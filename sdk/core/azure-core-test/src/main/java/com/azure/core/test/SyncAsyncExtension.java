@@ -18,12 +18,18 @@ import java.util.concurrent.Callable;
 import java.util.stream.Stream;
 
 /**
- * An test template extension that helps to branch out a single test into sync and async invocation.
+ * A test template extension that helps to branch out a single test into sync and async invocation.
  */
 public final class SyncAsyncExtension implements TestTemplateInvocationContextProvider {
 
     private static final ThreadLocal<Boolean> IS_SYNC_THREAD_LOCAL = new ThreadLocal<>();
     private static final ThreadLocal<Boolean> WAS_EXTENSION_USED_THREAD_LOCAL = new ThreadLocal<>();
+
+    /**
+     * Creates a new instance of {@link SyncAsyncExtension}.
+     */
+    public SyncAsyncExtension() {
+    }
 
     /**
      * Executes sync or async branch depending on the context.
@@ -91,12 +97,10 @@ public final class SyncAsyncExtension implements TestTemplateInvocationContextPr
     }
 
     @Override
-    public Stream<TestTemplateInvocationContext> provideTestTemplateInvocationContexts(
-        ExtensionContext extensionContext) {
-        return Stream.of(
-            new SyncAsyncTestTemplateInvocationContext(true),
-            new SyncAsyncTestTemplateInvocationContext(false)
-        );
+    public Stream<TestTemplateInvocationContext>
+        provideTestTemplateInvocationContexts(ExtensionContext extensionContext) {
+        return Stream.of(new SyncAsyncTestTemplateInvocationContext(true),
+            new SyncAsyncTestTemplateInvocationContext(false));
     }
 
     private static final class SyncAsyncTestTemplateInvocationContext implements TestTemplateInvocationContext {

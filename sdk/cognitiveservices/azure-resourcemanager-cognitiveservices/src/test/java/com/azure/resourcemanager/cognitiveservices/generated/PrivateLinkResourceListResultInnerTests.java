@@ -9,31 +9,27 @@ import com.azure.resourcemanager.cognitiveservices.fluent.models.PrivateLinkReso
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResource;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResourceProperties;
 import java.util.Arrays;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 public final class PrivateLinkResourceListResultInnerTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkResourceListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"qlveualupjmkh\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"displayName\":\"bcswsrt\"},\"id\":\"riplrbpbewtg\",\"name\":\"fgb\",\"type\":\"c\"},{\"properties\":{\"groupId\":\"zvlvqhjkbegib\",\"requiredMembers\":[],\"requiredZoneNames\":[],\"displayName\":\"iebwwaloayqcgwrt\"},\"id\":\"j\",\"name\":\"zg\",\"type\":\"yzm\"}]}")
-                .toObject(PrivateLinkResourceListResultInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkResourceListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"zel\",\"requiredMembers\":[\"r\",\"lsfeaenwabfatkld\"],\"requiredZoneNames\":[\"jhwuaanozjos\",\"hyoulpjr\"],\"displayName\":\"ag\"},\"id\":\"rvimjwosytxitcsk\",\"name\":\"cktqumiekkezzi\",\"type\":\"hlyfjhdgqgg\"},{\"properties\":{\"groupId\":\"unygaeqid\",\"requiredMembers\":[\"atpxl\",\"rxcyjmoad\",\"uvarmywdmjsjq\",\"jhhyxxrwlycoduhp\"],\"requiredZoneNames\":[\"gymare\",\"n\",\"jxqugjhky\",\"ubeddg\"],\"displayName\":\"ofwq\"},\"id\":\"zqalkrmnjijpx\",\"name\":\"cqqudf\",\"type\":\"byxbaaabjy\"},{\"properties\":{\"groupId\":\"ffimrzrtuzqogsex\",\"requiredMembers\":[\"fdnw\",\"wmewzsyy\",\"euzsoi\",\"judpfrxt\"],\"requiredZoneNames\":[\"zvaytdwkqbr\"],\"displayName\":\"bpaxhexiilivpdt\"},\"id\":\"irqtdqoa\",\"name\":\"oruzfgsquyfxrxx\",\"type\":\"eptra\"}]}")
+            .toObject(PrivateLinkResourceListResultInner.class);
+        Assertions.assertEquals("jhwuaanozjos", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkResourceListResultInner model =
-            new PrivateLinkResourceListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new PrivateLinkResource()
-                                .withProperties(
-                                    new PrivateLinkResourceProperties().withRequiredZoneNames(Arrays.asList())),
-                            new PrivateLinkResource()
-                                .withProperties(
-                                    new PrivateLinkResourceProperties().withRequiredZoneNames(Arrays.asList()))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkResourceListResultInner model = new PrivateLinkResourceListResultInner().withValue(Arrays.asList(
+            new PrivateLinkResource().withProperties(
+                new PrivateLinkResourceProperties().withRequiredZoneNames(Arrays.asList("jhwuaanozjos", "hyoulpjr"))),
+            new PrivateLinkResource().withProperties(new PrivateLinkResourceProperties()
+                .withRequiredZoneNames(Arrays.asList("gymare", "n", "jxqugjhky", "ubeddg"))),
+            new PrivateLinkResource().withProperties(
+                new PrivateLinkResourceProperties().withRequiredZoneNames(Arrays.asList("zvaytdwkqbr")))));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceListResultInner.class);
+        Assertions.assertEquals("jhwuaanozjos", model.value().get(0).properties().requiredZoneNames().get(0));
     }
 }

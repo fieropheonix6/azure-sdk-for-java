@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureWorkloadSapHanaPointInTimeRecoveryPoint;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PointInTimeRange;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointMoveReadinessInfo;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointProperties;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierInformationV2;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierType;
@@ -17,95 +18,64 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadSapHanaPointInTimeRecoveryPointTests {
-    @Test
-    public void testDeserialize() {
-        AzureWorkloadSapHanaPointInTimeRecoveryPoint model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"AzureWorkloadSAPHanaPointInTimeRecoveryPoint\",\"timeRanges\":[{\"startTime\":\"2021-05-19T22:03:11Z\",\"endTime\":\"2021-07-26T18:31:56Z\"},{\"startTime\":\"2021-12-05T00:17:31Z\",\"endTime\":\"2021-03-10T08:15:44Z\"},{\"startTime\":\"2021-12-07T19:13:24Z\",\"endTime\":\"2020-12-23T10:26:10Z\"},{\"startTime\":\"2021-03-26T08:46:35Z\",\"endTime\":\"2021-02-11T17:22:49Z\"}],\"recoveryPointTimeInUTC\":\"2021-01-01T22:27:05Z\",\"type\":\"Invalid\",\"recoveryPointTierDetails\":[{\"type\":\"HardenedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"oobrlttyms\":\"qyrp\"}},{\"type\":\"HardenedRP\",\"status\":\"Deleted\",\"extendedInfo\":{\"tilaxh\":\"fwqzdz\",\"ouwivkxoyzunbixx\":\"fhqlyvi\",\"vcpwpgclrc\":\"ti\",\"kenx\":\"vtsoxf\"}},{\"type\":\"ArchivedRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"qskaw\":\"pmpdn\",\"bnpqfrtqlkzme\":\"oqvm\",\"qdrfegcealzxwhc\":\"nitgvkxlz\"}}],\"recoveryPointMoveReadinessInfo\":{\"omfaj\":{\"isReadyForMove\":false,\"additionalInfo\":\"yqhlwigdivbkbx\"},\"hzbezkgi\":{\"isReadyForMove\":false,\"additionalInfo\":\"qvdaeyyguxakjsq\"}}}")
-                .toObject(AzureWorkloadSapHanaPointInTimeRecoveryPoint.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T22:27:05Z"), model.recoveryPointTimeInUtc());
-        Assertions.assertEquals(RestorePointType.INVALID, model.type());
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.recoveryPointTierDetails().get(0).type());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureWorkloadSapHanaPointInTimeRecoveryPoint model = BinaryData.fromString(
+            "{\"objectType\":\"AzureWorkloadSAPHanaPointInTimeRecoveryPoint\",\"timeRanges\":[{\"startTime\":\"2021-09-21T07:24:07Z\",\"endTime\":\"2021-07-31T03:26:03Z\"},{\"startTime\":\"2021-06-20T08:18:39Z\",\"endTime\":\"2021-07-21T08:09:37Z\"}],\"recoveryPointTimeInUTC\":\"2021-07-16T00:25:09Z\",\"type\":\"SnapshotFull\",\"recoveryPointTierDetails\":[{\"type\":\"InstantRP\",\"status\":\"Disabled\",\"extendedInfo\":{\"ckt\":\"wklnsrmffeyc\",\"kk\":\"iymerteeammxqi\"}}],\"recoveryPointMoveReadinessInfo\":{\"mxvavrefdee\":{\"isReadyForMove\":true,\"additionalInfo\":\"kgdoj\"},\"xtxsuwprtujw\":{\"isReadyForMove\":true,\"additionalInfo\":\"uij\"},\"tzeexav\":{\"isReadyForMove\":false,\"additionalInfo\":\"djibabxvitit\"}},\"recoveryPointProperties\":{\"expiryTime\":\"fglecdmdqbwp\",\"ruleName\":\"q\",\"isSoftDeleted\":false}}")
+            .toObject(AzureWorkloadSapHanaPointInTimeRecoveryPoint.class);
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T00:25:09Z"), model.recoveryPointTimeInUtc());
+        Assertions.assertEquals(RestorePointType.SNAPSHOT_FULL, model.type());
+        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.recoveryPointTierDetails().get(0).type());
         Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.recoveryPointTierDetails().get(0).status());
-        Assertions.assertEquals("qyrp", model.recoveryPointTierDetails().get(0).extendedInfo().get("oobrlttyms"));
-        Assertions.assertEquals(false, model.recoveryPointMoveReadinessInfo().get("omfaj").isReadyForMove());
-        Assertions.assertEquals("yqhlwigdivbkbx", model.recoveryPointMoveReadinessInfo().get("omfaj").additionalInfo());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T22:03:11Z"), model.timeRanges().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T18:31:56Z"), model.timeRanges().get(0).endTime());
+        Assertions.assertEquals("wklnsrmffeyc", model.recoveryPointTierDetails().get(0).extendedInfo().get("ckt"));
+        Assertions.assertEquals(true, model.recoveryPointMoveReadinessInfo().get("mxvavrefdee").isReadyForMove());
+        Assertions.assertEquals("kgdoj", model.recoveryPointMoveReadinessInfo().get("mxvavrefdee").additionalInfo());
+        Assertions.assertEquals("fglecdmdqbwp", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("q", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T07:24:07Z"), model.timeRanges().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T03:26:03Z"), model.timeRanges().get(0).endTime());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureWorkloadSapHanaPointInTimeRecoveryPoint model =
-            new AzureWorkloadSapHanaPointInTimeRecoveryPoint()
-                .withRecoveryPointTimeInUtc(OffsetDateTime.parse("2021-01-01T22:27:05Z"))
-                .withType(RestorePointType.INVALID)
-                .withRecoveryPointTierDetails(
-                    Arrays
-                        .asList(
-                            new RecoveryPointTierInformationV2()
-                                .withType(RecoveryPointTierType.HARDENED_RP)
-                                .withStatus(RecoveryPointTierStatus.DISABLED)
-                                .withExtendedInfo(mapOf("oobrlttyms", "qyrp")),
-                            new RecoveryPointTierInformationV2()
-                                .withType(RecoveryPointTierType.HARDENED_RP)
-                                .withStatus(RecoveryPointTierStatus.DELETED)
-                                .withExtendedInfo(
-                                    mapOf(
-                                        "tilaxh",
-                                        "fwqzdz",
-                                        "ouwivkxoyzunbixx",
-                                        "fhqlyvi",
-                                        "vcpwpgclrc",
-                                        "ti",
-                                        "kenx",
-                                        "vtsoxf")),
-                            new RecoveryPointTierInformationV2()
-                                .withType(RecoveryPointTierType.ARCHIVED_RP)
-                                .withStatus(RecoveryPointTierStatus.DISABLED)
-                                .withExtendedInfo(
-                                    mapOf("qskaw", "pmpdn", "bnpqfrtqlkzme", "oqvm", "qdrfegcealzxwhc", "nitgvkxlz"))))
-                .withRecoveryPointMoveReadinessInfo(
-                    mapOf(
-                        "omfaj",
-                        new RecoveryPointMoveReadinessInfo()
-                            .withIsReadyForMove(false)
-                            .withAdditionalInfo("yqhlwigdivbkbx"),
-                        "hzbezkgi",
-                        new RecoveryPointMoveReadinessInfo()
-                            .withIsReadyForMove(false)
-                            .withAdditionalInfo("qvdaeyyguxakjsq")))
-                .withTimeRanges(
-                    Arrays
-                        .asList(
-                            new PointInTimeRange()
-                                .withStartTime(OffsetDateTime.parse("2021-05-19T22:03:11Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-07-26T18:31:56Z")),
-                            new PointInTimeRange()
-                                .withStartTime(OffsetDateTime.parse("2021-12-05T00:17:31Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-03-10T08:15:44Z")),
-                            new PointInTimeRange()
-                                .withStartTime(OffsetDateTime.parse("2021-12-07T19:13:24Z"))
-                                .withEndTime(OffsetDateTime.parse("2020-12-23T10:26:10Z")),
-                            new PointInTimeRange()
-                                .withStartTime(OffsetDateTime.parse("2021-03-26T08:46:35Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-02-11T17:22:49Z"))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureWorkloadSapHanaPointInTimeRecoveryPoint model = new AzureWorkloadSapHanaPointInTimeRecoveryPoint()
+            .withRecoveryPointTimeInUtc(OffsetDateTime.parse("2021-07-16T00:25:09Z"))
+            .withType(RestorePointType.SNAPSHOT_FULL)
+            .withRecoveryPointTierDetails(
+                Arrays.asList(new RecoveryPointTierInformationV2().withType(RecoveryPointTierType.INSTANT_RP)
+                    .withStatus(RecoveryPointTierStatus.DISABLED)
+                    .withExtendedInfo(mapOf("ckt", "wklnsrmffeyc", "kk", "iymerteeammxqi"))))
+            .withRecoveryPointMoveReadinessInfo(mapOf("mxvavrefdee",
+                new RecoveryPointMoveReadinessInfo().withIsReadyForMove(true).withAdditionalInfo("kgdoj"),
+                "xtxsuwprtujw", new RecoveryPointMoveReadinessInfo().withIsReadyForMove(true).withAdditionalInfo("uij"),
+                "tzeexav",
+                new RecoveryPointMoveReadinessInfo().withIsReadyForMove(false).withAdditionalInfo("djibabxvitit")))
+            .withRecoveryPointProperties(
+                new RecoveryPointProperties().withExpiryTime("fglecdmdqbwp").withRuleName("q").withIsSoftDeleted(false))
+            .withTimeRanges(Arrays.asList(
+                new PointInTimeRange().withStartTime(OffsetDateTime.parse("2021-09-21T07:24:07Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-07-31T03:26:03Z")),
+                new PointInTimeRange().withStartTime(OffsetDateTime.parse("2021-06-20T08:18:39Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-07-21T08:09:37Z"))));
         model = BinaryData.fromObject(model).toObject(AzureWorkloadSapHanaPointInTimeRecoveryPoint.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-01T22:27:05Z"), model.recoveryPointTimeInUtc());
-        Assertions.assertEquals(RestorePointType.INVALID, model.type());
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.recoveryPointTierDetails().get(0).type());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-16T00:25:09Z"), model.recoveryPointTimeInUtc());
+        Assertions.assertEquals(RestorePointType.SNAPSHOT_FULL, model.type());
+        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.recoveryPointTierDetails().get(0).type());
         Assertions.assertEquals(RecoveryPointTierStatus.DISABLED, model.recoveryPointTierDetails().get(0).status());
-        Assertions.assertEquals("qyrp", model.recoveryPointTierDetails().get(0).extendedInfo().get("oobrlttyms"));
-        Assertions.assertEquals(false, model.recoveryPointMoveReadinessInfo().get("omfaj").isReadyForMove());
-        Assertions.assertEquals("yqhlwigdivbkbx", model.recoveryPointMoveReadinessInfo().get("omfaj").additionalInfo());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-19T22:03:11Z"), model.timeRanges().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-26T18:31:56Z"), model.timeRanges().get(0).endTime());
+        Assertions.assertEquals("wklnsrmffeyc", model.recoveryPointTierDetails().get(0).extendedInfo().get("ckt"));
+        Assertions.assertEquals(true, model.recoveryPointMoveReadinessInfo().get("mxvavrefdee").isReadyForMove());
+        Assertions.assertEquals("kgdoj", model.recoveryPointMoveReadinessInfo().get("mxvavrefdee").additionalInfo());
+        Assertions.assertEquals("fglecdmdqbwp", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("q", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals(false, model.recoveryPointProperties().isSoftDeleted());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-21T07:24:07Z"), model.timeRanges().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T03:26:03Z"), model.timeRanges().get(0).endTime());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

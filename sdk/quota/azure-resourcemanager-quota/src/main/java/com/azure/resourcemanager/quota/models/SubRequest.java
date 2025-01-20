@@ -5,62 +5,62 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Request property. */
+/**
+ * Request property.
+ */
 @Fluent
-public final class SubRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubRequest.class);
-
+public final class SubRequest implements JsonSerializable<SubRequest> {
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name")
     private ResourceName name;
 
     /*
      * Resource type for which the quota properties were requested.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
-     * Quota limit units, such as Count and Bytes. When requesting quota, use
-     * the **unit** value returned in the GET response in the request body of
-     * your PUT operation.
+     * Quota limit units, such as Count and Bytes. When requesting quota, use the **unit** value returned in the GET
+     * response in the request body of your PUT operation.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * The quota request status.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private QuotaRequestState provisioningState;
 
     /*
      * User-friendly status message.
      */
-    @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
     /*
      * Quota request ID.
      */
-    @JsonProperty(value = "subRequestId", access = JsonProperty.Access.WRITE_ONLY)
     private String subRequestId;
 
     /*
      * Resource quota limit properties.
      */
-    @JsonProperty(value = "limit")
     private LimitJsonObject limit;
 
     /**
+     * Creates an instance of SubRequest class.
+     */
+    public SubRequest() {
+    }
+
+    /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public ResourceName name() {
@@ -69,7 +69,7 @@ public final class SubRequest {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SubRequest object itself.
      */
@@ -80,7 +80,7 @@ public final class SubRequest {
 
     /**
      * Get the resourceType property: Resource type for which the quota properties were requested.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -90,7 +90,7 @@ public final class SubRequest {
     /**
      * Get the unit property: Quota limit units, such as Count and Bytes. When requesting quota, use the **unit** value
      * returned in the GET response in the request body of your PUT operation.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -100,7 +100,7 @@ public final class SubRequest {
     /**
      * Set the unit property: Quota limit units, such as Count and Bytes. When requesting quota, use the **unit** value
      * returned in the GET response in the request body of your PUT operation.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the SubRequest object itself.
      */
@@ -111,7 +111,7 @@ public final class SubRequest {
 
     /**
      * Get the provisioningState property: The quota request status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public QuotaRequestState provisioningState() {
@@ -120,7 +120,7 @@ public final class SubRequest {
 
     /**
      * Get the message property: User-friendly status message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -129,7 +129,7 @@ public final class SubRequest {
 
     /**
      * Get the subRequestId property: Quota request ID.
-     *
+     * 
      * @return the subRequestId value.
      */
     public String subRequestId() {
@@ -138,7 +138,7 @@ public final class SubRequest {
 
     /**
      * Get the limit property: Resource quota limit properties.
-     *
+     * 
      * @return the limit value.
      */
     public LimitJsonObject limit() {
@@ -147,7 +147,7 @@ public final class SubRequest {
 
     /**
      * Set the limit property: Resource quota limit properties.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the SubRequest object itself.
      */
@@ -158,7 +158,7 @@ public final class SubRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -168,5 +168,55 @@ public final class SubRequest {
         if (limit() != null) {
             limit().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("name", this.name);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeJsonField("limit", this.limit);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubRequest if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SubRequest.
+     */
+    public static SubRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubRequest deserializedSubRequest = new SubRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSubRequest.name = ResourceName.fromJson(reader);
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedSubRequest.resourceType = reader.getString();
+                } else if ("unit".equals(fieldName)) {
+                    deserializedSubRequest.unit = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSubRequest.provisioningState = QuotaRequestState.fromString(reader.getString());
+                } else if ("message".equals(fieldName)) {
+                    deserializedSubRequest.message = reader.getString();
+                } else if ("subRequestId".equals(fieldName)) {
+                    deserializedSubRequest.subRequestId = reader.getString();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedSubRequest.limit = LimitJsonObject.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubRequest;
+        });
     }
 }

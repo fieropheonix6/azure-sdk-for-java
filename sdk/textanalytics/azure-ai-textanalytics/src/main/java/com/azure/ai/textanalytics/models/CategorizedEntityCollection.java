@@ -7,20 +7,20 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link CategorizedEntityCollection} model.
+ * The {@code CategorizedEntityCollection} model.
  */
 @Immutable
 public final class CategorizedEntityCollection extends IterableStream<CategorizedEntity> {
     private final IterableStream<TextAnalyticsWarning> warnings;
 
     /**
-     * Creates a {@link CategorizedEntityCollection} model that describes a entities collection including warnings.
+     * Creates a {@code CategorizedEntityCollection} model that describes a entities collection including warnings.
      *
      * @param entities An {@link IterableStream} of {@link CategorizedEntity categorized entities}.
      * @param warnings An {@link IterableStream} of {@link TextAnalyticsWarning warnings}.
      */
     public CategorizedEntityCollection(IterableStream<CategorizedEntity> entities,
-                                       IterableStream<TextAnalyticsWarning> warnings) {
+        IterableStream<TextAnalyticsWarning> warnings) {
         super(entities);
         this.warnings = warnings;
     }

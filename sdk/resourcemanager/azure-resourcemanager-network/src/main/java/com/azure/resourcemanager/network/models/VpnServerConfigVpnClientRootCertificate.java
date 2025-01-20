@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of VPN client root certificate of VpnServerConfiguration. */
+/**
+ * Properties of VPN client root certificate of VpnServerConfiguration.
+ */
 @Fluent
-public final class VpnServerConfigVpnClientRootCertificate {
+public final class VpnServerConfigVpnClientRootCertificate
+    implements JsonSerializable<VpnServerConfigVpnClientRootCertificate> {
     /*
      * The certificate name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The certificate public data.
      */
-    @JsonProperty(value = "publicCertData")
     private String publicCertData;
 
-    /** Creates an instance of VpnServerConfigVpnClientRootCertificate class. */
+    /**
+     * Creates an instance of VpnServerConfigVpnClientRootCertificate class.
+     */
     public VpnServerConfigVpnClientRootCertificate() {
     }
 
     /**
      * Get the name property: The certificate name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +44,7 @@ public final class VpnServerConfigVpnClientRootCertificate {
 
     /**
      * Set the name property: The certificate name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigVpnClientRootCertificate object itself.
      */
@@ -48,7 +55,7 @@ public final class VpnServerConfigVpnClientRootCertificate {
 
     /**
      * Get the publicCertData property: The certificate public data.
-     *
+     * 
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -57,7 +64,7 @@ public final class VpnServerConfigVpnClientRootCertificate {
 
     /**
      * Set the publicCertData property: The certificate public data.
-     *
+     * 
      * @param publicCertData the publicCertData value to set.
      * @return the VpnServerConfigVpnClientRootCertificate object itself.
      */
@@ -68,9 +75,49 @@ public final class VpnServerConfigVpnClientRootCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publicCertData", this.publicCertData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnServerConfigVpnClientRootCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnServerConfigVpnClientRootCertificate if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnServerConfigVpnClientRootCertificate.
+     */
+    public static VpnServerConfigVpnClientRootCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnServerConfigVpnClientRootCertificate deserializedVpnServerConfigVpnClientRootCertificate
+                = new VpnServerConfigVpnClientRootCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVpnServerConfigVpnClientRootCertificate.name = reader.getString();
+                } else if ("publicCertData".equals(fieldName)) {
+                    deserializedVpnServerConfigVpnClientRootCertificate.publicCertData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnServerConfigVpnClientRootCertificate;
+        });
     }
 }

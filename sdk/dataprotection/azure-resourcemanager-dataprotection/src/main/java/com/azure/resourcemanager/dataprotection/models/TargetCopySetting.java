@@ -6,29 +6,38 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** TargetCopySetting Target copy settings. */
+/**
+ * TargetCopySetting
+ * 
+ * Target copy settings.
+ */
 @Fluent
-public final class TargetCopySetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetCopySetting.class);
-
+public final class TargetCopySetting implements JsonSerializable<TargetCopySetting> {
     /*
-     * CopyOption It can be CustomCopyOption or ImmediateCopyOption.
+     * It can be CustomCopyOption or ImmediateCopyOption.
      */
-    @JsonProperty(value = "copyAfter", required = true)
     private CopyOption copyAfter;
 
     /*
-     * DataStoreInfoBase Info of target datastore
+     * Info of target datastore
      */
-    @JsonProperty(value = "dataStore", required = true)
     private DataStoreInfoBase dataStore;
 
     /**
-     * Get the copyAfter property: CopyOption It can be CustomCopyOption or ImmediateCopyOption.
-     *
+     * Creates an instance of TargetCopySetting class.
+     */
+    public TargetCopySetting() {
+    }
+
+    /**
+     * Get the copyAfter property: It can be CustomCopyOption or ImmediateCopyOption.
+     * 
      * @return the copyAfter value.
      */
     public CopyOption copyAfter() {
@@ -36,8 +45,8 @@ public final class TargetCopySetting {
     }
 
     /**
-     * Set the copyAfter property: CopyOption It can be CustomCopyOption or ImmediateCopyOption.
-     *
+     * Set the copyAfter property: It can be CustomCopyOption or ImmediateCopyOption.
+     * 
      * @param copyAfter the copyAfter value to set.
      * @return the TargetCopySetting object itself.
      */
@@ -47,8 +56,8 @@ public final class TargetCopySetting {
     }
 
     /**
-     * Get the dataStore property: DataStoreInfoBase Info of target datastore.
-     *
+     * Get the dataStore property: Info of target datastore.
+     * 
      * @return the dataStore value.
      */
     public DataStoreInfoBase dataStore() {
@@ -56,8 +65,8 @@ public final class TargetCopySetting {
     }
 
     /**
-     * Set the dataStore property: DataStoreInfoBase Info of target datastore.
-     *
+     * Set the dataStore property: Info of target datastore.
+     * 
      * @param dataStore the dataStore value to set.
      * @return the TargetCopySetting object itself.
      */
@@ -68,23 +77,63 @@ public final class TargetCopySetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (copyAfter() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property copyAfter in model TargetCopySetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property copyAfter in model TargetCopySetting"));
         } else {
             copyAfter().validate();
         }
         if (dataStore() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property dataStore in model TargetCopySetting"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property dataStore in model TargetCopySetting"));
         } else {
             dataStore().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TargetCopySetting.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("copyAfter", this.copyAfter);
+        jsonWriter.writeJsonField("dataStore", this.dataStore);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetCopySetting from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetCopySetting if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TargetCopySetting.
+     */
+    public static TargetCopySetting fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetCopySetting deserializedTargetCopySetting = new TargetCopySetting();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("copyAfter".equals(fieldName)) {
+                    deserializedTargetCopySetting.copyAfter = CopyOption.fromJson(reader);
+                } else if ("dataStore".equals(fieldName)) {
+                    deserializedTargetCopySetting.dataStore = DataStoreInfoBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetCopySetting;
+        });
     }
 }

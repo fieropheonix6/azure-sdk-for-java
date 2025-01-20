@@ -5,30 +5,87 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.WebJobType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Web Job Information. */
+/**
+ * Web Job Information.
+ */
 @Fluent
 public final class WebJobInner extends ProxyOnlyResource {
     /*
      * WebJob resource specific properties
      */
-    @JsonProperty(value = "properties")
     private WebJobProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WebJobInner class.
+     */
+    public WebJobInner() {
+    }
 
     /**
      * Get the innerProperties property: WebJob resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebJobProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebJobInner withKind(String kind) {
         super.withKind(kind);
@@ -37,7 +94,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the runCommand property: Run command.
-     *
+     * 
      * @return the runCommand value.
      */
     public String runCommand() {
@@ -46,7 +103,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the runCommand property: Run command.
-     *
+     * 
      * @param runCommand the runCommand value to set.
      * @return the WebJobInner object itself.
      */
@@ -60,7 +117,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the url property: Job URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -69,7 +126,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the url property: Job URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the WebJobInner object itself.
      */
@@ -83,7 +140,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @return the extraInfoUrl value.
      */
     public String extraInfoUrl() {
@@ -92,7 +149,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @param extraInfoUrl the extraInfoUrl value to set.
      * @return the WebJobInner object itself.
      */
@@ -106,7 +163,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the webJobType property: Job type.
-     *
+     * 
      * @return the webJobType value.
      */
     public WebJobType webJobType() {
@@ -115,7 +172,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the webJobType property: Job type.
-     *
+     * 
      * @param webJobType the webJobType value to set.
      * @return the WebJobInner object itself.
      */
@@ -129,7 +186,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the error property: Error information.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -138,7 +195,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the error property: Error information.
-     *
+     * 
      * @param error the error value to set.
      * @return the WebJobInner object itself.
      */
@@ -152,7 +209,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the usingSdk property: Using SDK?.
-     *
+     * 
      * @return the usingSdk value.
      */
     public Boolean usingSdk() {
@@ -161,7 +218,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the usingSdk property: Using SDK?.
-     *
+     * 
      * @param usingSdk the usingSdk value to set.
      * @return the WebJobInner object itself.
      */
@@ -175,7 +232,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Get the settings property: Job settings.
-     *
+     * 
      * @return the settings value.
      */
     public Map<String, Object> settings() {
@@ -184,7 +241,7 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Set the settings property: Job settings.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the WebJobInner object itself.
      */
@@ -198,14 +255,59 @@ public final class WebJobInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebJobInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebJobInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebJobInner.
+     */
+    public static WebJobInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebJobInner deserializedWebJobInner = new WebJobInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebJobInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebJobInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebJobInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWebJobInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebJobInner.innerProperties = WebJobProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebJobInner;
+        });
     }
 }

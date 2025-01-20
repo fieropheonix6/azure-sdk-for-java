@@ -39,6 +39,8 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseList;
 import com.azure.resourcemanager.redisenterprise.models.DatabaseUpdate;
 import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
+import com.azure.resourcemanager.redisenterprise.models.FlushParameters;
+import com.azure.resourcemanager.redisenterprise.models.ForceLinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ForceUnlinkParameters;
 import com.azure.resourcemanager.redisenterprise.models.ImportClusterParameters;
 import com.azure.resourcemanager.redisenterprise.models.RegenerateKeyParameters;
@@ -46,22 +48,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatabasesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatabasesClient.
+ */
 public final class DatabasesClientImpl implements DatabasesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DatabasesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RedisEnterpriseManagementClientImpl client;
 
     /**
      * Initializes an instance of DatabasesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DatabasesClientImpl(RedisEnterpriseManagementClientImpl client) {
-        this.service =
-            RestProxy.create(DatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DatabasesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,208 +79,168 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "RedisEnterpriseManag")
-    private interface DatabasesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases")
-        @ExpectedResponses({200})
+    public interface DatabasesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseList>> listByCluster(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<DatabaseList>> listByCluster(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DatabaseInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") DatabaseUpdate parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<DatabaseInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/listKeys")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AccessKeysInner>> listKeys(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/regenerateKey")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> regenerateKey(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DatabaseInner parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") RegenerateKeyParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/import")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> importMethod(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DatabaseUpdate parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ImportClusterParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/export")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> export(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ExportClusterParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/forceUnlink")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> forceUnlink(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ForceUnlinkParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}/listKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/forceLinkToReplicationGroup")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AccessKeysInner>> listKeys(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> forceLinkToReplicationGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") ForceLinkParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}/regenerateKey")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/flush")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> regenerateKey(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> flush(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") RegenerateKeyParameters parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") FlushParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}/import")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/databases/{databaseName}/upgradeDBRedisVersion")
+        @ExpectedResponses({ 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> importMethod(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ImportClusterParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> upgradeDBRedisVersion(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("databaseName") String databaseName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}/export")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> export(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ExportClusterParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache"
-                + "/redisEnterprise/{clusterName}/databases/{databaseName}/forceUnlink")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> forceUnlink(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("databaseName") String databaseName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ForceUnlinkParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatabaseList>> listByClusterNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DatabaseList>> listByClusterNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
-     *
+     * Gets all databases in the specified Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all databases in the specified Redis Enterprise cluster along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<DatabaseInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -283,55 +251,35 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByCluster(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            accept,
-                            context))
-            .<PagedResponse<DatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByCluster(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, clusterName, accept, context))
+            .<PagedResponse<DatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
-     *
+     * Gets all databases in the specified Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * @return all databases in the specified Redis Enterprise cluster along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseInner>> listByClusterSinglePageAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<DatabaseInner>> listByClusterSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -343,69 +291,54 @@ public final class DatabasesClientImpl implements DatabasesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByCluster(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByCluster(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
-     *
+     * Gets all databases in the specified Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedFlux}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseInner> listByClusterAsync(String resourceGroupName, String clusterName) {
-        return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName),
             nextLink -> listByClusterNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
-     *
+     * Gets all databases in the specified Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedFlux}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatabaseInner> listByClusterAsync(String resourceGroupName, String clusterName, Context context) {
-        return new PagedFlux<>(
-            () -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
+        return new PagedFlux<>(() -> listByClusterSinglePageAsync(resourceGroupName, clusterName, context),
             nextLink -> listByClusterNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
-     *
+     * Gets all databases in the specified Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedIterable}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName) {
@@ -413,15 +346,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Gets all databases in the specified RedisEnterprise cluster.
-     *
+     * Gets all databases in the specified Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all databases in the specified RedisEnterprise cluster as paginated response with {@link PagedIterable}.
+     * @return all databases in the specified Redis Enterprise cluster as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseInner> listByCluster(String resourceGroupName, String clusterName, Context context) {
@@ -430,25 +363,23 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -461,10 +392,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -474,43 +403,31 @@ public final class DatabasesClientImpl implements DatabasesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -523,10 +440,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -535,207 +450,186 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link PollerFlux} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabaseInner.class,
-                DatabaseInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link PollerFlux} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginCreateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DatabaseInner.class, DatabaseInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, context);
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
-        return beginCreateAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters) {
+        return this.beginCreateAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, databaseName, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginCreate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseInner parameters, Context context) {
+        return this.beginCreateAsync(resourceGroupName, clusterName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> createAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
-        return beginCreateAsync(resourceGroupName, clusterName, databaseName, parameters)
-            .last()
+    private Mono<DatabaseInner> createAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters) {
+        return beginCreateAsync(resourceGroupName, clusterName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> createAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
-        return beginCreateAsync(resourceGroupName, clusterName, databaseName, parameters, context)
-            .last()
+    private Mono<DatabaseInner> createAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, Context context) {
+        return beginCreateAsync(resourceGroupName, clusterName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster.
+     * @return describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner create(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters) {
+    public DatabaseInner create(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters) {
         return createAsync(resourceGroupName, clusterName, databaseName, parameters).block();
     }
 
     /**
      * Creates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster.
+     * @return describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner create(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context) {
+    public DatabaseInner create(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseInner parameters, Context context) {
         return createAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -748,10 +642,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -761,43 +653,31 @@ public final class DatabasesClientImpl implements DatabasesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, DatabaseUpdate parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -810,10 +690,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -822,206 +700,185 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link PollerFlux} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatabaseInner.class,
-                DatabaseInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseUpdate parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, this.client.getContext());
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link PollerFlux} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters, Context context) {
+    private PollerFlux<PollResult<DatabaseInner>, DatabaseInner> beginUpdateAsync(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
-        return this
-            .client
-            .<DatabaseInner, DatabaseInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DatabaseInner.class, DatabaseInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
+        return this.client.<DatabaseInner, DatabaseInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatabaseInner.class, DatabaseInner.class, context);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseUpdate parameters) {
+        return this.beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of describes a database on the RedisEnterprise cluster.
+     * @return the {@link SyncPoller} for polling of describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<DatabaseInner>, DatabaseInner> beginUpdate(String resourceGroupName,
+        String clusterName, String databaseName, DatabaseUpdate parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> updateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters)
-            .last()
+    private Mono<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return describes a database on the Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatabaseInner> updateAsync(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, context)
-            .last()
+    private Mono<DatabaseInner> updateAsync(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseUpdate parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, clusterName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster.
+     * @return describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner update(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters) {
+    public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseUpdate parameters) {
         return updateAsync(resourceGroupName, clusterName, databaseName, parameters).block();
     }
 
     /**
      * Updates a database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Parameters supplied to the create or update database operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a database on the RedisEnterprise cluster.
+     * @return describes a database on the Redis Enterprise cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner update(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseUpdate parameters, Context context) {
+    public DatabaseInner update(String resourceGroupName, String clusterName, String databaseName,
+        DatabaseUpdate parameters, Context context) {
         return updateAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
-     *
+     * Gets information about a database in a Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1034,49 +891,35 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
-     *
+     * Gets information about a database in a Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private Mono<Response<DatabaseInner>> getWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1089,102 +932,83 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
-     *
+     * Gets information about a database in a Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster on successful completion of {@link Mono}.
+     * @return information about a database in a Redis Enterprise cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatabaseInner> getAsync(String resourceGroupName, String clusterName, String databaseName) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName)
-            .flatMap(
-                (Response<DatabaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets information about a database in a RedisEnterprise cluster.
-     *
+     * Gets information about a database in a Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatabaseInner get(String resourceGroupName, String clusterName, String databaseName) {
-        return getAsync(resourceGroupName, clusterName, databaseName).block();
-    }
-
-    /**
-     * Gets information about a database in a RedisEnterprise cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a database in a RedisEnterprise cluster along with {@link Response}.
+     * @return information about a database in a Redis Enterprise cluster along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatabaseInner> getWithResponse(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    public Response<DatabaseInner> getWithResponse(String resourceGroupName, String clusterName, String databaseName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, databaseName, context).block();
     }
 
     /**
-     * Deletes a single database.
-     *
+     * Gets information about a database in a Redis Enterprise cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a database in a Redis Enterprise cluster.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatabaseInner get(String resourceGroupName, String clusterName, String databaseName) {
+        return getWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes a single database.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1197,34 +1021,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1232,13 +1044,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1251,52 +1061,40 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1304,39 +1102,38 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, databaseName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String databaseName) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName).getSyncPoller();
     }
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1344,17 +1141,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, clusterName, databaseName, context).getSyncPoller();
     }
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1362,17 +1159,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, databaseName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1381,17 +1177,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String databaseName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, databaseName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1403,10 +1198,10 @@ public final class DatabasesClientImpl implements DatabasesClient {
 
     /**
      * Deletes a single database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1418,24 +1213,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
-     *
+     * Retrieves the access keys for the Redis Enterprise database.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName) {
+    private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1448,34 +1241,22 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
-     *
+     * Retrieves the access keys for the Redis Enterprise database.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1483,13 +1264,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    private Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1502,31 +1281,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listKeys(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.listKeys(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
-     *
+     * Retrieves the access keys for the Redis Enterprise database.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1535,38 +1304,15 @@ public final class DatabasesClientImpl implements DatabasesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String clusterName, String databaseName) {
         return listKeysWithResponseAsync(resourceGroupName, clusterName, databaseName)
-            .flatMap(
-                (Response<AccessKeysInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Retrieves the access keys for the RedisEnterprise database.
-     *
+     * Retrieves the access keys for the Redis Enterprise database.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return access keys.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessKeysInner listKeys(String resourceGroupName, String clusterName, String databaseName) {
-        return listKeysAsync(resourceGroupName, clusterName, databaseName).block();
-    }
-
-    /**
-     * Retrieves the access keys for the RedisEnterprise database.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1574,17 +1320,33 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return access keys along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AccessKeysInner> listKeysWithResponse(
-        String resourceGroupName, String clusterName, String databaseName, Context context) {
+    public Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
         return listKeysWithResponseAsync(resourceGroupName, clusterName, databaseName, context).block();
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Retrieves the access keys for the Redis Enterprise database.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return access keys.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AccessKeysInner listKeys(String resourceGroupName, String clusterName, String databaseName) {
+        return listKeysWithResponse(resourceGroupName, clusterName, databaseName, Context.NONE).getValue();
+    }
+
+    /**
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1592,13 +1354,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, RegenerateKeyParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, RegenerateKeyParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1611,10 +1371,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1623,28 +1381,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKey(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateKey(this.client.getEndpoint(), resourceGroupName, clusterName,
+                databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1653,17 +1401,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return access keys along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        RegenerateKeyParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, RegenerateKeyParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1676,10 +1418,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1688,25 +1428,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateKey(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.regenerateKey(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1714,26 +1445,20 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of access keys.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKeyAsync(
-        String resourceGroupName, String clusterName, String databaseName, RegenerateKeyParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            regenerateKeyWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
-        return this
-            .client
-            .<AccessKeysInner, AccessKeysInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                AccessKeysInner.class,
-                AccessKeysInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKeyAsync(String resourceGroupName,
+        String clusterName, String databaseName, RegenerateKeyParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = regenerateKeyWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<AccessKeysInner, AccessKeysInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccessKeysInner.class, AccessKeysInner.class, this.client.getContext());
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1742,27 +1467,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of access keys.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKeyAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        RegenerateKeyParameters parameters,
-        Context context) {
+    private PollerFlux<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKeyAsync(String resourceGroupName,
+        String clusterName, String databaseName, RegenerateKeyParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            regenerateKeyWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
-        return this
-            .client
-            .<AccessKeysInner, AccessKeysInner>getLroResult(
-                mono, this.client.getHttpPipeline(), AccessKeysInner.class, AccessKeysInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = regenerateKeyWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
+        return this.client.<AccessKeysInner, AccessKeysInner>getLroResult(mono, this.client.getHttpPipeline(),
+            AccessKeysInner.class, AccessKeysInner.class, context);
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1770,17 +1489,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of access keys.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKey(
-        String resourceGroupName, String clusterName, String databaseName, RegenerateKeyParameters parameters) {
-        return beginRegenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKey(String resourceGroupName,
+        String clusterName, String databaseName, RegenerateKeyParameters parameters) {
+        return this.beginRegenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1789,22 +1508,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of access keys.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKey(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        RegenerateKeyParameters parameters,
-        Context context) {
-        return beginRegenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+    public SyncPoller<PollResult<AccessKeysInner>, AccessKeysInner> beginRegenerateKey(String resourceGroupName,
+        String clusterName, String databaseName, RegenerateKeyParameters parameters, Context context) {
+        return this.beginRegenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1812,19 +1527,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return access keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessKeysInner> regenerateKeyAsync(
-        String resourceGroupName, String clusterName, String databaseName, RegenerateKeyParameters parameters) {
-        return beginRegenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters)
-            .last()
+    private Mono<AccessKeysInner> regenerateKeyAsync(String resourceGroupName, String clusterName, String databaseName,
+        RegenerateKeyParameters parameters) {
+        return beginRegenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1833,23 +1547,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return access keys on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AccessKeysInner> regenerateKeyAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        RegenerateKeyParameters parameters,
-        Context context) {
-        return beginRegenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters, context)
-            .last()
+    private Mono<AccessKeysInner> regenerateKeyAsync(String resourceGroupName, String clusterName, String databaseName,
+        RegenerateKeyParameters parameters, Context context) {
+        return beginRegenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1857,17 +1566,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessKeysInner regenerateKey(
-        String resourceGroupName, String clusterName, String databaseName, RegenerateKeyParameters parameters) {
+    public AccessKeysInner regenerateKey(String resourceGroupName, String clusterName, String databaseName,
+        RegenerateKeyParameters parameters) {
         return regenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters).block();
     }
 
     /**
-     * Regenerates the RedisEnterprise database's access keys.
-     *
+     * Regenerates the Redis Enterprise database's access keys.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Specifies which key to regenerate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1876,21 +1585,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AccessKeysInner regenerateKey(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        RegenerateKeyParameters parameters,
-        Context context) {
+    public AccessKeysInner regenerateKey(String resourceGroupName, String clusterName, String databaseName,
+        RegenerateKeyParameters parameters, Context context) {
         return regenerateKeyAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1898,13 +1603,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, ImportClusterParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, ImportClusterParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1917,10 +1620,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1930,27 +1631,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .importMethod(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.importMethod(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1959,17 +1650,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ImportClusterParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> importMethodWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, ImportClusterParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1982,10 +1667,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1994,25 +1677,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .importMethod(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.importMethod(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2020,22 +1694,20 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginImportMethodAsync(
-        String resourceGroupName, String clusterName, String databaseName, ImportClusterParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            importMethodWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginImportMethodAsync(String resourceGroupName, String clusterName,
+        String databaseName, ImportClusterParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = importMethodWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2044,26 +1716,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginImportMethodAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ImportClusterParameters parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginImportMethodAsync(String resourceGroupName, String clusterName,
+        String databaseName, ImportClusterParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            importMethodWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = importMethodWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2071,17 +1738,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginImportMethod(
-        String resourceGroupName, String clusterName, String databaseName, ImportClusterParameters parameters) {
-        return beginImportMethodAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginImportMethod(String resourceGroupName, String clusterName,
+        String databaseName, ImportClusterParameters parameters) {
+        return this.beginImportMethodAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2090,22 +1757,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginImportMethod(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ImportClusterParameters parameters,
-        Context context) {
-        return beginImportMethodAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+    public SyncPoller<PollResult<Void>, Void> beginImportMethod(String resourceGroupName, String clusterName,
+        String databaseName, ImportClusterParameters parameters, Context context) {
+        return this.beginImportMethodAsync(resourceGroupName, clusterName, databaseName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2113,19 +1776,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> importMethodAsync(
-        String resourceGroupName, String clusterName, String databaseName, ImportClusterParameters parameters) {
-        return beginImportMethodAsync(resourceGroupName, clusterName, databaseName, parameters)
-            .last()
+    private Mono<Void> importMethodAsync(String resourceGroupName, String clusterName, String databaseName,
+        ImportClusterParameters parameters) {
+        return beginImportMethodAsync(resourceGroupName, clusterName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2134,40 +1796,35 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> importMethodAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ImportClusterParameters parameters,
-        Context context) {
-        return beginImportMethodAsync(resourceGroupName, clusterName, databaseName, parameters, context)
-            .last()
+    private Mono<Void> importMethodAsync(String resourceGroupName, String clusterName, String databaseName,
+        ImportClusterParameters parameters, Context context) {
+        return beginImportMethodAsync(resourceGroupName, clusterName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importMethod(
-        String resourceGroupName, String clusterName, String databaseName, ImportClusterParameters parameters) {
+    public void importMethod(String resourceGroupName, String clusterName, String databaseName,
+        ImportClusterParameters parameters) {
         importMethodAsync(resourceGroupName, clusterName, databaseName, parameters).block();
     }
 
     /**
      * Imports database files to target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for importing into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2175,21 +1832,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void importMethod(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ImportClusterParameters parameters,
-        Context context) {
+    public void importMethod(String resourceGroupName, String clusterName, String databaseName,
+        ImportClusterParameters parameters, Context context) {
         importMethodAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2197,13 +1850,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, ExportClusterParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, ExportClusterParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2216,10 +1867,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2229,27 +1878,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .export(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.export(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2258,17 +1897,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ExportClusterParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> exportWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, ExportClusterParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2281,10 +1914,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2293,25 +1924,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .export(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.export(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2319,22 +1941,20 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginExportAsync(
-        String resourceGroupName, String clusterName, String databaseName, ExportClusterParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            exportWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginExportAsync(String resourceGroupName, String clusterName,
+        String databaseName, ExportClusterParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = exportWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2343,26 +1963,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginExportAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ExportClusterParameters parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginExportAsync(String resourceGroupName, String clusterName,
+        String databaseName, ExportClusterParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            exportWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = exportWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2370,17 +1985,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginExport(
-        String resourceGroupName, String clusterName, String databaseName, ExportClusterParameters parameters) {
-        return beginExportAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginExport(String resourceGroupName, String clusterName,
+        String databaseName, ExportClusterParameters parameters) {
+        return this.beginExportAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2389,21 +2004,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginExport(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ExportClusterParameters parameters,
-        Context context) {
-        return beginExportAsync(resourceGroupName, clusterName, databaseName, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginExport(String resourceGroupName, String clusterName,
+        String databaseName, ExportClusterParameters parameters, Context context) {
+        return this.beginExportAsync(resourceGroupName, clusterName, databaseName, parameters, context).getSyncPoller();
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2411,19 +2022,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> exportAsync(
-        String resourceGroupName, String clusterName, String databaseName, ExportClusterParameters parameters) {
-        return beginExportAsync(resourceGroupName, clusterName, databaseName, parameters)
-            .last()
+    private Mono<Void> exportAsync(String resourceGroupName, String clusterName, String databaseName,
+        ExportClusterParameters parameters) {
+        return beginExportAsync(resourceGroupName, clusterName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2432,40 +2042,35 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> exportAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ExportClusterParameters parameters,
-        Context context) {
-        return beginExportAsync(resourceGroupName, clusterName, databaseName, parameters, context)
-            .last()
+    private Mono<Void> exportAsync(String resourceGroupName, String clusterName, String databaseName,
+        ExportClusterParameters parameters, Context context) {
+        return beginExportAsync(resourceGroupName, clusterName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void export(
-        String resourceGroupName, String clusterName, String databaseName, ExportClusterParameters parameters) {
+    public void export(String resourceGroupName, String clusterName, String databaseName,
+        ExportClusterParameters parameters) {
         exportAsync(resourceGroupName, clusterName, databaseName, parameters).block();
     }
 
     /**
      * Exports a database file from target database.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Storage information for exporting into the cluster.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2473,21 +2078,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void export(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ExportClusterParameters parameters,
-        Context context) {
+    public void export(String resourceGroupName, String clusterName, String databaseName,
+        ExportClusterParameters parameters, Context context) {
         exportAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2495,13 +2096,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> forceUnlinkWithResponseAsync(
-        String resourceGroupName, String clusterName, String databaseName, ForceUnlinkParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> forceUnlinkWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, ForceUnlinkParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2514,10 +2113,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2527,27 +2124,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .forceUnlink(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            clusterName,
-                            databaseName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.forceUnlink(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2556,17 +2143,11 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> forceUnlinkWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ForceUnlinkParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> forceUnlinkWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, ForceUnlinkParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2579,10 +2160,8 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2591,25 +2170,16 @@ public final class DatabasesClientImpl implements DatabasesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .forceUnlink(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                clusterName,
-                databaseName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.forceUnlink(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2617,22 +2187,20 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginForceUnlinkAsync(
-        String resourceGroupName, String clusterName, String databaseName, ForceUnlinkParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            forceUnlinkWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginForceUnlinkAsync(String resourceGroupName, String clusterName,
+        String databaseName, ForceUnlinkParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = forceUnlinkWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2641,26 +2209,21 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginForceUnlinkAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ForceUnlinkParameters parameters,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginForceUnlinkAsync(String resourceGroupName, String clusterName,
+        String databaseName, ForceUnlinkParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            forceUnlinkWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = forceUnlinkWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2668,17 +2231,17 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginForceUnlink(
-        String resourceGroupName, String clusterName, String databaseName, ForceUnlinkParameters parameters) {
-        return beginForceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginForceUnlink(String resourceGroupName, String clusterName,
+        String databaseName, ForceUnlinkParameters parameters) {
+        return this.beginForceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2687,21 +2250,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginForceUnlink(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ForceUnlinkParameters parameters,
-        Context context) {
-        return beginForceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginForceUnlink(String resourceGroupName, String clusterName,
+        String databaseName, ForceUnlinkParameters parameters, Context context) {
+        return this.beginForceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+            .getSyncPoller();
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2709,19 +2269,18 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> forceUnlinkAsync(
-        String resourceGroupName, String clusterName, String databaseName, ForceUnlinkParameters parameters) {
-        return beginForceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters)
-            .last()
+    private Mono<Void> forceUnlinkAsync(String resourceGroupName, String clusterName, String databaseName,
+        ForceUnlinkParameters parameters) {
+        return beginForceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2730,40 +2289,35 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> forceUnlinkAsync(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ForceUnlinkParameters parameters,
-        Context context) {
-        return beginForceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters, context)
-            .last()
+    private Mono<Void> forceUnlinkAsync(String resourceGroupName, String clusterName, String databaseName,
+        ForceUnlinkParameters parameters, Context context) {
+        return beginForceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void forceUnlink(
-        String resourceGroupName, String clusterName, String databaseName, ForceUnlinkParameters parameters) {
+    public void forceUnlink(String resourceGroupName, String clusterName, String databaseName,
+        ForceUnlinkParameters parameters) {
         forceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters).block();
     }
 
     /**
      * Forcibly removes the link to the specified database resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the RedisEnterprise cluster.
-     * @param databaseName The name of the database.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
      * @param parameters Information identifying the database to be unlinked.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2771,24 +2325,760 @@ public final class DatabasesClientImpl implements DatabasesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void forceUnlink(
-        String resourceGroupName,
-        String clusterName,
-        String databaseName,
-        ForceUnlinkParameters parameters,
-        Context context) {
+    public void forceUnlink(String resourceGroupName, String clusterName, String databaseName,
+        ForceUnlinkParameters parameters, Context context) {
         forceUnlinkAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
     }
 
     /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list-all operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> forceLinkToReplicationGroupWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.forceLinkToReplicationGroup(this.client.getEndpoint(), resourceGroupName,
+                clusterName, databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters,
+                accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> forceLinkToReplicationGroupWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.forceLinkToReplicationGroup(this.client.getEndpoint(), resourceGroupName, clusterName,
+            databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginForceLinkToReplicationGroupAsync(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = forceLinkToReplicationGroupWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginForceLinkToReplicationGroupAsync(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = forceLinkToReplicationGroupWithResponseAsync(resourceGroupName,
+            clusterName, databaseName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginForceLinkToReplicationGroup(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters) {
+        return this.beginForceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginForceLinkToReplicationGroup(String resourceGroupName,
+        String clusterName, String databaseName, ForceLinkParameters parameters, Context context) {
+        return this
+            .beginForceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> forceLinkToReplicationGroupAsync(String resourceGroupName, String clusterName,
+        String databaseName, ForceLinkParameters parameters) {
+        return beginForceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> forceLinkToReplicationGroupAsync(String resourceGroupName, String clusterName,
+        String databaseName, ForceLinkParameters parameters, Context context) {
+        return beginForceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
+        ForceLinkParameters parameters) {
+        forceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters).block();
+    }
+
+    /**
+     * Forcibly recreates an existing database on the specified cluster, and rejoins it to an existing replication
+     * group. **IMPORTANT NOTE:** All data in this database will be discarded, and the database will temporarily be
+     * unavailable while rejoining the replication group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the database to be unlinked.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void forceLinkToReplicationGroup(String resourceGroupName, String clusterName, String databaseName,
+        ForceLinkParameters parameters, Context context) {
+        forceLinkToReplicationGroupAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> flushWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, FlushParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.flush(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> flushWithResponseAsync(String resourceGroupName, String clusterName,
+        String databaseName, FlushParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.flush(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginFlushAsync(String resourceGroupName, String clusterName,
+        String databaseName, FlushParameters parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = flushWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginFlushAsync(String resourceGroupName, String clusterName,
+        String databaseName, FlushParameters parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = flushWithResponseAsync(resourceGroupName, clusterName, databaseName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String clusterName,
+        String databaseName, FlushParameters parameters) {
+        return this.beginFlushAsync(resourceGroupName, clusterName, databaseName, parameters).getSyncPoller();
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginFlush(String resourceGroupName, String clusterName,
+        String databaseName, FlushParameters parameters, Context context) {
+        return this.beginFlushAsync(resourceGroupName, clusterName, databaseName, parameters, context).getSyncPoller();
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> flushAsync(String resourceGroupName, String clusterName, String databaseName,
+        FlushParameters parameters) {
+        return beginFlushAsync(resourceGroupName, clusterName, databaseName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> flushAsync(String resourceGroupName, String clusterName, String databaseName,
+        FlushParameters parameters, Context context) {
+        return beginFlushAsync(resourceGroupName, clusterName, databaseName, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters) {
+        flushAsync(resourceGroupName, clusterName, databaseName, parameters).block();
+    }
+
+    /**
+     * Flushes all the keys in this database and also from its linked databases.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param parameters Information identifying the databases to be flushed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void flush(String resourceGroupName, String clusterName, String databaseName, FlushParameters parameters,
+        Context context) {
+        flushAsync(resourceGroupName, clusterName, databaseName, parameters, context).block();
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeDBRedisVersionWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.upgradeDBRedisVersion(this.client.getEndpoint(), resourceGroupName, clusterName,
+                    databaseName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> upgradeDBRedisVersionWithResponseAsync(String resourceGroupName,
+        String clusterName, String databaseName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (databaseName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter databaseName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.upgradeDBRedisVersion(this.client.getEndpoint(), resourceGroupName, clusterName, databaseName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeDBRedisVersionAsync(String resourceGroupName,
+        String clusterName, String databaseName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeDBRedisVersionWithResponseAsync(resourceGroupName, clusterName, databaseName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginUpgradeDBRedisVersionAsync(String resourceGroupName,
+        String clusterName, String databaseName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = upgradeDBRedisVersionWithResponseAsync(resourceGroupName, clusterName, databaseName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeDBRedisVersion(String resourceGroupName, String clusterName,
+        String databaseName) {
+        return this.beginUpgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName).getSyncPoller();
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginUpgradeDBRedisVersion(String resourceGroupName, String clusterName,
+        String databaseName, Context context) {
+        return this.beginUpgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> upgradeDBRedisVersionAsync(String resourceGroupName, String clusterName, String databaseName) {
+        return beginUpgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> upgradeDBRedisVersionAsync(String resourceGroupName, String clusterName, String databaseName,
+        Context context) {
+        return beginUpgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName) {
+        upgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName).block();
+    }
+
+    /**
+     * Upgrades the database Redis version to the latest available.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param databaseName The name of the Redis Enterprise database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upgradeDBRedisVersion(String resourceGroupName, String clusterName, String databaseName,
+        Context context) {
+        upgradeDBRedisVersionAsync(resourceGroupName, clusterName, databaseName, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a list-all operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByClusterNextSinglePageAsync(String nextLink) {
@@ -2796,36 +3086,27 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatabaseInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DatabaseInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list-all operation along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the response of a list-all operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatabaseInner>> listByClusterNextSinglePageAsync(String nextLink, Context context) {
@@ -2833,23 +3114,13 @@ public final class DatabasesClientImpl implements DatabasesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByClusterNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

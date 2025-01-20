@@ -5,61 +5,61 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.SharingProfile;
 import com.azure.resourcemanager.compute.models.SharingStatus;
 import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes the properties of a Shared Image Gallery. */
+/**
+ * Describes the properties of a Shared Image Gallery.
+ */
 @Fluent
-public final class GalleryProperties {
+public final class GalleryProperties implements JsonSerializable<GalleryProperties> {
     /*
      * The description of this Shared Image Gallery resource. This property is updatable.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Describes the gallery unique name.
      */
-    @JsonProperty(value = "identifier")
     private GalleryIdentifier identifier;
 
     /*
-     * The current state of the gallery or gallery artifact.
-     *
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private GalleryProvisioningState provisioningState;
 
     /*
      * Profile for gallery sharing to subscription or tenant
      */
-    @JsonProperty(value = "sharingProfile")
     private SharingProfile sharingProfile;
 
     /*
      * Contains information about the soft deletion policy of the gallery.
      */
-    @JsonProperty(value = "softDeletePolicy")
     private SoftDeletePolicy softDeletePolicy;
 
     /*
      * Sharing status of current gallery.
      */
-    @JsonProperty(value = "sharingStatus", access = JsonProperty.Access.WRITE_ONLY)
     private SharingStatus sharingStatus;
 
-    /** Creates an instance of GalleryProperties class. */
+    /**
+     * Creates an instance of GalleryProperties class.
+     */
     public GalleryProperties() {
     }
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -68,7 +68,7 @@ public final class GalleryProperties {
 
     /**
      * Set the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryProperties object itself.
      */
@@ -79,7 +79,7 @@ public final class GalleryProperties {
 
     /**
      * Get the identifier property: Describes the gallery unique name.
-     *
+     * 
      * @return the identifier value.
      */
     public GalleryIdentifier identifier() {
@@ -88,7 +88,7 @@ public final class GalleryProperties {
 
     /**
      * Set the identifier property: Describes the gallery unique name.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the GalleryProperties object itself.
      */
@@ -98,10 +98,8 @@ public final class GalleryProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     *
-     * <p>The provisioning state, which only appears in the response.
-     *
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public GalleryProvisioningState provisioningState() {
@@ -110,7 +108,7 @@ public final class GalleryProperties {
 
     /**
      * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
+     * 
      * @return the sharingProfile value.
      */
     public SharingProfile sharingProfile() {
@@ -119,7 +117,7 @@ public final class GalleryProperties {
 
     /**
      * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
+     * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the GalleryProperties object itself.
      */
@@ -130,7 +128,7 @@ public final class GalleryProperties {
 
     /**
      * Get the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
+     * 
      * @return the softDeletePolicy value.
      */
     public SoftDeletePolicy softDeletePolicy() {
@@ -139,7 +137,7 @@ public final class GalleryProperties {
 
     /**
      * Set the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
+     * 
      * @param softDeletePolicy the softDeletePolicy value to set.
      * @return the GalleryProperties object itself.
      */
@@ -150,7 +148,7 @@ public final class GalleryProperties {
 
     /**
      * Get the sharingStatus property: Sharing status of current gallery.
-     *
+     * 
      * @return the sharingStatus value.
      */
     public SharingStatus sharingStatus() {
@@ -159,7 +157,7 @@ public final class GalleryProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -175,5 +173,55 @@ public final class GalleryProperties {
         if (sharingStatus() != null) {
             sharingStatus().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeJsonField("identifier", this.identifier);
+        jsonWriter.writeJsonField("sharingProfile", this.sharingProfile);
+        jsonWriter.writeJsonField("softDeletePolicy", this.softDeletePolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GalleryProperties.
+     */
+    public static GalleryProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryProperties deserializedGalleryProperties = new GalleryProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedGalleryProperties.description = reader.getString();
+                } else if ("identifier".equals(fieldName)) {
+                    deserializedGalleryProperties.identifier = GalleryIdentifier.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedGalleryProperties.provisioningState
+                        = GalleryProvisioningState.fromString(reader.getString());
+                } else if ("sharingProfile".equals(fieldName)) {
+                    deserializedGalleryProperties.sharingProfile = SharingProfile.fromJson(reader);
+                } else if ("softDeletePolicy".equals(fieldName)) {
+                    deserializedGalleryProperties.softDeletePolicy = SoftDeletePolicy.fromJson(reader);
+                } else if ("sharingStatus".equals(fieldName)) {
+                    deserializedGalleryProperties.sharingStatus = SharingStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryProperties;
+        });
     }
 }

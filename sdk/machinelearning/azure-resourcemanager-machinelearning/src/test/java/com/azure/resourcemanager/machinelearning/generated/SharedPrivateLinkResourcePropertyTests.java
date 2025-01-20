@@ -8,34 +8,30 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.SharedPrivateLinkResourceProperty;
 import com.azure.resourcemanager.machinelearning.models.PrivateEndpointServiceConnectionStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SharedPrivateLinkResourcePropertyTests {
-    @Test
-    public void testDeserialize() {
-        SharedPrivateLinkResourceProperty model =
-            BinaryData
-                .fromString(
-                    "{\"privateLinkResourceId\":\"s\",\"groupId\":\"smjqulngsntnbyb\",\"requestMessage\":\"gc\",\"status\":\"Approved\"}")
-                .toObject(SharedPrivateLinkResourceProperty.class);
-        Assertions.assertEquals("s", model.privateLinkResourceId());
-        Assertions.assertEquals("smjqulngsntnbyb", model.groupId());
-        Assertions.assertEquals("gc", model.requestMessage());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SharedPrivateLinkResourceProperty model = BinaryData.fromString(
+            "{\"privateLinkResourceId\":\"tqxhocdgeab\",\"groupId\":\"phut\",\"requestMessage\":\"ndv\",\"status\":\"Rejected\"}")
+            .toObject(SharedPrivateLinkResourceProperty.class);
+        Assertions.assertEquals("tqxhocdgeab", model.privateLinkResourceId());
+        Assertions.assertEquals("phut", model.groupId());
+        Assertions.assertEquals("ndv", model.requestMessage());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        SharedPrivateLinkResourceProperty model =
-            new SharedPrivateLinkResourceProperty()
-                .withPrivateLinkResourceId("s")
-                .withGroupId("smjqulngsntnbyb")
-                .withRequestMessage("gc")
-                .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SharedPrivateLinkResourceProperty model
+            = new SharedPrivateLinkResourceProperty().withPrivateLinkResourceId("tqxhocdgeab")
+                .withGroupId("phut")
+                .withRequestMessage("ndv")
+                .withStatus(PrivateEndpointServiceConnectionStatus.REJECTED);
         model = BinaryData.fromObject(model).toObject(SharedPrivateLinkResourceProperty.class);
-        Assertions.assertEquals("s", model.privateLinkResourceId());
-        Assertions.assertEquals("smjqulngsntnbyb", model.groupId());
-        Assertions.assertEquals("gc", model.requestMessage());
-        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED, model.status());
+        Assertions.assertEquals("tqxhocdgeab", model.privateLinkResourceId());
+        Assertions.assertEquals("phut", model.groupId());
+        Assertions.assertEquals("ndv", model.requestMessage());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.REJECTED, model.status());
     }
 }

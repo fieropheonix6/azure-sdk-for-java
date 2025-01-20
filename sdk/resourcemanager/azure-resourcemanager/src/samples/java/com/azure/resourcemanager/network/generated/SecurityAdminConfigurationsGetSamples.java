@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SecurityAdminConfigurations Get. */
+/**
+ * Samples for SecurityAdminConfigurations Get.
+ */
 public final class SecurityAdminConfigurationsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerSecurityAdminConfigurationGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * NetworkManagerSecurityAdminConfigurationGet.json
      */
     /**
      * Sample code: Get security admin configurations.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getSecurityAdminConfigurations(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getSecurityAdminConfigurations()
-            .getWithResponse("rg1", "testNetworkManager", "myTestSecurityConfig", Context.NONE);
+            .getWithResponse("rg1", "testNetworkManager", "myTestSecurityConfig", com.azure.core.util.Context.NONE);
     }
 }

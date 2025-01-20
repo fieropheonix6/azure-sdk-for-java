@@ -11,19 +11,15 @@ import com.azure.spring.cloud.service.servicebus.consumer.ServiceBusErrorHandler
  */
 public class ServiceBusContainerProperties extends ProcessorProperties {
 
+    /**
+     * Creates an instance of {@link ServiceBusContainerProperties}.
+     */
+    public ServiceBusContainerProperties() {
+    }
+
     private MessageListener<?> messageListener;
     private ServiceBusErrorHandler errorHandler;
 
-    /**
-     * The container properties should have no default value.
-     */
-    public ServiceBusContainerProperties() {
-        this.setMaxConcurrentCalls(null);
-        this.setAutoComplete(null);
-        this.setMaxAutoLockRenewDuration(null);
-        this.setSubQueue(null);
-        this.setReceiveMode(null);
-    }
     /**
      * Get the message listener of the container.
      * @return the message listener of the container.

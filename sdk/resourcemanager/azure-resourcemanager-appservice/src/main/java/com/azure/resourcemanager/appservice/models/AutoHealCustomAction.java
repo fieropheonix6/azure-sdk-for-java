@@ -5,26 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Custom action to be executed when an auto heal rule is triggered. */
+/**
+ * Custom action to be executed
+ * when an auto heal rule is triggered.
+ */
 @Fluent
-public final class AutoHealCustomAction {
+public final class AutoHealCustomAction implements JsonSerializable<AutoHealCustomAction> {
     /*
      * Executable to be run.
      */
-    @JsonProperty(value = "exe")
     private String exe;
 
     /*
      * Parameters for the executable.
      */
-    @JsonProperty(value = "parameters")
     private String parameters;
 
     /**
+     * Creates an instance of AutoHealCustomAction class.
+     */
+    public AutoHealCustomAction() {
+    }
+
+    /**
      * Get the exe property: Executable to be run.
-     *
+     * 
      * @return the exe value.
      */
     public String exe() {
@@ -33,7 +44,7 @@ public final class AutoHealCustomAction {
 
     /**
      * Set the exe property: Executable to be run.
-     *
+     * 
      * @param exe the exe value to set.
      * @return the AutoHealCustomAction object itself.
      */
@@ -44,7 +55,7 @@ public final class AutoHealCustomAction {
 
     /**
      * Get the parameters property: Parameters for the executable.
-     *
+     * 
      * @return the parameters value.
      */
     public String parameters() {
@@ -53,7 +64,7 @@ public final class AutoHealCustomAction {
 
     /**
      * Set the parameters property: Parameters for the executable.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the AutoHealCustomAction object itself.
      */
@@ -64,9 +75,48 @@ public final class AutoHealCustomAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("exe", this.exe);
+        jsonWriter.writeStringField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoHealCustomAction from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoHealCustomAction if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AutoHealCustomAction.
+     */
+    public static AutoHealCustomAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoHealCustomAction deserializedAutoHealCustomAction = new AutoHealCustomAction();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exe".equals(fieldName)) {
+                    deserializedAutoHealCustomAction.exe = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedAutoHealCustomAction.parameters = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoHealCustomAction;
+        });
     }
 }

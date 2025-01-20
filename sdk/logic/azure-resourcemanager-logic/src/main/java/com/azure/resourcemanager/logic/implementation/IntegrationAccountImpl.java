@@ -9,15 +9,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountInner;
-import com.azure.resourcemanager.logic.fluent.models.IntegrationServiceEnvironmentInner;
 import com.azure.resourcemanager.logic.models.CallbackUrl;
 import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 import com.azure.resourcemanager.logic.models.IntegrationAccount;
 import com.azure.resourcemanager.logic.models.IntegrationAccountSku;
-import com.azure.resourcemanager.logic.models.IntegrationServiceEnvironment;
 import com.azure.resourcemanager.logic.models.KeyVaultKey;
 import com.azure.resourcemanager.logic.models.ListKeyVaultKeysDefinition;
 import com.azure.resourcemanager.logic.models.RegenerateActionParameter;
+import com.azure.resourcemanager.logic.models.ResourceReference;
 import com.azure.resourcemanager.logic.models.TrackingEventsDefinition;
 import com.azure.resourcemanager.logic.models.WorkflowState;
 import java.util.Collections;
@@ -58,13 +57,8 @@ public final class IntegrationAccountImpl
         return this.innerModel().sku();
     }
 
-    public IntegrationServiceEnvironment integrationServiceEnvironment() {
-        IntegrationServiceEnvironmentInner inner = this.innerModel().integrationServiceEnvironment();
-        if (inner != null) {
-            return new IntegrationServiceEnvironmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public ResourceReference integrationServiceEnvironment() {
+        return this.innerModel().integrationServiceEnvironment();
     }
 
     public WorkflowState state() {
@@ -77,6 +71,10 @@ public final class IntegrationAccountImpl
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public IntegrationAccountInner innerModel() {
@@ -97,22 +95,18 @@ public final class IntegrationAccountImpl
     }
 
     public IntegrationAccount create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccounts()
-                .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccount create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccounts()
-                .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccounts()
+            .createOrUpdateWithResponse(resourceGroupName, integrationAccountName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -127,100 +121,85 @@ public final class IntegrationAccountImpl
     }
 
     public IntegrationAccount apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccounts()
-                .updateWithResponse(resourceGroupName, integrationAccountName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccounts()
+            .updateWithResponse(resourceGroupName, integrationAccountName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccount apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccounts()
-                .updateWithResponse(resourceGroupName, integrationAccountName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccounts()
+            .updateWithResponse(resourceGroupName, integrationAccountName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    IntegrationAccountImpl(
-        IntegrationAccountInner innerObject, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    IntegrationAccountImpl(IntegrationAccountInner innerObject,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.integrationAccountName = Utils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.integrationAccountName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "integrationAccounts");
     }
 
     public IntegrationAccount refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, integrationAccountName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, integrationAccountName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public IntegrationAccount refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getIntegrationAccounts()
-                .getByResourceGroupWithResponse(resourceGroupName, integrationAccountName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getIntegrationAccounts()
+            .getByResourceGroupWithResponse(resourceGroupName, integrationAccountName, context)
+            .getValue();
         return this;
     }
 
-    public CallbackUrl listCallbackUrl(GetCallbackUrlParameters parameters) {
-        return serviceManager
-            .integrationAccounts()
-            .listCallbackUrl(resourceGroupName, integrationAccountName, parameters);
-    }
-
     public Response<CallbackUrl> listCallbackUrlWithResponse(GetCallbackUrlParameters parameters, Context context) {
-        return serviceManager
-            .integrationAccounts()
+        return serviceManager.integrationAccounts()
             .listCallbackUrlWithResponse(resourceGroupName, integrationAccountName, parameters, context);
     }
 
+    public CallbackUrl listCallbackUrl(GetCallbackUrlParameters parameters) {
+        return serviceManager.integrationAccounts()
+            .listCallbackUrl(resourceGroupName, integrationAccountName, parameters);
+    }
+
     public PagedIterable<KeyVaultKey> listKeyVaultKeys(ListKeyVaultKeysDefinition listKeyVaultKeys) {
-        return serviceManager
-            .integrationAccounts()
+        return serviceManager.integrationAccounts()
             .listKeyVaultKeys(resourceGroupName, integrationAccountName, listKeyVaultKeys);
     }
 
     public PagedIterable<KeyVaultKey> listKeyVaultKeys(ListKeyVaultKeysDefinition listKeyVaultKeys, Context context) {
-        return serviceManager
-            .integrationAccounts()
+        return serviceManager.integrationAccounts()
             .listKeyVaultKeys(resourceGroupName, integrationAccountName, listKeyVaultKeys, context);
     }
 
-    public void logTrackingEvents(TrackingEventsDefinition logTrackingEvents) {
-        serviceManager
-            .integrationAccounts()
-            .logTrackingEvents(resourceGroupName, integrationAccountName, logTrackingEvents);
-    }
-
     public Response<Void> logTrackingEventsWithResponse(TrackingEventsDefinition logTrackingEvents, Context context) {
-        return serviceManager
-            .integrationAccounts()
+        return serviceManager.integrationAccounts()
             .logTrackingEventsWithResponse(resourceGroupName, integrationAccountName, logTrackingEvents, context);
     }
 
-    public IntegrationAccount regenerateAccessKey(RegenerateActionParameter regenerateAccessKey) {
-        return serviceManager
-            .integrationAccounts()
-            .regenerateAccessKey(resourceGroupName, integrationAccountName, regenerateAccessKey);
+    public void logTrackingEvents(TrackingEventsDefinition logTrackingEvents) {
+        serviceManager.integrationAccounts()
+            .logTrackingEvents(resourceGroupName, integrationAccountName, logTrackingEvents);
     }
 
-    public Response<IntegrationAccount> regenerateAccessKeyWithResponse(
-        RegenerateActionParameter regenerateAccessKey, Context context) {
-        return serviceManager
-            .integrationAccounts()
+    public Response<IntegrationAccount> regenerateAccessKeyWithResponse(RegenerateActionParameter regenerateAccessKey,
+        Context context) {
+        return serviceManager.integrationAccounts()
             .regenerateAccessKeyWithResponse(resourceGroupName, integrationAccountName, regenerateAccessKey, context);
+    }
+
+    public IntegrationAccount regenerateAccessKey(RegenerateActionParameter regenerateAccessKey) {
+        return serviceManager.integrationAccounts()
+            .regenerateAccessKey(resourceGroupName, integrationAccountName, regenerateAccessKey);
     }
 
     public IntegrationAccountImpl withRegion(Region location) {
@@ -243,8 +222,7 @@ public final class IntegrationAccountImpl
         return this;
     }
 
-    public IntegrationAccountImpl withIntegrationServiceEnvironment(
-        IntegrationServiceEnvironmentInner integrationServiceEnvironment) {
+    public IntegrationAccountImpl withIntegrationServiceEnvironment(ResourceReference integrationServiceEnvironment) {
         this.innerModel().withIntegrationServiceEnvironment(integrationServiceEnvironment);
         return this;
     }

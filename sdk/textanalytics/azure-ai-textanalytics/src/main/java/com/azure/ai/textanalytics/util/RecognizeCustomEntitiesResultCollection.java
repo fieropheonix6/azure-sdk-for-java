@@ -21,8 +21,7 @@ public final class RecognizeCustomEntitiesResultCollection extends IterableStrea
 
     static {
         RecognizeCustomEntitiesResultCollectionPropertiesHelper.setAccessor(
-            new RecognizeCustomEntitiesResultCollectionPropertiesHelper
-                    .RecognizeCustomEntitiesResultCollectionAccessor() {
+            new RecognizeCustomEntitiesResultCollectionPropertiesHelper.RecognizeCustomEntitiesResultCollectionAccessor() {
                 @Override
                 public void setProjectName(RecognizeCustomEntitiesResultCollection resultCollection,
                     String projectName) {
@@ -44,7 +43,7 @@ public final class RecognizeCustomEntitiesResultCollection extends IterableStrea
     }
 
     /**
-     * Create a {@link RecognizeCustomEntitiesResultCollection} model that maintains a list of
+     * Create a {@code RecognizeCustomEntitiesResultCollection} model that maintains a list of
      * {@link RecognizeEntitiesResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link RecognizeEntitiesResult}.

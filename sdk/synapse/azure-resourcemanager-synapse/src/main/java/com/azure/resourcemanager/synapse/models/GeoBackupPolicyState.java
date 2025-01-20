@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.synapse.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for GeoBackupPolicyState. */
+/**
+ * The state of the geo backup policy.
+ */
 public enum GeoBackupPolicyState {
-    /** Enum value Disabled. */
+    /**
+     * Enum value Disabled.
+     */
     DISABLED("Disabled"),
 
-    /** Enum value Enabled. */
+    /**
+     * Enum value Enabled.
+     */
     ENABLED("Enabled");
 
-    /** The actual serialized value for a GeoBackupPolicyState instance. */
+    /**
+     * The actual serialized value for a GeoBackupPolicyState instance.
+     */
     private final String value;
 
     GeoBackupPolicyState(String value) {
@@ -24,12 +29,14 @@ public enum GeoBackupPolicyState {
 
     /**
      * Parses a serialized value to a GeoBackupPolicyState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed GeoBackupPolicyState object, or null if unable to parse.
      */
-    @JsonCreator
     public static GeoBackupPolicyState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         GeoBackupPolicyState[] items = GeoBackupPolicyState.values();
         for (GeoBackupPolicyState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum GeoBackupPolicyState {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -4,19 +4,33 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VolumeGroups ListByNetAppAccount. */
+/**
+ * Samples for VolumeGroups ListByNetAppAccount.
+ */
 public final class VolumeGroupsListByNetAppAccountSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/VolumeGroups_List.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * VolumeGroups_List_Oracle.json
      */
     /**
-     * Sample code: VolumeGroups_List.
-     *
+     * Sample code: VolumeGroups_List_Oracle.
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
-    public static void volumeGroupsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.volumeGroups().listByNetAppAccount("myRG", "account1", Context.NONE);
+    public static void volumeGroupsListOracle(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/
+     * VolumeGroups_List_SapHana.json
+     */
+    /**
+     * Sample code: VolumeGroups_List_SapHana.
+     * 
+     * @param manager Entry point to NetAppFilesManager.
+     */
+    public static void volumeGroupsListSapHana(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
+        manager.volumeGroups().listByNetAppAccount("myRG", "account1", com.azure.core.util.Context.NONE);
     }
 }

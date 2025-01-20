@@ -18,8 +18,8 @@ public final class ExtendedProductImpl implements ExtendedProduct {
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    ExtendedProductImpl(
-        ExtendedProductInner innerObject, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    ExtendedProductImpl(ExtendedProductInner innerObject,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -30,34 +30,6 @@ public final class ExtendedProductImpl implements ExtendedProduct {
 
     public String productKind() {
         return this.innerModel().productKind();
-    }
-
-    public ComputeRole computeRole() {
-        return this.innerModel().computeRole();
-    }
-
-    public Boolean isSystemExtension() {
-        return this.innerModel().isSystemExtension();
-    }
-
-    public Boolean supportMultipleExtensions() {
-        return this.innerModel().supportMultipleExtensions();
-    }
-
-    public String versionPropertiesVersion() {
-        return this.innerModel().versionPropertiesVersion();
-    }
-
-    public OperatingSystem vmOsType() {
-        return this.innerModel().vmOsType();
-    }
-
-    public Boolean vmScaleSetEnabled() {
-        return this.innerModel().vmScaleSetEnabled();
-    }
-
-    public String uri() {
-        return this.innerModel().uri();
     }
 
     public String version() {
@@ -75,6 +47,30 @@ public final class ExtendedProductImpl implements ExtendedProduct {
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ComputeRole computeRole() {
+        return this.innerModel().computeRole();
+    }
+
+    public Boolean isSystemExtension() {
+        return this.innerModel().isSystemExtension();
+    }
+
+    public String uri() {
+        return this.innerModel().uri();
+    }
+
+    public Boolean supportMultipleExtensions() {
+        return this.innerModel().supportMultipleExtensions();
+    }
+
+    public OperatingSystem vmOsType() {
+        return this.innerModel().vmOsType();
+    }
+
+    public Boolean vmScaleSetEnabled() {
+        return this.innerModel().vmScaleSetEnabled();
     }
 
     public ExtendedProductInner innerModel() {

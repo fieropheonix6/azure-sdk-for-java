@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Network Manager Deployment Status Parameter. */
+/**
+ * Network Manager Deployment Status Parameter.
+ */
 @Fluent
-public final class NetworkManagerDeploymentStatusParameter {
+public final class NetworkManagerDeploymentStatusParameter
+    implements JsonSerializable<NetworkManagerDeploymentStatusParameter> {
     /*
      * List of locations.
      */
-    @JsonProperty(value = "regions")
     private List<String> regions;
 
     /*
      * List of deployment types.
      */
-    @JsonProperty(value = "deploymentTypes")
     private List<ConfigurationType> deploymentTypes;
 
     /*
      * Continuation token for pagination, capturing the next page size and offset, as well as the context of the query.
      */
-    @JsonProperty(value = "skipToken")
     private String skipToken;
 
-    /** Creates an instance of NetworkManagerDeploymentStatusParameter class. */
+    /**
+     * Creates an instance of NetworkManagerDeploymentStatusParameter class.
+     */
     public NetworkManagerDeploymentStatusParameter() {
     }
 
     /**
      * Get the regions property: List of locations.
-     *
+     * 
      * @return the regions value.
      */
     public List<String> regions() {
@@ -44,7 +50,7 @@ public final class NetworkManagerDeploymentStatusParameter {
 
     /**
      * Set the regions property: List of locations.
-     *
+     * 
      * @param regions the regions value to set.
      * @return the NetworkManagerDeploymentStatusParameter object itself.
      */
@@ -55,7 +61,7 @@ public final class NetworkManagerDeploymentStatusParameter {
 
     /**
      * Get the deploymentTypes property: List of deployment types.
-     *
+     * 
      * @return the deploymentTypes value.
      */
     public List<ConfigurationType> deploymentTypes() {
@@ -64,7 +70,7 @@ public final class NetworkManagerDeploymentStatusParameter {
 
     /**
      * Set the deploymentTypes property: List of deployment types.
-     *
+     * 
      * @param deploymentTypes the deploymentTypes value to set.
      * @return the NetworkManagerDeploymentStatusParameter object itself.
      */
@@ -76,7 +82,7 @@ public final class NetworkManagerDeploymentStatusParameter {
     /**
      * Get the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well
      * as the context of the query.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -86,7 +92,7 @@ public final class NetworkManagerDeploymentStatusParameter {
     /**
      * Set the skipToken property: Continuation token for pagination, capturing the next page size and offset, as well
      * as the context of the query.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the NetworkManagerDeploymentStatusParameter object itself.
      */
@@ -97,9 +103,56 @@ public final class NetworkManagerDeploymentStatusParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("regions", this.regions, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("deploymentTypes", this.deploymentTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("skipToken", this.skipToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkManagerDeploymentStatusParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkManagerDeploymentStatusParameter if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkManagerDeploymentStatusParameter.
+     */
+    public static NetworkManagerDeploymentStatusParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkManagerDeploymentStatusParameter deserializedNetworkManagerDeploymentStatusParameter
+                = new NetworkManagerDeploymentStatusParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("regions".equals(fieldName)) {
+                    List<String> regions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkManagerDeploymentStatusParameter.regions = regions;
+                } else if ("deploymentTypes".equals(fieldName)) {
+                    List<ConfigurationType> deploymentTypes
+                        = reader.readArray(reader1 -> ConfigurationType.fromString(reader1.getString()));
+                    deserializedNetworkManagerDeploymentStatusParameter.deploymentTypes = deploymentTypes;
+                } else if ("skipToken".equals(fieldName)) {
+                    deserializedNetworkManagerDeploymentStatusParameter.skipToken = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkManagerDeploymentStatusParameter;
+        });
     }
 }

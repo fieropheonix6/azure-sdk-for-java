@@ -6,47 +6,67 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
+import com.azure.resourcemanager.network.models.BastionHostPropertiesFormatNetworkAcls;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.Sku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Bastion Host resource. */
+/**
+ * Bastion Host resource.
+ */
 @Fluent
 public final class BastionHostInner extends Resource {
     /*
      * Represents the bastion host resource.
      */
-    @JsonProperty(value = "properties")
     private BastionHostPropertiesFormat innerProperties;
+
+    /*
+     * A list of availability zones denoting where the resource needs to come from.
+     */
+    private List<String> zones;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The sku of this Bastion Host.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of BastionHostInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of BastionHostInner class.
+     */
     public BastionHostInner() {
     }
 
     /**
      * Get the innerProperties property: Represents the bastion host resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BastionHostPropertiesFormat innerProperties() {
@@ -54,8 +74,28 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the zones property: A list of availability zones denoting where the resource needs to come from.
+     * 
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: A list of availability zones denoting where the resource needs to come from.
+     * 
+     * @param zones the zones value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
+    }
+
+    /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -64,7 +104,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the sku property: The sku of this Bastion Host.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -73,7 +113,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the sku property: The sku of this Bastion Host.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the BastionHostInner object itself.
      */
@@ -84,7 +124,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -93,7 +133,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the BastionHostInner object itself.
      */
@@ -102,14 +142,38 @@ public final class BastionHostInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BastionHostInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BastionHostInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -118,7 +182,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the ipConfigurations property: IP configuration of the Bastion Host resource.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<BastionHostIpConfiguration> ipConfigurations() {
@@ -127,7 +191,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the ipConfigurations property: IP configuration of the Bastion Host resource.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the BastionHostInner object itself.
      */
@@ -141,7 +205,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the dnsName property: FQDN for the endpoint on which bastion host is accessible.
-     *
+     * 
      * @return the dnsName value.
      */
     public String dnsName() {
@@ -150,7 +214,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the dnsName property: FQDN for the endpoint on which bastion host is accessible.
-     *
+     * 
      * @param dnsName the dnsName value to set.
      * @return the BastionHostInner object itself.
      */
@@ -163,8 +227,56 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
+     * only.
+     * 
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetwork();
+    }
+
+    /**
+     * Set the virtualNetwork property: Reference to an existing virtual network required for Developer Bastion Host
+     * only.
+     * 
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withVirtualNetwork(SubResource virtualNetwork) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetwork(virtualNetwork);
+        return this;
+    }
+
+    /**
+     * Get the networkAcls property: The networkAcls property.
+     * 
+     * @return the networkAcls value.
+     */
+    public BastionHostPropertiesFormatNetworkAcls networkAcls() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkAcls();
+    }
+
+    /**
+     * Set the networkAcls property: The networkAcls property.
+     * 
+     * @param networkAcls the networkAcls value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withNetworkAcls(BastionHostPropertiesFormatNetworkAcls networkAcls) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withNetworkAcls(networkAcls);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the bastion host resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -173,7 +285,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the scaleUnits property: The scale units for the Bastion Host resource.
-     *
+     * 
      * @return the scaleUnits value.
      */
     public Integer scaleUnits() {
@@ -182,7 +294,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the scaleUnits property: The scale units for the Bastion Host resource.
-     *
+     * 
      * @param scaleUnits the scaleUnits value to set.
      * @return the BastionHostInner object itself.
      */
@@ -196,7 +308,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the disableCopyPaste property: Enable/Disable Copy/Paste feature of the Bastion Host resource.
-     *
+     * 
      * @return the disableCopyPaste value.
      */
     public Boolean disableCopyPaste() {
@@ -205,7 +317,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the disableCopyPaste property: Enable/Disable Copy/Paste feature of the Bastion Host resource.
-     *
+     * 
      * @param disableCopyPaste the disableCopyPaste value to set.
      * @return the BastionHostInner object itself.
      */
@@ -219,7 +331,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the enableFileCopy property: Enable/Disable File Copy feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableFileCopy value.
      */
     public Boolean enableFileCopy() {
@@ -228,7 +340,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the enableFileCopy property: Enable/Disable File Copy feature of the Bastion Host resource.
-     *
+     * 
      * @param enableFileCopy the enableFileCopy value to set.
      * @return the BastionHostInner object itself.
      */
@@ -242,7 +354,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the enableIpConnect property: Enable/Disable IP Connect feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableIpConnect value.
      */
     public Boolean enableIpConnect() {
@@ -251,7 +363,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the enableIpConnect property: Enable/Disable IP Connect feature of the Bastion Host resource.
-     *
+     * 
      * @param enableIpConnect the enableIpConnect value to set.
      * @return the BastionHostInner object itself.
      */
@@ -265,7 +377,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the enableShareableLink property: Enable/Disable Shareable Link of the Bastion Host resource.
-     *
+     * 
      * @return the enableShareableLink value.
      */
     public Boolean enableShareableLink() {
@@ -274,7 +386,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the enableShareableLink property: Enable/Disable Shareable Link of the Bastion Host resource.
-     *
+     * 
      * @param enableShareableLink the enableShareableLink value to set.
      * @return the BastionHostInner object itself.
      */
@@ -288,7 +400,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Get the enableTunneling property: Enable/Disable Tunneling feature of the Bastion Host resource.
-     *
+     * 
      * @return the enableTunneling value.
      */
     public Boolean enableTunneling() {
@@ -297,7 +409,7 @@ public final class BastionHostInner extends Resource {
 
     /**
      * Set the enableTunneling property: Enable/Disable Tunneling feature of the Bastion Host resource.
-     *
+     * 
      * @param enableTunneling the enableTunneling value to set.
      * @return the BastionHostInner object itself.
      */
@@ -310,8 +422,77 @@ public final class BastionHostInner extends Resource {
     }
 
     /**
+     * Get the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
+     * 
+     * @return the enableKerberos value.
+     */
+    public Boolean enableKerberos() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableKerberos();
+    }
+
+    /**
+     * Set the enableKerberos property: Enable/Disable Kerberos feature of the Bastion Host resource.
+     * 
+     * @param enableKerberos the enableKerberos value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableKerberos(Boolean enableKerberos) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableKerberos(enableKerberos);
+        return this;
+    }
+
+    /**
+     * Get the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
+     * 
+     * @return the enableSessionRecording value.
+     */
+    public Boolean enableSessionRecording() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableSessionRecording();
+    }
+
+    /**
+     * Set the enableSessionRecording property: Enable/Disable Session Recording feature of the Bastion Host resource.
+     * 
+     * @param enableSessionRecording the enableSessionRecording value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnableSessionRecording(Boolean enableSessionRecording) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnableSessionRecording(enableSessionRecording);
+        return this;
+    }
+
+    /**
+     * Get the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @return the enablePrivateOnlyBastion value.
+     */
+    public Boolean enablePrivateOnlyBastion() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateOnlyBastion();
+    }
+
+    /**
+     * Set the enablePrivateOnlyBastion property: Enable/Disable Private Only feature of the Bastion Host resource.
+     * 
+     * @param enablePrivateOnlyBastion the enablePrivateOnlyBastion value to set.
+     * @return the BastionHostInner object itself.
+     */
+    public BastionHostInner withEnablePrivateOnlyBastion(Boolean enablePrivateOnlyBastion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BastionHostPropertiesFormat();
+        }
+        this.innerProperties().withEnablePrivateOnlyBastion(enablePrivateOnlyBastion);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -321,5 +502,65 @@ public final class BastionHostInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionHostInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionHostInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BastionHostInner.
+     */
+    public static BastionHostInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionHostInner deserializedBastionHostInner = new BastionHostInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedBastionHostInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBastionHostInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedBastionHostInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBastionHostInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBastionHostInner.innerProperties = BastionHostPropertiesFormat.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBastionHostInner.zones = zones;
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBastionHostInner.etag = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedBastionHostInner.sku = Sku.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedBastionHostInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionHostInner;
+        });
     }
 }

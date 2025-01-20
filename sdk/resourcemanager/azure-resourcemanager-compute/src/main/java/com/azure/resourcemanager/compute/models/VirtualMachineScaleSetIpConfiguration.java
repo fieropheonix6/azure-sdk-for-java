@@ -7,32 +7,39 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a virtual machine scale set network profile's IP configuration. */
+/**
+ * Describes a virtual machine scale set network profile's IP configuration.
+ */
 @Fluent
-public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
+public final class VirtualMachineScaleSetIpConfiguration
+    implements JsonSerializable<VirtualMachineScaleSetIpConfiguration> {
     /*
      * The IP configuration name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Describes a virtual machine scale set network profile's IP configuration properties.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineScaleSetIpConfigurationProperties innerProperties;
 
-    /** Creates an instance of VirtualMachineScaleSetIpConfiguration class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetIpConfiguration class.
+     */
     public VirtualMachineScaleSetIpConfiguration() {
     }
 
     /**
      * Get the name property: The IP configuration name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +48,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
 
     /**
      * Set the name property: The IP configuration name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -53,23 +60,16 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Get the innerProperties property: Describes a virtual machine scale set network profile's IP configuration
      * properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineScaleSetIpConfigurationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public VirtualMachineScaleSetIpConfiguration withId(String id) {
-        super.withId(id);
-        return this;
-    }
-
     /**
      * Get the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public ApiEntityReference subnet() {
@@ -78,7 +78,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
 
     /**
      * Set the subnet property: Specifies the identifier of the subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -93,7 +93,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -103,7 +103,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Set the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -117,7 +117,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
 
     /**
      * Get the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
-     *
+     * 
      * @return the publicIpAddressConfiguration value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration publicIpAddressConfiguration() {
@@ -126,7 +126,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
 
     /**
      * Set the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
-     *
+     * 
      * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -142,7 +142,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Get the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
@@ -152,7 +152,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
     /**
      * Set the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
@@ -168,7 +168,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * Get the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
      * of application gateways. A scale set can reference backend address pools of multiple application gateways.
      * Multiple scale sets cannot use the same application gateway.
-     *
+     * 
      * @return the applicationGatewayBackendAddressPools value.
      */
     public List<SubResource> applicationGatewayBackendAddressPools() {
@@ -179,12 +179,12 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * Set the applicationGatewayBackendAddressPools property: Specifies an array of references to backend address pools
      * of application gateways. A scale set can reference backend address pools of multiple application gateways.
      * Multiple scale sets cannot use the same application gateway.
-     *
+     * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIpConfiguration withApplicationGatewayBackendAddressPools(
-        List<SubResource> applicationGatewayBackendAddressPools) {
+    public VirtualMachineScaleSetIpConfiguration
+        withApplicationGatewayBackendAddressPools(List<SubResource> applicationGatewayBackendAddressPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
@@ -194,7 +194,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
 
     /**
      * Get the applicationSecurityGroups property: Specifies an array of references to application security group.
-     *
+     * 
      * @return the applicationSecurityGroups value.
      */
     public List<SubResource> applicationSecurityGroups() {
@@ -203,12 +203,12 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
 
     /**
      * Set the applicationSecurityGroups property: Specifies an array of references to application security group.
-     *
+     * 
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIpConfiguration withApplicationSecurityGroups(
-        List<SubResource> applicationSecurityGroups) {
+    public VirtualMachineScaleSetIpConfiguration
+        withApplicationSecurityGroups(List<SubResource> applicationSecurityGroups) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
@@ -220,7 +220,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * Get the loadBalancerBackendAddressPools property: Specifies an array of references to backend address pools of
      * load balancers. A scale set can reference backend address pools of one public and one internal load balancer.
      * Multiple scale sets cannot use the same basic sku load balancer.
-     *
+     * 
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<SubResource> loadBalancerBackendAddressPools() {
@@ -231,12 +231,12 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * Set the loadBalancerBackendAddressPools property: Specifies an array of references to backend address pools of
      * load balancers. A scale set can reference backend address pools of one public and one internal load balancer.
      * Multiple scale sets cannot use the same basic sku load balancer.
-     *
+     * 
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIpConfiguration withLoadBalancerBackendAddressPools(
-        List<SubResource> loadBalancerBackendAddressPools) {
+    public VirtualMachineScaleSetIpConfiguration
+        withLoadBalancerBackendAddressPools(List<SubResource> loadBalancerBackendAddressPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
@@ -248,7 +248,7 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * Get the loadBalancerInboundNatPools property: Specifies an array of references to inbound Nat pools of the load
      * balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple
      * scale sets cannot use the same basic sku load balancer.
-     *
+     * 
      * @return the loadBalancerInboundNatPools value.
      */
     public List<SubResource> loadBalancerInboundNatPools() {
@@ -259,12 +259,12 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
      * Set the loadBalancerInboundNatPools property: Specifies an array of references to inbound Nat pools of the load
      * balancers. A scale set can reference inbound nat pools of one public and one internal load balancer. Multiple
      * scale sets cannot use the same basic sku load balancer.
-     *
+     * 
      * @param loadBalancerInboundNatPools the loadBalancerInboundNatPools value to set.
      * @return the VirtualMachineScaleSetIpConfiguration object itself.
      */
-    public VirtualMachineScaleSetIpConfiguration withLoadBalancerInboundNatPools(
-        List<SubResource> loadBalancerInboundNatPools) {
+    public VirtualMachineScaleSetIpConfiguration
+        withLoadBalancerInboundNatPools(List<SubResource> loadBalancerInboundNatPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetIpConfigurationProperties();
         }
@@ -274,15 +274,14 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model VirtualMachineScaleSetIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model VirtualMachineScaleSetIpConfiguration"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();
@@ -290,4 +289,46 @@ public final class VirtualMachineScaleSetIpConfiguration extends SubResource {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineScaleSetIpConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetIpConfiguration if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetIpConfiguration.
+     */
+    public static VirtualMachineScaleSetIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetIpConfiguration deserializedVirtualMachineScaleSetIpConfiguration
+                = new VirtualMachineScaleSetIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetIpConfiguration.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetIpConfiguration.innerProperties
+                        = VirtualMachineScaleSetIpConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetIpConfiguration;
+        });
+    }
 }

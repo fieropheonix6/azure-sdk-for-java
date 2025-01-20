@@ -6,19 +6,17 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.models.UserAssignedIdentityProperty;
-import org.junit.jupiter.api.Test;
 
 public final class UserAssignedIdentityPropertyTests {
-    @Test
-    public void testDeserialize() {
-        UserAssignedIdentityProperty model =
-            BinaryData
-                .fromString("{\"principalId\":\"taruoujmkcj\",\"clientId\":\"qytjrybnwjewgd\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UserAssignedIdentityProperty model
+            = BinaryData.fromString("{\"principalId\":\"pqjlihhyusps\",\"clientId\":\"sdvlmfwdgzxulucv\"}")
                 .toObject(UserAssignedIdentityProperty.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserAssignedIdentityProperty model = new UserAssignedIdentityProperty();
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentityProperty.class);
     }

@@ -5,32 +5,89 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AzureResourceType;
 import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
 import com.azure.resourcemanager.appservice.models.HostnameType;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.SslState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A hostname binding object. */
+/**
+ * A hostname binding object.
+ */
 @Fluent
 public final class HostnameBindingInner extends ProxyOnlyResource {
     /*
      * HostNameBinding resource specific properties
      */
-    @JsonProperty(value = "properties")
     private HostnameBindingProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of HostnameBindingInner class.
+     */
+    public HostnameBindingInner() {
+    }
 
     /**
      * Get the innerProperties property: HostNameBinding resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HostnameBindingProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HostnameBindingInner withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +96,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the siteName property: App Service app name.
-     *
+     * 
      * @return the siteName value.
      */
     public String siteName() {
@@ -48,7 +105,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Set the siteName property: App Service app name.
-     *
+     * 
      * @param siteName the siteName value to set.
      * @return the HostnameBindingInner object itself.
      */
@@ -62,7 +119,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the domainId property: Fully qualified ARM domain resource URI.
-     *
+     * 
      * @return the domainId value.
      */
     public String domainId() {
@@ -71,7 +128,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Set the domainId property: Fully qualified ARM domain resource URI.
-     *
+     * 
      * @param domainId the domainId value to set.
      * @return the HostnameBindingInner object itself.
      */
@@ -85,7 +142,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the azureResourceName property: Azure resource name.
-     *
+     * 
      * @return the azureResourceName value.
      */
     public String azureResourceName() {
@@ -94,7 +151,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Set the azureResourceName property: Azure resource name.
-     *
+     * 
      * @param azureResourceName the azureResourceName value to set.
      * @return the HostnameBindingInner object itself.
      */
@@ -108,7 +165,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the azureResourceType property: Azure resource type.
-     *
+     * 
      * @return the azureResourceType value.
      */
     public AzureResourceType azureResourceType() {
@@ -117,7 +174,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Set the azureResourceType property: Azure resource type.
-     *
+     * 
      * @param azureResourceType the azureResourceType value to set.
      * @return the HostnameBindingInner object itself.
      */
@@ -131,7 +188,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the customHostnameDnsRecordType property: Custom DNS record type.
-     *
+     * 
      * @return the customHostnameDnsRecordType value.
      */
     public CustomHostnameDnsRecordType customHostnameDnsRecordType() {
@@ -140,12 +197,12 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Set the customHostnameDnsRecordType property: Custom DNS record type.
-     *
+     * 
      * @param customHostnameDnsRecordType the customHostnameDnsRecordType value to set.
      * @return the HostnameBindingInner object itself.
      */
-    public HostnameBindingInner withCustomHostnameDnsRecordType(
-        CustomHostnameDnsRecordType customHostnameDnsRecordType) {
+    public HostnameBindingInner
+        withCustomHostnameDnsRecordType(CustomHostnameDnsRecordType customHostnameDnsRecordType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HostnameBindingProperties();
         }
@@ -155,7 +212,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the hostnameType property: Hostname type.
-     *
+     * 
      * @return the hostnameType value.
      */
     public HostnameType hostnameType() {
@@ -164,7 +221,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Set the hostnameType property: Hostname type.
-     *
+     * 
      * @param hostnameType the hostnameType value to set.
      * @return the HostnameBindingInner object itself.
      */
@@ -178,7 +235,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the sslState property: SSL type.
-     *
+     * 
      * @return the sslState value.
      */
     public SslState sslState() {
@@ -187,7 +244,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Set the sslState property: SSL type.
-     *
+     * 
      * @param sslState the sslState value to set.
      * @return the HostnameBindingInner object itself.
      */
@@ -201,7 +258,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the thumbprint property: SSL certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -210,7 +267,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Set the thumbprint property: SSL certificate thumbprint.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the HostnameBindingInner object itself.
      */
@@ -224,7 +281,7 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Get the virtualIp property: Virtual IP address assigned to the hostname if IP based SSL is enabled.
-     *
+     * 
      * @return the virtualIp value.
      */
     public String virtualIp() {
@@ -233,14 +290,59 @@ public final class HostnameBindingInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostnameBindingInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostnameBindingInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HostnameBindingInner.
+     */
+    public static HostnameBindingInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostnameBindingInner deserializedHostnameBindingInner = new HostnameBindingInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHostnameBindingInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedHostnameBindingInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHostnameBindingInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedHostnameBindingInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHostnameBindingInner.innerProperties = HostnameBindingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostnameBindingInner;
+        });
     }
 }

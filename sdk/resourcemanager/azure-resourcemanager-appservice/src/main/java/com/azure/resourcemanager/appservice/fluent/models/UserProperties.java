@@ -6,44 +6,51 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** User resource specific properties. */
+/**
+ * User resource specific properties.
+ */
 @Fluent
-public final class UserProperties {
+public final class UserProperties implements JsonSerializable<UserProperties> {
     /*
      * Username used for publishing.
      */
-    @JsonProperty(value = "publishingUserName", required = true)
     private String publishingUsername;
 
     /*
      * Password used for publishing.
      */
-    @JsonProperty(value = "publishingPassword")
     private String publishingPassword;
 
     /*
      * Password hash used for publishing.
      */
-    @JsonProperty(value = "publishingPasswordHash")
     private String publishingPasswordHash;
 
     /*
      * Password hash salt used for publishing.
      */
-    @JsonProperty(value = "publishingPasswordHashSalt")
     private String publishingPasswordHashSalt;
 
     /*
      * Url of SCM site.
      */
-    @JsonProperty(value = "scmUri")
     private String scmUri;
 
     /**
+     * Creates an instance of UserProperties class.
+     */
+    public UserProperties() {
+    }
+
+    /**
      * Get the publishingUsername property: Username used for publishing.
-     *
+     * 
      * @return the publishingUsername value.
      */
     public String publishingUsername() {
@@ -52,7 +59,7 @@ public final class UserProperties {
 
     /**
      * Set the publishingUsername property: Username used for publishing.
-     *
+     * 
      * @param publishingUsername the publishingUsername value to set.
      * @return the UserProperties object itself.
      */
@@ -63,7 +70,7 @@ public final class UserProperties {
 
     /**
      * Get the publishingPassword property: Password used for publishing.
-     *
+     * 
      * @return the publishingPassword value.
      */
     public String publishingPassword() {
@@ -72,7 +79,7 @@ public final class UserProperties {
 
     /**
      * Set the publishingPassword property: Password used for publishing.
-     *
+     * 
      * @param publishingPassword the publishingPassword value to set.
      * @return the UserProperties object itself.
      */
@@ -83,7 +90,7 @@ public final class UserProperties {
 
     /**
      * Get the publishingPasswordHash property: Password hash used for publishing.
-     *
+     * 
      * @return the publishingPasswordHash value.
      */
     public String publishingPasswordHash() {
@@ -92,7 +99,7 @@ public final class UserProperties {
 
     /**
      * Set the publishingPasswordHash property: Password hash used for publishing.
-     *
+     * 
      * @param publishingPasswordHash the publishingPasswordHash value to set.
      * @return the UserProperties object itself.
      */
@@ -103,7 +110,7 @@ public final class UserProperties {
 
     /**
      * Get the publishingPasswordHashSalt property: Password hash salt used for publishing.
-     *
+     * 
      * @return the publishingPasswordHashSalt value.
      */
     public String publishingPasswordHashSalt() {
@@ -112,7 +119,7 @@ public final class UserProperties {
 
     /**
      * Set the publishingPasswordHashSalt property: Password hash salt used for publishing.
-     *
+     * 
      * @param publishingPasswordHashSalt the publishingPasswordHashSalt value to set.
      * @return the UserProperties object itself.
      */
@@ -123,7 +130,7 @@ public final class UserProperties {
 
     /**
      * Get the scmUri property: Url of SCM site.
-     *
+     * 
      * @return the scmUri value.
      */
     public String scmUri() {
@@ -132,7 +139,7 @@ public final class UserProperties {
 
     /**
      * Set the scmUri property: Url of SCM site.
-     *
+     * 
      * @param scmUri the scmUri value to set.
      * @return the UserProperties object itself.
      */
@@ -143,17 +150,65 @@ public final class UserProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publishingUsername() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publishingUsername in model UserProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property publishingUsername in model UserProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UserProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publishingUserName", this.publishingUsername);
+        jsonWriter.writeStringField("publishingPassword", this.publishingPassword);
+        jsonWriter.writeStringField("publishingPasswordHash", this.publishingPasswordHash);
+        jsonWriter.writeStringField("publishingPasswordHashSalt", this.publishingPasswordHashSalt);
+        jsonWriter.writeStringField("scmUri", this.scmUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserProperties.
+     */
+    public static UserProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserProperties deserializedUserProperties = new UserProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publishingUserName".equals(fieldName)) {
+                    deserializedUserProperties.publishingUsername = reader.getString();
+                } else if ("publishingPassword".equals(fieldName)) {
+                    deserializedUserProperties.publishingPassword = reader.getString();
+                } else if ("publishingPasswordHash".equals(fieldName)) {
+                    deserializedUserProperties.publishingPasswordHash = reader.getString();
+                } else if ("publishingPasswordHashSalt".equals(fieldName)) {
+                    deserializedUserProperties.publishingPasswordHashSalt = reader.getString();
+                } else if ("scmUri".equals(fieldName)) {
+                    deserializedUserProperties.scmUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserProperties;
+        });
+    }
 }

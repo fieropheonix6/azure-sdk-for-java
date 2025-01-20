@@ -5,30 +5,50 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AnalyzeTextEntityLinkingInput model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("EntityLinking")
+/**
+ * The AnalyzeTextEntityLinkingInput model.
+ */
 @Fluent
 public final class AnalyzeTextEntityLinkingInput extends AnalyzeTextTask {
     /*
+     * Enumeration of supported Text Analysis tasks.
+     */
+    private AnalyzeTextTaskKind kind = AnalyzeTextTaskKind.ENTITY_LINKING;
+
+    /*
      * The analysisInput property.
      */
-    @JsonProperty(value = "analysisInput")
     private MultiLanguageAnalysisInput analysisInput;
 
     /*
      * Supported parameters for an Entity Linking task.
      */
-    @JsonProperty(value = "parameters")
     private EntityLinkingTaskParameters parameters;
 
     /**
+     * Creates an instance of AnalyzeTextEntityLinkingInput class.
+     */
+    public AnalyzeTextEntityLinkingInput() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported Text Analysis tasks.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextTaskKind getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the analysisInput property: The analysisInput property.
-     *
+     * 
      * @return the analysisInput value.
      */
     public MultiLanguageAnalysisInput getAnalysisInput() {
@@ -37,7 +57,7 @@ public final class AnalyzeTextEntityLinkingInput extends AnalyzeTextTask {
 
     /**
      * Set the analysisInput property: The analysisInput property.
-     *
+     * 
      * @param analysisInput the analysisInput value to set.
      * @return the AnalyzeTextEntityLinkingInput object itself.
      */
@@ -48,7 +68,7 @@ public final class AnalyzeTextEntityLinkingInput extends AnalyzeTextTask {
 
     /**
      * Get the parameters property: Supported parameters for an Entity Linking task.
-     *
+     * 
      * @return the parameters value.
      */
     public EntityLinkingTaskParameters getParameters() {
@@ -57,12 +77,56 @@ public final class AnalyzeTextEntityLinkingInput extends AnalyzeTextTask {
 
     /**
      * Set the parameters property: Supported parameters for an Entity Linking task.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the AnalyzeTextEntityLinkingInput object itself.
      */
     public AnalyzeTextEntityLinkingInput setParameters(EntityLinkingTaskParameters parameters) {
         this.parameters = parameters;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("analysisInput", this.analysisInput);
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeTextEntityLinkingInput from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeTextEntityLinkingInput if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnalyzeTextEntityLinkingInput.
+     */
+    public static AnalyzeTextEntityLinkingInput fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnalyzeTextEntityLinkingInput deserializedAnalyzeTextEntityLinkingInput
+                = new AnalyzeTextEntityLinkingInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAnalyzeTextEntityLinkingInput.kind = AnalyzeTextTaskKind.fromString(reader.getString());
+                } else if ("analysisInput".equals(fieldName)) {
+                    deserializedAnalyzeTextEntityLinkingInput.analysisInput
+                        = MultiLanguageAnalysisInput.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedAnalyzeTextEntityLinkingInput.parameters = EntityLinkingTaskParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnalyzeTextEntityLinkingInput;
+        });
     }
 }

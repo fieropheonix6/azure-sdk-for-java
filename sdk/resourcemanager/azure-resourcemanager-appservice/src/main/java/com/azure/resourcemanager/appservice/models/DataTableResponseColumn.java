@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Column definition. */
+/**
+ * Column definition.
+ */
 @Fluent
-public final class DataTableResponseColumn {
+public final class DataTableResponseColumn implements JsonSerializable<DataTableResponseColumn> {
     /*
      * Name of the column
      */
-    @JsonProperty(value = "columnName")
     private String columnName;
 
     /*
      * Data type which looks like 'String' or 'Int32'.
      */
-    @JsonProperty(value = "dataType")
     private String dataType;
 
     /*
      * Column Type
      */
-    @JsonProperty(value = "columnType")
     private String columnType;
 
     /**
+     * Creates an instance of DataTableResponseColumn class.
+     */
+    public DataTableResponseColumn() {
+    }
+
+    /**
      * Get the columnName property: Name of the column.
-     *
+     * 
      * @return the columnName value.
      */
     public String columnName() {
@@ -39,7 +48,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Set the columnName property: Name of the column.
-     *
+     * 
      * @param columnName the columnName value to set.
      * @return the DataTableResponseColumn object itself.
      */
@@ -50,7 +59,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Get the dataType property: Data type which looks like 'String' or 'Int32'.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -59,7 +68,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Set the dataType property: Data type which looks like 'String' or 'Int32'.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the DataTableResponseColumn object itself.
      */
@@ -70,7 +79,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Get the columnType property: Column Type.
-     *
+     * 
      * @return the columnType value.
      */
     public String columnType() {
@@ -79,7 +88,7 @@ public final class DataTableResponseColumn {
 
     /**
      * Set the columnType property: Column Type.
-     *
+     * 
      * @param columnType the columnType value to set.
      * @return the DataTableResponseColumn object itself.
      */
@@ -90,9 +99,51 @@ public final class DataTableResponseColumn {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("columnName", this.columnName);
+        jsonWriter.writeStringField("dataType", this.dataType);
+        jsonWriter.writeStringField("columnType", this.columnType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataTableResponseColumn from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataTableResponseColumn if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataTableResponseColumn.
+     */
+    public static DataTableResponseColumn fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataTableResponseColumn deserializedDataTableResponseColumn = new DataTableResponseColumn();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("columnName".equals(fieldName)) {
+                    deserializedDataTableResponseColumn.columnName = reader.getString();
+                } else if ("dataType".equals(fieldName)) {
+                    deserializedDataTableResponseColumn.dataType = reader.getString();
+                } else if ("columnType".equals(fieldName)) {
+                    deserializedDataTableResponseColumn.columnType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataTableResponseColumn;
+        });
     }
 }

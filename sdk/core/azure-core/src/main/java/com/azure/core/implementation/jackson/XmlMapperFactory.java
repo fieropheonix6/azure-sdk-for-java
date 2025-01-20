@@ -3,85 +3,129 @@
 
 package com.azure.core.implementation.jackson;
 
+import com.azure.core.implementation.ReflectionUtils;
+import com.azure.core.implementation.ReflectiveInvoker;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
-import com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser;
-import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
+import com.fasterxml.jackson.databind.cfg.MapperBuilder;
+import com.fasterxml.jackson.databind.cfg.PackageVersion;
 
-import java.lang.invoke.MethodHandle;
-import java.lang.invoke.MethodHandles;
-import java.lang.invoke.MethodType;
-
+/**
+ * Constructs and configures {@link ObjectMapper} instances that handle XML.
+ */
 public final class XmlMapperFactory {
     private static final ClientLogger LOGGER = new ClientLogger(XmlMapperFactory.class);
 
-    private static final String MUTABLE_COERCION_CONFIG = "com.fasterxml.jackson.databind.cfg.MutableCoercionConfig";
-    private static final String COERCION_INPUT_SHAPE = "com.fasterxml.jackson.databind.cfg.CoercionInputShape";
-    private static final String COERCION_ACTION = "com.fasterxml.jackson.databind.cfg.CoercionAction";
+    private static final String XML_MAPPER = "com.fasterxml.jackson.dataformat.xml.XmlMapper";
+    private static final String XML_MAPPER_BUILDER = "com.fasterxml.jackson.dataformat.xml.XmlMapper$Builder";
+    private static final String FROM_XML_PARSER = "com.fasterxml.jackson.dataformat.xml.deser.FromXmlParser$Feature";
+    private static final String TO_XML_GENERATOR = "com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator$Feature";
+    private final ReflectiveInvoker createXmlMapperBuilder;
+    private final ReflectiveInvoker defaultUseWrapper;
+    private final ReflectiveInvoker configureWriteXmlDeclaration;
+    private final Object writeXmlDeclaration;
+    private final ReflectiveInvoker configureEmptyElementAsNull;
+    private final Object emptyElementAsNull;
 
-    private MethodHandle coercionConfigDefaults;
-    private MethodHandle setCoercion;
-    private Object coercionInputShapeEmptyString;
-    private Object coercionActionAsNull;
-    private boolean useReflectionToSetCoercion;
+    final boolean useJackson212;
+    private boolean jackson212IsSafe = true;
 
+    /**
+     * XML mapper factory instance.
+     */
     public static final XmlMapperFactory INSTANCE = new XmlMapperFactory();
 
     private XmlMapperFactory() {
-        MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+        ClassLoader thisClassLoader = XmlMapperFactory.class.getClassLoader();
 
+        ReflectiveInvoker createXmlMapperBuilder;
+        ReflectiveInvoker defaultUseWrapper;
+        ReflectiveInvoker configureWriteXmlDeclaration;
+        Object writeXmlDeclaration;
+        ReflectiveInvoker configureEmptyElementAsNull;
+        Object emptyElementAsNull;
         try {
-            Class<?> mutableCoercionConfig = Class.forName(MUTABLE_COERCION_CONFIG);
-            Class<?> coercionInputShapeClass = Class.forName(COERCION_INPUT_SHAPE);
-            Class<?> coercionActionClass = Class.forName(COERCION_ACTION);
+            Class<?> xmlMapper = Class.forName(XML_MAPPER, true, thisClassLoader);
+            Class<?> xmlMapperBuilder = Class.forName(XML_MAPPER_BUILDER, true, thisClassLoader);
+            Class<?> fromXmlParser = Class.forName(FROM_XML_PARSER, true, thisClassLoader);
+            Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR, true, thisClassLoader);
 
-            coercionConfigDefaults = publicLookup.findVirtual(ObjectMapper.class, "coercionConfigDefaults",
-                MethodType.methodType(mutableCoercionConfig));
-            setCoercion = publicLookup.findVirtual(mutableCoercionConfig, "setCoercion",
-                MethodType.methodType(mutableCoercionConfig, coercionInputShapeClass, coercionActionClass));
-            coercionInputShapeEmptyString = publicLookup.findStaticGetter(coercionInputShapeClass, "EmptyString",
-                coercionInputShapeClass).invoke();
-            coercionActionAsNull = publicLookup.findStaticGetter(coercionActionClass, "AsNull", coercionActionClass)
-                .invoke();
-            useReflectionToSetCoercion = true;
+            createXmlMapperBuilder
+                = ReflectionUtils.getMethodInvoker(xmlMapper, xmlMapper.getDeclaredMethod("builder"), false);
+            defaultUseWrapper = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
+                xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper", boolean.class), false);
+
+            configureWriteXmlDeclaration = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
+                xmlMapperBuilder.getDeclaredMethod("configure", toXmlGenerator, boolean.class), false);
+            writeXmlDeclaration = toXmlGenerator.getDeclaredField("WRITE_XML_DECLARATION").get(null);
+            configureEmptyElementAsNull = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
+                xmlMapperBuilder.getDeclaredMethod("configure", fromXmlParser, boolean.class), false);
+            emptyElementAsNull = fromXmlParser.getDeclaredField("EMPTY_ELEMENT_AS_NULL").get(null);
         } catch (Throwable ex) {
             // Throw the Error only if it isn't a LinkageError.
             // This initialization is attempting to use classes that may not exist.
             if (ex instanceof Error && !(ex instanceof LinkageError)) {
-                throw (Error) ex;
+                throw LOGGER.logThrowableAsError((Error) ex);
             }
 
-            LOGGER.verbose("Failed to retrieve MethodHandles used to set coercion configurations. "
-                + "Setting coercion configurations will be skipped. "
-                + "Please update your Jackson dependencies to at least version 2.12", ex);
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Failed to retrieve invoker used to "
+                + "create XmlMapper. XML serialization won't be supported until "
+                + "'com.fasterxml.jackson.dataformat:jackson-dataformat-xml' is added to the classpath or updated to a "
+                + "supported version. " + JacksonVersion.getHelpInfo(), ex));
         }
+
+        this.createXmlMapperBuilder = createXmlMapperBuilder;
+        this.defaultUseWrapper = defaultUseWrapper;
+        this.configureWriteXmlDeclaration = configureWriteXmlDeclaration;
+        this.writeXmlDeclaration = writeXmlDeclaration;
+        this.configureEmptyElementAsNull = configureEmptyElementAsNull;
+        this.emptyElementAsNull = emptyElementAsNull;
+
+        this.useJackson212 = PackageVersion.VERSION.getMinorVersion() >= 12;
     }
 
+    /**
+     * Creates a new {@link ObjectMapper} instance that can handle XML.
+     *
+     * @return A new {@link ObjectMapper} instance that can handle XML.
+     */
     public ObjectMapper createXmlMapper() {
-        ObjectMapper xmlMapper = ObjectMapperFactory.initializeMapperBuilder(XmlMapper.builder())
-            .defaultUseWrapper(false)
-            .enable(ToXmlGenerator.Feature.WRITE_XML_DECLARATION)
+        ObjectMapper xmlMapper;
+        try {
+            MapperBuilder<?, ?> xmlMapperBuilder = ObjectMapperFactory
+                .initializeMapperBuilder((MapperBuilder<?, ?>) createXmlMapperBuilder.invokeStatic());
+
+            defaultUseWrapper.invokeWithArguments(xmlMapperBuilder, false);
+            configureWriteXmlDeclaration.invokeWithArguments(xmlMapperBuilder, writeXmlDeclaration, true);
+
             /*
              * In Jackson 2.12 the default value of this feature changed from true to false.
              * https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12#xml-module
              */
-            .enable(FromXmlParser.Feature.EMPTY_ELEMENT_AS_NULL)
-            .build();
+            configureEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull, true);
 
-        if (useReflectionToSetCoercion) {
+            xmlMapper = xmlMapperBuilder.build();
+        } catch (Exception exception) {
+            if (exception instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) exception);
+            }
+
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", exception));
+        }
+
+        if (useJackson212 && jackson212IsSafe) {
             try {
-                Object object = coercionConfigDefaults.invoke(xmlMapper);
-                setCoercion.invoke(object, coercionInputShapeEmptyString, coercionActionAsNull);
-            } catch (Throwable e) {
-                if (e instanceof Error) {
-                    throw (Error) e;
+                return JacksonDatabind212.mutateXmlCoercions(xmlMapper);
+            } catch (Throwable ex) {
+                if (ex instanceof LinkageError) {
+                    jackson212IsSafe = false;
+                    LOGGER.log(LogLevel.VERBOSE, JacksonVersion::getHelpInfo, ex);
                 }
 
-                LOGGER.verbose("Failed to set coercion actions.", e);
+                throw ex;
             }
-        } else {
-            LOGGER.verbose("Didn't set coercion defaults as it wasn't found on the classpath.");
         }
 
         return xmlMapper;

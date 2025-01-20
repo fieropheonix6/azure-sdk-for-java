@@ -5,30 +5,54 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.StackPreferredOs;
 import com.azure.resourcemanager.appservice.models.WebAppMajorVersion;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Web App stack. */
+/**
+ * Web App stack.
+ */
 @Fluent
 public final class WebAppStackInner extends ProxyOnlyResource {
     /*
      * Web App stack location.
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * WebAppStack resource specific properties
      */
-    @JsonProperty(value = "properties")
     private WebAppStackProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of WebAppStackInner class.
+     */
+    public WebAppStackInner() {
+    }
 
     /**
      * Get the location property: Web App stack location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -37,14 +61,46 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the innerProperties property: WebAppStack resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WebAppStackProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebAppStackInner withKind(String kind) {
         super.withKind(kind);
@@ -53,7 +109,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the displayText property: Web App stack (display only).
-     *
+     * 
      * @return the displayText value.
      */
     public String displayText() {
@@ -62,7 +118,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the value property: Web App stack name.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -71,7 +127,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the majorVersions property: List of major versions available.
-     *
+     * 
      * @return the majorVersions value.
      */
     public List<WebAppMajorVersion> majorVersions() {
@@ -80,7 +136,7 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Get the preferredOs property: Web App stack preferred OS.
-     *
+     * 
      * @return the preferredOs value.
      */
     public StackPreferredOs preferredOs() {
@@ -89,14 +145,61 @@ public final class WebAppStackInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WebAppStackInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WebAppStackInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the WebAppStackInner.
+     */
+    public static WebAppStackInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WebAppStackInner deserializedWebAppStackInner = new WebAppStackInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedWebAppStackInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedWebAppStackInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedWebAppStackInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedWebAppStackInner.withKind(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedWebAppStackInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedWebAppStackInner.innerProperties = WebAppStackProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWebAppStackInner;
+        });
     }
 }

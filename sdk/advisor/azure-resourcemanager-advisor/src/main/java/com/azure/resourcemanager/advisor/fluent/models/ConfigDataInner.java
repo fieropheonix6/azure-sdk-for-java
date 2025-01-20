@@ -5,111 +5,207 @@
 package com.azure.resourcemanager.advisor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.advisor.models.CpuThreshold;
 import com.azure.resourcemanager.advisor.models.DigestConfig;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The Advisor configuration data structure. */
-@JsonFlatten
+/**
+ * The Advisor configuration data structure.
+ */
 @Fluent
-public class ConfigDataInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigDataInner.class);
+public final class ConfigDataInner extends ProxyResource {
+    /*
+     * The Advisor configuration data structure.
+     */
+    private ConfigDataProperties innerProperties;
 
     /*
-     * Exclude the resource from Advisor evaluations. Valid values: False
-     * (default) or True.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.exclude")
-    private Boolean exclude;
+    private String type;
 
     /*
-     * Minimum percentage threshold for Advisor low CPU utilization evaluation.
-     * Valid only for subscriptions. Valid values: 5 (default), 10, 15 or 20.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.lowCpuThreshold")
-    private CpuThreshold lowCpuThreshold;
+    private String name;
 
     /*
-     * Advisor digest configuration. Valid only for subscriptions
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.digests")
-    private List<DigestConfig> digests;
+    private String id;
+
+    /**
+     * Creates an instance of ConfigDataInner class.
+     */
+    public ConfigDataInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The Advisor configuration data structure.
+     * 
+     * @return the innerProperties value.
+     */
+    private ConfigDataProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the exclude property: Exclude the resource from Advisor evaluations. Valid values: False (default) or True.
-     *
+     * 
      * @return the exclude value.
      */
     public Boolean exclude() {
-        return this.exclude;
+        return this.innerProperties() == null ? null : this.innerProperties().exclude();
     }
 
     /**
      * Set the exclude property: Exclude the resource from Advisor evaluations. Valid values: False (default) or True.
-     *
+     * 
      * @param exclude the exclude value to set.
      * @return the ConfigDataInner object itself.
      */
     public ConfigDataInner withExclude(Boolean exclude) {
-        this.exclude = exclude;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigDataProperties();
+        }
+        this.innerProperties().withExclude(exclude);
         return this;
     }
 
     /**
      * Get the lowCpuThreshold property: Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid
      * only for subscriptions. Valid values: 5 (default), 10, 15 or 20.
-     *
+     * 
      * @return the lowCpuThreshold value.
      */
     public CpuThreshold lowCpuThreshold() {
-        return this.lowCpuThreshold;
+        return this.innerProperties() == null ? null : this.innerProperties().lowCpuThreshold();
     }
 
     /**
      * Set the lowCpuThreshold property: Minimum percentage threshold for Advisor low CPU utilization evaluation. Valid
      * only for subscriptions. Valid values: 5 (default), 10, 15 or 20.
-     *
+     * 
      * @param lowCpuThreshold the lowCpuThreshold value to set.
      * @return the ConfigDataInner object itself.
      */
     public ConfigDataInner withLowCpuThreshold(CpuThreshold lowCpuThreshold) {
-        this.lowCpuThreshold = lowCpuThreshold;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigDataProperties();
+        }
+        this.innerProperties().withLowCpuThreshold(lowCpuThreshold);
         return this;
     }
 
     /**
      * Get the digests property: Advisor digest configuration. Valid only for subscriptions.
-     *
+     * 
      * @return the digests value.
      */
     public List<DigestConfig> digests() {
-        return this.digests;
+        return this.innerProperties() == null ? null : this.innerProperties().digests();
     }
 
     /**
      * Set the digests property: Advisor digest configuration. Valid only for subscriptions.
-     *
+     * 
      * @param digests the digests value to set.
      * @return the ConfigDataInner object itself.
      */
     public ConfigDataInner withDigests(List<DigestConfig> digests) {
-        this.digests = digests;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigDataProperties();
+        }
+        this.innerProperties().withDigests(digests);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (digests() != null) {
-            digests().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigDataInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigDataInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfigDataInner.
+     */
+    public static ConfigDataInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigDataInner deserializedConfigDataInner = new ConfigDataInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConfigDataInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConfigDataInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConfigDataInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConfigDataInner.innerProperties = ConfigDataProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigDataInner;
+        });
     }
 }

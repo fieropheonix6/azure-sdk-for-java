@@ -11,15 +11,22 @@ import com.azure.ai.formrecognizer.implementation.CustomFormModelPropertiesHelpe
 public final class CustomFormModelProperties {
     private boolean isComposed;
 
+    /**
+     * Create a CustomFormModelProperties instance.
+     */
+    public CustomFormModelProperties() {
+    }
+
     static {
-        CustomFormModelPropertiesHelper.setAccessor(
-            new CustomFormModelPropertiesHelper.CustomFormModelPropertiesAccessor() {
+        CustomFormModelPropertiesHelper
+            .setAccessor(new CustomFormModelPropertiesHelper.CustomFormModelPropertiesAccessor() {
                 @Override
                 public void setIsComposed(CustomFormModelProperties formModelProperties, boolean isComposed) {
                     formModelProperties.setIsComposed(isComposed);
                 }
             });
     }
+
     /**
      * Is this model composed?
      *

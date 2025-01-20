@@ -29,7 +29,10 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMessage> {
     private static final ClientLogger LOGGER = new ClientLogger(SynchronousMessageSubscriber.class);
+    private static final RuntimeException CLIENT_TERMINATED_ERROR
+        = new RuntimeException("The receiver client is terminated. Re-create the client to continue receive attempt.");
     private final AtomicBoolean isDisposed = new AtomicBoolean();
+    private volatile Throwable disposalReason;
     private final AtomicInteger wip = new AtomicInteger();
     private final ConcurrentLinkedQueue<SynchronousReceiveWork> workQueue = new ConcurrentLinkedQueue<>();
     private final ConcurrentLinkedDeque<ServiceBusReceivedMessage> bufferMessages = new ConcurrentLinkedDeque<>();
@@ -46,13 +49,12 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      * The number of requested messages.
      */
     private volatile long requested;
-    private static final AtomicLongFieldUpdater<SynchronousMessageSubscriber> REQUESTED =
-        AtomicLongFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, "requested");
+    private static final AtomicLongFieldUpdater<SynchronousMessageSubscriber> REQUESTED
+        = AtomicLongFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, "requested");
 
     private volatile Subscription upstream;
-    private static final AtomicReferenceFieldUpdater<SynchronousMessageSubscriber, Subscription> UPSTREAM =
-        AtomicReferenceFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, Subscription.class,
-            "upstream");
+    private static final AtomicReferenceFieldUpdater<SynchronousMessageSubscriber, Subscription> UPSTREAM
+        = AtomicReferenceFieldUpdater.newUpdater(SynchronousMessageSubscriber.class, Subscription.class, "upstream");
 
     /**
      * Creates a synchronous subscriber with some initial work to queue.
@@ -71,16 +73,15 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
      * @throws NullPointerException if {@code initialWork} is null.
      * @throws IllegalArgumentException if {@code initialWork.getNumberOfEvents()} is less than 1.
      */
-    SynchronousMessageSubscriber(ServiceBusReceiverAsyncClient asyncClient,
-                                 SynchronousReceiveWork initialWork,
-                                 boolean isPrefetchDisabled,
-                                 Duration operationTimeout) {
+    SynchronousMessageSubscriber(ServiceBusReceiverAsyncClient asyncClient, SynchronousReceiveWork initialWork,
+        boolean isPrefetchDisabled, Duration operationTimeout) {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.workQueue.add(Objects.requireNonNull(initialWork, "'initialWork' cannot be null."));
 
         this.isPrefetchDisabled = isPrefetchDisabled;
-        this.isReceiveDeleteMode = asyncClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.RECEIVE_AND_DELETE;
+        this.isReceiveDeleteMode
+            = asyncClient.getReceiverOptions().getReceiveMode() == ServiceBusReceiveMode.RECEIVE_AND_DELETE;
         if (initialWork.getNumberOfEvents() < 1) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "'numberOfEvents' cannot be less than 1. Actual: " + initialWork.getNumberOfEvents()));
@@ -132,6 +133,15 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     void queueWork(SynchronousReceiveWork work) {
         Objects.requireNonNull(work, "'work' cannot be null");
 
+        if (isTerminated()) {
+            Throwable reason = disposalReason;
+            if (reason == null) {
+                reason = CLIENT_TERMINATED_ERROR;
+            }
+            work.complete("The receiver client is terminated. Re-create the client to continue receive attempt.",
+                reason);
+            return;
+        }
         workQueue.add(work);
 
         LoggingEventBuilder logBuilder = LOGGER.atVerbose()
@@ -220,10 +230,10 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
                         // When Prefetch is disabled, for the receive mode that influences the delivery count
                         // (today, only PeekLock ReceiveMode), we try to release undelivered messages to adjust
                         // the delivery count on the broker.
-                        asyncClient.release(message).subscribe(__ -> { },
-                            error -> LOGGER.atWarning()
-                                .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
-                                .log("Couldn't release the message.", error),
+                        asyncClient.release(message).subscribe(__ -> {
+                        }, error -> LOGGER.atWarning()
+                            .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
+                            .log("Couldn't release the message.", error),
                             () -> LOGGER.atVerbose()
                                 .addKeyValue(LOCK_TOKEN_KEY, message.getLockToken())
                                 .log("Message successfully released."));
@@ -245,8 +255,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
             }
         }
         if (numberRequested == 0L) {
-            LOGGER.atVerbose()
-                .log("Current work is completed. Schedule next work.");
+            LOGGER.atVerbose().log("Current work is completed. Schedule next work.");
             getOrUpdateCurrentWork();
         }
     }
@@ -257,6 +266,11 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
     @Override
     protected void hookOnError(Throwable throwable) {
         dispose("Errors occurred upstream", throwable);
+    }
+
+    @Override
+    protected void hookOnComplete() {
+        dispose("Upstream signaled completion", null);
     }
 
     @Override
@@ -362,6 +376,7 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         if (isDisposed.getAndSet(true)) {
             return;
         }
+        disposalReason = throwable;
 
         synchronized (currentWorkLock) {
             if (currentWork != null) {
@@ -386,4 +401,3 @@ class SynchronousMessageSubscriber extends BaseSubscriber<ServiceBusReceivedMess
         return this.workQueue.size();
     }
 }
-

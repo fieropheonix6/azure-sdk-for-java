@@ -6,25 +6,33 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** MongoDB database dataset properties. */
+/**
+ * MongoDB database dataset properties.
+ */
 @Fluent
-public final class MongoDbCollectionDatasetTypeProperties {
+public final class MongoDbCollectionDatasetTypeProperties
+    implements JsonSerializable<MongoDbCollectionDatasetTypeProperties> {
     /*
      * The table name of the MongoDB database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "collectionName", required = true)
     private Object collectionName;
 
-    /** Creates an instance of MongoDbCollectionDatasetTypeProperties class. */
+    /**
+     * Creates an instance of MongoDbCollectionDatasetTypeProperties class.
+     */
     public MongoDbCollectionDatasetTypeProperties() {
     }
 
     /**
      * Get the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the collectionName value.
      */
     public Object collectionName() {
@@ -34,7 +42,7 @@ public final class MongoDbCollectionDatasetTypeProperties {
     /**
      * Set the collectionName property: The table name of the MongoDB database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param collectionName the collectionName value to set.
      * @return the MongoDbCollectionDatasetTypeProperties object itself.
      */
@@ -45,17 +53,54 @@ public final class MongoDbCollectionDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (collectionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property collectionName in model MongoDbCollectionDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collectionName in model MongoDbCollectionDatasetTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MongoDbCollectionDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("collectionName", this.collectionName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDbCollectionDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDbCollectionDatasetTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDbCollectionDatasetTypeProperties.
+     */
+    public static MongoDbCollectionDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDbCollectionDatasetTypeProperties deserializedMongoDbCollectionDatasetTypeProperties
+                = new MongoDbCollectionDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("collectionName".equals(fieldName)) {
+                    deserializedMongoDbCollectionDatasetTypeProperties.collectionName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoDbCollectionDatasetTypeProperties;
+        });
+    }
 }

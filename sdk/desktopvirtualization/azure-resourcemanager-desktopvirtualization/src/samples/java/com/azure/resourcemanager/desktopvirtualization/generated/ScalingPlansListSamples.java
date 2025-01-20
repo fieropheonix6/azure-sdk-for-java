@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.desktopvirtualization.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ScalingPlans List. */
+/**
+ * Samples for ScalingPlans List.
+ */
 public final class ScalingPlansListSamples {
     /*
-     * x-ms-original-file: specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/preview/2021-09-03-preview/examples/ScalingPlan_ListBySubscription.json
+     * x-ms-original-file:
+     * specification/desktopvirtualization/resource-manager/Microsoft.DesktopVirtualization/stable/2024-04-03/examples/
+     * ScalingPlan_ListBySubscription.json
      */
     /**
      * Sample code: ScalingPlans_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to DesktopVirtualizationManager.
      */
     public static void scalingPlansListBySubscription(
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager manager) {
-        manager.scalingPlans().list(Context.NONE);
+        manager.scalingPlans().list(10, true, 0, com.azure.core.util.Context.NONE);
     }
 }

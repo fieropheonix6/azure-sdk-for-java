@@ -5,163 +5,254 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.DataPolicy;
 import com.azure.resourcemanager.databoxedge.models.StorageAccountStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Represents a Storage Account on the Data Box Edge/Gateway device. */
-@JsonFlatten
+/**
+ * Represents a Storage Account on the Data Box Edge/Gateway device.
+ */
 @Fluent
-public class StorageAccountInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountInner.class);
+public final class StorageAccountInner extends ArmBaseModel {
+    /*
+     * The Storage Account properties.
+     */
+    private StorageAccountProperties innerProperties = new StorageAccountProperties();
 
     /*
-     * Description for the storage Account.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private String type;
 
     /*
-     * Current status of the storage account
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.storageAccountStatus")
-    private StorageAccountStatus storageAccountStatus;
+    private String name;
 
     /*
-     * Data policy of the storage Account.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.dataPolicy")
-    private DataPolicy dataPolicy;
+    private String id;
 
-    /*
-     * Storage Account Credential Id
+    /**
+     * Creates an instance of StorageAccountInner class.
      */
-    @JsonProperty(value = "properties.storageAccountCredentialId")
-    private String storageAccountCredentialId;
+    public StorageAccountInner() {
+    }
 
-    /*
-     * BlobEndpoint of Storage Account
+    /**
+     * Get the innerProperties property: The Storage Account properties.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.blobEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String blobEndpoint;
+    private StorageAccountProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The Container Count. Present only for Storage Accounts with DataPolicy
-     * set to Cloud.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.containerCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer containerCount;
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the description property: Description for the storage Account.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: Description for the storage Account.
-     *
+     * 
      * @param description the description value to set.
      * @return the StorageAccountInner object itself.
      */
     public StorageAccountInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the storageAccountStatus property: Current status of the storage account.
-     *
+     * 
      * @return the storageAccountStatus value.
      */
     public StorageAccountStatus storageAccountStatus() {
-        return this.storageAccountStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountStatus();
     }
 
     /**
      * Set the storageAccountStatus property: Current status of the storage account.
-     *
+     * 
      * @param storageAccountStatus the storageAccountStatus value to set.
      * @return the StorageAccountInner object itself.
      */
     public StorageAccountInner withStorageAccountStatus(StorageAccountStatus storageAccountStatus) {
-        this.storageAccountStatus = storageAccountStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountProperties();
+        }
+        this.innerProperties().withStorageAccountStatus(storageAccountStatus);
         return this;
     }
 
     /**
      * Get the dataPolicy property: Data policy of the storage Account.
-     *
+     * 
      * @return the dataPolicy value.
      */
     public DataPolicy dataPolicy() {
-        return this.dataPolicy;
+        return this.innerProperties() == null ? null : this.innerProperties().dataPolicy();
     }
 
     /**
      * Set the dataPolicy property: Data policy of the storage Account.
-     *
+     * 
      * @param dataPolicy the dataPolicy value to set.
      * @return the StorageAccountInner object itself.
      */
     public StorageAccountInner withDataPolicy(DataPolicy dataPolicy) {
-        this.dataPolicy = dataPolicy;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountProperties();
+        }
+        this.innerProperties().withDataPolicy(dataPolicy);
         return this;
     }
 
     /**
      * Get the storageAccountCredentialId property: Storage Account Credential Id.
-     *
+     * 
      * @return the storageAccountCredentialId value.
      */
     public String storageAccountCredentialId() {
-        return this.storageAccountCredentialId;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountCredentialId();
     }
 
     /**
      * Set the storageAccountCredentialId property: Storage Account Credential Id.
-     *
+     * 
      * @param storageAccountCredentialId the storageAccountCredentialId value to set.
      * @return the StorageAccountInner object itself.
      */
     public StorageAccountInner withStorageAccountCredentialId(String storageAccountCredentialId) {
-        this.storageAccountCredentialId = storageAccountCredentialId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountProperties();
+        }
+        this.innerProperties().withStorageAccountCredentialId(storageAccountCredentialId);
         return this;
     }
 
     /**
      * Get the blobEndpoint property: BlobEndpoint of Storage Account.
-     *
+     * 
      * @return the blobEndpoint value.
      */
     public String blobEndpoint() {
-        return this.blobEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().blobEndpoint();
     }
 
     /**
      * Get the containerCount property: The Container Count. Present only for Storage Accounts with DataPolicy set to
      * Cloud.
-     *
+     * 
      * @return the containerCount value.
      */
     public Integer containerCount() {
-        return this.containerCount;
+        return this.innerProperties() == null ? null : this.innerProperties().containerCount();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model StorageAccountInner"));
+        } else {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageAccountInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StorageAccountInner.
+     */
+    public static StorageAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccountInner deserializedStorageAccountInner = new StorageAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStorageAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorageAccountInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStorageAccountInner.innerProperties = StorageAccountProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccountInner;
+        });
     }
 }

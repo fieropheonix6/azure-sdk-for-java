@@ -5,19 +5,42 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AbsoluteDeleteOption Delete option with duration. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AbsoluteDeleteOption")
+/**
+ * AbsoluteDeleteOption
+ * 
+ * Delete option with duration.
+ */
 @Fluent
 public final class AbsoluteDeleteOption extends DeleteOption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AbsoluteDeleteOption.class);
+    /*
+     * Type of the specific object - used for deserializing
+     */
+    private String objectType = "AbsoluteDeleteOption";
 
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of AbsoluteDeleteOption class.
+     */
+    public AbsoluteDeleteOption() {
+    }
+
+    /**
+     * Get the objectType property: Type of the specific object - used for deserializing.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AbsoluteDeleteOption withDuration(String duration) {
         super.withDuration(duration);
@@ -26,11 +49,51 @@ public final class AbsoluteDeleteOption extends DeleteOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("duration", duration());
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AbsoluteDeleteOption from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AbsoluteDeleteOption if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AbsoluteDeleteOption.
+     */
+    public static AbsoluteDeleteOption fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AbsoluteDeleteOption deserializedAbsoluteDeleteOption = new AbsoluteDeleteOption();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("duration".equals(fieldName)) {
+                    deserializedAbsoluteDeleteOption.withDuration(reader.getString());
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAbsoluteDeleteOption.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAbsoluteDeleteOption;
+        });
     }
 }

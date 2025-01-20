@@ -9,37 +9,25 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineUpdat
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlVirtualMachineUpdateTests {
-    @Test
-    public void testDeserialize() {
-        SqlVirtualMachineUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"unmpxttd\":\"hj\",\"nbtkcxywnytnr\":\"hrbnlankxmyskpbh\",\"qidybyx\":\"yn\",\"aaxdbabphlwrq\":\"zfcl\"}}")
-                .toObject(SqlVirtualMachineUpdate.class);
-        Assertions.assertEquals("hj", model.tags().get("unmpxttd"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SqlVirtualMachineUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"hrk\":\"obpxjmflbvvn\",\"ajiwkuo\":\"ciwwzjuqkhr\",\"sauuimj\":\"oskg\",\"rfbyaosvexcso\":\"vxieduugidyj\"}}")
+            .toObject(SqlVirtualMachineUpdate.class);
+        Assertions.assertEquals("obpxjmflbvvn", model.tags().get("hrk"));
     }
 
-    @Test
-    public void testSerialize() {
-        SqlVirtualMachineUpdate model =
-            new SqlVirtualMachineUpdate()
-                .withTags(
-                    mapOf(
-                        "unmpxttd",
-                        "hj",
-                        "nbtkcxywnytnr",
-                        "hrbnlankxmyskpbh",
-                        "qidybyx",
-                        "yn",
-                        "aaxdbabphlwrq",
-                        "zfcl"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SqlVirtualMachineUpdate model = new SqlVirtualMachineUpdate().withTags(
+            mapOf("hrk", "obpxjmflbvvn", "ajiwkuo", "ciwwzjuqkhr", "sauuimj", "oskg", "rfbyaosvexcso", "vxieduugidyj"));
         model = BinaryData.fromObject(model).toObject(SqlVirtualMachineUpdate.class);
-        Assertions.assertEquals("hj", model.tags().get("unmpxttd"));
+        Assertions.assertEquals("obpxjmflbvvn", model.tags().get("hrk"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

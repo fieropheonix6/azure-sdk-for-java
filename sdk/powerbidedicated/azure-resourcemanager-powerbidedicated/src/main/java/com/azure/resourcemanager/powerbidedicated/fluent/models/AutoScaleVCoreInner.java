@@ -5,57 +5,61 @@
 package com.azure.resourcemanager.powerbidedicated.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.powerbidedicated.models.AutoScaleVCoreSku;
 import com.azure.resourcemanager.powerbidedicated.models.VCoreProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Represents an instance of an auto scale v-core resource. */
-@JsonFlatten
+/**
+ * Represents an instance of an auto scale v-core resource.
+ */
 @Fluent
-public class AutoScaleVCoreInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoScaleVCoreInner.class);
-
+public final class AutoScaleVCoreInner extends Resource {
     /*
      * The SKU of the auto scale v-core resource.
      */
-    @JsonProperty(value = "sku", required = true)
     private AutoScaleVCoreSku sku;
 
     /*
-     * The maximum capacity of an auto scale v-core resource.
+     * Properties of an auto scale v-core resource.
      */
-    @JsonProperty(value = "properties.capacityLimit")
-    private Integer capacityLimit;
-
-    /*
-     * The object ID of the capacity resource associated with the auto scale
-     * v-core resource.
-     */
-    @JsonProperty(value = "properties.capacityObjectId")
-    private String capacityObjectId;
-
-    /*
-     * The current deployment state of an auto scale v-core resource. The
-     * provisioningState is to indicate states for resource provisioning.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private VCoreProvisioningState provisioningState;
+    private AutoScaleVCoreProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData")
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AutoScaleVCoreInner class.
+     */
+    public AutoScaleVCoreInner() {
+    }
 
     /**
      * Get the sku property: The SKU of the auto scale v-core resource.
-     *
+     * 
      * @return the sku value.
      */
     public AutoScaleVCoreSku sku() {
@@ -64,7 +68,7 @@ public class AutoScaleVCoreInner extends Resource {
 
     /**
      * Set the sku property: The SKU of the auto scale v-core resource.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AutoScaleVCoreInner object itself.
      */
@@ -74,60 +78,17 @@ public class AutoScaleVCoreInner extends Resource {
     }
 
     /**
-     * Get the capacityLimit property: The maximum capacity of an auto scale v-core resource.
-     *
-     * @return the capacityLimit value.
+     * Get the innerProperties property: Properties of an auto scale v-core resource.
+     * 
+     * @return the innerProperties value.
      */
-    public Integer capacityLimit() {
-        return this.capacityLimit;
-    }
-
-    /**
-     * Set the capacityLimit property: The maximum capacity of an auto scale v-core resource.
-     *
-     * @param capacityLimit the capacityLimit value to set.
-     * @return the AutoScaleVCoreInner object itself.
-     */
-    public AutoScaleVCoreInner withCapacityLimit(Integer capacityLimit) {
-        this.capacityLimit = capacityLimit;
-        return this;
-    }
-
-    /**
-     * Get the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
-     * resource.
-     *
-     * @return the capacityObjectId value.
-     */
-    public String capacityObjectId() {
-        return this.capacityObjectId;
-    }
-
-    /**
-     * Set the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
-     * resource.
-     *
-     * @param capacityObjectId the capacityObjectId value to set.
-     * @return the AutoScaleVCoreInner object itself.
-     */
-    public AutoScaleVCoreInner withCapacityObjectId(String capacityObjectId) {
-        this.capacityObjectId = capacityObjectId;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The current deployment state of an auto scale v-core resource. The
-     * provisioningState is to indicate states for resource provisioning.
-     *
-     * @return the provisioningState value.
-     */
-    public VCoreProvisioningState provisioningState() {
-        return this.provisioningState;
+    private AutoScaleVCoreProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -136,7 +97,7 @@ public class AutoScaleVCoreInner extends Resource {
 
     /**
      * Set the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @param systemData the systemData value to set.
      * @return the AutoScaleVCoreInner object itself.
      */
@@ -145,14 +106,48 @@ public class AutoScaleVCoreInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AutoScaleVCoreInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AutoScaleVCoreInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -160,17 +155,135 @@ public class AutoScaleVCoreInner extends Resource {
     }
 
     /**
+     * Get the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
+     * resource.
+     * 
+     * @return the capacityObjectId value.
+     */
+    public String capacityObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityObjectId();
+    }
+
+    /**
+     * Set the capacityObjectId property: The object ID of the capacity resource associated with the auto scale v-core
+     * resource.
+     * 
+     * @param capacityObjectId the capacityObjectId value to set.
+     * @return the AutoScaleVCoreInner object itself.
+     */
+    public AutoScaleVCoreInner withCapacityObjectId(String capacityObjectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutoScaleVCoreProperties();
+        }
+        this.innerProperties().withCapacityObjectId(capacityObjectId);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The current deployment state of an auto scale v-core resource. The
+     * provisioningState is to indicate states for resource provisioning.
+     * 
+     * @return the provisioningState value.
+     */
+    public VCoreProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the capacityLimit property: The maximum capacity of an auto scale v-core resource.
+     * 
+     * @return the capacityLimit value.
+     */
+    public Integer capacityLimit() {
+        return this.innerProperties() == null ? null : this.innerProperties().capacityLimit();
+    }
+
+    /**
+     * Set the capacityLimit property: The maximum capacity of an auto scale v-core resource.
+     * 
+     * @param capacityLimit the capacityLimit value to set.
+     * @return the AutoScaleVCoreInner object itself.
+     */
+    public AutoScaleVCoreInner withCapacityLimit(Integer capacityLimit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AutoScaleVCoreProperties();
+        }
+        this.innerProperties().withCapacityLimit(capacityLimit);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model AutoScaleVCoreInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model AutoScaleVCoreInner"));
         } else {
             sku().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AutoScaleVCoreInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("systemData", this.systemData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AutoScaleVCoreInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AutoScaleVCoreInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AutoScaleVCoreInner.
+     */
+    public static AutoScaleVCoreInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AutoScaleVCoreInner deserializedAutoScaleVCoreInner = new AutoScaleVCoreInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAutoScaleVCoreInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAutoScaleVCoreInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAutoScaleVCoreInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAutoScaleVCoreInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAutoScaleVCoreInner.withTags(tags);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedAutoScaleVCoreInner.sku = AutoScaleVCoreSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAutoScaleVCoreInner.innerProperties = AutoScaleVCoreProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedAutoScaleVCoreInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAutoScaleVCoreInner;
+        });
     }
 }

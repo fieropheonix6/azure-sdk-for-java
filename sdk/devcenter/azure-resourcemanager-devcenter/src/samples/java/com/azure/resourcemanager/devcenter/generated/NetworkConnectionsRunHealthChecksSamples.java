@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkConnections RunHealthChecks. */
+/**
+ * Samples for NetworkConnections RunHealthChecks.
+ */
 public final class NetworkConnectionsRunHealthChecksSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/NetworkConnections_RunHealthChecks.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/
+     * NetworkConnections_RunHealthChecks.json
      */
     /**
      * Sample code: NetworkConnections_RunHealthChecks.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void networkConnectionsRunHealthChecks(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.networkConnections().runHealthChecks("rg1", "uswest3network", Context.NONE);
+        manager.networkConnections().runHealthChecks("rg1", "uswest3network", com.azure.core.util.Context.NONE);
     }
 }

@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for HcxEnterpriseSites Delete. */
+/**
+ * Samples for HcxEnterpriseSites Delete.
+ */
 public final class HcxEnterpriseSitesDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/HcxEnterpriseSites_Delete.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/HcxEnterpriseSites_Delete.json
      */
     /**
      * Sample code: HcxEnterpriseSites_Delete.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void hcxEnterpriseSitesDelete(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.hcxEnterpriseSites().deleteWithResponse("group1", "cloud1", "site1", Context.NONE);
+        manager.hcxEnterpriseSites().deleteWithResponse("group1", "cloud1", "site1", com.azure.core.util.Context.NONE);
     }
 }

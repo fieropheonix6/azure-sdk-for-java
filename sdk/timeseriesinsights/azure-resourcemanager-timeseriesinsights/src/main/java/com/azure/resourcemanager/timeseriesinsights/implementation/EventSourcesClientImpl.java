@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.fluent.EventSourcesClient;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventSourceListResponseInner;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventSourceResourceInner;
@@ -33,24 +32,28 @@ import com.azure.resourcemanager.timeseriesinsights.models.EventSourceCreateOrUp
 import com.azure.resourcemanager.timeseriesinsights.models.EventSourceUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in EventSourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in EventSourcesClient.
+ */
 public final class EventSourcesClientImpl implements EventSourcesClient {
-    private final ClientLogger logger = new ClientLogger(EventSourcesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final EventSourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TimeSeriesInsightsClientImpl client;
 
     /**
      * Initializes an instance of EventSourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     EventSourcesClientImpl(TimeSeriesInsightsClientImpl client) {
-        this.service =
-            RestProxy.create(EventSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(EventSourcesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,119 +63,86 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
-    private interface EventSourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources/{eventSourceName}")
-        @ExpectedResponses({200, 201})
+    public interface EventSourcesService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/eventSources/{eventSourceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSourceResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSourceResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("eventSourceName") String eventSourceName,
+            @PathParam("environmentName") String environmentName, @PathParam("eventSourceName") String eventSourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EventSourceCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources/{eventSourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/eventSources/{eventSourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSourceResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSourceResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("eventSourceName") String eventSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @PathParam("eventSourceName") String eventSourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources/{eventSourceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/eventSources/{eventSourceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSourceResourceInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSourceResourceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("eventSourceName") String eventSourceName,
+            @PathParam("environmentName") String environmentName, @PathParam("eventSourceName") String eventSourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EventSourceUpdateParameters eventSourceUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources/{eventSourceName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/eventSources/{eventSourceName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @PathParam("eventSourceName") String eventSourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @PathParam("eventSourceName") String eventSourceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/eventSources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/eventSources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSourceListResponseInner>> listByEnvironment(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSourceListResponseInner>> listByEnvironment(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create or update an event source under the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName Name of the event source.
      * @param parameters Parameters for creating an event source resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters) {
+    private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -193,54 +163,38 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            eventSourceName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, eventSourceName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update an event source under the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName Name of the event source.
      * @param parameters Parameters for creating an event source resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters,
+    private Mono<Response<EventSourceResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceCreateOrUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -261,123 +215,96 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                eventSourceName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, eventSourceName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Create or update an event source under the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName Name of the event source.
      * @param parameters Parameters for creating an event source resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSourceResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters) {
+    private Mono<EventSourceResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, parameters)
-            .flatMap(
-                (Response<EventSourceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update an event source under the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName Name of the event source.
-     * @param parameters Parameters for creating an event source resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSourceResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, eventSourceName, parameters).block();
-    }
-
-    /**
-     * Create or update an event source under the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName Name of the event source.
      * @param parameters Parameters for creating an event source resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceCreateOrUpdateParameters parameters,
+    public Response<EventSourceResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceCreateOrUpdateParameters parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, parameters, context)
             .block();
     }
 
     /**
-     * Gets the event source with the specified name in the specified environment.
-     *
+     * Create or update an event source under the specified environment.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * group.
+     * @param eventSourceName Name of the event source.
+     * @param parameters Parameters for creating an event source resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
+     * @return an environment receives data from one or more event sources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String eventSourceName) {
+    public EventSourceResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, eventSourceName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Gets the event source with the specified name in the specified environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
+     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
+     * environment.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the event source with the specified name in the specified environment along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -393,49 +320,36 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            eventSourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, eventSourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the event source with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
+     * @return the event source with the specified name in the specified environment along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
+    private Mono<Response<EventSourceResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -451,53 +365,59 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                eventSourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, eventSourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the event source with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
+     * @return the event source with the specified name in the specified environment on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSourceResourceInner> getAsync(
-        String resourceGroupName, String environmentName, String eventSourceName) {
+    private Mono<EventSourceResourceInner> getAsync(String resourceGroupName, String environmentName,
+        String eventSourceName) {
         return getWithResponseAsync(resourceGroupName, environmentName, eventSourceName)
-            .flatMap(
-                (Response<EventSourceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the event source with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the event source with the specified name in the specified environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EventSourceResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, Context context) {
+        return getWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
+    }
+
+    /**
+     * Gets the event source with the specified name in the specified environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
+     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -505,60 +425,34 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSourceResourceInner get(String resourceGroupName, String environmentName, String eventSourceName) {
-        return getAsync(resourceGroupName, environmentName, eventSourceName).block();
-    }
-
-    /**
-     * Gets the event source with the specified name in the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the event source with the specified name in the specified environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
-        return getWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
+        return getWithResponse(resourceGroupName, environmentName, eventSourceName, Context.NONE).getValue();
     }
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters) {
+    private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -573,64 +467,46 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
                 .error(new IllegalArgumentException("Parameter eventSourceName is required and cannot be null."));
         }
         if (eventSourceUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSourceUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter eventSourceUpdateParameters is required and cannot be null."));
         } else {
             eventSourceUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            eventSourceName,
-                            this.client.getApiVersion(),
-                            eventSourceUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, eventSourceName, this.client.getApiVersion(),
+                eventSourceUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters,
+    private Mono<Response<EventSourceResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -645,136 +521,105 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
                 .error(new IllegalArgumentException("Parameter eventSourceName is required and cannot be null."));
         }
         if (eventSourceUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSourceUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter eventSourceUpdateParameters is required and cannot be null."));
         } else {
             eventSourceUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                eventSourceName,
-                this.client.getApiVersion(),
-                eventSourceUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, eventSourceName, this.client.getApiVersion(), eventSourceUpdateParameters, accept,
+            context);
     }
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
+     * @return an environment receives data from one or more event sources on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSourceResourceInner> updateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters) {
+    private Mono<EventSourceResourceInner> updateAsync(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters) {
         return updateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters)
-            .flatMap(
-                (Response<EventSourceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
-     * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment receives data from one or more event sources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSourceResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters) {
-        return updateAsync(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters).block();
-    }
-
-    /**
-     * Updates the event source with the specified name in the specified subscription, resource group, and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment receives data from one or more event sources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EventSourceResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String eventSourceName, EventSourceUpdateParameters eventSourceUpdateParameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters,
+            context).block();
+    }
+
+    /**
+     * Updates the event source with the specified name in the specified subscription, resource group, and environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
+     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
+     * environment.
+     * @param eventSourceUpdateParameters Request object that contains the updated information for the event source.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an environment receives data from one or more event sources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String eventSourceName,
-        EventSourceUpdateParameters eventSourceUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters, context)
-            .block();
+    public EventSourceResourceInner update(String resourceGroupName, String environmentName, String eventSourceName,
+        EventSourceUpdateParameters eventSourceUpdateParameters) {
+        return updateWithResponse(resourceGroupName, environmentName, eventSourceName, eventSourceUpdateParameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String eventSourceName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String eventSourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -790,49 +635,35 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            eventSourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, eventSourceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String eventSourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -848,100 +679,89 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                eventSourceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, eventSourceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String environmentName, String eventSourceName) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, eventSourceName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
+     * environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, String eventSourceName,
+        Context context) {
+        return deleteWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
+    }
+
+    /**
+     * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
+     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String eventSourceName) {
-        deleteAsync(resourceGroupName, environmentName, eventSourceName).block();
-    }
-
-    /**
-     * Deletes the event source with the specified name in the specified subscription, resource group, and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param eventSourceName The name of the Time Series Insights event source associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String eventSourceName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, environmentName, eventSourceName, context).block();
+        deleteWithResponse(resourceGroupName, environmentName, eventSourceName, Context.NONE);
     }
 
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group
      * and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
+     * @return the response of the List EventSources operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(String resourceGroupName,
+        String environmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -954,46 +774,35 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByEnvironment(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, environmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group
      * and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
+     * @return the response of the List EventSources operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, Context context) {
+    private Mono<Response<EventSourceListResponseInner>> listByEnvironmentWithResponseAsync(String resourceGroupName,
+        String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1005,50 +814,55 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByEnvironment(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group
      * and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
+     * @return the response of the List EventSources operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSourceListResponseInner> listByEnvironmentAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<EventSourceListResponseInner> listByEnvironmentAsync(String resourceGroupName,
+        String environmentName) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName)
-            .flatMap(
-                (Response<EventSourceListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Lists all the available event sources associated with the subscription and within the specified resource group
      * and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List EventSources operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<EventSourceListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context) {
+        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
+    }
+
+    /**
+     * Lists all the available event sources associated with the subscription and within the specified resource group
+     * and environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1056,25 +870,6 @@ public final class EventSourcesClientImpl implements EventSourcesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EventSourceListResponseInner listByEnvironment(String resourceGroupName, String environmentName) {
-        return listByEnvironmentAsync(resourceGroupName, environmentName).block();
-    }
-
-    /**
-     * Lists all the available event sources associated with the subscription and within the specified resource group
-     * and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List EventSources operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSourceListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
-        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
+        return listByEnvironmentWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
     }
 }

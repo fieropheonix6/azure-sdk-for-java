@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Indicates the type of database account. This can only be set at database account creation. */
+/**
+ * Indicates the type of database account. This can only be set at database account creation.
+ */
 public final class DatabaseAccountKind extends ExpandableStringEnum<DatabaseAccountKind> {
-    /** Static value GlobalDocumentDB for DatabaseAccountKind. */
+    /**
+     * Static value GlobalDocumentDB for DatabaseAccountKind.
+     */
     public static final DatabaseAccountKind GLOBAL_DOCUMENT_DB = fromString("GlobalDocumentDB");
 
-    /** Static value MongoDB for DatabaseAccountKind. */
+    /**
+     * Static value MongoDB for DatabaseAccountKind.
+     */
     public static final DatabaseAccountKind MONGO_DB = fromString("MongoDB");
 
-    /** Static value Parse for DatabaseAccountKind. */
+    /**
+     * Static value Parse for DatabaseAccountKind.
+     */
     public static final DatabaseAccountKind PARSE = fromString("Parse");
 
     /**
+     * Creates a new instance of DatabaseAccountKind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DatabaseAccountKind() {
+    }
+
+    /**
      * Creates or finds a DatabaseAccountKind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DatabaseAccountKind.
      */
-    @JsonCreator
     public static DatabaseAccountKind fromString(String name) {
         return fromString(name, DatabaseAccountKind.class);
     }
 
     /**
      * Gets known DatabaseAccountKind values.
-     *
+     * 
      * @return known DatabaseAccountKind values.
      */
     public static Collection<DatabaseAccountKind> values() {

@@ -5,29 +5,86 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.KeyVaultSecretStatus;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Key Vault container ARM resource for a certificate that is purchased through Azure. */
+/**
+ * Key Vault container ARM resource for a certificate that is purchased through Azure.
+ */
 @Fluent
 public final class AppServiceCertificatePatchResourceInner extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
-    @JsonProperty(value = "properties")
     private AppServiceCertificateInner innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of AppServiceCertificatePatchResourceInner class.
+     */
+    public AppServiceCertificatePatchResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AppServiceCertificateInner innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AppServiceCertificatePatchResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -36,7 +93,7 @@ public final class AppServiceCertificatePatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the keyVaultId property: Key Vault resource Id.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -45,7 +102,7 @@ public final class AppServiceCertificatePatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the keyVaultId property: Key Vault resource Id.
-     *
+     * 
      * @param keyVaultId the keyVaultId value to set.
      * @return the AppServiceCertificatePatchResourceInner object itself.
      */
@@ -59,7 +116,7 @@ public final class AppServiceCertificatePatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the keyVaultSecretName property: Key Vault secret name.
-     *
+     * 
      * @return the keyVaultSecretName value.
      */
     public String keyVaultSecretName() {
@@ -68,7 +125,7 @@ public final class AppServiceCertificatePatchResourceInner extends ProxyOnlyReso
 
     /**
      * Set the keyVaultSecretName property: Key Vault secret name.
-     *
+     * 
      * @param keyVaultSecretName the keyVaultSecretName value to set.
      * @return the AppServiceCertificatePatchResourceInner object itself.
      */
@@ -82,7 +139,7 @@ public final class AppServiceCertificatePatchResourceInner extends ProxyOnlyReso
 
     /**
      * Get the provisioningState property: Status of the Key Vault secret.
-     *
+     * 
      * @return the provisioningState value.
      */
     public KeyVaultSecretStatus provisioningState() {
@@ -91,14 +148,61 @@ public final class AppServiceCertificatePatchResourceInner extends ProxyOnlyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppServiceCertificatePatchResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppServiceCertificatePatchResourceInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppServiceCertificatePatchResourceInner.
+     */
+    public static AppServiceCertificatePatchResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppServiceCertificatePatchResourceInner deserializedAppServiceCertificatePatchResourceInner
+                = new AppServiceCertificatePatchResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAppServiceCertificatePatchResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAppServiceCertificatePatchResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAppServiceCertificatePatchResourceInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedAppServiceCertificatePatchResourceInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAppServiceCertificatePatchResourceInner.innerProperties
+                        = AppServiceCertificateInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppServiceCertificatePatchResourceInner;
+        });
     }
 }

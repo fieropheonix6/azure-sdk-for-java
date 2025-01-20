@@ -8,24 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.Goal;
 import com.azure.resourcemanager.machinelearning.models.Objective;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ObjectiveTests {
-    @Test
-    public void testDeserialize() {
-        Objective model =
-            BinaryData
-                .fromString("{\"goal\":\"Minimize\",\"primaryMetric\":\"qxjoshohtotryeg\"}")
-                .toObject(Objective.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Objective model = BinaryData.fromString("{\"primaryMetric\":\"hjxncqzahg\",\"goal\":\"Minimize\"}")
+            .toObject(Objective.class);
+        Assertions.assertEquals("hjxncqzahg", model.primaryMetric());
         Assertions.assertEquals(Goal.MINIMIZE, model.goal());
-        Assertions.assertEquals("qxjoshohtotryeg", model.primaryMetric());
     }
 
-    @Test
-    public void testSerialize() {
-        Objective model = new Objective().withGoal(Goal.MINIMIZE).withPrimaryMetric("qxjoshohtotryeg");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        Objective model = new Objective().withPrimaryMetric("hjxncqzahg").withGoal(Goal.MINIMIZE);
         model = BinaryData.fromObject(model).toObject(Objective.class);
+        Assertions.assertEquals("hjxncqzahg", model.primaryMetric());
         Assertions.assertEquals(Goal.MINIMIZE, model.goal());
-        Assertions.assertEquals("qxjoshohtotryeg", model.primaryMetric());
     }
 }

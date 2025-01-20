@@ -12,29 +12,28 @@ import com.azure.resourcemanager.peering.fluent.models.PeeringInner;
 import com.azure.resourcemanager.peering.models.LegacyPeerings;
 import com.azure.resourcemanager.peering.models.LegacyPeeringsKind;
 import com.azure.resourcemanager.peering.models.Peering;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LegacyPeeringsImpl implements LegacyPeerings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LegacyPeeringsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LegacyPeeringsImpl.class);
 
     private final LegacyPeeringsClient innerClient;
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public LegacyPeeringsImpl(
-        LegacyPeeringsClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public LegacyPeeringsImpl(LegacyPeeringsClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Peering> list(String peeringLocation, LegacyPeeringsKind kind) {
         PagedIterable<PeeringInner> inner = this.serviceClient().list(peeringLocation, kind);
-        return Utils.mapPage(inner, inner1 -> new PeeringImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Peering> list(String peeringLocation, LegacyPeeringsKind kind, Integer asn, Context context) {
         PagedIterable<PeeringInner> inner = this.serviceClient().list(peeringLocation, kind, asn, context);
-        return Utils.mapPage(inner, inner1 -> new PeeringImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringImpl(inner1, this.manager()));
     }
 
     private LegacyPeeringsClient serviceClient() {

@@ -27,14 +27,15 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.implementation.models.CpkInfo;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -59,15 +60,16 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {DataLakeFileClient.class, DataLakeFileAsyncClient.class,
-    DataLakeDirectoryClient.class, DataLakeDirectoryAsyncClient.class})
-public final class DataLakePathClientBuilder implements
-    TokenCredentialTrait<DataLakePathClientBuilder>,
-    AzureNamedKeyCredentialTrait<DataLakePathClientBuilder>,
-    AzureSasCredentialTrait<DataLakePathClientBuilder>,
-    HttpTrait<DataLakePathClientBuilder>,
-    ConfigurationTrait<DataLakePathClientBuilder>,
-    EndpointTrait<DataLakePathClientBuilder> {
+@ServiceClientBuilder(
+    serviceClients = {
+        DataLakeFileClient.class,
+        DataLakeFileAsyncClient.class,
+        DataLakeDirectoryClient.class,
+        DataLakeDirectoryAsyncClient.class })
+public final class DataLakePathClientBuilder
+    implements TokenCredentialTrait<DataLakePathClientBuilder>, AzureNamedKeyCredentialTrait<DataLakePathClientBuilder>,
+    AzureSasCredentialTrait<DataLakePathClientBuilder>, HttpTrait<DataLakePathClientBuilder>,
+    ConfigurationTrait<DataLakePathClientBuilder>, EndpointTrait<DataLakePathClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakePathClientBuilder.class);
     private final BlobClientBuilder blobClientBuilder;
@@ -93,6 +95,7 @@ public final class DataLakePathClientBuilder implements
     private Configuration configuration;
     private DataLakeServiceVersion version;
     private CpkInfo customerProvidedKey;
+    private DataLakeAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeFileClient FileClients}, {@link
@@ -103,6 +106,18 @@ public final class DataLakePathClientBuilder implements
         logOptions = getDefaultHttpLogOptions();
         blobClientBuilder = new BlobClientBuilder();
         blobClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
+    }
+
+    private DataLakeServiceVersion getServiceVersion() {
+        return version != null ? version : DataLakeServiceVersion.getLatest();
+    }
+
+    private HttpPipeline constructPipeline() {
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint,
+                retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
@@ -126,8 +141,14 @@ public final class DataLakePathClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileClient buildFileClient() {
-        return new DataLakeFileClient(buildFileAsyncClient(),
-            blobClientBuilder.buildClient().getBlockBlobClient());
+        String dataLakeFileSystemName
+            = CoreUtils.isNullOrEmpty(fileSystemName) ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
+
+        DataLakeFileAsyncClient fileAsyncClient = buildFileAsyncClient();
+
+        return new DataLakeFileClient(fileAsyncClient, blobClientBuilder.buildClient().getBlockBlobClient(),
+            fileAsyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName,
+            pathName, azureSasCredential, customerProvidedKey, tokenCredential != null);
     }
 
     /**
@@ -159,16 +180,9 @@ public final class DataLakePathClientBuilder implements
             ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
             : fileSystemName;
 
-        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
-
-        return new DataLakeFileAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
-            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
-            customerProvidedKey);
+        return new DataLakeFileAsyncClient(constructPipeline(), endpoint, getServiceVersion(), accountName,
+            dataLakeFileSystemName, pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(),
+            azureSasCredential, customerProvidedKey, tokenCredential != null);
     }
 
     /**
@@ -191,8 +205,20 @@ public final class DataLakePathClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeDirectoryClient buildDirectoryClient() {
-        return new DataLakeDirectoryClient(buildDirectoryAsyncClient(),
-            blobClientBuilder.buildClient().getBlockBlobClient());
+        validateConstruction();
+
+        /*
+        Implicit and explicit root container access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        String dataLakeFileSystemName
+            = CoreUtils.isNullOrEmpty(fileSystemName) ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
+
+        DataLakeDirectoryAsyncClient directoryAsyncClient = buildDirectoryAsyncClient();
+
+        return new DataLakeDirectoryClient(directoryAsyncClient, blobClientBuilder.buildClient().getBlockBlobClient(),
+            directoryAsyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName,
+            pathName, azureSasCredential, customerProvidedKey, tokenCredential != null);
     }
 
     /**
@@ -225,16 +251,9 @@ public final class DataLakePathClientBuilder implements
             ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
             : fileSystemName;
 
-        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint,
-            retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
-
-        return new DataLakeDirectoryAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
-            pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(), azureSasCredential,
-            customerProvidedKey);
+        return new DataLakeDirectoryAsyncClient(constructPipeline(), endpoint, getServiceVersion(), accountName,
+            dataLakeFileSystemName, pathName, blobClientBuilder.buildAsyncClient().getBlockBlobAsyncClient(),
+            azureSasCredential, customerProvidedKey, tokenCredential != null);
     }
 
     /*
@@ -303,8 +322,8 @@ public final class DataLakePathClientBuilder implements
      */
     public DataLakePathClientBuilder sasToken(String sasToken) {
         blobClientBuilder.sasToken(sasToken);
-        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.azureSasCredential
+            = new AzureSasCredential(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -320,8 +339,7 @@ public final class DataLakePathClientBuilder implements
     @Override
     public DataLakePathClientBuilder credential(AzureSasCredential credential) {
         blobClientBuilder.credential(credential);
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -367,9 +385,9 @@ public final class DataLakePathClientBuilder implements
 
             this.accountName = parts.getAccountName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
-            this.fileSystemName = parts.getBlobContainerName() == null ? this.fileSystemName
-                : parts.getBlobContainerName();
-            this.pathName = parts.getBlobName() == null ? this.pathName : Utility.urlEncode(parts.getBlobName());
+            this.fileSystemName
+                = parts.getBlobContainerName() == null ? this.fileSystemName : parts.getBlobContainerName();
+            this.pathName = parts.getBlobName() == null ? this.pathName : parts.getBlobName();
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
             if (!CoreUtils.isNullOrEmpty(sasToken)) {
@@ -405,8 +423,7 @@ public final class DataLakePathClientBuilder implements
      */
     public DataLakePathClientBuilder pathName(String pathName) {
         blobClientBuilder.blobName(pathName);
-        this.pathName = Utility.urlEncode(Utility.urlDecode(Objects.requireNonNull(pathName,
-            "'pathName' cannot be null.")));
+        this.pathName = Objects.requireNonNull(pathName, "'pathName' cannot be null.");
         return this;
     }
 
@@ -624,12 +641,25 @@ public final class DataLakePathClientBuilder implements
             this.customerProvidedKey = null;
         } else {
             blobClientBuilder.customerProvidedKey(Transforms.toBlobCustomerProvidedKey(customerProvidedKey));
-            this.customerProvidedKey = new CpkInfo()
-                .setEncryptionKey(customerProvidedKey.getKey())
+            this.customerProvidedKey = new CpkInfo().setEncryptionKey(customerProvidedKey.getKey())
                 .setEncryptionKeySha256(customerProvidedKey.getKeySha256())
                 .setEncryptionAlgorithm(customerProvidedKey.getEncryptionAlgorithm());
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link DataLakeAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated DataLakePathClientBuilder object
+     */
+    public DataLakePathClientBuilder audience(DataLakeAudience audience) {
+        this.audience = audience;
+        if (audience != null) {
+            blobClientBuilder.audience(BlobAudience.fromString(audience.toString()));
+        }
         return this;
     }
 }

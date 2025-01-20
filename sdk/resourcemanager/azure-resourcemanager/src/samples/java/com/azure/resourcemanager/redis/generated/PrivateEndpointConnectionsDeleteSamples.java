@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections Delete. */
+/**
+ * Samples for PrivateEndpointConnections Delete.
+ */
 public final class PrivateEndpointConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheDeletePrivateEndpointConnection.json
+     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/
+     * RedisCacheDeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: RedisCacheDeletePrivateEndpointConnection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCacheDeletePrivateEndpointConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .deleteWithResponse("rgtest01", "cachetest01", "pectest01", Context.NONE);
+            .deleteWithResponse("rgtest01", "cachetest01", "pectest01", com.azure.core.util.Context.NONE);
     }
 }

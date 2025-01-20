@@ -6,33 +6,48 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayFirewallRuleSetPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** A web application firewall rule set. */
+/**
+ * A web application firewall rule set.
+ */
 @Fluent
 public final class ApplicationGatewayFirewallRuleSet extends Resource {
     /*
      * Properties of the application gateway firewall rule set.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayFirewallRuleSetPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ApplicationGatewayFirewallRuleSet class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of ApplicationGatewayFirewallRuleSet class.
+     */
     public ApplicationGatewayFirewallRuleSet() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway firewall rule set.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayFirewallRuleSetPropertiesFormat innerProperties() {
@@ -41,7 +56,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +65,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -59,14 +74,38 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayFirewallRuleSet withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayFirewallRuleSet withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +114,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the web application firewall rule set.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,7 +123,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -93,7 +132,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -107,7 +146,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -116,7 +155,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -130,7 +169,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ApplicationGatewayFirewallRuleGroup> ruleGroups() {
@@ -139,7 +178,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -153,7 +192,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Get the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @return the tiers value.
      */
     public List<ApplicationGatewayTierTypes> tiers() {
@@ -162,7 +201,7 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Set the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @param tiers the tiers value to set.
      * @return the ApplicationGatewayFirewallRuleSet object itself.
      */
@@ -176,12 +215,65 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayFirewallRuleSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayFirewallRuleSet if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayFirewallRuleSet.
+     */
+    public static ApplicationGatewayFirewallRuleSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayFirewallRuleSet deserializedApplicationGatewayFirewallRuleSet
+                = new ApplicationGatewayFirewallRuleSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRuleSet.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRuleSet.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRuleSet.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationGatewayFirewallRuleSet.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRuleSet.innerProperties
+                        = ApplicationGatewayFirewallRuleSetPropertiesFormat.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayFirewallRuleSet.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayFirewallRuleSet;
+        });
     }
 }

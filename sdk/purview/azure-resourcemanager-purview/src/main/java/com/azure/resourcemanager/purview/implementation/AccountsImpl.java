@@ -19,10 +19,9 @@ import com.azure.resourcemanager.purview.models.Accounts;
 import com.azure.resourcemanager.purview.models.CheckNameAvailabilityRequest;
 import com.azure.resourcemanager.purview.models.CheckNameAvailabilityResult;
 import com.azure.resourcemanager.purview.models.CollectionAdminUpdate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AccountsImpl implements Accounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AccountsImpl.class);
 
     private final AccountsClient innerClient;
 
@@ -35,44 +34,41 @@ public final class AccountsImpl implements Accounts {
 
     public PagedIterable<Account> listByResourceGroup(String resourceGroupName) {
         PagedIterable<AccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Account> listByResourceGroup(String resourceGroupName, String skipToken, Context context) {
-        PagedIterable<AccountInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        PagedIterable<AccountInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Account> list() {
         PagedIterable<AccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Account> list(String skipToken, Context context) {
         PagedIterable<AccountInner> inner = this.serviceClient().list(skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AccountImpl(inner1, this.manager()));
+    }
+
+    public Response<Account> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        Response<AccountInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Account getByResourceGroup(String resourceGroupName, String accountName) {
         AccountInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, accountName);
         if (inner != null) {
             return new AccountImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Account> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<AccountInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AccountImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -86,6 +82,17 @@ public final class AccountsImpl implements Accounts {
         this.serviceClient().delete(resourceGroupName, accountName, context);
     }
 
+    public Response<AccessKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
+        Response<AccessKeysInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccessKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public AccessKeys listKeys(String resourceGroupName, String accountName) {
         AccessKeysInner inner = this.serviceClient().listKeys(resourceGroupName, accountName);
         if (inner != null) {
@@ -95,36 +102,33 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public Response<AccessKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
-        Response<AccessKeysInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
+    public Response<Void> addRootCollectionAdminWithResponse(String resourceGroupName, String accountName,
+        CollectionAdminUpdate collectionAdminUpdate, Context context) {
+        return this.serviceClient()
+            .addRootCollectionAdminWithResponse(resourceGroupName, accountName, collectionAdminUpdate, context);
+    }
+
+    public void addRootCollectionAdmin(String resourceGroupName, String accountName,
+        CollectionAdminUpdate collectionAdminUpdate) {
+        this.serviceClient().addRootCollectionAdmin(resourceGroupName, accountName, collectionAdminUpdate);
+    }
+
+    public Response<CheckNameAvailabilityResult>
+        checkNameAvailabilityWithResponse(CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
+        Response<CheckNameAvailabilityResultInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AccessKeysImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public void addRootCollectionAdmin(
-        String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate) {
-        this.serviceClient().addRootCollectionAdmin(resourceGroupName, accountName, collectionAdminUpdate);
-    }
-
-    public Response<Void> addRootCollectionAdminWithResponse(
-        String resourceGroupName, String accountName, CollectionAdminUpdate collectionAdminUpdate, Context context) {
-        return this
-            .serviceClient()
-            .addRootCollectionAdminWithResponse(resourceGroupName, accountName, collectionAdminUpdate, context);
-    }
-
-    public CheckNameAvailabilityResult checkNameAvailability(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
-        CheckNameAvailabilityResultInner inner =
-            this.serviceClient().checkNameAvailability(checkNameAvailabilityRequest);
+    public CheckNameAvailabilityResult
+        checkNameAvailability(CheckNameAvailabilityRequest checkNameAvailabilityRequest) {
+        CheckNameAvailabilityResultInner inner
+            = this.serviceClient().checkNameAvailability(checkNameAvailabilityRequest);
         if (inner != null) {
             return new CheckNameAvailabilityResultImpl(inner, this.manager());
         } else {
@@ -132,93 +136,58 @@ public final class AccountsImpl implements Accounts {
         }
     }
 
-    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        Response<CheckNameAvailabilityResultInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(checkNameAvailabilityRequest, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public Account getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     public Response<Account> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         this.delete(resourceGroupName, accountName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
         this.delete(resourceGroupName, accountName, context);
     }

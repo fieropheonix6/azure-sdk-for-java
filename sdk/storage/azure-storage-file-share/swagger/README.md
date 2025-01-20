@@ -15,24 +15,21 @@ autorest
 
 ### Code generation settings
 ``` yaml
-use: '@autorest/java@4.1.6'
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-06-08/file.json
+use: '@autorest/java@4.1.42'
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/refs/heads/main/specification/storage/data-plane/Microsoft.FileStorage/stable/2025-01-05/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
-enable-xml: true
 generate-client-as-impl: true
-generate-client-interfaces: false
-service-interface-as-public: true
 license-header: MICROSOFT_MIT_SMALL
-context-client-method-parameter: true
-default-http-exception-type: com.azure.storage.file.share.models.ShareStorageException
+enable-sync-stack: true
+default-http-exception-type: com.azure.storage.file.share.implementation.models.ShareStorageExceptionInternal
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: HandleItem,ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode
+custom-types: ShareFileHttpHeaders,ShareServiceProperties,ShareCorsRule,Range,FileRange,ClearRange,ShareFileRangeList,CopyStatusType,ShareSignedIdentifier,SourceModifiedAccessConditions,ShareErrorCode,StorageServiceProperties,ShareMetrics,ShareAccessPolicy,ShareFileDownloadHeaders,LeaseDurationType,LeaseStateType,LeaseStatusType,PermissionCopyModeType,ShareAccessTier,ShareRootSquash,ShareRetentionPolicy,ShareProtocolSettings,ShareSmbSettings,SmbMultichannel,FileLastWrittenMode,ShareTokenIntent,AccessRight,FilePermissionFormat
 customization-class: src/main/java/ShareStorageCustomization.java
-custom-strongly-typed-header-deserialization: true
-generic-response-type: true
+use-input-stream-for-binary: true
+disable-client-builder: true
 ```
 
 ### Query Parameters
@@ -398,6 +395,15 @@ directive:
   transform: >
     const op = $["/{shareName}/{fileName}?comp=range&fromURL"];
     op.put.responses["201"].headers["x-ms-file-last-write-time"].format = "date-time";
+```
+
+### Change ShareFileRangeList XML name to Ranges
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.ShareFileRangeList
+  transform: >
+    $.xml = {"name": "Ranges"};
 ```
         
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fstorage%2Fazure-storage-file-share%2Fswagger%2FREADME.png)

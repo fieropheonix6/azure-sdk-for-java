@@ -5,80 +5,92 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Square Service linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Square")
-@JsonFlatten
+/**
+ * Square Service linked service.
+ */
 @Fluent
 public class SquareLinkedService extends LinkedService {
+    /*
+     * Type of linked service.
+     */
+    private String type = "Square";
+
     /*
      * Properties used to connect to Square. It is mutually exclusive with any other properties in the linked service.
      * Type: object.
      */
-    @JsonProperty(value = "typeProperties.connectionProperties")
     private Object connectionProperties;
 
     /*
      * The URL of the Square instance. (i.e. mystore.mysquare.com)
      */
-    @JsonProperty(value = "typeProperties.host", required = true)
     private Object host;
 
     /*
      * The client ID associated with your Square application.
      */
-    @JsonProperty(value = "typeProperties.clientId", required = true)
     private Object clientId;
 
     /*
      * The client secret associated with your Square application.
      */
-    @JsonProperty(value = "typeProperties.clientSecret")
     private SecretBase clientSecret;
 
     /*
      * The redirect URL assigned in the Square application dashboard. (i.e. http://localhost:2500)
      */
-    @JsonProperty(value = "typeProperties.redirectUri", required = true)
     private Object redirectUri;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "typeProperties.useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "typeProperties.useHostVerification")
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "typeProperties.usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Creates an instance of SquareLinkedService class.
+     */
+    public SquareLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object getConnectionProperties() {
@@ -88,7 +100,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the connectionProperties property: Properties used to connect to Square. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -99,7 +111,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Get the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
-     *
+     * 
      * @return the host value.
      */
     public Object getHost() {
@@ -108,7 +120,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Set the host property: The URL of the Square instance. (i.e. mystore.mysquare.com).
-     *
+     * 
      * @param host the host value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -119,7 +131,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Get the clientId property: The client ID associated with your Square application.
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -128,7 +140,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Set the clientId property: The client ID associated with your Square application.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -139,7 +151,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Get the clientSecret property: The client secret associated with your Square application.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase getClientSecret() {
@@ -148,7 +160,7 @@ public class SquareLinkedService extends LinkedService {
 
     /**
      * Set the clientSecret property: The client secret associated with your Square application.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -160,7 +172,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Get the redirectUri property: The redirect URL assigned in the Square application dashboard. (i.e.
      * http://localhost:2500).
-     *
+     * 
      * @return the redirectUri value.
      */
     public Object getRedirectUri() {
@@ -170,7 +182,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the redirectUri property: The redirect URL assigned in the Square application dashboard. (i.e.
      * http://localhost:2500).
-     *
+     * 
      * @param redirectUri the redirectUri value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -182,7 +194,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -192,7 +204,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -204,7 +216,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -214,7 +226,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -226,7 +238,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -236,7 +248,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -248,7 +260,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -258,7 +270,7 @@ public class SquareLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SquareLinkedService object itself.
      */
@@ -267,31 +279,150 @@ public class SquareLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SquareLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SquareLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SquareLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SquareLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (connectionProperties != null
+            || host != null
+            || clientId != null
+            || clientSecret != null
+            || redirectUri != null
+            || useEncryptedEndpoints != null
+            || useHostVerification != null
+            || usePeerVerification != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+            jsonWriter.writeUntypedField("host", this.host);
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+            jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+            jsonWriter.writeUntypedField("redirectUri", this.redirectUri);
+            jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+            jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+            jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SquareLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SquareLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SquareLinkedService.
+     */
+    public static SquareLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SquareLinkedService deserializedSquareLinkedService = new SquareLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedSquareLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSquareLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSquareLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSquareLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSquareLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("connectionProperties".equals(fieldName)) {
+                            deserializedSquareLinkedService.connectionProperties = reader.readUntyped();
+                        } else if ("host".equals(fieldName)) {
+                            deserializedSquareLinkedService.host = reader.readUntyped();
+                        } else if ("clientId".equals(fieldName)) {
+                            deserializedSquareLinkedService.clientId = reader.readUntyped();
+                        } else if ("clientSecret".equals(fieldName)) {
+                            deserializedSquareLinkedService.clientSecret = SecretBase.fromJson(reader);
+                        } else if ("redirectUri".equals(fieldName)) {
+                            deserializedSquareLinkedService.redirectUri = reader.readUntyped();
+                        } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                            deserializedSquareLinkedService.useEncryptedEndpoints = reader.readUntyped();
+                        } else if ("useHostVerification".equals(fieldName)) {
+                            deserializedSquareLinkedService.useHostVerification = reader.readUntyped();
+                        } else if ("usePeerVerification".equals(fieldName)) {
+                            deserializedSquareLinkedService.usePeerVerification = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedSquareLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSquareLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedSquareLinkedService;
+        });
     }
 }

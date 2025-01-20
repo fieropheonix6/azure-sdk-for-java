@@ -5,71 +5,75 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The FilesForceCloseHandlesHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The FilesForceCloseHandlesHeaders model.
+ */
 @Fluent
 public final class FilesForceCloseHandlesHeaders {
     /*
      * The x-ms-marker property.
      */
-    @JsonProperty(value = "x-ms-marker")
     private String xMsMarker;
 
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-number-of-handles-closed property.
      */
-    @JsonProperty(value = "x-ms-number-of-handles-closed")
     private Integer xMsNumberOfHandlesClosed;
 
     /*
      * The x-ms-number-of-handles-failed property.
      */
-    @JsonProperty(value = "x-ms-number-of-handles-failed")
     private Integer xMsNumberOfHandlesFailed;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
+
+    private static final HttpHeaderName X_MS_MARKER = HttpHeaderName.fromString("x-ms-marker");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_NUMBER_OF_HANDLES_CLOSED
+        = HttpHeaderName.fromString("x-ms-number-of-handles-closed");
+
+    private static final HttpHeaderName X_MS_NUMBER_OF_HANDLES_FAILED
+        = HttpHeaderName.fromString("x-ms-number-of-handles-failed");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesForceCloseHandlesHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesForceCloseHandlesHeaders(HttpHeaders rawHeaders) {
-        this.xMsMarker = rawHeaders.getValue("x-ms-marker");
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        String xMsNumberOfHandlesClosed = rawHeaders.getValue("x-ms-number-of-handles-closed");
+        this.xMsMarker = rawHeaders.getValue(X_MS_MARKER);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsNumberOfHandlesClosed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_CLOSED);
         if (xMsNumberOfHandlesClosed != null) {
             this.xMsNumberOfHandlesClosed = Integer.parseInt(xMsNumberOfHandlesClosed);
         }
-        String xMsNumberOfHandlesFailed = rawHeaders.getValue("x-ms-number-of-handles-failed");
+        String xMsNumberOfHandlesFailed = rawHeaders.getValue(X_MS_NUMBER_OF_HANDLES_FAILED);
         if (xMsNumberOfHandlesFailed != null) {
             this.xMsNumberOfHandlesFailed = Integer.parseInt(xMsNumberOfHandlesFailed);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
@@ -77,7 +81,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Get the xMsMarker property: The x-ms-marker property.
-     *
+     * 
      * @return the xMsMarker value.
      */
     public String getXMsMarker() {
@@ -86,7 +90,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Set the xMsMarker property: The x-ms-marker property.
-     *
+     * 
      * @param xMsMarker the xMsMarker value to set.
      * @return the FilesForceCloseHandlesHeaders object itself.
      */
@@ -97,7 +101,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -106,7 +110,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesForceCloseHandlesHeaders object itself.
      */
@@ -117,7 +121,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Get the xMsNumberOfHandlesClosed property: The x-ms-number-of-handles-closed property.
-     *
+     * 
      * @return the xMsNumberOfHandlesClosed value.
      */
     public Integer getXMsNumberOfHandlesClosed() {
@@ -126,7 +130,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Set the xMsNumberOfHandlesClosed property: The x-ms-number-of-handles-closed property.
-     *
+     * 
      * @param xMsNumberOfHandlesClosed the xMsNumberOfHandlesClosed value to set.
      * @return the FilesForceCloseHandlesHeaders object itself.
      */
@@ -137,7 +141,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Get the xMsNumberOfHandlesFailed property: The x-ms-number-of-handles-failed property.
-     *
+     * 
      * @return the xMsNumberOfHandlesFailed value.
      */
     public Integer getXMsNumberOfHandlesFailed() {
@@ -146,7 +150,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Set the xMsNumberOfHandlesFailed property: The x-ms-number-of-handles-failed property.
-     *
+     * 
      * @param xMsNumberOfHandlesFailed the xMsNumberOfHandlesFailed value to set.
      * @return the FilesForceCloseHandlesHeaders object itself.
      */
@@ -157,7 +161,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -166,7 +170,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesForceCloseHandlesHeaders object itself.
      */
@@ -177,7 +181,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -189,7 +193,7 @@ public final class FilesForceCloseHandlesHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the FilesForceCloseHandlesHeaders object itself.
      */

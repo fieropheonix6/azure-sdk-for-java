@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ResourceGuards List. */
+/**
+ * Samples for ResourceGuards List.
+ */
 public final class ResourceGuardsListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/ResourceGuardCRUD/GetResourceGuardsInSubscription.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/
+     * ResourceGuardCRUD/GetResourceGuardsInSubscription.json
      */
     /**
      * Sample code: Get ResourceGuards in Subscription.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getResourceGuardsInSubscription(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.resourceGuards().list(Context.NONE);
+    public static void
+        getResourceGuardsInSubscription(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.resourceGuards().list(com.azure.core.util.Context.NONE);
     }
 }

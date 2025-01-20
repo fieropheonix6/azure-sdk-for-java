@@ -5,80 +5,80 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Connection state snapshot. */
+/**
+ * Connection state snapshot.
+ */
 @Fluent
-public final class ConnectionStateSnapshot {
+public final class ConnectionStateSnapshot implements JsonSerializable<ConnectionStateSnapshot> {
     /*
      * The connection state.
      */
-    @JsonProperty(value = "connectionState")
     private ConnectionState connectionState;
 
     /*
      * The start time of the connection snapshot.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The end time of the connection snapshot.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Connectivity analysis evaluation state.
      */
-    @JsonProperty(value = "evaluationState")
     private EvaluationState evaluationState;
 
     /*
      * Average latency in ms.
      */
-    @JsonProperty(value = "avgLatencyInMs")
     private Long avgLatencyInMs;
 
     /*
      * Minimum latency in ms.
      */
-    @JsonProperty(value = "minLatencyInMs")
     private Long minLatencyInMs;
 
     /*
      * Maximum latency in ms.
      */
-    @JsonProperty(value = "maxLatencyInMs")
     private Long maxLatencyInMs;
 
     /*
      * The number of sent probes.
      */
-    @JsonProperty(value = "probesSent")
     private Long probesSent;
 
     /*
      * The number of failed probes.
      */
-    @JsonProperty(value = "probesFailed")
     private Long probesFailed;
 
     /*
      * List of hops between the source and the destination.
      */
-    @JsonProperty(value = "hops", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectivityHop> hops;
 
-    /** Creates an instance of ConnectionStateSnapshot class. */
+    /**
+     * Creates an instance of ConnectionStateSnapshot class.
+     */
     public ConnectionStateSnapshot() {
     }
 
     /**
      * Get the connectionState property: The connection state.
-     *
+     * 
      * @return the connectionState value.
      */
     public ConnectionState connectionState() {
@@ -87,7 +87,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the connectionState property: The connection state.
-     *
+     * 
      * @param connectionState the connectionState value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -98,7 +98,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the startTime property: The start time of the connection snapshot.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -107,7 +107,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the startTime property: The start time of the connection snapshot.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -118,7 +118,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the endTime property: The end time of the connection snapshot.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -127,7 +127,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the endTime property: The end time of the connection snapshot.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -138,7 +138,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the evaluationState property: Connectivity analysis evaluation state.
-     *
+     * 
      * @return the evaluationState value.
      */
     public EvaluationState evaluationState() {
@@ -147,7 +147,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the evaluationState property: Connectivity analysis evaluation state.
-     *
+     * 
      * @param evaluationState the evaluationState value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -158,7 +158,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the avgLatencyInMs property: Average latency in ms.
-     *
+     * 
      * @return the avgLatencyInMs value.
      */
     public Long avgLatencyInMs() {
@@ -167,7 +167,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the avgLatencyInMs property: Average latency in ms.
-     *
+     * 
      * @param avgLatencyInMs the avgLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -178,7 +178,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the minLatencyInMs property: Minimum latency in ms.
-     *
+     * 
      * @return the minLatencyInMs value.
      */
     public Long minLatencyInMs() {
@@ -187,7 +187,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the minLatencyInMs property: Minimum latency in ms.
-     *
+     * 
      * @param minLatencyInMs the minLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -198,7 +198,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the maxLatencyInMs property: Maximum latency in ms.
-     *
+     * 
      * @return the maxLatencyInMs value.
      */
     public Long maxLatencyInMs() {
@@ -207,7 +207,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the maxLatencyInMs property: Maximum latency in ms.
-     *
+     * 
      * @param maxLatencyInMs the maxLatencyInMs value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -218,7 +218,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the probesSent property: The number of sent probes.
-     *
+     * 
      * @return the probesSent value.
      */
     public Long probesSent() {
@@ -227,7 +227,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the probesSent property: The number of sent probes.
-     *
+     * 
      * @param probesSent the probesSent value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -238,7 +238,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the probesFailed property: The number of failed probes.
-     *
+     * 
      * @return the probesFailed value.
      */
     public Long probesFailed() {
@@ -247,7 +247,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Set the probesFailed property: The number of failed probes.
-     *
+     * 
      * @param probesFailed the probesFailed value to set.
      * @return the ConnectionStateSnapshot object itself.
      */
@@ -258,7 +258,7 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Get the hops property: List of hops between the source and the destination.
-     *
+     * 
      * @return the hops value.
      */
     public List<ConnectivityHop> hops() {
@@ -267,12 +267,83 @@ public final class ConnectionStateSnapshot {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hops() != null) {
             hops().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("connectionState",
+            this.connectionState == null ? null : this.connectionState.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("evaluationState",
+            this.evaluationState == null ? null : this.evaluationState.toString());
+        jsonWriter.writeNumberField("avgLatencyInMs", this.avgLatencyInMs);
+        jsonWriter.writeNumberField("minLatencyInMs", this.minLatencyInMs);
+        jsonWriter.writeNumberField("maxLatencyInMs", this.maxLatencyInMs);
+        jsonWriter.writeNumberField("probesSent", this.probesSent);
+        jsonWriter.writeNumberField("probesFailed", this.probesFailed);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectionStateSnapshot from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectionStateSnapshot if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConnectionStateSnapshot.
+     */
+    public static ConnectionStateSnapshot fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectionStateSnapshot deserializedConnectionStateSnapshot = new ConnectionStateSnapshot();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionState".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.connectionState
+                        = ConnectionState.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("evaluationState".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.evaluationState
+                        = EvaluationState.fromString(reader.getString());
+                } else if ("avgLatencyInMs".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.avgLatencyInMs = reader.getNullable(JsonReader::getLong);
+                } else if ("minLatencyInMs".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.minLatencyInMs = reader.getNullable(JsonReader::getLong);
+                } else if ("maxLatencyInMs".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.maxLatencyInMs = reader.getNullable(JsonReader::getLong);
+                } else if ("probesSent".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.probesSent = reader.getNullable(JsonReader::getLong);
+                } else if ("probesFailed".equals(fieldName)) {
+                    deserializedConnectionStateSnapshot.probesFailed = reader.getNullable(JsonReader::getLong);
+                } else if ("hops".equals(fieldName)) {
+                    List<ConnectivityHop> hops = reader.readArray(reader1 -> ConnectivityHop.fromJson(reader1));
+                    deserializedConnectionStateSnapshot.hops = hops;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectionStateSnapshot;
+        });
     }
 }

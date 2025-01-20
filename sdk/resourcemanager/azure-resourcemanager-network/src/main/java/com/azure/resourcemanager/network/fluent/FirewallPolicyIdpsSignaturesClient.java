@@ -12,29 +12,33 @@ import com.azure.resourcemanager.network.fluent.models.QueryResultsInner;
 import com.azure.resourcemanager.network.models.IdpsQueryObject;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FirewallPolicyIdpsSignaturesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FirewallPolicyIdpsSignaturesClient.
+ */
 public interface FirewallPolicyIdpsSignaturesClient {
     /**
-     * Retrieves the current status of IDPS signatures for the relevant policy.
-     *
+     * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
+     * 1000.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return query result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<QueryResultsInner>> listWithResponseAsync(
-        String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters);
+    Mono<Response<QueryResultsInner>> listWithResponseAsync(String resourceGroupName, String firewallPolicyName,
+        IdpsQueryObject parameters);
 
     /**
-     * Retrieves the current status of IDPS signatures for the relevant policy.
-     *
+     * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
+     * 1000.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -44,11 +48,12 @@ public interface FirewallPolicyIdpsSignaturesClient {
     Mono<QueryResultsInner> listAsync(String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters);
 
     /**
-     * Retrieves the current status of IDPS signatures for the relevant policy.
-     *
+     * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
+     * 1000.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -56,15 +61,16 @@ public interface FirewallPolicyIdpsSignaturesClient {
      * @return query result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<QueryResultsInner> listWithResponse(
-        String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters, Context context);
+    Response<QueryResultsInner> listWithResponse(String resourceGroupName, String firewallPolicyName,
+        IdpsQueryObject parameters, Context context);
 
     /**
-     * Retrieves the current status of IDPS signatures for the relevant policy.
-     *
+     * Retrieves the current status of IDPS signatures for the relevant policy. Maximal amount of returned signatures is
+     * 1000.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @param parameters The parameters parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.

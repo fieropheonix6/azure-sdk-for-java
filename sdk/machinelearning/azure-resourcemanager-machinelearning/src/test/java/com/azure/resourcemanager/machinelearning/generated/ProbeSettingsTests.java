@@ -8,37 +8,32 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ProbeSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProbeSettingsTests {
-    @Test
-    public void testDeserialize() {
-        ProbeSettings model =
-            BinaryData
-                .fromString(
-                    "{\"failureThreshold\":1906628483,\"initialDelay\":\"PT113H32M27S\",\"period\":\"PT148H10M\",\"successThreshold\":619019093,\"timeout\":\"PT78H24M37S\"}")
-                .toObject(ProbeSettings.class);
-        Assertions.assertEquals(1906628483, model.failureThreshold());
-        Assertions.assertEquals(Duration.parse("PT113H32M27S"), model.initialDelay());
-        Assertions.assertEquals(Duration.parse("PT148H10M"), model.period());
-        Assertions.assertEquals(619019093, model.successThreshold());
-        Assertions.assertEquals(Duration.parse("PT78H24M37S"), model.timeout());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProbeSettings model = BinaryData.fromString(
+            "{\"failureThreshold\":1074790994,\"successThreshold\":190325570,\"timeout\":\"PT185H38M37S\",\"period\":\"PT155H32M4S\",\"initialDelay\":\"PT161H44M50S\"}")
+            .toObject(ProbeSettings.class);
+        Assertions.assertEquals(1074790994, model.failureThreshold());
+        Assertions.assertEquals(190325570, model.successThreshold());
+        Assertions.assertEquals(Duration.parse("PT185H38M37S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT155H32M4S"), model.period());
+        Assertions.assertEquals(Duration.parse("PT161H44M50S"), model.initialDelay());
     }
 
-    @Test
-    public void testSerialize() {
-        ProbeSettings model =
-            new ProbeSettings()
-                .withFailureThreshold(1906628483)
-                .withInitialDelay(Duration.parse("PT113H32M27S"))
-                .withPeriod(Duration.parse("PT148H10M"))
-                .withSuccessThreshold(619019093)
-                .withTimeout(Duration.parse("PT78H24M37S"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProbeSettings model = new ProbeSettings().withFailureThreshold(1074790994)
+            .withSuccessThreshold(190325570)
+            .withTimeout(Duration.parse("PT185H38M37S"))
+            .withPeriod(Duration.parse("PT155H32M4S"))
+            .withInitialDelay(Duration.parse("PT161H44M50S"));
         model = BinaryData.fromObject(model).toObject(ProbeSettings.class);
-        Assertions.assertEquals(1906628483, model.failureThreshold());
-        Assertions.assertEquals(Duration.parse("PT113H32M27S"), model.initialDelay());
-        Assertions.assertEquals(Duration.parse("PT148H10M"), model.period());
-        Assertions.assertEquals(619019093, model.successThreshold());
-        Assertions.assertEquals(Duration.parse("PT78H24M37S"), model.timeout());
+        Assertions.assertEquals(1074790994, model.failureThreshold());
+        Assertions.assertEquals(190325570, model.successThreshold());
+        Assertions.assertEquals(Duration.parse("PT185H38M37S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT155H32M4S"), model.period());
+        Assertions.assertEquals(Duration.parse("PT161H44M50S"), model.initialDelay());
     }
 }

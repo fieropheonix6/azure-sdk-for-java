@@ -9,31 +9,27 @@ import com.azure.resourcemanager.appcontainers.models.GlobalValidation;
 import com.azure.resourcemanager.appcontainers.models.UnauthenticatedClientActionV2;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GlobalValidationTests {
-    @Test
-    public void testDeserialize() {
-        GlobalValidation model =
-            BinaryData
-                .fromString(
-                    "{\"unauthenticatedClientAction\":\"AllowAnonymous\",\"redirectToProvider\":\"qnjaqwix\",\"excludedPaths\":[\"r\",\"zvcputegjvwmfda\",\"scmdvpjhulsuu\",\"mkjozkrwf\"]}")
-                .toObject(GlobalValidation.class);
-        Assertions.assertEquals(UnauthenticatedClientActionV2.ALLOW_ANONYMOUS, model.unauthenticatedClientAction());
-        Assertions.assertEquals("qnjaqwix", model.redirectToProvider());
-        Assertions.assertEquals("r", model.excludedPaths().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GlobalValidation model = BinaryData.fromString(
+            "{\"unauthenticatedClientAction\":\"Return401\",\"redirectToProvider\":\"s\",\"excludedPaths\":[\"bquxigjy\",\"gzjaoyfhrtxilne\"]}")
+            .toObject(GlobalValidation.class);
+        Assertions.assertEquals(UnauthenticatedClientActionV2.RETURN401, model.unauthenticatedClientAction());
+        Assertions.assertEquals("s", model.redirectToProvider());
+        Assertions.assertEquals("bquxigjy", model.excludedPaths().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        GlobalValidation model =
-            new GlobalValidation()
-                .withUnauthenticatedClientAction(UnauthenticatedClientActionV2.ALLOW_ANONYMOUS)
-                .withRedirectToProvider("qnjaqwix")
-                .withExcludedPaths(Arrays.asList("r", "zvcputegjvwmfda", "scmdvpjhulsuu", "mkjozkrwf"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GlobalValidation model
+            = new GlobalValidation().withUnauthenticatedClientAction(UnauthenticatedClientActionV2.RETURN401)
+                .withRedirectToProvider("s")
+                .withExcludedPaths(Arrays.asList("bquxigjy", "gzjaoyfhrtxilne"));
         model = BinaryData.fromObject(model).toObject(GlobalValidation.class);
-        Assertions.assertEquals(UnauthenticatedClientActionV2.ALLOW_ANONYMOUS, model.unauthenticatedClientAction());
-        Assertions.assertEquals("qnjaqwix", model.redirectToProvider());
-        Assertions.assertEquals("r", model.excludedPaths().get(0));
+        Assertions.assertEquals(UnauthenticatedClientActionV2.RETURN401, model.unauthenticatedClientAction());
+        Assertions.assertEquals("s", model.redirectToProvider());
+        Assertions.assertEquals("bquxigjy", model.excludedPaths().get(0));
     }
 }

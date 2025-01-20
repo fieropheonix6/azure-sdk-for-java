@@ -6,26 +6,51 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
 import com.azure.resourcemanager.apimanagement.models.HttpCorrelationProtocol;
 import com.azure.resourcemanager.apimanagement.models.OperationNameFormat;
 import com.azure.resourcemanager.apimanagement.models.PipelineDiagnosticSettings;
 import com.azure.resourcemanager.apimanagement.models.SamplingSettings;
 import com.azure.resourcemanager.apimanagement.models.Verbosity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Diagnostic details. */
+/**
+ * Diagnostic details.
+ */
 @Fluent
 public final class DiagnosticContractInner extends ProxyResource {
     /*
      * Diagnostic entity contract properties.
      */
-    @JsonProperty(value = "properties")
     private DiagnosticContractProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DiagnosticContractInner class.
+     */
+    public DiagnosticContractInner() {
+    }
 
     /**
      * Get the innerProperties property: Diagnostic entity contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiagnosticContractProperties innerProperties() {
@@ -33,8 +58,38 @@ public final class DiagnosticContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the alwaysLog property: Specifies for what type of messages sampling settings should not apply.
-     *
+     * 
      * @return the alwaysLog value.
      */
     public AlwaysLog alwaysLog() {
@@ -43,7 +98,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Set the alwaysLog property: Specifies for what type of messages sampling settings should not apply.
-     *
+     * 
      * @param alwaysLog the alwaysLog value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -57,7 +112,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Get the loggerId property: Resource Id of a target logger.
-     *
+     * 
      * @return the loggerId value.
      */
     public String loggerId() {
@@ -66,7 +121,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Set the loggerId property: Resource Id of a target logger.
-     *
+     * 
      * @param loggerId the loggerId value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -80,7 +135,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Get the sampling property: Sampling settings for Diagnostic.
-     *
+     * 
      * @return the sampling value.
      */
     public SamplingSettings sampling() {
@@ -89,7 +144,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Set the sampling property: Sampling settings for Diagnostic.
-     *
+     * 
      * @param sampling the sampling value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -103,7 +158,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Get the frontend property: Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
-     *
+     * 
      * @return the frontend value.
      */
     public PipelineDiagnosticSettings frontend() {
@@ -112,7 +167,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Set the frontend property: Diagnostic settings for incoming/outgoing HTTP messages to the Gateway.
-     *
+     * 
      * @param frontend the frontend value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -126,7 +181,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Get the backend property: Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
-     *
+     * 
      * @return the backend value.
      */
     public PipelineDiagnosticSettings backend() {
@@ -135,7 +190,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Set the backend property: Diagnostic settings for incoming/outgoing HTTP messages to the Backend.
-     *
+     * 
      * @param backend the backend value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -149,7 +204,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Get the logClientIp property: Log the ClientIP. Default is false.
-     *
+     * 
      * @return the logClientIp value.
      */
     public Boolean logClientIp() {
@@ -158,7 +213,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Set the logClientIp property: Log the ClientIP. Default is false.
-     *
+     * 
      * @param logClientIp the logClientIp value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -172,7 +227,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Get the httpCorrelationProtocol property: Sets correlation protocol to use for Application Insights diagnostics.
-     *
+     * 
      * @return the httpCorrelationProtocol value.
      */
     public HttpCorrelationProtocol httpCorrelationProtocol() {
@@ -181,7 +236,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Set the httpCorrelationProtocol property: Sets correlation protocol to use for Application Insights diagnostics.
-     *
+     * 
      * @param httpCorrelationProtocol the httpCorrelationProtocol value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -195,7 +250,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Get the verbosity property: The verbosity level applied to traces emitted by trace policies.
-     *
+     * 
      * @return the verbosity value.
      */
     public Verbosity verbosity() {
@@ -204,7 +259,7 @@ public final class DiagnosticContractInner extends ProxyResource {
 
     /**
      * Set the verbosity property: The verbosity level applied to traces emitted by trace policies.
-     *
+     * 
      * @param verbosity the verbosity value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -219,7 +274,7 @@ public final class DiagnosticContractInner extends ProxyResource {
     /**
      * Get the operationNameFormat property: The format of the Operation Name for Application Insights telemetries.
      * Default is Name.
-     *
+     * 
      * @return the operationNameFormat value.
      */
     public OperationNameFormat operationNameFormat() {
@@ -229,7 +284,7 @@ public final class DiagnosticContractInner extends ProxyResource {
     /**
      * Set the operationNameFormat property: The format of the Operation Name for Application Insights telemetries.
      * Default is Name.
-     *
+     * 
      * @param operationNameFormat the operationNameFormat value to set.
      * @return the DiagnosticContractInner object itself.
      */
@@ -242,13 +297,81 @@ public final class DiagnosticContractInner extends ProxyResource {
     }
 
     /**
+     * Get the metrics property: Emit custom metrics via emit-metric policy. Applicable only to Application Insights
+     * diagnostic settings.
+     * 
+     * @return the metrics value.
+     */
+    public Boolean metrics() {
+        return this.innerProperties() == null ? null : this.innerProperties().metrics();
+    }
+
+    /**
+     * Set the metrics property: Emit custom metrics via emit-metric policy. Applicable only to Application Insights
+     * diagnostic settings.
+     * 
+     * @param metrics the metrics value to set.
+     * @return the DiagnosticContractInner object itself.
+     */
+    public DiagnosticContractInner withMetrics(Boolean metrics) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DiagnosticContractProperties();
+        }
+        this.innerProperties().withMetrics(metrics);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticContractInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiagnosticContractInner.
+     */
+    public static DiagnosticContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticContractInner deserializedDiagnosticContractInner = new DiagnosticContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDiagnosticContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiagnosticContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDiagnosticContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDiagnosticContractInner.innerProperties = DiagnosticContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticContractInner;
+        });
     }
 }

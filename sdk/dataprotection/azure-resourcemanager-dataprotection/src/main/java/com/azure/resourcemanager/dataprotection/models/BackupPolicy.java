@@ -6,30 +6,49 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** BackupPolicy Rule based backup policy. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("BackupPolicy")
+/**
+ * BackupPolicy
+ * 
+ * Rule based backup policy.
+ */
 @Fluent
 public final class BackupPolicy extends BaseBackupPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPolicy.class);
+    /*
+     * The objectType property.
+     */
+    private String objectType = "BackupPolicy";
 
     /*
-     * Policy rule dictionary that contains rules for each backuptype i.e
-     * Full/Incremental/Logs etc
+     * Policy rule dictionary that contains rules for each backuptype i.e Full/Incremental/Logs etc
      */
-    @JsonProperty(value = "policyRules", required = true)
     private List<BasePolicyRule> policyRules;
+
+    /**
+     * Creates an instance of BackupPolicy class.
+     */
+    public BackupPolicy() {
+    }
+
+    /**
+     * Get the objectType property: The objectType property.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
 
     /**
      * Get the policyRules property: Policy rule dictionary that contains rules for each backuptype i.e
      * Full/Incremental/Logs etc.
-     *
+     * 
      * @return the policyRules value.
      */
     public List<BasePolicyRule> policyRules() {
@@ -39,7 +58,7 @@ public final class BackupPolicy extends BaseBackupPolicy {
     /**
      * Set the policyRules property: Policy rule dictionary that contains rules for each backuptype i.e
      * Full/Incremental/Logs etc.
-     *
+     * 
      * @param policyRules the policyRules value to set.
      * @return the BackupPolicy object itself.
      */
@@ -48,7 +67,9 @@ public final class BackupPolicy extends BaseBackupPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupPolicy withDatasourceTypes(List<String> datasourceTypes) {
         super.withDatasourceTypes(datasourceTypes);
@@ -57,18 +78,65 @@ public final class BackupPolicy extends BaseBackupPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (policyRules() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property policyRules in model BackupPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property policyRules in model BackupPolicy"));
         } else {
             policyRules().forEach(e -> e.validate());
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("datasourceTypes", datasourceTypes(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("policyRules", this.policyRules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupPolicy.
+     */
+    public static BackupPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupPolicy deserializedBackupPolicy = new BackupPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("datasourceTypes".equals(fieldName)) {
+                    List<String> datasourceTypes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackupPolicy.withDatasourceTypes(datasourceTypes);
+                } else if ("policyRules".equals(fieldName)) {
+                    List<BasePolicyRule> policyRules = reader.readArray(reader1 -> BasePolicyRule.fromJson(reader1));
+                    deserializedBackupPolicy.policyRules = policyRules;
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedBackupPolicy.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupPolicy;
+        });
     }
 }

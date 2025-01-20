@@ -13,49 +13,45 @@ import com.azure.resourcemanager.databoxedge.fluent.OrdersClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.OrderInner;
 import com.azure.resourcemanager.databoxedge.models.Order;
 import com.azure.resourcemanager.databoxedge.models.Orders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OrdersImpl implements Orders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrdersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OrdersImpl.class);
 
     private final OrdersClient innerClient;
 
     private final com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager;
 
-    public OrdersImpl(
-        OrdersClient innerClient, com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
+    public OrdersImpl(OrdersClient innerClient,
+        com.azure.resourcemanager.databoxedge.DataBoxEdgeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Order> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName) {
         PagedIterable<OrderInner> inner = this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new OrderImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Order> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, Context context) {
-        PagedIterable<OrderInner> inner =
-            this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new OrderImpl(inner1, this.manager()));
+        PagedIterable<OrderInner> inner
+            = this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OrderImpl(inner1, this.manager()));
+    }
+
+    public Response<Order> getWithResponse(String deviceName, String resourceGroupName, Context context) {
+        Response<OrderInner> inner = this.serviceClient().getWithResponse(deviceName, resourceGroupName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OrderImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Order get(String deviceName, String resourceGroupName) {
         OrderInner inner = this.serviceClient().get(deviceName, resourceGroupName);
         if (inner != null) {
             return new OrderImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Order> getWithResponse(String deviceName, String resourceGroupName, Context context) {
-        Response<OrderInner> inner = this.serviceClient().getWithResponse(deviceName, resourceGroupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OrderImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -33,6 +33,10 @@ public final class BlobBatchClient {
         this.client = client;
     }
 
+    BlobBatchAsyncClient getClient() {
+        return client;
+    }
+
     /**
      * Gets a {@link BlobBatch} used to configure a batching operation to send to Azure Storage blobs.
      *
@@ -118,8 +122,8 @@ public final class BlobBatchClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> submitBatchWithResponse(BlobBatch batch, boolean throwOnAnyFailure, Duration timeout,
         Context context) {
-        return StorageImplUtils.blockWithOptionalTimeout(client.submitBatchWithResponse(batch,
-            throwOnAnyFailure, context), timeout);
+        return StorageImplUtils
+            .blockWithOptionalTimeout(client.submitBatchWithResponse(batch, throwOnAnyFailure, context), timeout);
     }
 
     /**

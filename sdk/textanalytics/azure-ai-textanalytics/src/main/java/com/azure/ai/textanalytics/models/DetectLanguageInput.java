@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import java.util.Locale;
 
 /**
- * The {@link DetectLanguageInput} model.
+ * The {@code DetectLanguageInput} model.
  */
 @Immutable
 public final class DetectLanguageInput {
@@ -81,7 +81,7 @@ public final class DetectLanguageInput {
 
     @Override
     public String toString() {
-        return String.format(Locale.ROOT, "Text = %s, Id = %s, Country Hint = %s",
-            this.getText(), this.getId(), this.getCountryHint());
+        return String.format(Locale.ROOT, "Text = %s, Id = %s, Country Hint = %s", this.getText(), this.getId(),
+            this.getCountryHint());
     }
 }

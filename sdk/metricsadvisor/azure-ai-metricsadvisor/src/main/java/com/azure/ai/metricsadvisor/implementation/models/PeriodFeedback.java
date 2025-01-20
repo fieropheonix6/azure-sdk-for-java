@@ -4,25 +4,66 @@
 
 package com.azure.ai.metricsadvisor.implementation.models;
 
+import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
-/** The PeriodFeedback model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "feedbackType")
-@JsonTypeName("Period")
+/**
+ * The PeriodFeedback model.
+ */
 @Fluent
 public final class PeriodFeedback extends MetricFeedback {
     /*
+     * feedback type
+     */
+    private FeedbackType feedbackType = FeedbackType.PERIOD;
+
+    /*
      * The value property.
      */
-    @JsonProperty(value = "value", required = true)
     private PeriodFeedbackValue value;
+
+    /*
+     * user who gives this feedback
+     */
+    private String userPrincipal;
+
+    /*
+     * feedback created time
+     */
+    private OffsetDateTime createdTime;
+
+    /*
+     * feedback unique id
+     */
+    private UUID feedbackId;
+
+    /**
+     * Creates an instance of PeriodFeedback class.
+     */
+    public PeriodFeedback() {
+    }
+
+    /**
+     * Get the feedbackType property: feedback type.
+     * 
+     * @return the feedbackType value.
+     */
+    @Override
+    public FeedbackType getFeedbackType() {
+        return this.feedbackType;
+    }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public PeriodFeedbackValue getValue() {
@@ -31,12 +72,115 @@ public final class PeriodFeedback extends MetricFeedback {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the PeriodFeedback object itself.
      */
     public PeriodFeedback setValue(PeriodFeedbackValue value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Get the userPrincipal property: user who gives this feedback.
+     * 
+     * @return the userPrincipal value.
+     */
+    @Override
+    public String getUserPrincipal() {
+        return this.userPrincipal;
+    }
+
+    /**
+     * Get the createdTime property: feedback created time.
+     * 
+     * @return the createdTime value.
+     */
+    @Override
+    public OffsetDateTime getCreatedTime() {
+        return this.createdTime;
+    }
+
+    /**
+     * Get the feedbackId property: feedback unique id.
+     * 
+     * @return the feedbackId value.
+     */
+    @Override
+    public UUID getFeedbackId() {
+        return this.feedbackId;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PeriodFeedback setMetricId(UUID metricId) {
+        super.setMetricId(metricId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PeriodFeedback setDimensionFilter(FeedbackDimensionFilter dimensionFilter) {
+        super.setDimensionFilter(dimensionFilter);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metricId", Objects.toString(getMetricId(), null));
+        jsonWriter.writeJsonField("dimensionFilter", getDimensionFilter());
+        jsonWriter.writeJsonField("value", this.value);
+        jsonWriter.writeStringField("feedbackType", this.feedbackType == null ? null : this.feedbackType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeriodFeedback from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeriodFeedback if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeriodFeedback.
+     */
+    public static PeriodFeedback fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeriodFeedback deserializedPeriodFeedback = new PeriodFeedback();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricId".equals(fieldName)) {
+                    deserializedPeriodFeedback
+                        .setMetricId(reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString())));
+                } else if ("dimensionFilter".equals(fieldName)) {
+                    deserializedPeriodFeedback.setDimensionFilter(FeedbackDimensionFilter.fromJson(reader));
+                } else if ("feedbackId".equals(fieldName)) {
+                    deserializedPeriodFeedback.feedbackId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("createdTime".equals(fieldName)) {
+                    deserializedPeriodFeedback.createdTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("userPrincipal".equals(fieldName)) {
+                    deserializedPeriodFeedback.userPrincipal = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedPeriodFeedback.value = PeriodFeedbackValue.fromJson(reader);
+                } else if ("feedbackType".equals(fieldName)) {
+                    deserializedPeriodFeedback.feedbackType = FeedbackType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeriodFeedback;
+        });
     }
 }

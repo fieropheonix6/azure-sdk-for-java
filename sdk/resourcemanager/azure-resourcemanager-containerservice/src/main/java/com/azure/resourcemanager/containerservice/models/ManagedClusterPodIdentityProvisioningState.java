@@ -5,38 +5,65 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current provisioning state of the pod identity. */
+/**
+ * The current provisioning state of the pod identity.
+ */
 public final class ManagedClusterPodIdentityProvisioningState
     extends ExpandableStringEnum<ManagedClusterPodIdentityProvisioningState> {
-    /** Static value Assigned for ManagedClusterPodIdentityProvisioningState. */
+    /**
+     * Static value Assigned for ManagedClusterPodIdentityProvisioningState.
+     */
     public static final ManagedClusterPodIdentityProvisioningState ASSIGNED = fromString("Assigned");
 
-    /** Static value Updating for ManagedClusterPodIdentityProvisioningState. */
-    public static final ManagedClusterPodIdentityProvisioningState UPDATING = fromString("Updating");
+    /**
+     * Static value Canceled for ManagedClusterPodIdentityProvisioningState.
+     */
+    public static final ManagedClusterPodIdentityProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Deleting for ManagedClusterPodIdentityProvisioningState. */
+    /**
+     * Static value Deleting for ManagedClusterPodIdentityProvisioningState.
+     */
     public static final ManagedClusterPodIdentityProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Failed for ManagedClusterPodIdentityProvisioningState. */
+    /**
+     * Static value Failed for ManagedClusterPodIdentityProvisioningState.
+     */
     public static final ManagedClusterPodIdentityProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Static value Succeeded for ManagedClusterPodIdentityProvisioningState.
+     */
+    public static final ManagedClusterPodIdentityProvisioningState SUCCEEDED = fromString("Succeeded");
+
+    /**
+     * Static value Updating for ManagedClusterPodIdentityProvisioningState.
+     */
+    public static final ManagedClusterPodIdentityProvisioningState UPDATING = fromString("Updating");
+
+    /**
+     * Creates a new instance of ManagedClusterPodIdentityProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedClusterPodIdentityProvisioningState() {
+    }
+
+    /**
      * Creates or finds a ManagedClusterPodIdentityProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedClusterPodIdentityProvisioningState.
      */
-    @JsonCreator
     public static ManagedClusterPodIdentityProvisioningState fromString(String name) {
         return fromString(name, ManagedClusterPodIdentityProvisioningState.class);
     }
 
     /**
      * Gets known ManagedClusterPodIdentityProvisioningState values.
-     *
+     * 
      * @return known ManagedClusterPodIdentityProvisioningState values.
      */
     public static Collection<ManagedClusterPodIdentityProvisioningState> values() {

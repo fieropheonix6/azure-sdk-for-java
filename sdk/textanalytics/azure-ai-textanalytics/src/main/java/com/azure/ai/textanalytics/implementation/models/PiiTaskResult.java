@@ -5,24 +5,45 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The PiiTaskResult model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("PiiEntityRecognitionResults")
+/**
+ * The PiiTaskResult model.
+ */
 @Fluent
 public final class PiiTaskResult extends AnalyzeTextTaskResult {
     /*
+     * Enumeration of supported Text Analysis task results.
+     */
+    private AnalyzeTextTaskResultsKind kind = AnalyzeTextTaskResultsKind.PII_ENTITY_RECOGNITION_RESULTS;
+
+    /*
      * The results property.
      */
-    @JsonProperty(value = "results", required = true)
     private PiiResult results;
 
     /**
+     * Creates an instance of PiiTaskResult class.
+     */
+    public PiiTaskResult() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported Text Analysis task results.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextTaskResultsKind getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the results property: The results property.
-     *
+     * 
      * @return the results value.
      */
     public PiiResult getResults() {
@@ -31,12 +52,52 @@ public final class PiiTaskResult extends AnalyzeTextTaskResult {
 
     /**
      * Set the results property: The results property.
-     *
+     * 
      * @param results the results value to set.
      * @return the PiiTaskResult object itself.
      */
     public PiiTaskResult setResults(PiiResult results) {
         this.results = results;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("results", this.results);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PiiTaskResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PiiTaskResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PiiTaskResult.
+     */
+    public static PiiTaskResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PiiTaskResult deserializedPiiTaskResult = new PiiTaskResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("results".equals(fieldName)) {
+                    deserializedPiiTaskResult.results = PiiResult.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedPiiTaskResult.kind = AnalyzeTextTaskResultsKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPiiTaskResult;
+        });
     }
 }

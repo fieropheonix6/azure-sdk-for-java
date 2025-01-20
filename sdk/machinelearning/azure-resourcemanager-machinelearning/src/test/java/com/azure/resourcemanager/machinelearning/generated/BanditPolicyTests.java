@@ -7,34 +7,29 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.BanditPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BanditPolicyTests {
-    @Test
-    public void testDeserialize() {
-        BanditPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"policyType\":\"Bandit\",\"slackAmount\":59.648163,\"slackFactor\":43.063473,\"delayEvaluation\":364097944,\"evaluationInterval\":2114496472}")
-                .toObject(BanditPolicy.class);
-        Assertions.assertEquals(364097944, model.delayEvaluation());
-        Assertions.assertEquals(2114496472, model.evaluationInterval());
-        Assertions.assertEquals(59.648163F, model.slackAmount());
-        Assertions.assertEquals(43.063473F, model.slackFactor());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        BanditPolicy model = BinaryData.fromString(
+            "{\"policyType\":\"Bandit\",\"slackFactor\":60.285545,\"slackAmount\":73.91734,\"evaluationInterval\":1123560800,\"delayEvaluation\":1370389329}")
+            .toObject(BanditPolicy.class);
+        Assertions.assertEquals(1123560800, model.evaluationInterval());
+        Assertions.assertEquals(1370389329, model.delayEvaluation());
+        Assertions.assertEquals(60.285545F, model.slackFactor());
+        Assertions.assertEquals(73.91734F, model.slackAmount());
     }
 
-    @Test
-    public void testSerialize() {
-        BanditPolicy model =
-            new BanditPolicy()
-                .withDelayEvaluation(364097944)
-                .withEvaluationInterval(2114496472)
-                .withSlackAmount(59.648163F)
-                .withSlackFactor(43.063473F);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        BanditPolicy model = new BanditPolicy().withEvaluationInterval(1123560800)
+            .withDelayEvaluation(1370389329)
+            .withSlackFactor(60.285545F)
+            .withSlackAmount(73.91734F);
         model = BinaryData.fromObject(model).toObject(BanditPolicy.class);
-        Assertions.assertEquals(364097944, model.delayEvaluation());
-        Assertions.assertEquals(2114496472, model.evaluationInterval());
-        Assertions.assertEquals(59.648163F, model.slackAmount());
-        Assertions.assertEquals(43.063473F, model.slackFactor());
+        Assertions.assertEquals(1123560800, model.evaluationInterval());
+        Assertions.assertEquals(1370389329, model.delayEvaluation());
+        Assertions.assertEquals(60.285545F, model.slackFactor());
+        Assertions.assertEquals(73.91734F, model.slackAmount());
     }
 }

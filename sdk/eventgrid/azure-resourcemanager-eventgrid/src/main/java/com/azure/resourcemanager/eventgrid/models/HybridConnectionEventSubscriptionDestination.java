@@ -5,26 +5,47 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.HybridConnectionEventSubscriptionDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Information about the HybridConnection destination for an event subscription. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "endpointType")
-@JsonTypeName("HybridConnection")
+/**
+ * Information about the HybridConnection destination for an event subscription.
+ */
 @Fluent
 public final class HybridConnectionEventSubscriptionDestination extends EventSubscriptionDestination {
     /*
+     * Type of the endpoint for the event subscription destination.
+     */
+    private EndpointType endpointType = EndpointType.HYBRID_CONNECTION;
+
+    /*
      * Hybrid connection Properties of the event subscription destination.
      */
-    @JsonProperty(value = "properties")
     private HybridConnectionEventSubscriptionDestinationProperties innerProperties;
 
     /**
+     * Creates an instance of HybridConnectionEventSubscriptionDestination class.
+     */
+    public HybridConnectionEventSubscriptionDestination() {
+    }
+
+    /**
+     * Get the endpointType property: Type of the endpoint for the event subscription destination.
+     * 
+     * @return the endpointType value.
+     */
+    @Override
+    public EndpointType endpointType() {
+        return this.endpointType;
+    }
+
+    /**
      * Get the innerProperties property: Hybrid connection Properties of the event subscription destination.
-     *
+     * 
      * @return the innerProperties value.
      */
     private HybridConnectionEventSubscriptionDestinationProperties innerProperties() {
@@ -34,7 +55,7 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
     /**
      * Get the resourceId property: The Azure Resource ID of an hybrid connection that is the destination of an event
      * subscription.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -44,7 +65,7 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
     /**
      * Set the resourceId property: The Azure Resource ID of an hybrid connection that is the destination of an event
      * subscription.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the HybridConnectionEventSubscriptionDestination object itself.
      */
@@ -58,7 +79,7 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -67,12 +88,12 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the HybridConnectionEventSubscriptionDestination object itself.
      */
-    public HybridConnectionEventSubscriptionDestination withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public HybridConnectionEventSubscriptionDestination
+        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new HybridConnectionEventSubscriptionDestinationProperties();
         }
@@ -82,14 +103,55 @@ public final class HybridConnectionEventSubscriptionDestination extends EventSub
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endpointType", this.endpointType == null ? null : this.endpointType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HybridConnectionEventSubscriptionDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HybridConnectionEventSubscriptionDestination if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HybridConnectionEventSubscriptionDestination.
+     */
+    public static HybridConnectionEventSubscriptionDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HybridConnectionEventSubscriptionDestination deserializedHybridConnectionEventSubscriptionDestination
+                = new HybridConnectionEventSubscriptionDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpointType".equals(fieldName)) {
+                    deserializedHybridConnectionEventSubscriptionDestination.endpointType
+                        = EndpointType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHybridConnectionEventSubscriptionDestination.innerProperties
+                        = HybridConnectionEventSubscriptionDestinationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHybridConnectionEventSubscriptionDestination;
+        });
     }
 }

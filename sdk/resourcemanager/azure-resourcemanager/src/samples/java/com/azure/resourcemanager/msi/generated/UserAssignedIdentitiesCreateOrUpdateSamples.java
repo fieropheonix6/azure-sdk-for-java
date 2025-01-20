@@ -4,34 +4,35 @@
 
 package com.azure.resourcemanager.msi.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.msi.fluent.models.IdentityInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for UserAssignedIdentities CreateOrUpdate. */
+/**
+ * Samples for UserAssignedIdentities CreateOrUpdate.
+ */
 public final class UserAssignedIdentitiesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2018-11-30/examples/IdentityCreate.json
+     * x-ms-original-file:
+     * specification/msi/resource-manager/Microsoft.ManagedIdentity/stable/2023-01-31/examples/IdentityCreate.json
      */
     /**
      * Sample code: IdentityCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void identityCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .identities()
+        azure.identities()
             .manager()
             .serviceClient()
             .getUserAssignedIdentities()
-            .createOrUpdateWithResponse(
-                "rgName",
-                "resourceName",
-                new IdentityInner().withLocation("eastus").withTags(mapOf("key1", "value1", "key2", "value2")),
-                Context.NONE);
+            .createOrUpdateWithResponse("rgName", "resourceName",
+                new IdentityInner().withLocation("eastus")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder")),
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

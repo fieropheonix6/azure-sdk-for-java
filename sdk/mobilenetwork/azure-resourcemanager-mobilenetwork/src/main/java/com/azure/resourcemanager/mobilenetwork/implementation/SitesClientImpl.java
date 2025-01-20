@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -34,23 +35,30 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.SitesClient;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.SiteInner;
+import com.azure.resourcemanager.mobilenetwork.models.SiteDeletePacketCore;
 import com.azure.resourcemanager.mobilenetwork.models.SiteListResult;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SitesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SitesClient.
+ */
 public final class SitesClientImpl implements SitesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SitesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MobileNetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of SitesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SitesClientImpl(MobileNetworkManagementClientImpl client) {
@@ -64,102 +72,82 @@ public final class SitesClientImpl implements SitesClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MobileNetworkManagem")
-    private interface SitesService {
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
-        @ExpectedResponses({200, 202, 204})
+    public interface SitesService {
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("siteName") String siteName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("siteName") String siteName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SiteInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("siteName") String siteName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("siteName") String siteName,
+            @BodyParam("application/json") SiteInner parameters, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SiteInner>> updateTags(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("siteName") String siteName,
+            @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SiteInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<SiteListResult>> listByMobileNetwork(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("siteName") String siteName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork/mobileNetworks/{mobileNetworkName}/sites/{siteName}/deletePacketCore")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> deletePacketCore(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("siteName") String siteName,
-            @BodyParam("application/json") SiteInner parameters,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("mobileNetworkName") String mobileNetworkName, @PathParam("siteName") String siteName,
+            @BodyParam("application/json") SiteDeletePacketCore parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites/{siteName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SiteInner>> updateTags(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @PathParam("siteName") String siteName,
-            @BodyParam("application/json") TagsObject parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MobileNetwork"
-                + "/mobileNetworks/{mobileNetworkName}/sites")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SiteListResult>> listByMobileNetwork(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("mobileNetworkName") String mobileNetworkName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SiteListResult>> listByMobileNetworkNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -169,19 +157,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String siteName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -196,24 +180,15 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            siteName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, siteName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -224,19 +199,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String siteName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -251,21 +222,14 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                siteName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, siteName, accept, context);
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -275,18 +239,17 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mobileNetworkName,
+        String siteName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, mobileNetworkName, siteName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -297,19 +260,19 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String mobileNetworkName,
+        String siteName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -319,14 +282,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String siteName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, siteName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String siteName) {
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, siteName).getSyncPoller();
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -337,14 +301,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, siteName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String siteName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, mobileNetworkName, siteName, context).getSyncPoller();
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -355,14 +320,14 @@ public final class SitesClientImpl implements SitesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String mobileNetworkName, String siteName) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, siteName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, mobileNetworkName, siteName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -373,16 +338,16 @@ public final class SitesClientImpl implements SitesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
-        return beginDeleteAsync(resourceGroupName, mobileNetworkName, siteName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String mobileNetworkName, String siteName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, mobileNetworkName, siteName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -396,8 +361,9 @@ public final class SitesClientImpl implements SitesClient {
     }
 
     /**
-     * Deletes the specified mobile network site.
-     *
+     * Deletes the specified mobile network site. This will also delete any network functions that are a part of this
+     * site.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -413,7 +379,7 @@ public final class SitesClientImpl implements SitesClient {
 
     /**
      * Gets information about the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -421,22 +387,18 @@ public final class SitesClientImpl implements SitesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified mobile network site along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SiteInner>> getWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName) {
+    private Mono<Response<SiteInner>> getWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String siteName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -451,24 +413,14 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            siteName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, siteName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -477,22 +429,18 @@ public final class SitesClientImpl implements SitesClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified mobile network site along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SiteInner>> getWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
+    private Mono<Response<SiteInner>> getWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String siteName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -507,21 +455,13 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                siteName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, siteName, accept, context);
     }
 
     /**
      * Gets information about the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -538,23 +478,7 @@ public final class SitesClientImpl implements SitesClient {
 
     /**
      * Gets information about the specified mobile network site.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param siteName The name of the mobile network site.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified mobile network site.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SiteInner get(String resourceGroupName, String mobileNetworkName, String siteName) {
-        return getAsync(resourceGroupName, mobileNetworkName, siteName).block();
-    }
-
-    /**
-     * Gets information about the specified mobile network site.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -565,14 +489,30 @@ public final class SitesClientImpl implements SitesClient {
      * @return information about the specified mobile network site along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SiteInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String siteName, Context context) {
+    public Response<SiteInner> getWithResponse(String resourceGroupName, String mobileNetworkName, String siteName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, context).block();
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Gets information about the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified mobile network site.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SiteInner get(String resourceGroupName, String mobileNetworkName, String siteName) {
+        return getWithResponse(resourceGroupName, mobileNetworkName, siteName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -583,19 +523,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -615,25 +551,15 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            siteName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, siteName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -645,19 +571,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -677,22 +599,13 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                siteName,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, siteName, parameters, accept, context);
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -703,19 +616,17 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link PollerFlux} for polling of site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters);
-        return this
-            .client
-            .<SiteInner, SiteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SiteInner.class, SiteInner.class, this.client.getContext());
+    private PollerFlux<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters);
+        return this.client.<SiteInner, SiteInner>getLroResult(mono, this.client.getHttpPipeline(), SiteInner.class,
+            SiteInner.class, this.client.getContext());
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -727,20 +638,18 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link PollerFlux} for polling of site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context) {
+    private PollerFlux<PollResult<SiteInner>, SiteInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context);
-        return this
-            .client
-            .<SiteInner, SiteInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SiteInner.class, SiteInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context);
+        return this.client.<SiteInner, SiteInner>getLroResult(mono, this.client.getHttpPipeline(), SiteInner.class,
+            SiteInner.class, context);
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -751,34 +660,35 @@ public final class SitesClientImpl implements SitesClient {
      * @return the {@link SyncPoller} for polling of site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates a mobile network site.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param siteName The name of the mobile network site.
-     * @param parameters Parameters supplied to the create or update mobile network site operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of site resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context)
+    public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters)
             .getSyncPoller();
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to the create or update mobile network site operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of site resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<SiteInner>, SiteInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -789,16 +699,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SiteInner> createOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters)
-            .last()
+    private Mono<SiteInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -810,16 +719,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SiteInner> createOrUpdateAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context)
-            .last()
+    private Mono<SiteInner> createOrUpdateAsync(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -830,14 +738,14 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SiteInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters) {
+    public SiteInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteInner parameters) {
         return createOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters).block();
     }
 
     /**
-     * Creates or updates a mobile network site.
-     *
+     * Creates or updates a mobile network site. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -849,14 +757,14 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SiteInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String siteName, SiteInner parameters, Context context) {
+    public SiteInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context).block();
     }
 
     /**
      * Updates site tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -867,19 +775,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SiteInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters) {
+    private Mono<Response<SiteInner>> updateTagsWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String siteName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -899,25 +803,15 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .updateTags(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            mobileNetworkName,
-                            siteName,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, siteName, parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates site tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -929,19 +823,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SiteInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters, Context context) {
+    private Mono<Response<SiteInner>> updateTagsWithResponseAsync(String resourceGroupName, String mobileNetworkName,
+        String siteName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -961,22 +851,13 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .updateTags(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                mobileNetworkName,
-                siteName,
-                parameters,
-                accept,
-                context);
+        return service.updateTags(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, siteName, parameters, accept, context);
     }
 
     /**
      * Updates site tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -987,33 +868,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SiteInner> updateTagsAsync(
-        String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters) {
+    private Mono<SiteInner> updateTagsAsync(String resourceGroupName, String mobileNetworkName, String siteName,
+        TagsObject parameters) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates site tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param siteName The name of the mobile network site.
-     * @param parameters Parameters supplied to update network site tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return site resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SiteInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters) {
-        return updateTagsAsync(resourceGroupName, mobileNetworkName, siteName, parameters).block();
-    }
-
-    /**
-     * Updates site tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param siteName The name of the mobile network site.
@@ -1025,36 +888,51 @@ public final class SitesClientImpl implements SitesClient {
      * @return site resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SiteInner> updateTagsWithResponse(
-        String resourceGroupName, String mobileNetworkName, String siteName, TagsObject parameters, Context context) {
+    public Response<SiteInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName,
+        String siteName, TagsObject parameters, Context context) {
         return updateTagsWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context).block();
     }
 
     /**
+     * Updates site tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to update network site tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return site resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SiteInner updateTags(String resourceGroupName, String mobileNetworkName, String siteName,
+        TagsObject parameters) {
+        return updateTagsWithResponse(resourceGroupName, mobileNetworkName, siteName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Lists all sites in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for sites API service call along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response for sites API service call along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SiteInner>> listByMobileNetworkSinglePageAsync(
-        String resourceGroupName, String mobileNetworkName) {
+    private Mono<PagedResponse<SiteInner>> listByMobileNetworkSinglePageAsync(String resourceGroupName,
+        String mobileNetworkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1066,55 +944,35 @@ public final class SitesClientImpl implements SitesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByMobileNetwork(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            mobileNetworkName,
-                            accept,
-                            context))
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByMobileNetwork(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mobileNetworkName, accept, context))
+            .<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all sites in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for sites API service call along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response for sites API service call along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SiteInner>> listByMobileNetworkSinglePageAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
+    private Mono<PagedResponse<SiteInner>> listByMobileNetworkSinglePageAsync(String resourceGroupName,
+        String mobileNetworkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1127,28 +985,15 @@ public final class SitesClientImpl implements SitesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByMobileNetwork(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                mobileNetworkName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByMobileNetwork(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, mobileNetworkName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all sites in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1158,14 +1003,13 @@ public final class SitesClientImpl implements SitesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SiteInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName) {
-        return new PagedFlux<>(
-            () -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName),
+        return new PagedFlux<>(() -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName),
             nextLink -> listByMobileNetworkNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all sites in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1175,16 +1019,15 @@ public final class SitesClientImpl implements SitesClient {
      * @return response for sites API service call as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SiteInner> listByMobileNetworkAsync(
-        String resourceGroupName, String mobileNetworkName, Context context) {
-        return new PagedFlux<>(
-            () -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName, context),
+    private PagedFlux<SiteInner> listByMobileNetworkAsync(String resourceGroupName, String mobileNetworkName,
+        Context context) {
+        return new PagedFlux<>(() -> listByMobileNetworkSinglePageAsync(resourceGroupName, mobileNetworkName, context),
             nextLink -> listByMobileNetworkNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all sites in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1199,7 +1042,7 @@ public final class SitesClientImpl implements SitesClient {
 
     /**
      * Lists all sites in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -1209,20 +1052,270 @@ public final class SitesClientImpl implements SitesClient {
      * @return response for sites API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SiteInner> listByMobileNetwork(
-        String resourceGroupName, String mobileNetworkName, Context context) {
+    public PagedIterable<SiteInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName,
+        Context context) {
         return new PagedIterable<>(listByMobileNetworkAsync(resourceGroupName, mobileNetworkName, context));
     }
 
     /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for sites API service call along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deletePacketCoreWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mobileNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mobileNetworkName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.deletePacketCore(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), mobileNetworkName, siteName, parameters, accept,
+                context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deletePacketCoreWithResponseAsync(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteDeletePacketCore parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (mobileNetworkName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter mobileNetworkName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.deletePacketCore(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            this.client.getApiVersion(), mobileNetworkName, siteName, parameters, accept, context);
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeletePacketCoreAsync(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteDeletePacketCore parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deletePacketCoreWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeletePacketCoreAsync(String resourceGroupName,
+        String mobileNetworkName, String siteName, SiteDeletePacketCore parameters, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deletePacketCoreWithResponseAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(String resourceGroupName, String mobileNetworkName,
+        String siteName, SiteDeletePacketCore parameters) {
+        return this.beginDeletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDeletePacketCore(String resourceGroupName, String mobileNetworkName,
+        String siteName, SiteDeletePacketCore parameters, Context context) {
+        return this.beginDeletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deletePacketCoreAsync(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteDeletePacketCore parameters) {
+        return beginDeletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deletePacketCoreAsync(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteDeletePacketCore parameters, Context context) {
+        return beginDeletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deletePacketCore(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteDeletePacketCore parameters) {
+        deletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters).block();
+    }
+
+    /**
+     * Deletes a packet core under the specified mobile network site.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param siteName The name of the mobile network site.
+     * @param parameters Parameters supplied to delete a packet core under a site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deletePacketCore(String resourceGroupName, String mobileNetworkName, String siteName,
+        SiteDeletePacketCore parameters, Context context) {
+        deletePacketCoreAsync(resourceGroupName, mobileNetworkName, siteName, parameters, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for sites API service call along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SiteInner>> listByMobileNetworkNextSinglePageAsync(String nextLink) {
@@ -1230,37 +1323,28 @@ public final class SitesClientImpl implements SitesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SiteInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<SiteInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for sites API service call along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response for sites API service call along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SiteInner>> listByMobileNetworkNextSinglePageAsync(String nextLink, Context context) {
@@ -1268,23 +1352,13 @@ public final class SitesClientImpl implements SitesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByMobileNetworkNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

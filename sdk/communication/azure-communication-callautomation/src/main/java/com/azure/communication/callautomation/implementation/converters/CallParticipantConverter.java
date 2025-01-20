@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation.implementation.converters;
 
-import com.azure.communication.callautomation.implementation.models.AcsCallParticipantInternal;
+import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.models.CallParticipant;
 
 /**
@@ -14,15 +14,14 @@ public final class CallParticipantConverter {
     /**
      * Converts to {@link CallParticipant}.
      */
-    public static CallParticipant convert(
-        AcsCallParticipantInternal acsCallParticipantDto) {
+    public static CallParticipant convert(CallParticipantInternal acsCallParticipantDto) {
 
         if (acsCallParticipantDto == null) {
             return null;
         }
 
         return new CallParticipant(CommunicationIdentifierConverter.convert(acsCallParticipantDto.getIdentifier()),
-            acsCallParticipantDto.isMuted());
+            acsCallParticipantDto.isMuted(), acsCallParticipantDto.isOnHold());
     }
 
     private CallParticipantConverter() {

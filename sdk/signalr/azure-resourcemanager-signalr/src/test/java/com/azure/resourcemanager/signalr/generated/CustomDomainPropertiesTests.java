@@ -8,28 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.CustomDomainProperties;
 import com.azure.resourcemanager.signalr.models.ResourceReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomDomainPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        CustomDomainProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Failed\",\"domainName\":\"wiwubm\",\"customCertificate\":{\"id\":\"besldnkwwtppjflc\"}}")
-                .toObject(CustomDomainProperties.class);
-        Assertions.assertEquals("wiwubm", model.domainName());
-        Assertions.assertEquals("besldnkwwtppjflc", model.customCertificate().id());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CustomDomainProperties model = BinaryData
+            .fromString(
+                "{\"provisioningState\":\"Running\",\"domainName\":\"vdsrhnjiv\",\"customCertificate\":{\"id\":\"v\"}}")
+            .toObject(CustomDomainProperties.class);
+        Assertions.assertEquals("vdsrhnjiv", model.domainName());
+        Assertions.assertEquals("v", model.customCertificate().id());
     }
 
-    @Test
-    public void testSerialize() {
-        CustomDomainProperties model =
-            new CustomDomainProperties()
-                .withDomainName("wiwubm")
-                .withCustomCertificate(new ResourceReference().withId("besldnkwwtppjflc"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CustomDomainProperties model = new CustomDomainProperties().withDomainName("vdsrhnjiv")
+            .withCustomCertificate(new ResourceReference().withId("v"));
         model = BinaryData.fromObject(model).toObject(CustomDomainProperties.class);
-        Assertions.assertEquals("wiwubm", model.domainName());
-        Assertions.assertEquals("besldnkwwtppjflc", model.customCertificate().id());
+        Assertions.assertEquals("vdsrhnjiv", model.domainName());
+        Assertions.assertEquals("v", model.customCertificate().id());
     }
 }

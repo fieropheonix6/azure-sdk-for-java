@@ -65,11 +65,11 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
      * @throws IllegalArgumentException If {@code pageSize} is not null and is less than or equal to zero.
      */
     public ContinuablePagedIterable(Supplier<PageRetrieverSync<C, P>> pageRetrieverSyncProvider, Integer pageSize,
-                                    Predicate<C> continuationPredicate) {
-        super(new ContinuablePagedByItemIterable<>(pageRetrieverSyncProvider.get(), null,
-            continuationPredicate, pageSize));
-        this.pageRetrieverSyncProvider = Objects.requireNonNull(pageRetrieverSyncProvider,
-            "'pageRetrieverSyncProvider' function cannot be null.");
+        Predicate<C> continuationPredicate) {
+        super(new ContinuablePagedByItemIterable<>(pageRetrieverSyncProvider.get(), null, continuationPredicate,
+            pageSize));
+        this.pageRetrieverSyncProvider
+            = Objects.requireNonNull(pageRetrieverSyncProvider, "'pageRetrieverSyncProvider' function cannot be null.");
         if (pageSize != null && pageSize <= 0) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
@@ -109,7 +109,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
 
     /**
      * Retrieve the {@link Stream}, one page at a time, with each page containing {@code preferredPageSize} items.
-     *
+     * <p>
      * It will provide same {@link Stream} of T values from starting if called multiple times.
      *
      * @param preferredPageSize the preferred page size, service may or may not honor the page size preference hence
@@ -165,7 +165,7 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
 
     /**
      * Retrieve the {@link Iterable}, one page at a time, with each page containing {@code preferredPageSize} items.
-     *
+     * <p>
      * It will provide same {@link Iterable} of T values from starting if called multiple times.
      *
      * @param preferredPageSize the preferred page size, service may or may not honor the page size preference hence
@@ -195,12 +195,12 @@ public class ContinuablePagedIterable<C, T, P extends ContinuablePage<C, T>> ext
     private Stream<P> streamByPageInternal(C continuationToken, Integer preferredPageSize,
         Supplier<Stream<P>> nonPagedFluxCoreIterableSupplier) {
         if (pagedFlux == null) {
-            return StreamSupport.stream(iterableByPageInternal(continuationToken, preferredPageSize, null)
-                .spliterator(), false);
+            return StreamSupport
+                .stream(iterableByPageInternal(continuationToken, preferredPageSize, null).spliterator(), false);
         }
         if (pagedFlux instanceof ContinuablePagedFluxCore) {
-            return StreamSupport.stream(iterableByPageInternal(continuationToken, preferredPageSize, null)
-                .spliterator(), false);
+            return StreamSupport
+                .stream(iterableByPageInternal(continuationToken, preferredPageSize, null).spliterator(), false);
         } else {
             return nonPagedFluxCoreIterableSupplier.get();
         }

@@ -4,48 +4,45 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachineImages Get. */
+/**
+ * Samples for VirtualMachineImages Get.
+ */
 public final class VirtualMachineImagesGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineImageExamples/VirtualMachineImages_Get_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineImageExamples/VirtualMachineImage_Get_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineImages_Get_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachineImage_Get_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesGetMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachineImageGetMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .getWithResponse(
-                "aaaaaaaaaaaa", "aaaaaaaaaaa", "aa", "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .getWithResponse("aaaaaaaaaaaa", "aaaaaaaaaaa", "aa", "aaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineImageExamples/VirtualMachineImages_Get_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineImageExamples/VirtualMachineImage_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineImages_Get_MaximumSet_Gen.
-     *
+     * Sample code: VirtualMachineImage_Get_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineImagesGetMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachineImageGetMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineImages()
-            .getWithResponse(
-                "aaaaaa",
-                "aaa",
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaaaaa",
-                Context.NONE);
+            .getWithResponse("aaaaaa", "aaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "aaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

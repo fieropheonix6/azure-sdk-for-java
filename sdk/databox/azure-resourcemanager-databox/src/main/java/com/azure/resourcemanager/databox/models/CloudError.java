@@ -5,49 +5,61 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Cloud error. */
+/**
+ * Provides additional information about an http error response.
+ */
 @Fluent
-public final class CloudError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudError.class);
+public final class CloudError implements JsonSerializable<CloudError> {
+    /*
+     * Gets or sets additional error info.
+     */
+    private List<AdditionalErrorInfo> additionalInfo;
 
     /*
-     * Cloud error code.
+     * Error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
-     * Cloud error message.
+     * Gets or sets details for the error.
      */
-    @JsonProperty(value = "message")
-    private String message;
-
-    /*
-     * Cloud error target.
-     */
-    @JsonProperty(value = "target")
-    private String target;
-
-    /*
-     * Cloud error details.
-     */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private List<CloudError> details;
 
     /*
-     * Cloud error additional info.
+     * The error message parsed from the body of the http error response.
      */
-    @JsonProperty(value = "additionalInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private List<AdditionalErrorInfo> additionalInfo;
+    private String message;
+
+    /*
+     * Gets or sets the target of the error.
+     */
+    private String target;
 
     /**
-     * Get the code property: Cloud error code.
-     *
+     * Creates an instance of CloudError class.
+     */
+    public CloudError() {
+    }
+
+    /**
+     * Get the additionalInfo property: Gets or sets additional error info.
+     * 
+     * @return the additionalInfo value.
+     */
+    public List<AdditionalErrorInfo> additionalInfo() {
+        return this.additionalInfo;
+    }
+
+    /**
+     * Get the code property: Error code.
+     * 
      * @return the code value.
      */
     public String code() {
@@ -55,8 +67,8 @@ public final class CloudError {
     }
 
     /**
-     * Set the code property: Cloud error code.
-     *
+     * Set the code property: Error code.
+     * 
      * @param code the code value to set.
      * @return the CloudError object itself.
      */
@@ -66,8 +78,17 @@ public final class CloudError {
     }
 
     /**
-     * Get the message property: Cloud error message.
-     *
+     * Get the details property: Gets or sets details for the error.
+     * 
+     * @return the details value.
+     */
+    public List<CloudError> details() {
+        return this.details;
+    }
+
+    /**
+     * Get the message property: The error message parsed from the body of the http error response.
+     * 
      * @return the message value.
      */
     public String message() {
@@ -75,8 +96,8 @@ public final class CloudError {
     }
 
     /**
-     * Set the message property: Cloud error message.
-     *
+     * Set the message property: The error message parsed from the body of the http error response.
+     * 
      * @param message the message value to set.
      * @return the CloudError object itself.
      */
@@ -86,8 +107,8 @@ public final class CloudError {
     }
 
     /**
-     * Get the target property: Cloud error target.
-     *
+     * Get the target property: Gets or sets the target of the error.
+     * 
      * @return the target value.
      */
     public String target() {
@@ -95,8 +116,8 @@ public final class CloudError {
     }
 
     /**
-     * Set the target property: Cloud error target.
-     *
+     * Set the target property: Gets or sets the target of the error.
+     * 
      * @param target the target value to set.
      * @return the CloudError object itself.
      */
@@ -106,34 +127,65 @@ public final class CloudError {
     }
 
     /**
-     * Get the details property: Cloud error details.
-     *
-     * @return the details value.
-     */
-    public List<CloudError> details() {
-        return this.details;
-    }
-
-    /**
-     * Get the additionalInfo property: Cloud error additional info.
-     *
-     * @return the additionalInfo value.
-     */
-    public List<AdditionalErrorInfo> additionalInfo() {
-        return this.additionalInfo;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (details() != null) {
-            details().forEach(e -> e.validate());
-        }
         if (additionalInfo() != null) {
             additionalInfo().forEach(e -> e.validate());
         }
+        if (details() != null) {
+            details().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("target", this.target);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudError if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the CloudError.
+     */
+    public static CloudError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudError deserializedCloudError = new CloudError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("additionalInfo".equals(fieldName)) {
+                    List<AdditionalErrorInfo> additionalInfo
+                        = reader.readArray(reader1 -> AdditionalErrorInfo.fromJson(reader1));
+                    deserializedCloudError.additionalInfo = additionalInfo;
+                } else if ("code".equals(fieldName)) {
+                    deserializedCloudError.code = reader.getString();
+                } else if ("details".equals(fieldName)) {
+                    List<CloudError> details = reader.readArray(reader1 -> CloudError.fromJson(reader1));
+                    deserializedCloudError.details = details;
+                } else if ("message".equals(fieldName)) {
+                    deserializedCloudError.message = reader.getString();
+                } else if ("target".equals(fieldName)) {
+                    deserializedCloudError.target = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudError;
+        });
     }
 }

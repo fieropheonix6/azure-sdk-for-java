@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.NetworkVirtualApplianceSkuInstances;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Network Virtual Appliance Sku Properties
- *
- * <p>Properties specific to NetworkVirtualApplianceSkus.
+ * 
+ * Properties specific to NetworkVirtualApplianceSkus.
  */
 @Fluent
-public final class NetworkVirtualApplianceSkuPropertiesFormat {
+public final class NetworkVirtualApplianceSkuPropertiesFormat
+    implements JsonSerializable<NetworkVirtualApplianceSkuPropertiesFormat> {
     /*
      * Network Virtual Appliance Sku vendor.
      */
-    @JsonProperty(value = "vendor", access = JsonProperty.Access.WRITE_ONLY)
     private String vendor;
 
     /*
      * Available Network Virtual Appliance versions.
      */
-    @JsonProperty(value = "availableVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> availableVersions;
 
     /*
      * The list of scale units available.
      */
-    @JsonProperty(value = "availableScaleUnits")
     private List<NetworkVirtualApplianceSkuInstances> availableScaleUnits;
 
-    /** Creates an instance of NetworkVirtualApplianceSkuPropertiesFormat class. */
+    /**
+     * Creates an instance of NetworkVirtualApplianceSkuPropertiesFormat class.
+     */
     public NetworkVirtualApplianceSkuPropertiesFormat() {
     }
 
     /**
      * Get the vendor property: Network Virtual Appliance Sku vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -49,7 +53,7 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
 
     /**
      * Get the availableVersions property: Available Network Virtual Appliance versions.
-     *
+     * 
      * @return the availableVersions value.
      */
     public List<String> availableVersions() {
@@ -58,7 +62,7 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
 
     /**
      * Get the availableScaleUnits property: The list of scale units available.
-     *
+     * 
      * @return the availableScaleUnits value.
      */
     public List<NetworkVirtualApplianceSkuInstances> availableScaleUnits() {
@@ -67,24 +71,69 @@ public final class NetworkVirtualApplianceSkuPropertiesFormat {
 
     /**
      * Set the availableScaleUnits property: The list of scale units available.
-     *
+     * 
      * @param availableScaleUnits the availableScaleUnits value to set.
      * @return the NetworkVirtualApplianceSkuPropertiesFormat object itself.
      */
-    public NetworkVirtualApplianceSkuPropertiesFormat withAvailableScaleUnits(
-        List<NetworkVirtualApplianceSkuInstances> availableScaleUnits) {
+    public NetworkVirtualApplianceSkuPropertiesFormat
+        withAvailableScaleUnits(List<NetworkVirtualApplianceSkuInstances> availableScaleUnits) {
         this.availableScaleUnits = availableScaleUnits;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (availableScaleUnits() != null) {
             availableScaleUnits().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("availableScaleUnits", this.availableScaleUnits,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkVirtualApplianceSkuPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkVirtualApplianceSkuPropertiesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkVirtualApplianceSkuPropertiesFormat.
+     */
+    public static NetworkVirtualApplianceSkuPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkVirtualApplianceSkuPropertiesFormat deserializedNetworkVirtualApplianceSkuPropertiesFormat
+                = new NetworkVirtualApplianceSkuPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vendor".equals(fieldName)) {
+                    deserializedNetworkVirtualApplianceSkuPropertiesFormat.vendor = reader.getString();
+                } else if ("availableVersions".equals(fieldName)) {
+                    List<String> availableVersions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkVirtualApplianceSkuPropertiesFormat.availableVersions = availableVersions;
+                } else if ("availableScaleUnits".equals(fieldName)) {
+                    List<NetworkVirtualApplianceSkuInstances> availableScaleUnits
+                        = reader.readArray(reader1 -> NetworkVirtualApplianceSkuInstances.fromJson(reader1));
+                    deserializedNetworkVirtualApplianceSkuPropertiesFormat.availableScaleUnits = availableScaleUnits;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkVirtualApplianceSkuPropertiesFormat;
+        });
     }
 }

@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of Backend Address Pool of an application gateway. */
+/**
+ * Properties of Backend Address Pool of an application gateway.
+ */
 @Fluent
-public final class ApplicationGatewayBackendAddressPoolPropertiesFormat {
+public final class ApplicationGatewayBackendAddressPoolPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayBackendAddressPoolPropertiesFormat> {
     /*
      * Collection of references to IPs defined in network interfaces.
      */
-    @JsonProperty(value = "backendIPConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations;
 
     /*
      * Backend addresses.
      */
-    @JsonProperty(value = "backendAddresses")
     private List<ApplicationGatewayBackendAddress> backendAddresses;
 
     /*
      * The provisioning state of the backend address pool resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayBackendAddressPoolPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendAddressPoolPropertiesFormat class.
+     */
     public ApplicationGatewayBackendAddressPoolPropertiesFormat() {
     }
 
     /**
      * Get the backendIpConfigurations property: Collection of references to IPs defined in network interfaces.
-     *
+     * 
      * @return the backendIpConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
@@ -46,7 +52,7 @@ public final class ApplicationGatewayBackendAddressPoolPropertiesFormat {
 
     /**
      * Get the backendAddresses property: Backend addresses.
-     *
+     * 
      * @return the backendAddresses value.
      */
     public List<ApplicationGatewayBackendAddress> backendAddresses() {
@@ -55,19 +61,19 @@ public final class ApplicationGatewayBackendAddressPoolPropertiesFormat {
 
     /**
      * Set the backendAddresses property: Backend addresses.
-     *
+     * 
      * @param backendAddresses the backendAddresses value to set.
      * @return the ApplicationGatewayBackendAddressPoolPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendAddressPoolPropertiesFormat withBackendAddresses(
-        List<ApplicationGatewayBackendAddress> backendAddresses) {
+    public ApplicationGatewayBackendAddressPoolPropertiesFormat
+        withBackendAddresses(List<ApplicationGatewayBackendAddress> backendAddresses) {
         this.backendAddresses = backendAddresses;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the backend address pool resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -76,7 +82,7 @@ public final class ApplicationGatewayBackendAddressPoolPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -86,5 +92,55 @@ public final class ApplicationGatewayBackendAddressPoolPropertiesFormat {
         if (backendAddresses() != null) {
             backendAddresses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("backendAddresses", this.backendAddresses,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayBackendAddressPoolPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayBackendAddressPoolPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayBackendAddressPoolPropertiesFormat.
+     */
+    public static ApplicationGatewayBackendAddressPoolPropertiesFormat fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayBackendAddressPoolPropertiesFormat deserializedApplicationGatewayBackendAddressPoolPropertiesFormat
+                = new ApplicationGatewayBackendAddressPoolPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("backendIPConfigurations".equals(fieldName)) {
+                    List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations
+                        = reader.readArray(reader1 -> NetworkInterfaceIpConfigurationInner.fromJson(reader1));
+                    deserializedApplicationGatewayBackendAddressPoolPropertiesFormat.backendIpConfigurations
+                        = backendIpConfigurations;
+                } else if ("backendAddresses".equals(fieldName)) {
+                    List<ApplicationGatewayBackendAddress> backendAddresses
+                        = reader.readArray(reader1 -> ApplicationGatewayBackendAddress.fromJson(reader1));
+                    deserializedApplicationGatewayBackendAddressPoolPropertiesFormat.backendAddresses
+                        = backendAddresses;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayBackendAddressPoolPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayBackendAddressPoolPropertiesFormat;
+        });
     }
 }

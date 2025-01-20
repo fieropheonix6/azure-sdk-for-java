@@ -6,20 +6,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.AmlComputeNodesInformation;
-import org.junit.jupiter.api.Test;
 
 public final class AmlComputeNodesInformationTests {
-    @Test
-    public void testDeserialize() {
-        AmlComputeNodesInformation model =
-            BinaryData
-                .fromString(
-                    "{\"nodes\":[{\"nodeId\":\"zjancuxr\",\"privateIpAddress\":\"wbavxbniwdj\",\"publicIpAddress\":\"zt\",\"port\":593552862,\"nodeState\":\"unusable\",\"runId\":\"xytxhpzxbz\"},{\"nodeId\":\"zabglcuhxwt\",\"privateIpAddress\":\"yqiklbbovplwzb\",\"publicIpAddress\":\"gy\",\"port\":1408848677,\"nodeState\":\"idle\",\"runId\":\"mkfssxqukkfplgm\"},{\"nodeId\":\"xnkjzkdesl\",\"privateIpAddress\":\"lopwiyig\",\"publicIpAddress\":\"pkdwzbai\",\"port\":830727700,\"nodeState\":\"unusable\",\"runId\":\"m\"}],\"nextLink\":\"qupedeojnab\"}")
-                .toObject(AmlComputeNodesInformation.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AmlComputeNodesInformation model = BinaryData.fromString(
+            "{\"nodes\":[{\"nodeId\":\"wrtz\",\"privateIpAddress\":\"zg\",\"publicIpAddress\":\"zmh\",\"port\":1672254683,\"nodeState\":\"running\",\"runId\":\"ts\"},{\"nodeId\":\"jcbpwxqpsrknft\",\"privateIpAddress\":\"vriuhprwmdyvx\",\"publicIpAddress\":\"ayriwwroyqbexrm\",\"port\":1486337456,\"nodeState\":\"running\",\"runId\":\"nojvknmefqsg\"},{\"nodeId\":\"ah\",\"privateIpAddress\":\"jyzhpvgq\",\"publicIpAddress\":\"j\",\"port\":391970506,\"nodeState\":\"preempted\",\"runId\":\"lmwlxkvugfhzo\"}],\"nextLink\":\"wjvzunluthnn\"}")
+            .toObject(AmlComputeNodesInformation.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AmlComputeNodesInformation model = new AmlComputeNodesInformation();
         model = BinaryData.fromObject(model).toObject(AmlComputeNodesInformation.class);
     }

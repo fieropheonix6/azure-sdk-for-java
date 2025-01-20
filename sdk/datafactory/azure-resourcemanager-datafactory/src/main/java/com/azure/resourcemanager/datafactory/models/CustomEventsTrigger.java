@@ -6,51 +6,76 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.CustomEventsTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Trigger that runs every time a custom event is received. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("CustomEventsTrigger")
+/**
+ * Trigger that runs every time a custom event is received.
+ */
 @Fluent
 public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /*
+     * Trigger type.
+     */
+    private String type = "CustomEventsTrigger";
+
+    /*
      * Custom Events Trigger properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private CustomEventsTriggerTypeProperties innerTypeProperties = new CustomEventsTriggerTypeProperties();
 
-    /** Creates an instance of CustomEventsTrigger class. */
+    /**
+     * Creates an instance of CustomEventsTrigger class.
+     */
     public CustomEventsTrigger() {
     }
 
     /**
+     * Get the type property: Trigger type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Custom Events Trigger properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private CustomEventsTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEventsTrigger withPipelines(List<TriggerPipelineReference> pipelines) {
         super.withPipelines(pipelines);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEventsTrigger withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEventsTrigger withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -60,7 +85,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Get the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @return the subjectBeginsWith value.
      */
     public String subjectBeginsWith() {
@@ -70,7 +95,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Set the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @param subjectBeginsWith the subjectBeginsWith value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -85,7 +110,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Get the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @return the subjectEndsWith value.
      */
     public String subjectEndsWith() {
@@ -95,7 +120,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Set the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @param subjectEndsWith the subjectEndsWith value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -109,7 +134,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the events property: The list of event types that cause this trigger to fire.
-     *
+     * 
      * @return the events value.
      */
     public List<Object> events() {
@@ -118,7 +143,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the events property: The list of event types that cause this trigger to fire.
-     *
+     * 
      * @param events the events value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -132,7 +157,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -141,7 +166,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -155,21 +180,89 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model CustomEventsTrigger"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model CustomEventsTrigger"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (pipelines() != null) {
+            pipelines().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomEventsTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeArrayField("pipelines", pipelines(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomEventsTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEventsTrigger if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomEventsTrigger.
+     */
+    public static CustomEventsTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomEventsTrigger deserializedCustomEventsTrigger = new CustomEventsTrigger();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedCustomEventsTrigger.withDescription(reader.getString());
+                } else if ("runtimeState".equals(fieldName)) {
+                    deserializedCustomEventsTrigger
+                        .withRuntimeState(TriggerRuntimeState.fromString(reader.getString()));
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedCustomEventsTrigger.withAnnotations(annotations);
+                } else if ("pipelines".equals(fieldName)) {
+                    List<TriggerPipelineReference> pipelines
+                        = reader.readArray(reader1 -> TriggerPipelineReference.fromJson(reader1));
+                    deserializedCustomEventsTrigger.withPipelines(pipelines);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedCustomEventsTrigger.innerTypeProperties
+                        = CustomEventsTriggerTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomEventsTrigger.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedCustomEventsTrigger.withAdditionalProperties(additionalProperties);
+
+            return deserializedCustomEventsTrigger;
+        });
+    }
 }

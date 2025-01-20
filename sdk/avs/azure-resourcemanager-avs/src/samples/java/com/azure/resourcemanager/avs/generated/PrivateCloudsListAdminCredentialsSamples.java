@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.avs.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateClouds ListAdminCredentials. */
+/**
+ * Samples for PrivateClouds ListAdminCredentials.
+ */
 public final class PrivateCloudsListAdminCredentialsSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/PrivateClouds_ListAdminCredentials.json
+     * x-ms-original-file:
+     * specification/vmware/resource-manager/Microsoft.AVS/stable/2023-09-01/examples/PrivateClouds_ListAdminCredentials
+     * .json
      */
     /**
      * Sample code: PrivateClouds_ListAdminCredentials.
-     *
+     * 
      * @param manager Entry point to AvsManager.
      */
     public static void privateCloudsListAdminCredentials(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.privateClouds().listAdminCredentialsWithResponse("group1", "cloud1", Context.NONE);
+        manager.privateClouds().listAdminCredentialsWithResponse("group1", "cloud1", com.azure.core.util.Context.NONE);
     }
 }

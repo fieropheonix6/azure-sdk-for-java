@@ -5,44 +5,52 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** List of DnsRecord. */
+/**
+ * List of DnsRecord.
+ */
 @Fluent
-public final class DomainPropertiesVerificationRecords {
+public final class DomainPropertiesVerificationRecords
+    implements JsonSerializable<DomainPropertiesVerificationRecords> {
     /*
      * A class that represents a VerificationStatus record.
      */
-    @JsonProperty(value = "Domain")
     private DnsRecord domain;
 
     /*
      * A class that represents a VerificationStatus record.
      */
-    @JsonProperty(value = "SPF")
     private DnsRecord spf;
 
     /*
      * A class that represents a VerificationStatus record.
      */
-    @JsonProperty(value = "DKIM")
     private DnsRecord dkim;
 
     /*
      * A class that represents a VerificationStatus record.
      */
-    @JsonProperty(value = "DKIM2")
     private DnsRecord dkim2;
 
     /*
      * A class that represents a VerificationStatus record.
      */
-    @JsonProperty(value = "DMARC")
     private DnsRecord dmarc;
 
     /**
+     * Creates an instance of DomainPropertiesVerificationRecords class.
+     */
+    public DomainPropertiesVerificationRecords() {
+    }
+
+    /**
      * Get the domain property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the domain value.
      */
     public DnsRecord domain() {
@@ -51,7 +59,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the domain property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -62,7 +70,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Get the spf property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the spf value.
      */
     public DnsRecord spf() {
@@ -71,7 +79,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the spf property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param spf the spf value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -82,7 +90,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Get the dkim property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the dkim value.
      */
     public DnsRecord dkim() {
@@ -91,7 +99,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the dkim property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param dkim the dkim value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -102,7 +110,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Get the dkim2 property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the dkim2 value.
      */
     public DnsRecord dkim2() {
@@ -111,7 +119,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the dkim2 property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param dkim2 the dkim2 value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -122,7 +130,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Get the dmarc property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @return the dmarc value.
      */
     public DnsRecord dmarc() {
@@ -131,7 +139,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Set the dmarc property: A class that represents a VerificationStatus record.
-     *
+     * 
      * @param dmarc the dmarc value to set.
      * @return the DomainPropertiesVerificationRecords object itself.
      */
@@ -142,7 +150,7 @@ public final class DomainPropertiesVerificationRecords {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -161,5 +169,54 @@ public final class DomainPropertiesVerificationRecords {
         if (dmarc() != null) {
             dmarc().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("Domain", this.domain);
+        jsonWriter.writeJsonField("SPF", this.spf);
+        jsonWriter.writeJsonField("DKIM", this.dkim);
+        jsonWriter.writeJsonField("DKIM2", this.dkim2);
+        jsonWriter.writeJsonField("DMARC", this.dmarc);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainPropertiesVerificationRecords from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainPropertiesVerificationRecords if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DomainPropertiesVerificationRecords.
+     */
+    public static DomainPropertiesVerificationRecords fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainPropertiesVerificationRecords deserializedDomainPropertiesVerificationRecords
+                = new DomainPropertiesVerificationRecords();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("Domain".equals(fieldName)) {
+                    deserializedDomainPropertiesVerificationRecords.domain = DnsRecord.fromJson(reader);
+                } else if ("SPF".equals(fieldName)) {
+                    deserializedDomainPropertiesVerificationRecords.spf = DnsRecord.fromJson(reader);
+                } else if ("DKIM".equals(fieldName)) {
+                    deserializedDomainPropertiesVerificationRecords.dkim = DnsRecord.fromJson(reader);
+                } else if ("DKIM2".equals(fieldName)) {
+                    deserializedDomainPropertiesVerificationRecords.dkim2 = DnsRecord.fromJson(reader);
+                } else if ("DMARC".equals(fieldName)) {
+                    deserializedDomainPropertiesVerificationRecords.dmarc = DnsRecord.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainPropertiesVerificationRecords;
+        });
     }
 }

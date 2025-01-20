@@ -9,36 +9,26 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignmentTests {
-    @Test
-    public void testDeserialize() {
-        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
-            BinaryData
-                .fromString(
-                    "{\"roles\":{\"notyfjfcnjbkcn\":{\"roleName\":\"vlxotogtwrupqsx\",\"description\":\"micykvceoveilo\"},\"phoxus\":{\"roleName\":\"hbttkphyw\",\"description\":\"vjtoqnermclfp\"},\"wfqkquj\":{\"roleName\":\"pabgyeps\",\"description\":\"tazqugxywpmueefj\"},\"yudxytlmoy\":{\"roleName\":\"suyonobglaocq\",\"description\":\"ccm\"}}}")
-                .toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model = BinaryData.fromString(
+            "{\"roles\":{\"eqidbqfatpx\":{\"roleName\":\"dgqggebdu\",\"description\":\"g\"},\"jqbjhhy\":{\"roleName\":\"rxcyjmoad\",\"description\":\"varmywdmj\"},\"uhpkxkgymar\":{\"roleName\":\"rw\",\"description\":\"co\"},\"ssofwqmzqa\":{\"roleName\":\"n\",\"description\":\"xqugjhkycubedd\"}}}")
+            .toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }
 
-    @Test
-    public void testSerialize() {
-        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model =
-            new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
-                .withRoles(
-                    mapOf(
-                        "notyfjfcnjbkcn",
-                        new EnvironmentRole(),
-                        "phoxus",
-                        new EnvironmentRole(),
-                        "wfqkquj",
-                        new EnvironmentRole(),
-                        "yudxytlmoy",
-                        new EnvironmentRole()));
-        model =
-            BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment model
+            = new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
+                .withRoles(mapOf("eqidbqfatpx", new EnvironmentRole(), "jqbjhhy", new EnvironmentRole(), "uhpkxkgymar",
+                    new EnvironmentRole(), "ssofwqmzqa", new EnvironmentRole()));
+        model
+            = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Accounts. */
+/**
+ * Resource collection API of Accounts.
+ */
 public interface Accounts {
     /**
      * Describe all NetApp Accounts in a subscription
-     *
-     * <p>List and describe all NetApp accounts in the subscription.
-     *
+     * 
+     * List and describe all NetApp accounts in the subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
@@ -23,9 +25,9 @@ public interface Accounts {
 
     /**
      * Describe all NetApp Accounts in a subscription
-     *
-     * <p>List and describe all NetApp accounts in the subscription.
-     *
+     * 
+     * List and describe all NetApp accounts in the subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -36,10 +38,10 @@ public interface Accounts {
 
     /**
      * Describe all NetApp Accounts in a resource group
-     *
-     * <p>List and describe all NetApp accounts in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List and describe all NetApp accounts in the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -49,10 +51,10 @@ public interface Accounts {
 
     /**
      * Describe all NetApp Accounts in a resource group
-     *
-     * <p>List and describe all NetApp accounts in the resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List and describe all NetApp accounts in the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -63,10 +65,26 @@ public interface Accounts {
 
     /**
      * Describe a NetApp Account
-     *
-     * <p>Get the NetApp account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get the NetApp account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the NetApp account along with {@link Response}.
+     */
+    Response<NetAppAccount> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
+
+    /**
+     * Describe a NetApp Account
+     * 
+     * Get the NetApp account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -76,27 +94,11 @@ public interface Accounts {
     NetAppAccount getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Describe a NetApp Account
-     *
-     * <p>Get the NetApp account.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account along with {@link Response}.
-     */
-    Response<NetAppAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
-
-    /**
      * Delete a NetApp account
-     *
-     * <p>Delete the specified NetApp account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified NetApp account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -106,10 +108,10 @@ public interface Accounts {
 
     /**
      * Delete a NetApp account
-     *
-     * <p>Delete the specified NetApp account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified NetApp account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,11 +122,11 @@ public interface Accounts {
 
     /**
      * Renew identity credentials
-     *
-     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * 
+     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,11 +136,11 @@ public interface Accounts {
 
     /**
      * Renew identity credentials
-     *
-     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * 
+     * Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
      * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,10 +150,102 @@ public interface Accounts {
     void renewCredentials(String resourceGroupName, String accountName, Context context);
 
     /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void transitionToCmk(String resourceGroupName, String accountName);
+
+    /**
+     * Transition volumes encryption from PMK to CMK.
+     * 
+     * Transitions all volumes in a VNet to a different encryption key source (Microsoft-managed key or Azure Key
+     * Vault). Operation fails if targeted volumes share encryption sibling set with volumes from another account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption transition.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void transitionToCmk(String resourceGroupName, String accountName, EncryptionTransitionRequest body,
+        Context context);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getChangeKeyVaultInformation(String resourceGroupName, String accountName);
+
+    /**
+     * Get information about how volumes under NetApp account are encrypted.
+     * 
+     * Contains data from encryption.keyVaultProperties as well as information about which private endpoint is used by
+     * each encryption sibling set. Response from this endpoint can be modified and used as request body for POST
+     * request.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void getChangeKeyVaultInformation(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void changeKeyVault(String resourceGroupName, String accountName);
+
+    /**
+     * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.
+     * 
+     * Affects existing volumes that are encrypted with Key Vault/Managed HSM, and new volumes. Supports HSM to Key
+     * Vault, Key Vault to HSM, HSM to HSM and Key Vault to Key Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param body The required parameters to perform encryption migration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void changeKeyVault(String resourceGroupName, String accountName, ChangeKeyVault body, Context context);
+
+    /**
      * Describe a NetApp Account
-     *
-     * <p>Get the NetApp account.
-     *
+     * 
+     * Get the NetApp account.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,9 +256,9 @@ public interface Accounts {
 
     /**
      * Describe a NetApp Account
-     *
-     * <p>Get the NetApp account.
-     *
+     * 
+     * Get the NetApp account.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,9 +270,9 @@ public interface Accounts {
 
     /**
      * Delete a NetApp account
-     *
-     * <p>Delete the specified NetApp account.
-     *
+     * 
+     * Delete the specified NetApp account.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -188,9 +282,9 @@ public interface Accounts {
 
     /**
      * Delete a NetApp account
-     *
-     * <p>Delete the specified NetApp account.
-     *
+     * 
+     * Delete the specified NetApp account.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,7 +295,7 @@ public interface Accounts {
 
     /**
      * Begins definition for a new NetAppAccount resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new NetAppAccount definition.
      */

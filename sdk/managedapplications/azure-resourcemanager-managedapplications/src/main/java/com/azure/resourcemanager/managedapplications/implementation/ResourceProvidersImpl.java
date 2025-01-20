@@ -11,17 +11,15 @@ import com.azure.resourcemanager.managedapplications.fluent.ResourceProvidersCli
 import com.azure.resourcemanager.managedapplications.fluent.models.OperationInner;
 import com.azure.resourcemanager.managedapplications.models.Operation;
 import com.azure.resourcemanager.managedapplications.models.ResourceProviders;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 
     private final com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient,
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
         com.azure.resourcemanager.managedapplications.ApplicationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -29,12 +27,12 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     public PagedIterable<Operation> listOperations() {
         PagedIterable<OperationInner> inner = this.serviceClient().listOperations();
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Operation> listOperations(Context context) {
         PagedIterable<OperationInner> inner = this.serviceClient().listOperations(context);
-        return Utils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationImpl(inner1, this.manager()));
     }
 
     private ResourceProvidersClient serviceClient() {

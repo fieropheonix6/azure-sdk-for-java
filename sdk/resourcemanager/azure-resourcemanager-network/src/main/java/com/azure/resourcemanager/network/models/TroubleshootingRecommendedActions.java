@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Recommended actions based on discovered issues. */
+/**
+ * Recommended actions based on discovered issues.
+ */
 @Fluent
-public final class TroubleshootingRecommendedActions {
+public final class TroubleshootingRecommendedActions implements JsonSerializable<TroubleshootingRecommendedActions> {
     /*
      * ID of the recommended action.
      */
-    @JsonProperty(value = "actionId")
     private String actionId;
 
     /*
      * Description of recommended actions.
      */
-    @JsonProperty(value = "actionText")
     private String actionText;
 
     /*
      * The uri linking to a documentation for the recommended troubleshooting actions.
      */
-    @JsonProperty(value = "actionUri")
     private String actionUri;
 
     /*
      * The information from the URI for the recommended troubleshooting actions.
      */
-    @JsonProperty(value = "actionUriText")
     private String actionUriText;
 
-    /** Creates an instance of TroubleshootingRecommendedActions class. */
+    /**
+     * Creates an instance of TroubleshootingRecommendedActions class.
+     */
     public TroubleshootingRecommendedActions() {
     }
 
     /**
      * Get the actionId property: ID of the recommended action.
-     *
+     * 
      * @return the actionId value.
      */
     public String actionId() {
@@ -49,7 +53,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Set the actionId property: ID of the recommended action.
-     *
+     * 
      * @param actionId the actionId value to set.
      * @return the TroubleshootingRecommendedActions object itself.
      */
@@ -60,7 +64,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Get the actionText property: Description of recommended actions.
-     *
+     * 
      * @return the actionText value.
      */
     public String actionText() {
@@ -69,7 +73,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Set the actionText property: Description of recommended actions.
-     *
+     * 
      * @param actionText the actionText value to set.
      * @return the TroubleshootingRecommendedActions object itself.
      */
@@ -80,7 +84,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Get the actionUri property: The uri linking to a documentation for the recommended troubleshooting actions.
-     *
+     * 
      * @return the actionUri value.
      */
     public String actionUri() {
@@ -89,7 +93,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Set the actionUri property: The uri linking to a documentation for the recommended troubleshooting actions.
-     *
+     * 
      * @param actionUri the actionUri value to set.
      * @return the TroubleshootingRecommendedActions object itself.
      */
@@ -100,7 +104,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Get the actionUriText property: The information from the URI for the recommended troubleshooting actions.
-     *
+     * 
      * @return the actionUriText value.
      */
     public String actionUriText() {
@@ -109,7 +113,7 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Set the actionUriText property: The information from the URI for the recommended troubleshooting actions.
-     *
+     * 
      * @param actionUriText the actionUriText value to set.
      * @return the TroubleshootingRecommendedActions object itself.
      */
@@ -120,9 +124,55 @@ public final class TroubleshootingRecommendedActions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("actionId", this.actionId);
+        jsonWriter.writeStringField("actionText", this.actionText);
+        jsonWriter.writeStringField("actionUri", this.actionUri);
+        jsonWriter.writeStringField("actionUriText", this.actionUriText);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TroubleshootingRecommendedActions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TroubleshootingRecommendedActions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TroubleshootingRecommendedActions.
+     */
+    public static TroubleshootingRecommendedActions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TroubleshootingRecommendedActions deserializedTroubleshootingRecommendedActions
+                = new TroubleshootingRecommendedActions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("actionId".equals(fieldName)) {
+                    deserializedTroubleshootingRecommendedActions.actionId = reader.getString();
+                } else if ("actionText".equals(fieldName)) {
+                    deserializedTroubleshootingRecommendedActions.actionText = reader.getString();
+                } else if ("actionUri".equals(fieldName)) {
+                    deserializedTroubleshootingRecommendedActions.actionUri = reader.getString();
+                } else if ("actionUriText".equals(fieldName)) {
+                    deserializedTroubleshootingRecommendedActions.actionUriText = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTroubleshootingRecommendedActions;
+        });
     }
 }

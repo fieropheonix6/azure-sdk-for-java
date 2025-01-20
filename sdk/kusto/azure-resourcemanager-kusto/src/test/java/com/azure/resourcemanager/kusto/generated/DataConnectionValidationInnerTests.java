@@ -8,28 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionValidationInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataConnectionValidationInnerTests {
-    @Test
-    public void testDeserialize() {
-        DataConnectionValidationInner model =
-            BinaryData
-                .fromString(
-                    "{\"dataConnectionName\":\"udutnco\",\"properties\":{\"kind\":\"DataConnection\",\"location\":\"lxqtvcofudfl\",\"id\":\"kgjubgdknnqvsazn\",\"name\":\"n\",\"type\":\"orudsgsa\"}}")
-                .toObject(DataConnectionValidationInner.class);
-        Assertions.assertEquals("udutnco", model.dataConnectionName());
-        Assertions.assertEquals("lxqtvcofudfl", model.properties().location());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DataConnectionValidationInner model = BinaryData.fromString(
+            "{\"dataConnectionName\":\"ybar\",\"properties\":{\"kind\":\"DataConnection\",\"location\":\"ayjkqa\",\"id\":\"qgzsles\",\"name\":\"cbhernntiewdj\",\"type\":\"vbquwr\"}}")
+            .toObject(DataConnectionValidationInner.class);
+        Assertions.assertEquals("ybar", model.dataConnectionName());
+        Assertions.assertEquals("ayjkqa", model.properties().location());
     }
 
-    @Test
-    public void testSerialize() {
-        DataConnectionValidationInner model =
-            new DataConnectionValidationInner()
-                .withDataConnectionName("udutnco")
-                .withProperties(new DataConnectionInner().withLocation("lxqtvcofudfl"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataConnectionValidationInner model = new DataConnectionValidationInner().withDataConnectionName("ybar")
+            .withProperties(new DataConnectionInner().withLocation("ayjkqa"));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationInner.class);
-        Assertions.assertEquals("udutnco", model.dataConnectionName());
-        Assertions.assertEquals("lxqtvcofudfl", model.properties().location());
+        Assertions.assertEquals("ybar", model.dataConnectionName());
+        Assertions.assertEquals("ayjkqa", model.properties().location());
     }
 }

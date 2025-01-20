@@ -4,20 +4,25 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for HybridIdentityMetadata ListByCluster. */
+/**
+ * Samples for HybridIdentityMetadata ListByCluster.
+ */
 public final class HybridIdentityMetadataListByClusterSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/HybridIdentityMetadataListByCluster.json
+     * x-ms-original-file:
+     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/
+     * HybridIdentityMetadataListByCluster.json
      */
     /**
      * Sample code: HybridIdentityMetadataListByCluster.
-     *
+     * 
      * @param manager Entry point to HybridContainerServiceManager.
      */
     public static void hybridIdentityMetadataListByCluster(
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager.hybridIdentityMetadatas().listByCluster("testrg", "ContosoTargetCluster", Context.NONE);
+        manager.hybridIdentityMetadatas()
+            .listByCluster(
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+                com.azure.core.util.Context.NONE);
     }
 }

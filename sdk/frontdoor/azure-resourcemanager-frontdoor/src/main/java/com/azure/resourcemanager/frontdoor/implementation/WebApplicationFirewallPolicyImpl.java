@@ -15,15 +15,14 @@ import com.azure.resourcemanager.frontdoor.models.PolicySettings;
 import com.azure.resourcemanager.frontdoor.models.RoutingRuleLink;
 import com.azure.resourcemanager.frontdoor.models.SecurityPolicyLink;
 import com.azure.resourcemanager.frontdoor.models.Sku;
+import com.azure.resourcemanager.frontdoor.models.TagsObject;
 import com.azure.resourcemanager.frontdoor.models.WebApplicationFirewallPolicy;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public final class WebApplicationFirewallPolicyImpl
-    implements WebApplicationFirewallPolicy,
-        WebApplicationFirewallPolicy.Definition,
-        WebApplicationFirewallPolicy.Update {
+public final class WebApplicationFirewallPolicyImpl implements WebApplicationFirewallPolicy,
+    WebApplicationFirewallPolicy.Definition, WebApplicationFirewallPolicy.Update {
     private WebApplicationFirewallPolicyInner innerObject;
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
@@ -116,6 +115,10 @@ public final class WebApplicationFirewallPolicyImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WebApplicationFirewallPolicyInner innerModel() {
         return this.innerObject;
     }
@@ -128,26 +131,24 @@ public final class WebApplicationFirewallPolicyImpl
 
     private String policyName;
 
+    private TagsObject updateParameters;
+
     public WebApplicationFirewallPolicyImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
     }
 
     public WebApplicationFirewallPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .createOrUpdate(resourceGroupName, policyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .createOrUpdate(resourceGroupName, policyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public WebApplicationFirewallPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .createOrUpdate(resourceGroupName, policyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .createOrUpdate(resourceGroupName, policyName, this.innerModel(), context);
         return this;
     }
 
@@ -158,53 +159,46 @@ public final class WebApplicationFirewallPolicyImpl
     }
 
     public WebApplicationFirewallPolicyImpl update() {
+        this.updateParameters = new TagsObject();
         return this;
     }
 
     public WebApplicationFirewallPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .createOrUpdate(resourceGroupName, policyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .update(resourceGroupName, policyName, updateParameters, Context.NONE);
         return this;
     }
 
     public WebApplicationFirewallPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .createOrUpdate(resourceGroupName, policyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .update(resourceGroupName, policyName, updateParameters, context);
         return this;
     }
 
-    WebApplicationFirewallPolicyImpl(
-        WebApplicationFirewallPolicyInner innerObject,
+    WebApplicationFirewallPolicyImpl(WebApplicationFirewallPolicyInner innerObject,
         com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.policyName = Utils.getValueFromIdByName(innerObject.id(), "FrontDoorWebApplicationFirewallPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.policyName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "FrontDoorWebApplicationFirewallPolicies");
     }
 
     public WebApplicationFirewallPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .getByResourceGroupWithResponse(resourceGroupName, policyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .getByResourceGroupWithResponse(resourceGroupName, policyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public WebApplicationFirewallPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPolicies()
-                .getByResourceGroupWithResponse(resourceGroupName, policyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getPolicies()
+            .getByResourceGroupWithResponse(resourceGroupName, policyName, context)
+            .getValue();
         return this;
     }
 
@@ -219,8 +213,13 @@ public final class WebApplicationFirewallPolicyImpl
     }
 
     public WebApplicationFirewallPolicyImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateParameters.withTags(tags);
+            return this;
+        }
     }
 
     public WebApplicationFirewallPolicyImpl withEtag(String etag) {
@@ -246,5 +245,9 @@ public final class WebApplicationFirewallPolicyImpl
     public WebApplicationFirewallPolicyImpl withManagedRules(ManagedRuleSetList managedRules) {
         this.innerModel().withManagedRules(managedRules);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }

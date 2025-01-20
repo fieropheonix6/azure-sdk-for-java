@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IngressTransportMethod. */
+/**
+ * Ingress transport protocol.
+ */
 public final class IngressTransportMethod extends ExpandableStringEnum<IngressTransportMethod> {
-    /** Static value auto for IngressTransportMethod. */
+    /**
+     * Static value auto for IngressTransportMethod.
+     */
     public static final IngressTransportMethod AUTO = fromString("auto");
 
-    /** Static value http for IngressTransportMethod. */
+    /**
+     * Static value http for IngressTransportMethod.
+     */
     public static final IngressTransportMethod HTTP = fromString("http");
 
-    /** Static value http2 for IngressTransportMethod. */
+    /**
+     * Static value http2 for IngressTransportMethod.
+     */
     public static final IngressTransportMethod HTTP2 = fromString("http2");
 
     /**
+     * Creates a new instance of IngressTransportMethod value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IngressTransportMethod() {
+    }
+
+    /**
      * Creates or finds a IngressTransportMethod from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IngressTransportMethod.
      */
-    @JsonCreator
     public static IngressTransportMethod fromString(String name) {
         return fromString(name, IngressTransportMethod.class);
     }
 
     /**
      * Gets known IngressTransportMethod values.
-     *
+     * 
      * @return known IngressTransportMethod values.
      */
     public static Collection<IngressTransportMethod> values() {

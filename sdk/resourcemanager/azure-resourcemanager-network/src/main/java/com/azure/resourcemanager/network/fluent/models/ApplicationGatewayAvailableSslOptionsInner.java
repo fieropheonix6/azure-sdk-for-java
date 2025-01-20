@@ -7,35 +7,50 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicyName;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Response for ApplicationGatewayAvailableSslOptions API service call. */
+/**
+ * Response for ApplicationGatewayAvailableSslOptions API service call.
+ */
 @Fluent
 public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
     /*
      * Properties of the application gateway available SSL options.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayAvailableSslOptionsPropertiesFormat innerProperties;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ApplicationGatewayAvailableSslOptionsInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of ApplicationGatewayAvailableSslOptionsInner class.
+     */
     public ApplicationGatewayAvailableSslOptionsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway available SSL options.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayAvailableSslOptionsPropertiesFormat innerProperties() {
@@ -44,7 +59,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -53,7 +68,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -62,14 +77,38 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayAvailableSslOptionsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayAvailableSslOptionsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -78,7 +117,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the predefinedPolicies property: List of available Ssl predefined policy.
-     *
+     * 
      * @return the predefinedPolicies value.
      */
     public List<SubResource> predefinedPolicies() {
@@ -87,7 +126,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the predefinedPolicies property: List of available Ssl predefined policy.
-     *
+     * 
      * @param predefinedPolicies the predefinedPolicies value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -101,7 +140,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     *
+     * 
      * @return the defaultPolicy value.
      */
     public ApplicationGatewaySslPolicyName defaultPolicy() {
@@ -110,7 +149,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     *
+     * 
      * @param defaultPolicy the defaultPolicy value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
@@ -124,7 +163,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the availableCipherSuites property: List of available Ssl cipher suites.
-     *
+     * 
      * @return the availableCipherSuites value.
      */
     public List<ApplicationGatewaySslCipherSuite> availableCipherSuites() {
@@ -133,12 +172,12 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the availableCipherSuites property: List of available Ssl cipher suites.
-     *
+     * 
      * @param availableCipherSuites the availableCipherSuites value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
-    public ApplicationGatewayAvailableSslOptionsInner withAvailableCipherSuites(
-        List<ApplicationGatewaySslCipherSuite> availableCipherSuites) {
+    public ApplicationGatewayAvailableSslOptionsInner
+        withAvailableCipherSuites(List<ApplicationGatewaySslCipherSuite> availableCipherSuites) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
         }
@@ -148,7 +187,7 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Get the availableProtocols property: List of available Ssl protocols.
-     *
+     * 
      * @return the availableProtocols value.
      */
     public List<ApplicationGatewaySslProtocol> availableProtocols() {
@@ -157,12 +196,12 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Set the availableProtocols property: List of available Ssl protocols.
-     *
+     * 
      * @param availableProtocols the availableProtocols value to set.
      * @return the ApplicationGatewayAvailableSslOptionsInner object itself.
      */
-    public ApplicationGatewayAvailableSslOptionsInner withAvailableProtocols(
-        List<ApplicationGatewaySslProtocol> availableProtocols) {
+    public ApplicationGatewayAvailableSslOptionsInner
+        withAvailableProtocols(List<ApplicationGatewaySslProtocol> availableProtocols) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayAvailableSslOptionsPropertiesFormat();
         }
@@ -172,12 +211,65 @@ public final class ApplicationGatewayAvailableSslOptionsInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayAvailableSslOptionsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayAvailableSslOptionsInner if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayAvailableSslOptionsInner.
+     */
+    public static ApplicationGatewayAvailableSslOptionsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayAvailableSslOptionsInner deserializedApplicationGatewayAvailableSslOptionsInner
+                = new ApplicationGatewayAvailableSslOptionsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayAvailableSslOptionsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayAvailableSslOptionsInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationGatewayAvailableSslOptionsInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationGatewayAvailableSslOptionsInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayAvailableSslOptionsInner.innerProperties
+                        = ApplicationGatewayAvailableSslOptionsPropertiesFormat.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayAvailableSslOptionsInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayAvailableSslOptionsInner;
+        });
     }
 }

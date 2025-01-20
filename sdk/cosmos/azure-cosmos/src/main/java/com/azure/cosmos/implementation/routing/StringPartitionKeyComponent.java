@@ -56,6 +56,11 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
+    public Object toObject() {
+        return this.value;
+    }
+
+    @Override
     public void jsonEncode(JsonGenerator writer) {
         try {
             writer.writeString(this.value);
@@ -94,7 +99,7 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
 
             for (int index = 0; index < (shortString ? this.utf8Value.length : MAX_STRING_BYTES_TO_APPEND + 1); index++) {
                 byte charByte = this.utf8Value[index];
-                if (charByte < 0xFF) charByte++;
+                charByte++;
                 outputStream.write(charByte);
             }
 

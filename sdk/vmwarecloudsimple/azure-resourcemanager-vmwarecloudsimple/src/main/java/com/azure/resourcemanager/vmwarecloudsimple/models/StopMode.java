@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for StopMode. */
+/**
+ * mode indicates a type of stop operation - reboot, suspend, shutdown or power-off.
+ */
 public enum StopMode {
-    /** Enum value reboot. */
+    /**
+     * Enum value reboot.
+     */
     REBOOT("reboot"),
 
-    /** Enum value suspend. */
+    /**
+     * Enum value suspend.
+     */
     SUSPEND("suspend"),
 
-    /** Enum value shutdown. */
+    /**
+     * Enum value shutdown.
+     */
     SHUTDOWN("shutdown"),
 
-    /** Enum value poweroff. */
+    /**
+     * Enum value poweroff.
+     */
     POWEROFF("poweroff");
 
-    /** The actual serialized value for a StopMode instance. */
+    /**
+     * The actual serialized value for a StopMode instance.
+     */
     private final String value;
 
     StopMode(String value) {
@@ -30,12 +39,14 @@ public enum StopMode {
 
     /**
      * Parses a serialized value to a StopMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed StopMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static StopMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StopMode[] items = StopMode.values();
         for (StopMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,7 +56,9 @@ public enum StopMode {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -12,47 +12,39 @@ import com.azure.resourcemanager.machinelearning.models.NlpVerticalFeaturization
 import com.azure.resourcemanager.machinelearning.models.NlpVerticalLimitSettings;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NlpVerticalTests {
-    @Test
-    public void testDeserialize() {
-        NlpVertical model =
-            BinaryData
-                .fromString(
-                    "{\"featurizationSettings\":{\"datasetLanguage\":\"ubmomsgvvjh\"},\"limitSettings\":{\"maxConcurrentTrials\":1113718862,\"maxTrials\":1386794835,\"timeout\":\"PT207H58M31S\"},\"validationData\":{\"jobInputType\":\"mltable\",\"mode\":\"EvalDownload\",\"uri\":\"majnkd\",\"description\":\"q\"}}")
-                .toObject(NlpVertical.class);
-        Assertions.assertEquals("ubmomsgvvjh", model.featurizationSettings().datasetLanguage());
-        Assertions.assertEquals(1113718862, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(1386794835, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT207H58M31S"), model.limitSettings().timeout());
-        Assertions.assertEquals("q", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_DOWNLOAD, model.validationData().mode());
-        Assertions.assertEquals("majnkd", model.validationData().uri());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NlpVertical model = BinaryData.fromString(
+            "{\"limitSettings\":{\"timeout\":\"PT133H10M21S\",\"maxTrials\":730548786,\"maxConcurrentTrials\":450987294},\"featurizationSettings\":{\"datasetLanguage\":\"qlngncrdorctysec\"},\"validationData\":{\"jobInputType\":\"mltable\",\"uri\":\"khxd\",\"mode\":\"ReadOnlyMount\",\"description\":\"tzcvimmwckoz\"}}")
+            .toObject(NlpVertical.class);
+        Assertions.assertEquals(Duration.parse("PT133H10M21S"), model.limitSettings().timeout());
+        Assertions.assertEquals(730548786, model.limitSettings().maxTrials());
+        Assertions.assertEquals(450987294, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals("qlngncrdorctysec", model.featurizationSettings().datasetLanguage());
+        Assertions.assertEquals("tzcvimmwckoz", model.validationData().description());
+        Assertions.assertEquals("khxd", model.validationData().uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.validationData().mode());
     }
 
-    @Test
-    public void testSerialize() {
-        NlpVertical model =
-            new NlpVertical()
-                .withFeaturizationSettings(new NlpVerticalFeaturizationSettings().withDatasetLanguage("ubmomsgvvjh"))
-                .withLimitSettings(
-                    new NlpVerticalLimitSettings()
-                        .withMaxConcurrentTrials(1113718862)
-                        .withMaxTrials(1386794835)
-                        .withTimeout(Duration.parse("PT207H58M31S")))
-                .withValidationData(
-                    new MLTableJobInput()
-                        .withDescription("q")
-                        .withMode(InputDeliveryMode.EVAL_DOWNLOAD)
-                        .withUri("majnkd"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NlpVertical model = new NlpVertical()
+            .withLimitSettings(new NlpVerticalLimitSettings().withTimeout(Duration.parse("PT133H10M21S"))
+                .withMaxTrials(730548786)
+                .withMaxConcurrentTrials(450987294))
+            .withFeaturizationSettings(new NlpVerticalFeaturizationSettings().withDatasetLanguage("qlngncrdorctysec"))
+            .withValidationData(new MLTableJobInput().withDescription("tzcvimmwckoz")
+                .withUri("khxd")
+                .withMode(InputDeliveryMode.READ_ONLY_MOUNT));
         model = BinaryData.fromObject(model).toObject(NlpVertical.class);
-        Assertions.assertEquals("ubmomsgvvjh", model.featurizationSettings().datasetLanguage());
-        Assertions.assertEquals(1113718862, model.limitSettings().maxConcurrentTrials());
-        Assertions.assertEquals(1386794835, model.limitSettings().maxTrials());
-        Assertions.assertEquals(Duration.parse("PT207H58M31S"), model.limitSettings().timeout());
-        Assertions.assertEquals("q", model.validationData().description());
-        Assertions.assertEquals(InputDeliveryMode.EVAL_DOWNLOAD, model.validationData().mode());
-        Assertions.assertEquals("majnkd", model.validationData().uri());
+        Assertions.assertEquals(Duration.parse("PT133H10M21S"), model.limitSettings().timeout());
+        Assertions.assertEquals(730548786, model.limitSettings().maxTrials());
+        Assertions.assertEquals(450987294, model.limitSettings().maxConcurrentTrials());
+        Assertions.assertEquals("qlngncrdorctysec", model.featurizationSettings().datasetLanguage());
+        Assertions.assertEquals("tzcvimmwckoz", model.validationData().description());
+        Assertions.assertEquals("khxd", model.validationData().uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_ONLY_MOUNT, model.validationData().mode());
     }
 }

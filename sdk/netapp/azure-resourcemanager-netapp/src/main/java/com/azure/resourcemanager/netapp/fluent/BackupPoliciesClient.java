@@ -14,14 +14,16 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.BackupPolicyInner;
 import com.azure.resourcemanager.netapp.models.BackupPolicyPatch;
 
-/** An instance of this class provides access to all the operations defined in BackupPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupPoliciesClient.
+ */
 public interface BackupPoliciesClient {
     /**
      * List backup policies
-     *
-     * <p>List backup policies for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List backup policies for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,10 +35,10 @@ public interface BackupPoliciesClient {
 
     /**
      * List backup policies
-     *
-     * <p>List backup policies for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List backup policies for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,10 +51,28 @@ public interface BackupPoliciesClient {
 
     /**
      * Get a backup Policy
-     *
-     * <p>Get a particular backup Policy.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get a particular backup Policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a particular backup Policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BackupPolicyInner> getWithResponse(String resourceGroupName, String accountName, String backupPolicyName,
+        Context context);
+
+    /**
+     * Get a backup Policy
+     * 
+     * Get a particular backup Policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,29 +84,11 @@ public interface BackupPoliciesClient {
     BackupPolicyInner get(String resourceGroupName, String accountName, String backupPolicyName);
 
     /**
-     * Get a backup Policy
-     *
-     * <p>Get a particular backup Policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a particular backup Policy along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackupPolicyInner> getWithResponse(
-        String resourceGroupName, String accountName, String backupPolicyName, Context context);
-
-    /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -96,15 +98,15 @@ public interface BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body);
+    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyInner body);
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -115,15 +117,15 @@ public interface BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body, Context context);
+    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginCreate(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyInner body, Context context);
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -133,15 +135,15 @@ public interface BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupPolicyInner create(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body);
+    BackupPolicyInner create(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyInner body);
 
     /**
      * Create a backup policy
-     *
-     * <p>Create a backup policy for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Create a backup policy for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -152,15 +154,15 @@ public interface BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupPolicyInner create(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyInner body, Context context);
+    BackupPolicyInner create(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyInner body, Context context);
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -170,15 +172,15 @@ public interface BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body);
+    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyPatch body);
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -189,15 +191,15 @@ public interface BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of backup policy information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body, Context context);
+    SyncPoller<PollResult<BackupPolicyInner>, BackupPolicyInner> beginUpdate(String resourceGroupName,
+        String accountName, String backupPolicyName, BackupPolicyPatch body, Context context);
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -207,15 +209,15 @@ public interface BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupPolicyInner update(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body);
+    BackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyPatch body);
 
     /**
      * Patch a backup policy
-     *
-     * <p>Patch a backup policy for Netapp Account.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a backup policy for Netapp Account.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param body Backup policy object supplied in the body of the operation.
@@ -226,15 +228,15 @@ public interface BackupPoliciesClient {
      * @return backup policy information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackupPolicyInner update(
-        String resourceGroupName, String accountName, String backupPolicyName, BackupPolicyPatch body, Context context);
+    BackupPolicyInner update(String resourceGroupName, String accountName, String backupPolicyName,
+        BackupPolicyPatch body, Context context);
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete backup policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -243,15 +245,15 @@ public interface BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String backupPolicyName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String backupPolicyName);
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete backup policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.
@@ -261,15 +263,15 @@ public interface BackupPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String backupPolicyName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String backupPolicyName, Context context);
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete backup policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,10 +283,10 @@ public interface BackupPoliciesClient {
 
     /**
      * Delete a backup policy
-     *
-     * <p>Delete backup policy.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete backup policy.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param backupPolicyName Backup policy Name which uniquely identify backup policy.
      * @param context The context to associate with this operation.

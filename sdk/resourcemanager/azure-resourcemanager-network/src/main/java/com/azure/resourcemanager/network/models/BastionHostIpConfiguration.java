@@ -6,43 +6,46 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.BastionHostIpConfigurationPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** IP configuration of an Bastion Host. */
+/**
+ * IP configuration of an Bastion Host.
+ */
 @Fluent
 public final class BastionHostIpConfiguration extends SubResource {
     /*
      * Represents the ip configuration associated with the resource.
      */
-    @JsonProperty(value = "properties")
     private BastionHostIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Ip configuration type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of BastionHostIpConfiguration class. */
+    /**
+     * Creates an instance of BastionHostIpConfiguration class.
+     */
     public BastionHostIpConfiguration() {
     }
 
     /**
      * Get the innerProperties property: Represents the ip configuration associated with the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BastionHostIpConfigurationPropertiesFormat innerProperties() {
@@ -52,7 +55,7 @@ public final class BastionHostIpConfiguration extends SubResource {
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +65,7 @@ public final class BastionHostIpConfiguration extends SubResource {
     /**
      * Set the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the BastionHostIpConfiguration object itself.
      */
@@ -73,7 +76,7 @@ public final class BastionHostIpConfiguration extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -82,14 +85,16 @@ public final class BastionHostIpConfiguration extends SubResource {
 
     /**
      * Get the type property: Ip configuration type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BastionHostIpConfiguration withId(String id) {
         super.withId(id);
@@ -98,7 +103,7 @@ public final class BastionHostIpConfiguration extends SubResource {
 
     /**
      * Get the subnet property: Reference of the subnet resource.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -107,7 +112,7 @@ public final class BastionHostIpConfiguration extends SubResource {
 
     /**
      * Set the subnet property: Reference of the subnet resource.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the BastionHostIpConfiguration object itself.
      */
@@ -120,8 +125,8 @@ public final class BastionHostIpConfiguration extends SubResource {
     }
 
     /**
-     * Get the publicIpAddress property: Reference of the PublicIP resource.
-     *
+     * Get the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
+     * 
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
@@ -129,8 +134,8 @@ public final class BastionHostIpConfiguration extends SubResource {
     }
 
     /**
-     * Set the publicIpAddress property: Reference of the PublicIP resource.
-     *
+     * Set the publicIpAddress property: Reference of the PublicIP resource. Null for private only bastion.
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the BastionHostIpConfiguration object itself.
      */
@@ -144,7 +149,7 @@ public final class BastionHostIpConfiguration extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the bastion host IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,7 +158,7 @@ public final class BastionHostIpConfiguration extends SubResource {
 
     /**
      * Get the privateIpAllocationMethod property: Private IP allocation method.
-     *
+     * 
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -162,7 +167,7 @@ public final class BastionHostIpConfiguration extends SubResource {
 
     /**
      * Set the privateIpAllocationMethod property: Private IP allocation method.
-     *
+     * 
      * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the BastionHostIpConfiguration object itself.
      */
@@ -176,12 +181,59 @@ public final class BastionHostIpConfiguration extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionHostIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionHostIpConfiguration if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BastionHostIpConfiguration.
+     */
+    public static BastionHostIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionHostIpConfiguration deserializedBastionHostIpConfiguration = new BastionHostIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBastionHostIpConfiguration.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBastionHostIpConfiguration.innerProperties
+                        = BastionHostIpConfigurationPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedBastionHostIpConfiguration.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBastionHostIpConfiguration.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBastionHostIpConfiguration.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionHostIpConfiguration;
+        });
     }
 }

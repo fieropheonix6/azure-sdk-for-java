@@ -5,67 +5,73 @@
 package com.azure.resourcemanager.datadog.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Datadog organization properties. */
+/**
+ * Specify the Datadog organization name. In the case of linking to existing organizations, Id, ApiKey, and
+ * Applicationkey is required as well.
+ */
 @Fluent
-public final class DatadogOrganizationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatadogOrganizationProperties.class);
-
+public final class DatadogOrganizationProperties implements JsonSerializable<DatadogOrganizationProperties> {
     /*
      * Name of the Datadog organization.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Id of the Datadog organization.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
-     * The auth code used to linking to an existing datadog organization.
+     * The auth code used to linking to an existing Datadog organization.
      */
-    @JsonProperty(value = "linkingAuthCode")
     private String linkingAuthCode;
 
     /*
-     * The client_id from an existing in exchange for an auth token to link
-     * organization.
+     * The client_id from an existing in exchange for an auth token to link organization.
      */
-    @JsonProperty(value = "linkingClientId")
     private String linkingClientId;
 
     /*
-     * The redirect uri for linking.
+     * The redirect URI for linking.
      */
-    @JsonProperty(value = "redirectUri")
     private String redirectUri;
 
     /*
      * Api key associated to the Datadog organization.
      */
-    @JsonProperty(value = "apiKey")
     private String apiKey;
 
     /*
      * Application key associated to the Datadog organization.
      */
-    @JsonProperty(value = "applicationKey")
     private String applicationKey;
 
     /*
      * The Id of the Enterprise App used for Single sign on.
      */
-    @JsonProperty(value = "enterpriseAppId")
     private String enterpriseAppId;
+
+    /*
+     * The configuration which describes the state of cloud security posture management. This collects configuration
+     * information for all resources in a subscription and track conformance to industry benchmarks.
+     */
+    private Boolean cspm;
+
+    /**
+     * Creates an instance of DatadogOrganizationProperties class.
+     */
+    public DatadogOrganizationProperties() {
+    }
 
     /**
      * Get the name property: Name of the Datadog organization.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -73,8 +79,19 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
+     * Set the name property: Name of the Datadog organization.
+     * 
+     * @param name the name value to set.
+     * @return the DatadogOrganizationProperties object itself.
+     */
+    public DatadogOrganizationProperties withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
      * Get the id property: Id of the Datadog organization.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -82,8 +99,19 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
-     * Get the linkingAuthCode property: The auth code used to linking to an existing datadog organization.
-     *
+     * Set the id property: Id of the Datadog organization.
+     * 
+     * @param id the id value to set.
+     * @return the DatadogOrganizationProperties object itself.
+     */
+    public DatadogOrganizationProperties withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the linkingAuthCode property: The auth code used to linking to an existing Datadog organization.
+     * 
      * @return the linkingAuthCode value.
      */
     public String linkingAuthCode() {
@@ -91,8 +119,8 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
-     * Set the linkingAuthCode property: The auth code used to linking to an existing datadog organization.
-     *
+     * Set the linkingAuthCode property: The auth code used to linking to an existing Datadog organization.
+     * 
      * @param linkingAuthCode the linkingAuthCode value to set.
      * @return the DatadogOrganizationProperties object itself.
      */
@@ -104,7 +132,7 @@ public final class DatadogOrganizationProperties {
     /**
      * Get the linkingClientId property: The client_id from an existing in exchange for an auth token to link
      * organization.
-     *
+     * 
      * @return the linkingClientId value.
      */
     public String linkingClientId() {
@@ -114,7 +142,7 @@ public final class DatadogOrganizationProperties {
     /**
      * Set the linkingClientId property: The client_id from an existing in exchange for an auth token to link
      * organization.
-     *
+     * 
      * @param linkingClientId the linkingClientId value to set.
      * @return the DatadogOrganizationProperties object itself.
      */
@@ -124,8 +152,8 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
-     * Get the redirectUri property: The redirect uri for linking.
-     *
+     * Get the redirectUri property: The redirect URI for linking.
+     * 
      * @return the redirectUri value.
      */
     public String redirectUri() {
@@ -133,8 +161,8 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
-     * Set the redirectUri property: The redirect uri for linking.
-     *
+     * Set the redirectUri property: The redirect URI for linking.
+     * 
      * @param redirectUri the redirectUri value to set.
      * @return the DatadogOrganizationProperties object itself.
      */
@@ -145,7 +173,7 @@ public final class DatadogOrganizationProperties {
 
     /**
      * Get the apiKey property: Api key associated to the Datadog organization.
-     *
+     * 
      * @return the apiKey value.
      */
     public String apiKey() {
@@ -154,7 +182,7 @@ public final class DatadogOrganizationProperties {
 
     /**
      * Set the apiKey property: Api key associated to the Datadog organization.
-     *
+     * 
      * @param apiKey the apiKey value to set.
      * @return the DatadogOrganizationProperties object itself.
      */
@@ -165,7 +193,7 @@ public final class DatadogOrganizationProperties {
 
     /**
      * Get the applicationKey property: Application key associated to the Datadog organization.
-     *
+     * 
      * @return the applicationKey value.
      */
     public String applicationKey() {
@@ -174,7 +202,7 @@ public final class DatadogOrganizationProperties {
 
     /**
      * Set the applicationKey property: Application key associated to the Datadog organization.
-     *
+     * 
      * @param applicationKey the applicationKey value to set.
      * @return the DatadogOrganizationProperties object itself.
      */
@@ -185,7 +213,7 @@ public final class DatadogOrganizationProperties {
 
     /**
      * Get the enterpriseAppId property: The Id of the Enterprise App used for Single sign on.
-     *
+     * 
      * @return the enterpriseAppId value.
      */
     public String enterpriseAppId() {
@@ -194,7 +222,7 @@ public final class DatadogOrganizationProperties {
 
     /**
      * Set the enterpriseAppId property: The Id of the Enterprise App used for Single sign on.
-     *
+     * 
      * @param enterpriseAppId the enterpriseAppId value to set.
      * @return the DatadogOrganizationProperties object itself.
      */
@@ -204,10 +232,95 @@ public final class DatadogOrganizationProperties {
     }
 
     /**
+     * Get the cspm property: The configuration which describes the state of cloud security posture management. This
+     * collects configuration information for all resources in a subscription and track conformance to industry
+     * benchmarks.
+     * 
+     * @return the cspm value.
+     */
+    public Boolean cspm() {
+        return this.cspm;
+    }
+
+    /**
+     * Set the cspm property: The configuration which describes the state of cloud security posture management. This
+     * collects configuration information for all resources in a subscription and track conformance to industry
+     * benchmarks.
+     * 
+     * @param cspm the cspm value to set.
+     * @return the DatadogOrganizationProperties object itself.
+     */
+    public DatadogOrganizationProperties withCspm(Boolean cspm) {
+        this.cspm = cspm;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("linkingAuthCode", this.linkingAuthCode);
+        jsonWriter.writeStringField("linkingClientId", this.linkingClientId);
+        jsonWriter.writeStringField("redirectUri", this.redirectUri);
+        jsonWriter.writeStringField("apiKey", this.apiKey);
+        jsonWriter.writeStringField("applicationKey", this.applicationKey);
+        jsonWriter.writeStringField("enterpriseAppId", this.enterpriseAppId);
+        jsonWriter.writeBooleanField("cspm", this.cspm);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatadogOrganizationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatadogOrganizationProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DatadogOrganizationProperties.
+     */
+    public static DatadogOrganizationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatadogOrganizationProperties deserializedDatadogOrganizationProperties
+                = new DatadogOrganizationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.id = reader.getString();
+                } else if ("linkingAuthCode".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.linkingAuthCode = reader.getString();
+                } else if ("linkingClientId".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.linkingClientId = reader.getString();
+                } else if ("redirectUri".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.redirectUri = reader.getString();
+                } else if ("apiKey".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.apiKey = reader.getString();
+                } else if ("applicationKey".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.applicationKey = reader.getString();
+                } else if ("enterpriseAppId".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.enterpriseAppId = reader.getString();
+                } else if ("cspm".equals(fieldName)) {
+                    deserializedDatadogOrganizationProperties.cspm = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatadogOrganizationProperties;
+        });
     }
 }

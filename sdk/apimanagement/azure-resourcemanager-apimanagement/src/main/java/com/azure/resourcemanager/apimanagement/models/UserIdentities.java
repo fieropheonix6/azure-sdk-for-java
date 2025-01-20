@@ -7,12 +7,14 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of UserIdentities. */
+/**
+ * Resource collection API of UserIdentities.
+ */
 public interface UserIdentities {
     /**
      * List of all user identities.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,8 +26,8 @@ public interface UserIdentities {
 
     /**
      * List of all user identities.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param userId User identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
@@ -34,6 +36,6 @@ public interface UserIdentities {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Users Identity list representation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<UserIdentityContract> list(
-        String resourceGroupName, String serviceName, String userId, Context context);
+    PagedIterable<UserIdentityContract> list(String resourceGroupName, String serviceName, String userId,
+        Context context);
 }

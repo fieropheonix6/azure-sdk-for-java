@@ -4,24 +4,49 @@
 
 package com.azure.resourcemanager.synapse.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.synapse.models.ManagementOperationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A Sql pool operation. */
-@Fluent
+/**
+ * A Sql pool operation.
+ */
+@Immutable
 public final class SqlPoolOperationInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private SqlPoolOperationProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SqlPoolOperationInner class.
+     */
+    public SqlPoolOperationInner() {
+    }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlPoolOperationProperties innerProperties() {
@@ -29,8 +54,38 @@ public final class SqlPoolOperationInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the databaseName property: The name of the Sql pool the operation is being performed on.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -39,7 +94,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the operation property: The name of operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -48,7 +103,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the operationFriendlyName property: The friendly name of operation.
-     *
+     * 
      * @return the operationFriendlyName value.
      */
     public String operationFriendlyName() {
@@ -57,7 +112,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the percentComplete property: The percentage of the operation completed.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -66,7 +121,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the serverName property: The name of the server.
-     *
+     * 
      * @return the serverName value.
      */
     public String serverName() {
@@ -75,7 +130,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the startTime property: The operation start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -84,7 +139,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the state property: The operation state.
-     *
+     * 
      * @return the state value.
      */
     public ManagementOperationState state() {
@@ -93,7 +148,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the errorCode property: The operation error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -102,7 +157,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the errorDescription property: The operation error description.
-     *
+     * 
      * @return the errorDescription value.
      */
     public String errorDescription() {
@@ -111,7 +166,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the errorSeverity property: The operation error severity.
-     *
+     * 
      * @return the errorSeverity value.
      */
     public Integer errorSeverity() {
@@ -120,7 +175,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the isUserError property: Whether or not the error is a user error.
-     *
+     * 
      * @return the isUserError value.
      */
     public Boolean isUserError() {
@@ -129,7 +184,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the estimatedCompletionTime property: The estimated completion time of the operation.
-     *
+     * 
      * @return the estimatedCompletionTime value.
      */
     public OffsetDateTime estimatedCompletionTime() {
@@ -138,7 +193,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the description property: The operation description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -147,7 +202,7 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Get the isCancellable property: Whether the operation can be cancelled.
-     *
+     * 
      * @return the isCancellable value.
      */
     public Boolean isCancellable() {
@@ -156,12 +211,55 @@ public final class SqlPoolOperationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlPoolOperationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlPoolOperationInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlPoolOperationInner.
+     */
+    public static SqlPoolOperationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlPoolOperationInner deserializedSqlPoolOperationInner = new SqlPoolOperationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlPoolOperationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSqlPoolOperationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlPoolOperationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSqlPoolOperationInner.innerProperties = SqlPoolOperationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlPoolOperationInner;
+        });
     }
 }

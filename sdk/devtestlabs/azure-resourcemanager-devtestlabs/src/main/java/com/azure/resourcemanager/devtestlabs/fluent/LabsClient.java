@@ -20,21 +20,23 @@ import com.azure.resourcemanager.devtestlabs.models.ImportLabVirtualMachineReque
 import com.azure.resourcemanager.devtestlabs.models.LabFragment;
 import com.azure.resourcemanager.devtestlabs.models.LabVirtualMachineCreationParameter;
 
-/** An instance of this class provides access to all the operations defined in LabsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LabsClient.
+ */
 public interface LabsClient {
     /**
      * List labs in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabInner> list();
 
     /**
      * List labs in a subscription.
-     *
+     * 
      * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -43,26 +45,26 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabInner> list(String expand, String filter, Integer top, String orderby, Context context);
 
     /**
      * List labs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List labs in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
@@ -72,15 +74,31 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<LabInner> listByResourceGroup(
-        String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+    PagedIterable<LabInner> listByResourceGroup(String resourceGroupName, String expand, String filter, Integer top,
+        String orderby, Context context);
 
     /**
      * Get lab.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the lab.
+     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return lab along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LabInner> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
+        Context context);
+
+    /**
+     * Get lab.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,38 +110,22 @@ public interface LabsClient {
     LabInner getByResourceGroup(String resourceGroupName, String name);
 
     /**
-     * Get lab.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the lab.
-     * @param expand Specify the $expand query. Example: 'properties($select=defaultStorageAccount)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context);
-
-    /**
      * Create or replace an existing lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param lab A lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
+     * @return the {@link SyncPoller} for polling of a lab.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(String resourceGroupName, String name, LabInner lab);
 
     /**
      * Create or replace an existing lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param lab A lab.
@@ -131,15 +133,15 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
+     * @return the {@link SyncPoller} for polling of a lab.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, LabInner lab, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<LabInner>, LabInner> beginCreateOrUpdate(String resourceGroupName, String name, LabInner lab,
+        Context context);
 
     /**
      * Create or replace an existing lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param lab A lab.
@@ -153,7 +155,7 @@ public interface LabsClient {
 
     /**
      * Create or replace an existing lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param lab A lab.
@@ -168,34 +170,34 @@ public interface LabsClient {
 
     /**
      * Delete lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name);
 
     /**
      * Delete lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context);
 
     /**
      * Delete lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -207,7 +209,7 @@ public interface LabsClient {
 
     /**
      * Delete lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param context The context to associate with this operation.
@@ -220,7 +222,22 @@ public interface LabsClient {
 
     /**
      * Allows modifying tags of labs. All other properties will be ignored.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the lab.
+     * @param lab A lab.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a lab along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<LabInner> updateWithResponse(String resourceGroupName, String name, LabFragment lab, Context context);
+
+    /**
+     * Allows modifying tags of labs. All other properties will be ignored.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param lab A lab.
@@ -233,50 +250,35 @@ public interface LabsClient {
     LabInner update(String resourceGroupName, String name, LabFragment lab);
 
     /**
-     * Allows modifying tags of labs. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the lab.
-     * @param lab A lab.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a lab.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LabInner> updateWithResponse(String resourceGroupName, String name, LabFragment lab, Context context);
-
-    /**
      * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginClaimAnyVm(String resourceGroupName, String name);
 
     /**
      * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginClaimAnyVm(String resourceGroupName, String name, Context context);
 
     /**
      * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,7 +290,7 @@ public interface LabsClient {
 
     /**
      * Claim a random claimable virtual machine in the lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param context The context to associate with this operation.
@@ -301,22 +303,22 @@ public interface LabsClient {
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(
-        String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
@@ -324,18 +326,15 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(
-        String resourceGroupName,
-        String name,
-        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginCreateEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context);
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
@@ -344,12 +343,12 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createEnvironment(
-        String resourceGroupName, String name, LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
+    void createEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter);
 
     /**
      * Create virtual machines in a lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param labVirtualMachineCreationParameter Properties for creating a virtual machine.
@@ -359,30 +358,27 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void createEnvironment(
-        String resourceGroupName,
-        String name,
-        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter,
-        Context context);
+    void createEnvironment(String resourceGroupName, String name,
+        LabVirtualMachineCreationParameter labVirtualMachineCreationParameter, Context context);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param exportResourceUsageParameters The parameters of the export operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(
-        String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param exportResourceUsageParameters The parameters of the export operation.
@@ -390,18 +386,15 @@ public interface LabsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(
-        String resourceGroupName,
-        String name,
-        ExportResourceUsageParameters exportResourceUsageParameters,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters, Context context);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param exportResourceUsageParameters The parameters of the export operation.
@@ -410,12 +403,12 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void exportResourceUsage(
-        String resourceGroupName, String name, ExportResourceUsageParameters exportResourceUsageParameters);
+    void exportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters);
 
     /**
      * Exports the lab resource usage into a storage account This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param exportResourceUsageParameters The parameters of the export operation.
@@ -425,15 +418,28 @@ public interface LabsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void exportResourceUsage(
-        String resourceGroupName,
-        String name,
-        ExportResourceUsageParameters exportResourceUsageParameters,
-        Context context);
+    void exportResourceUsage(String resourceGroupName, String name,
+        ExportResourceUsageParameters exportResourceUsageParameters, Context context);
 
     /**
      * Generate a URI for uploading custom disk images to a Lab.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the lab.
+     * @param generateUploadUriParameter Properties for generating an upload URI.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body for generating an upload URI along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<GenerateUploadUriResponseInner> generateUploadUriWithResponse(String resourceGroupName, String name,
+        GenerateUploadUriParameter generateUploadUriParameter, Context context);
+
+    /**
+     * Generate a URI for uploading custom disk images to a Lab.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param generateUploadUriParameter Properties for generating an upload URI.
@@ -443,118 +449,96 @@ public interface LabsClient {
      * @return response body for generating an upload URI.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    GenerateUploadUriResponseInner generateUploadUri(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter);
+    GenerateUploadUriResponseInner generateUploadUri(String resourceGroupName, String name,
+        GenerateUploadUriParameter generateUploadUriParameter);
 
     /**
-     * Generate a URI for uploading custom disk images to a Lab.
-     *
+     * Import a virtual machine into a different lab. This operation can take a while to complete.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
-     * @param generateUploadUriParameter Properties for generating an upload URI.
+     * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
+     * different lab into the current one.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
+
+    /**
+     * Import a virtual machine into a different lab. This operation can take a while to complete.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the lab.
+     * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
+     * different lab into the current one.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body for generating an upload URI.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<GenerateUploadUriResponseInner> generateUploadUriWithResponse(
-        String resourceGroupName, String name, GenerateUploadUriParameter generateUploadUriParameter, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest, Context context);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     *     different lab into the current one.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(
-        String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
-
-    /**
-     * Import a virtual machine into a different lab. This operation can take a while to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the lab.
-     * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     *     different lab into the current one.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginImportVirtualMachine(
-        String resourceGroupName,
-        String name,
-        ImportLabVirtualMachineRequest importLabVirtualMachineRequest,
-        Context context);
-
-    /**
-     * Import a virtual machine into a different lab. This operation can take a while to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the lab.
-     * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     *     different lab into the current one.
+     * different lab into the current one.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void importVirtualMachine(
-        String resourceGroupName, String name, ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
+    void importVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest);
 
     /**
      * Import a virtual machine into a different lab. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param importLabVirtualMachineRequest This represents the payload required to import a virtual machine from a
-     *     different lab into the current one.
+     * different lab into the current one.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void importVirtualMachine(
-        String resourceGroupName,
-        String name,
-        ImportLabVirtualMachineRequest importLabVirtualMachineRequest,
-        Context context);
+    void importVirtualMachine(String resourceGroupName, String name,
+        ImportLabVirtualMachineRequest importLabVirtualMachineRequest, Context context);
 
     /**
      * List disk images available for custom image creation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabVhdInner> listVhds(String resourceGroupName, String name);
 
     /**
      * List disk images available for custom image creation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the lab.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabVhdInner> listVhds(String resourceGroupName, String name, Context context);

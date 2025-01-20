@@ -24,16 +24,16 @@ public final class ConfigurationsImpl implements Configurations {
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    public ConfigurationsImpl(
-        ConfigurationsClient innerClient, com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
+    public ConfigurationsImpl(ConfigurationsClient innerClient,
+        com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Configuration update(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters) {
-        ConfigurationInner inner =
-            this.serviceClient().update(resourceGroupName, serverName, configurationName, parameters);
+    public Configuration update(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationInner parameters) {
+        ConfigurationInner inner
+            = this.serviceClient().update(resourceGroupName, serverName, configurationName, parameters);
         if (inner != null) {
             return new ConfigurationImpl(inner, this.manager());
         } else {
@@ -41,16 +41,24 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public Configuration update(
-        String resourceGroupName,
-        String serverName,
-        String configurationName,
-        ConfigurationInner parameters,
-        Context context) {
-        ConfigurationInner inner =
-            this.serviceClient().update(resourceGroupName, serverName, configurationName, parameters, context);
+    public Configuration update(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationInner parameters, Context context) {
+        ConfigurationInner inner
+            = this.serviceClient().update(resourceGroupName, serverName, configurationName, parameters, context);
         if (inner != null) {
             return new ConfigurationImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Configuration> getWithResponse(String resourceGroupName, String serverName,
+        String configurationName, Context context) {
+        Response<ConfigurationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, configurationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ConfigurationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -65,25 +73,10 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public Response<Configuration> getWithResponse(
-        String resourceGroupName, String serverName, String configurationName, Context context) {
-        Response<ConfigurationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, configurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public ConfigurationListResult batchUpdate(
-        String resourceGroupName, String serverName, ConfigurationListForBatchUpdate parameters) {
-        ConfigurationListResultInner inner =
-            this.serviceClient().batchUpdate(resourceGroupName, serverName, parameters);
+    public ConfigurationListResult batchUpdate(String resourceGroupName, String serverName,
+        ConfigurationListForBatchUpdate parameters) {
+        ConfigurationListResultInner inner
+            = this.serviceClient().batchUpdate(resourceGroupName, serverName, parameters);
         if (inner != null) {
             return new ConfigurationListResultImpl(inner, this.manager());
         } else {
@@ -91,10 +84,10 @@ public final class ConfigurationsImpl implements Configurations {
         }
     }
 
-    public ConfigurationListResult batchUpdate(
-        String resourceGroupName, String serverName, ConfigurationListForBatchUpdate parameters, Context context) {
-        ConfigurationListResultInner inner =
-            this.serviceClient().batchUpdate(resourceGroupName, serverName, parameters, context);
+    public ConfigurationListResult batchUpdate(String resourceGroupName, String serverName,
+        ConfigurationListForBatchUpdate parameters, Context context) {
+        ConfigurationListResultInner inner
+            = this.serviceClient().batchUpdate(resourceGroupName, serverName, parameters, context);
         if (inner != null) {
             return new ConfigurationListResultImpl(inner, this.manager());
         } else {
@@ -104,13 +97,13 @@ public final class ConfigurationsImpl implements Configurations {
 
     public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<ConfigurationInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Configuration> listByServer(String resourceGroupName, String serverName, Context context) {
-        PagedIterable<ConfigurationInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
+        PagedIterable<ConfigurationInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ConfigurationImpl(inner1, this.manager()));
     }
 
     private ConfigurationsClient serviceClient() {

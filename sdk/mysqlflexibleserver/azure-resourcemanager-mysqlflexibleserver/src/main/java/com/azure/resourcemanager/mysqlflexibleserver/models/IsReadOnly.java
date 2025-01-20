@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IsReadOnly. */
+/**
+ * If is the configuration read only.
+ */
 public final class IsReadOnly extends ExpandableStringEnum<IsReadOnly> {
-    /** Static value True for IsReadOnly. */
+    /**
+     * Static value True for IsReadOnly.
+     */
     public static final IsReadOnly TRUE = fromString("True");
 
-    /** Static value False for IsReadOnly. */
+    /**
+     * Static value False for IsReadOnly.
+     */
     public static final IsReadOnly FALSE = fromString("False");
 
     /**
+     * Creates a new instance of IsReadOnly value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IsReadOnly() {
+    }
+
+    /**
      * Creates or finds a IsReadOnly from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IsReadOnly.
      */
-    @JsonCreator
     public static IsReadOnly fromString(String name) {
         return fromString(name, IsReadOnly.class);
     }
 
-    /** @return known IsReadOnly values. */
+    /**
+     * Gets known IsReadOnly values.
+     * 
+     * @return known IsReadOnly values.
+     */
     public static Collection<IsReadOnly> values() {
         return values(IsReadOnly.class);
     }

@@ -5,37 +5,44 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about the partner. */
+/**
+ * Information about the partner.
+ */
 @Fluent
-public final class PartnerDetails {
+public final class PartnerDetails implements JsonSerializable<PartnerDetails> {
     /*
-     * This is short description about the partner. The length of this
-     * description should not exceed 256 characters.
+     * This is short description about the partner. The length of this description should not exceed 256 characters.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
-     * Long description for the partner's scenarios and integration.Length of
-     * this description should not exceed 2048 characters.
+     * Long description for the partner's scenarios and integration.Length of this description should not exceed 2048
+     * characters.
      */
-    @JsonProperty(value = "longDescription")
     private String longDescription;
 
     /*
-     * URI of the partner website that can be used by Azure customers to setup
-     * Event Grid
+     * URI of the partner website that can be used by Azure customers to setup Event Grid
      * integration on an event source.
      */
-    @JsonProperty(value = "setupUri")
     private String setupUri;
+
+    /**
+     * Creates an instance of PartnerDetails class.
+     */
+    public PartnerDetails() {
+    }
 
     /**
      * Get the description property: This is short description about the partner. The length of this description should
      * not exceed 256 characters.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -45,7 +52,7 @@ public final class PartnerDetails {
     /**
      * Set the description property: This is short description about the partner. The length of this description should
      * not exceed 256 characters.
-     *
+     * 
      * @param description the description value to set.
      * @return the PartnerDetails object itself.
      */
@@ -57,7 +64,7 @@ public final class PartnerDetails {
     /**
      * Get the longDescription property: Long description for the partner's scenarios and integration.Length of this
      * description should not exceed 2048 characters.
-     *
+     * 
      * @return the longDescription value.
      */
     public String longDescription() {
@@ -67,7 +74,7 @@ public final class PartnerDetails {
     /**
      * Set the longDescription property: Long description for the partner's scenarios and integration.Length of this
      * description should not exceed 2048 characters.
-     *
+     * 
      * @param longDescription the longDescription value to set.
      * @return the PartnerDetails object itself.
      */
@@ -79,7 +86,7 @@ public final class PartnerDetails {
     /**
      * Get the setupUri property: URI of the partner website that can be used by Azure customers to setup Event Grid
      * integration on an event source.
-     *
+     * 
      * @return the setupUri value.
      */
     public String setupUri() {
@@ -89,7 +96,7 @@ public final class PartnerDetails {
     /**
      * Set the setupUri property: URI of the partner website that can be used by Azure customers to setup Event Grid
      * integration on an event source.
-     *
+     * 
      * @param setupUri the setupUri value to set.
      * @return the PartnerDetails object itself.
      */
@@ -100,9 +107,51 @@ public final class PartnerDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("longDescription", this.longDescription);
+        jsonWriter.writeStringField("setupUri", this.setupUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PartnerDetails.
+     */
+    public static PartnerDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerDetails deserializedPartnerDetails = new PartnerDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedPartnerDetails.description = reader.getString();
+                } else if ("longDescription".equals(fieldName)) {
+                    deserializedPartnerDetails.longDescription = reader.getString();
+                } else if ("setupUri".equals(fieldName)) {
+                    deserializedPartnerDetails.setupUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerDetails;
+        });
     }
 }

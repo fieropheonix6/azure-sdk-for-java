@@ -4,14 +4,12 @@
 package com.azure.ai.documenttranslator;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.core.experimental.http.DynamicResponse;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.StringReader;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.polling.SyncPoller;
+import com.azure.json.models.JsonArray;
+import com.azure.json.models.JsonObject;
+import com.azure.json.models.JsonString;
 
 /**
  * Sample for translating documents using the document translator client.
@@ -24,71 +22,32 @@ public class TranslateDocuments {
      */
     public static void main(final String[] args) {
         // Step 0: create a client
-        BatchDocumentTranslationRestClient client = new BatchDocumentTranslationClientBuilder()
+        BatchDocumentTranslationClient client = new BatchDocumentTranslationClientBuilder()
             .credential(new AzureKeyCredential(System.getenv("API_KEY")))
             .endpoint(System.getenv("API_ENDPOINT"))
             .httpClient(new NettyAsyncHttpClientBuilder().build())
-            .buildRestClient();
+            .buildClient();
 
         // Step 1: Construct the request object
-        JsonObject source = Json.createObjectBuilder()
-            .add("sourceUrl", "SOURCE_URL")
-            .build();
+        JsonObject source = new JsonObject().setProperty("sourceUrl", new JsonString("SOURCE_URL"));
 
-        JsonObject target = Json.createObjectBuilder()
-            .add("language", "zh-Hans")
-            .add("targetUrl", "TARGET_URL")
-            .build();
+        JsonObject target = new JsonObject()
+            .setProperty("language", new JsonString("zh-Hans"))
+            .setProperty("targetUrl", new JsonString("TARGET_URL"));
 
-        JsonObject input = Json.createObjectBuilder()
-            .add("source", source)
-            .add("targets", Json.createArrayBuilder().add(target).build())
-            .build();
+        JsonObject input = new JsonObject()
+            .setProperty("source", source)
+            .setProperty("targets", new JsonArray().addElement(target));
 
-        JsonObject requestBody = Json.createObjectBuilder()
-            .add("inputs", Json.createArrayBuilder().add(input).build())
-            .build();
+        JsonObject requestBody = new JsonObject().setProperty("inputs", new JsonArray().addElement(input));
 
         // Step 2: Send the request
-        DynamicResponse response = client.startTranslation()
-            .setBody(requestBody.toString())
-            .send();
-
-        if (response.getStatusCode() / 100 != 2) {
-            System.err.println("Received error: " + response.getBody().toString());
-            return;
-        }
+        SyncPoller<BinaryData, BinaryData> poller = client.beginStartTranslation(BinaryData.fromObject(requestBody),
+            null);
 
         System.out.println("Translation request submitted...");
 
         // Step 3: Poll until translation is completed
-        while (response.getStatusCode() == 202) {
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            String operationLocation = response.getHeaders().getValue("Operation-Location");
-            DynamicResponse pollResponse = client.invoke()
-                .setUrl(operationLocation)
-                .setHttpMethod(HttpMethod.GET)
-                .send();
-
-            String pollBody = pollResponse.getBody().toString();
-            JsonReader jsonReader = Json.createReader(new StringReader(pollBody));
-            JsonObject pollResult = jsonReader.readObject();
-            String status = pollResult.getString("status");
-            if ("NotStarted".equalsIgnoreCase(status)) {
-                System.out.println("Translation running...");
-            } else if ("Running".equalsIgnoreCase(status)) {
-                System.out.println("Translation running...");
-            } else if ("Succeeded".equalsIgnoreCase(status)) {
-                System.out.println("Translation succeeded.");
-                break;
-            } else {
-                System.err.println("Unexpected status: " + status);
-                break;
-            }
-        }
+        poller.waitForCompletion();
     }
 }

@@ -8,13 +8,31 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of VirtualNetworks. */
+/**
+ * Resource collection API of VirtualNetworks.
+ */
 public interface VirtualNetworks {
     /**
      * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
+     * 
+     * Implements virtual network GET method.
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param virtualNetworkName Name of the virtual network resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the virtualNetwork along with {@link Response}.
+     */
+    Response<VirtualNetwork> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkName,
+        Context context);
+
+    /**
+     * Gets a virtual network.
+     * 
+     * Implements virtual network GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -25,40 +43,10 @@ public interface VirtualNetworks {
     VirtualNetwork getByResourceGroup(String resourceGroupName, String virtualNetworkName);
 
     /**
-     * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the virtualNetwork along with {@link Response}.
-     */
-    Response<VirtualNetwork> getByResourceGroupWithResponse(
-        String resourceGroupName, String virtualNetworkName, Context context);
-
-    /**
      * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param virtualNetworkName Name of the virtual network resource.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String virtualNetworkName, Boolean force);
-
-    /**
-     * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
+     * 
+     * Implements virtual network DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,9 +57,9 @@ public interface VirtualNetworks {
 
     /**
      * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
+     * 
+     * Implements virtual network DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param virtualNetworkName Name of the virtual network resource.
      * @param force Whether force delete was specified.
@@ -84,9 +72,9 @@ public interface VirtualNetworks {
 
     /**
      * Implements GET virtualNetworks in a subscription.
-     *
-     * <p>List of virtualNetworks in a subscription.
-     *
+     * 
+     * List of virtualNetworks in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of VirtualNetworks as paginated response with {@link PagedIterable}.
@@ -95,9 +83,9 @@ public interface VirtualNetworks {
 
     /**
      * Implements GET virtualNetworks in a subscription.
-     *
-     * <p>List of virtualNetworks in a subscription.
-     *
+     * 
+     * List of virtualNetworks in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,9 +96,9 @@ public interface VirtualNetworks {
 
     /**
      * Implements GET virtualNetworks in a resource group.
-     *
-     * <p>List of virtualNetworks in a resource group.
-     *
+     * 
+     * List of virtualNetworks in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,9 +109,9 @@ public interface VirtualNetworks {
 
     /**
      * Implements GET virtualNetworks in a resource group.
-     *
-     * <p>List of virtualNetworks in a resource group.
-     *
+     * 
+     * List of virtualNetworks in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,9 +123,9 @@ public interface VirtualNetworks {
 
     /**
      * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
+     * 
+     * Implements virtual network GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -148,9 +136,9 @@ public interface VirtualNetworks {
 
     /**
      * Gets a virtual network.
-     *
-     * <p>Implements virtual network GET method.
-     *
+     * 
+     * Implements virtual network GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,9 +150,9 @@ public interface VirtualNetworks {
 
     /**
      * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
+     * 
+     * Implements virtual network DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -174,9 +162,9 @@ public interface VirtualNetworks {
 
     /**
      * Deletes an virtual network.
-     *
-     * <p>Implements virtual network DELETE method.
-     *
+     * 
+     * Implements virtual network DELETE method.
+     * 
      * @param id the resource ID.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -188,7 +176,7 @@ public interface VirtualNetworks {
 
     /**
      * Begins definition for a new VirtualNetwork resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new VirtualNetwork definition.
      */

@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.trafficmanager.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for GeographicHierarchies GetDefault. */
+/**
+ * Samples for GeographicHierarchies GetDefault.
+ */
 public final class GeographicHierarchiesGetDefaultSamples {
     /*
-     * x-ms-original-file: specification/trafficmanager/resource-manager/Microsoft.Network/stable/2018-04-01/examples/GeographicHierarchy-GET-default.json
+     * x-ms-original-file:
+     * specification/trafficmanager/resource-manager/Microsoft.Network/stable/2022-04-01/examples/GeographicHierarchy-
+     * GET-default.json
      */
     /**
      * Sample code: GeographicHierarchy-GET-default.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void geographicHierarchyGETDefault(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .trafficManagerProfiles()
+        azure.trafficManagerProfiles()
             .manager()
             .serviceClient()
             .getGeographicHierarchies()
-            .getDefaultWithResponse(Context.NONE);
+            .getDefaultWithResponse(com.azure.core.util.Context.NONE);
     }
 }

@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.RoleAssignmentsClient;
@@ -39,24 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoleAssignmentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoleAssignmentsClient.
+ */
 public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(RoleAssignmentsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RoleAssignmentsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CustomerInsightsManagementClientImpl client;
 
     /**
      * Initializes an instance of RoleAssignmentsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RoleAssignmentsClientImpl(CustomerInsightsManagementClientImpl client) {
-        this.service =
-            RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RoleAssignmentsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,99 +69,71 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "CustomerInsightsMana")
-    private interface RoleAssignmentsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/roleAssignments")
-        @ExpectedResponses({200})
+    public interface RoleAssignmentsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/roleAssignments")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentListResult>> listByHub(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RoleAssignmentListResult>> listByHub(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/roleAssignments/{assignmentName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/roleAssignments/{assignmentName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("assignmentName") String assignmentName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("assignmentName") String assignmentName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") RoleAssignmentResourceFormatInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/roleAssignments/{assignmentName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/roleAssignments/{assignmentName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RoleAssignmentResourceFormatInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("assignmentName") String assignmentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<RoleAssignmentResourceFormatInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("assignmentName") String assignmentName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights"
-                + "/hubs/{hubName}/roleAssignments/{assignmentName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/roleAssignments/{assignmentName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("hubName") String hubName,
-            @PathParam("assignmentName") String assignmentName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            Context context);
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hubName") String hubName,
+            @PathParam("assignmentName") String assignmentName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RoleAssignmentListResult>> listByHubNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName) {
+    private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubSinglePageAsync(String resourceGroupName,
+        String hubName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,55 +143,36 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByHub(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<RoleAssignmentResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByHub(this.client.getEndpoint(), resourceGroupName, hubName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<RoleAssignmentResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubSinglePageAsync(
-        String resourceGroupName, String hubName, Context context) {
+    private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubSinglePageAsync(String resourceGroupName,
+        String hubName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -226,78 +182,61 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter hubName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByHub(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByHub(this.client.getEndpoint(), resourceGroupName, hubName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RoleAssignmentResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName),
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName),
             nextLink -> listByHubNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RoleAssignmentResourceFormatInner> listByHubAsync(
-        String resourceGroupName, String hubName, Context context) {
-        return new PagedFlux<>(
-            () -> listByHubSinglePageAsync(resourceGroupName, hubName, context),
+    private PagedFlux<RoleAssignmentResourceFormatInner> listByHubAsync(String resourceGroupName, String hubName,
+        Context context) {
+        return new PagedFlux<>(() -> listByHubSinglePageAsync(resourceGroupName, hubName, context),
             nextLink -> listByHubNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RoleAssignmentResourceFormatInner> listByHub(String resourceGroupName, String hubName) {
@@ -306,24 +245,24 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
 
     /**
      * Gets all the role assignments for the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the role assignments for the specified hub.
+     * @return all the role assignments for the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignmentResourceFormatInner> listByHub(
-        String resourceGroupName, String hubName, Context context) {
+    public PagedIterable<RoleAssignmentResourceFormatInner> listByHub(String resourceGroupName, String hubName,
+        Context context) {
         return new PagedIterable<>(listByHubAsync(resourceGroupName, hubName, context));
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -331,16 +270,14 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the Role Assignment resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String hubName, String assignmentName, RoleAssignmentResourceFormatInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String hubName,
+        String assignmentName, RoleAssignmentResourceFormatInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -353,10 +290,8 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter assignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -366,24 +301,14 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            assignmentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+                context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName, assignmentName,
+                    this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -392,20 +317,14 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the Role Assignment resource format along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String hubName,
-        String assignmentName,
-        RoleAssignmentResourceFormatInner parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String hubName,
+        String assignmentName, RoleAssignmentResourceFormatInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -418,10 +337,8 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter assignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -430,22 +347,13 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                assignmentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hubName, assignmentName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -453,30 +361,22 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link PollerFlux} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String hubName,
-            String assignmentName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String hubName, String assignmentName,
             RoleAssignmentResourceFormatInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, hubName, assignmentName, parameters);
-        return this
-            .client
-            .<RoleAssignmentResourceFormatInner, RoleAssignmentResourceFormatInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RoleAssignmentResourceFormatInner.class,
-                RoleAssignmentResourceFormatInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, hubName, assignmentName, parameters);
+        return this.client.<RoleAssignmentResourceFormatInner, RoleAssignmentResourceFormatInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RoleAssignmentResourceFormatInner.class,
+            RoleAssignmentResourceFormatInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -485,32 +385,23 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link PollerFlux} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String hubName,
-            String assignmentName,
-            RoleAssignmentResourceFormatInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String hubName, String assignmentName,
+            RoleAssignmentResourceFormatInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, hubName, assignmentName, parameters, context);
-        return this
-            .client
-            .<RoleAssignmentResourceFormatInner, RoleAssignmentResourceFormatInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                RoleAssignmentResourceFormatInner.class,
-                RoleAssignmentResourceFormatInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, hubName, assignmentName, parameters, context);
+        return this.client.<RoleAssignmentResourceFormatInner, RoleAssignmentResourceFormatInner>getLroResult(mono,
+            this.client.getHttpPipeline(), RoleAssignmentResourceFormatInner.class,
+            RoleAssignmentResourceFormatInner.class, context);
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -518,21 +409,18 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link SyncPoller} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String hubName,
-            String assignmentName,
+        beginCreateOrUpdate(String resourceGroupName, String hubName, String assignmentName,
             RoleAssignmentResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -541,23 +429,19 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the {@link SyncPoller} for polling of the Role Assignment resource format.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<RoleAssignmentResourceFormatInner>, RoleAssignmentResourceFormatInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String hubName,
-            String assignmentName,
-            RoleAssignmentResourceFormatInner parameters,
-            Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters, context)
+        beginCreateOrUpdate(String resourceGroupName, String hubName, String assignmentName,
+            RoleAssignmentResourceFormatInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -565,19 +449,18 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the Role Assignment resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RoleAssignmentResourceFormatInner> createOrUpdateAsync(
-        String resourceGroupName, String hubName, String assignmentName, RoleAssignmentResourceFormatInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters)
-            .last()
+    private Mono<RoleAssignmentResourceFormatInner> createOrUpdateAsync(String resourceGroupName, String hubName,
+        String assignmentName, RoleAssignmentResourceFormatInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -586,23 +469,18 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Role Assignment resource format.
+     * @return the Role Assignment resource format on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RoleAssignmentResourceFormatInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String hubName,
-        String assignmentName,
-        RoleAssignmentResourceFormatInner parameters,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters, context)
-            .last()
+    private Mono<RoleAssignmentResourceFormatInner> createOrUpdateAsync(String resourceGroupName, String hubName,
+        String assignmentName, RoleAssignmentResourceFormatInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -613,14 +491,14 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @return the Role Assignment resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String assignmentName, RoleAssignmentResourceFormatInner parameters) {
+    public RoleAssignmentResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String assignmentName, RoleAssignmentResourceFormatInner parameters) {
         return createOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters).block();
     }
 
     /**
      * Creates or updates a role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The assignment name.
@@ -632,34 +510,28 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @return the Role Assignment resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoleAssignmentResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String assignmentName,
-        RoleAssignmentResourceFormatInner parameters,
-        Context context) {
+    public RoleAssignmentResourceFormatInner createOrUpdate(String resourceGroupName, String hubName,
+        String assignmentName, RoleAssignmentResourceFormatInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, hubName, assignmentName, parameters, context).block();
     }
 
     /**
      * Gets the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the role assignment in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleAssignmentResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String assignmentName) {
+    private Mono<Response<RoleAssignmentResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String assignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -672,31 +544,19 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter assignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            assignmentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hubName, assignmentName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -704,16 +564,14 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the role assignment in the hub along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RoleAssignmentResourceFormatInner>> getWithResponseAsync(
-        String resourceGroupName, String hubName, String assignmentName, Context context) {
+    private Mono<Response<RoleAssignmentResourceFormatInner>> getWithResponseAsync(String resourceGroupName,
+        String hubName, String assignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -726,53 +584,54 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter assignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                assignmentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, hubName, assignmentName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
+     * @return the role assignment in the hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RoleAssignmentResourceFormatInner> getAsync(
-        String resourceGroupName, String hubName, String assignmentName) {
+    private Mono<RoleAssignmentResourceFormatInner> getAsync(String resourceGroupName, String hubName,
+        String assignmentName) {
         return getWithResponseAsync(resourceGroupName, hubName, assignmentName)
-            .flatMap(
-                (Response<RoleAssignmentResourceFormatInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the role assignment in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param assignmentName The name of the role assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the role assignment in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RoleAssignmentResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String assignmentName, Context context) {
+        return getWithResponseAsync(resourceGroupName, hubName, assignmentName, context).block();
+    }
+
+    /**
+     * Gets the role assignment in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -783,46 +642,26 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignmentResourceFormatInner get(String resourceGroupName, String hubName, String assignmentName) {
-        return getAsync(resourceGroupName, hubName, assignmentName).block();
-    }
-
-    /**
-     * Gets the role assignment in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param assignmentName The name of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the role assignment in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RoleAssignmentResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context) {
-        return getWithResponseAsync(resourceGroupName, hubName, assignmentName, context).block();
+        return getWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE).getValue();
     }
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String hubName, String assignmentName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hubName,
+        String assignmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -835,29 +674,18 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter assignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            hubName,
-                            assignmentName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, hubName,
+                assignmentName, this.client.getApiVersion(), this.client.getSubscriptionId(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -865,16 +693,14 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String hubName, String assignmentName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String hubName,
+        String assignmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -887,43 +713,51 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter assignmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                hubName,
-                assignmentName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, hubName, assignmentName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), context);
     }
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String hubName, String assignmentName) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, assignmentName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, hubName, assignmentName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the role assignment in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param assignmentName The name of the role assignment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String hubName, String assignmentName,
+        Context context) {
+        return deleteWithResponseAsync(resourceGroupName, hubName, assignmentName, context).block();
+    }
+
+    /**
+     * Deletes the role assignment in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param assignmentName The name of the role assignment.
@@ -933,35 +767,18 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String hubName, String assignmentName) {
-        deleteAsync(resourceGroupName, hubName, assignmentName).block();
-    }
-
-    /**
-     * Deletes the role assignment in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param assignmentName The name of the role assignment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hubName, String assignmentName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, hubName, assignmentName, context).block();
+        deleteWithResponse(resourceGroupName, hubName, assignmentName, Context.NONE);
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list role assignment operation.
+     * @return the response of list role assignment operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink) {
@@ -969,60 +786,42 @@ public final class RoleAssignmentsClientImpl implements RoleAssignmentsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RoleAssignmentResourceFormatInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<RoleAssignmentResourceFormatInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of list role assignment operation.
+     * @return the response of list role assignment operation along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<RoleAssignmentResourceFormatInner>> listByHubNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByHubNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

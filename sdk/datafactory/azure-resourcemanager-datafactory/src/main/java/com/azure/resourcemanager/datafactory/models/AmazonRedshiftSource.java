@@ -5,36 +5,54 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity source for Amazon Redshift Source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AmazonRedshiftSource")
+/**
+ * A copy activity source for Amazon Redshift Source.
+ */
 @Fluent
 public final class AmazonRedshiftSource extends TabularSource {
     /*
+     * Copy source type.
+     */
+    private String type = "AmazonRedshiftSource";
+
+    /*
      * Database query. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon Redshift with unload. With
-     * this, data from Amazon Redshift source will be unloaded into S3 first and then copied into the targeted sink
-     * from the interim S3.
+     * The Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon Redshift with unload. With this,
+     * data from Amazon Redshift source will be unloaded into S3 first and then copied into the targeted sink from the
+     * interim S3.
      */
-    @JsonProperty(value = "redshiftUnloadSettings")
     private RedshiftUnloadSettings redshiftUnloadSettings;
 
-    /** Creates an instance of AmazonRedshiftSource class. */
+    /**
+     * Creates an instance of AmazonRedshiftSource class.
+     */
     public AmazonRedshiftSource() {
     }
 
     /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object query() {
@@ -43,7 +61,7 @@ public final class AmazonRedshiftSource extends TabularSource {
 
     /**
      * Set the query property: Database query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the AmazonRedshiftSource object itself.
      */
@@ -56,7 +74,7 @@ public final class AmazonRedshiftSource extends TabularSource {
      * Get the redshiftUnloadSettings property: The Amazon S3 settings needed for the interim Amazon S3 when copying
      * from Amazon Redshift with unload. With this, data from Amazon Redshift source will be unloaded into S3 first and
      * then copied into the targeted sink from the interim S3.
-     *
+     * 
      * @return the redshiftUnloadSettings value.
      */
     public RedshiftUnloadSettings redshiftUnloadSettings() {
@@ -67,7 +85,7 @@ public final class AmazonRedshiftSource extends TabularSource {
      * Set the redshiftUnloadSettings property: The Amazon S3 settings needed for the interim Amazon S3 when copying
      * from Amazon Redshift with unload. With this, data from Amazon Redshift source will be unloaded into S3 first and
      * then copied into the targeted sink from the interim S3.
-     *
+     * 
      * @param redshiftUnloadSettings the redshiftUnloadSettings value to set.
      * @return the AmazonRedshiftSource object itself.
      */
@@ -76,42 +94,54 @@ public final class AmazonRedshiftSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRedshiftSource withQueryTimeout(Object queryTimeout) {
         super.withQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRedshiftSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRedshiftSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRedshiftSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRedshiftSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AmazonRedshiftSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -120,14 +150,84 @@ public final class AmazonRedshiftSource extends TabularSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (redshiftUnloadSettings() != null) {
             redshiftUnloadSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeUntypedField("queryTimeout", queryTimeout());
+        jsonWriter.writeUntypedField("additionalColumns", additionalColumns());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("query", this.query);
+        jsonWriter.writeJsonField("redshiftUnloadSettings", this.redshiftUnloadSettings);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRedshiftSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRedshiftSource if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonRedshiftSource.
+     */
+    public static AmazonRedshiftSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRedshiftSource deserializedAmazonRedshiftSource = new AmazonRedshiftSource();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.withQueryTimeout(reader.readUntyped());
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.withAdditionalColumns(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.type = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.query = reader.readUntyped();
+                } else if ("redshiftUnloadSettings".equals(fieldName)) {
+                    deserializedAmazonRedshiftSource.redshiftUnloadSettings = RedshiftUnloadSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAmazonRedshiftSource.withAdditionalProperties(additionalProperties);
+
+            return deserializedAmazonRedshiftSource;
+        });
     }
 }

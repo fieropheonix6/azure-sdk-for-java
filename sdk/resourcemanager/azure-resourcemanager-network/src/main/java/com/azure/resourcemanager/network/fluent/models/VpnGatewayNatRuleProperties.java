@@ -6,71 +6,71 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnNatRuleMapping;
 import com.azure.resourcemanager.network.models.VpnNatRuleMode;
 import com.azure.resourcemanager.network.models.VpnNatRuleType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters for VpnGatewayNatRule. */
+/**
+ * Parameters for VpnGatewayNatRule.
+ */
 @Fluent
-public final class VpnGatewayNatRuleProperties {
+public final class VpnGatewayNatRuleProperties implements JsonSerializable<VpnGatewayNatRuleProperties> {
     /*
      * The provisioning state of the NAT Rule resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The type of NAT rule for VPN NAT.
      */
-    @JsonProperty(value = "type")
     private VpnNatRuleType type;
 
     /*
      * The Source NAT direction of a VPN NAT.
      */
-    @JsonProperty(value = "mode")
     private VpnNatRuleMode mode;
 
     /*
      * The private IP address internal mapping for NAT.
      */
-    @JsonProperty(value = "internalMappings")
     private List<VpnNatRuleMapping> internalMappings;
 
     /*
      * The private IP address external mapping for NAT.
      */
-    @JsonProperty(value = "externalMappings")
     private List<VpnNatRuleMapping> externalMappings;
 
     /*
      * The IP Configuration ID this NAT rule applies to.
      */
-    @JsonProperty(value = "ipConfigurationId")
     private String ipConfigurationId;
 
     /*
      * List of egress VpnSiteLinkConnections.
      */
-    @JsonProperty(value = "egressVpnSiteLinkConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> egressVpnSiteLinkConnections;
 
     /*
      * List of ingress VpnSiteLinkConnections.
      */
-    @JsonProperty(value = "ingressVpnSiteLinkConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> ingressVpnSiteLinkConnections;
 
-    /** Creates an instance of VpnGatewayNatRuleProperties class. */
+    /**
+     * Creates an instance of VpnGatewayNatRuleProperties class.
+     */
     public VpnGatewayNatRuleProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the NAT Rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -79,7 +79,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the type property: The type of NAT rule for VPN NAT.
-     *
+     * 
      * @return the type value.
      */
     public VpnNatRuleType type() {
@@ -88,7 +88,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the type property: The type of NAT rule for VPN NAT.
-     *
+     * 
      * @param type the type value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -99,7 +99,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the mode property: The Source NAT direction of a VPN NAT.
-     *
+     * 
      * @return the mode value.
      */
     public VpnNatRuleMode mode() {
@@ -108,7 +108,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the mode property: The Source NAT direction of a VPN NAT.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -119,7 +119,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the internalMappings property: The private IP address internal mapping for NAT.
-     *
+     * 
      * @return the internalMappings value.
      */
     public List<VpnNatRuleMapping> internalMappings() {
@@ -128,7 +128,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the internalMappings property: The private IP address internal mapping for NAT.
-     *
+     * 
      * @param internalMappings the internalMappings value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -139,7 +139,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the externalMappings property: The private IP address external mapping for NAT.
-     *
+     * 
      * @return the externalMappings value.
      */
     public List<VpnNatRuleMapping> externalMappings() {
@@ -148,7 +148,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the externalMappings property: The private IP address external mapping for NAT.
-     *
+     * 
      * @param externalMappings the externalMappings value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -159,7 +159,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the ipConfigurationId property: The IP Configuration ID this NAT rule applies to.
-     *
+     * 
      * @return the ipConfigurationId value.
      */
     public String ipConfigurationId() {
@@ -168,7 +168,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the ipConfigurationId property: The IP Configuration ID this NAT rule applies to.
-     *
+     * 
      * @param ipConfigurationId the ipConfigurationId value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -179,7 +179,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the egressVpnSiteLinkConnections property: List of egress VpnSiteLinkConnections.
-     *
+     * 
      * @return the egressVpnSiteLinkConnections value.
      */
     public List<SubResource> egressVpnSiteLinkConnections() {
@@ -188,7 +188,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the ingressVpnSiteLinkConnections property: List of ingress VpnSiteLinkConnections.
-     *
+     * 
      * @return the ingressVpnSiteLinkConnections value.
      */
     public List<SubResource> ingressVpnSiteLinkConnections() {
@@ -197,7 +197,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -207,5 +207,71 @@ public final class VpnGatewayNatRuleProperties {
         if (externalMappings() != null) {
             externalMappings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("mode", this.mode == null ? null : this.mode.toString());
+        jsonWriter.writeArrayField("internalMappings", this.internalMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("externalMappings", this.externalMappings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("ipConfigurationId", this.ipConfigurationId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnGatewayNatRuleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnGatewayNatRuleProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnGatewayNatRuleProperties.
+     */
+    public static VpnGatewayNatRuleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnGatewayNatRuleProperties deserializedVpnGatewayNatRuleProperties = new VpnGatewayNatRuleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedVpnGatewayNatRuleProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("type".equals(fieldName)) {
+                    deserializedVpnGatewayNatRuleProperties.type = VpnNatRuleType.fromString(reader.getString());
+                } else if ("mode".equals(fieldName)) {
+                    deserializedVpnGatewayNatRuleProperties.mode = VpnNatRuleMode.fromString(reader.getString());
+                } else if ("internalMappings".equals(fieldName)) {
+                    List<VpnNatRuleMapping> internalMappings
+                        = reader.readArray(reader1 -> VpnNatRuleMapping.fromJson(reader1));
+                    deserializedVpnGatewayNatRuleProperties.internalMappings = internalMappings;
+                } else if ("externalMappings".equals(fieldName)) {
+                    List<VpnNatRuleMapping> externalMappings
+                        = reader.readArray(reader1 -> VpnNatRuleMapping.fromJson(reader1));
+                    deserializedVpnGatewayNatRuleProperties.externalMappings = externalMappings;
+                } else if ("ipConfigurationId".equals(fieldName)) {
+                    deserializedVpnGatewayNatRuleProperties.ipConfigurationId = reader.getString();
+                } else if ("egressVpnSiteLinkConnections".equals(fieldName)) {
+                    List<SubResource> egressVpnSiteLinkConnections
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVpnGatewayNatRuleProperties.egressVpnSiteLinkConnections = egressVpnSiteLinkConnections;
+                } else if ("ingressVpnSiteLinkConnections".equals(fieldName)) {
+                    List<SubResource> ingressVpnSiteLinkConnections
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVpnGatewayNatRuleProperties.ingressVpnSiteLinkConnections
+                        = ingressVpnSiteLinkConnections;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnGatewayNatRuleProperties;
+        });
     }
 }

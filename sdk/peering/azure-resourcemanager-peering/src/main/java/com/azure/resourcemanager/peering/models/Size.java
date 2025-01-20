@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Size. */
+/**
+ * The size of the peering SKU.
+ */
 public final class Size extends ExpandableStringEnum<Size> {
-    /** Static value Free for Size. */
+    /**
+     * Static value Free for Size.
+     */
     public static final Size FREE = fromString("Free");
 
-    /** Static value Metered for Size. */
+    /**
+     * Static value Metered for Size.
+     */
     public static final Size METERED = fromString("Metered");
 
-    /** Static value Unlimited for Size. */
+    /**
+     * Static value Unlimited for Size.
+     */
     public static final Size UNLIMITED = fromString("Unlimited");
 
     /**
+     * Creates a new instance of Size value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Size() {
+    }
+
+    /**
      * Creates or finds a Size from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Size.
      */
-    @JsonCreator
     public static Size fromString(String name) {
         return fromString(name, Size.class);
     }
 
-    /** @return known Size values. */
+    /**
+     * Gets known Size values.
+     * 
+     * @return known Size values.
+     */
     public static Collection<Size> values() {
         return values(Size.class);
     }

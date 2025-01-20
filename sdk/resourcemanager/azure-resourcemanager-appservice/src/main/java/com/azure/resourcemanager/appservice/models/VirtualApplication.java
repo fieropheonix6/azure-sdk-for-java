@@ -5,40 +5,47 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Virtual application in an app. */
+/**
+ * Virtual application in an app.
+ */
 @Fluent
-public final class VirtualApplication {
+public final class VirtualApplication implements JsonSerializable<VirtualApplication> {
     /*
      * Virtual path.
      */
-    @JsonProperty(value = "virtualPath")
     private String virtualPath;
 
     /*
      * Physical path.
      */
-    @JsonProperty(value = "physicalPath")
     private String physicalPath;
 
     /*
-     * <code>true</code> if preloading is enabled; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if preloading is enabled; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "preloadEnabled")
     private Boolean preloadEnabled;
 
     /*
      * Virtual directories for virtual application.
      */
-    @JsonProperty(value = "virtualDirectories")
     private List<VirtualDirectory> virtualDirectories;
 
     /**
+     * Creates an instance of VirtualApplication class.
+     */
+    public VirtualApplication() {
+    }
+
+    /**
      * Get the virtualPath property: Virtual path.
-     *
+     * 
      * @return the virtualPath value.
      */
     public String virtualPath() {
@@ -47,7 +54,7 @@ public final class VirtualApplication {
 
     /**
      * Set the virtualPath property: Virtual path.
-     *
+     * 
      * @param virtualPath the virtualPath value to set.
      * @return the VirtualApplication object itself.
      */
@@ -58,7 +65,7 @@ public final class VirtualApplication {
 
     /**
      * Get the physicalPath property: Physical path.
-     *
+     * 
      * @return the physicalPath value.
      */
     public String physicalPath() {
@@ -67,7 +74,7 @@ public final class VirtualApplication {
 
     /**
      * Set the physicalPath property: Physical path.
-     *
+     * 
      * @param physicalPath the physicalPath value to set.
      * @return the VirtualApplication object itself.
      */
@@ -79,7 +86,7 @@ public final class VirtualApplication {
     /**
      * Get the preloadEnabled property: &lt;code&gt;true&lt;/code&gt; if preloading is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the preloadEnabled value.
      */
     public Boolean preloadEnabled() {
@@ -89,7 +96,7 @@ public final class VirtualApplication {
     /**
      * Set the preloadEnabled property: &lt;code&gt;true&lt;/code&gt; if preloading is enabled; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param preloadEnabled the preloadEnabled value to set.
      * @return the VirtualApplication object itself.
      */
@@ -100,7 +107,7 @@ public final class VirtualApplication {
 
     /**
      * Get the virtualDirectories property: Virtual directories for virtual application.
-     *
+     * 
      * @return the virtualDirectories value.
      */
     public List<VirtualDirectory> virtualDirectories() {
@@ -109,7 +116,7 @@ public final class VirtualApplication {
 
     /**
      * Set the virtualDirectories property: Virtual directories for virtual application.
-     *
+     * 
      * @param virtualDirectories the virtualDirectories value to set.
      * @return the VirtualApplication object itself.
      */
@@ -120,12 +127,60 @@ public final class VirtualApplication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (virtualDirectories() != null) {
             virtualDirectories().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualPath", this.virtualPath);
+        jsonWriter.writeStringField("physicalPath", this.physicalPath);
+        jsonWriter.writeBooleanField("preloadEnabled", this.preloadEnabled);
+        jsonWriter.writeArrayField("virtualDirectories", this.virtualDirectories,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualApplication from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualApplication if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualApplication.
+     */
+    public static VirtualApplication fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualApplication deserializedVirtualApplication = new VirtualApplication();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualPath".equals(fieldName)) {
+                    deserializedVirtualApplication.virtualPath = reader.getString();
+                } else if ("physicalPath".equals(fieldName)) {
+                    deserializedVirtualApplication.physicalPath = reader.getString();
+                } else if ("preloadEnabled".equals(fieldName)) {
+                    deserializedVirtualApplication.preloadEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("virtualDirectories".equals(fieldName)) {
+                    List<VirtualDirectory> virtualDirectories
+                        = reader.readArray(reader1 -> VirtualDirectory.fromJson(reader1));
+                    deserializedVirtualApplication.virtualDirectories = virtualDirectories;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualApplication;
+        });
     }
 }

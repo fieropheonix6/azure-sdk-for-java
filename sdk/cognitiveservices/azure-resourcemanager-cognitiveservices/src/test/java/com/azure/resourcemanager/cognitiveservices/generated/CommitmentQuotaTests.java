@@ -7,24 +7,21 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentQuota;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CommitmentQuotaTests {
-    @Test
-    public void testDeserialize() {
-        CommitmentQuota model =
-            BinaryData
-                .fromString("{\"quantity\":8988719472980860271,\"unit\":\"wkz\"}")
-                .toObject(CommitmentQuota.class);
-        Assertions.assertEquals(8988719472980860271L, model.quantity());
-        Assertions.assertEquals("wkz", model.unit());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CommitmentQuota model = BinaryData.fromString("{\"quantity\":193130563963832642,\"unit\":\"nxipeil\"}")
+            .toObject(CommitmentQuota.class);
+        Assertions.assertEquals(193130563963832642L, model.quantity());
+        Assertions.assertEquals("nxipeil", model.unit());
     }
 
-    @Test
-    public void testSerialize() {
-        CommitmentQuota model = new CommitmentQuota().withQuantity(8988719472980860271L).withUnit("wkz");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CommitmentQuota model = new CommitmentQuota().withQuantity(193130563963832642L).withUnit("nxipeil");
         model = BinaryData.fromObject(model).toObject(CommitmentQuota.class);
-        Assertions.assertEquals(8988719472980860271L, model.quantity());
-        Assertions.assertEquals("wkz", model.unit());
+        Assertions.assertEquals(193130563963832642L, model.quantity());
+        Assertions.assertEquals("nxipeil", model.unit());
     }
 }

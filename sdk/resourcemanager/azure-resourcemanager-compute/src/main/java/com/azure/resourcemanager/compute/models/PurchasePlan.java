@@ -6,37 +6,42 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Used for establishing the purchase context of any 3rd Party artifact through MarketPlace. */
+/**
+ * Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
+ */
 @Fluent
-public final class PurchasePlan {
+public final class PurchasePlan implements JsonSerializable<PurchasePlan> {
     /*
      * The publisher ID.
      */
-    @JsonProperty(value = "publisher", required = true)
     private String publisher;
 
     /*
      * The plan ID.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Specifies the product of the image from the marketplace. This is the same value as Offer under the
-     * imageReference element.
+     * Specifies the product of the image from the marketplace. This is the same value as Offer under the imageReference
+     * element.
      */
-    @JsonProperty(value = "product", required = true)
     private String product;
 
-    /** Creates an instance of PurchasePlan class. */
+    /**
+     * Creates an instance of PurchasePlan class.
+     */
     public PurchasePlan() {
     }
 
     /**
      * Get the publisher property: The publisher ID.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -45,7 +50,7 @@ public final class PurchasePlan {
 
     /**
      * Set the publisher property: The publisher ID.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the PurchasePlan object itself.
      */
@@ -56,7 +61,7 @@ public final class PurchasePlan {
 
     /**
      * Get the name property: The plan ID.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -65,7 +70,7 @@ public final class PurchasePlan {
 
     /**
      * Set the name property: The plan ID.
-     *
+     * 
      * @param name the name value to set.
      * @return the PurchasePlan object itself.
      */
@@ -77,7 +82,7 @@ public final class PurchasePlan {
     /**
      * Get the product property: Specifies the product of the image from the marketplace. This is the same value as
      * Offer under the imageReference element.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -87,7 +92,7 @@ public final class PurchasePlan {
     /**
      * Set the product property: Specifies the product of the image from the marketplace. This is the same value as
      * Offer under the imageReference element.
-     *
+     * 
      * @param product the product value to set.
      * @return the PurchasePlan object itself.
      */
@@ -98,26 +103,66 @@ public final class PurchasePlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property publisher in model PurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property publisher in model PurchasePlan"));
         }
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model PurchasePlan"));
         }
         if (product() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property product in model PurchasePlan"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property product in model PurchasePlan"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PurchasePlan.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("product", this.product);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PurchasePlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PurchasePlan if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PurchasePlan.
+     */
+    public static PurchasePlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PurchasePlan deserializedPurchasePlan = new PurchasePlan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publisher".equals(fieldName)) {
+                    deserializedPurchasePlan.publisher = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPurchasePlan.name = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPurchasePlan.product = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPurchasePlan;
+        });
+    }
 }

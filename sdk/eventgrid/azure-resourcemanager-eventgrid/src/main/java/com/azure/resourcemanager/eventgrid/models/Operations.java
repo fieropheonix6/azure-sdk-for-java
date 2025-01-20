@@ -7,11 +7,15 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
+     * List available operations.
+     * 
      * List the available operations supported by the Microsoft.EventGrid resource provider.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Operations operation as paginated response with {@link PagedIterable}.
@@ -19,8 +23,10 @@ public interface Operations {
     PagedIterable<Operation> list();
 
     /**
+     * List available operations.
+     * 
      * List the available operations supported by the Microsoft.EventGrid resource provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

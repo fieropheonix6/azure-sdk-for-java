@@ -5,70 +5,74 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Deployment resource specific properties. */
+/**
+ * Deployment resource specific properties.
+ */
 @Fluent
-public final class DeploymentProperties {
+public final class DeploymentProperties implements JsonSerializable<DeploymentProperties> {
     /*
      * Deployment status.
      */
-    @JsonProperty(value = "status")
     private Integer status;
 
     /*
      * Details about deployment status.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Who authored the deployment.
      */
-    @JsonProperty(value = "author")
     private String author;
 
     /*
      * Who performed the deployment.
      */
-    @JsonProperty(value = "deployer")
     private String deployer;
 
     /*
      * Author email.
      */
-    @JsonProperty(value = "author_email")
     private String authorEmail;
 
     /*
      * Start time.
      */
-    @JsonProperty(value = "start_time")
     private OffsetDateTime startTime;
 
     /*
      * End time.
      */
-    @JsonProperty(value = "end_time")
     private OffsetDateTime endTime;
 
     /*
-     * True if deployment is currently active, false if completed and null if
-     * not started.
+     * True if deployment is currently active, false if completed and null if not started.
      */
-    @JsonProperty(value = "active")
     private Boolean active;
 
     /*
      * Details on deployment.
      */
-    @JsonProperty(value = "details")
     private String details;
 
     /**
+     * Creates an instance of DeploymentProperties class.
+     */
+    public DeploymentProperties() {
+    }
+
+    /**
      * Get the status property: Deployment status.
-     *
+     * 
      * @return the status value.
      */
     public Integer status() {
@@ -77,7 +81,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the status property: Deployment status.
-     *
+     * 
      * @param status the status value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the message property: Details about deployment status.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -97,7 +101,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the message property: Details about deployment status.
-     *
+     * 
      * @param message the message value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the author property: Who authored the deployment.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -117,7 +121,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the author property: Who authored the deployment.
-     *
+     * 
      * @param author the author value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the deployer property: Who performed the deployment.
-     *
+     * 
      * @return the deployer value.
      */
     public String deployer() {
@@ -137,7 +141,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the deployer property: Who performed the deployment.
-     *
+     * 
      * @param deployer the deployer value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -148,7 +152,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the authorEmail property: Author email.
-     *
+     * 
      * @return the authorEmail value.
      */
     public String authorEmail() {
@@ -157,7 +161,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the authorEmail property: Author email.
-     *
+     * 
      * @param authorEmail the authorEmail value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -168,7 +172,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -177,7 +181,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -188,7 +192,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the endTime property: End time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -197,7 +201,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the endTime property: End time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -208,7 +212,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the active property: True if deployment is currently active, false if completed and null if not started.
-     *
+     * 
      * @return the active value.
      */
     public Boolean active() {
@@ -217,7 +221,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the active property: True if deployment is currently active, false if completed and null if not started.
-     *
+     * 
      * @param active the active value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -228,7 +232,7 @@ public final class DeploymentProperties {
 
     /**
      * Get the details property: Details on deployment.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -237,7 +241,7 @@ public final class DeploymentProperties {
 
     /**
      * Set the details property: Details on deployment.
-     *
+     * 
      * @param details the details value to set.
      * @return the DeploymentProperties object itself.
      */
@@ -248,9 +252,73 @@ public final class DeploymentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("status", this.status);
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("author", this.author);
+        jsonWriter.writeStringField("deployer", this.deployer);
+        jsonWriter.writeStringField("author_email", this.authorEmail);
+        jsonWriter.writeStringField("start_time",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("end_time",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeBooleanField("active", this.active);
+        jsonWriter.writeStringField("details", this.details);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeploymentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeploymentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeploymentProperties.
+     */
+    public static DeploymentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeploymentProperties deserializedDeploymentProperties = new DeploymentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedDeploymentProperties.status = reader.getNullable(JsonReader::getInt);
+                } else if ("message".equals(fieldName)) {
+                    deserializedDeploymentProperties.message = reader.getString();
+                } else if ("author".equals(fieldName)) {
+                    deserializedDeploymentProperties.author = reader.getString();
+                } else if ("deployer".equals(fieldName)) {
+                    deserializedDeploymentProperties.deployer = reader.getString();
+                } else if ("author_email".equals(fieldName)) {
+                    deserializedDeploymentProperties.authorEmail = reader.getString();
+                } else if ("start_time".equals(fieldName)) {
+                    deserializedDeploymentProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("end_time".equals(fieldName)) {
+                    deserializedDeploymentProperties.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("active".equals(fieldName)) {
+                    deserializedDeploymentProperties.active = reader.getNullable(JsonReader::getBoolean);
+                } else if ("details".equals(fieldName)) {
+                    deserializedDeploymentProperties.details = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeploymentProperties;
+        });
     }
 }

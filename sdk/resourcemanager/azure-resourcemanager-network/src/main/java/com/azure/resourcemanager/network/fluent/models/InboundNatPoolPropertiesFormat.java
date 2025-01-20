@@ -7,50 +7,50 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of Inbound NAT pool. */
+/**
+ * Properties of Inbound NAT pool.
+ */
 @Fluent
-public final class InboundNatPoolPropertiesFormat {
+public final class InboundNatPoolPropertiesFormat implements JsonSerializable<InboundNatPoolPropertiesFormat> {
     /*
      * A reference to frontend IP addresses.
      */
-    @JsonProperty(value = "frontendIPConfiguration")
     private SubResource frontendIpConfiguration;
 
     /*
      * The reference to the transport protocol used by the inbound NAT pool.
      */
-    @JsonProperty(value = "protocol", required = true)
     private TransportProtocol protocol;
 
     /*
      * The first port number in the range of external ports that will be used to provide Inbound Nat to NICs associated
      * with a load balancer. Acceptable values range between 1 and 65534.
      */
-    @JsonProperty(value = "frontendPortRangeStart", required = true)
     private int frontendPortRangeStart;
 
     /*
      * The last port number in the range of external ports that will be used to provide Inbound Nat to NICs associated
      * with a load balancer. Acceptable values range between 1 and 65535.
      */
-    @JsonProperty(value = "frontendPortRangeEnd", required = true)
     private int frontendPortRangeEnd;
 
     /*
      * The port used for internal connections on the endpoint. Acceptable values are between 1 and 65535.
      */
-    @JsonProperty(value = "backendPort", required = true)
     private int backendPort;
 
     /*
      * The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4
      * minutes. This element is only used when the protocol is set to TCP.
      */
-    @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /*
@@ -58,29 +58,28 @@ public final class InboundNatPoolPropertiesFormat {
      * Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This
      * setting can't be changed after you create the endpoint.
      */
-    @JsonProperty(value = "enableFloatingIP")
     private Boolean enableFloatingIp;
 
     /*
      * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is
      * only used when the protocol is set to TCP.
      */
-    @JsonProperty(value = "enableTcpReset")
     private Boolean enableTcpReset;
 
     /*
      * The provisioning state of the inbound NAT pool resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of InboundNatPoolPropertiesFormat class. */
+    /**
+     * Creates an instance of InboundNatPoolPropertiesFormat class.
+     */
     public InboundNatPoolPropertiesFormat() {
     }
 
     /**
      * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
-     *
+     * 
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -89,7 +88,7 @@ public final class InboundNatPoolPropertiesFormat {
 
     /**
      * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
-     *
+     * 
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
      */
@@ -100,7 +99,7 @@ public final class InboundNatPoolPropertiesFormat {
 
     /**
      * Get the protocol property: The reference to the transport protocol used by the inbound NAT pool.
-     *
+     * 
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -109,7 +108,7 @@ public final class InboundNatPoolPropertiesFormat {
 
     /**
      * Set the protocol property: The reference to the transport protocol used by the inbound NAT pool.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
      */
@@ -121,7 +120,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Get the frontendPortRangeStart property: The first port number in the range of external ports that will be used
      * to provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65534.
-     *
+     * 
      * @return the frontendPortRangeStart value.
      */
     public int frontendPortRangeStart() {
@@ -131,7 +130,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Set the frontendPortRangeStart property: The first port number in the range of external ports that will be used
      * to provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65534.
-     *
+     * 
      * @param frontendPortRangeStart the frontendPortRangeStart value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
      */
@@ -143,7 +142,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Get the frontendPortRangeEnd property: The last port number in the range of external ports that will be used to
      * provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65535.
-     *
+     * 
      * @return the frontendPortRangeEnd value.
      */
     public int frontendPortRangeEnd() {
@@ -153,7 +152,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Set the frontendPortRangeEnd property: The last port number in the range of external ports that will be used to
      * provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65535.
-     *
+     * 
      * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
      */
@@ -165,7 +164,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Get the backendPort property: The port used for internal connections on the endpoint. Acceptable values are
      * between 1 and 65535.
-     *
+     * 
      * @return the backendPort value.
      */
     public int backendPort() {
@@ -175,7 +174,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Set the backendPort property: The port used for internal connections on the endpoint. Acceptable values are
      * between 1 and 65535.
-     *
+     * 
      * @param backendPort the backendPort value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
      */
@@ -187,7 +186,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Get the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
      * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -197,7 +196,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Set the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
      * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
      */
@@ -210,7 +209,7 @@ public final class InboundNatPoolPropertiesFormat {
      * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
-     *
+     * 
      * @return the enableFloatingIp value.
      */
     public Boolean enableFloatingIp() {
@@ -221,7 +220,7 @@ public final class InboundNatPoolPropertiesFormat {
      * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
-     *
+     * 
      * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
      */
@@ -233,7 +232,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
      * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
@@ -243,7 +242,7 @@ public final class InboundNatPoolPropertiesFormat {
     /**
      * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
      * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @param enableTcpReset the enableTcpReset value to set.
      * @return the InboundNatPoolPropertiesFormat object itself.
      */
@@ -254,7 +253,7 @@ public final class InboundNatPoolPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the inbound NAT pool resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -263,17 +262,82 @@ public final class InboundNatPoolPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property protocol in model InboundNatPoolPropertiesFormat"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property protocol in model InboundNatPoolPropertiesFormat"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InboundNatPoolPropertiesFormat.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeIntField("frontendPortRangeStart", this.frontendPortRangeStart);
+        jsonWriter.writeIntField("frontendPortRangeEnd", this.frontendPortRangeEnd);
+        jsonWriter.writeIntField("backendPort", this.backendPort);
+        jsonWriter.writeJsonField("frontendIPConfiguration", this.frontendIpConfiguration);
+        jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
+        jsonWriter.writeBooleanField("enableFloatingIP", this.enableFloatingIp);
+        jsonWriter.writeBooleanField("enableTcpReset", this.enableTcpReset);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundNatPoolPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundNatPoolPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InboundNatPoolPropertiesFormat.
+     */
+    public static InboundNatPoolPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InboundNatPoolPropertiesFormat deserializedInboundNatPoolPropertiesFormat
+                = new InboundNatPoolPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocol".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.protocol
+                        = TransportProtocol.fromString(reader.getString());
+                } else if ("frontendPortRangeStart".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.frontendPortRangeStart = reader.getInt();
+                } else if ("frontendPortRangeEnd".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.frontendPortRangeEnd = reader.getInt();
+                } else if ("backendPort".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.backendPort = reader.getInt();
+                } else if ("frontendIPConfiguration".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.frontendIpConfiguration = SubResource.fromJson(reader);
+                } else if ("idleTimeoutInMinutes".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.idleTimeoutInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("enableFloatingIP".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.enableFloatingIp
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableTcpReset".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.enableTcpReset
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedInboundNatPoolPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInboundNatPoolPropertiesFormat;
+        });
+    }
 }

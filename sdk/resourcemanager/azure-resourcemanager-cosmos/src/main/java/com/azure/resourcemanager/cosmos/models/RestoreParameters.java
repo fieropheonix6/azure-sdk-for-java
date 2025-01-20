@@ -5,41 +5,49 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Parameters to indicate the information about the restore. */
+/**
+ * Parameters to indicate the information about the restore.
+ */
 @Fluent
-public final class RestoreParameters {
+public final class RestoreParameters extends RestoreParametersBase {
     /*
      * Describes the mode of the restore.
      */
-    @JsonProperty(value = "restoreMode")
     private RestoreMode restoreMode;
-
-    /*
-     * The id of the restorable database account from which the restore has to be initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}
-     */
-    @JsonProperty(value = "restoreSource")
-    private String restoreSource;
-
-    /*
-     * Time to which the account has to be restored (ISO-8601 format).
-     */
-    @JsonProperty(value = "restoreTimestampInUtc")
-    private OffsetDateTime restoreTimestampInUtc;
 
     /*
      * List of specific databases available for restore.
      */
-    @JsonProperty(value = "databasesToRestore")
     private List<DatabaseRestoreResource> databasesToRestore;
+
+    /*
+     * List of specific gremlin databases available for restore.
+     */
+    private List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore;
+
+    /*
+     * List of specific tables available for restore.
+     */
+    private List<String> tablesToRestore;
+
+    /**
+     * Creates an instance of RestoreParameters class.
+     */
+    public RestoreParameters() {
+    }
 
     /**
      * Get the restoreMode property: Describes the mode of the restore.
-     *
+     * 
      * @return the restoreMode value.
      */
     public RestoreMode restoreMode() {
@@ -48,7 +56,7 @@ public final class RestoreParameters {
 
     /**
      * Set the restoreMode property: Describes the mode of the restore.
-     *
+     * 
      * @param restoreMode the restoreMode value to set.
      * @return the RestoreParameters object itself.
      */
@@ -58,52 +66,8 @@ public final class RestoreParameters {
     }
 
     /**
-     * Get the restoreSource property: The id of the restorable database account from which the restore has to be
-     * initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     *
-     * @return the restoreSource value.
-     */
-    public String restoreSource() {
-        return this.restoreSource;
-    }
-
-    /**
-     * Set the restoreSource property: The id of the restorable database account from which the restore has to be
-     * initiated. For example:
-     * /subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{restorableDatabaseAccountName}.
-     *
-     * @param restoreSource the restoreSource value to set.
-     * @return the RestoreParameters object itself.
-     */
-    public RestoreParameters withRestoreSource(String restoreSource) {
-        this.restoreSource = restoreSource;
-        return this;
-    }
-
-    /**
-     * Get the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     *
-     * @return the restoreTimestampInUtc value.
-     */
-    public OffsetDateTime restoreTimestampInUtc() {
-        return this.restoreTimestampInUtc;
-    }
-
-    /**
-     * Set the restoreTimestampInUtc property: Time to which the account has to be restored (ISO-8601 format).
-     *
-     * @param restoreTimestampInUtc the restoreTimestampInUtc value to set.
-     * @return the RestoreParameters object itself.
-     */
-    public RestoreParameters withRestoreTimestampInUtc(OffsetDateTime restoreTimestampInUtc) {
-        this.restoreTimestampInUtc = restoreTimestampInUtc;
-        return this;
-    }
-
-    /**
      * Get the databasesToRestore property: List of specific databases available for restore.
-     *
+     * 
      * @return the databasesToRestore value.
      */
     public List<DatabaseRestoreResource> databasesToRestore() {
@@ -112,7 +76,7 @@ public final class RestoreParameters {
 
     /**
      * Set the databasesToRestore property: List of specific databases available for restore.
-     *
+     * 
      * @param databasesToRestore the databasesToRestore value to set.
      * @return the RestoreParameters object itself.
      */
@@ -122,13 +86,152 @@ public final class RestoreParameters {
     }
 
     /**
+     * Get the gremlinDatabasesToRestore property: List of specific gremlin databases available for restore.
+     * 
+     * @return the gremlinDatabasesToRestore value.
+     */
+    public List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore() {
+        return this.gremlinDatabasesToRestore;
+    }
+
+    /**
+     * Set the gremlinDatabasesToRestore property: List of specific gremlin databases available for restore.
+     * 
+     * @param gremlinDatabasesToRestore the gremlinDatabasesToRestore value to set.
+     * @return the RestoreParameters object itself.
+     */
+    public RestoreParameters
+        withGremlinDatabasesToRestore(List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore) {
+        this.gremlinDatabasesToRestore = gremlinDatabasesToRestore;
+        return this;
+    }
+
+    /**
+     * Get the tablesToRestore property: List of specific tables available for restore.
+     * 
+     * @return the tablesToRestore value.
+     */
+    public List<String> tablesToRestore() {
+        return this.tablesToRestore;
+    }
+
+    /**
+     * Set the tablesToRestore property: List of specific tables available for restore.
+     * 
+     * @param tablesToRestore the tablesToRestore value to set.
+     * @return the RestoreParameters object itself.
+     */
+    public RestoreParameters withTablesToRestore(List<String> tablesToRestore) {
+        this.tablesToRestore = tablesToRestore;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestoreParameters withRestoreSource(String restoreSource) {
+        super.withRestoreSource(restoreSource);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestoreParameters withRestoreTimestampInUtc(OffsetDateTime restoreTimestampInUtc) {
+        super.withRestoreTimestampInUtc(restoreTimestampInUtc);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public RestoreParameters withRestoreWithTtlDisabled(Boolean restoreWithTtlDisabled) {
+        super.withRestoreWithTtlDisabled(restoreWithTtlDisabled);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (databasesToRestore() != null) {
             databasesToRestore().forEach(e -> e.validate());
         }
+        if (gremlinDatabasesToRestore() != null) {
+            gremlinDatabasesToRestore().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("restoreSource", restoreSource());
+        jsonWriter.writeStringField("restoreTimestampInUtc",
+            restoreTimestampInUtc() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(restoreTimestampInUtc()));
+        jsonWriter.writeBooleanField("restoreWithTtlDisabled", restoreWithTtlDisabled());
+        jsonWriter.writeStringField("restoreMode", this.restoreMode == null ? null : this.restoreMode.toString());
+        jsonWriter.writeArrayField("databasesToRestore", this.databasesToRestore,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("gremlinDatabasesToRestore", this.gremlinDatabasesToRestore,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("tablesToRestore", this.tablesToRestore,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestoreParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestoreParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestoreParameters.
+     */
+    public static RestoreParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestoreParameters deserializedRestoreParameters = new RestoreParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restoreSource".equals(fieldName)) {
+                    deserializedRestoreParameters.withRestoreSource(reader.getString());
+                } else if ("restoreTimestampInUtc".equals(fieldName)) {
+                    deserializedRestoreParameters.withRestoreTimestampInUtc(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("restoreWithTtlDisabled".equals(fieldName)) {
+                    deserializedRestoreParameters
+                        .withRestoreWithTtlDisabled(reader.getNullable(JsonReader::getBoolean));
+                } else if ("restoreMode".equals(fieldName)) {
+                    deserializedRestoreParameters.restoreMode = RestoreMode.fromString(reader.getString());
+                } else if ("databasesToRestore".equals(fieldName)) {
+                    List<DatabaseRestoreResource> databasesToRestore
+                        = reader.readArray(reader1 -> DatabaseRestoreResource.fromJson(reader1));
+                    deserializedRestoreParameters.databasesToRestore = databasesToRestore;
+                } else if ("gremlinDatabasesToRestore".equals(fieldName)) {
+                    List<GremlinDatabaseRestoreResource> gremlinDatabasesToRestore
+                        = reader.readArray(reader1 -> GremlinDatabaseRestoreResource.fromJson(reader1));
+                    deserializedRestoreParameters.gremlinDatabasesToRestore = gremlinDatabasesToRestore;
+                } else if ("tablesToRestore".equals(fieldName)) {
+                    List<String> tablesToRestore = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRestoreParameters.tablesToRestore = tablesToRestore;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestoreParameters;
+        });
     }
 }

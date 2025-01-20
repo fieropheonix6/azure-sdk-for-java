@@ -10,28 +10,27 @@ import com.azure.resourcemanager.machinelearning.models.PartialManagedServiceIde
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialManagedServiceIdentityTests {
-    @Test
-    public void testDeserialize() {
-        PartialManagedServiceIdentity model =
-            BinaryData
-                .fromString("{\"type\":\"None\",\"userAssignedIdentities\":{\"dtmhrkwofyyvoqa\":\"dataibahwflus\"}}")
-                .toObject(PartialManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PartialManagedServiceIdentity model = BinaryData.fromString(
+            "{\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"sqqw\":\"dataclafzvaylpt\",\"waxfewzjkj\":\"datatcmwqkchc\",\"ksh\":\"dataxfdeqvhpsyl\",\"rgywwp\":\"databffmbmxz\"}}")
+            .toObject(PartialManagedServiceIdentity.class);
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        PartialManagedServiceIdentity model =
-            new PartialManagedServiceIdentity()
-                .withType(ManagedServiceIdentityType.NONE)
-                .withUserAssignedIdentities(mapOf("dtmhrkwofyyvoqa", "dataibahwflus"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PartialManagedServiceIdentity model
+            = new PartialManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("sqqw", "dataclafzvaylpt", "waxfewzjkj", "datatcmwqkchc", "ksh",
+                    "dataxfdeqvhpsyl", "rgywwp", "databffmbmxz"));
         model = BinaryData.fromObject(model).toObject(PartialManagedServiceIdentity.class);
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.type());
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

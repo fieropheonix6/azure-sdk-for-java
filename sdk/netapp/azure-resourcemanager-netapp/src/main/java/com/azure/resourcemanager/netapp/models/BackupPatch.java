@@ -5,100 +5,41 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.netapp.fluent.models.BackupProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
-import java.util.Map;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.netapp.fluent.models.BackupPatchProperties;
+import java.io.IOException;
 
-/** Backup patch. */
+/**
+ * Backup patch.
+ */
 @Fluent
-public final class BackupPatch {
+public final class BackupPatch implements JsonSerializable<BackupPatch> {
     /*
-     * Resource tags
+     * Backup Patch Properties
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
-    private Map<String, String> tags;
-
-    /*
-     * Backup Properties
-     */
-    @JsonProperty(value = "properties")
-    private BackupProperties innerProperties;
+    private BackupPatchProperties innerProperties;
 
     /**
-     * Get the tags property: Resource tags.
-     *
-     * @return the tags value.
+     * Creates an instance of BackupPatch class.
      */
-    public Map<String, String> tags() {
-        return this.tags;
+    public BackupPatch() {
     }
 
     /**
-     * Set the tags property: Resource tags.
-     *
-     * @param tags the tags value to set.
-     * @return the BackupPatch object itself.
-     */
-    public BackupPatch withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the innerProperties property: Backup Properties.
-     *
+     * Get the innerProperties property: Backup Patch Properties.
+     * 
      * @return the innerProperties value.
      */
-    private BackupProperties innerProperties() {
+    private BackupPatchProperties innerProperties() {
         return this.innerProperties;
     }
 
     /**
-     * Get the backupId property: backupId
-     *
-     * <p>UUID v4 used to identify the Backup.
-     *
-     * @return the backupId value.
-     */
-    public String backupId() {
-        return this.innerProperties() == null ? null : this.innerProperties().backupId();
-    }
-
-    /**
-     * Get the creationDate property: creationDate
-     *
-     * <p>The creation date of the backup.
-     *
-     * @return the creationDate value.
-     */
-    public OffsetDateTime creationDate() {
-        return this.innerProperties() == null ? null : this.innerProperties().creationDate();
-    }
-
-    /**
-     * Get the provisioningState property: Azure lifecycle management.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
-    }
-
-    /**
-     * Get the size property: Size of backup.
-     *
-     * @return the size value.
-     */
-    public Long size() {
-        return this.innerProperties() == null ? null : this.innerProperties().size();
-    }
-
-    /**
      * Get the label property: Label for backup.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -107,80 +48,62 @@ public final class BackupPatch {
 
     /**
      * Set the label property: Label for backup.
-     *
+     * 
      * @param label the label value to set.
      * @return the BackupPatch object itself.
      */
     public BackupPatch withLabel(String label) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new BackupProperties();
+            this.innerProperties = new BackupPatchProperties();
         }
         this.innerProperties().withLabel(label);
         return this;
     }
 
     /**
-     * Get the backupType property: backupType
-     *
-     * <p>Type of backup Manual or Scheduled.
-     *
-     * @return the backupType value.
-     */
-    public BackupType backupType() {
-        return this.innerProperties() == null ? null : this.innerProperties().backupType();
-    }
-
-    /**
-     * Get the failureReason property: Failure reason.
-     *
-     * @return the failureReason value.
-     */
-    public String failureReason() {
-        return this.innerProperties() == null ? null : this.innerProperties().failureReason();
-    }
-
-    /**
-     * Get the volumeName property: Volume name.
-     *
-     * @return the volumeName value.
-     */
-    public String volumeName() {
-        return this.innerProperties() == null ? null : this.innerProperties().volumeName();
-    }
-
-    /**
-     * Get the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
-     * scheduled backups and true/false for manual backups.
-     *
-     * @return the useExistingSnapshot value.
-     */
-    public Boolean useExistingSnapshot() {
-        return this.innerProperties() == null ? null : this.innerProperties().useExistingSnapshot();
-    }
-
-    /**
-     * Set the useExistingSnapshot property: Manual backup an already existing snapshot. This will always be false for
-     * scheduled backups and true/false for manual backups.
-     *
-     * @param useExistingSnapshot the useExistingSnapshot value to set.
-     * @return the BackupPatch object itself.
-     */
-    public BackupPatch withUseExistingSnapshot(Boolean useExistingSnapshot) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new BackupProperties();
-        }
-        this.innerProperties().withUseExistingSnapshot(useExistingSnapshot);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupPatch if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupPatch.
+     */
+    public static BackupPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupPatch deserializedBackupPatch = new BackupPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedBackupPatch.innerProperties = BackupPatchProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupPatch;
+        });
     }
 }

@@ -5,27 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Object with a list of the resources that need to be moved and the resource group they should be moved to. */
+/**
+ * Object with a list of the resources that need to be moved and the resource group they should be moved to.
+ */
 @Fluent
-public final class CsmMoveResourceEnvelope {
+public final class CsmMoveResourceEnvelope implements JsonSerializable<CsmMoveResourceEnvelope> {
     /*
      * The targetResourceGroup property.
      */
-    @JsonProperty(value = "targetResourceGroup")
     private String targetResourceGroup;
 
     /*
      * The resources property.
      */
-    @JsonProperty(value = "resources")
     private List<String> resources;
 
     /**
+     * Creates an instance of CsmMoveResourceEnvelope class.
+     */
+    public CsmMoveResourceEnvelope() {
+    }
+
+    /**
      * Get the targetResourceGroup property: The targetResourceGroup property.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -34,7 +44,7 @@ public final class CsmMoveResourceEnvelope {
 
     /**
      * Set the targetResourceGroup property: The targetResourceGroup property.
-     *
+     * 
      * @param targetResourceGroup the targetResourceGroup value to set.
      * @return the CsmMoveResourceEnvelope object itself.
      */
@@ -45,7 +55,7 @@ public final class CsmMoveResourceEnvelope {
 
     /**
      * Get the resources property: The resources property.
-     *
+     * 
      * @return the resources value.
      */
     public List<String> resources() {
@@ -54,7 +64,7 @@ public final class CsmMoveResourceEnvelope {
 
     /**
      * Set the resources property: The resources property.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the CsmMoveResourceEnvelope object itself.
      */
@@ -65,9 +75,49 @@ public final class CsmMoveResourceEnvelope {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("targetResourceGroup", this.targetResourceGroup);
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CsmMoveResourceEnvelope from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CsmMoveResourceEnvelope if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CsmMoveResourceEnvelope.
+     */
+    public static CsmMoveResourceEnvelope fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CsmMoveResourceEnvelope deserializedCsmMoveResourceEnvelope = new CsmMoveResourceEnvelope();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("targetResourceGroup".equals(fieldName)) {
+                    deserializedCsmMoveResourceEnvelope.targetResourceGroup = reader.getString();
+                } else if ("resources".equals(fieldName)) {
+                    List<String> resources = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCsmMoveResourceEnvelope.resources = resources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCsmMoveResourceEnvelope;
+        });
     }
 }

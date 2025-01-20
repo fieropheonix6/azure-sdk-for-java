@@ -24,32 +24,44 @@ public final class EmailTemplatesImpl implements EmailTemplates {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public EmailTemplatesImpl(
-        EmailTemplatesClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public EmailTemplatesImpl(EmailTemplatesClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<EmailTemplateContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<EmailTemplateContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new EmailTemplateContractImpl(inner1, this.manager()));
+        PagedIterable<EmailTemplateContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailTemplateContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<EmailTemplateContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
-        PagedIterable<EmailTemplateContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new EmailTemplateContractImpl(inner1, this.manager()));
+    public PagedIterable<EmailTemplateContract> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<EmailTemplateContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new EmailTemplateContractImpl(inner1, this.manager()));
+    }
+
+    public EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        TemplateName templateName, Context context) {
+        return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, templateName, context);
     }
 
     public void getEntityTag(String resourceGroupName, String serviceName, TemplateName templateName) {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, templateName);
     }
 
-    public EmailTemplatesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, TemplateName templateName, Context context) {
-        return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, templateName, context);
+    public Response<EmailTemplateContract> getWithResponse(String resourceGroupName, String serviceName,
+        TemplateName templateName, Context context) {
+        EmailTemplatesGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, templateName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EmailTemplateContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EmailTemplateContract get(String resourceGroupName, String serviceName, TemplateName templateName) {
@@ -61,132 +73,93 @@ public final class EmailTemplatesImpl implements EmailTemplates {
         }
     }
 
-    public Response<EmailTemplateContract> getWithResponse(
-        String resourceGroupName, String serviceName, TemplateName templateName, Context context) {
-        EmailTemplatesGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, templateName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EmailTemplateContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, TemplateName templateName,
+        String ifMatch, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, templateName, ifMatch, context);
     }
 
     public void delete(String resourceGroupName, String serviceName, TemplateName templateName, String ifMatch) {
         this.serviceClient().delete(resourceGroupName, serviceName, templateName, ifMatch);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, TemplateName templateName, String ifMatch, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, templateName, ifMatch, context);
-    }
-
     public EmailTemplateContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        TemplateName templateName = TemplateName.fromString(Utils.getValueFromIdByName(id, "templates"));
-        if (templateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
+        String templateNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "templates");
+        if (templateNameLocal == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
         }
+        TemplateName templateName = TemplateName.fromString(templateNameLocal);
         return this.getWithResponse(resourceGroupName, serviceName, templateName, Context.NONE).getValue();
     }
 
     public Response<EmailTemplateContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        TemplateName templateName = TemplateName.fromString(Utils.getValueFromIdByName(id, "templates"));
-        if (templateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
+        String templateNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "templates");
+        if (templateNameLocal == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
         }
+        TemplateName templateName = TemplateName.fromString(templateNameLocal);
         return this.getWithResponse(resourceGroupName, serviceName, templateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        TemplateName templateName = TemplateName.fromString(Utils.getValueFromIdByName(id, "templates"));
-        if (templateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
+        String templateNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "templates");
+        if (templateNameLocal == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
         }
+        TemplateName templateName = TemplateName.fromString(templateNameLocal);
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, templateName, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        TemplateName templateName = TemplateName.fromString(Utils.getValueFromIdByName(id, "templates"));
-        if (templateName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
+        String templateNameLocal = ResourceManagerUtils.getValueFromIdByName(id, "templates");
+        if (templateNameLocal == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'templates'.", id)));
         }
+        TemplateName templateName = TemplateName.fromString(templateNameLocal);
         return this.deleteWithResponse(resourceGroupName, serviceName, templateName, ifMatch, context);
     }
 

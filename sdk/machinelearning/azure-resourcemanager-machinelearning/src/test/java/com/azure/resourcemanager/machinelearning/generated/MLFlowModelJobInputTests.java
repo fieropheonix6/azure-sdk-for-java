@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.InputDeliveryMode;
 import com.azure.resourcemanager.machinelearning.models.MLFlowModelJobInput;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MLFlowModelJobInputTests {
-    @Test
-    public void testDeserialize() {
-        MLFlowModelJobInput model =
-            BinaryData
-                .fromString(
-                    "{\"jobInputType\":\"mlflow_model\",\"mode\":\"Direct\",\"uri\":\"vdmvxadqa\",\"description\":\"rgnawbabgfbk\"}")
-                .toObject(MLFlowModelJobInput.class);
-        Assertions.assertEquals("rgnawbabgfbk", model.description());
-        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("vdmvxadqa", model.uri());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        MLFlowModelJobInput model = BinaryData.fromString(
+            "{\"jobInputType\":\"mlflow_model\",\"uri\":\"hximkgfmxpq\",\"mode\":\"ReadWriteMount\",\"description\":\"yriwnto\"}")
+            .toObject(MLFlowModelJobInput.class);
+        Assertions.assertEquals("yriwnto", model.description());
+        Assertions.assertEquals("hximkgfmxpq", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 
-    @Test
-    public void testSerialize() {
-        MLFlowModelJobInput model =
-            new MLFlowModelJobInput()
-                .withDescription("rgnawbabgfbk")
-                .withMode(InputDeliveryMode.DIRECT)
-                .withUri("vdmvxadqa");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        MLFlowModelJobInput model = new MLFlowModelJobInput().withDescription("yriwnto")
+            .withUri("hximkgfmxpq")
+            .withMode(InputDeliveryMode.READ_WRITE_MOUNT);
         model = BinaryData.fromObject(model).toObject(MLFlowModelJobInput.class);
-        Assertions.assertEquals("rgnawbabgfbk", model.description());
-        Assertions.assertEquals(InputDeliveryMode.DIRECT, model.mode());
-        Assertions.assertEquals("vdmvxadqa", model.uri());
+        Assertions.assertEquals("yriwnto", model.description());
+        Assertions.assertEquals("hximkgfmxpq", model.uri());
+        Assertions.assertEquals(InputDeliveryMode.READ_WRITE_MOUNT, model.mode());
     }
 }

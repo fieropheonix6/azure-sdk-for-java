@@ -3,13 +3,15 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.EnumWithPackagePrivateCtor;
+import com.azure.core.implementation.ReflectionUtils;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import wiremock.com.google.common.base.Objects;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -30,13 +32,36 @@ public class ExpandableStringEnumTests {
     }
 
     /**
-     * Tests that a {@code private} {@link ExpandableStringEnum} class will always return {@code null}.
+     * Tests that a private {@link ExpandableStringEnum} class will return {@code null} on Java 9+
      */
     @Test
-    public void privateStringEnumAlwaysReturnsNull() {
-        assertNull(PrivateStringEnum.fromString("test"));
-        assertNull(PrivateStringEnum.fromString("anotherTest"));
-        assertNull(PrivateStringEnum.fromString("finalTest"));
+    public void privateStringEnumDifferentPackageInCoreAlwaysReturnsNull() {
+        if (ReflectionUtils.isModuleBased()) {
+            // on Java 9+, when enum impl is in the core module, we use MethodHandles.lookup
+            // which does not provide access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
+            // from com.azure.core.implementation.ExpandableStringEnum
+            //
+            // but if it was in a different module, which is open to core, we would be able to access it
+            assertNull(PrivateStringEnum.fromString("test"));
+            assertNull(PrivateStringEnum.fromString("anotherTest"));
+            assertNull(PrivateStringEnum.fromString("finalTest"));
+        } else {
+            // Java 8 does not work with modules, we always use private lookups there
+            // and therefore can access com.azure.core.util.ExpandableStringEnumTests.PrivateStringEnum
+            // from com.azure.core.implementation.ExpandableStringEnum
+            assertEquals("java8", PrivateStringEnum.fromString("java8").toString());
+        }
+    }
+
+    /**
+     * Tests that a same package, package-private {@link ExpandableStringEnum} class will always return non-null value
+     */
+    @Test
+    public void privateStringEnumSamePackageInCoreReturnsValue() {
+        // EnumWithPackagePrivateCtor is in the same package as ExpandableStringEnum
+        assertEquals("test", EnumWithPackagePrivateCtor.fromString("test").toString());
+        assertEquals("anotherTest", EnumWithPackagePrivateCtor.fromString("anotherTest").toString());
+        assertEquals("finalTest", EnumWithPackagePrivateCtor.fromString("finalTest").toString());
     }
 
     /**
@@ -61,7 +86,7 @@ public class ExpandableStringEnumTests {
      */
     @Test
     public void validateHashCode() {
-        assertEquals(Objects.hashCode(TestStringEnum.class, "test"), TestStringEnum.fromString("test").hashCode());
+        assertEquals(Objects.hash(TestStringEnum.class, "test"), TestStringEnum.fromString("test").hashCode());
     }
 
     /**
@@ -77,14 +102,11 @@ public class ExpandableStringEnumTests {
         TestStringEnum testStringEnum = TestStringEnum.fromString("test");
         TestStringEnum2 testStringEnum2 = TestStringEnum2.fromString("test");
 
-        return Stream.of(
-            Arguments.of(testStringEnum, null, false),
-            Arguments.of(testStringEnum, testStringEnum2, false),
-            Arguments.of(testStringEnum, testStringEnum, true),
+        return Stream.of(Arguments.of(testStringEnum, null, false),
+            Arguments.of(testStringEnum, testStringEnum2, false), Arguments.of(testStringEnum, testStringEnum, true),
             Arguments.of(testStringEnum2, testStringEnum2, true),
             Arguments.of(testStringEnum, TestStringEnum.fromString("test"), true),
-            Arguments.of(testStringEnum, TestStringEnum.fromString("test2"), false)
-        );
+            Arguments.of(testStringEnum, TestStringEnum.fromString("test2"), false));
     }
 
     public static final class TestStringEnum extends ExpandableStringEnum<TestStringEnum> {
@@ -107,9 +129,9 @@ public class ExpandableStringEnumTests {
         }
     }
 
-    private static final class PrivateStringEnum extends ExpandableStringEnum<PrivateStringEnum> {
+    public static final class PrivateStringEnum extends ExpandableStringEnum<PrivateStringEnum> {
         @Deprecated
-        private PrivateStringEnum() {
+        PrivateStringEnum() {
         }
 
         static PrivateStringEnum fromString(String name) {

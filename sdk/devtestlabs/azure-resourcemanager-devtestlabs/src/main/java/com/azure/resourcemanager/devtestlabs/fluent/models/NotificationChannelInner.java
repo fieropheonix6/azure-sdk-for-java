@@ -5,211 +5,99 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.Event;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** A notification. */
-@JsonFlatten
+/**
+ * A notification.
+ */
 @Fluent
-public class NotificationChannelInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationChannelInner.class);
+public final class NotificationChannelInner extends Resource {
+    /*
+     * The properties of the resource.
+     */
+    private NotificationChannelProperties innerProperties = new NotificationChannelProperties();
 
     /*
-     * The webhook URL to send notifications to.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.webHookUrl")
-    private String webhookUrl;
+    private String type;
 
     /*
-     * The email recipient to send notifications to (can be a list of
-     * semi-colon separated email addresses).
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.emailRecipient")
-    private String emailRecipient;
+    private String name;
 
     /*
-     * The locale to use when sending a notification (fallback for unsupported
-     * languages is EN).
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.notificationLocale")
-    private String notificationLocale;
-
-    /*
-     * Description of notification.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
-
-    /*
-     * The list of event for which this notification is enabled.
-     */
-    @JsonProperty(value = "properties.events")
-    private List<Event> events;
-
-    /*
-     * The creation date of the notification channel.
-     */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    private String id;
 
     /**
-     * Get the webhookUrl property: The webhook URL to send notifications to.
-     *
-     * @return the webhookUrl value.
+     * Creates an instance of NotificationChannelInner class.
      */
-    public String webhookUrl() {
-        return this.webhookUrl;
+    public NotificationChannelInner() {
     }
 
     /**
-     * Set the webhookUrl property: The webhook URL to send notifications to.
-     *
-     * @param webhookUrl the webhookUrl value to set.
-     * @return the NotificationChannelInner object itself.
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
      */
-    public NotificationChannelInner withWebhookUrl(String webhookUrl) {
-        this.webhookUrl = webhookUrl;
-        return this;
+    private NotificationChannelProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the emailRecipient property: The email recipient to send notifications to (can be a list of semi-colon
-     * separated email addresses).
-     *
-     * @return the emailRecipient value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String emailRecipient() {
-        return this.emailRecipient;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the emailRecipient property: The email recipient to send notifications to (can be a list of semi-colon
-     * separated email addresses).
-     *
-     * @param emailRecipient the emailRecipient value to set.
-     * @return the NotificationChannelInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public NotificationChannelInner withEmailRecipient(String emailRecipient) {
-        this.emailRecipient = emailRecipient;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the notificationLocale property: The locale to use when sending a notification (fallback for unsupported
-     * languages is EN).
-     *
-     * @return the notificationLocale value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String notificationLocale() {
-        return this.notificationLocale;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the notificationLocale property: The locale to use when sending a notification (fallback for unsupported
-     * languages is EN).
-     *
-     * @param notificationLocale the notificationLocale value to set.
-     * @return the NotificationChannelInner object itself.
+     * {@inheritDoc}
      */
-    public NotificationChannelInner withNotificationLocale(String notificationLocale) {
-        this.notificationLocale = notificationLocale;
-        return this;
-    }
-
-    /**
-     * Get the description property: Description of notification.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.description;
-    }
-
-    /**
-     * Set the description property: Description of notification.
-     *
-     * @param description the description value to set.
-     * @return the NotificationChannelInner object itself.
-     */
-    public NotificationChannelInner withDescription(String description) {
-        this.description = description;
-        return this;
-    }
-
-    /**
-     * Get the events property: The list of event for which this notification is enabled.
-     *
-     * @return the events value.
-     */
-    public List<Event> events() {
-        return this.events;
-    }
-
-    /**
-     * Set the events property: The list of event for which this notification is enabled.
-     *
-     * @param events the events value to set.
-     * @return the NotificationChannelInner object itself.
-     */
-    public NotificationChannelInner withEvents(List<Event> events) {
-        this.events = events;
-        return this;
-    }
-
-    /**
-     * Get the createdDate property: The creation date of the notification channel.
-     *
-     * @return the createdDate value.
-     */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public NotificationChannelInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NotificationChannelInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -217,13 +105,216 @@ public class NotificationChannelInner extends Resource {
     }
 
     /**
+     * Get the webhookUrl property: The webhook URL to send notifications to.
+     * 
+     * @return the webhookUrl value.
+     */
+    public String webhookUrl() {
+        return this.innerProperties() == null ? null : this.innerProperties().webhookUrl();
+    }
+
+    /**
+     * Set the webhookUrl property: The webhook URL to send notifications to.
+     * 
+     * @param webhookUrl the webhookUrl value to set.
+     * @return the NotificationChannelInner object itself.
+     */
+    public NotificationChannelInner withWebhookUrl(String webhookUrl) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationChannelProperties();
+        }
+        this.innerProperties().withWebhookUrl(webhookUrl);
+        return this;
+    }
+
+    /**
+     * Get the emailRecipient property: The email recipient to send notifications to (can be a list of semi-colon
+     * separated email addresses).
+     * 
+     * @return the emailRecipient value.
+     */
+    public String emailRecipient() {
+        return this.innerProperties() == null ? null : this.innerProperties().emailRecipient();
+    }
+
+    /**
+     * Set the emailRecipient property: The email recipient to send notifications to (can be a list of semi-colon
+     * separated email addresses).
+     * 
+     * @param emailRecipient the emailRecipient value to set.
+     * @return the NotificationChannelInner object itself.
+     */
+    public NotificationChannelInner withEmailRecipient(String emailRecipient) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationChannelProperties();
+        }
+        this.innerProperties().withEmailRecipient(emailRecipient);
+        return this;
+    }
+
+    /**
+     * Get the notificationLocale property: The locale to use when sending a notification (fallback for unsupported
+     * languages is EN).
+     * 
+     * @return the notificationLocale value.
+     */
+    public String notificationLocale() {
+        return this.innerProperties() == null ? null : this.innerProperties().notificationLocale();
+    }
+
+    /**
+     * Set the notificationLocale property: The locale to use when sending a notification (fallback for unsupported
+     * languages is EN).
+     * 
+     * @param notificationLocale the notificationLocale value to set.
+     * @return the NotificationChannelInner object itself.
+     */
+    public NotificationChannelInner withNotificationLocale(String notificationLocale) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationChannelProperties();
+        }
+        this.innerProperties().withNotificationLocale(notificationLocale);
+        return this;
+    }
+
+    /**
+     * Get the description property: Description of notification.
+     * 
+     * @return the description value.
+     */
+    public String description() {
+        return this.innerProperties() == null ? null : this.innerProperties().description();
+    }
+
+    /**
+     * Set the description property: Description of notification.
+     * 
+     * @param description the description value to set.
+     * @return the NotificationChannelInner object itself.
+     */
+    public NotificationChannelInner withDescription(String description) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationChannelProperties();
+        }
+        this.innerProperties().withDescription(description);
+        return this;
+    }
+
+    /**
+     * Get the events property: The list of event for which this notification is enabled.
+     * 
+     * @return the events value.
+     */
+    public List<Event> events() {
+        return this.innerProperties() == null ? null : this.innerProperties().events();
+    }
+
+    /**
+     * Set the events property: The list of event for which this notification is enabled.
+     * 
+     * @param events the events value to set.
+     * @return the NotificationChannelInner object itself.
+     */
+    public NotificationChannelInner withEvents(List<Event> events) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NotificationChannelProperties();
+        }
+        this.innerProperties().withEvents(events);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the notification channel.
+     * 
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     * 
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (events() != null) {
-            events().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model NotificationChannelInner"));
+        } else {
+            innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NotificationChannelInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NotificationChannelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NotificationChannelInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NotificationChannelInner.
+     */
+    public static NotificationChannelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NotificationChannelInner deserializedNotificationChannelInner = new NotificationChannelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNotificationChannelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNotificationChannelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNotificationChannelInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNotificationChannelInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNotificationChannelInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNotificationChannelInner.innerProperties
+                        = NotificationChannelProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNotificationChannelInner;
+        });
     }
 }

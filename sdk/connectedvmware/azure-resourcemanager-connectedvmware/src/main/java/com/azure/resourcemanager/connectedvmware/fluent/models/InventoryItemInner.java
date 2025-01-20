@@ -8,54 +8,80 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.connectedvmware.models.InventoryItemProperties;
+import java.io.IOException;
 
-/** Defines the inventory item. */
+/**
+ * Defines the inventory item.
+ */
 @Fluent
 public final class InventoryItemInner extends ProxyResource {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties", required = true)
-    private InventoryItemProperties innerProperties = new InventoryItemProperties();
-
-    /*
-     * The system data.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
+    private InventoryItemProperties properties;
 
     /*
      * Metadata used by portal/tooling/etc to render different UX experiences for resources of the same type; e.g.
-     * ApiApps are a kind of Microsoft.Web/sites type.  If supported, the resource provider must validate and persist
+     * ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must validate and persist
      * this value.
      */
-    @JsonProperty(value = "kind")
     private String kind;
 
-    /**
-     * Get the innerProperties property: Resource properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    private InventoryItemProperties innerProperties() {
-        return this.innerProperties;
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of InventoryItemInner class.
+     */
+    public InventoryItemInner() {
     }
 
     /**
-     * Get the systemData property: The system data.
-     *
-     * @return the systemData value.
+     * Get the properties property: Resource properties.
+     * 
+     * @return the properties value.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public InventoryItemProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Resource properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the InventoryItemInner object itself.
+     */
+    public InventoryItemInner withProperties(InventoryItemProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the kind property: Metadata used by portal/tooling/etc to render different UX experiences for resources of
      * the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must
      * validate and persist this value.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -66,7 +92,7 @@ public final class InventoryItemInner extends ProxyResource {
      * Set the kind property: Metadata used by portal/tooling/etc to render different UX experiences for resources of
      * the same type; e.g. ApiApps are a kind of Microsoft.Web/sites type. If supported, the resource provider must
      * validate and persist this value.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the InventoryItemInner object itself.
      */
@@ -76,98 +102,105 @@ public final class InventoryItemInner extends ProxyResource {
     }
 
     /**
-     * Get the managedResourceId property: Gets or sets the tracked resource id corresponding to the inventory resource.
-     *
-     * @return the managedResourceId value.
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
      */
-    public String managedResourceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().managedResourceId();
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Set the managedResourceId property: Gets or sets the tracked resource id corresponding to the inventory resource.
-     *
-     * @param managedResourceId the managedResourceId value to set.
-     * @return the InventoryItemInner object itself.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public InventoryItemInner withManagedResourceId(String managedResourceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InventoryItemProperties();
-        }
-        this.innerProperties().withManagedResourceId(managedResourceId);
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the moRefId property: Gets or sets the MoRef (Managed Object Reference) ID for the inventory item.
-     *
-     * @return the moRefId value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String moRefId() {
-        return this.innerProperties() == null ? null : this.innerProperties().moRefId();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the moRefId property: Gets or sets the MoRef (Managed Object Reference) ID for the inventory item.
-     *
-     * @param moRefId the moRefId value to set.
-     * @return the InventoryItemInner object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public InventoryItemInner withMoRefId(String moRefId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InventoryItemProperties();
-        }
-        this.innerProperties().withMoRefId(moRefId);
-        return this;
-    }
-
-    /**
-     * Get the moName property: Gets or sets the vCenter Managed Object name for the inventory item.
-     *
-     * @return the moName value.
-     */
-    public String moName() {
-        return this.innerProperties() == null ? null : this.innerProperties().moName();
-    }
-
-    /**
-     * Set the moName property: Gets or sets the vCenter Managed Object name for the inventory item.
-     *
-     * @param moName the moName value to set.
-     * @return the InventoryItemInner object itself.
-     */
-    public InventoryItemInner withMoName(String moName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new InventoryItemProperties();
-        }
-        this.innerProperties().withMoName(moName);
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model InventoryItemInner"));
+        if (properties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property properties in model InventoryItemInner"));
         } else {
-            innerProperties().validate();
+            properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(InventoryItemInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InventoryItemInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InventoryItemInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the InventoryItemInner.
+     */
+    public static InventoryItemInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InventoryItemInner deserializedInventoryItemInner = new InventoryItemInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedInventoryItemInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedInventoryItemInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedInventoryItemInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedInventoryItemInner.properties = InventoryItemProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedInventoryItemInner.kind = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedInventoryItemInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInventoryItemInner;
+        });
+    }
 }

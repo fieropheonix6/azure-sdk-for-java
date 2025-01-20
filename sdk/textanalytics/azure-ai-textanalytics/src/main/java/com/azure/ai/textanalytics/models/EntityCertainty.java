@@ -5,10 +5,11 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
+
+import java.util.Collection;
 
 /**
- * The {@link EntityCertainty} model.
+ * The {@code EntityCertainty} model.
  */
 @Immutable
 public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty> {
@@ -28,13 +29,30 @@ public final class EntityCertainty extends ExpandableStringEnum<EntityCertainty>
     public static final EntityCertainty NEGATIVE = fromString("Negative");
 
     /**
-     * Creates or finds a {@link EntityCertainty} from its string representation.
+     * Creates a new instance of {@code EntityCertainty} value.
+     *
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntityCertainty() {
+    }
+
+    /**
+     * Creates or finds a {@code EntityCertainty} from its string representation.
      *
      * @param name The string name to look for.
-     * @return The corresponding {@link EntityCertainty}.
+     * @return The corresponding {@code EntityCertainty}.
      */
-    @JsonCreator
     public static EntityCertainty fromString(String name) {
         return fromString(name, EntityCertainty.class);
+    }
+
+    /**
+     * All known EntityCertainty values.
+     *
+     * @return known EntityCertainty values.
+     */
+    public static Collection<EntityCertainty> values() {
+        return values(EntityCertainty.class);
     }
 }

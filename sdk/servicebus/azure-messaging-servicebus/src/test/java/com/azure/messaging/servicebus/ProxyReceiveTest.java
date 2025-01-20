@@ -41,8 +41,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @BeforeEach
     public void setup() throws IOException {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(30));
-
         proxyServer = new SimpleProxy(PROXY_PORT);
         proxyServer.start(error -> logger.error("Exception occurred in proxy.", error));
 
@@ -64,8 +62,6 @@ public class ProxyReceiveTest extends IntegrationTestBase {
 
     @AfterEach()
     public void cleanup() throws Exception {
-        StepVerifier.resetDefaultTimeout();
-
         if (proxyServer != null) {
             proxyServer.stop();
         }
@@ -83,35 +79,34 @@ public class ProxyReceiveTest extends IntegrationTestBase {
         final String messageTracking = UUID.randomUUID().toString();
 
         final List<ServiceBusMessage> messages = TestUtils.getServiceBusMessages(NUMBER_OF_EVENTS, messageTracking);
-        final ServiceBusSenderAsyncClient sender = new ServiceBusClientBuilder()
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
-            .connectionString(getConnectionString())
+        final ServiceBusSenderAsyncClient sender
+            = getAuthenticatedBuilder().transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
+                .sender()
+                .queueName(queueName)
+                .buildAsyncClient();
 
-            .sender()
-            .queueName(queueName)
-            .buildAsyncClient();
+        toClose(sender);
 
-        final ServiceBusReceiverAsyncClient receiver = new ServiceBusClientBuilder()
-            .transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
-            .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
-            .connectionString(getConnectionString())
-            .receiver()
-            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
-            .queueName(queueName)
-            .buildAsyncClient();
+        final ServiceBusReceiverAsyncClient receiver
+            = getAuthenticatedBuilder().transportType(AmqpTransportType.AMQP_WEB_SOCKETS)
+                .verifyMode(SslDomain.VerifyMode.ANONYMOUS_PEER)
+                .receiver()
+                .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+                .queueName(queueName)
+                .buildAsyncClient();
+
+        toClose(receiver);
 
         // Act & Assert
         try {
-            StepVerifier.create(sender.createMessageBatch()
-                .flatMap(batch -> {
-                    for (int i = 0; i < messages.size(); i++) {
-                        Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
-                    }
+            StepVerifier.create(sender.createMessageBatch().flatMap(batch -> {
+                for (int i = 0; i < messages.size(); i++) {
+                    Assertions.assertTrue(batch.tryAddMessage(messages.get(i)), "Unable to add message: " + i);
+                }
 
-                    return sender.sendMessages(batch);
-                }))
-                .verifyComplete();
+                return sender.sendMessages(batch);
+            })).expectComplete().verify(Duration.ofSeconds(30));
 
             StepVerifier.create(receiver.receiveMessages().take(NUMBER_OF_EVENTS))
                 .expectNextCount(NUMBER_OF_EVENTS)

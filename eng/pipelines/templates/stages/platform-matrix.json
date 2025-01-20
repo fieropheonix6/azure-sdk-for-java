@@ -1,55 +1,123 @@
 {
   "displayNames": {
-    "true": "TestFromSource"
+    "netty": "nettyhttp",
+    "okhttp": "okhttp",
+    "JdkHttpClientProvider": "jdkhttp",
+    "VertxHttpClientProvider": "vertxhttp"
   },
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" },
-      "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" },
-      "macos-11": { "OSVmImage": "macos-11", "Pool": "Azure Pipelines" }
+      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
+      "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
+      "macos-latest": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
-    "JavaTestVersion": [ "1.8", "1.17" ],
+    "JavaTestVersion": [ "1.8", "1.21" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
-    "TestFromSource": false,
-    "TestGoals": "surefire:test",
-    "TestOptions": ""
+    "Options": {
+      "NotFromSource_TestsOnly": {
+        "TestFromSource": false,
+        "RunAggregateReports": false,
+        "TestOptions": "",
+        "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+      }
+    }
   },
   "exclude": [
     {
-      "Pool": "azsdk-pool-mms-win-2019-general",
-      "JavaTestVersion": "1.17"
+      "Pool": "env:LINUXPOOL",
+      "JavaTestVersion": "1.21"
     }
   ],
   "include": [
     {
       "Agent": {
-          "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+          "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
-      "JavaTestVersion": "1.17",
+      "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": true,
-      "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "Options": {
+        "FromSource_SkipRebuild_Verify": {
+          "TestFromSource": true,
+          "RunAggregateReports": false,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+          "TestGoals": "verify"
+        }
+      }
     },
     {
       "Agent": {
-        "windows-2019": { "OSVmImage": "MMS2019", "Pool": "azsdk-pool-mms-win-2019-general" }
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
-      "JavaTestVersion": "1.17",
+      "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
-      "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "Options": {
+        "NotFromSource_AggregateReports_SkipRebuild_Verify": {
+          "TestFromSource": false,
+          "RunAggregateReports": true,
+          "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+          "TestGoals": "verify"
+        }
+      }
     },
     {
       "Agent": {
-        "ubuntu-20.04": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.11",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
-      "TestFromSource": false,
-      "TestGoals": "surefire:test",
-      "TestOptions": ""
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "",
+          "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.17",
+      "AZURE_TEST_HTTP_CLIENTS": "netty",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "",
+          "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.17",
+      "AZURE_TEST_HTTP_CLIENTS": "JdkHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "",
+          "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+        }
+      }
+    },
+    {
+      "Agent": {
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      },
+      "JavaTestVersion": "1.17",
+      "AZURE_TEST_HTTP_CLIENTS": "VertxHttpClientProvider",
+      "Options": {
+        "NotFromSource_TestsOnly": {
+          "TestFromSource": false,
+          "RunAggregateReports": false,
+          "TestOptions": "",
+          "TestGoals": "surefire:test failsafe:integration-test failsafe:verify"
+        }
+      }
     }
   ]
 }

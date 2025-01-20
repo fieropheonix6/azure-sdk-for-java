@@ -13,10 +13,9 @@ import com.azure.resourcemanager.peering.fluent.PeerAsnsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeerAsnInner;
 import com.azure.resourcemanager.peering.models.PeerAsn;
 import com.azure.resourcemanager.peering.models.PeerAsns;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeerAsnsImpl implements PeerAsns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerAsnsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeerAsnsImpl.class);
 
     private final PeerAsnsClient innerClient;
 
@@ -25,6 +24,16 @@ public final class PeerAsnsImpl implements PeerAsns {
     public PeerAsnsImpl(PeerAsnsClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<PeerAsn> getWithResponse(String peerAsnName, Context context) {
+        Response<PeerAsnInner> inner = this.serviceClient().getWithResponse(peerAsnName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PeerAsnImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PeerAsn get(String peerAsnName) {
@@ -36,77 +45,56 @@ public final class PeerAsnsImpl implements PeerAsns {
         }
     }
 
-    public Response<PeerAsn> getWithResponse(String peerAsnName, Context context) {
-        Response<PeerAsnInner> inner = this.serviceClient().getWithResponse(peerAsnName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PeerAsnImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String peerAsnName, Context context) {
+        return this.serviceClient().deleteWithResponse(peerAsnName, context);
     }
 
     public void delete(String peerAsnName) {
         this.serviceClient().delete(peerAsnName);
     }
 
-    public Response<Void> deleteWithResponse(String peerAsnName, Context context) {
-        return this.serviceClient().deleteWithResponse(peerAsnName, context);
-    }
-
     public PagedIterable<PeerAsn> list() {
         PagedIterable<PeerAsnInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PeerAsnImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeerAsnImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeerAsn> list(Context context) {
         PagedIterable<PeerAsnInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PeerAsnImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeerAsnImpl(inner1, this.manager()));
     }
 
     public PeerAsn getById(String id) {
-        String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
+        String peerAsnName = ResourceManagerUtils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
         return this.getWithResponse(peerAsnName, Context.NONE).getValue();
     }
 
     public Response<PeerAsn> getByIdWithResponse(String id, Context context) {
-        String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
+        String peerAsnName = ResourceManagerUtils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
         return this.getWithResponse(peerAsnName, context);
     }
 
     public void deleteById(String id) {
-        String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
+        String peerAsnName = ResourceManagerUtils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
-        this.deleteWithResponse(peerAsnName, Context.NONE).getValue();
+        this.deleteWithResponse(peerAsnName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String peerAsnName = Utils.getValueFromIdByName(id, "peerAsns");
+        String peerAsnName = ResourceManagerUtils.getValueFromIdByName(id, "peerAsns");
         if (peerAsnName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peerAsns'.", id)));
         }
         return this.deleteWithResponse(peerAsnName, context);
     }

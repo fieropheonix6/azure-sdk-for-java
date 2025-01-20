@@ -5,16 +5,22 @@ package com.azure.messaging.eventhubs;
 
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
-import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsTracer;
+import com.azure.messaging.eventhubs.implementation.instrumentation.EventHubsConsumerInstrumentation;
+import com.azure.messaging.eventhubs.implementation.instrumentation.InstrumentedCheckpointStore;
 import com.azure.messaging.eventhubs.models.ErrorContext;
-import com.azure.messaging.eventhubs.models.EventPosition;
+import com.azure.messaging.eventhubs.models.PartitionOwnership;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -33,14 +39,51 @@ import java.util.stream.Collectors;
  * workload across different instances and track progress when events are processed. Based on the number of instances
  * running, each EventProcessorClient may own zero or more partitions to balance the workload among all the instances.
  *
- * <p>To create an instance of EventProcessorClient, use the fluent {@link EventProcessorClientBuilder}.</p>
+ * <p><strong>Sample: Construct an {@link com.azure.messaging.eventhubs.EventProcessorClient}</strong></p>
+ *
+ * <p>The sample below uses an in-memory {@link com.azure.messaging.eventhubs.CheckpointStore} but
+ * <a href="https://central.sonatype.com/artifact/com.azure/azure-messaging-eventhubs-checkpointstore-blob">
+ *     azure-messaging-eventhubs-checkpointstore-blob</a> provides a checkpoint store backed by Azure Blob Storage.
+ * Additionally, {@code fullyQualifiedNamespace} is the Event Hubs Namespace's host name.  It is listed under the
+ * "Essentials" panel after navigating to the Event Hubs Namespace via Azure Portal.  The credential used is
+ * {@code DefaultAzureCredential} because it combines commonly used credentials in deployment and development and
+ * chooses the credential to used based on its running environment.  The {@code consumerGroup} is found by navigating
+ * to the Event Hub instance, and selecting "Consumer groups" under the "Entities" panel. The {@code consumerGroup} is
+ * required.  The credential used is {@code DefaultAzureCredential} because it combines
+ * commonly used credentials in deployment and development and chooses the credential to used based on its running
+ * environment.</p>
+ *
+ * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct -->
+ * <pre>
+ * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+ *
+ * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+ * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+ * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+ *     .consumerGroup&#40;&quot;&lt;&lt; CONSUMER GROUP NAME &gt;&gt;&quot;&#41;
+ *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+ *         credential&#41;
+ *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+ *     .processEvent&#40;eventContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+ *             eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+ *             eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .processError&#40;errorContext -&gt; &#123;
+ *         System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+ *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+ *             errorContext.getThrowable&#40;&#41;&#41;;
+ *     &#125;&#41;
+ *     .buildEventProcessorClient&#40;&#41;;
+ * </pre>
+ *<!-- end com.azure.messaging.eventhubs.eventprocessorclientbuilder.construct -->
  *
  * @see EventProcessorClientBuilder
  */
 @ServiceClient(builder = EventProcessorClientBuilder.class)
 public class EventProcessorClient {
-
     private static final long BASE_JITTER_IN_SECONDS = 2; // the initial delay jitter before starting the processor
+    private static final Duration DEFAULT_STOP_TIMEOUT = Duration.ofSeconds(10);
     private final ClientLogger logger;
 
     private final String identifier;
@@ -55,41 +98,30 @@ public class EventProcessorClient {
     private final String eventHubName;
     private final String consumerGroup;
     private final Duration loadBalancerUpdateInterval;
+    private final EventProcessorClientOptions processorClientOptions;
 
     /**
      * Package-private constructor. Use {@link EventHubClientBuilder} to create an instance.
      *
      * @param eventHubClientBuilder The {@link EventHubClientBuilder}.
-     * @param consumerGroup The consumer group name used in this event processor to consumer events.
      * @param partitionProcessorFactory The factory to create new partition processor(s).
      * @param checkpointStore The store used for reading and updating partition ownership and checkpoints. information.
-     * @param trackLastEnqueuedEventProperties If set to {@code true}, all events received by this EventProcessorClient
-     * will also include the last enqueued event properties for it's respective partitions.
      * @param processError Error handler for any errors that occur outside the context of a partition.
-     * @param initialPartitionEventPosition Map of initial event positions for partition ids.
-     * @param maxBatchSize The maximum batch size to receive per users' process handler invocation.
-     * @param maxWaitTime The maximum time to wait to receive a batch or a single event.
-     * @param batchReceiveMode The boolean value indicating if this processor is configured to receive in batches or
-     * single events.
-     * @param loadBalancerUpdateInterval The time duration between load balancing update cycles.
-     * @param partitionOwnershipExpirationInterval The time duration after which the ownership of partition expires.
-     * @param loadBalancingStrategy The load balancing strategy to use.
-     * @param tracer Tracer instance.
      */
-    EventProcessorClient(EventHubClientBuilder eventHubClientBuilder, String consumerGroup,
+    EventProcessorClient(EventHubClientBuilder eventHubClientBuilder,
         Supplier<PartitionProcessor> partitionProcessorFactory, CheckpointStore checkpointStore,
-        boolean trackLastEnqueuedEventProperties, Consumer<ErrorContext> processError,
-        Map<String, EventPosition> initialPartitionEventPosition, int maxBatchSize, Duration maxWaitTime,
-        boolean batchReceiveMode, Duration loadBalancerUpdateInterval, Duration partitionOwnershipExpirationInterval,
-        LoadBalancingStrategy loadBalancingStrategy, Tracer tracer) {
+        Consumer<ErrorContext> processError, Tracer tracer, Meter meter,
+        EventProcessorClientOptions processorClientOptions) {
 
         Objects.requireNonNull(eventHubClientBuilder, "eventHubClientBuilder cannot be null.");
-        Objects.requireNonNull(consumerGroup, "consumerGroup cannot be null.");
+        this.processorClientOptions
+            = Objects.requireNonNull(processorClientOptions, "processorClientOptions cannot be null.");
+
+        Objects.requireNonNull(processorClientOptions.getConsumerGroup(), "'consumerGroup' cannot be null.");
         Objects.requireNonNull(partitionProcessorFactory, "partitionProcessorFactory cannot be null.");
 
-        EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
+        final EventHubAsyncClient eventHubAsyncClient = eventHubClientBuilder.buildAsyncClient();
 
-        this.checkpointStore = Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
         this.identifier = eventHubAsyncClient.getIdentifier();
 
         Map<String, Object> loggingContext = new HashMap<>();
@@ -98,19 +130,58 @@ public class EventProcessorClient {
         this.logger = new ClientLogger(EventProcessorClient.class, loggingContext);
         this.fullyQualifiedNamespace = eventHubAsyncClient.getFullyQualifiedNamespace().toLowerCase(Locale.ROOT);
         this.eventHubName = eventHubAsyncClient.getEventHubName().toLowerCase(Locale.ROOT);
-        this.consumerGroup = consumerGroup.toLowerCase(Locale.ROOT);
-        this.loadBalancerUpdateInterval = loadBalancerUpdateInterval;
+        this.consumerGroup = processorClientOptions.getConsumerGroup().toLowerCase(Locale.ROOT);
+        this.loadBalancerUpdateInterval = processorClientOptions.getLoadBalancerUpdateInterval();
 
-        EventHubsTracer ehTracer = new EventHubsTracer(tracer, fullyQualifiedNamespace, eventHubName);
-        this.partitionPumpManager = new PartitionPumpManager(checkpointStore, partitionProcessorFactory,
-            eventHubClientBuilder, trackLastEnqueuedEventProperties, ehTracer, initialPartitionEventPosition,
-            maxBatchSize, maxWaitTime, batchReceiveMode);
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+            fullyQualifiedNamespace, eventHubName, consumerGroup, true);
 
-        this.partitionBasedLoadBalancer =
-            new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
-                this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
-                partitionOwnershipExpirationInterval.getSeconds(), this.partitionPumpManager, processError,
-                loadBalancingStrategy);
+        Objects.requireNonNull(checkpointStore, "checkpointStore cannot be null");
+        this.checkpointStore = InstrumentedCheckpointStore.create(checkpointStore, instrumentation);
+
+        this.partitionPumpManager = new PartitionPumpManager(this.checkpointStore, partitionProcessorFactory,
+            eventHubClientBuilder, instrumentation, processorClientOptions);
+
+        this.partitionBasedLoadBalancer = new PartitionBasedLoadBalancer(this.checkpointStore, eventHubAsyncClient,
+            this.fullyQualifiedNamespace, this.eventHubName, this.consumerGroup, this.identifier,
+            processorClientOptions.getPartitionOwnershipExpirationInterval().getSeconds(), this.partitionPumpManager,
+            processError, processorClientOptions.getLoadBalancingStrategy());
+    }
+
+    /**
+     * Gets the processor options.
+     *
+     * @return Gets the processor options set.
+     */
+    EventProcessorClientOptions getEventProcessorClientOptions() {
+        return processorClientOptions;
+    }
+
+    /**
+     * Gets the consumer group.
+     *
+     * @return The consumer group.
+     */
+    String getConsumerGroup() {
+        return consumerGroup;
+    }
+
+    /**
+     * Gets the Event Hub name.
+     *
+     * @return the Event Hub name.
+     */
+    String getEventHubName() {
+        return eventHubName;
+    }
+
+    /**
+     * Gets the fully-qualified namespace.
+     *
+     * @return The fully-qualified namespace.
+     */
+    String getFullyQualifiedNamespace() {
+        return fullyQualifiedNamespace;
     }
 
     /**
@@ -134,8 +205,32 @@ public class EventProcessorClient {
      * <p><strong>Starting the processor to consume events from all partitions</strong></p>
      * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      * <pre>
+     * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+     * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+     * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+     *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+     *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+     *         credential&#41;
+     *     .processEvent&#40;eventContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+     *             eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .processError&#40;errorContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+     *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             errorContext.getThrowable&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+     *     .buildEventProcessorClient&#40;&#41;;
+     *
      * eventProcessorClient.start&#40;&#41;;
+     *
      * &#47;&#47; Continue to perform other tasks while the processor is running in the background.
+     * &#47;&#47;
+     * &#47;&#47; Finally, stop the processor client when application is finished.
      * eventProcessorClient.stop&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
@@ -150,37 +245,97 @@ public class EventProcessorClient {
         ScheduledExecutorService executor = Executors.newSingleThreadScheduledExecutor();
         scheduler.set(executor);
         // Add a bit of jitter to initialDelay to minimize contention if multiple EventProcessors start at the same time
-        Double jitterInMillis =
-            ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
+        Double jitterInMillis
+            = ThreadLocalRandom.current().nextDouble() * TimeUnit.SECONDS.toMillis(BASE_JITTER_IN_SECONDS);
 
-        runner.set(scheduler.get().scheduleWithFixedDelay(partitionBasedLoadBalancer::loadBalance,
-            jitterInMillis.longValue(), loadBalancerUpdateInterval.toMillis(), TimeUnit.MILLISECONDS));
+        runner.set(scheduler.get()
+            .scheduleWithFixedDelay(partitionBasedLoadBalancer::loadBalance, jitterInMillis.longValue(),
+                loadBalancerUpdateInterval.toMillis(), TimeUnit.MILLISECONDS));
     }
 
     /**
      * Stops processing events for all partitions owned by this event processor. All {@link PartitionProcessor} will be
      * shutdown and any open resources will be closed.
+     *
      * <p>
-     * Subsequent calls to stop will be ignored if the event processor is not running.
+     * Subsequent calls to stop will be ignored if the event processor is not running or is being stopped.
+     * </p>
+     *
+     * <p>
+     * This method will do the best effort to stop processing gracefully and will block for up to 10 seconds waiting for
+     * the processor to stop. Use {@link #stop(Duration)} overload to specify a different timeout.
      * </p>
      *
      * <p><strong>Stopping the processor</strong></p>
      * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      * <pre>
+     * TokenCredential credential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+     *
+     * &#47;&#47; &quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot; will look similar to &quot;&#123;your-namespace&#125;.servicebus.windows.net&quot;
+     * &#47;&#47; &quot;&lt;&lt;event-hub-name&gt;&gt;&quot; will be the name of the Event Hub instance you created inside the Event Hubs namespace.
+     * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+     *     .consumerGroup&#40;EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME&#41;
+     *     .credential&#40;&quot;&lt;&lt;fully-qualified-namespace&gt;&gt;&quot;, &quot;&lt;&lt;event-hub-name&gt;&gt;&quot;,
+     *         credential&#41;
+     *     .processEvent&#40;eventContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+     *             eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .processError&#40;errorContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+     *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             errorContext.getThrowable&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+     *     .buildEventProcessorClient&#40;&#41;;
+     *
      * eventProcessorClient.start&#40;&#41;;
+     *
      * &#47;&#47; Continue to perform other tasks while the processor is running in the background.
+     * &#47;&#47;
+     * &#47;&#47; Finally, stop the processor client when application is finished.
      * eventProcessorClient.stop&#40;&#41;;
      * </pre>
      * <!-- end com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      */
     public synchronized void stop() {
+        try {
+            stop(DEFAULT_STOP_TIMEOUT);
+        } catch (RuntimeException e) {
+            logger.info("Error while stopping the event processor", e);
+        }
+    }
+
+    /**
+     * Stops processing events for all partitions owned by this event processor. All {@link PartitionProcessor} will be
+     * shutdown and any open resources will be closed.
+     *
+     * <p>
+     * Subsequent calls to stop will be ignored if the event processor is not running or is being stopped.
+     * </p>
+     *
+     * @param timeout The maximum amount of time to wait for the processor to stop processing.
+     *
+     * @throws RuntimeException if the event processor encounters timout or another error while stopping.
+     */
+    public synchronized void stop(Duration timeout) {
         if (!isRunning.compareAndSet(true, false)) {
             logger.info("Event processor has already stopped");
             return;
         }
         runner.get().cancel(true);
-        scheduler.get().shutdown();
-        stopProcessing();
+
+        Mono<Boolean> awaitScheduler = Mono.fromRunnable(() -> shutdownWithAwait(scheduler.get(), timeout.toMillis()));
+        Flux<PartitionOwnership> clearOwnership
+            = checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
+                .filter(ownership -> identifier.equals(ownership.getOwnerId()))
+                .map(ownership -> ownership.setOwnerId(""))
+                .collect(Collectors.toList())
+                .flatMapMany(p -> checkpointStore.claimOwnership(p).onErrorResume(ex -> Mono.empty()));
+
+        Mono.when(awaitScheduler, partitionPumpManager.stopAllPartitionPumps().onErrorResume(ex -> Mono.empty()),
+            clearOwnership.onErrorResume(ex -> Mono.empty())).block(timeout);
     }
 
     /**
@@ -193,15 +348,15 @@ public class EventProcessorClient {
         return isRunning.get();
     }
 
-    private void stopProcessing() {
-        partitionPumpManager.stopAllPartitionPumps();
-
-        // finally, remove ownerid from checkpointstore as the processor is shutting down
-        checkpointStore.listOwnership(fullyQualifiedNamespace, eventHubName, consumerGroup)
-            .filter(ownership -> identifier.equals(ownership.getOwnerId()))
-            .map(ownership -> ownership.setOwnerId(""))
-            .collect(Collectors.toList())
-            .flatMapMany(checkpointStore::claimOwnership)
-            .blockLast(Duration.ofSeconds(10)); // block until the checkpoint store is updated
+    private void shutdownWithAwait(ExecutorService service, long timeoutMillis) {
+        service.shutdown();
+        try {
+            if (!service.awaitTermination(timeoutMillis, TimeUnit.MILLISECONDS)) {
+                service.shutdownNow();
+            }
+        } catch (InterruptedException ex) {
+            service.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
     }
 }

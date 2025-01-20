@@ -7,43 +7,57 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** VpnSite Resource. */
+/**
+ * VpnSite Resource.
+ */
 @Fluent
 public final class VpnSiteInner extends Resource {
     /*
      * Properties of the VPN site.
      */
-    @JsonProperty(value = "properties")
     private VpnSiteProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of VpnSiteInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of VpnSiteInner class.
+     */
     public VpnSiteInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the VPN site.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VpnSiteProperties innerProperties() {
@@ -52,7 +66,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -61,7 +75,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -70,7 +84,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -79,14 +93,38 @@ public final class VpnSiteInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnSiteInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnSiteInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -95,7 +133,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the virtualWan property: The VirtualWAN to which the vpnSite belongs.
-     *
+     * 
      * @return the virtualWan value.
      */
     public SubResource virtualWan() {
@@ -104,7 +142,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the virtualWan property: The VirtualWAN to which the vpnSite belongs.
-     *
+     * 
      * @param virtualWan the virtualWan value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -118,7 +156,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the deviceProperties property: The device properties.
-     *
+     * 
      * @return the deviceProperties value.
      */
     public DeviceProperties deviceProperties() {
@@ -127,7 +165,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the deviceProperties property: The device properties.
-     *
+     * 
      * @param deviceProperties the deviceProperties value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -141,7 +179,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the ipAddress property: The ip-address for the vpn-site.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -150,7 +188,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the ipAddress property: The ip-address for the vpn-site.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -164,7 +202,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the siteKey property: The key for vpn-site that can be used for connections.
-     *
+     * 
      * @return the siteKey value.
      */
     public String siteKey() {
@@ -173,7 +211,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the siteKey property: The key for vpn-site that can be used for connections.
-     *
+     * 
      * @param siteKey the siteKey value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -187,7 +225,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges.
-     *
+     * 
      * @return the addressSpace value.
      */
     public AddressSpace addressSpace() {
@@ -196,7 +234,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges.
-     *
+     * 
      * @param addressSpace the addressSpace value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -210,7 +248,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the bgpProperties property: The set of bgp properties.
-     *
+     * 
      * @return the bgpProperties value.
      */
     public BgpSettings bgpProperties() {
@@ -219,7 +257,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the bgpProperties property: The set of bgp properties.
-     *
+     * 
      * @param bgpProperties the bgpProperties value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -233,7 +271,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN site resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -242,7 +280,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the isSecuritySite property: IsSecuritySite flag.
-     *
+     * 
      * @return the isSecuritySite value.
      */
     public Boolean isSecuritySite() {
@@ -251,7 +289,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the isSecuritySite property: IsSecuritySite flag.
-     *
+     * 
      * @param isSecuritySite the isSecuritySite value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -265,7 +303,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the vpnSiteLinks property: List of all vpn site links.
-     *
+     * 
      * @return the vpnSiteLinks value.
      */
     public List<VpnSiteLinkInner> vpnSiteLinks() {
@@ -274,7 +312,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the vpnSiteLinks property: List of all vpn site links.
-     *
+     * 
      * @param vpnSiteLinks the vpnSiteLinks value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -288,7 +326,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Get the o365Policy property: Office365 Policy.
-     *
+     * 
      * @return the o365Policy value.
      */
     public O365PolicyProperties o365Policy() {
@@ -297,7 +335,7 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Set the o365Policy property: Office365 Policy.
-     *
+     * 
      * @param o365Policy the o365Policy value to set.
      * @return the VpnSiteInner object itself.
      */
@@ -311,12 +349,65 @@ public final class VpnSiteInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnSiteInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnSiteInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VpnSiteInner.
+     */
+    public static VpnSiteInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnSiteInner deserializedVpnSiteInner = new VpnSiteInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVpnSiteInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVpnSiteInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVpnSiteInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVpnSiteInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVpnSiteInner.innerProperties = VpnSiteProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedVpnSiteInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVpnSiteInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnSiteInner;
+        });
     }
 }

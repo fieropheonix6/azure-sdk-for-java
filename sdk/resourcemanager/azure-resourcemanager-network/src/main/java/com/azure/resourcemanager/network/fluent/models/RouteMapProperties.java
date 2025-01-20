@@ -5,46 +5,50 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteMapRule;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of RouteMap resource. */
+/**
+ * Properties of RouteMap resource.
+ */
 @Fluent
-public final class RouteMapProperties {
+public final class RouteMapProperties implements JsonSerializable<RouteMapProperties> {
     /*
      * List of connections which have this RoutMap associated for inbound traffic.
      */
-    @JsonProperty(value = "associatedInboundConnections")
     private List<String> associatedInboundConnections;
 
     /*
      * List of connections which have this RoutMap associated for outbound traffic.
      */
-    @JsonProperty(value = "associatedOutboundConnections")
     private List<String> associatedOutboundConnections;
 
     /*
      * List of RouteMap rules to be applied.
      */
-    @JsonProperty(value = "rules")
     private List<RouteMapRule> rules;
 
     /*
      * The provisioning state of the RouteMap resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RouteMapProperties class. */
+    /**
+     * Creates an instance of RouteMapProperties class.
+     */
     public RouteMapProperties() {
     }
 
     /**
      * Get the associatedInboundConnections property: List of connections which have this RoutMap associated for inbound
      * traffic.
-     *
+     * 
      * @return the associatedInboundConnections value.
      */
     public List<String> associatedInboundConnections() {
@@ -54,7 +58,7 @@ public final class RouteMapProperties {
     /**
      * Set the associatedInboundConnections property: List of connections which have this RoutMap associated for inbound
      * traffic.
-     *
+     * 
      * @param associatedInboundConnections the associatedInboundConnections value to set.
      * @return the RouteMapProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class RouteMapProperties {
     /**
      * Get the associatedOutboundConnections property: List of connections which have this RoutMap associated for
      * outbound traffic.
-     *
+     * 
      * @return the associatedOutboundConnections value.
      */
     public List<String> associatedOutboundConnections() {
@@ -76,7 +80,7 @@ public final class RouteMapProperties {
     /**
      * Set the associatedOutboundConnections property: List of connections which have this RoutMap associated for
      * outbound traffic.
-     *
+     * 
      * @param associatedOutboundConnections the associatedOutboundConnections value to set.
      * @return the RouteMapProperties object itself.
      */
@@ -87,7 +91,7 @@ public final class RouteMapProperties {
 
     /**
      * Get the rules property: List of RouteMap rules to be applied.
-     *
+     * 
      * @return the rules value.
      */
     public List<RouteMapRule> rules() {
@@ -96,7 +100,7 @@ public final class RouteMapProperties {
 
     /**
      * Set the rules property: List of RouteMap rules to be applied.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RouteMapProperties object itself.
      */
@@ -107,7 +111,7 @@ public final class RouteMapProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the RouteMap resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,12 +120,61 @@ public final class RouteMapProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("associatedInboundConnections", this.associatedInboundConnections,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("associatedOutboundConnections", this.associatedOutboundConnections,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteMapProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteMapProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteMapProperties.
+     */
+    public static RouteMapProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteMapProperties deserializedRouteMapProperties = new RouteMapProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("associatedInboundConnections".equals(fieldName)) {
+                    List<String> associatedInboundConnections = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteMapProperties.associatedInboundConnections = associatedInboundConnections;
+                } else if ("associatedOutboundConnections".equals(fieldName)) {
+                    List<String> associatedOutboundConnections = reader.readArray(reader1 -> reader1.getString());
+                    deserializedRouteMapProperties.associatedOutboundConnections = associatedOutboundConnections;
+                } else if ("rules".equals(fieldName)) {
+                    List<RouteMapRule> rules = reader.readArray(reader1 -> RouteMapRule.fromJson(reader1));
+                    deserializedRouteMapProperties.rules = rules;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRouteMapProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteMapProperties;
+        });
     }
 }

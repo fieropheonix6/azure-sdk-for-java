@@ -8,25 +8,24 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DpmErrorInfo;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DpmErrorInfoTests {
-    @Test
-    public void testDeserialize() {
-        DpmErrorInfo model =
-            BinaryData
-                .fromString("{\"errorString\":\"hsdtmc\",\"recommendations\":[\"ufcohdxbz\",\"mcmuapc\"]}")
-                .toObject(DpmErrorInfo.class);
-        Assertions.assertEquals("hsdtmc", model.errorString());
-        Assertions.assertEquals("ufcohdxbz", model.recommendations().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DpmErrorInfo model = BinaryData
+            .fromString(
+                "{\"errorString\":\"ztcmwq\",\"recommendations\":[\"cxwaxfewz\",\"kjexfdeqvhp\",\"ylkkshkbffmbm\"]}")
+            .toObject(DpmErrorInfo.class);
+        Assertions.assertEquals("ztcmwq", model.errorString());
+        Assertions.assertEquals("cxwaxfewz", model.recommendations().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        DpmErrorInfo model =
-            new DpmErrorInfo().withErrorString("hsdtmc").withRecommendations(Arrays.asList("ufcohdxbz", "mcmuapc"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DpmErrorInfo model = new DpmErrorInfo().withErrorString("ztcmwq")
+            .withRecommendations(Arrays.asList("cxwaxfewz", "kjexfdeqvhp", "ylkkshkbffmbm"));
         model = BinaryData.fromObject(model).toObject(DpmErrorInfo.class);
-        Assertions.assertEquals("hsdtmc", model.errorString());
-        Assertions.assertEquals("ufcohdxbz", model.recommendations().get(0));
+        Assertions.assertEquals("ztcmwq", model.errorString());
+        Assertions.assertEquals("cxwaxfewz", model.recommendations().get(0));
     }
 }

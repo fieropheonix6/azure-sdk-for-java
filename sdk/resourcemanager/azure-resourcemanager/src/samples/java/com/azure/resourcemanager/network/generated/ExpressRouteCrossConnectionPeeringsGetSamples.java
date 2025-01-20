@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ExpressRouteCrossConnectionPeerings Get. */
+/**
+ * Samples for ExpressRouteCrossConnectionPeerings Get.
+ */
 public final class ExpressRouteCrossConnectionPeeringsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCrossConnectionBgpPeeringGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * ExpressRouteCrossConnectionBgpPeeringGet.json
      */
     /**
      * Sample code: GetExpressRouteCrossConnectionBgpPeering.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getExpressRouteCrossConnectionBgpPeering(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getExpressRouteCrossConnectionPeerings()
-            .getWithResponse(
-                "CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering", Context.NONE);
+            .getWithResponse("CrossConnection-SiliconValley", "<circuitServiceKey>", "AzurePrivatePeering",
+                com.azure.core.util.Context.NONE);
     }
 }

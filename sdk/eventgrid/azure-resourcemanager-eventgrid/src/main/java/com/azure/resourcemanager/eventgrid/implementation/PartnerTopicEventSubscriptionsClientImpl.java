@@ -43,26 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PartnerTopicEventSubscriptionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PartnerTopicEventSubscriptionsClient.
+ */
 public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTopicEventSubscriptionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PartnerTopicEventSubscriptionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of PartnerTopicEventSubscriptionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PartnerTopicEventSubscriptionsClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PartnerTopicEventSubscriptionsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(PartnerTopicEventSubscriptionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -72,159 +74,121 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface PartnerTopicEventSubscriptionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200})
+    public interface PartnerTopicEventSubscriptionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerTopicName") String partnerTopicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerTopicName") String partnerTopicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EventSubscriptionInner eventSubscriptionInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerTopicName") String partnerTopicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerTopicName") String partnerTopicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}/getFullUrl")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionFullUrlInner>> getFullUrl(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionFullUrlInner>> getFullUrl(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerTopicName") String partnerTopicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerTopics/{partnerTopicName}/eventSubscriptions")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<EventSubscriptionsListResult>> listByPartnerTopic(
-            @HostParam("$host") String endpoint,
+        Mono<Response<EventSubscriptionsListResult>> listByPartnerTopic(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("partnerTopicName") String partnerTopicName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("partnerTopicName") String partnerTopicName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerTopics/{partnerTopicName}/eventSubscriptions/{eventSubscriptionName}/getDeliveryAttributes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributes(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("partnerTopicName") String partnerTopicName,
             @PathParam("eventSubscriptionName") String eventSubscriptionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<EventSubscriptionsListResult>> listByPartnerTopicNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
+     * Get an event subscription of a partner topic.
+     * 
      * Get properties of an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     *     3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an event subscription of a partner topic along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
+    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -241,48 +205,36 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerTopicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get an event subscription of a partner topic.
+     * 
      * Get properties of an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     *     3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an event subscription of a partner topic along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
+    private Mono<Response<EventSubscriptionInner>> getWithResponseAsync(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -298,61 +250,38 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerTopicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
+     * Get an event subscription of a partner topic.
+     * 
      * Get properties of an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     *     3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return properties of an event subscription of a partner topic on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> getAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
+    private Mono<EventSubscriptionInner> getAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName) {
         return getWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get an event subscription of a partner topic.
+     * 
      * Get properties of an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     *     3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of an event subscription of a partner topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner get(String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
-        return getAsync(resourceGroupName, partnerTopicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get properties of an event subscription of a partner topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be found. Event subscription names must be between
-     *     3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be found.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -360,19 +289,39 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return properties of an event subscription of a partner topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSubscriptionInner> getWithResponse(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
+    public Response<EventSubscriptionInner> getWithResponse(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, Context context) {
         return getWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context).block();
     }
 
     /**
+     * Get an event subscription of a partner topic.
+     * 
+     * Get properties of an event subscription of a partner topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param eventSubscriptionName Name of the event subscription to be found.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of an event subscription of a partner topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionInner get(String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
+        return getWithResponse(resourceGroupName, partnerTopicName, eventSubscriptionName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -380,22 +329,15 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -417,30 +359,22 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerTopicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            eventSubscriptionInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, partnerTopicName, eventSubscriptionName, this.client.getApiVersion(),
+                eventSubscriptionInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,23 +383,16 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -487,27 +414,21 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerTopicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                eventSubscriptionInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), eventSubscriptionInfo, accept,
+            context);
     }
 
     /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -516,31 +437,25 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
+        String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
         EventSubscriptionInner eventSubscriptionInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo);
-        return this
-            .client
-            .<EventSubscriptionInner, EventSubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EventSubscriptionInner.class,
-                EventSubscriptionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, partnerTopicName,
+            eventSubscriptionName, eventSubscriptionInfo);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class,
+            this.client.getContext());
     }
 
     /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -550,58 +465,50 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo,
-        Context context) {
+        String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, partnerTopicName,
+            eventSubscriptionName, eventSubscriptionInfo, context);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class, context);
+    }
+
+    /**
+     * Create or update an event subscription of a partner topic.
+     * 
+     * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
+     * Existing event subscriptions will be updated with this API.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
+     * between 3 and 64 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
+        String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo) {
         return this
-            .client
-            .<EventSubscriptionInner, EventSubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EventSubscriptionInner.class,
-                EventSubscriptionInner.class,
-                context);
-    }
-
-    /**
-     * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
-     * Existing event subscriptions will be updated with this API.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo)
+            .beginCreateOrUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo)
             .getSyncPoller();
     }
 
     /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -611,24 +518,24 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo, context)
+        String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
+        EventSubscriptionInner eventSubscriptionInfo, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo,
+                context)
             .getSyncPoller();
     }
 
     /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -636,25 +543,22 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<EventSubscriptionInner> createOrUpdateAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            eventSubscriptionInfo).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -663,26 +567,22 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<EventSubscriptionInner> createOrUpdateAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            eventSubscriptionInfo, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -690,23 +590,22 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner createOrUpdate(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo) {
+    public EventSubscriptionInner createOrUpdate(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo) {
         return createOrUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo)
             .block();
     }
 
     /**
+     * Create or update an event subscription of a partner topic.
+     * 
      * Asynchronously creates or updates an event subscription of a partner topic with the specified parameters.
      * Existing event subscriptions will be updated with this API.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * between 3 and 64 characters in length and use alphanumeric letters only.
      * @param eventSubscriptionInfo Event subscription properties containing the destination and filter information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -715,43 +614,35 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner createOrUpdate(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionInner eventSubscriptionInfo,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo, context)
-            .block();
+    public EventSubscriptionInner createOrUpdate(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionInner eventSubscriptionInfo, Context context) {
+        return createOrUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionInfo,
+            context).block();
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -766,27 +657,19 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerTopicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -794,19 +677,15 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -821,47 +700,40 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerTopicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), context);
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -869,41 +741,42 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
-        return beginDeleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName) {
+        return this.beginDeleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName).getSyncPoller();
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -911,18 +784,20 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context)
+            .getSyncPoller();
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -930,18 +805,18 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
-        return beginDeleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -949,20 +824,20 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
-        return beginDeleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -973,30 +848,32 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
     }
 
     /**
+     * Delete an event subscription of a partner topic.
+     * 
      * Delete an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
+    public void delete(String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
+        Context context) {
         deleteAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context).block();
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1004,22 +881,15 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1034,38 +904,27 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         if (eventSubscriptionUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
         } else {
             eventSubscriptionUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerTopicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            eventSubscriptionUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, partnerTopicName, eventSubscriptionName, this.client.getApiVersion(),
+                eventSubscriptionUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1074,23 +933,16 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1105,35 +957,26 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
                 .error(new IllegalArgumentException("Parameter eventSubscriptionName is required and cannot be null."));
         }
         if (eventSubscriptionUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter eventSubscriptionUpdateParameters is required and cannot be null."));
         } else {
             eventSubscriptionUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerTopicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                eventSubscriptionUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), eventSubscriptionUpdateParameters,
+            accept, context);
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1142,30 +985,23 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
+        String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
         EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters);
-        return this
-            .client
-            .<EventSubscriptionInner, EventSubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EventSubscriptionInner.class,
-                EventSubscriptionInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, partnerTopicName,
+            eventSubscriptionName, eventSubscriptionUpdateParameters);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class,
+            this.client.getContext());
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1175,56 +1011,47 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
+        String resourceGroupName, String partnerTopicName, String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, partnerTopicName,
+            eventSubscriptionName, eventSubscriptionUpdateParameters, context);
+        return this.client.<EventSubscriptionInner, EventSubscriptionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), EventSubscriptionInner.class, EventSubscriptionInner.class, context);
+    }
+
+    /**
+     * Update event subscription of a partner topic.
+     * 
+     * Update an existing event subscription of a partner topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
+     * @param eventSubscriptionUpdateParameters Updated event subscription information.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of event Subscription.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
         return this
-            .client
-            .<EventSubscriptionInner, EventSubscriptionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                EventSubscriptionInner.class,
-                EventSubscriptionInner.class,
-                context);
-    }
-
-    /**
-     * Update an existing event subscription of a partner topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @param eventSubscriptionUpdateParameters Updated event subscription information.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of event Subscription.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
+            .beginUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+                eventSubscriptionUpdateParameters)
             .getSyncPoller();
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1233,24 +1060,23 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
+    public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName,
+        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters, Context context) {
+        return this
+            .beginUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+                eventSubscriptionUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1258,24 +1084,20 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> updateAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return beginUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<EventSubscriptionInner> updateAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1284,25 +1106,21 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionInner> updateAsync(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+    private Mono<EventSubscriptionInner> updateAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
-        return beginUpdateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1310,23 +1128,20 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner update(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
-        return updateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters)
-            .block();
+    public EventSubscriptionInner update(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters) {
+        return updateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters).block();
     }
 
     /**
+     * Update event subscription of a partner topic.
+     * 
      * Update an existing event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription to be updated.
      * @param eventSubscriptionUpdateParameters Updated event subscription information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1335,44 +1150,37 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return event Subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionInner update(
-        String resourceGroupName,
-        String partnerTopicName,
-        String eventSubscriptionName,
-        EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
+    public EventSubscriptionInner update(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName, EventSubscriptionUpdateParameters eventSubscriptionUpdateParameters,
         Context context) {
-        return updateAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, eventSubscriptionUpdateParameters, context)
-            .block();
+        return updateAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            eventSubscriptionUpdateParameters, context).block();
     }
 
     /**
+     * Get full URL of an event subscription of a partner topic.
+     * 
      * Get the full endpoint URL for an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the full endpoint URL for an event subscription of a partner topic along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
+    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1388,49 +1196,37 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getFullUrl(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerTopicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getFullUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get full URL of an event subscription of a partner topic.
+     * 
      * Get the full endpoint URL for an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the full endpoint URL for an event subscription of a partner topic along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
+    private Mono<Response<EventSubscriptionFullUrlInner>> getFullUrlWithResponseAsync(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1446,63 +1242,39 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getFullUrl(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerTopicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getFullUrl(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
+     * Get full URL of an event subscription of a partner topic.
+     * 
      * Get the full endpoint URL for an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription of a partner topic on successful completion of {@link
-     *     Mono}.
+     * @return the full endpoint URL for an event subscription of a partner topic on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<EventSubscriptionFullUrlInner> getFullUrlAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
+    private Mono<EventSubscriptionFullUrlInner> getFullUrlAsync(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName) {
         return getFullUrlWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get full URL of an event subscription of a partner topic.
+     * 
      * Get the full endpoint URL for an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription of a partner topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EventSubscriptionFullUrlInner getFullUrl(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
-        return getFullUrlAsync(resourceGroupName, partnerTopicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get the full endpoint URL for an event subscription of a partner topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1510,44 +1282,61 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return the full endpoint URL for an event subscription of a partner topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
+    public Response<EventSubscriptionFullUrlInner> getFullUrlWithResponse(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName, Context context) {
         return getFullUrlWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName, context).block();
     }
 
     /**
+     * Get full URL of an event subscription of a partner topic.
+     * 
+     * Get the full endpoint URL for an event subscription of a partner topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription of a partner topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EventSubscriptionFullUrlInner getFullUrl(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName) {
+        return getFullUrlWithResponse(resourceGroupName, partnerTopicName, eventSubscriptionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * List event subscriptions of a partner topic.
+     * 
      * List event subscriptions that belong to a specific partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByPartnerTopicSinglePageAsync(
-        String resourceGroupName, String partnerTopicName, String filter, Integer top) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByPartnerTopicSinglePageAsync(String resourceGroupName,
+        String partnerTopicName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1560,64 +1349,44 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByPartnerTopic(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerTopicName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByPartnerTopic(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, partnerTopicName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * List event subscriptions of a partner topic.
+     * 
      * List event subscriptions that belong to a specific partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByPartnerTopicSinglePageAsync(
-        String resourceGroupName, String partnerTopicName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByPartnerTopicSinglePageAsync(String resourceGroupName,
+        String partnerTopicName, String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1630,56 +1399,44 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByPartnerTopic(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerTopicName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByPartnerTopic(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                partnerTopicName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
+     * List event subscriptions of a partner topic.
+     * 
      * List event subscriptions that belong to a specific partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByPartnerTopicAsync(
-        String resourceGroupName, String partnerTopicName, String filter, Integer top) {
+    private PagedFlux<EventSubscriptionInner> listByPartnerTopicAsync(String resourceGroupName, String partnerTopicName,
+        String filter, Integer top) {
         return new PagedFlux<>(
             () -> listByPartnerTopicSinglePageAsync(resourceGroupName, partnerTopicName, filter, top),
             nextLink -> listByPartnerTopicNextSinglePageAsync(nextLink));
     }
 
     /**
+     * List event subscriptions of a partner topic.
+     * 
      * List event subscriptions that belong to a specific partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1688,8 +1445,8 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByPartnerTopicAsync(
-        String resourceGroupName, String partnerTopicName) {
+    private PagedFlux<EventSubscriptionInner> listByPartnerTopicAsync(String resourceGroupName,
+        String partnerTopicName) {
         final String filter = null;
         final Integer top = null;
         return new PagedFlux<>(
@@ -1698,18 +1455,19 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
     }
 
     /**
+     * List event subscriptions of a partner topic.
+     * 
      * List event subscriptions that belong to a specific partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1717,16 +1475,18 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<EventSubscriptionInner> listByPartnerTopicAsync(
-        String resourceGroupName, String partnerTopicName, String filter, Integer top, Context context) {
+    private PagedFlux<EventSubscriptionInner> listByPartnerTopicAsync(String resourceGroupName, String partnerTopicName,
+        String filter, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listByPartnerTopicSinglePageAsync(resourceGroupName, partnerTopicName, filter, top, context),
             nextLink -> listByPartnerTopicNextSinglePageAsync(nextLink, context));
     }
 
     /**
+     * List event subscriptions of a partner topic.
+     * 
      * List event subscriptions that belong to a specific partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1742,18 +1502,19 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
     }
 
     /**
+     * List event subscriptions of a partner topic.
+     * 
      * List event subscriptions that belong to a specific partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1761,38 +1522,35 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<EventSubscriptionInner> listByPartnerTopic(
-        String resourceGroupName, String partnerTopicName, String filter, Integer top, Context context) {
+    public PagedIterable<EventSubscriptionInner> listByPartnerTopic(String resourceGroupName, String partnerTopicName,
+        String filter, Integer top, Context context) {
         return new PagedIterable<>(listByPartnerTopicAsync(resourceGroupName, partnerTopicName, filter, top, context));
     }
 
     /**
+     * Get delivery attributes for an event subscription of a partner topic.
+     * 
      * Get all delivery attributes for an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all delivery attributes for an event subscription of a partner topic along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1808,49 +1566,37 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeliveryAttributes(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            partnerTopicName,
-                            eventSubscriptionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getDeliveryAttributes(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, partnerTopicName, eventSubscriptionName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get delivery attributes for an event subscription of a partner topic.
+     * 
      * Get all delivery attributes for an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all delivery attributes for an event subscription of a partner topic along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeliveryAttributeListResultInner>> getDeliveryAttributesWithResponseAsync(
         String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1866,63 +1612,39 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDeliveryAttributes(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                partnerTopicName,
-                eventSubscriptionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getDeliveryAttributes(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, partnerTopicName, eventSubscriptionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
+     * Get delivery attributes for an event subscription of a partner topic.
+     * 
      * Get all delivery attributes for an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription of a partner topic on successful completion of {@link
-     *     Mono}.
+     * @return all delivery attributes for an event subscription of a partner topic on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
+    private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName) {
         return getDeliveryAttributesWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get delivery attributes for an event subscription of a partner topic.
+     * 
      * Get all delivery attributes for an event subscription of a partner topic.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription of a partner topic.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeliveryAttributeListResultInner getDeliveryAttributes(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName) {
-        return getDeliveryAttributesAsync(resourceGroupName, partnerTopicName, eventSubscriptionName).block();
-    }
-
-    /**
-     * Get all delivery attributes for an event subscription of a partner topic.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerTopicName Name of the partner topic.
-     * @param eventSubscriptionName Name of the event subscription to be created. Event subscription names must be
-     *     between 3 and 100 characters in length and use alphanumeric letters only.
+     * @param eventSubscriptionName Name of the event subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1930,22 +1652,41 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
      * @return all delivery attributes for an event subscription of a partner topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(
-        String resourceGroupName, String partnerTopicName, String eventSubscriptionName, Context context) {
-        return getDeliveryAttributesWithResponseAsync(
-                resourceGroupName, partnerTopicName, eventSubscriptionName, context)
-            .block();
+    public Response<DeliveryAttributeListResultInner> getDeliveryAttributesWithResponse(String resourceGroupName,
+        String partnerTopicName, String eventSubscriptionName, Context context) {
+        return getDeliveryAttributesWithResponseAsync(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            context).block();
+    }
+
+    /**
+     * Get delivery attributes for an event subscription of a partner topic.
+     * 
+     * Get all delivery attributes for an event subscription of a partner topic.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerTopicName Name of the partner topic.
+     * @param eventSubscriptionName Name of the event subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all delivery attributes for an event subscription of a partner topic.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeliveryAttributeListResultInner getDeliveryAttributes(String resourceGroupName, String partnerTopicName,
+        String eventSubscriptionName) {
+        return getDeliveryAttributesWithResponse(resourceGroupName, partnerTopicName, eventSubscriptionName,
+            Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<EventSubscriptionInner>> listByPartnerTopicNextSinglePageAsync(String nextLink) {
@@ -1953,62 +1694,43 @@ public final class PartnerTopicEventSubscriptionsClientImpl implements PartnerTo
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByPartnerTopicNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<EventSubscriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<EventSubscriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List EventSubscriptions operation along with {@link PagedResponse} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<EventSubscriptionInner>> listByPartnerTopicNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<EventSubscriptionInner>> listByPartnerTopicNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByPartnerTopicNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByPartnerTopicNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

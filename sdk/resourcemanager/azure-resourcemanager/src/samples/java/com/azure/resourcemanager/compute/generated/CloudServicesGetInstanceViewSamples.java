@@ -4,25 +4,26 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CloudServices GetInstanceView. */
+/**
+ * Samples for CloudServices GetInstanceView.
+ */
 public final class CloudServicesGetInstanceViewSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Get_InstanceViewWithMultiRole.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
+     * CloudService_Get_InstanceViewWithMultiRole.json
      */
     /**
      * Sample code: Get Cloud Service Instance View with Multiple Roles.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getCloudServiceInstanceViewWithMultipleRoles(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void
+        getCloudServiceInstanceViewWithMultipleRoles(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getCloudServices()
-            .getInstanceViewWithResponse("ConstosoRG", "{cs-name}", Context.NONE);
+            .getInstanceViewWithResponse("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,25 +6,33 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** MongoDB Atlas database dataset properties. */
+/**
+ * MongoDB Atlas database dataset properties.
+ */
 @Fluent
-public final class MongoDbAtlasCollectionDatasetTypeProperties {
+public final class MongoDbAtlasCollectionDatasetTypeProperties
+    implements JsonSerializable<MongoDbAtlasCollectionDatasetTypeProperties> {
     /*
      * The collection name of the MongoDB Atlas database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "collection", required = true)
     private Object collection;
 
-    /** Creates an instance of MongoDbAtlasCollectionDatasetTypeProperties class. */
+    /**
+     * Creates an instance of MongoDbAtlasCollectionDatasetTypeProperties class.
+     */
     public MongoDbAtlasCollectionDatasetTypeProperties() {
     }
 
     /**
      * Get the collection property: The collection name of the MongoDB Atlas database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the collection value.
      */
     public Object collection() {
@@ -34,7 +42,7 @@ public final class MongoDbAtlasCollectionDatasetTypeProperties {
     /**
      * Set the collection property: The collection name of the MongoDB Atlas database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param collection the collection value to set.
      * @return the MongoDbAtlasCollectionDatasetTypeProperties object itself.
      */
@@ -45,17 +53,54 @@ public final class MongoDbAtlasCollectionDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (collection() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property collection in model MongoDbAtlasCollectionDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property collection in model MongoDbAtlasCollectionDatasetTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MongoDbAtlasCollectionDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("collection", this.collection);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDbAtlasCollectionDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDbAtlasCollectionDatasetTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDbAtlasCollectionDatasetTypeProperties.
+     */
+    public static MongoDbAtlasCollectionDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDbAtlasCollectionDatasetTypeProperties deserializedMongoDbAtlasCollectionDatasetTypeProperties
+                = new MongoDbAtlasCollectionDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("collection".equals(fieldName)) {
+                    deserializedMongoDbAtlasCollectionDatasetTypeProperties.collection = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoDbAtlasCollectionDatasetTypeProperties;
+        });
+    }
 }

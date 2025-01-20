@@ -5,48 +5,66 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.SharedGalleryImageVersionStorageProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
-/** Describes the properties of a gallery image version. */
+/**
+ * Describes the properties of a gallery image version.
+ */
 @Fluent
-public final class CommunityGalleryImageVersionProperties {
+public final class CommunityGalleryImageVersionProperties
+    implements JsonSerializable<CommunityGalleryImageVersionProperties> {
     /*
      * The published date of the gallery image version Definition. This property can be used for decommissioning
      * purposes. This property is updatable.
      */
-    @JsonProperty(value = "publishedDate")
     private OffsetDateTime publishedDate;
 
     /*
      * The end of life date of the gallery image version Definition. This property can be used for decommissioning
      * purposes. This property is updatable.
      */
-    @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
      * If set to true, Virtual Machines deployed from the latest version of the Image Definition won't use this Image
      * Version.
      */
-    @JsonProperty(value = "excludeFromLatest")
     private Boolean excludeFromLatest;
 
     /*
      * Describes the storage profile of the image version.
      */
-    @JsonProperty(value = "storageProfile")
     private SharedGalleryImageVersionStorageProfile storageProfile;
 
-    /** Creates an instance of CommunityGalleryImageVersionProperties class. */
+    /*
+     * The disclaimer for a community gallery resource.
+     */
+    private String disclaimer;
+
+    /*
+     * The artifact tags of a community gallery resource.
+     */
+    private Map<String, String> artifactTags;
+
+    /**
+     * Creates an instance of CommunityGalleryImageVersionProperties class.
+     */
     public CommunityGalleryImageVersionProperties() {
     }
 
     /**
      * Get the publishedDate property: The published date of the gallery image version Definition. This property can be
      * used for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @return the publishedDate value.
      */
     public OffsetDateTime publishedDate() {
@@ -56,7 +74,7 @@ public final class CommunityGalleryImageVersionProperties {
     /**
      * Set the publishedDate property: The published date of the gallery image version Definition. This property can be
      * used for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @param publishedDate the publishedDate value to set.
      * @return the CommunityGalleryImageVersionProperties object itself.
      */
@@ -68,7 +86,7 @@ public final class CommunityGalleryImageVersionProperties {
     /**
      * Get the endOfLifeDate property: The end of life date of the gallery image version Definition. This property can
      * be used for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -78,7 +96,7 @@ public final class CommunityGalleryImageVersionProperties {
     /**
      * Set the endOfLifeDate property: The end of life date of the gallery image version Definition. This property can
      * be used for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @param endOfLifeDate the endOfLifeDate value to set.
      * @return the CommunityGalleryImageVersionProperties object itself.
      */
@@ -90,7 +108,7 @@ public final class CommunityGalleryImageVersionProperties {
     /**
      * Get the excludeFromLatest property: If set to true, Virtual Machines deployed from the latest version of the
      * Image Definition won't use this Image Version.
-     *
+     * 
      * @return the excludeFromLatest value.
      */
     public Boolean excludeFromLatest() {
@@ -100,7 +118,7 @@ public final class CommunityGalleryImageVersionProperties {
     /**
      * Set the excludeFromLatest property: If set to true, Virtual Machines deployed from the latest version of the
      * Image Definition won't use this Image Version.
-     *
+     * 
      * @param excludeFromLatest the excludeFromLatest value to set.
      * @return the CommunityGalleryImageVersionProperties object itself.
      */
@@ -111,7 +129,7 @@ public final class CommunityGalleryImageVersionProperties {
 
     /**
      * Get the storageProfile property: Describes the storage profile of the image version.
-     *
+     * 
      * @return the storageProfile value.
      */
     public SharedGalleryImageVersionStorageProfile storageProfile() {
@@ -120,24 +138,123 @@ public final class CommunityGalleryImageVersionProperties {
 
     /**
      * Set the storageProfile property: Describes the storage profile of the image version.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the CommunityGalleryImageVersionProperties object itself.
      */
-    public CommunityGalleryImageVersionProperties withStorageProfile(
-        SharedGalleryImageVersionStorageProfile storageProfile) {
+    public CommunityGalleryImageVersionProperties
+        withStorageProfile(SharedGalleryImageVersionStorageProfile storageProfile) {
         this.storageProfile = storageProfile;
         return this;
     }
 
     /**
+     * Get the disclaimer property: The disclaimer for a community gallery resource.
+     * 
+     * @return the disclaimer value.
+     */
+    public String disclaimer() {
+        return this.disclaimer;
+    }
+
+    /**
+     * Set the disclaimer property: The disclaimer for a community gallery resource.
+     * 
+     * @param disclaimer the disclaimer value to set.
+     * @return the CommunityGalleryImageVersionProperties object itself.
+     */
+    public CommunityGalleryImageVersionProperties withDisclaimer(String disclaimer) {
+        this.disclaimer = disclaimer;
+        return this;
+    }
+
+    /**
+     * Get the artifactTags property: The artifact tags of a community gallery resource.
+     * 
+     * @return the artifactTags value.
+     */
+    public Map<String, String> artifactTags() {
+        return this.artifactTags;
+    }
+
+    /**
+     * Set the artifactTags property: The artifact tags of a community gallery resource.
+     * 
+     * @param artifactTags the artifactTags value to set.
+     * @return the CommunityGalleryImageVersionProperties object itself.
+     */
+    public CommunityGalleryImageVersionProperties withArtifactTags(Map<String, String> artifactTags) {
+        this.artifactTags = artifactTags;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageProfile() != null) {
             storageProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("publishedDate",
+            this.publishedDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.publishedDate));
+        jsonWriter.writeStringField("endOfLifeDate",
+            this.endOfLifeDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endOfLifeDate));
+        jsonWriter.writeBooleanField("excludeFromLatest", this.excludeFromLatest);
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        jsonWriter.writeStringField("disclaimer", this.disclaimer);
+        jsonWriter.writeMapField("artifactTags", this.artifactTags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunityGalleryImageVersionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunityGalleryImageVersionProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommunityGalleryImageVersionProperties.
+     */
+    public static CommunityGalleryImageVersionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunityGalleryImageVersionProperties deserializedCommunityGalleryImageVersionProperties
+                = new CommunityGalleryImageVersionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publishedDate".equals(fieldName)) {
+                    deserializedCommunityGalleryImageVersionProperties.publishedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endOfLifeDate".equals(fieldName)) {
+                    deserializedCommunityGalleryImageVersionProperties.endOfLifeDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("excludeFromLatest".equals(fieldName)) {
+                    deserializedCommunityGalleryImageVersionProperties.excludeFromLatest
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedCommunityGalleryImageVersionProperties.storageProfile
+                        = SharedGalleryImageVersionStorageProfile.fromJson(reader);
+                } else if ("disclaimer".equals(fieldName)) {
+                    deserializedCommunityGalleryImageVersionProperties.disclaimer = reader.getString();
+                } else if ("artifactTags".equals(fieldName)) {
+                    Map<String, String> artifactTags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCommunityGalleryImageVersionProperties.artifactTags = artifactTags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunityGalleryImageVersionProperties;
+        });
     }
 }

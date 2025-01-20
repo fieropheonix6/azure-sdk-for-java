@@ -69,6 +69,10 @@ public final class BackendContractImpl implements BackendContract, BackendContra
         return this.innerModel().tls();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BackendContractInner innerModel() {
         return this.innerObject;
     }
@@ -96,24 +100,20 @@ public final class BackendContractImpl implements BackendContract, BackendContra
     }
 
     public BackendContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackends()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, backendId, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackends()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, backendId, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public BackendContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackends()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, backendId, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackends()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, backendId, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
@@ -131,63 +131,54 @@ public final class BackendContractImpl implements BackendContract, BackendContra
     }
 
     public BackendContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackends()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, backendId, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackends()
+            .updateWithResponse(resourceGroupName, serviceName, backendId, updateIfMatch, updateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public BackendContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackends()
-                .updateWithResponse(resourceGroupName, serviceName, backendId, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackends()
+            .updateWithResponse(resourceGroupName, serviceName, backendId, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    BackendContractImpl(
-        BackendContractInner innerObject, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    BackendContractImpl(BackendContractInner innerObject,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.backendId = Utils.getValueFromIdByName(innerObject.id(), "backends");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.backendId = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "backends");
     }
 
     public BackendContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackends()
-                .getWithResponse(resourceGroupName, serviceName, backendId, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackends()
+            .getWithResponse(resourceGroupName, serviceName, backendId, Context.NONE)
+            .getValue();
         return this;
     }
 
     public BackendContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackends()
-                .getWithResponse(resourceGroupName, serviceName, backendId, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getBackends()
+            .getWithResponse(resourceGroupName, serviceName, backendId, context)
+            .getValue();
         return this;
+    }
+
+    public Response<Void> reconnectWithResponse(BackendReconnectContract parameters, Context context) {
+        return serviceManager.backends()
+            .reconnectWithResponse(resourceGroupName, serviceName, backendId, parameters, context);
     }
 
     public void reconnect() {
         serviceManager.backends().reconnect(resourceGroupName, serviceName, backendId);
-    }
-
-    public Response<Void> reconnectWithResponse(BackendReconnectContract parameters, Context context) {
-        return serviceManager
-            .backends()
-            .reconnectWithResponse(resourceGroupName, serviceName, backendId, parameters, context);
     }
 
     public BackendContractImpl withUrl(String url) {

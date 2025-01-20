@@ -5,23 +5,28 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Oracle Cloud Storage linked service properties. */
+/**
+ * Oracle Cloud Storage linked service properties.
+ */
 @Fluent
-public final class OracleCloudStorageLinkedServiceTypeProperties {
+public final class OracleCloudStorageLinkedServiceTypeProperties
+    implements JsonSerializable<OracleCloudStorageLinkedServiceTypeProperties> {
     /*
-     * The access key identifier of the Oracle Cloud Storage Identity and Access Management (IAM) user. Type: string
-     * (or Expression with resultType string).
+     * The access key identifier of the Oracle Cloud Storage Identity and Access Management (IAM) user. Type: string (or
+     * Expression with resultType string).
      */
-    @JsonProperty(value = "accessKeyId")
     private Object accessKeyId;
 
     /*
      * The secret access key of the Oracle Cloud Storage Identity and Access Management (IAM) user.
      */
-    @JsonProperty(value = "secretAccessKey")
     private SecretBase secretAccessKey;
 
     /*
@@ -29,24 +34,24 @@ public final class OracleCloudStorageLinkedServiceTypeProperties {
      * property; change it only if you want to try a different service endpoint or want to switch between https and
      * http. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "serviceUrl")
     private Object serviceUrl;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of OracleCloudStorageLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of OracleCloudStorageLinkedServiceTypeProperties class.
+     */
     public OracleCloudStorageLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the accessKeyId property: The access key identifier of the Oracle Cloud Storage Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the accessKeyId value.
      */
     public Object accessKeyId() {
@@ -56,7 +61,7 @@ public final class OracleCloudStorageLinkedServiceTypeProperties {
     /**
      * Set the accessKeyId property: The access key identifier of the Oracle Cloud Storage Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param accessKeyId the accessKeyId value to set.
      * @return the OracleCloudStorageLinkedServiceTypeProperties object itself.
      */
@@ -68,7 +73,7 @@ public final class OracleCloudStorageLinkedServiceTypeProperties {
     /**
      * Get the secretAccessKey property: The secret access key of the Oracle Cloud Storage Identity and Access
      * Management (IAM) user.
-     *
+     * 
      * @return the secretAccessKey value.
      */
     public SecretBase secretAccessKey() {
@@ -78,7 +83,7 @@ public final class OracleCloudStorageLinkedServiceTypeProperties {
     /**
      * Set the secretAccessKey property: The secret access key of the Oracle Cloud Storage Identity and Access
      * Management (IAM) user.
-     *
+     * 
      * @param secretAccessKey the secretAccessKey value to set.
      * @return the OracleCloudStorageLinkedServiceTypeProperties object itself.
      */
@@ -91,7 +96,7 @@ public final class OracleCloudStorageLinkedServiceTypeProperties {
      * Get the serviceUrl property: This value specifies the endpoint to access with the Oracle Cloud Storage Connector.
      * This is an optional property; change it only if you want to try a different service endpoint or want to switch
      * between https and http. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the serviceUrl value.
      */
     public Object serviceUrl() {
@@ -102,7 +107,7 @@ public final class OracleCloudStorageLinkedServiceTypeProperties {
      * Set the serviceUrl property: This value specifies the endpoint to access with the Oracle Cloud Storage Connector.
      * This is an optional property; change it only if you want to try a different service endpoint or want to switch
      * between https and http. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param serviceUrl the serviceUrl value to set.
      * @return the OracleCloudStorageLinkedServiceTypeProperties object itself.
      */
@@ -113,34 +118,81 @@ public final class OracleCloudStorageLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the OracleCloudStorageLinkedServiceTypeProperties object itself.
      */
-    public OracleCloudStorageLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public OracleCloudStorageLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (secretAccessKey() != null) {
             secretAccessKey().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("accessKeyId", this.accessKeyId);
+        jsonWriter.writeJsonField("secretAccessKey", this.secretAccessKey);
+        jsonWriter.writeUntypedField("serviceUrl", this.serviceUrl);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OracleCloudStorageLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OracleCloudStorageLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OracleCloudStorageLinkedServiceTypeProperties.
+     */
+    public static OracleCloudStorageLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OracleCloudStorageLinkedServiceTypeProperties deserializedOracleCloudStorageLinkedServiceTypeProperties
+                = new OracleCloudStorageLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("accessKeyId".equals(fieldName)) {
+                    deserializedOracleCloudStorageLinkedServiceTypeProperties.accessKeyId = reader.readUntyped();
+                } else if ("secretAccessKey".equals(fieldName)) {
+                    deserializedOracleCloudStorageLinkedServiceTypeProperties.secretAccessKey
+                        = SecretBase.fromJson(reader);
+                } else if ("serviceUrl".equals(fieldName)) {
+                    deserializedOracleCloudStorageLinkedServiceTypeProperties.serviceUrl = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedOracleCloudStorageLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOracleCloudStorageLinkedServiceTypeProperties;
+        });
     }
 }

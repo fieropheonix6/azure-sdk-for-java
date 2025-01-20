@@ -5,75 +5,179 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The role resource format. */
-@JsonFlatten
+/**
+ * The role resource format.
+ */
 @Fluent
-public class RoleResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleResourceFormatInner.class);
+public final class RoleResourceFormatInner extends ProxyResource {
+    /*
+     * The Role definition.
+     */
+    private Role innerProperties;
 
     /*
-     * The role name.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.roleName")
-    private String roleName;
+    private String type;
 
     /*
-     * The description of the role.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RoleResourceFormatInner class.
+     */
+    public RoleResourceFormatInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The Role definition.
+     * 
+     * @return the innerProperties value.
+     */
+    private Role innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the roleName property: The role name.
-     *
+     * 
      * @return the roleName value.
      */
     public String roleName() {
-        return this.roleName;
+        return this.innerProperties() == null ? null : this.innerProperties().roleName();
     }
 
     /**
      * Set the roleName property: The role name.
-     *
+     * 
      * @param roleName the roleName value to set.
      * @return the RoleResourceFormatInner object itself.
      */
     public RoleResourceFormatInner withRoleName(String roleName) {
-        this.roleName = roleName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Role();
+        }
+        this.innerProperties().withRoleName(roleName);
         return this;
     }
 
     /**
      * Get the description property: The description of the role.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: The description of the role.
-     *
+     * 
      * @param description the description value to set.
      * @return the RoleResourceFormatInner object itself.
      */
     public RoleResourceFormatInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new Role();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoleResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoleResourceFormatInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoleResourceFormatInner.
+     */
+    public static RoleResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoleResourceFormatInner deserializedRoleResourceFormatInner = new RoleResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoleResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRoleResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRoleResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRoleResourceFormatInner.innerProperties = Role.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoleResourceFormatInner;
+        });
     }
 }

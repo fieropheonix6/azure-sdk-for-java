@@ -14,11 +14,32 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerRegistrationInner;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrationUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in PartnerRegistrationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PartnerRegistrationsClient.
+ */
 public interface PartnerRegistrationsClient {
     /**
+     * Get a partner registration.
+     * 
      * Gets a partner registration with the specified parameters.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerRegistrationName Name of the partner registration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a partner registration with the specified parameters along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PartnerRegistrationInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String partnerRegistrationName, Context context);
+
+    /**
+     * Get a partner registration.
+     * 
+     * Gets a partner registration with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,23 +51,10 @@ public interface PartnerRegistrationsClient {
     PartnerRegistrationInner getByResourceGroup(String resourceGroupName, String partnerRegistrationName);
 
     /**
-     * Gets a partner registration with the specified parameters.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerRegistrationName Name of the partner registration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a partner registration with the specified parameters along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PartnerRegistrationInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String partnerRegistrationName, Context context);
-
-    /**
+     * Create a partner registration.
+     * 
      * Creates a new partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -60,8 +68,10 @@ public interface PartnerRegistrationsClient {
         String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo);
 
     /**
+     * Create a partner registration.
+     * 
      * Creates a new partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -73,14 +83,14 @@ public interface PartnerRegistrationsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String partnerRegistrationName,
-        PartnerRegistrationInner partnerRegistrationInfo,
+        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo,
         Context context);
 
     /**
+     * Create a partner registration.
+     * 
      * Creates a new partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -90,12 +100,14 @@ public interface PartnerRegistrationsClient {
      * @return information about a partner registration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerRegistrationInner createOrUpdate(
-        String resourceGroupName, String partnerRegistrationName, PartnerRegistrationInner partnerRegistrationInfo);
+    PartnerRegistrationInner createOrUpdate(String resourceGroupName, String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo);
 
     /**
+     * Create a partner registration.
+     * 
      * Creates a new partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationInfo PartnerRegistration information.
@@ -106,15 +118,14 @@ public interface PartnerRegistrationsClient {
      * @return information about a partner registration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerRegistrationInner createOrUpdate(
-        String resourceGroupName,
-        String partnerRegistrationName,
-        PartnerRegistrationInner partnerRegistrationInfo,
-        Context context);
+    PartnerRegistrationInner createOrUpdate(String resourceGroupName, String partnerRegistrationName,
+        PartnerRegistrationInner partnerRegistrationInfo, Context context);
 
     /**
+     * Delete a partner registration.
+     * 
      * Deletes a partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,8 +137,10 @@ public interface PartnerRegistrationsClient {
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerRegistrationName);
 
     /**
+     * Delete a partner registration.
+     * 
      * Deletes a partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -137,12 +150,14 @@ public interface PartnerRegistrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String partnerRegistrationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String partnerRegistrationName,
+        Context context);
 
     /**
+     * Delete a partner registration.
+     * 
      * Deletes a partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,8 +168,10 @@ public interface PartnerRegistrationsClient {
     void delete(String resourceGroupName, String partnerRegistrationName);
 
     /**
+     * Delete a partner registration.
+     * 
      * Deletes a partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param context The context to associate with this operation.
@@ -166,8 +183,10 @@ public interface PartnerRegistrationsClient {
     void delete(String resourceGroupName, String partnerRegistrationName, Context context);
 
     /**
+     * Update a partner registration.
+     * 
      * Updates a partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -177,14 +196,14 @@ public interface PartnerRegistrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
-        String resourceGroupName,
-        String partnerRegistrationName,
-        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters);
+    SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(String resourceGroupName,
+        String partnerRegistrationName, PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters);
 
     /**
+     * Update a partner registration.
+     * 
      * Updates a partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -195,15 +214,15 @@ public interface PartnerRegistrationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(
-        String resourceGroupName,
-        String partnerRegistrationName,
-        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
+    SyncPoller<PollResult<PartnerRegistrationInner>, PartnerRegistrationInner> beginUpdate(String resourceGroupName,
+        String partnerRegistrationName, PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
         Context context);
 
     /**
+     * Update a partner registration.
+     * 
      * Updates a partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -213,14 +232,14 @@ public interface PartnerRegistrationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerRegistrationInner update(
-        String resourceGroupName,
-        String partnerRegistrationName,
+    PartnerRegistrationInner update(String resourceGroupName, String partnerRegistrationName,
         PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters);
 
     /**
+     * Update a partner registration.
+     * 
      * Updates a partner registration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerRegistrationName Name of the partner registration.
      * @param partnerRegistrationUpdateParameters Partner registration update information.
@@ -231,15 +250,14 @@ public interface PartnerRegistrationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PartnerRegistrationInner update(
-        String resourceGroupName,
-        String partnerRegistrationName,
-        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters,
-        Context context);
+    PartnerRegistrationInner update(String resourceGroupName, String partnerRegistrationName,
+        PartnerRegistrationUpdateParameters partnerRegistrationUpdateParameters, Context context);
 
     /**
+     * List partner registrations under an Azure subscription.
+     * 
      * List all the partner registrations under an Azure subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
@@ -248,16 +266,17 @@ public interface PartnerRegistrationsClient {
     PagedIterable<PartnerRegistrationInner> list();
 
     /**
+     * List partner registrations under an Azure subscription.
+     * 
      * List all the partner registrations under an Azure subscription.
-     *
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -268,8 +287,10 @@ public interface PartnerRegistrationsClient {
     PagedIterable<PartnerRegistrationInner> list(String filter, Integer top, Context context);
 
     /**
+     * List partner registrations under a resource group.
+     * 
      * List all the partner registrations under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -280,17 +301,18 @@ public interface PartnerRegistrationsClient {
     PagedIterable<PartnerRegistrationInner> listByResourceGroup(String resourceGroupName);
 
     /**
+     * List partner registrations under a resource group.
+     * 
      * List all the partner registrations under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -298,6 +320,6 @@ public interface PartnerRegistrationsClient {
      * @return result of the List Partner Registrations operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PartnerRegistrationInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context);
+    PagedIterable<PartnerRegistrationInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Context context);
 }

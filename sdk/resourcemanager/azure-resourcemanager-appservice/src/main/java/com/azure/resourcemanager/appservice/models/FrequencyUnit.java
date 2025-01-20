@@ -4,18 +4,24 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for FrequencyUnit. */
+/**
+ * The unit of time for how often the backup should be executed (e.g. for weekly backup, this should be set to Day and
+ * FrequencyInterval should be set to 7).
+ */
 public enum FrequencyUnit {
-    /** Enum value Day. */
+    /**
+     * Enum value Day.
+     */
     DAY("Day"),
 
-    /** Enum value Hour. */
+    /**
+     * Enum value Hour.
+     */
     HOUR("Hour");
 
-    /** The actual serialized value for a FrequencyUnit instance. */
+    /**
+     * The actual serialized value for a FrequencyUnit instance.
+     */
     private final String value;
 
     FrequencyUnit(String value) {
@@ -24,12 +30,14 @@ public enum FrequencyUnit {
 
     /**
      * Parses a serialized value to a FrequencyUnit instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FrequencyUnit object, or null if unable to parse.
      */
-    @JsonCreator
     public static FrequencyUnit fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FrequencyUnit[] items = FrequencyUnit.values();
         for (FrequencyUnit item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +47,9 @@ public enum FrequencyUnit {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

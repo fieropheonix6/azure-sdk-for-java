@@ -7,28 +7,23 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FollowerDatabaseDefinitionInnerTests {
-    @Test
-    public void testDeserialize() {
-        FollowerDatabaseDefinitionInner model =
-            BinaryData
-                .fromString(
-                    "{\"clusterResourceId\":\"n\",\"attachedDatabaseConfigurationName\":\"ulexxbczwtr\",\"databaseName\":\"iqzbq\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"vmyokacspkwl\"],\"tablesToExclude\":[\"obpxjmflbvvn\",\"hrk\",\"ciwwzjuqkhr\",\"ajiwkuo\"],\"externalTablesToInclude\":[\"kg\",\"sauuimj\",\"vxieduugidyj\"],\"externalTablesToExclude\":[\"byao\"],\"materializedViewsToInclude\":[\"xc\"],\"materializedViewsToExclude\":[\"pclhocohslk\"]},\"databaseShareOrigin\":\"Other\"}")
-                .toObject(FollowerDatabaseDefinitionInner.class);
-        Assertions.assertEquals("n", model.clusterResourceId());
-        Assertions.assertEquals("ulexxbczwtr", model.attachedDatabaseConfigurationName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FollowerDatabaseDefinitionInner model = BinaryData.fromString(
+            "{\"clusterResourceId\":\"xyqj\",\"attachedDatabaseConfigurationName\":\"k\",\"databaseName\":\"t\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"jcrcczsqpjhvmda\",\"v\",\"ysou\",\"q\"],\"tablesToExclude\":[\"noae\"],\"externalTablesToInclude\":[\"hy\",\"ltrpmopj\",\"cma\",\"u\"],\"externalTablesToExclude\":[\"hfuiuaodsfc\",\"kvxod\",\"uozmyzydagfua\",\"bezy\"],\"materializedViewsToInclude\":[\"kktwhrdxw\",\"ywqsmbsurexim\",\"ryocfsfksymdd\"],\"materializedViewsToExclude\":[\"kiiuxhqyudxor\"],\"functionsToInclude\":[\"b\",\"oczvy\",\"fqrvkdvjsllrmvvd\",\"watkpnpulexxb\"],\"functionsToExclude\":[\"truwiqzb\",\"j\",\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\"]},\"databaseShareOrigin\":\"Direct\"}")
+            .toObject(FollowerDatabaseDefinitionInner.class);
+        Assertions.assertEquals("xyqj", model.clusterResourceId());
+        Assertions.assertEquals("k", model.attachedDatabaseConfigurationName());
     }
 
-    @Test
-    public void testSerialize() {
-        FollowerDatabaseDefinitionInner model =
-            new FollowerDatabaseDefinitionInner()
-                .withClusterResourceId("n")
-                .withAttachedDatabaseConfigurationName("ulexxbczwtr");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FollowerDatabaseDefinitionInner model = new FollowerDatabaseDefinitionInner().withClusterResourceId("xyqj")
+            .withAttachedDatabaseConfigurationName("k");
         model = BinaryData.fromObject(model).toObject(FollowerDatabaseDefinitionInner.class);
-        Assertions.assertEquals("n", model.clusterResourceId());
-        Assertions.assertEquals("ulexxbczwtr", model.attachedDatabaseConfigurationName());
+        Assertions.assertEquals("xyqj", model.clusterResourceId());
+        Assertions.assertEquals("k", model.attachedDatabaseConfigurationName());
     }
 }

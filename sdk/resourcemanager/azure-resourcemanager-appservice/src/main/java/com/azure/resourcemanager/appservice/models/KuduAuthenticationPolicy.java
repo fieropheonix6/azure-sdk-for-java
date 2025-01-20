@@ -14,7 +14,12 @@ import java.util.Base64;
 
 /**
  * Kudu web app authentication via basic auth
+ *
+ * @deprecated Kudu deployment has switched to use AAD Auth. This policy is no longer needed.
+ * @see com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy
+ * @see com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthenticationPolicy
  */
+@Deprecated
 public final class KuduAuthenticationPolicy implements HttpPipelinePolicy {
     private final WebAppBase webApp;
     private static final String HEADER_NAME = "Authorization";
@@ -30,26 +35,14 @@ public final class KuduAuthenticationPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        Mono<String> basicTokenMono =
-            basicToken == null
-                ? webApp
-                    .getPublishingProfileAsync()
-                    .map(
-                        profile -> {
-                            basicToken =
-                                Base64
-                                    .getEncoder()
-                                    .encodeToString(
-                                        (profile.gitUsername() + ":" + profile.gitPassword())
-                                            .getBytes(StandardCharsets.UTF_8));
-                            return basicToken;
-                        })
-                : Mono.just(basicToken);
-        return basicTokenMono
-            .flatMap(
-                key -> {
-                    context.getHttpRequest().setHeader(HEADER_NAME, "Basic " + basicToken);
-                    return next.process();
-                });
+        Mono<String> basicTokenMono = basicToken == null ? webApp.getPublishingProfileAsync().map(profile -> {
+            basicToken = Base64.getEncoder()
+                .encodeToString((profile.gitUsername() + ":" + profile.gitPassword()).getBytes(StandardCharsets.UTF_8));
+            return basicToken;
+        }) : Mono.just(basicToken);
+        return basicTokenMono.flatMap(key -> {
+            context.getHttpRequest().setHeader(HEADER_NAME, "Basic " + basicToken);
+            return next.process();
+        });
     }
 }

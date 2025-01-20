@@ -7,11 +7,26 @@ package com.azure.resourcemanager.devtestlabs.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Operations. */
+/**
+ * Resource collection API of Operations.
+ */
 public interface Operations {
     /**
      * Get operation.
-     *
+     * 
+     * @param locationName The name of the location.
+     * @param name The name of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation along with {@link Response}.
+     */
+    Response<OperationResult> getWithResponse(String locationName, String name, Context context);
+
+    /**
+     * Get operation.
+     * 
      * @param locationName The name of the location.
      * @param name The name of the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -20,17 +35,4 @@ public interface Operations {
      * @return operation.
      */
     OperationResult get(String locationName, String name);
-
-    /**
-     * Get operation.
-     *
-     * @param locationName The name of the location.
-     * @param name The name of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation.
-     */
-    Response<OperationResult> getWithResponse(String locationName, String name, Context context);
 }

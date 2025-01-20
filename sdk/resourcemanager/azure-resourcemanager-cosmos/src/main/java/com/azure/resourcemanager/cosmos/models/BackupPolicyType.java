@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes the mode of backups. */
+/**
+ * Describes the mode of backups.
+ */
 public final class BackupPolicyType extends ExpandableStringEnum<BackupPolicyType> {
-    /** Static value Periodic for BackupPolicyType. */
+    /**
+     * Static value Periodic for BackupPolicyType.
+     */
     public static final BackupPolicyType PERIODIC = fromString("Periodic");
 
-    /** Static value Continuous for BackupPolicyType. */
+    /**
+     * Static value Continuous for BackupPolicyType.
+     */
     public static final BackupPolicyType CONTINUOUS = fromString("Continuous");
 
     /**
+     * Creates a new instance of BackupPolicyType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackupPolicyType() {
+    }
+
+    /**
      * Creates or finds a BackupPolicyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackupPolicyType.
      */
-    @JsonCreator
     public static BackupPolicyType fromString(String name) {
         return fromString(name, BackupPolicyType.class);
     }
 
     /**
      * Gets known BackupPolicyType values.
-     *
+     * 
      * @return known BackupPolicyType values.
      */
     public static Collection<BackupPolicyType> values() {

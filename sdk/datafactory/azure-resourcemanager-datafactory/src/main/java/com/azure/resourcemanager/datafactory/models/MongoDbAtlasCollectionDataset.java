@@ -6,81 +6,113 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.MongoDbAtlasCollectionDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The MongoDB Atlas database dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("MongoDbAtlasCollection")
+/**
+ * The MongoDB Atlas database dataset.
+ */
 @Fluent
 public final class MongoDbAtlasCollectionDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "MongoDbAtlasCollection";
+
+    /*
      * MongoDB Atlas database dataset properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
-    private MongoDbAtlasCollectionDatasetTypeProperties innerTypeProperties =
-        new MongoDbAtlasCollectionDatasetTypeProperties();
+    private MongoDbAtlasCollectionDatasetTypeProperties innerTypeProperties
+        = new MongoDbAtlasCollectionDatasetTypeProperties();
 
-    /** Creates an instance of MongoDbAtlasCollectionDataset class. */
+    /**
+     * Creates an instance of MongoDbAtlasCollectionDataset class.
+     */
     public MongoDbAtlasCollectionDataset() {
     }
 
     /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: MongoDB Atlas database dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private MongoDbAtlasCollectionDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasCollectionDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasCollectionDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasCollectionDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasCollectionDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasCollectionDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasCollectionDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasCollectionDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -90,7 +122,7 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * Get the collection property: The collection name of the MongoDB Atlas database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the collection value.
      */
     public Object collection() {
@@ -100,7 +132,7 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
     /**
      * Set the collection property: The collection name of the MongoDB Atlas database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param collection the collection value to set.
      * @return the MongoDbAtlasCollectionDataset object itself.
      */
@@ -114,21 +146,114 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model MongoDbAtlasCollectionDataset"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model MongoDbAtlasCollectionDataset"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (linkedServiceName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model MongoDbAtlasCollectionDataset"));
+        } else {
+            linkedServiceName().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (folder() != null) {
+            folder().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MongoDbAtlasCollectionDataset.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeUntypedField("structure", structure());
+        jsonWriter.writeUntypedField("schema", schema());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", folder());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDbAtlasCollectionDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDbAtlasCollectionDataset if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoDbAtlasCollectionDataset.
+     */
+    public static MongoDbAtlasCollectionDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDbAtlasCollectionDataset deserializedMongoDbAtlasCollectionDataset
+                = new MongoDbAtlasCollectionDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedMongoDbAtlasCollectionDataset
+                        .withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedMongoDbAtlasCollectionDataset.withDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedMongoDbAtlasCollectionDataset.withStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedMongoDbAtlasCollectionDataset.withSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedMongoDbAtlasCollectionDataset.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedMongoDbAtlasCollectionDataset.withAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedMongoDbAtlasCollectionDataset.withFolder(DatasetFolder.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedMongoDbAtlasCollectionDataset.innerTypeProperties
+                        = MongoDbAtlasCollectionDatasetTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedMongoDbAtlasCollectionDataset.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMongoDbAtlasCollectionDataset.withAdditionalProperties(additionalProperties);
+
+            return deserializedMongoDbAtlasCollectionDataset;
+        });
+    }
 }

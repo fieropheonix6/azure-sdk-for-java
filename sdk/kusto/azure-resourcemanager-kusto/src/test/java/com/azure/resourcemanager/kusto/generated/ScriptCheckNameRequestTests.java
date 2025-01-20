@@ -7,20 +7,19 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.ScriptCheckNameRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScriptCheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
-        ScriptCheckNameRequest model =
-            BinaryData.fromString("{\"name\":\"gkfbtndoaong\"}").toObject(ScriptCheckNameRequest.class);
-        Assertions.assertEquals("gkfbtndoaong", model.name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ScriptCheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"iuxxpshneekulfg\"}").toObject(ScriptCheckNameRequest.class);
+        Assertions.assertEquals("iuxxpshneekulfg", model.name());
     }
 
-    @Test
-    public void testSerialize() {
-        ScriptCheckNameRequest model = new ScriptCheckNameRequest().withName("gkfbtndoaong");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ScriptCheckNameRequest model = new ScriptCheckNameRequest().withName("iuxxpshneekulfg");
         model = BinaryData.fromObject(model).toObject(ScriptCheckNameRequest.class);
-        Assertions.assertEquals("gkfbtndoaong", model.name());
+        Assertions.assertEquals("iuxxpshneekulfg", model.name());
     }
 }

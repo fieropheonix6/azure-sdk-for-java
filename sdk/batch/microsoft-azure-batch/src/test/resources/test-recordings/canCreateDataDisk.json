@@ -1,88 +1,84 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools?api-version=2022-10-01.16.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; odata=minimalmetadata; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 15 Nov 2022 16:10:39 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:31 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "dataserviceid" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-testpool3",
+      "dataserviceid" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3",
       "retry-after" : "0",
-      "request-id" : "876ee0bf-596f-4634-9573-c35da322e4ae",
+      "request-id" : "c2fb5550-214f-42f5-ad54-5c7dfb3a2549",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 15 Nov 2022 16:10:39 GMT",
+      "last-modified" : "Fri, 06 Sep 2024 22:00:32 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "22d5d53e-aa82-4a5d-94d8-cd1f9b1fc8bc",
-      "etag" : "0x8DAC723F01452F5",
-      "location" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-testpool3",
+      "client-request-id" : "0f73b6b9-bc65-41db-b24f-220e2c7acc11",
+      "etag" : "0x8DCCEBF5402E67D",
+      "location" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3",
       "dataserviceversion" : "3.0",
       "Body" : ""
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-testpool3?api-version=2022-10-01.16.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 15 Nov 2022 16:10:39 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:31 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "retry-after" : "0",
-      "request-id" : "ea86be1d-7355-45ce-906c-f79549563c54",
+      "request-id" : "22825847-8e91-4061-a3b2-0b91649091c2",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 15 Nov 2022 16:10:39 GMT",
+      "last-modified" : "Fri, 06 Sep 2024 22:00:32 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "4850db60-0397-424b-a1a2-145dc152679f",
+      "client-request-id" : "582eafc0-8ce6-4621-960b-6319a17c8184",
       "content-type" : "application/json;odata=minimalmetadata",
-      "etag" : "0x8DAC723F01452F5",
+      "etag" : "0x8DCCEBF5402E67D",
       "dataserviceversion" : "3.0",
-      "Body" : "{\r\n  \"odata.metadata\":\"https://sdktest.westus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool3\",\"url\":\"https://sdktest.westus.batch.azure.com/pools/BatchUser-testpool3\",\"eTag\":\"0x8DAC723F01452F5\",\"lastModified\":\"2022-11-15T16:10:39.1993077Z\",\"creationTime\":\"2022-11-15T16:10:39.1993077Z\",\"state\":\"active\",\"stateTransitionTime\":\"2022-11-15T16:10:39.1993077Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2022-11-15T16:10:39.1993077Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"dataDisks\":[\r\n      {\r\n        \"lun\":50,\"caching\":\"none\",\"diskSizeGB\":50,\"storageAccountType\":\"standard_lrs\"\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/65634139-3762-476b-946d-e221f4cdc2bf/resourceGroups/nikoudsiSDKTest/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/MySubnet\",\"dynamicVNetAssignmentScope\":\"none\"\r\n  }\r\n}"
+      "Body" : "{\r\n  \"odata.metadata\":\"https://sanjbatch.eastus.batch.azure.com/$metadata#pools/@Element\",\"id\":\"BatchUser-testpool3\",\"url\":\"https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3\",\"eTag\":\"0x8DCCEBF5402E67D\",\"lastModified\":\"2024-09-06T22:00:32.3319421Z\",\"creationTime\":\"2024-09-06T22:00:32.3319405Z\",\"state\":\"active\",\"stateTransitionTime\":\"2024-09-06T22:00:32.3319405Z\",\"allocationState\":\"resizing\",\"allocationStateTransitionTime\":\"2024-09-06T22:00:32.3319421Z\",\"vmSize\":\"standard_d1_v2\",\"resizeTimeout\":\"PT15M\",\"currentDedicatedNodes\":0,\"targetDedicatedNodes\":0,\"currentLowPriorityNodes\":0,\"targetLowPriorityNodes\":0,\"enableAutoScale\":false,\"enableInterNodeCommunication\":false,\"certificateReferences\":[],\"taskSlotsPerNode\":1,\"taskSchedulingPolicy\":{\r\n    \"nodeFillType\":\"Spread\"\r\n  },\"virtualMachineConfiguration\":{\r\n    \"imageReference\":{\r\n      \"publisher\":\"Canonical\",\"offer\":\"UbuntuServer\",\"sku\":\"18.04-LTS\",\"version\":\"latest\"\r\n    },\"nodeAgentSKUId\":\"batch.node.ubuntu 18.04\",\"dataDisks\":[\r\n      {\r\n        \"lun\":50,\"caching\":\"none\",\"diskSizeGB\":50,\"storageAccountType\":\"standard_lrs\"\r\n      }\r\n    ]\r\n  },\"networkConfiguration\":{\r\n    \"subnetId\":\"/subscriptions/42d72928-df33-4f31-9f04-581177fca7d6/resourceGroups/sanjrg/providers/Microsoft.Network/virtualNetworks/sanjvnet/subnets/default\",\"dynamicVNetAssignmentScope\":\"none\",\"enableAcceleratedNetworking\":false\r\n  }\r\n}"
     }
   }, {
     "Method" : "HEAD",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-testpool3?api-version=2022-10-01.16.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 15 Nov 2022 16:10:39 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:31 GMT",
+      "last-modified" : "Fri, 06 Sep 2024 22:00:32 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
-      "retry-after" : "0",
-      "request-id" : "58782827-f6bd-4d50-8719-cc464e5089d6",
-      "StatusCode" : "200",
-      "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "last-modified" : "Tue, 15 Nov 2022 16:10:39 GMT",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "d1b88f60-4ab0-4630-b6f8-3d3963b1f18f",
-      "etag" : "0x8DAC723F01452F5",
+      "client-request-id" : "0ddb64d3-9bdc-4810-84a8-7f234c14d461",
+      "etag" : "0x8DCCEBF5402E67D",
+      "retry-after" : "0",
+      "request-id" : "b3620575-2a12-4d3f-a010-4b5831baf425",
+      "StatusCode" : "200",
       "dataserviceversion" : "3.0",
-      "Body" : ""
+      "Body" : "",
+      "strict-transport-security" : "max-age=31536000; includeSubDomains"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://sdktest.westus.batch.azure.com/pools/BatchUser-testpool3?api-version=2022-10-01.16.0",
+    "Uri" : "https://sanjbatch.eastus.batch.azure.com/pools/BatchUser-testpool3?api-version=2024-07-01.20.0",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:25f5a46ce747e9ac1a28bab51f3971a29d824d064d699b4ac530b6e156af3ba8 Java:1.8.0_202 (BatchServiceClient, 2022-10-01.16.0)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 11/10.0 MacAddressHash:8d29338fe3269b595397ed56c360a4f409ec99957eaefd0b3cd6dd065b9ab5ce Java:17.0.9 (BatchServiceClient, 2024-07-01.20.0)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 15 Nov 2022 16:10:40 GMT",
+      "date" : "Fri, 06 Sep 2024 22:00:32 GMT",
       "server" : "Microsoft-HTTPAPI/2.0",
-      "transfer-encoding" : "chunked",
       "x-content-type-options" : "nosniff",
-      "client-request-id" : "fb8fd0ff-3638-481e-a555-241ac77fefb7",
+      "client-request-id" : "25286198-0c0f-46d3-a996-55601784b916",
       "retry-after" : "0",
-      "request-id" : "3087dbea-9c52-4b2c-a869-3feee98339cd",
+      "request-id" : "4358e109-32b8-4179-8687-58ec892dea86",
       "StatusCode" : "202",
       "dataserviceversion" : "3.0",
       "Body" : "",

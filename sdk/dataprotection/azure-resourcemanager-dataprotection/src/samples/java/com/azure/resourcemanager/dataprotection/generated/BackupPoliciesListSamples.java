@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for BackupPolicies List. */
+/**
+ * Samples for BackupPolicies List.
+ */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/PolicyCRUD/ListBackupPolicy.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/PolicyCRUD/
+     * ListBackupPolicy.json
      */
     /**
      * Sample code: List BackupPolicy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void listBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager.backupPolicies().list("PrivatePreviewVault", "000pikumar", Context.NONE);
+        manager.backupPolicies().list("000pikumar", "PrivatePreviewVault", com.azure.core.util.Context.NONE);
     }
 }

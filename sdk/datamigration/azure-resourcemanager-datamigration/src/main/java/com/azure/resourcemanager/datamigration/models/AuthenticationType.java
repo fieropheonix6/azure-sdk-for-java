@@ -5,38 +5,61 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationType. */
+/**
+ * An enumeration of possible authentication types when connecting.
+ */
 public final class AuthenticationType extends ExpandableStringEnum<AuthenticationType> {
-    /** Static value None for AuthenticationType. */
+    /**
+     * Static value None for AuthenticationType.
+     */
     public static final AuthenticationType NONE = fromString("None");
 
-    /** Static value WindowsAuthentication for AuthenticationType. */
+    /**
+     * Static value WindowsAuthentication for AuthenticationType.
+     */
     public static final AuthenticationType WINDOWS_AUTHENTICATION = fromString("WindowsAuthentication");
 
-    /** Static value SqlAuthentication for AuthenticationType. */
+    /**
+     * Static value SqlAuthentication for AuthenticationType.
+     */
     public static final AuthenticationType SQL_AUTHENTICATION = fromString("SqlAuthentication");
 
-    /** Static value ActiveDirectoryIntegrated for AuthenticationType. */
+    /**
+     * Static value ActiveDirectoryIntegrated for AuthenticationType.
+     */
     public static final AuthenticationType ACTIVE_DIRECTORY_INTEGRATED = fromString("ActiveDirectoryIntegrated");
 
-    /** Static value ActiveDirectoryPassword for AuthenticationType. */
+    /**
+     * Static value ActiveDirectoryPassword for AuthenticationType.
+     */
     public static final AuthenticationType ACTIVE_DIRECTORY_PASSWORD = fromString("ActiveDirectoryPassword");
 
     /**
+     * Creates a new instance of AuthenticationType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AuthenticationType() {
+    }
+
+    /**
      * Creates or finds a AuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AuthenticationType.
      */
-    @JsonCreator
     public static AuthenticationType fromString(String name) {
         return fromString(name, AuthenticationType.class);
     }
 
-    /** @return known AuthenticationType values. */
+    /**
+     * Gets known AuthenticationType values.
+     * 
+     * @return known AuthenticationType values.
+     */
     public static Collection<AuthenticationType> values() {
         return values(AuthenticationType.class);
     }

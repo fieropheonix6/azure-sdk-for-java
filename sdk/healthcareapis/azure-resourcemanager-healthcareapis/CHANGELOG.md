@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,188 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0 (2024-12-19)
+
+- Azure Resource Manager HealthcareApis client library for Java. This package contains Microsoft Azure SDK for HealthcareApis Management SDK. Azure Healthcare APIs Client. Package tag package-2024-03-31. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### Serialization/Deserialization change
+
+- `Jackson` is removed from dependency and no longer supported.
+
+##### Migration Guide
+
+If you are using `Jackson`/`ObjectMapper` for manual serialization/deserialization, configure your `ObjectMapper` for backward compatibility:
+```java
+objectMapper.registerModule(com.azure.core.serializer.json.jackson.JacksonJsonProvider.getJsonSerializableDatabindModule());
+```
+
+### Features Added
+
+#### `models.ServicesResource` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.PrivateLinkResource` was modified
+
+* `type()` was added
+* `id()` was added
+* `name()` was added
+
+#### `models.PrivateEndpointConnection` was modified
+
+* `name()` was added
+* `id()` was added
+* `type()` was added
+
+#### `models.ResourceCore` was modified
+
+* `id()` was added
+* `type()` was added
+* `name()` was added
+
+#### `models.TaggedResource` was modified
+
+* `id()` was added
+* `name()` was added
+* `type()` was added
+
+#### `models.LocationBasedResource` was modified
+
+* `name()` was added
+* `type()` was added
+* `id()` was added
+
+## 1.1.0 (2024-04-15)
+
+- Azure Resource Manager HealthcareApis client library for Java. This package contains Microsoft Azure SDK for HealthcareApis Management SDK. Azure Healthcare APIs Client. Package tag package-2024-03-31. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SmartDataActions` was added
+
+* `models.SmartIdentityProviderConfiguration` was added
+
+* `models.StorageConfiguration` was added
+
+* `models.SmartIdentityProviderApplication` was added
+
+#### `models.DicomService` was modified
+
+* `enableDataPartitions()` was added
+* `storageConfiguration()` was added
+
+#### `models.FhirServiceAuthenticationConfiguration` was modified
+
+* `withSmartIdentityProviders(java.util.List)` was added
+* `smartIdentityProviders()` was added
+
+#### `models.DicomService$Definition` was modified
+
+* `withEnableDataPartitions(java.lang.Boolean)` was added
+* `withStorageConfiguration(models.StorageConfiguration)` was added
+
+## 1.0.0 (2023-12-21)
+
+- Azure Resource Manager HealthcareApis client library for Java. This package contains Microsoft Azure SDK for HealthcareApis Management SDK. Azure Healthcare APIs Client. Package tag package-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.FhirServiceAccessPolicyEntry` was removed
+
+#### `models.FhirService$Definition` was modified
+
+* `withAccessPolicies(java.util.List)` was removed
+
+#### `models.FhirService` was modified
+
+* `accessPolicies()` was removed
+
+### Features Added
+
+* `models.ImplementationGuidesConfiguration` was added
+
+* `models.ServiceImportConfigurationInfo` was added
+
+* `models.Encryption` was added
+
+* `models.FhirServiceImportConfiguration` was added
+
+* `models.CorsConfiguration` was added
+
+* `models.EncryptionCustomerManagedKeyEncryption` was added
+
+#### `models.FhirService$Definition` was modified
+
+* `withImportConfiguration(models.FhirServiceImportConfiguration)` was added
+* `withEncryption(models.Encryption)` was added
+* `withImplementationGuidesConfiguration(models.ImplementationGuidesConfiguration)` was added
+
+#### `models.ServicesDescription` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DicomService` was modified
+
+* `eventState()` was added
+* `corsConfiguration()` was added
+* `resourceGroupName()` was added
+* `encryption()` was added
+
+#### `models.IotConnector` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.MetricSpecification` was modified
+
+* `enableRegionalMdmAccount()` was added
+* `metricFilterPattern()` was added
+* `sourceMdmAccount()` was added
+* `withIsInternal(java.lang.Boolean)` was added
+* `withEnableRegionalMdmAccount(java.lang.Boolean)` was added
+* `withMetricFilterPattern(java.lang.String)` was added
+* `withResourceIdDimensionNameOverride(java.lang.String)` was added
+* `isInternal()` was added
+* `resourceIdDimensionNameOverride()` was added
+* `withSourceMdmAccount(java.lang.String)` was added
+
+#### `models.Workspace` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnectionDescription` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.FhirService` was modified
+
+* `implementationGuidesConfiguration()` was added
+* `resourceGroupName()` was added
+* `importConfiguration()` was added
+* `encryption()` was added
+
+#### `models.ServicesProperties` was modified
+
+* `importConfiguration()` was added
+* `withImportConfiguration(models.ServiceImportConfigurationInfo)` was added
+
+#### `models.ServiceCosmosDbConfigurationInfo` was modified
+
+* `crossTenantCmkApplicationId()` was added
+* `withCrossTenantCmkApplicationId(java.lang.String)` was added
+
+#### `models.IotFhirDestination` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DicomService$Definition` was modified
+
+* `withEncryption(models.Encryption)` was added
+* `withCorsConfiguration(models.CorsConfiguration)` was added
 
 ## 1.0.0-beta.2 (2022-04-11)
 

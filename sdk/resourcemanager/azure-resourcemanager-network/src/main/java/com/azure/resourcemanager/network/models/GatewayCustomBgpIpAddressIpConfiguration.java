@@ -6,30 +6,37 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** GatewayCustomBgpIpAddressIpConfiguration for a virtual network gateway connection. */
+/**
+ * GatewayCustomBgpIpAddressIpConfiguration for a virtual network gateway connection.
+ */
 @Fluent
-public final class GatewayCustomBgpIpAddressIpConfiguration {
+public final class GatewayCustomBgpIpAddressIpConfiguration
+    implements JsonSerializable<GatewayCustomBgpIpAddressIpConfiguration> {
     /*
      * The IpconfigurationId of ipconfiguration which belongs to gateway.
      */
-    @JsonProperty(value = "ipConfigurationId", required = true)
     private String ipConfigurationId;
 
     /*
      * The custom BgpPeeringAddress which belongs to IpconfigurationId.
      */
-    @JsonProperty(value = "customBgpIpAddress", required = true)
     private String customBgpIpAddress;
 
-    /** Creates an instance of GatewayCustomBgpIpAddressIpConfiguration class. */
+    /**
+     * Creates an instance of GatewayCustomBgpIpAddressIpConfiguration class.
+     */
     public GatewayCustomBgpIpAddressIpConfiguration() {
     }
 
     /**
      * Get the ipConfigurationId property: The IpconfigurationId of ipconfiguration which belongs to gateway.
-     *
+     * 
      * @return the ipConfigurationId value.
      */
     public String ipConfigurationId() {
@@ -38,7 +45,7 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
 
     /**
      * Set the ipConfigurationId property: The IpconfigurationId of ipconfiguration which belongs to gateway.
-     *
+     * 
      * @param ipConfigurationId the ipConfigurationId value to set.
      * @return the GatewayCustomBgpIpAddressIpConfiguration object itself.
      */
@@ -49,7 +56,7 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
 
     /**
      * Get the customBgpIpAddress property: The custom BgpPeeringAddress which belongs to IpconfigurationId.
-     *
+     * 
      * @return the customBgpIpAddress value.
      */
     public String customBgpIpAddress() {
@@ -58,7 +65,7 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
 
     /**
      * Set the customBgpIpAddress property: The custom BgpPeeringAddress which belongs to IpconfigurationId.
-     *
+     * 
      * @param customBgpIpAddress the customBgpIpAddress value to set.
      * @return the GatewayCustomBgpIpAddressIpConfiguration object itself.
      */
@@ -69,25 +76,62 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipConfigurationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ipConfigurationId in model"
-                            + " GatewayCustomBgpIpAddressIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property ipConfigurationId in model GatewayCustomBgpIpAddressIpConfiguration"));
         }
         if (customBgpIpAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customBgpIpAddress in model"
-                            + " GatewayCustomBgpIpAddressIpConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property customBgpIpAddress in model GatewayCustomBgpIpAddressIpConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GatewayCustomBgpIpAddressIpConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("ipConfigurationId", this.ipConfigurationId);
+        jsonWriter.writeStringField("customBgpIpAddress", this.customBgpIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GatewayCustomBgpIpAddressIpConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GatewayCustomBgpIpAddressIpConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GatewayCustomBgpIpAddressIpConfiguration.
+     */
+    public static GatewayCustomBgpIpAddressIpConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GatewayCustomBgpIpAddressIpConfiguration deserializedGatewayCustomBgpIpAddressIpConfiguration
+                = new GatewayCustomBgpIpAddressIpConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ipConfigurationId".equals(fieldName)) {
+                    deserializedGatewayCustomBgpIpAddressIpConfiguration.ipConfigurationId = reader.getString();
+                } else if ("customBgpIpAddress".equals(fieldName)) {
+                    deserializedGatewayCustomBgpIpAddressIpConfiguration.customBgpIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGatewayCustomBgpIpAddressIpConfiguration;
+        });
+    }
 }

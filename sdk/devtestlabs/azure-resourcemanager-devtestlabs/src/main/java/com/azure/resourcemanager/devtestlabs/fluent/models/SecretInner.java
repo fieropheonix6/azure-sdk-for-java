@@ -5,83 +5,96 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** A secret. */
-@JsonFlatten
+/**
+ * A secret.
+ */
 @Fluent
-public class SecretInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretInner.class);
+public final class SecretInner extends Resource {
+    /*
+     * The properties of the resource.
+     */
+    private SecretProperties innerProperties = new SecretProperties();
 
     /*
-     * The value of the secret for secret creation.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
+    private String type;
 
     /*
-     * The provisioning status of the resource.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private String name;
 
     /*
-     * The unique immutable identifier of a resource (Guid).
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    private String id;
 
     /**
-     * Get the value property: The value of the secret for secret creation.
-     *
-     * @return the value value.
+     * Creates an instance of SecretInner class.
      */
-    public String value() {
-        return this.value;
+    public SecretInner() {
     }
 
     /**
-     * Set the value property: The value of the secret for secret creation.
-     *
-     * @param value the value value to set.
-     * @return the SecretInner object itself.
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
      */
-    public SecretInner withValue(String value) {
-        this.value = value;
-        return this;
+    private SecretProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
+    @Override
+    public String name() {
+        return this.name;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecretInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SecretInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -89,10 +102,109 @@ public class SecretInner extends Resource {
     }
 
     /**
+     * Get the value property: The value of the secret for secret creation.
+     * 
+     * @return the value value.
+     */
+    public String value() {
+        return this.innerProperties() == null ? null : this.innerProperties().value();
+    }
+
+    /**
+     * Set the value property: The value of the secret for secret creation.
+     * 
+     * @param value the value value to set.
+     * @return the SecretInner object itself.
+     */
+    public SecretInner withValue(String value) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SecretProperties();
+        }
+        this.innerProperties().withValue(value);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     * 
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model SecretInner"));
+        } else {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecretInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecretInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecretInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SecretInner.
+     */
+    public static SecretInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecretInner deserializedSecretInner = new SecretInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSecretInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSecretInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSecretInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedSecretInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedSecretInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSecretInner.innerProperties = SecretProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecretInner;
+        });
     }
 }

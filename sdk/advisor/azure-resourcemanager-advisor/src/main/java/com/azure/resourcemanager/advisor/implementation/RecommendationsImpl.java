@@ -14,69 +14,67 @@ import com.azure.resourcemanager.advisor.fluent.models.ResourceRecommendationBas
 import com.azure.resourcemanager.advisor.models.Recommendations;
 import com.azure.resourcemanager.advisor.models.RecommendationsGenerateResponse;
 import com.azure.resourcemanager.advisor.models.ResourceRecommendationBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class RecommendationsImpl implements Recommendations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendationsImpl.class);
 
     private final RecommendationsClient innerClient;
 
     private final com.azure.resourcemanager.advisor.AdvisorManager serviceManager;
 
-    public RecommendationsImpl(
-        RecommendationsClient innerClient, com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
+    public RecommendationsImpl(RecommendationsClient innerClient,
+        com.azure.resourcemanager.advisor.AdvisorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public void generate() {
-        this.serviceClient().generate();
     }
 
     public RecommendationsGenerateResponse generateWithResponse(Context context) {
         return this.serviceClient().generateWithResponse(context);
     }
 
-    public void getGenerateStatus(UUID operationId) {
-        this.serviceClient().getGenerateStatus(operationId);
+    public void generate() {
+        this.serviceClient().generate();
     }
 
     public Response<Void> getGenerateStatusWithResponse(UUID operationId, Context context) {
         return this.serviceClient().getGenerateStatusWithResponse(operationId, context);
     }
 
-    public PagedIterable<ResourceRecommendationBase> list() {
-        PagedIterable<ResourceRecommendationBaseInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ResourceRecommendationBaseImpl(inner1, this.manager()));
+    public void getGenerateStatus(UUID operationId) {
+        this.serviceClient().getGenerateStatus(operationId);
     }
 
-    public PagedIterable<ResourceRecommendationBase> list(
-        String filter, Integer top, String skipToken, Context context) {
-        PagedIterable<ResourceRecommendationBaseInner> inner =
-            this.serviceClient().list(filter, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new ResourceRecommendationBaseImpl(inner1, this.manager()));
+    public PagedIterable<ResourceRecommendationBase> list() {
+        PagedIterable<ResourceRecommendationBaseInner> inner = this.serviceClient().list();
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceRecommendationBaseImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<ResourceRecommendationBase> list(String filter, Integer top, String skipToken,
+        Context context) {
+        PagedIterable<ResourceRecommendationBaseInner> inner
+            = this.serviceClient().list(filter, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ResourceRecommendationBaseImpl(inner1, this.manager()));
+    }
+
+    public Response<ResourceRecommendationBase> getWithResponse(String resourceUri, String recommendationId,
+        Context context) {
+        Response<ResourceRecommendationBaseInner> inner
+            = this.serviceClient().getWithResponse(resourceUri, recommendationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourceRecommendationBaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ResourceRecommendationBase get(String resourceUri, String recommendationId) {
         ResourceRecommendationBaseInner inner = this.serviceClient().get(resourceUri, recommendationId);
         if (inner != null) {
             return new ResourceRecommendationBaseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ResourceRecommendationBase> getWithResponse(
-        String resourceUri, String recommendationId, Context context) {
-        Response<ResourceRecommendationBaseInner> inner =
-            this.serviceClient().getWithResponse(resourceUri, recommendationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ResourceRecommendationBaseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

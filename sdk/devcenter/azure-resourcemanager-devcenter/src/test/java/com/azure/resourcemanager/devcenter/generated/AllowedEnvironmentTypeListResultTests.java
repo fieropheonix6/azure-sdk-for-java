@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.AllowedEnvironmentTypeListResult;
-import org.junit.jupiter.api.Test;
 
 public final class AllowedEnvironmentTypeListResultTests {
-    @Test
-    public void testDeserialize() {
-        AllowedEnvironmentTypeListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Created\"},\"id\":\"rywn\",\"name\":\"zoqftiyqzrnkcqvy\",\"type\":\"lwh\"}],\"nextLink\":\"sicohoqqnwvlry\"}")
-                .toObject(AllowedEnvironmentTypeListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AllowedEnvironmentTypeListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"StorageProvisioningFailed\",\"displayName\":\"xyawj\"},\"id\":\"aq\",\"name\":\"slyjpkiid\",\"type\":\"yexz\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"displayName\":\"hnrztfol\"},\"id\":\"nxknalaulp\",\"name\":\"ggdtpnapnyiro\",\"type\":\"uhpigvp\"},{\"properties\":{\"provisioningState\":\"TransientFailure\",\"displayName\":\"git\"},\"id\":\"edjvcslynqw\",\"name\":\"ncw\",\"type\":\"zhxgktrmgucn\"},{\"properties\":{\"provisioningState\":\"NotSpecified\",\"displayName\":\"oellwp\"},\"id\":\"d\",\"name\":\"gpfqbuace\",\"type\":\"pzfqrhhuaoppp\"}],\"nextLink\":\"eqx\"}")
+            .toObject(AllowedEnvironmentTypeListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AllowedEnvironmentTypeListResult model = new AllowedEnvironmentTypeListResult();
         model = BinaryData.fromObject(model).toObject(AllowedEnvironmentTypeListResult.class);
     }

@@ -9,26 +9,23 @@ import com.azure.resourcemanager.hybridcontainerservice.models.VirtualNetworksPa
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworksPatchTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworksPatch model =
-            BinaryData
-                .fromString("{\"tags\":{\"ldsyuuximerqfob\":\"q\",\"utwpfhp\":\"yznkby\"}}")
-                .toObject(VirtualNetworksPatch.class);
-        Assertions.assertEquals("q", model.tags().get("ldsyuuximerqfob"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworksPatch model
+            = BinaryData.fromString("{\"tags\":{\"n\":\"ohfwds\"}}").toObject(VirtualNetworksPatch.class);
+        Assertions.assertEquals("ohfwds", model.tags().get("n"));
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworksPatch model =
-            new VirtualNetworksPatch().withTags(mapOf("ldsyuuximerqfob", "q", "utwpfhp", "yznkby"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworksPatch model = new VirtualNetworksPatch().withTags(mapOf("n", "ohfwds"));
         model = BinaryData.fromObject(model).toObject(VirtualNetworksPatch.class);
-        Assertions.assertEquals("q", model.tags().get("ldsyuuximerqfob"));
+        Assertions.assertEquals("ohfwds", model.tags().get("n"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

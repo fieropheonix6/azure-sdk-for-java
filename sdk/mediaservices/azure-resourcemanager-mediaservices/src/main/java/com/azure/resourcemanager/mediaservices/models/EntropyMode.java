@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,26 +12,38 @@ import java.util.Collection;
  * the profile and level.
  */
 public final class EntropyMode extends ExpandableStringEnum<EntropyMode> {
-    /** Static value Cabac for EntropyMode. */
+    /**
+     * Static value Cabac for EntropyMode.
+     */
     public static final EntropyMode CABAC = fromString("Cabac");
 
-    /** Static value Cavlc for EntropyMode. */
+    /**
+     * Static value Cavlc for EntropyMode.
+     */
     public static final EntropyMode CAVLC = fromString("Cavlc");
 
     /**
+     * Creates a new instance of EntropyMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public EntropyMode() {
+    }
+
+    /**
      * Creates or finds a EntropyMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EntropyMode.
      */
-    @JsonCreator
     public static EntropyMode fromString(String name) {
         return fromString(name, EntropyMode.class);
     }
 
     /**
      * Gets known EntropyMode values.
-     *
+     * 
      * @return known EntropyMode values.
      */
     public static Collection<EntropyMode> values() {

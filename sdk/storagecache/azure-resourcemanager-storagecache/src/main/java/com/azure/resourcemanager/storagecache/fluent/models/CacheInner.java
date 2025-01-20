@@ -7,6 +7,9 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.storagecache.models.CacheDirectorySettings;
 import com.azure.resourcemanager.storagecache.models.CacheEncryptionSettings;
 import com.azure.resourcemanager.storagecache.models.CacheHealth;
@@ -19,12 +22,12 @@ import com.azure.resourcemanager.storagecache.models.CacheUpgradeStatus;
 import com.azure.resourcemanager.storagecache.models.PrimingJob;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
 import com.azure.resourcemanager.storagecache.models.StorageTargetSpaceAllocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 /**
- * A Cache instance. Follows Azure Resource Manager standards:
+ * A cache instance. Follows Azure Resource Manager standards:
  * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/resource-api-reference.md.
  */
 @Fluent
@@ -32,30 +35,47 @@ public final class CacheInner extends Resource {
     /*
      * The identity of the cache, if configured.
      */
-    @JsonProperty(value = "identity")
     private CacheIdentity identity;
 
     /*
      * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
-     * Properties of the Cache.
+     * Properties of the cache.
      */
-    @JsonProperty(value = "properties")
     private CacheProperties innerProperties;
 
     /*
-     * SKU for the Cache.
+     * SKU for the cache.
      */
-    @JsonProperty(value = "sku")
     private CacheSku sku;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CacheInner class.
+     */
+    public CacheInner() {
+    }
 
     /**
      * Get the identity property: The identity of the cache, if configured.
-     *
+     * 
      * @return the identity value.
      */
     public CacheIdentity identity() {
@@ -64,7 +84,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Set the identity property: The identity of the cache, if configured.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the CacheInner object itself.
      */
@@ -75,7 +95,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Get the systemData property: The system meta data relating to this resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -83,8 +103,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Properties of the Cache.
-     *
+     * Get the innerProperties property: Properties of the cache.
+     * 
      * @return the innerProperties value.
      */
     private CacheProperties innerProperties() {
@@ -92,8 +112,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the sku property: SKU for the Cache.
-     *
+     * Get the sku property: SKU for the cache.
+     * 
      * @return the sku value.
      */
     public CacheSku sku() {
@@ -101,8 +121,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the sku property: SKU for the Cache.
-     *
+     * Set the sku property: SKU for the cache.
+     * 
      * @param sku the sku value to set.
      * @return the CacheInner object itself.
      */
@@ -111,14 +131,48 @@ public final class CacheInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CacheInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CacheInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -127,7 +181,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Get the cacheSizeGB property: The size of this Cache, in GB.
-     *
+     * 
      * @return the cacheSizeGB value.
      */
     public Integer cacheSizeGB() {
@@ -136,7 +190,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Set the cacheSizeGB property: The size of this Cache, in GB.
-     *
+     * 
      * @param cacheSizeGB the cacheSizeGB value to set.
      * @return the CacheInner object itself.
      */
@@ -149,8 +203,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the health property: Health of the Cache.
-     *
+     * Get the health property: Health of the cache.
+     * 
      * @return the health value.
      */
     public CacheHealth health() {
@@ -158,8 +212,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the mountAddresses property: Array of IP addresses that can be used by clients mounting this Cache.
-     *
+     * Get the mountAddresses property: Array of IPv4 addresses that can be used by clients mounting this cache.
+     * 
      * @return the mountAddresses value.
      */
     public List<String> mountAddresses() {
@@ -169,7 +223,7 @@ public final class CacheInner extends Resource {
     /**
      * Get the provisioningState property: ARM provisioning state, see
      * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStateType provisioningState() {
@@ -177,8 +231,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the subnet property: Subnet used for the Cache.
-     *
+     * Get the subnet property: Subnet used for the cache.
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -186,8 +240,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the subnet property: Subnet used for the Cache.
-     *
+     * Set the subnet property: Subnet used for the cache.
+     * 
      * @param subnet the subnet value to set.
      * @return the CacheInner object itself.
      */
@@ -200,8 +254,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the upgradeStatus property: Upgrade status of the Cache.
-     *
+     * Get the upgradeStatus property: Upgrade status of the cache.
+     * 
      * @return the upgradeStatus value.
      */
     public CacheUpgradeStatus upgradeStatus() {
@@ -209,8 +263,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Get the upgradeSettings property: Upgrade settings of the Cache.
-     *
+     * Get the upgradeSettings property: Upgrade settings of the cache.
+     * 
      * @return the upgradeSettings value.
      */
     public CacheUpgradeSettings upgradeSettings() {
@@ -218,8 +272,8 @@ public final class CacheInner extends Resource {
     }
 
     /**
-     * Set the upgradeSettings property: Upgrade settings of the Cache.
-     *
+     * Set the upgradeSettings property: Upgrade settings of the cache.
+     * 
      * @param upgradeSettings the upgradeSettings value to set.
      * @return the CacheInner object itself.
      */
@@ -233,7 +287,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Get the networkSettings property: Specifies network settings of the cache.
-     *
+     * 
      * @return the networkSettings value.
      */
     public CacheNetworkSettings networkSettings() {
@@ -242,7 +296,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Set the networkSettings property: Specifies network settings of the cache.
-     *
+     * 
      * @param networkSettings the networkSettings value to set.
      * @return the CacheInner object itself.
      */
@@ -256,7 +310,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Get the encryptionSettings property: Specifies encryption settings of the cache.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public CacheEncryptionSettings encryptionSettings() {
@@ -265,7 +319,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Set the encryptionSettings property: Specifies encryption settings of the cache.
-     *
+     * 
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the CacheInner object itself.
      */
@@ -279,7 +333,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Get the securitySettings property: Specifies security settings of the cache.
-     *
+     * 
      * @return the securitySettings value.
      */
     public CacheSecuritySettings securitySettings() {
@@ -288,7 +342,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Set the securitySettings property: Specifies security settings of the cache.
-     *
+     * 
      * @param securitySettings the securitySettings value to set.
      * @return the CacheInner object itself.
      */
@@ -302,7 +356,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Get the directoryServicesSettings property: Specifies Directory Services settings of the cache.
-     *
+     * 
      * @return the directoryServicesSettings value.
      */
     public CacheDirectorySettings directoryServicesSettings() {
@@ -311,7 +365,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Set the directoryServicesSettings property: Specifies Directory Services settings of the cache.
-     *
+     * 
      * @param directoryServicesSettings the directoryServicesSettings value to set.
      * @return the CacheInner object itself.
      */
@@ -326,7 +380,7 @@ public final class CacheInner extends Resource {
     /**
      * Get the zones property: Availability zones for resources. This field should only contain a single element in the
      * array.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -336,7 +390,7 @@ public final class CacheInner extends Resource {
     /**
      * Set the zones property: Availability zones for resources. This field should only contain a single element in the
      * array.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the CacheInner object itself.
      */
@@ -350,7 +404,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Get the primingJobs property: Specifies the priming jobs defined in the cache.
-     *
+     * 
      * @return the primingJobs value.
      */
     public List<PrimingJob> primingJobs() {
@@ -359,7 +413,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Get the spaceAllocation property: Specifies the space allocation percentage for each storage target in the cache.
-     *
+     * 
      * @return the spaceAllocation value.
      */
     public List<StorageTargetSpaceAllocation> spaceAllocation() {
@@ -368,7 +422,7 @@ public final class CacheInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -381,5 +435,63 @@ public final class CacheInner extends Resource {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CacheInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CacheInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CacheInner.
+     */
+    public static CacheInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CacheInner deserializedCacheInner = new CacheInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCacheInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCacheInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCacheInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCacheInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCacheInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCacheInner.identity = CacheIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCacheInner.systemData = SystemData.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCacheInner.innerProperties = CacheProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedCacheInner.sku = CacheSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCacheInner;
+        });
     }
 }

@@ -9,30 +9,24 @@ import com.azure.resourcemanager.kusto.fluent.models.DataConnectionValidationLis
 import com.azure.resourcemanager.kusto.models.DataConnectionValidationResult;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataConnectionValidationListResultInnerTests {
-    @Test
-    public void testDeserialize() {
-        DataConnectionValidationListResultInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"errorMessage\":\"c\"},{\"errorMessage\":\"auwjuetaebu\"},{\"errorMessage\":\"vdmovsmzlxwabm\"}]}")
-                .toObject(DataConnectionValidationListResultInner.class);
-        Assertions.assertEquals("c", model.value().get(0).errorMessage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DataConnectionValidationListResultInner model = BinaryData.fromString(
+            "{\"value\":[{\"errorMessage\":\"agohbuff\"},{\"errorMessage\":\"rqemvvhmxt\"},{\"errorMessage\":\"jfutacoebj\"},{\"errorMessage\":\"wzcjznmwcpmgua\"}]}")
+            .toObject(DataConnectionValidationListResultInner.class);
+        Assertions.assertEquals("agohbuff", model.value().get(0).errorMessage());
     }
 
-    @Test
-    public void testSerialize() {
-        DataConnectionValidationListResultInner model =
-            new DataConnectionValidationListResultInner()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new DataConnectionValidationResult().withErrorMessage("c"),
-                            new DataConnectionValidationResult().withErrorMessage("auwjuetaebu"),
-                            new DataConnectionValidationResult().withErrorMessage("vdmovsmzlxwabm")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataConnectionValidationListResultInner model = new DataConnectionValidationListResultInner()
+            .withValue(Arrays.asList(new DataConnectionValidationResult().withErrorMessage("agohbuff"),
+                new DataConnectionValidationResult().withErrorMessage("rqemvvhmxt"),
+                new DataConnectionValidationResult().withErrorMessage("jfutacoebj"),
+                new DataConnectionValidationResult().withErrorMessage("wzcjznmwcpmgua")));
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationListResultInner.class);
-        Assertions.assertEquals("c", model.value().get(0).errorMessage());
+        Assertions.assertEquals("agohbuff", model.value().get(0).errorMessage());
     }
 }

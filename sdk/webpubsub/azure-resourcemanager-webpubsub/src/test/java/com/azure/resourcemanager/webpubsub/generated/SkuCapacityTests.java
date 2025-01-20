@@ -6,20 +6,17 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.SkuCapacity;
-import org.junit.jupiter.api.Test;
 
 public final class SkuCapacityTests {
-    @Test
-    public void testDeserialize() {
-        SkuCapacity model =
-            BinaryData
-                .fromString(
-                    "{\"minimum\":1703781779,\"maximum\":995419481,\"default\":1024892279,\"allowedValues\":[1113434704,346562184,254804801,1095781686],\"scaleType\":\"Automatic\"}")
-                .toObject(SkuCapacity.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SkuCapacity model = BinaryData.fromString(
+            "{\"minimum\":1135591058,\"maximum\":1646739085,\"default\":2041776052,\"allowedValues\":[2017122463],\"scaleType\":\"Automatic\"}")
+            .toObject(SkuCapacity.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuCapacity model = new SkuCapacity();
         model = BinaryData.fromObject(model).toObject(SkuCapacity.class);
     }

@@ -9,27 +9,24 @@ import com.azure.resourcemanager.machinelearning.models.PartialMinimalTrackedRes
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PartialMinimalTrackedResourceTests {
-    @Test
-    public void testDeserialize() {
-        PartialMinimalTrackedResource model =
-            BinaryData
-                .fromString("{\"tags\":{\"wbwo\":\"expbtg\",\"kcnqxwbpo\":\"nwashrtd\",\"aasipqi\":\"ulpiuj\"}}")
-                .toObject(PartialMinimalTrackedResource.class);
-        Assertions.assertEquals("expbtg", model.tags().get("wbwo"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PartialMinimalTrackedResource model = BinaryData.fromString("{\"tags\":{\"pttaqutd\":\"snptfujgicgaao\"}}")
+            .toObject(PartialMinimalTrackedResource.class);
+        Assertions.assertEquals("snptfujgicgaao", model.tags().get("pttaqutd"));
     }
 
-    @Test
-    public void testSerialize() {
-        PartialMinimalTrackedResource model =
-            new PartialMinimalTrackedResource()
-                .withTags(mapOf("wbwo", "expbtg", "kcnqxwbpo", "nwashrtd", "aasipqi", "ulpiuj"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PartialMinimalTrackedResource model
+            = new PartialMinimalTrackedResource().withTags(mapOf("pttaqutd", "snptfujgicgaao"));
         model = BinaryData.fromObject(model).toObject(PartialMinimalTrackedResource.class);
-        Assertions.assertEquals("expbtg", model.tags().get("wbwo"));
+        Assertions.assertEquals("snptfujgicgaao", model.tags().get("pttaqutd"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

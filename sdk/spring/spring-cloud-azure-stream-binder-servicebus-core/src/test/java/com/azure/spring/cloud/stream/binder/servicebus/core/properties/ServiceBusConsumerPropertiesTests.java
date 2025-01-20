@@ -5,15 +5,17 @@ package com.azure.spring.cloud.stream.binder.servicebus.core.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
+import com.azure.spring.cloud.core.properties.profile.AzureEnvironmentProperties;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.MAX_DURATION;
 import static com.azure.spring.cloud.stream.binder.servicebus.core.properties.ServiceBusProducerPropertiesTests.CONNECTION_STRING_PATTERN;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -28,7 +30,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void autoCompleteDefaultTrue() {
-        assertTrue(consumerProperties.getAutoComplete());
+        assertNull(consumerProperties.getAutoComplete());
     }
 
     @Test
@@ -50,7 +52,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void maxConcurrentCallsDefaults() {
-        assertEquals(1, consumerProperties.getMaxConcurrentCalls());
+        assertNull(consumerProperties.getMaxConcurrentCalls());
     }
 
     @Test
@@ -72,7 +74,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void subQueueDefaults() {
-        assertNotNull(consumerProperties.getSubQueue());
+        assertNull(consumerProperties.getSubQueue());
     }
 
     @Test
@@ -83,7 +85,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void receiveModeDefaults() {
-        assertEquals(ServiceBusReceiveMode.PEEK_LOCK, consumerProperties.getReceiveMode());
+        assertNull(consumerProperties.getReceiveMode());
     }
 
     @Test
@@ -94,7 +96,7 @@ class ServiceBusConsumerPropertiesTests {
 
     @Test
     void maxAutoLockRenewDurationDefaults() {
-        assertEquals(Duration.ofMinutes(5), consumerProperties.getMaxAutoLockRenewDuration());
+        assertNull(consumerProperties.getMaxAutoLockRenewDuration());
     }
 
     @Test
@@ -110,8 +112,17 @@ class ServiceBusConsumerPropertiesTests {
     }
 
     @Test
+    void domainNameConfigureAsCloud() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, consumerProperties.getProfile().getCloudType());
+        assertEquals(AzureEnvironmentProperties.AZURE_US_GOVERNMENT.getServiceBusDomainName(), consumerProperties.getDomainName());
+    }
+
+    @Test
     void customDomainNameShouldSet() {
+        consumerProperties.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
         consumerProperties.setDomainName("new.servicebus.windows.net");
+        assertEquals(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT, consumerProperties.getProfile().getCloudType());
         assertEquals("new.servicebus.windows.net", consumerProperties.getDomainName());
     }
 
@@ -154,4 +165,15 @@ class ServiceBusConsumerPropertiesTests {
     void amqpTransportTypeDefaultIsNull() {
         assertNull(consumerProperties.getClient().getTransportType());
     }
+
+    @Test
+    void defaultMaxSizeInMegabytes() {
+        assertEquals(consumerProperties.getMaxSizeInMegabytes(), 1024L);
+    }
+
+    @Test
+    void defaultMessageTimeToLive() {
+        assertEquals(consumerProperties.getDefaultMessageTimeToLive(), MAX_DURATION);
+    }
+
 }

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link SentenceOpinion} model.
+ * The {@code SentenceOpinion} model.
  */
 @Immutable
 public final class SentenceOpinion {
@@ -16,18 +16,24 @@ public final class SentenceOpinion {
     private IterableStream<AssessmentSentiment> assessments;
 
     static {
-        SentenceOpinionPropertiesHelper.setAccessor(
-            new SentenceOpinionPropertiesHelper.SentenceOpinionAccessor() {
-                @Override
-                public void setTarget(SentenceOpinion sentenceOpinion, TargetSentiment target) {
-                    sentenceOpinion.setTarget(target);
-                }
+        SentenceOpinionPropertiesHelper.setAccessor(new SentenceOpinionPropertiesHelper.SentenceOpinionAccessor() {
+            @Override
+            public void setTarget(SentenceOpinion sentenceOpinion, TargetSentiment target) {
+                sentenceOpinion.setTarget(target);
+            }
 
-                @Override
-                public void setAssessments(SentenceOpinion sentenceOpinion, IterableStream<AssessmentSentiment> assessments) {
-                    sentenceOpinion.setAssessments(assessments);
-                }
-            });
+            @Override
+            public void setAssessments(SentenceOpinion sentenceOpinion,
+                IterableStream<AssessmentSentiment> assessments) {
+                sentenceOpinion.setAssessments(assessments);
+            }
+        });
+    }
+
+    /**
+     * Constructs a {@code SentenceOpinion} model.
+     */
+    public SentenceOpinion() {
     }
 
     /**
@@ -47,7 +53,7 @@ public final class SentenceOpinion {
      * @return The assessments of target text.
      */
     public IterableStream<AssessmentSentiment> getAssessments() {
-        return assessments;
+        return assessments == null ? IterableStream.of(null) : assessments;
     }
 
     private void setTarget(TargetSentiment target) {

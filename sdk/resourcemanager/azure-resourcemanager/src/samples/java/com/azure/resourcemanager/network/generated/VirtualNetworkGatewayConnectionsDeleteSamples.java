@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkGatewayConnections Delete. */
+/**
+ * Samples for VirtualNetworkGatewayConnections Delete.
+ */
 public final class VirtualNetworkGatewayConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayConnectionDelete.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualNetworkGatewayConnectionDelete.json
      */
     /**
      * Sample code: DeleteVirtualNetworkGatewayConnection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteVirtualNetworkGatewayConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .delete("rg1", "conn1", Context.NONE);
+            .delete("rg1", "conn1", com.azure.core.util.Context.NONE);
     }
 }

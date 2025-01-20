@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.BandwidthSchedulesClient;
@@ -39,24 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BandwidthSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BandwidthSchedulesClient.
+ */
 public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesClient {
-    private final ClientLogger logger = new ClientLogger(BandwidthSchedulesClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BandwidthSchedulesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxEdgeManagementClientImpl client;
 
     /**
      * Initializes an instance of BandwidthSchedulesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BandwidthSchedulesClientImpl(DataBoxEdgeManagementClientImpl client) {
-        this.service =
-            RestProxy.create(BandwidthSchedulesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(BandwidthSchedulesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,109 +69,80 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxEdgeManagemen")
-    private interface BandwidthSchedulesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules")
-        @ExpectedResponses({200})
+    public interface BandwidthSchedulesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BandwidthSchedulesList>> listByDataBoxEdgeDevice(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
+        Mono<Response<BandwidthSchedulesList>> listByDataBoxEdgeDevice(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BandwidthScheduleInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") BandwidthScheduleInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BandwidthScheduleInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") BandwidthScheduleInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/bandwidthSchedules/{name}")
-        @ExpectedResponses({200, 202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<BandwidthSchedulesList>> listByDataBoxEdgeDeviceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device along with {@link PagedResponse}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BandwidthScheduleInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName) {
+    private Mono<PagedResponse<BandwidthScheduleInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -176,57 +150,38 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDataBoxEdgeDevice(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<BandwidthScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<BandwidthScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device along with {@link PagedResponse}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BandwidthScheduleInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<BandwidthScheduleInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -235,71 +190,59 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDataBoxEdgeDevice(
-                this.client.getEndpoint(),
-                deviceName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BandwidthScheduleInner> listByDataBoxEdgeDeviceAsync(
-        String deviceName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName),
+    private PagedFlux<BandwidthScheduleInner> listByDataBoxEdgeDeviceAsync(String deviceName,
+        String resourceGroupName) {
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<BandwidthScheduleInner> listByDataBoxEdgeDeviceAsync(
-        String deviceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, context),
+    private PagedFlux<BandwidthScheduleInner> listByDataBoxEdgeDeviceAsync(String deviceName, String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, context),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BandwidthScheduleInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName) {
@@ -308,40 +251,40 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
 
     /**
      * Gets all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device.
+     * @return all the bandwidth schedules for a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BandwidthScheduleInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, Context context) {
+    public PagedIterable<BandwidthScheduleInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByDataBoxEdgeDeviceAsync(deviceName, resourceGroupName, context));
     }
 
     /**
      * Gets the properties of the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified bandwidth schedule.
+     * @return the properties of the specified bandwidth schedule along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BandwidthScheduleInner>> getWithResponseAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private Mono<Response<BandwidthScheduleInner>> getWithResponseAsync(String deviceName, String name,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -350,10 +293,8 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -361,24 +302,14 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -386,16 +317,15 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified bandwidth schedule.
+     * @return the properties of the specified bandwidth schedule along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BandwidthScheduleInner>> getWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<BandwidthScheduleInner>> getWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -404,10 +334,8 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -415,45 +343,48 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the properties of the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified bandwidth schedule.
+     * @return the properties of the specified bandwidth schedule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BandwidthScheduleInner> getAsync(String deviceName, String name, String resourceGroupName) {
         return getWithResponseAsync(deviceName, name, resourceGroupName)
-            .flatMap(
-                (Response<BandwidthScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the properties of the specified bandwidth schedule.
-     *
+     * 
+     * @param deviceName The device name.
+     * @param name The bandwidth schedule name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified bandwidth schedule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BandwidthScheduleInner> getWithResponse(String deviceName, String name, String resourceGroupName,
+        Context context) {
+        return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
+    }
+
+    /**
+     * Gets the properties of the specified bandwidth schedule.
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -464,30 +395,12 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BandwidthScheduleInner get(String deviceName, String name, String resourceGroupName) {
-        return getAsync(deviceName, name, resourceGroupName).block();
-    }
-
-    /**
-     * Gets the properties of the specified bandwidth schedule.
-     *
-     * @param deviceName The device name.
-     * @param name The bandwidth schedule name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified bandwidth schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BandwidthScheduleInner> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context) {
-        return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
+        return getWithResponse(deviceName, name, resourceGroupName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -495,16 +408,14 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the bandwidth schedule details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, BandwidthScheduleInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -513,10 +424,8 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -529,25 +438,15 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -556,16 +455,14 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the bandwidth schedule details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, BandwidthScheduleInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -574,10 +471,8 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -590,22 +485,13 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -613,26 +499,21 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the {@link PollerFlux} for polling of the bandwidth schedule details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdateAsync(
         String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, parameters);
-        return this
-            .client
-            .<BandwidthScheduleInner, BandwidthScheduleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BandwidthScheduleInner.class,
-                BandwidthScheduleInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, parameters);
+        return this.client.<BandwidthScheduleInner, BandwidthScheduleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BandwidthScheduleInner.class, BandwidthScheduleInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -641,27 +522,21 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the {@link PollerFlux} for polling of the bandwidth schedule details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdateAsync(
         String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, parameters, context);
-        return this
-            .client
-            .<BandwidthScheduleInner, BandwidthScheduleInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                BandwidthScheduleInner.class,
-                BandwidthScheduleInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, parameters, context);
+        return this.client.<BandwidthScheduleInner, BandwidthScheduleInner>getLroResult(mono,
+            this.client.getHttpPipeline(), BandwidthScheduleInner.class, BandwidthScheduleInner.class, context);
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -669,17 +544,17 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the {@link SyncPoller} for polling of the bandwidth schedule details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, parameters).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(String deviceName,
+        String name, String resourceGroupName, BandwidthScheduleInner parameters) {
+        return this.beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -688,17 +563,17 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the {@link SyncPoller} for polling of the bandwidth schedule details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, parameters, context).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BandwidthScheduleInner>, BandwidthScheduleInner> beginCreateOrUpdate(String deviceName,
+        String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -706,19 +581,18 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the bandwidth schedule details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BandwidthScheduleInner> createOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, parameters)
-            .last()
+    private Mono<BandwidthScheduleInner> createOrUpdateAsync(String deviceName, String name, String resourceGroupName,
+        BandwidthScheduleInner parameters) {
+        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -727,19 +601,18 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the bandwidth schedule details.
+     * @return the bandwidth schedule details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<BandwidthScheduleInner> createOrUpdateAsync(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, parameters, context)
-            .last()
+    private Mono<BandwidthScheduleInner> createOrUpdateAsync(String deviceName, String name, String resourceGroupName,
+        BandwidthScheduleInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -750,14 +623,14 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @return the bandwidth schedule details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BandwidthScheduleInner createOrUpdate(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters) {
+    public BandwidthScheduleInner createOrUpdate(String deviceName, String name, String resourceGroupName,
+        BandwidthScheduleInner parameters) {
         return createOrUpdateAsync(deviceName, name, resourceGroupName, parameters).block();
     }
 
     /**
      * Creates or updates a bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name which needs to be added/updated.
      * @param resourceGroupName The resource group name.
@@ -769,30 +642,28 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @return the bandwidth schedule details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BandwidthScheduleInner createOrUpdate(
-        String deviceName, String name, String resourceGroupName, BandwidthScheduleInner parameters, Context context) {
+    public BandwidthScheduleInner createOrUpdate(String deviceName, String name, String resourceGroupName,
+        BandwidthScheduleInner parameters, Context context) {
         return createOrUpdateAsync(deviceName, name, resourceGroupName, parameters, context).block();
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String name,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -801,10 +672,8 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -812,24 +681,14 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -837,16 +696,14 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -855,10 +712,8 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -866,41 +721,32 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String name, String resourceGroupName) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String name,
+        String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -908,37 +754,36 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName).getSyncPoller();
+        return this.beginDeleteAsync(deviceName, name, resourceGroupName).getSyncPoller();
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -946,35 +791,34 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context) {
+        return this.beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName)
-            .last()
+        return beginDeleteAsync(deviceName, name, resourceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -982,18 +826,17 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName, Context context) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName, context)
-            .last()
+        return beginDeleteAsync(deviceName, name, resourceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -1008,7 +851,7 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
 
     /**
      * Deletes the specified bandwidth schedule.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The bandwidth schedule name.
      * @param resourceGroupName The resource group name.
@@ -1024,12 +867,13 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of bandwidth schedules.
+     * @return the collection of bandwidth schedules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<BandwidthScheduleInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink) {
@@ -1037,61 +881,43 @@ public final class BandwidthSchedulesClientImpl implements BandwidthSchedulesCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<BandwidthScheduleInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<BandwidthScheduleInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of bandwidth schedules.
+     * @return the collection of bandwidth schedules along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BandwidthScheduleInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<BandwidthScheduleInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

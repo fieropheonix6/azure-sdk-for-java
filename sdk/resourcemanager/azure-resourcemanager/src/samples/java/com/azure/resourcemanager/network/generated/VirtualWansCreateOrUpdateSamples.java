@@ -4,38 +4,37 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.VirtualWanInner;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VirtualWans CreateOrUpdate. */
+/**
+ * Samples for VirtualWans CreateOrUpdate.
+ */
 public final class VirtualWansCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualWANPut.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualWANPut.json
      */
     /**
      * Sample code: VirtualWANCreate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualWANCreate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualWans()
-            .createOrUpdate(
-                "rg1",
-                "wan1",
-                new VirtualWanInner()
-                    .withLocation("West US")
-                    .withTags(mapOf("key1", "value1"))
+            .createOrUpdate("rg1", "wan1",
+                new VirtualWanInner().withLocation("West US")
+                    .withTags(mapOf("key1", "fakeTokenPlaceholder"))
                     .withDisableVpnEncryption(false)
                     .withTypePropertiesType("Basic"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

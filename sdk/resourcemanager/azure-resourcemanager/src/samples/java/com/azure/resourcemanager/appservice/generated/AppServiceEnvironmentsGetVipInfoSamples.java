@@ -4,25 +4,26 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AppServiceEnvironments GetVipInfo. */
+/**
+ * Samples for AppServiceEnvironments GetVipInfo.
+ */
 public final class AppServiceEnvironmentsGetVipInfoSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_GetVipInfo.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_GetVipInfo.
+     * json
      */
     /**
      * Sample code: Get IP addresses assigned to an App Service Environment.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getIPAddressesAssignedToAnAppServiceEnvironment(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+    public static void
+        getIPAddressesAssignedToAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps()
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .getVipInfoWithResponse("test-rg", "test-ase", Context.NONE);
+            .getVipInfoWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

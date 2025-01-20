@@ -14,11 +14,13 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.models.Application
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationPatch;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationsClient.
+ */
 public interface ApplicationsClient {
     /**
      * Get an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -28,12 +30,12 @@ public interface ApplicationsClient {
      * @return an application along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationInner>> getWithResponseAsync(
-        String resourceGroupName, String applicationGroupName, String applicationName);
+    Mono<Response<ApplicationInner>> getWithResponseAsync(String resourceGroupName, String applicationGroupName,
+        String applicationName);
 
     /**
      * Get an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -47,7 +49,23 @@ public interface ApplicationsClient {
 
     /**
      * Get an application.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param applicationName The name of the application within the specified application group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ApplicationInner> getWithResponse(String resourceGroupName, String applicationGroupName,
+        String applicationName, Context context);
+
+    /**
+     * Get an application.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -60,24 +78,8 @@ public interface ApplicationsClient {
     ApplicationInner get(String resourceGroupName, String applicationGroupName, String applicationName);
 
     /**
-     * Get an application.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInner> getWithResponse(
-        String resourceGroupName, String applicationGroupName, String applicationName, Context context);
-
-    /**
      * Create or update an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -88,12 +90,12 @@ public interface ApplicationsClient {
      * @return schema for Application properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String applicationGroupName, String applicationName, ApplicationInner application);
+    Mono<Response<ApplicationInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String applicationGroupName, String applicationName, ApplicationInner application);
 
     /**
      * Create or update an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -104,28 +106,12 @@ public interface ApplicationsClient {
      * @return schema for Application properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationInner> createOrUpdateAsync(
-        String resourceGroupName, String applicationGroupName, String applicationName, ApplicationInner application);
+    Mono<ApplicationInner> createOrUpdateAsync(String resourceGroupName, String applicationGroupName,
+        String applicationName, ApplicationInner application);
 
     /**
      * Create or update an application.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application Object containing Application definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationInner createOrUpdate(
-        String resourceGroupName, String applicationGroupName, String applicationName, ApplicationInner application);
-
-    /**
-     * Create or update an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -137,16 +123,28 @@ public interface ApplicationsClient {
      * @return schema for Application properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String applicationGroupName,
-        String applicationName,
-        ApplicationInner application,
-        Context context);
+    Response<ApplicationInner> createOrUpdateWithResponse(String resourceGroupName, String applicationGroupName,
+        String applicationName, ApplicationInner application, Context context);
+
+    /**
+     * Create or update an application.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param applicationName The name of the application within the specified application group.
+     * @param application Object containing Application definitions.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema for Application properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationInner createOrUpdate(String resourceGroupName, String applicationGroupName, String applicationName,
+        ApplicationInner application);
 
     /**
      * Remove an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -156,12 +154,12 @@ public interface ApplicationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String applicationGroupName, String applicationName);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String applicationGroupName,
+        String applicationName);
 
     /**
      * Remove an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -175,7 +173,23 @@ public interface ApplicationsClient {
 
     /**
      * Remove an application.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param applicationName The name of the application within the specified application group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String applicationGroupName, String applicationName,
+        Context context);
+
+    /**
+     * Remove an application.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -187,24 +201,8 @@ public interface ApplicationsClient {
     void delete(String resourceGroupName, String applicationGroupName, String applicationName);
 
     /**
-     * Remove an application.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String applicationGroupName, String applicationName, Context context);
-
-    /**
      * Update an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -215,28 +213,12 @@ public interface ApplicationsClient {
      * @return schema for Application properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationInner>> updateWithResponseAsync(
-        String resourceGroupName, String applicationGroupName, String applicationName, ApplicationPatch application);
+    Mono<Response<ApplicationInner>> updateWithResponseAsync(String resourceGroupName, String applicationGroupName,
+        String applicationName, ApplicationPatch application);
 
     /**
      * Update an application.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application Object containing Application definitions.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationInner> updateAsync(
-        String resourceGroupName, String applicationGroupName, String applicationName, ApplicationPatch application);
-
-    /**
-     * Update an application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -250,7 +232,24 @@ public interface ApplicationsClient {
 
     /**
      * Update an application.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param applicationGroupName The name of the application group.
+     * @param applicationName The name of the application within the specified application group.
+     * @param application Object containing Application definitions.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schema for Application properties along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ApplicationInner> updateWithResponse(String resourceGroupName, String applicationGroupName,
+        String applicationName, ApplicationPatch application, Context context);
+
+    /**
+     * Update an application.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @param applicationName The name of the application within the specified application group.
@@ -263,29 +262,25 @@ public interface ApplicationsClient {
     ApplicationInner update(String resourceGroupName, String applicationGroupName, String applicationName);
 
     /**
-     * Update an application.
-     *
+     * List applications.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
-     * @param applicationName The name of the application within the specified application group.
-     * @param application Object containing Application definitions.
-     * @param context The context to associate with this operation.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Application properties along with {@link Response}.
+     * @return applicationList as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationInner> updateWithResponse(
-        String resourceGroupName,
-        String applicationGroupName,
-        String applicationName,
-        ApplicationPatch application,
-        Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ApplicationInner> listAsync(String resourceGroupName, String applicationGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip);
 
     /**
      * List applications.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,7 +293,7 @@ public interface ApplicationsClient {
 
     /**
      * List applications.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,9 +306,12 @@ public interface ApplicationsClient {
 
     /**
      * List applications.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param applicationGroupName The name of the application group.
+     * @param pageSize Number of items per page.
+     * @param isDescending Indicates whether the collection is descending.
+     * @param initialSkip Initial number of items to skip.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -321,5 +319,6 @@ public interface ApplicationsClient {
      * @return applicationList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApplicationInner> list(String resourceGroupName, String applicationGroupName, Context context);
+    PagedIterable<ApplicationInner> list(String resourceGroupName, String applicationGroupName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context);
 }

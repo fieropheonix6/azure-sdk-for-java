@@ -6,23 +6,22 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.apachecommons.lang.ArrayUtils;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * StoreResultDiagnostics is a combination of diagnostics from StoreResult, StoreResponse and CosmosException.
- *
  * This is just a model class for StoreResult Diagnostics. It doesn't contain any references to the actual store result, store response and cosmos exception.
  * We intend to keep it this way - decoupled with store result, store response and cosmos exception.
  *
  */
 public class StoreResultDiagnostics {
-    private final static Logger logger = LoggerFactory.getLogger(StoreResultDiagnostics.class);
 
     //  StoreResult fields
     private final long lsn;
@@ -139,7 +138,7 @@ public class StoreResultDiagnostics {
 
     public String getStorePhysicalAddressEscapedAuthority() {
         return storePhysicalAddress != null
-            ? String.format("%s_%d", storePhysicalAddress.getURI().getHost(), storePhysicalAddress.getURI().getPort())
+            ? storePhysicalAddress.getURI().getHost() + "_" +  storePhysicalAddress.getURI().getPort()
             : null;
     }
 
@@ -147,6 +146,28 @@ public class StoreResultDiagnostics {
         return storePhysicalAddress != null
             ? storePhysicalAddress.getURI().getPath()
             : null;
+    }
+
+    public String[] getPartitionAndReplicaId() {
+        return getPartitionAndReplicaId(this.getStorePhysicalAddressEscapedPath());
+    }
+
+    public static String[] getPartitionAndReplicaId(String serviceAddress) {
+        if (serviceAddress == null) {
+            return ArrayUtils.EMPTY_STRING_ARRAY;
+        }
+
+        String[] serviceAddressParts = serviceAddress.split("/");
+        // Sample value for serviceAddress
+        // /apps/f88bfdf4-2954-4324-aad3-f1686668076d/services/3359112a-719d-474e-aa51-e89a142ae1b3/partitions/512fe816-24fa-4fbb-bbb1-587d2ce19851/replicas/133038444008943156p/
+        if (serviceAddressParts.length != 9) {
+            return ArrayUtils.EMPTY_STRING_ARRAY;
+        }
+        String[] result = new String[2];
+        result[0] = serviceAddressParts[6];
+        result[1] = serviceAddressParts[8];
+
+        return result;
     }
 
     public boolean isThroughputControlRequestRateTooLargeException() {
@@ -180,6 +201,8 @@ public class StoreResultDiagnostics {
                     "storePhysicalAddress",
                     storeResultDiagnostics.storePhysicalAddress == null ? null : storeResultDiagnostics.storePhysicalAddress.getURIAsString());
             jsonGenerator.writeNumberField("lsn", storeResultDiagnostics.lsn);
+            jsonGenerator.writeNumberField("quorumAckedLSN",storeResultDiagnostics.quorumAckedLSN);
+            jsonGenerator.writeNumberField("currentReplicaSetSize", storeResultDiagnostics.currentReplicaSetSize);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResultDiagnostics.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResponseDiagnostics.getPartitionKeyRangeId());
             jsonGenerator.writeBooleanField("isValid", storeResultDiagnostics.isValid);
@@ -196,6 +219,15 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeObjectField("retryAfterInMs", storeResultDiagnostics.retryAfterInMs);
             this.writeNonNullStringField(jsonGenerator, "exceptionMessage", storeResponseDiagnostics.getExceptionMessage());
             this.writeNonNullStringField(jsonGenerator, "exceptionResponseHeaders", storeResponseDiagnostics.getExceptionResponseHeaders());
+            this.writeNonNullStringField(jsonGenerator, "faultInjectionRuleId", storeResponseDiagnostics.getFaultInjectionRuleId());
+
+            if (StringUtils.isEmpty(storeResponseDiagnostics.getFaultInjectionRuleId())) {
+                this.writeNonEmptyStringArrayField(
+                    jsonGenerator,
+                    "faultInjectionEvaluationResults",
+                    storeResponseDiagnostics.getFaultInjectionEvaluationResults());
+            }
+
             this.writeNonNullObjectField(jsonGenerator, "replicaStatusList", storeResponseDiagnostics.getReplicaStatusList());
             jsonGenerator.writeObjectField("transportRequestTimeline", storeResponseDiagnostics.getRequestTimeline());
 
@@ -205,8 +237,7 @@ public class StoreResultDiagnostics {
             jsonGenerator.writeObjectField("rntbdResponseLengthInBytes", storeResponseDiagnostics.getRntbdResponseLength());
             jsonGenerator.writeObjectField("requestPayloadLengthInBytes", storeResponseDiagnostics.getRequestPayloadLength());
             jsonGenerator.writeObjectField("responsePayloadLengthInBytes", storeResponseDiagnostics.getResponsePayloadLength());
-            jsonGenerator.writeObjectField("channelTaskQueueSize", storeResponseDiagnostics.getRntbdChannelTaskQueueSize());
-            jsonGenerator.writeObjectField("pendingRequestsCount", storeResponseDiagnostics.getPendingRequestQueueSize());
+            jsonGenerator.writeObjectField("channelStatistics", storeResponseDiagnostics.getRntbdChannelStatistics());
             jsonGenerator.writeObjectField("serviceEndpointStatistics", storeResponseDiagnostics.getRntbdEndpointStatistics());
 
             jsonGenerator.writeEndObject();
@@ -226,6 +257,14 @@ public class StoreResultDiagnostics {
             }
 
             jsonGenerator.writeStringField(fieldName, value);
+        }
+
+        private void writeNonEmptyStringArrayField(JsonGenerator jsonGenerator, String fieldName, List<String> values) throws IOException {
+            if (values == null || values.isEmpty()) {
+                return;
+            }
+
+            jsonGenerator.writeObjectField(fieldName, values);
         }
     }
 }

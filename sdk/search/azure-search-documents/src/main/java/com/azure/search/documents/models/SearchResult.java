@@ -4,16 +4,10 @@
 package com.azure.search.documents.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.search.documents.SearchDocument;
 import com.azure.search.documents.implementation.converters.SearchResultHelper;
-import com.azure.search.documents.implementation.util.Utility;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -24,47 +18,38 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  */
 @Fluent
 public final class SearchResult {
-    private static final ClientLogger LOGGER = new ClientLogger(SearchResult.class);
 
     /*
      * The relevance score of the document compared to other documents returned
      * by the query.
      */
-    @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
-    private double score;
+    private final double score;
 
     /*
-     * The relevance score computed by the semantic ranker for the top search
-     * results. Search results are sorted by the RerankerScore first and then
-     * by the Score. RerankerScore is only returned for queries of type
-     * 'semantic'.
+     * The semantic search results based on the search request.
      */
-    @JsonProperty(value = "@search.rerankerScore", access = JsonProperty.Access.WRITE_ONLY)
-    private Double rerankerScore;
+    private SemanticSearchResult semanticSearch;
 
     /*
      * Text fragments from the document that indicate the matching search
      * terms, organized by each applicable field; null if hit highlighting was
      * not enabled for the query.
      */
-    @JsonProperty(value = "@search.highlights", access = JsonProperty.Access.WRITE_ONLY)
     private Map<String, List<String>> highlights;
 
     /*
-     * Captions are the most representative passages from the document
-     * relatively to the search query. They are often used as document summary.
-     * Captions are only returned for queries of type 'semantic'.
+     * Contains debugging information that can be used to further explore your search results.
      */
-    @JsonProperty(value = "@search.captions", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CaptionResult> captions;
+    private DocumentDebugInfo documentDebugInfo;
 
     /*
      * Contains a document found by a search query, plus associated metadata.
      */
-    @JsonIgnore
     private Map<String, Object> additionalProperties;
 
-    @JsonIgnore
+    /*
+     * The json serializer.
+     */
     private JsonSerializer jsonSerializer;
 
     static {
@@ -85,13 +70,14 @@ public final class SearchResult {
             }
 
             @Override
-            public void setRerankerScore(SearchResult searchResult, Double rerankerScore) {
-                searchResult.setRerankerScore(rerankerScore);
+            public void setSemanticSearchResults(SearchResult searchResult, Double rerankerScore,
+                List<QueryCaptionResult> captions) {
+                searchResult.setSemanticSearchResult(rerankerScore, captions);
             }
 
             @Override
-            public void setCaptions(SearchResult searchResult, List<CaptionResult> captions) {
-                searchResult.setCaptions(captions);
+            public void setDocumentDebugInfo(SearchResult searchResult, DocumentDebugInfo documentDebugInfo) {
+                searchResult.setDocumentDebugInfo(documentDebugInfo);
             }
         });
     }
@@ -101,10 +87,7 @@ public final class SearchResult {
      *
      * @param score The relevance score of the document compared to other documents returned by the query.
      */
-    @JsonCreator
-    public SearchResult(
-        @JsonProperty(value = "@search.score", required = true, access = JsonProperty.Access.WRITE_ONLY)
-            double score) {
+    public SearchResult(double score) {
         this.score = score;
     }
 
@@ -118,17 +101,6 @@ public final class SearchResult {
     }
 
     /**
-     * Get the rerankerScore property: The relevance score computed by the semantic ranker for the top search results.
-     * Search results are sorted by the RerankerScore first and then by the Score. RerankerScore is only returned for
-     * queries of type 'semantic'.
-     *
-     * @return the rerankerScore value.
-     */
-    public Double getRerankerScore() {
-        return this.rerankerScore;
-    }
-
-    /**
      * Get the highlights property: Text fragments from the document that indicate the matching search terms, organized
      * by each applicable field; null if hit highlighting was not enabled for the query.
      *
@@ -139,14 +111,22 @@ public final class SearchResult {
     }
 
     /**
-     * Get the captions property: Captions are the most representative passages from the document relatively to the
-     * search query. They are often used as document summary. Captions are only returned for queries of type
-     * 'semantic'.
+     * Get the semanticSearchResult property: The semantic search results based on the search request.
+     * <p>
+     * If semantic search wasn't requested this will return a {@link SemanticSearchResult} with no values.
      *
-     * @return the captions value.
+     * @return the semanticSearchResult value.
      */
-    public List<CaptionResult> getCaptions() {
-        return this.captions;
+    public SemanticSearchResult getSemanticSearch() {
+        return this.semanticSearch;
+    }
+
+    /**
+     * Get the documentDebugInfo property: Contains debugging information that can be used to further explore your search results.
+     * @return the documentDebugInfo value.
+     */
+    public DocumentDebugInfo getDocumentDebugInfo() {
+        return this.documentDebugInfo;
     }
 
     /**
@@ -158,16 +138,8 @@ public final class SearchResult {
      * @throws RuntimeException if there is IO error occurs.
      */
     public <T> T getDocument(Class<T> modelClass) {
-        if (jsonSerializer == null) {
-            try {
-                return Utility.convertValue(additionalProperties, modelClass);
-            } catch (IOException ex) {
-                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize search result.", ex));
-            }
-        }
-
-        byte[] rawJsonDocument = jsonSerializer.serializeToBytes(additionalProperties);
-        return jsonSerializer.deserializeFromBytes(rawJsonDocument, createInstance(modelClass));
+        return jsonSerializer.deserializeFromBytes(jsonSerializer.serializeToBytes(additionalProperties),
+            createInstance(modelClass));
     }
 
     /**
@@ -198,20 +170,22 @@ public final class SearchResult {
     }
 
     /**
-     * The private setter to set the rerankerScore property via {@code SearchResultHelper.setRerankerScore}.
+     * The private setter to set the documentDebugInfo property via {@code SearchResultHelper.SearchResultAccessor}.
      *
-     * @param rerankerScore The reranker score.
+     * @param documentDebugInfo The document debug info.
      */
-    private void setRerankerScore(Double rerankerScore) {
-        this.rerankerScore = rerankerScore;
+    private void setDocumentDebugInfo(DocumentDebugInfo documentDebugInfo) {
+        this.documentDebugInfo = documentDebugInfo;
     }
 
     /**
-     * The private setter to set the captions property via {@code SearchResultHelper.setCaptions}.
+     * The private setter to set the semanticSearchResult property via
+     * {@code SearchResultHelper.setSemanticSearchResult}.
      *
+     * @param rerankerScore The reranker score.
      * @param captions The captions.
      */
-    private void setCaptions(List<CaptionResult> captions) {
-        this.captions = captions;
+    private void setSemanticSearchResult(Double rerankerScore, List<QueryCaptionResult> captions) {
+        this.semanticSearch = new SemanticSearchResult(rerankerScore, captions);
     }
 }

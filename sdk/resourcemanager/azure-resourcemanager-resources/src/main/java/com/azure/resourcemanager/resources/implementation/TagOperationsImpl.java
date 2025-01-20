@@ -4,6 +4,7 @@
 package com.azure.resourcemanager.resources.implementation;
 
 import com.azure.resourcemanager.resources.ResourceManager;
+import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.models.TagOperations;
 import com.azure.resourcemanager.resources.models.TagResource;
@@ -41,11 +42,12 @@ public class TagOperationsImpl implements TagOperations {
 
     @Override
     public Mono<TagResource> updateTagsAsync(String resourceId, Map<String, String> tags) {
-        TagsPatchResource parameters = new TagsPatchResource()
-            .withOperation(TagsPatchOperation.REPLACE)
+        TagsPatchResource parameters = new TagsPatchResource().withOperation(TagsPatchOperation.REPLACE)
             .withProperties(new Tags().withTags(new TreeMap<>(tags)));
-        return this.manager().serviceClient().getTagOperations()
-            .updateAtScopeAsync(resourceId, parameters)
+        return this.manager()
+            .serviceClient()
+            .getTagOperations()
+            .updateAtScopeAsync(ResourceUtils.encodeResourceId(resourceId), parameters)
             .map(TagResourceImpl::new);
     }
 

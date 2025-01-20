@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Skus List. */
+/**
+ * Samples for Skus List.
+ */
 public final class SkusListSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/Skus_List.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/Skus_List.json
      */
     /**
      * Sample code: Skus_List.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void skusList(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.skus().list(Context.NONE);
+        manager.skus().list(com.azure.core.util.Context.NONE);
     }
 }

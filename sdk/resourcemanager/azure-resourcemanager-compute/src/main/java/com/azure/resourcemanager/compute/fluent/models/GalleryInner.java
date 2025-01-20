@@ -6,44 +6,125 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
+import com.azure.resourcemanager.compute.models.GalleryIdentity;
 import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.SharingProfile;
 import com.azure.resourcemanager.compute.models.SharingStatus;
 import com.azure.resourcemanager.compute.models.SoftDeletePolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Specifies information about the Shared Image Gallery that you want to create or update. */
+/**
+ * Specifies information about the Shared Image Gallery that you want to create or update.
+ */
 @Fluent
 public final class GalleryInner extends Resource {
     /*
      * Describes the properties of a Shared Image Gallery.
      */
-    @JsonProperty(value = "properties")
     private GalleryProperties innerProperties;
 
-    /** Creates an instance of GalleryInner class. */
+    /*
+     * The identity of the gallery, if configured.
+     */
+    private GalleryIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of GalleryInner class.
+     */
     public GalleryInner() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of a Shared Image Gallery.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GalleryProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the identity property: The identity of the gallery, if configured.
+     * 
+     * @return the identity value.
+     */
+    public GalleryIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the gallery, if configured.
+     * 
+     * @param identity the identity value to set.
+     * @return the GalleryInner object itself.
+     */
+    public GalleryInner withIdentity(GalleryIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -52,7 +133,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -61,7 +142,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Set the description property: The description of this Shared Image Gallery resource. This property is updatable.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryInner object itself.
      */
@@ -75,7 +156,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Get the identifier property: Describes the gallery unique name.
-     *
+     * 
      * @return the identifier value.
      */
     public GalleryIdentifier identifier() {
@@ -84,7 +165,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Set the identifier property: Describes the gallery unique name.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the GalleryInner object itself.
      */
@@ -97,10 +178,8 @@ public final class GalleryInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     *
-     * <p>The provisioning state, which only appears in the response.
-     *
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public GalleryProvisioningState provisioningState() {
@@ -109,7 +188,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Get the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
+     * 
      * @return the sharingProfile value.
      */
     public SharingProfile sharingProfile() {
@@ -118,7 +197,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Set the sharingProfile property: Profile for gallery sharing to subscription or tenant.
-     *
+     * 
      * @param sharingProfile the sharingProfile value to set.
      * @return the GalleryInner object itself.
      */
@@ -132,7 +211,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Get the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
+     * 
      * @return the softDeletePolicy value.
      */
     public SoftDeletePolicy softDeletePolicy() {
@@ -141,7 +220,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Set the softDeletePolicy property: Contains information about the soft deletion policy of the gallery.
-     *
+     * 
      * @param softDeletePolicy the softDeletePolicy value to set.
      * @return the GalleryInner object itself.
      */
@@ -155,7 +234,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Get the sharingStatus property: Sharing status of current gallery.
-     *
+     * 
      * @return the sharingStatus value.
      */
     public SharingStatus sharingStatus() {
@@ -164,12 +243,68 @@ public final class GalleryInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GalleryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GalleryInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GalleryInner.
+     */
+    public static GalleryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GalleryInner deserializedGalleryInner = new GalleryInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedGalleryInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedGalleryInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedGalleryInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedGalleryInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedGalleryInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedGalleryInner.innerProperties = GalleryProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedGalleryInner.identity = GalleryIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGalleryInner;
+        });
     }
 }

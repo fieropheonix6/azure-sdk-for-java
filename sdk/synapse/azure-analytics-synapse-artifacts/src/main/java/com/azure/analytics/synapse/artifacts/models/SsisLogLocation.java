@@ -5,42 +5,48 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SSIS package execution log location. */
-@JsonFlatten
+/**
+ * SSIS package execution log location.
+ */
 @Fluent
-public class SsisLogLocation {
+public class SsisLogLocation implements JsonSerializable<SsisLogLocation> {
     /*
      * The SSIS package execution log path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "logPath", required = true)
     private Object logPath;
 
     /*
      * The type of SSIS log location.
      */
-    @JsonProperty(value = "type", required = true)
     private SsisLogLocationType type;
 
     /*
      * The package execution log access credential.
      */
-    @JsonProperty(value = "typeProperties.accessCredential")
     private SsisAccessCredential accessCredential;
 
     /*
      * Specifies the interval to refresh log. The default interval is 5 minutes. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "typeProperties.logRefreshInterval")
     private Object logRefreshInterval;
+
+    /**
+     * Creates an instance of SsisLogLocation class.
+     */
+    public SsisLogLocation() {
+    }
 
     /**
      * Get the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the logPath value.
      */
     public Object getLogPath() {
@@ -50,7 +56,7 @@ public class SsisLogLocation {
     /**
      * Set the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param logPath the logPath value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -61,7 +67,7 @@ public class SsisLogLocation {
 
     /**
      * Get the type property: The type of SSIS log location.
-     *
+     * 
      * @return the type value.
      */
     public SsisLogLocationType getType() {
@@ -70,7 +76,7 @@ public class SsisLogLocation {
 
     /**
      * Set the type property: The type of SSIS log location.
-     *
+     * 
      * @param type the type value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -81,7 +87,7 @@ public class SsisLogLocation {
 
     /**
      * Get the accessCredential property: The package execution log access credential.
-     *
+     * 
      * @return the accessCredential value.
      */
     public SsisAccessCredential getAccessCredential() {
@@ -90,7 +96,7 @@ public class SsisLogLocation {
 
     /**
      * Set the accessCredential property: The package execution log access credential.
-     *
+     * 
      * @param accessCredential the accessCredential value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -103,7 +109,7 @@ public class SsisLogLocation {
      * Get the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the logRefreshInterval value.
      */
     public Object getLogRefreshInterval() {
@@ -114,12 +120,71 @@ public class SsisLogLocation {
      * Set the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param logRefreshInterval the logRefreshInterval value to set.
      * @return the SsisLogLocation object itself.
      */
     public SsisLogLocation setLogRefreshInterval(Object logRefreshInterval) {
         this.logRefreshInterval = logRefreshInterval;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("logPath", this.logPath);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        if (accessCredential != null || logRefreshInterval != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeJsonField("accessCredential", this.accessCredential);
+            jsonWriter.writeUntypedField("logRefreshInterval", this.logRefreshInterval);
+            jsonWriter.writeEndObject();
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisLogLocation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisLogLocation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SsisLogLocation.
+     */
+    public static SsisLogLocation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisLogLocation deserializedSsisLogLocation = new SsisLogLocation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("logPath".equals(fieldName)) {
+                    deserializedSsisLogLocation.logPath = reader.readUntyped();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSsisLogLocation.type = SsisLogLocationType.fromString(reader.getString());
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("accessCredential".equals(fieldName)) {
+                            deserializedSsisLogLocation.accessCredential = SsisAccessCredential.fromJson(reader);
+                        } else if ("logRefreshInterval".equals(fieldName)) {
+                            deserializedSsisLogLocation.logRefreshInterval = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisLogLocation;
+        });
     }
 }

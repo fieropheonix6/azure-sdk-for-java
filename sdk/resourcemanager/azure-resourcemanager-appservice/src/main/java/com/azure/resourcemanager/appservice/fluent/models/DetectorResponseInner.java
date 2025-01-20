@@ -5,34 +5,91 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DataProviderMetadata;
 import com.azure.resourcemanager.appservice.models.DetectorInfo;
 import com.azure.resourcemanager.appservice.models.DiagnosticData;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.QueryUtterancesResults;
 import com.azure.resourcemanager.appservice.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Class representing Response from Detector. */
+/**
+ * Class representing Response from Detector.
+ */
 @Fluent
 public final class DetectorResponseInner extends ProxyOnlyResource {
     /*
      * DetectorResponse resource specific properties
      */
-    @JsonProperty(value = "properties")
     private DetectorResponseProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DetectorResponseInner class.
+     */
+    public DetectorResponseInner() {
+    }
 
     /**
      * Get the innerProperties property: DetectorResponse resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DetectorResponseProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DetectorResponseInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +98,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the metadata property: metadata for the detector.
-     *
+     * 
      * @return the metadata value.
      */
     public DetectorInfo metadata() {
@@ -50,7 +107,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the metadata property: metadata for the detector.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -64,7 +121,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the dataset property: Data Set.
-     *
+     * 
      * @return the dataset value.
      */
     public List<DiagnosticData> dataset() {
@@ -73,7 +130,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the dataset property: Data Set.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -87,7 +144,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the status property: Indicates status of the most severe insight.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -96,7 +153,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the status property: Indicates status of the most severe insight.
-     *
+     * 
      * @param status the status value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -111,7 +168,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
     /**
      * Get the dataProvidersMetadata property: Additional configuration for different data providers to be used by the
      * UI.
-     *
+     * 
      * @return the dataProvidersMetadata value.
      */
     public List<DataProviderMetadata> dataProvidersMetadata() {
@@ -121,7 +178,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
     /**
      * Set the dataProvidersMetadata property: Additional configuration for different data providers to be used by the
      * UI.
-     *
+     * 
      * @param dataProvidersMetadata the dataProvidersMetadata value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -135,7 +192,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the suggestedUtterances property: Suggested utterances where the detector can be applicable.
-     *
+     * 
      * @return the suggestedUtterances value.
      */
     public QueryUtterancesResults suggestedUtterances() {
@@ -144,7 +201,7 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the suggestedUtterances property: Suggested utterances where the detector can be applicable.
-     *
+     * 
      * @param suggestedUtterances the suggestedUtterances value to set.
      * @return the DetectorResponseInner object itself.
      */
@@ -158,14 +215,59 @@ public final class DetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectorResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectorResponseInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DetectorResponseInner.
+     */
+    public static DetectorResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetectorResponseInner deserializedDetectorResponseInner = new DetectorResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDetectorResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDetectorResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDetectorResponseInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDetectorResponseInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDetectorResponseInner.innerProperties = DetectorResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetectorResponseInner;
+        });
     }
 }

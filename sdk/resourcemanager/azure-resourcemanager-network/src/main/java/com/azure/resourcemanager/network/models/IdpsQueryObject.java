@@ -5,49 +5,52 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Will describe the query to run against the IDPS signatures DB. */
+/**
+ * Will describe the query to run against the IDPS signatures DB.
+ */
 @Fluent
-public final class IdpsQueryObject {
+public final class IdpsQueryObject implements JsonSerializable<IdpsQueryObject> {
     /*
      * Contain all filters names and values
      */
-    @JsonProperty(value = "filters")
     private List<FilterItems> filters;
 
     /*
      * Search term in all columns
      */
-    @JsonProperty(value = "search")
     private String search;
 
     /*
      * Column to sort response by
      */
-    @JsonProperty(value = "orderBy")
     private OrderBy orderBy;
 
     /*
      * The number of the results to return in each page
      */
-    @JsonProperty(value = "resultsPerPage")
     private Integer resultsPerPage;
 
     /*
      * The number of records matching the filter to skip
      */
-    @JsonProperty(value = "skip")
     private Integer skip;
 
-    /** Creates an instance of IdpsQueryObject class. */
+    /**
+     * Creates an instance of IdpsQueryObject class.
+     */
     public IdpsQueryObject() {
     }
 
     /**
      * Get the filters property: Contain all filters names and values.
-     *
+     * 
      * @return the filters value.
      */
     public List<FilterItems> filters() {
@@ -56,7 +59,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the filters property: Contain all filters names and values.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -67,7 +70,7 @@ public final class IdpsQueryObject {
 
     /**
      * Get the search property: Search term in all columns.
-     *
+     * 
      * @return the search value.
      */
     public String search() {
@@ -76,7 +79,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the search property: Search term in all columns.
-     *
+     * 
      * @param search the search value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -87,7 +90,7 @@ public final class IdpsQueryObject {
 
     /**
      * Get the orderBy property: Column to sort response by.
-     *
+     * 
      * @return the orderBy value.
      */
     public OrderBy orderBy() {
@@ -96,7 +99,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the orderBy property: Column to sort response by.
-     *
+     * 
      * @param orderBy the orderBy value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -107,7 +110,7 @@ public final class IdpsQueryObject {
 
     /**
      * Get the resultsPerPage property: The number of the results to return in each page.
-     *
+     * 
      * @return the resultsPerPage value.
      */
     public Integer resultsPerPage() {
@@ -116,7 +119,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the resultsPerPage property: The number of the results to return in each page.
-     *
+     * 
      * @param resultsPerPage the resultsPerPage value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -127,7 +130,7 @@ public final class IdpsQueryObject {
 
     /**
      * Get the skip property: The number of records matching the filter to skip.
-     *
+     * 
      * @return the skip value.
      */
     public Integer skip() {
@@ -136,7 +139,7 @@ public final class IdpsQueryObject {
 
     /**
      * Set the skip property: The number of records matching the filter to skip.
-     *
+     * 
      * @param skip the skip value to set.
      * @return the IdpsQueryObject object itself.
      */
@@ -147,7 +150,7 @@ public final class IdpsQueryObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -157,5 +160,54 @@ public final class IdpsQueryObject {
         if (orderBy() != null) {
             orderBy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("search", this.search);
+        jsonWriter.writeJsonField("orderBy", this.orderBy);
+        jsonWriter.writeNumberField("resultsPerPage", this.resultsPerPage);
+        jsonWriter.writeNumberField("skip", this.skip);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IdpsQueryObject from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IdpsQueryObject if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IdpsQueryObject.
+     */
+    public static IdpsQueryObject fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IdpsQueryObject deserializedIdpsQueryObject = new IdpsQueryObject();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filters".equals(fieldName)) {
+                    List<FilterItems> filters = reader.readArray(reader1 -> FilterItems.fromJson(reader1));
+                    deserializedIdpsQueryObject.filters = filters;
+                } else if ("search".equals(fieldName)) {
+                    deserializedIdpsQueryObject.search = reader.getString();
+                } else if ("orderBy".equals(fieldName)) {
+                    deserializedIdpsQueryObject.orderBy = OrderBy.fromJson(reader);
+                } else if ("resultsPerPage".equals(fieldName)) {
+                    deserializedIdpsQueryObject.resultsPerPage = reader.getNullable(JsonReader::getInt);
+                } else if ("skip".equals(fieldName)) {
+                    deserializedIdpsQueryObject.skip = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIdpsQueryObject;
+        });
     }
 }

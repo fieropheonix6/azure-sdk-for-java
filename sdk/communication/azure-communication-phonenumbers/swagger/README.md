@@ -23,10 +23,11 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-phonenumber-2022-01-11-preview2
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/02fce64677f78021ba70d69bb8bd0d916d653927/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-phonenumber-2024-03-01-preview
+use: '@autorest/java@4.1.29'
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/b56afb26c5450157006a3a1d9be57bae429051a2/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -37,6 +38,7 @@ generate-client-as-impl: true
 service-interface-as-public: true
 sync-methods: all
 context-client-method-parameter: true
+stream-style-serialization: true
 ```
 
 ### Add readonly attribute to PurchasedPhoneNumber properties
@@ -80,6 +82,8 @@ directive:
       $["properties"]["phoneNumberType"].readOnly = true;
       $["properties"]["assignmentType"].readOnly = true;
       $["properties"]["capabilities"].readOnly = true;
+      $["properties"]["error"].readOnly = true;
+      $["properties"]["errorCode"].readOnly = true;
 ```
 
 ### Rename PhoneNumberOperation to PhoneNumberRawOperation
@@ -88,4 +92,155 @@ directive:
     - rename-model:
         from: PhoneNumberOperation
         to: PhoneNumberRawOperation
+```
+
+### Add readonly attribute to AreaCodeResult properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberAreaCode
+    transform: >
+      $["properties"]["areaCode"].readOnly = true;
+```
+
+### Add readonly attribute to AreaCodes properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberAreaCodes
+    transform: >
+      $["properties"]["areaCodes"].readOnly = true;
+      $["properties"]["nextLink"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberAdministrativeDivision properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberAdministrativeDivision
+    transform: >
+      $["properties"]["abbreviatedName"].readOnly = true;
+      $["properties"]["localizedName"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberAdministrativeDivision properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberAdministrativeDivision
+    transform: >
+      $["properties"]["abbreviatedName"].readOnly = true;
+      $["properties"]["localizedName"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberCountries properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCountries
+    transform: >
+      $["properties"]["countries"].readOnly = true;
+      $["properties"]["nextLink"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberLocality properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberLocality
+    transform: >
+      $["properties"]["administrativeDivision"].readOnly = true;
+      $["properties"]["localizedName"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberLocalities properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberLocalities
+    transform: >
+      $["properties"]["nextLink"].readOnly = true;
+      $["properties"]["phoneNumberLocalities"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberOffering properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberOffering
+    transform: >
+      $["properties"]["assignmentType"].readOnly = true;
+      $["properties"]["availableCapabilities"].readOnly = true;
+      $["properties"]["cost"].readOnly = true;
+      $["properties"]["phoneNumberType"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberOfferings properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OfferingsResponse
+    transform: >
+      $["properties"]["nextLink"].readOnly = true;
+      $["properties"]["phoneNumberOfferings"].readOnly = true;
+```
+
+### Add readonly attribute to PhoneNumberCountry properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumberCountry
+    transform: >
+      $["properties"]["localizedName"].readOnly = true;
+      $["properties"]["countryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorDetails properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorDetails
+    transform: >
+      $["properties"]["name"].readOnly = true;
+      $["properties"]["mobileNetworkCode"].readOnly = true;
+      $["properties"]["mobileCountryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformation properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorInformation
+    transform: >
+      $["properties"]["phoneNumber"].readOnly = true;
+      $["properties"]["numberType"].readOnly = true;
+      $["properties"]["isoCountryCode"].readOnly = true;
+      $["properties"]["operatorDetails"].readOnly = true;
+      $["properties"]["nationalFormat"].readOnly = true;
+      $["properties"]["internationalFormat"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformationResult properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorInformationResult
+    transform: >
+      $["properties"]["values"].readOnly = true;
+```
+
+``` yaml
+directive:
+  from: swagger-document
+  where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum
+  transform: >
+    $["name"] = "PhoneNumberSearchResultError";
+```
+
+``` yaml
+directive:
+  from: swagger-document
+  where: $.parameters.Endpoint
+  transform: >
+    $["format"] = "";
 ```

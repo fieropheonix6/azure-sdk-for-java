@@ -8,6 +8,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.redisson.Redisson;
 import org.redisson.api.RBucket;
 import org.redisson.api.RBuckets;
@@ -15,30 +17,41 @@ import org.redisson.api.RedissonClient;
 import org.redisson.client.RedisException;
 import org.redisson.config.Config;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * A sample with authenticating with a token cache.
+ */
 public class AuthenticateWithTokenCache {
 
+    /**
+     * The runnable sample.
+     *
+     * @param args Ignored.
+     */
     public static void main(String[] args) {
 
         //Construct a Token Credential from Identity library, e.g. DefaultAzureCredential / ClientSecretCredential / Client CertificateCredential / ManagedIdentityCredential etc.
         DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder().build();
 
-        // Fetch an Azure AD token to be used for authentication. This token will be used as the password.
-        // Note: The Scopes parameter will change as the Azure AD Authentication support hits public preview and eventually GA's.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("https://*.cacheinfra.windows.net:10225/appid/.default");
+        // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
+        TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 
-        // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 minutes before expiry.
-        TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc, Duration.ofMinutes(2));
+        // Instantiate the Token Refresh Cache, this cache will proactively refresh the access token 2 - 5 minutes before expiry.
+        TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
         AccessToken accessToken = tokenRefreshCache.getAccessToken();
+        String username = extractUsernameFromToken(accessToken.getToken());
 
         // Create Redisson Client
-        // Host Name, Port, Username and Azure AD Token are required here.
+        // Host Name, Port, and Microsoft Entra token are required here.
         // TODO: Replace <HOST_NAME> with Azure Cache for Redis Host name.
-        RedissonClient redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", accessToken);
+        RedissonClient redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, accessToken);
 
         int maxTries = 3;
         int i = 0;
@@ -60,8 +73,9 @@ public class AuthenticateWithTokenCache {
                 // For Exceptions containing Invalid Username Password / Permissions not granted error messages, look at troubleshooting section at the end of document.
 
                 if (redisson.isShutdown()) {
+                    AccessToken token = tokenRefreshCache.getAccessToken();
                     // Recreate the client with a fresh token non-expired token as password for authentication.
-                    redisson = createRedissonClient("redis://<HOST_NAME>:6380", "<USERNAME>", tokenRefreshCache.getAccessToken());
+                    redisson = createRedissonClient("rediss://<HOST_NAME>:6380", username, token);
                 }
             } catch (Exception e) {
                 // Handle Exception as required
@@ -95,19 +109,18 @@ public class AuthenticateWithTokenCache {
         private final TokenRequestContext tokenRequestContext;
         private final Timer timer;
         private volatile AccessToken accessToken;
-        private final Duration refreshOffset;
+        private final Duration maxRefreshOffset = Duration.ofMinutes(5);
+        private final Duration baseRefreshOffset = Duration.ofMinutes(2);
 
         /**
          * Creates an instance of TokenRefreshCache
          * @param tokenCredential the token credential to be used for authentication.
          * @param tokenRequestContext the token request context to be used for authentication.
-         * @param refreshOffset the refresh offset to use to proactively fetch a new access token before expiry time.
          */
-        public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext, Duration refreshOffset) {
+        public TokenRefreshCache(TokenCredential tokenCredential, TokenRequestContext tokenRequestContext) {
             this.tokenCredential = tokenCredential;
             this.tokenRequestContext = tokenRequestContext;
             this.timer = new Timer();
-            this.refreshOffset = refreshOffset;
         }
 
         /**
@@ -136,8 +149,26 @@ public class AuthenticateWithTokenCache {
 
         private long getTokenRefreshDelay() {
             return ((accessToken.getExpiresAt()
-                .minusSeconds(refreshOffset.getSeconds()))
-                .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000;
+                .minusSeconds(ThreadLocalRandom.current().nextLong(baseRefreshOffset.getSeconds(), maxRefreshOffset.getSeconds()))
+                .toEpochSecond() - OffsetDateTime.now().toEpochSecond()) * 1000);
         }
+    }
+
+    private static String extractUsernameFromToken(String token) {
+        String[] parts = token.split("\\.");
+        String base64 = parts[1];
+
+        int modulo = base64.length() % 4;
+        if (modulo == 2) {
+            base64 += "==";
+        } else if (modulo == 3) {
+            base64 += "=";
+        }
+
+        byte[] jsonBytes = Base64.getDecoder().decode(base64);
+        String json = new String(jsonBytes, StandardCharsets.UTF_8);
+        JsonObject jwt = JsonParser.parseString(json).getAsJsonObject();
+
+        return jwt.get("oid").getAsString();
     }
 }

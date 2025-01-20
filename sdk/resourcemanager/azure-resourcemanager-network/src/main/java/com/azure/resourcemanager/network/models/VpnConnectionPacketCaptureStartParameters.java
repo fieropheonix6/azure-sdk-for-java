@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Vpn Connection packet capture parameters supplied to start packet capture on gateway connection. */
+/**
+ * Vpn Connection packet capture parameters supplied to start packet capture on gateway connection.
+ */
 @Fluent
-public final class VpnConnectionPacketCaptureStartParameters {
+public final class VpnConnectionPacketCaptureStartParameters
+    implements JsonSerializable<VpnConnectionPacketCaptureStartParameters> {
     /*
      * Start Packet capture parameters on vpn connection.
      */
-    @JsonProperty(value = "filterData")
     private String filterData;
 
     /*
      * List of site link connection names.
      */
-    @JsonProperty(value = "linkConnectionNames")
     private List<String> linkConnectionNames;
 
-    /** Creates an instance of VpnConnectionPacketCaptureStartParameters class. */
+    /**
+     * Creates an instance of VpnConnectionPacketCaptureStartParameters class.
+     */
     public VpnConnectionPacketCaptureStartParameters() {
     }
 
     /**
      * Get the filterData property: Start Packet capture parameters on vpn connection.
-     *
+     * 
      * @return the filterData value.
      */
     public String filterData() {
@@ -38,7 +45,7 @@ public final class VpnConnectionPacketCaptureStartParameters {
 
     /**
      * Set the filterData property: Start Packet capture parameters on vpn connection.
-     *
+     * 
      * @param filterData the filterData value to set.
      * @return the VpnConnectionPacketCaptureStartParameters object itself.
      */
@@ -49,7 +56,7 @@ public final class VpnConnectionPacketCaptureStartParameters {
 
     /**
      * Get the linkConnectionNames property: List of site link connection names.
-     *
+     * 
      * @return the linkConnectionNames value.
      */
     public List<String> linkConnectionNames() {
@@ -58,7 +65,7 @@ public final class VpnConnectionPacketCaptureStartParameters {
 
     /**
      * Set the linkConnectionNames property: List of site link connection names.
-     *
+     * 
      * @param linkConnectionNames the linkConnectionNames value to set.
      * @return the VpnConnectionPacketCaptureStartParameters object itself.
      */
@@ -69,9 +76,51 @@ public final class VpnConnectionPacketCaptureStartParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("filterData", this.filterData);
+        jsonWriter.writeArrayField("linkConnectionNames", this.linkConnectionNames,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnConnectionPacketCaptureStartParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnConnectionPacketCaptureStartParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnConnectionPacketCaptureStartParameters.
+     */
+    public static VpnConnectionPacketCaptureStartParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnConnectionPacketCaptureStartParameters deserializedVpnConnectionPacketCaptureStartParameters
+                = new VpnConnectionPacketCaptureStartParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("filterData".equals(fieldName)) {
+                    deserializedVpnConnectionPacketCaptureStartParameters.filterData = reader.getString();
+                } else if ("linkConnectionNames".equals(fieldName)) {
+                    List<String> linkConnectionNames = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVpnConnectionPacketCaptureStartParameters.linkConnectionNames = linkConnectionNames;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnConnectionPacketCaptureStartParameters;
+        });
     }
 }

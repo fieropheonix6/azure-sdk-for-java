@@ -9,32 +9,28 @@ import com.azure.resourcemanager.machinelearning.models.DeploymentResourceConfig
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentResourceConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        DeploymentResourceConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"instanceCount\":1806206586,\"instanceType\":\"dcfhucqdpf\",\"properties\":{\"vudutncor\":\"datalsbjjcanvxbv\",\"xqtvcofu\":\"datar\"}}")
-                .toObject(DeploymentResourceConfiguration.class);
-        Assertions.assertEquals(1806206586, model.instanceCount());
-        Assertions.assertEquals("dcfhucqdpf", model.instanceType());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DeploymentResourceConfiguration model = BinaryData.fromString(
+            "{\"instanceCount\":1387875327,\"instanceType\":\"qaclnapxbiy\",\"properties\":{\"smfcttuxuuyilfl\":\"datagjkn\",\"jztczytqj\":\"dataoiquvrehmrnjhvs\"}}")
+            .toObject(DeploymentResourceConfiguration.class);
+        Assertions.assertEquals(1387875327, model.instanceCount());
+        Assertions.assertEquals("qaclnapxbiy", model.instanceType());
     }
 
-    @Test
-    public void testSerialize() {
-        DeploymentResourceConfiguration model =
-            new DeploymentResourceConfiguration()
-                .withInstanceCount(1806206586)
-                .withInstanceType("dcfhucqdpf")
-                .withProperties(mapOf("vudutncor", "datalsbjjcanvxbv", "xqtvcofu", "datar"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DeploymentResourceConfiguration model = new DeploymentResourceConfiguration().withInstanceCount(1387875327)
+            .withInstanceType("qaclnapxbiy")
+            .withProperties(mapOf("smfcttuxuuyilfl", "datagjkn", "jztczytqj", "dataoiquvrehmrnjhvs"));
         model = BinaryData.fromObject(model).toObject(DeploymentResourceConfiguration.class);
-        Assertions.assertEquals(1806206586, model.instanceCount());
-        Assertions.assertEquals("dcfhucqdpf", model.instanceType());
+        Assertions.assertEquals(1387875327, model.instanceCount());
+        Assertions.assertEquals("qaclnapxbiy", model.instanceType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -5,66 +5,66 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of ExpressRouteProviderPort. */
+/**
+ * Properties of ExpressRouteProviderPort.
+ */
 @Fluent
-public final class ExpressRouteProviderPortProperties {
+public final class ExpressRouteProviderPortProperties implements JsonSerializable<ExpressRouteProviderPortProperties> {
     /*
      * The name of the port pair.
      */
-    @JsonProperty(value = "portPairDescriptor", access = JsonProperty.Access.WRITE_ONLY)
     private String portPairDescriptor;
 
     /*
      * The name of the primary port.
      */
-    @JsonProperty(value = "primaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
     private String primaryAzurePort;
 
     /*
      * The name of the secondary port.
      */
-    @JsonProperty(value = "secondaryAzurePort", access = JsonProperty.Access.WRITE_ONLY)
     private String secondaryAzurePort;
 
     /*
      * The peering location of the port pair.
      */
-    @JsonProperty(value = "peeringLocation")
     private String peeringLocation;
 
     /*
      * Overprovisioning factor for the port pair.
      */
-    @JsonProperty(value = "overprovisionFactor")
     private Integer overprovisionFactor;
 
     /*
      * Bandwidth of the port in Mbps
      */
-    @JsonProperty(value = "portBandwidthInMbps")
     private Integer portBandwidthInMbps;
 
     /*
      * Used Bandwidth of the port in Mbps
      */
-    @JsonProperty(value = "usedBandwidthInMbps")
     private Integer usedBandwidthInMbps;
 
     /*
      * Remaining Bandwidth of the port in Mbps
      */
-    @JsonProperty(value = "remainingBandwidthInMbps")
     private Integer remainingBandwidthInMbps;
 
-    /** Creates an instance of ExpressRouteProviderPortProperties class. */
+    /**
+     * Creates an instance of ExpressRouteProviderPortProperties class.
+     */
     public ExpressRouteProviderPortProperties() {
     }
 
     /**
      * Get the portPairDescriptor property: The name of the port pair.
-     *
+     * 
      * @return the portPairDescriptor value.
      */
     public String portPairDescriptor() {
@@ -73,7 +73,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the primaryAzurePort property: The name of the primary port.
-     *
+     * 
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
@@ -82,7 +82,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the secondaryAzurePort property: The name of the secondary port.
-     *
+     * 
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
@@ -91,7 +91,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the peeringLocation property: The peering location of the port pair.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -100,7 +100,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the peeringLocation property: The peering location of the port pair.
-     *
+     * 
      * @param peeringLocation the peeringLocation value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -111,7 +111,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the overprovisionFactor property: Overprovisioning factor for the port pair.
-     *
+     * 
      * @return the overprovisionFactor value.
      */
     public Integer overprovisionFactor() {
@@ -120,7 +120,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the overprovisionFactor property: Overprovisioning factor for the port pair.
-     *
+     * 
      * @param overprovisionFactor the overprovisionFactor value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -131,7 +131,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the portBandwidthInMbps property: Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the portBandwidthInMbps value.
      */
     public Integer portBandwidthInMbps() {
@@ -140,7 +140,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the portBandwidthInMbps property: Bandwidth of the port in Mbps.
-     *
+     * 
      * @param portBandwidthInMbps the portBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -151,7 +151,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the usedBandwidthInMbps property: Used Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the usedBandwidthInMbps value.
      */
     public Integer usedBandwidthInMbps() {
@@ -160,7 +160,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the usedBandwidthInMbps property: Used Bandwidth of the port in Mbps.
-     *
+     * 
      * @param usedBandwidthInMbps the usedBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -171,7 +171,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Get the remainingBandwidthInMbps property: Remaining Bandwidth of the port in Mbps.
-     *
+     * 
      * @return the remainingBandwidthInMbps value.
      */
     public Integer remainingBandwidthInMbps() {
@@ -180,7 +180,7 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Set the remainingBandwidthInMbps property: Remaining Bandwidth of the port in Mbps.
-     *
+     * 
      * @param remainingBandwidthInMbps the remainingBandwidthInMbps value to set.
      * @return the ExpressRouteProviderPortProperties object itself.
      */
@@ -191,9 +191,68 @@ public final class ExpressRouteProviderPortProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("peeringLocation", this.peeringLocation);
+        jsonWriter.writeNumberField("overprovisionFactor", this.overprovisionFactor);
+        jsonWriter.writeNumberField("portBandwidthInMbps", this.portBandwidthInMbps);
+        jsonWriter.writeNumberField("usedBandwidthInMbps", this.usedBandwidthInMbps);
+        jsonWriter.writeNumberField("remainingBandwidthInMbps", this.remainingBandwidthInMbps);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteProviderPortProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteProviderPortProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteProviderPortProperties.
+     */
+    public static ExpressRouteProviderPortProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteProviderPortProperties deserializedExpressRouteProviderPortProperties
+                = new ExpressRouteProviderPortProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("portPairDescriptor".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortProperties.portPairDescriptor = reader.getString();
+                } else if ("primaryAzurePort".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortProperties.primaryAzurePort = reader.getString();
+                } else if ("secondaryAzurePort".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortProperties.secondaryAzurePort = reader.getString();
+                } else if ("peeringLocation".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortProperties.peeringLocation = reader.getString();
+                } else if ("overprovisionFactor".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortProperties.overprovisionFactor
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("portBandwidthInMbps".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortProperties.portBandwidthInMbps
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("usedBandwidthInMbps".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortProperties.usedBandwidthInMbps
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("remainingBandwidthInMbps".equals(fieldName)) {
+                    deserializedExpressRouteProviderPortProperties.remainingBandwidthInMbps
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteProviderPortProperties;
+        });
     }
 }

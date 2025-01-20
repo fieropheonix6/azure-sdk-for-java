@@ -8,27 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Datastores. */
+/**
+ * Resource collection API of Datastores.
+ */
 public interface Datastores {
     /**
      * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    Datastore getByResourceGroup(String resourceGroupName, String datastoreName);
-
-    /**
-     * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
+     * 
+     * Implements datastore GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
@@ -40,24 +28,24 @@ public interface Datastores {
     Response<Datastore> getByResourceGroupWithResponse(String resourceGroupName, String datastoreName, Context context);
 
     /**
-     * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * Gets a datastore.
+     * 
+     * Implements datastore GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the datastore.
      */
-    void delete(String resourceGroupName, String datastoreName, Boolean force);
+    Datastore getByResourceGroup(String resourceGroupName, String datastoreName);
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,9 +56,9 @@ public interface Datastores {
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -83,9 +71,9 @@ public interface Datastores {
 
     /**
      * Implements GET datastores in a subscription.
-     *
-     * <p>List of datastores in a subscription.
-     *
+     * 
+     * List of datastores in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Datastores as paginated response with {@link PagedIterable}.
@@ -94,9 +82,9 @@ public interface Datastores {
 
     /**
      * Implements GET datastores in a subscription.
-     *
-     * <p>List of datastores in a subscription.
-     *
+     * 
+     * List of datastores in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,9 +95,9 @@ public interface Datastores {
 
     /**
      * Implements GET datastores in a resource group.
-     *
-     * <p>List of datastores in a resource group.
-     *
+     * 
+     * List of datastores in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +108,9 @@ public interface Datastores {
 
     /**
      * Implements GET datastores in a resource group.
-     *
-     * <p>List of datastores in a resource group.
-     *
+     * 
+     * List of datastores in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,9 +122,9 @@ public interface Datastores {
 
     /**
      * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
+     * 
+     * Implements datastore GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,9 +135,9 @@ public interface Datastores {
 
     /**
      * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
+     * 
+     * Implements datastore GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,9 +149,9 @@ public interface Datastores {
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,9 +161,9 @@ public interface Datastores {
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param id the resource ID.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -187,7 +175,7 @@ public interface Datastores {
 
     /**
      * Begins definition for a new Datastore resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Datastore definition.
      */

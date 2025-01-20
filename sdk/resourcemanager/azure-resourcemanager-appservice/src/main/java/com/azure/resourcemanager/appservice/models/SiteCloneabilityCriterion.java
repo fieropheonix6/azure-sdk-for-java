@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An app cloneability criterion. */
+/**
+ * An app cloneability criterion.
+ */
 @Fluent
-public final class SiteCloneabilityCriterion {
+public final class SiteCloneabilityCriterion implements JsonSerializable<SiteCloneabilityCriterion> {
     /*
      * Name of criterion.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Description of criterion.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of SiteCloneabilityCriterion class.
+     */
+    public SiteCloneabilityCriterion() {
+    }
+
+    /**
      * Get the name property: Name of criterion.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +43,7 @@ public final class SiteCloneabilityCriterion {
 
     /**
      * Set the name property: Name of criterion.
-     *
+     * 
      * @param name the name value to set.
      * @return the SiteCloneabilityCriterion object itself.
      */
@@ -44,7 +54,7 @@ public final class SiteCloneabilityCriterion {
 
     /**
      * Get the description property: Description of criterion.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +63,7 @@ public final class SiteCloneabilityCriterion {
 
     /**
      * Set the description property: Description of criterion.
-     *
+     * 
      * @param description the description value to set.
      * @return the SiteCloneabilityCriterion object itself.
      */
@@ -64,9 +74,48 @@ public final class SiteCloneabilityCriterion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteCloneabilityCriterion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteCloneabilityCriterion if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteCloneabilityCriterion.
+     */
+    public static SiteCloneabilityCriterion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteCloneabilityCriterion deserializedSiteCloneabilityCriterion = new SiteCloneabilityCriterion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSiteCloneabilityCriterion.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSiteCloneabilityCriterion.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteCloneabilityCriterion;
+        });
     }
 }

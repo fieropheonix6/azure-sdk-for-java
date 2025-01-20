@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.VerifiedPartnerInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Result of the List verified partners operation. */
+/**
+ * Result of the List verified partners operation.
+ */
 @Fluent
-public final class VerifiedPartnersListResult {
+public final class VerifiedPartnersListResult implements JsonSerializable<VerifiedPartnersListResult> {
     /*
      * A collection of verified partners.
      */
-    @JsonProperty(value = "value")
     private List<VerifiedPartnerInner> value;
 
     /*
      * A link for the next page of verified partners if any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of VerifiedPartnersListResult class.
+     */
+    public VerifiedPartnersListResult() {
+    }
+
+    /**
      * Get the value property: A collection of verified partners.
-     *
+     * 
      * @return the value value.
      */
     public List<VerifiedPartnerInner> value() {
@@ -35,7 +45,7 @@ public final class VerifiedPartnersListResult {
 
     /**
      * Set the value property: A collection of verified partners.
-     *
+     * 
      * @param value the value value to set.
      * @return the VerifiedPartnersListResult object itself.
      */
@@ -46,7 +56,7 @@ public final class VerifiedPartnersListResult {
 
     /**
      * Get the nextLink property: A link for the next page of verified partners if any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +65,7 @@ public final class VerifiedPartnersListResult {
 
     /**
      * Set the nextLink property: A link for the next page of verified partners if any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VerifiedPartnersListResult object itself.
      */
@@ -66,12 +76,53 @@ public final class VerifiedPartnersListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VerifiedPartnersListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VerifiedPartnersListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VerifiedPartnersListResult.
+     */
+    public static VerifiedPartnersListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VerifiedPartnersListResult deserializedVerifiedPartnersListResult = new VerifiedPartnersListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VerifiedPartnerInner> value
+                        = reader.readArray(reader1 -> VerifiedPartnerInner.fromJson(reader1));
+                    deserializedVerifiedPartnersListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVerifiedPartnersListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVerifiedPartnersListResult;
+        });
     }
 }

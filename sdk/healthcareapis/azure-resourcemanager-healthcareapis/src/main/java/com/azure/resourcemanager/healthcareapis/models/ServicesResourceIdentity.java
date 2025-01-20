@@ -5,33 +5,41 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Setting indicating whether the service has a managed identity associated with it. */
+/**
+ * Setting indicating whether the service has a managed identity associated with it.
+ */
 @Fluent
-public class ServicesResourceIdentity {
+public final class ServicesResourceIdentity implements JsonSerializable<ServicesResourceIdentity> {
     /*
      * The principal ID of the resource identity.
      */
-    @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
      * The tenant ID of the resource.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * Type of identity being specified, currently SystemAssigned and None are
-     * allowed.
+     * Type of identity being specified, currently SystemAssigned and None are allowed.
      */
-    @JsonProperty(value = "type")
     private ManagedServiceIdentityType type;
 
     /**
+     * Creates an instance of ServicesResourceIdentity class.
+     */
+    public ServicesResourceIdentity() {
+    }
+
+    /**
      * Get the principalId property: The principal ID of the resource identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -40,7 +48,7 @@ public class ServicesResourceIdentity {
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -49,7 +57,7 @@ public class ServicesResourceIdentity {
 
     /**
      * Get the type property: Type of identity being specified, currently SystemAssigned and None are allowed.
-     *
+     * 
      * @return the type value.
      */
     public ManagedServiceIdentityType type() {
@@ -58,7 +66,7 @@ public class ServicesResourceIdentity {
 
     /**
      * Set the type property: Type of identity being specified, currently SystemAssigned and None are allowed.
-     *
+     * 
      * @param type the type value to set.
      * @return the ServicesResourceIdentity object itself.
      */
@@ -69,9 +77,50 @@ public class ServicesResourceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServicesResourceIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServicesResourceIdentity if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServicesResourceIdentity.
+     */
+    public static ServicesResourceIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServicesResourceIdentity deserializedServicesResourceIdentity = new ServicesResourceIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedServicesResourceIdentity.principalId = reader.getString();
+                } else if ("tenantId".equals(fieldName)) {
+                    deserializedServicesResourceIdentity.tenantId = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServicesResourceIdentity.type
+                        = ManagedServiceIdentityType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServicesResourceIdentity;
+        });
     }
 }

@@ -6,38 +6,44 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Snowflake linked service properties. */
+/**
+ * Snowflake linked service properties.
+ */
 @Fluent
-public final class SnowflakeLinkedServiceTypeProperties {
+public final class SnowflakeLinkedServiceTypeProperties
+    implements JsonSerializable<SnowflakeLinkedServiceTypeProperties> {
     /*
      * The connection string of snowflake. Type: string, SecureString.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "password")
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of SnowflakeLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of SnowflakeLinkedServiceTypeProperties class.
+     */
     public SnowflakeLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: The connection string of snowflake. Type: string, SecureString.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -46,7 +52,7 @@ public final class SnowflakeLinkedServiceTypeProperties {
 
     /**
      * Set the connectionString property: The connection string of snowflake. Type: string, SecureString.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the SnowflakeLinkedServiceTypeProperties object itself.
      */
@@ -57,7 +63,7 @@ public final class SnowflakeLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference password() {
@@ -66,7 +72,7 @@ public final class SnowflakeLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the SnowflakeLinkedServiceTypeProperties object itself.
      */
@@ -77,37 +83,36 @@ public final class SnowflakeLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SnowflakeLinkedServiceTypeProperties object itself.
      */
-    public SnowflakeLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public SnowflakeLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model SnowflakeLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model SnowflakeLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
@@ -115,4 +120,49 @@ public final class SnowflakeLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SnowflakeLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SnowflakeLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SnowflakeLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SnowflakeLinkedServiceTypeProperties.
+     */
+    public static SnowflakeLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SnowflakeLinkedServiceTypeProperties deserializedSnowflakeLinkedServiceTypeProperties
+                = new SnowflakeLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedSnowflakeLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedSnowflakeLinkedServiceTypeProperties.password
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedSnowflakeLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSnowflakeLinkedServiceTypeProperties;
+        });
+    }
 }

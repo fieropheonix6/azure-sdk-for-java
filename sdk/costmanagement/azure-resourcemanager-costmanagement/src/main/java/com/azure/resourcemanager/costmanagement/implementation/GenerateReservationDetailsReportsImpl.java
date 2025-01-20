@@ -10,17 +10,15 @@ import com.azure.resourcemanager.costmanagement.fluent.GenerateReservationDetail
 import com.azure.resourcemanager.costmanagement.fluent.models.OperationStatusInner;
 import com.azure.resourcemanager.costmanagement.models.GenerateReservationDetailsReports;
 import com.azure.resourcemanager.costmanagement.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GenerateReservationDetailsReportsImpl implements GenerateReservationDetailsReports {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenerateReservationDetailsReportsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GenerateReservationDetailsReportsImpl.class);
 
     private final GenerateReservationDetailsReportsClient innerClient;
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public GenerateReservationDetailsReportsImpl(
-        GenerateReservationDetailsReportsClient innerClient,
+    public GenerateReservationDetailsReportsImpl(GenerateReservationDetailsReportsClient innerClient,
         com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -35,10 +33,10 @@ public final class GenerateReservationDetailsReportsImpl implements GenerateRese
         }
     }
 
-    public OperationStatus byBillingAccountId(
-        String billingAccountId, String startDate, String endDate, Context context) {
-        OperationStatusInner inner =
-            this.serviceClient().byBillingAccountId(billingAccountId, startDate, endDate, context);
+    public OperationStatus byBillingAccountId(String billingAccountId, String startDate, String endDate,
+        Context context) {
+        OperationStatusInner inner
+            = this.serviceClient().byBillingAccountId(billingAccountId, startDate, endDate, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -46,10 +44,10 @@ public final class GenerateReservationDetailsReportsImpl implements GenerateRese
         }
     }
 
-    public OperationStatus byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate) {
-        OperationStatusInner inner =
-            this.serviceClient().byBillingProfileId(billingAccountId, billingProfileId, startDate, endDate);
+    public OperationStatus byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate) {
+        OperationStatusInner inner
+            = this.serviceClient().byBillingProfileId(billingAccountId, billingProfileId, startDate, endDate);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {
@@ -57,10 +55,10 @@ public final class GenerateReservationDetailsReportsImpl implements GenerateRese
         }
     }
 
-    public OperationStatus byBillingProfileId(
-        String billingAccountId, String billingProfileId, String startDate, String endDate, Context context) {
-        OperationStatusInner inner =
-            this.serviceClient().byBillingProfileId(billingAccountId, billingProfileId, startDate, endDate, context);
+    public OperationStatus byBillingProfileId(String billingAccountId, String billingProfileId, String startDate,
+        String endDate, Context context) {
+        OperationStatusInner inner
+            = this.serviceClient().byBillingProfileId(billingAccountId, billingProfileId, startDate, endDate, context);
         if (inner != null) {
             return new OperationStatusImpl(inner, this.manager());
         } else {

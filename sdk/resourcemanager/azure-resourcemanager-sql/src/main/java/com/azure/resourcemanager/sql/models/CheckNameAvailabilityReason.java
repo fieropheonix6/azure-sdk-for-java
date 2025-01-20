@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for CheckNameAvailabilityReason. */
+/**
+ * The reason code explaining why the name is unavailable. Will be undefined if the name is available.
+ */
 public enum CheckNameAvailabilityReason {
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid"),
 
-    /** Enum value AlreadyExists. */
+    /**
+     * Enum value AlreadyExists.
+     */
     ALREADY_EXISTS("AlreadyExists");
 
-    /** The actual serialized value for a CheckNameAvailabilityReason instance. */
+    /**
+     * The actual serialized value for a CheckNameAvailabilityReason instance.
+     */
     private final String value;
 
     CheckNameAvailabilityReason(String value) {
@@ -24,12 +29,14 @@ public enum CheckNameAvailabilityReason {
 
     /**
      * Parses a serialized value to a CheckNameAvailabilityReason instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CheckNameAvailabilityReason object, or null if unable to parse.
      */
-    @JsonCreator
     public static CheckNameAvailabilityReason fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         CheckNameAvailabilityReason[] items = CheckNameAvailabilityReason.values();
         for (CheckNameAvailabilityReason item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum CheckNameAvailabilityReason {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

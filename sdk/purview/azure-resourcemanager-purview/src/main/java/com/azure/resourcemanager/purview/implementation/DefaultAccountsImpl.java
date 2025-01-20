@@ -13,20 +13,31 @@ import com.azure.resourcemanager.purview.fluent.models.DefaultAccountPayloadInne
 import com.azure.resourcemanager.purview.models.DefaultAccountPayload;
 import com.azure.resourcemanager.purview.models.DefaultAccounts;
 import com.azure.resourcemanager.purview.models.ScopeType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.UUID;
 
 public final class DefaultAccountsImpl implements DefaultAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DefaultAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DefaultAccountsImpl.class);
 
     private final DefaultAccountsClient innerClient;
 
     private final com.azure.resourcemanager.purview.PurviewManager serviceManager;
 
-    public DefaultAccountsImpl(
-        DefaultAccountsClient innerClient, com.azure.resourcemanager.purview.PurviewManager serviceManager) {
+    public DefaultAccountsImpl(DefaultAccountsClient innerClient,
+        com.azure.resourcemanager.purview.PurviewManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<DefaultAccountPayload> getWithResponse(UUID scopeTenantId, ScopeType scopeType, String scope,
+        Context context) {
+        Response<DefaultAccountPayloadInner> inner
+            = this.serviceClient().getWithResponse(scopeTenantId, scopeType, scope, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DefaultAccountPayloadImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DefaultAccountPayload get(UUID scopeTenantId, ScopeType scopeType) {
@@ -38,15 +49,12 @@ public final class DefaultAccountsImpl implements DefaultAccounts {
         }
     }
 
-    public Response<DefaultAccountPayload> getWithResponse(
-        UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
-        Response<DefaultAccountPayloadInner> inner =
-            this.serviceClient().getWithResponse(scopeTenantId, scopeType, scope, context);
+    public Response<DefaultAccountPayload> setWithResponse(DefaultAccountPayloadInner defaultAccountPayload,
+        Context context) {
+        Response<DefaultAccountPayloadInner> inner
+            = this.serviceClient().setWithResponse(defaultAccountPayload, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DefaultAccountPayloadImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -62,27 +70,12 @@ public final class DefaultAccountsImpl implements DefaultAccounts {
         }
     }
 
-    public Response<DefaultAccountPayload> setWithResponse(
-        DefaultAccountPayloadInner defaultAccountPayload, Context context) {
-        Response<DefaultAccountPayloadInner> inner =
-            this.serviceClient().setWithResponse(defaultAccountPayload, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DefaultAccountPayloadImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> removeWithResponse(UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
+        return this.serviceClient().removeWithResponse(scopeTenantId, scopeType, scope, context);
     }
 
     public void remove(UUID scopeTenantId, ScopeType scopeType) {
         this.serviceClient().remove(scopeTenantId, scopeType);
-    }
-
-    public Response<Void> removeWithResponse(UUID scopeTenantId, ScopeType scopeType, String scope, Context context) {
-        return this.serviceClient().removeWithResponse(scopeTenantId, scopeType, scope, context);
     }
 
     private DefaultAccountsClient serviceClient() {

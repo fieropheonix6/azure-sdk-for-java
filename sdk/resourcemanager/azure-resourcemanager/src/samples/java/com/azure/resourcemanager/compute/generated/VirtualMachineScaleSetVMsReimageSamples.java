@@ -4,49 +4,50 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMReimageParameters;
 
-/** Samples for VirtualMachineScaleSetVMs Reimage. */
+/**
+ * Samples for VirtualMachineScaleSetVMs Reimage.
+ */
 public final class VirtualMachineScaleSetVMsReimageSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Reimage_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetVMs_Reimage_MaximumSet_Gen.
-     *
+     * Sample code: VirtualMachineScaleSetVM_Reimage_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetVMsReimageMaximumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void
+        virtualMachineScaleSetVMReimageMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .reimage(
-                "rgcompute",
-                "aaaaaaaaaaaaaaaa",
-                "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
-                new VirtualMachineScaleSetVMReimageParameters().withTempDisk(true),
-                Context.NONE);
+            .reimage("rgcompute", "aaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                new VirtualMachineScaleSetVMReimageParameters().withTempDisk(true)
+                    .withForceUpdateOSDiskForEphemeral(true),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSetVMs_Reimage_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSetVM_Reimage_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSetVMs_Reimage_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachineScaleSetVM_Reimage_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetVMsReimageMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void
+        virtualMachineScaleSetVMReimageMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .reimage("rgcompute", "aaaaaaa", "aaaaaaaaaaaaa", null, Context.NONE);
+            .reimage("rgcompute", "aaaaaaa", "aaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 }

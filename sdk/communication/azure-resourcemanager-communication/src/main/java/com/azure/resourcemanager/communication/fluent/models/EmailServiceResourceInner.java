@@ -7,28 +7,52 @@ package com.azure.resourcemanager.communication.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.models.EmailServicesProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A class representing an EmailService resource. */
+/**
+ * A class representing an EmailService resource.
+ */
 @Fluent
 public final class EmailServiceResourceInner extends Resource {
     /*
      * The properties of the service.
      */
-    @JsonProperty(value = "properties")
     private EmailServiceProperties innerProperties;
 
     /*
      * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EmailServiceResourceInner class.
+     */
+    public EmailServiceResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EmailServiceProperties innerProperties() {
@@ -37,21 +61,55 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailServiceResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailServiceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -60,7 +118,7 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public EmailServicesProvisioningState provisioningState() {
@@ -69,7 +127,7 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Get the dataLocation property: The location where the email service stores its data at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -78,7 +136,7 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Set the dataLocation property: The location where the email service stores its data at rest.
-     *
+     * 
      * @param dataLocation the dataLocation value to set.
      * @return the EmailServiceResourceInner object itself.
      */
@@ -92,12 +150,64 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailServiceResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailServiceResourceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmailServiceResourceInner.
+     */
+    public static EmailServiceResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailServiceResourceInner deserializedEmailServiceResourceInner = new EmailServiceResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEmailServiceResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEmailServiceResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEmailServiceResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEmailServiceResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEmailServiceResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEmailServiceResourceInner.innerProperties = EmailServiceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedEmailServiceResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailServiceResourceInner;
+        });
     }
 }

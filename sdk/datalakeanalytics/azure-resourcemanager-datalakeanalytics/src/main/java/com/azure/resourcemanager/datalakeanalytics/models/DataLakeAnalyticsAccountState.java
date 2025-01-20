@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.datalakeanalytics.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for DataLakeAnalyticsAccountState. */
+/**
+ * The state of the Data Lake Analytics account.
+ */
 public enum DataLakeAnalyticsAccountState {
-    /** Enum value Active. */
+    /**
+     * Enum value Active.
+     */
     ACTIVE("Active"),
 
-    /** Enum value Suspended. */
+    /**
+     * Enum value Suspended.
+     */
     SUSPENDED("Suspended");
 
-    /** The actual serialized value for a DataLakeAnalyticsAccountState instance. */
+    /**
+     * The actual serialized value for a DataLakeAnalyticsAccountState instance.
+     */
     private final String value;
 
     DataLakeAnalyticsAccountState(String value) {
@@ -24,12 +29,14 @@ public enum DataLakeAnalyticsAccountState {
 
     /**
      * Parses a serialized value to a DataLakeAnalyticsAccountState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DataLakeAnalyticsAccountState object, or null if unable to parse.
      */
-    @JsonCreator
     public static DataLakeAnalyticsAccountState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DataLakeAnalyticsAccountState[] items = DataLakeAnalyticsAccountState.values();
         for (DataLakeAnalyticsAccountState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum DataLakeAnalyticsAccountState {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

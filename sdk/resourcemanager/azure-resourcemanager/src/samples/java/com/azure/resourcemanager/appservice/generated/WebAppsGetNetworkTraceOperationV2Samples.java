@@ -4,26 +4,26 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for WebApps GetNetworkTraceOperationV2. */
+/**
+ * Samples for WebApps GetNetworkTraceOperationV2.
+ */
 public final class WebAppsGetNetworkTraceOperationV2Samples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetWebSiteNetworkTraceOperation.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetWebSiteNetworkTraceOperation.json
      */
     /**
      * Sample code: Get the current status of a network trace operation for a site.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getTheCurrentStatusOfANetworkTraceOperationForASite(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+    public static void
+        getTheCurrentStatusOfANetworkTraceOperationForASite(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.webApps()
             .manager()
             .serviceClient()
             .getWebApps()
-            .getNetworkTraceOperationV2WithResponse(
-                "testrg123", "SampleApp", "c291433b-53ad-4c49-8cae-0a293eae1c6d", Context.NONE);
+            .getNetworkTraceOperationV2WithResponse("testrg123", "SampleApp", "c291433b-53ad-4c49-8cae-0a293eae1c6d",
+                com.azure.core.util.Context.NONE);
     }
 }

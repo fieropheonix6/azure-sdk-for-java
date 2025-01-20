@@ -7,6 +7,14 @@ import com.azure.cosmos.implementation.RequestTimeline;
 import reactor.netty.http.client.HttpClientState;
 
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicLong;
+
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CONNECTION_ACQUIRED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CONNECTION_CONFIGURED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CONNECTION_CREATED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.RECEIVED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.REQUEST_SENT;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.TRANSIT_TIME;
 
 /**
  * Represents the timeline of various events in the lifetime of a reactor netty request response.
@@ -22,6 +30,7 @@ import java.time.Instant;
  * </ul></p>
  */
 public final class ReactorNettyRequestRecord {
+    private static final AtomicLong instanceCount = new AtomicLong();
 
     private volatile Instant timeCreated;
     private volatile Instant timeConnected;
@@ -30,6 +39,11 @@ public final class ReactorNettyRequestRecord {
     private volatile Instant timeSent;
     private volatile Instant timeReceived;
     private volatile Instant timeCompleted;
+    private final long transportRequestId;
+
+    public ReactorNettyRequestRecord() {
+        this.transportRequestId = instanceCount.incrementAndGet();
+    }
 
     /**
      * Gets request created instant.
@@ -162,28 +176,32 @@ public final class ReactorNettyRequestRecord {
 
         if (this.timeConnected() != null) {
             return RequestTimeline.of(
-                new RequestTimeline.Event("connectionCreated",
+                new RequestTimeline.Event(CONNECTION_CREATED,
                     timeCreated, timeConnected() == null ? timeCompletedOrNow : timeConnected),
-                new RequestTimeline.Event("connectionConfigured",
+                new RequestTimeline.Event(CONNECTION_CONFIGURED,
                     timeConnected, timeConfigured == null ? timeCompletedOrNow : timeConfigured),
-                new RequestTimeline.Event("requestSent",
+                new RequestTimeline.Event(REQUEST_SENT,
                     timeConfigured, timeSent == null ? timeCompletedOrNow : timeSent),
-                new RequestTimeline.Event("transitTime",
+                new RequestTimeline.Event(TRANSIT_TIME,
                     timeSent, timeReceived == null ? timeCompletedOrNow : timeReceived),
-                new RequestTimeline.Event("received",
+                new RequestTimeline.Event(RECEIVED,
                     timeReceived, timeCompletedOrNow));
         } else {
             return RequestTimeline.of(
-                new RequestTimeline.Event("connectionAcquired",
+                new RequestTimeline.Event(CONNECTION_ACQUIRED,
                     timeCreated, timeAcquired() == null ? timeCompletedOrNow : timeAcquired),
-                new RequestTimeline.Event("connectionConfigured",
+                new RequestTimeline.Event(CONNECTION_CONFIGURED,
                     timeAcquired, timeConfigured == null ? timeCompletedOrNow : timeConfigured),
-                new RequestTimeline.Event("requestSent",
+                new RequestTimeline.Event(REQUEST_SENT,
                     timeConfigured, timeSent == null ? timeCompletedOrNow : timeSent),
-                new RequestTimeline.Event("transitTime",
+                new RequestTimeline.Event(TRANSIT_TIME,
                     timeSent, timeReceived == null ? timeCompletedOrNow : timeReceived),
-                new RequestTimeline.Event("received",
+                new RequestTimeline.Event(RECEIVED,
                     timeReceived, timeCompletedOrNow));
         }
+    }
+
+    public long getTransportRequestId() {
+        return transportRequestId;
     }
 }

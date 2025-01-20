@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ExpressRouteCircuits ListRoutesTable. */
+/**
+ * Samples for ExpressRouteCircuits ListRoutesTable.
+ */
 public final class ExpressRouteCircuitsListRoutesTableSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ExpressRouteCircuitRouteTableList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * ExpressRouteCircuitRouteTableList.json
      */
     /**
      * Sample code: List Route Tables.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listRouteTables(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getExpressRouteCircuits()
-            .listRoutesTable("rg1", "circuitName", "peeringName", "devicePath", Context.NONE);
+            .listRoutesTable("rg1", "circuitName", "peeringName", "devicePath", com.azure.core.util.Context.NONE);
     }
 }

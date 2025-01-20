@@ -25,7 +25,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.deploymentmanager.fluent.ServiceUnitsClient;
@@ -37,8 +36,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServiceUnitsClient. */
 public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
-    private final ClientLogger logger = new ClientLogger(ServiceUnitsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServiceUnitsService service;
 
@@ -51,8 +48,8 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @param client the instance of the service client containing this operation class.
      */
     ServiceUnitsClientImpl(AzureDeploymentManagerImpl client) {
-        this.service =
-            RestProxy.create(ServiceUnitsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ServiceUnitsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -62,79 +59,61 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureDeploymentManag")
-    private interface ServiceUnitsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
-        @ExpectedResponses({201})
+    public interface ServiceUnitsService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceTopologyName") String serviceTopologyName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("serviceUnitName") String serviceUnitName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("serviceTopologyName") String serviceTopologyName, @PathParam("serviceName") String serviceName,
+            @PathParam("serviceUnitName") String serviceUnitName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ServiceUnitResourceInner serviceUnitInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ServiceUnitResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ServiceUnitResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceTopologyName") String serviceTopologyName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("serviceUnitName") String serviceUnitName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("serviceTopologyName") String serviceTopologyName, @PathParam("serviceName") String serviceName,
+            @PathParam("serviceUnitName") String serviceUnitName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits/{serviceUnitName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceTopologyName") String serviceTopologyName,
-            @PathParam("serviceName") String serviceName,
-            @PathParam("serviceUnitName") String serviceUnitName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("serviceTopologyName") String serviceTopologyName, @PathParam("serviceName") String serviceName,
+            @PathParam("serviceUnitName") String serviceUnitName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
-                + "/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeploymentManager"
+            + "/serviceTopologies/{serviceTopologyName}/services/{serviceName}/serviceUnits")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<List<ServiceUnitResourceInner>>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<List<ServiceUnitResourceInner>>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceTopologyName") String serviceTopologyName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("serviceTopologyName") String serviceTopologyName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -144,26 +123,20 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
+     * @return represents the response of a service unit resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceTopologyName, String serviceName, String serviceUnitName,
         ServiceUnitResourceInner serviceUnitInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -188,26 +161,17 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceTopologyName,
-                            serviceName,
-                            serviceUnitName,
-                            this.client.getApiVersion(),
-                            serviceUnitInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, this.client.getApiVersion(),
+                serviceUnitInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -218,27 +182,20 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
+     * @return represents the response of a service unit resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceTopologyName, String serviceName, String serviceUnitName,
+        ServiceUnitResourceInner serviceUnitInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -263,23 +220,16 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceTopologyName,
-                serviceName,
-                serviceUnitName,
-                this.client.getApiVersion(),
-                serviceUnitInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            serviceTopologyName, serviceName, serviceUnitName, this.client.getApiVersion(), serviceUnitInfo, accept,
+            context);
     }
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -289,31 +239,24 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
+     * @return the {@link PollerFlux} for polling of represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
+        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName,
         ServiceUnitResourceInner serviceUnitInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo);
-        return this
-            .client
-            .<ServiceUnitResourceInner, ServiceUnitResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServiceUnitResourceInner.class,
-                ServiceUnitResourceInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceTopologyName,
+            serviceName, serviceUnitName, serviceUnitInfo);
+        return this.client.<ServiceUnitResourceInner, ServiceUnitResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServiceUnitResourceInner.class, ServiceUnitResourceInner.class,
+            this.client.getContext());
     }
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -324,59 +267,50 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
+     * @return the {@link PollerFlux} for polling of represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo,
-        Context context) {
+        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName,
+        ServiceUnitResourceInner serviceUnitInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, serviceTopologyName,
+            serviceName, serviceUnitName, serviceUnitInfo, context);
+        return this.client.<ServiceUnitResourceInner, ServiceUnitResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ServiceUnitResourceInner.class, ServiceUnitResourceInner.class, context);
+    }
+
+    /**
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
+     * @param serviceUnitName The name of the service unit resource.
+     * @param serviceUnitInfo The service unit resource object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of represents the response of a service unit resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
+        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName,
+        ServiceUnitResourceInner serviceUnitInfo) {
         return this
-            .client
-            .<ServiceUnitResourceInner, ServiceUnitResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ServiceUnitResourceInner.class,
-                ServiceUnitResourceInner.class,
-                context);
-    }
-
-    /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
-     * @param serviceUnitName The name of the service unit resource.
-     * @param serviceUnitInfo The service unit resource object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo)
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName,
+                serviceUnitInfo)
             .getSyncPoller();
     }
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -387,24 +321,70 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
+     * @return the {@link SyncPoller} for polling of represents the response of a service unit resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ServiceUnitResourceInner>, ServiceUnitResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo, context)
+        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName,
+        ServiceUnitResourceInner serviceUnitInfo, Context context) {
+        return this
+            .beginCreateOrUpdateAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName,
+                serviceUnitInfo, context)
             .getSyncPoller();
     }
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
+     * @param serviceUnitName The name of the service unit resource.
+     * @param serviceUnitInfo The service unit resource object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response of a service unit resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ServiceUnitResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName,
+            serviceUnitInfo).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
+     * @param serviceUnitName The name of the service unit resource.
+     * @param serviceUnitInfo The service unit resource object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents the response of a service unit resource on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ServiceUnitResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName,
+            serviceUnitInfo, context).last().flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -417,21 +397,17 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @return represents the response of a service unit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceUnitResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public ServiceUnitResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo) {
+        return createOrUpdateAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName,
+            serviceUnitInfo).block();
     }
 
     /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
+     * Creates or updates a service unit under the service in the service topology.
+     *
+     * <p>This is an asynchronous operation and can be polled to completion using the operation resource returned by
+     * this operation.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceTopologyName The name of the service topology .
@@ -445,71 +421,10 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @return represents the response of a service unit resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceUnitResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
-     * @param serviceUnitName The name of the service unit resource.
-     * @param serviceUnitInfo The service unit resource object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceUnitResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo)
-            .block();
-    }
-
-    /**
-     * This is an asynchronous operation and can be polled to completion using the operation resource returned by this
-     * operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
-     * @param serviceUnitName The name of the service unit resource.
-     * @param serviceUnitInfo The service unit resource object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response of a service unit resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceUnitResourceInner createOrUpdate(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        ServiceUnitResourceInner serviceUnitInfo,
-        Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, serviceUnitInfo, context)
-            .block();
+    public ServiceUnitResourceInner createOrUpdate(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName, ServiceUnitResourceInner serviceUnitInfo, Context context) {
+        return createOrUpdateAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName,
+            serviceUnitInfo, context).block();
     }
 
     /**
@@ -522,22 +437,18 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
+     * @return the service unit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceUnitResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName) {
+    private Mono<Response<ServiceUnitResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceTopologyName, String serviceName, String serviceUnitName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -557,18 +468,8 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceTopologyName,
-                            serviceName,
-                            serviceUnitName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    serviceTopologyName, serviceName, serviceUnitName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -583,26 +484,18 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
+     * @return the service unit along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServiceUnitResourceInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context) {
+    private Mono<Response<ServiceUnitResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String serviceTopologyName, String serviceName, String serviceUnitName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -621,17 +514,8 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceTopologyName,
-                serviceName,
-                serviceUnitName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            serviceTopologyName, serviceName, serviceUnitName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -644,38 +528,13 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
+     * @return the service unit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ServiceUnitResourceInner> getAsync(
-        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName) {
+    private Mono<ServiceUnitResourceInner> getAsync(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName) {
         return getWithResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName)
-            .flatMap(
-                (Response<ServiceUnitResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets the service unit.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
-     * @param serviceUnitName The name of the service unit resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ServiceUnitResourceInner get(
-        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName) {
-        return getAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -689,20 +548,35 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the service unit.
+     * @return the service unit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceUnitResourceInner> getWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context) {
+    public Response<ServiceUnitResourceInner> getWithResponse(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName, Context context) {
         return getWithResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, context)
             .block();
     }
 
     /**
+     * Gets the service unit.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
+     * @param serviceUnitName The name of the service unit resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the service unit.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ServiceUnitResourceInner get(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName) {
+        return getWithResponse(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Deletes the service unit.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -712,22 +586,18 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -747,18 +617,8 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceTopologyName,
-                            serviceName,
-                            serviceUnitName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    serviceTopologyName, serviceName, serviceUnitName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -773,26 +633,18 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serviceTopologyName,
+        String serviceName, String serviceUnitName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -811,17 +663,8 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceTopologyName,
-                serviceName,
-                serviceUnitName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            serviceTopologyName, serviceName, serviceUnitName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -834,30 +677,13 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName) {
+    private Mono<Void> deleteAsync(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName) {
         return deleteWithResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes the service unit.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
-     * @param serviceUnitName The name of the service unit resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String serviceTopologyName, String serviceName, String serviceUnitName) {
-        deleteAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName).block();
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -871,20 +697,33 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String serviceTopologyName,
-        String serviceName,
-        String serviceUnitName,
-        Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, context)
             .block();
     }
 
     /**
+     * Deletes the service unit.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
+     * @param serviceUnitName The name of the service unit resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serviceTopologyName, String serviceName,
+        String serviceUnitName) {
+        deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, serviceUnitName, Context.NONE);
+    }
+
+    /**
      * Lists the service units under a service in the service topology.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -893,22 +732,18 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service units.
+     * @return the list of service units along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<ServiceUnitResourceInner>>> listWithResponseAsync(
-        String resourceGroupName, String serviceTopologyName, String serviceName) {
+    private Mono<Response<List<ServiceUnitResourceInner>>> listWithResponseAsync(String resourceGroupName,
+        String serviceTopologyName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -923,18 +758,8 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            serviceTopologyName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, serviceTopologyName, serviceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -948,22 +773,18 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service units.
+     * @return the list of service units along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<ServiceUnitResourceInner>>> listWithResponseAsync(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context) {
+    private Mono<Response<List<ServiceUnitResourceInner>>> listWithResponseAsync(String resourceGroupName,
+        String serviceTopologyName, String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -978,16 +799,8 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                serviceTopologyName,
-                serviceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            serviceTopologyName, serviceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -999,37 +812,13 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service units.
+     * @return the list of service units on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<List<ServiceUnitResourceInner>> listAsync(
-        String resourceGroupName, String serviceTopologyName, String serviceName) {
+    private Mono<List<ServiceUnitResourceInner>> listAsync(String resourceGroupName, String serviceTopologyName,
+        String serviceName) {
         return listWithResponseAsync(resourceGroupName, serviceTopologyName, serviceName)
-            .flatMap(
-                (Response<List<ServiceUnitResourceInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Lists the service units under a service in the service topology.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serviceTopologyName The name of the service topology .
-     * @param serviceName The name of the service resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of service units.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<ServiceUnitResourceInner> list(
-        String resourceGroupName, String serviceTopologyName, String serviceName) {
-        return listAsync(resourceGroupName, serviceTopologyName, serviceName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1042,11 +831,28 @@ public final class ServiceUnitsClientImpl implements ServiceUnitsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of service units along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<List<ServiceUnitResourceInner>> listWithResponse(String resourceGroupName,
+        String serviceTopologyName, String serviceName, Context context) {
+        return listWithResponseAsync(resourceGroupName, serviceTopologyName, serviceName, context).block();
+    }
+
+    /**
+     * Lists the service units under a service in the service topology.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceTopologyName The name of the service topology .
+     * @param serviceName The name of the service resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of service units.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<ServiceUnitResourceInner>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context) {
-        return listWithResponseAsync(resourceGroupName, serviceTopologyName, serviceName, context).block();
+    public List<ServiceUnitResourceInner> list(String resourceGroupName, String serviceTopologyName,
+        String serviceName) {
+        return listWithResponse(resourceGroupName, serviceTopologyName, serviceName, Context.NONE).getValue();
     }
 }

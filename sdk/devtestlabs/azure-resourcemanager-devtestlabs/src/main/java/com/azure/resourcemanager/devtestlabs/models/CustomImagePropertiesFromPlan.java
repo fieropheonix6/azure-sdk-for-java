@@ -5,38 +5,41 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties for plan on a custom image. */
+/**
+ * Properties for plan on a custom image.
+ */
 @Fluent
-public final class CustomImagePropertiesFromPlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomImagePropertiesFromPlan.class);
-
+public final class CustomImagePropertiesFromPlan implements JsonSerializable<CustomImagePropertiesFromPlan> {
     /*
      * The id of the plan, equivalent to name of the plan
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The publisher for the plan from the marketplace image the custom image
-     * is derived from
+     * The publisher for the plan from the marketplace image the custom image is derived from
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
-     * The offer for the plan from the marketplace image the custom image is
-     * derived from
+     * The offer for the plan from the marketplace image the custom image is derived from
      */
-    @JsonProperty(value = "offer")
     private String offer;
 
     /**
+     * Creates an instance of CustomImagePropertiesFromPlan class.
+     */
+    public CustomImagePropertiesFromPlan() {
+    }
+
+    /**
      * Get the id property: The id of the plan, equivalent to name of the plan.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -45,7 +48,7 @@ public final class CustomImagePropertiesFromPlan {
 
     /**
      * Set the id property: The id of the plan, equivalent to name of the plan.
-     *
+     * 
      * @param id the id value to set.
      * @return the CustomImagePropertiesFromPlan object itself.
      */
@@ -57,7 +60,7 @@ public final class CustomImagePropertiesFromPlan {
     /**
      * Get the publisher property: The publisher for the plan from the marketplace image the custom image is derived
      * from.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -67,7 +70,7 @@ public final class CustomImagePropertiesFromPlan {
     /**
      * Set the publisher property: The publisher for the plan from the marketplace image the custom image is derived
      * from.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the CustomImagePropertiesFromPlan object itself.
      */
@@ -78,7 +81,7 @@ public final class CustomImagePropertiesFromPlan {
 
     /**
      * Get the offer property: The offer for the plan from the marketplace image the custom image is derived from.
-     *
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -87,7 +90,7 @@ public final class CustomImagePropertiesFromPlan {
 
     /**
      * Set the offer property: The offer for the plan from the marketplace image the custom image is derived from.
-     *
+     * 
      * @param offer the offer value to set.
      * @return the CustomImagePropertiesFromPlan object itself.
      */
@@ -98,9 +101,52 @@ public final class CustomImagePropertiesFromPlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("offer", this.offer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomImagePropertiesFromPlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomImagePropertiesFromPlan if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomImagePropertiesFromPlan.
+     */
+    public static CustomImagePropertiesFromPlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomImagePropertiesFromPlan deserializedCustomImagePropertiesFromPlan
+                = new CustomImagePropertiesFromPlan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomImagePropertiesFromPlan.id = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedCustomImagePropertiesFromPlan.publisher = reader.getString();
+                } else if ("offer".equals(fieldName)) {
+                    deserializedCustomImagePropertiesFromPlan.offer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomImagePropertiesFromPlan;
+        });
     }
 }

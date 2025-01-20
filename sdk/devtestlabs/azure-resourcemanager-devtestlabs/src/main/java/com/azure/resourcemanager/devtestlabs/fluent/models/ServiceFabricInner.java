@@ -5,127 +5,96 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** A Service Fabric. */
-@JsonFlatten
+/**
+ * A Service Fabric.
+ */
 @Fluent
-public class ServiceFabricInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceFabricInner.class);
+public final class ServiceFabricInner extends Resource {
+    /*
+     * The properties of the resource.
+     */
+    private ServiceFabricPropertiesInner innerProperties = new ServiceFabricPropertiesInner();
 
     /*
-     * The backing service fabric resource's id
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.externalServiceFabricId")
-    private String externalServiceFabricId;
+    private String type;
 
     /*
-     * The resource id of the environment under which the service fabric
-     * resource is present
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.environmentId")
-    private String environmentId;
+    private String name;
 
     /*
-     * The applicable schedule for the virtual machine.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.applicableSchedule", access = JsonProperty.Access.WRITE_ONLY)
-    private ApplicableScheduleInner applicableSchedule;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    private String id;
 
     /**
-     * Get the externalServiceFabricId property: The backing service fabric resource's id.
-     *
-     * @return the externalServiceFabricId value.
+     * Creates an instance of ServiceFabricInner class.
      */
-    public String externalServiceFabricId() {
-        return this.externalServiceFabricId;
+    public ServiceFabricInner() {
     }
 
     /**
-     * Set the externalServiceFabricId property: The backing service fabric resource's id.
-     *
-     * @param externalServiceFabricId the externalServiceFabricId value to set.
-     * @return the ServiceFabricInner object itself.
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
      */
-    public ServiceFabricInner withExternalServiceFabricId(String externalServiceFabricId) {
-        this.externalServiceFabricId = externalServiceFabricId;
-        return this;
+    private ServiceFabricPropertiesInner innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the environmentId property: The resource id of the environment under which the service fabric resource is
-     * present.
-     *
-     * @return the environmentId value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String environmentId() {
-        return this.environmentId;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the environmentId property: The resource id of the environment under which the service fabric resource is
-     * present.
-     *
-     * @param environmentId the environmentId value to set.
-     * @return the ServiceFabricInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public ServiceFabricInner withEnvironmentId(String environmentId) {
-        this.environmentId = environmentId;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the applicableSchedule property: The applicable schedule for the virtual machine.
-     *
-     * @return the applicableSchedule value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public ApplicableScheduleInner applicableSchedule() {
-        return this.applicableSchedule;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
+     * {@inheritDoc}
      */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public ServiceFabricInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceFabricInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -133,13 +102,144 @@ public class ServiceFabricInner extends Resource {
     }
 
     /**
+     * Get the externalServiceFabricId property: The backing service fabric resource's id.
+     * 
+     * @return the externalServiceFabricId value.
+     */
+    public String externalServiceFabricId() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalServiceFabricId();
+    }
+
+    /**
+     * Set the externalServiceFabricId property: The backing service fabric resource's id.
+     * 
+     * @param externalServiceFabricId the externalServiceFabricId value to set.
+     * @return the ServiceFabricInner object itself.
+     */
+    public ServiceFabricInner withExternalServiceFabricId(String externalServiceFabricId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceFabricPropertiesInner();
+        }
+        this.innerProperties().withExternalServiceFabricId(externalServiceFabricId);
+        return this;
+    }
+
+    /**
+     * Get the environmentId property: The resource id of the environment under which the service fabric resource is
+     * present.
+     * 
+     * @return the environmentId value.
+     */
+    public String environmentId() {
+        return this.innerProperties() == null ? null : this.innerProperties().environmentId();
+    }
+
+    /**
+     * Set the environmentId property: The resource id of the environment under which the service fabric resource is
+     * present.
+     * 
+     * @param environmentId the environmentId value to set.
+     * @return the ServiceFabricInner object itself.
+     */
+    public ServiceFabricInner withEnvironmentId(String environmentId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServiceFabricPropertiesInner();
+        }
+        this.innerProperties().withEnvironmentId(environmentId);
+        return this;
+    }
+
+    /**
+     * Get the applicableSchedule property: The applicable schedule for the virtual machine.
+     * 
+     * @return the applicableSchedule value.
+     */
+    public ApplicableScheduleInner applicableSchedule() {
+        return this.innerProperties() == null ? null : this.innerProperties().applicableSchedule();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     * 
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (applicableSchedule() != null) {
-            applicableSchedule().validate();
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ServiceFabricInner"));
+        } else {
+            innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceFabricInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceFabricInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceFabricInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceFabricInner.
+     */
+    public static ServiceFabricInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceFabricInner deserializedServiceFabricInner = new ServiceFabricInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceFabricInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceFabricInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceFabricInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedServiceFabricInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceFabricInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceFabricInner.innerProperties = ServiceFabricPropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceFabricInner;
+        });
     }
 }

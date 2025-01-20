@@ -6,58 +6,103 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.FilterActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Filter and return results from input array based on the conditions. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Filter")
+/**
+ * Filter and return results from input array based on the conditions.
+ */
 @Fluent
 public final class FilterActivity extends ControlActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "Filter";
+
+    /*
      * Filter activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private FilterActivityTypeProperties innerTypeProperties = new FilterActivityTypeProperties();
 
-    /** Creates an instance of FilterActivity class. */
+    /**
+     * Creates an instance of FilterActivity class.
+     */
     public FilterActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Filter activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private FilterActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FilterActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FilterActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FilterActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public FilterActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FilterActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FilterActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -66,7 +111,7 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Get the items property: Input array on which filter should be applied.
-     *
+     * 
      * @return the items value.
      */
     public Expression items() {
@@ -75,7 +120,7 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Set the items property: Input array on which filter should be applied.
-     *
+     * 
      * @param items the items value to set.
      * @return the FilterActivity object itself.
      */
@@ -89,7 +134,7 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Get the condition property: Condition to be used for filtering the input.
-     *
+     * 
      * @return the condition value.
      */
     public Expression condition() {
@@ -98,7 +143,7 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Set the condition property: Condition to be used for filtering the input.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the FilterActivity object itself.
      */
@@ -112,21 +157,103 @@ public final class FilterActivity extends ControlActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model FilterActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model FilterActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model FilterActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FilterActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FilterActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FilterActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FilterActivity.
+     */
+    public static FilterActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FilterActivity deserializedFilterActivity = new FilterActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedFilterActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedFilterActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedFilterActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedFilterActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedFilterActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedFilterActivity.withUserProperties(userProperties);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedFilterActivity.innerTypeProperties = FilterActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedFilterActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedFilterActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedFilterActivity;
+        });
+    }
 }

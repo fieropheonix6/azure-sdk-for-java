@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Target type of the resource provided. */
+/**
+ * Target type of the resource provided.
+ */
 public enum PacketCaptureTargetType {
-    /** Enum value AzureVM. */
+    /**
+     * Enum value AzureVM.
+     */
     AZURE_VM("AzureVM"),
 
-    /** Enum value AzureVMSS. */
+    /**
+     * Enum value AzureVMSS.
+     */
     AZURE_VMSS("AzureVMSS");
 
-    /** The actual serialized value for a PacketCaptureTargetType instance. */
+    /**
+     * The actual serialized value for a PacketCaptureTargetType instance.
+     */
     private final String value;
 
     PacketCaptureTargetType(String value) {
@@ -24,11 +29,10 @@ public enum PacketCaptureTargetType {
 
     /**
      * Parses a serialized value to a PacketCaptureTargetType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PacketCaptureTargetType object, or null if unable to parse.
      */
-    @JsonCreator
     public static PacketCaptureTargetType fromString(String value) {
         if (value == null) {
             return null;
@@ -42,8 +46,9 @@ public enum PacketCaptureTargetType {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

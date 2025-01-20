@@ -5,26 +5,36 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The TargetRelation model. */
+/**
+ * The TargetRelation model.
+ */
 @Fluent
-public final class TargetRelation {
+public final class TargetRelation implements JsonSerializable<TargetRelation> {
     /*
      * The type related to the target.
      */
-    @JsonProperty(value = "relationType", required = true)
     private TargetRelationType relationType;
 
     /*
      * The JSON pointer indicating the linked object.
      */
-    @JsonProperty(value = "ref", required = true)
     private String ref;
 
     /**
+     * Creates an instance of TargetRelation class.
+     */
+    public TargetRelation() {
+    }
+
+    /**
      * Get the relationType property: The type related to the target.
-     *
+     * 
      * @return the relationType value.
      */
     public TargetRelationType getRelationType() {
@@ -33,7 +43,7 @@ public final class TargetRelation {
 
     /**
      * Set the relationType property: The type related to the target.
-     *
+     * 
      * @param relationType the relationType value to set.
      * @return the TargetRelation object itself.
      */
@@ -44,7 +54,7 @@ public final class TargetRelation {
 
     /**
      * Get the ref property: The JSON pointer indicating the linked object.
-     *
+     * 
      * @return the ref value.
      */
     public String getRef() {
@@ -53,12 +63,52 @@ public final class TargetRelation {
 
     /**
      * Set the ref property: The JSON pointer indicating the linked object.
-     *
+     * 
      * @param ref the ref value to set.
      * @return the TargetRelation object itself.
      */
     public TargetRelation setRef(String ref) {
         this.ref = ref;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("relationType", this.relationType == null ? null : this.relationType.toString());
+        jsonWriter.writeStringField("ref", this.ref);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TargetRelation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TargetRelation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TargetRelation.
+     */
+    public static TargetRelation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TargetRelation deserializedTargetRelation = new TargetRelation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("relationType".equals(fieldName)) {
+                    deserializedTargetRelation.relationType = TargetRelationType.fromString(reader.getString());
+                } else if ("ref".equals(fieldName)) {
+                    deserializedTargetRelation.ref = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTargetRelation;
+        });
     }
 }

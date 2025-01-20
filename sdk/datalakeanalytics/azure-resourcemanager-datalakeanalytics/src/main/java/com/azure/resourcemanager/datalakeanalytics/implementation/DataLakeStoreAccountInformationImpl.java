@@ -12,8 +12,7 @@ public final class DataLakeStoreAccountInformationImpl implements DataLakeStoreA
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    DataLakeStoreAccountInformationImpl(
-        DataLakeStoreAccountInformationInner innerObject,
+    DataLakeStoreAccountInformationImpl(DataLakeStoreAccountInformationInner innerObject,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -23,16 +22,16 @@ public final class DataLakeStoreAccountInformationImpl implements DataLakeStoreA
         return this.innerModel().id();
     }
 
-    public String suffix() {
-        return this.innerModel().suffix();
-    }
-
     public String name() {
         return this.innerModel().name();
     }
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public String suffix() {
+        return this.innerModel().suffix();
     }
 
     public DataLakeStoreAccountInformationInner innerModel() {

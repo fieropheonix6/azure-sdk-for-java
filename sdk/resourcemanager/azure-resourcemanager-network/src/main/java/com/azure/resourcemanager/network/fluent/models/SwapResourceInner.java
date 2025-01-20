@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.SwapResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** SwapResource to represent slot type on the specified cloud service. */
+/**
+ * SwapResource to represent slot type on the specified cloud service.
+ */
 @Fluent
-public final class SwapResourceInner {
+public final class SwapResourceInner implements JsonSerializable<SwapResourceInner> {
     /*
      * Resource Id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Swap resource properties
      */
-    @JsonProperty(value = "properties")
     private SwapResourceProperties properties;
 
-    /** Creates an instance of SwapResourceInner class. */
+    /**
+     * Creates an instance of SwapResourceInner class.
+     */
     public SwapResourceInner() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class SwapResourceInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class SwapResourceInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -68,7 +72,7 @@ public final class SwapResourceInner {
 
     /**
      * Get the properties property: Swap resource properties.
-     *
+     * 
      * @return the properties value.
      */
     public SwapResourceProperties properties() {
@@ -77,7 +81,7 @@ public final class SwapResourceInner {
 
     /**
      * Set the properties property: Swap resource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the SwapResourceInner object itself.
      */
@@ -88,12 +92,54 @@ public final class SwapResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SwapResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SwapResourceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SwapResourceInner.
+     */
+    public static SwapResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SwapResourceInner deserializedSwapResourceInner = new SwapResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSwapResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSwapResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSwapResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSwapResourceInner.properties = SwapResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSwapResourceInner;
+        });
     }
 }

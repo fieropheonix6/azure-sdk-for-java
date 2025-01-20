@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SapVirtualInstances Start. */
+/**
+ * Samples for SapVirtualInstances Start.
+ */
 public final class SapVirtualInstancesStartSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/sapvirtualinstances/SAPVirtualInstances_Start.json
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/sapvirtualinstances/
+     * SAPVirtualInstances_Start.json
      */
     /**
      * Sample code: SAPVirtualInstances_Start.
-     *
+     * 
      * @param manager Entry point to WorkloadsManager.
      */
     public static void sAPVirtualInstancesStart(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.sapVirtualInstances().start("test-rg", "X00", Context.NONE);
+        manager.sapVirtualInstances().start("test-rg", "X00", com.azure.core.util.Context.NONE);
     }
 }

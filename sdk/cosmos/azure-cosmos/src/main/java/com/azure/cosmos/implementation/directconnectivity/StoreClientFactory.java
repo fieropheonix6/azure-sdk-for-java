@@ -3,12 +3,13 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
-import com.azure.cosmos.implementation.SessionContainer;
+import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 
@@ -53,8 +54,13 @@ public class StoreClientFactory implements AutoCloseable {
 
                 RntbdTransportClient.Options rntbdOptions =
                     new RntbdTransportClient.Options.Builder(connectionPolicy).userAgent(userAgent).build();
-                this.transportClient = new RntbdTransportClient(rntbdOptions, configs.getSslContext(), addressResolver,
-                    clientTelemetry, globalEndpointManager);
+                this.transportClient =
+                    new RntbdTransportClient(
+                        rntbdOptions,
+                        configs.getSslContext(connectionPolicy.isServerCertValidationDisabled(), false),
+                        addressResolver,
+                        clientTelemetry,
+                        globalEndpointManager);
                 diagnosticsClientConfig.withRntbdOptions(rntbdOptions.toDiagnosticsString());
 
             } else {
@@ -74,10 +80,11 @@ public class StoreClientFactory implements AutoCloseable {
     public StoreClient createStoreClient(
         DiagnosticsClientContext diagnosticsClientContext,
         IAddressResolver addressResolver,
-        SessionContainer sessionContainer,
+        ISessionContainer sessionContainer,
         GatewayServiceConfigurationReader serviceConfigurationReader,
         IAuthorizationTokenProvider authorizationTokenProvider,
-        boolean useMultipleWriteLocations) {
+        boolean useMultipleWriteLocations,
+        SessionRetryOptions sessionRetryOptions) {
         this.throwIfClosed();
 
         return new StoreClient(diagnosticsClientContext,
@@ -87,7 +94,8 @@ public class StoreClientFactory implements AutoCloseable {
             serviceConfigurationReader,
             authorizationTokenProvider,
             this.transportClient,
-            useMultipleWriteLocations);
+            useMultipleWriteLocations,
+            sessionRetryOptions);
     }
 
     private void throwIfClosed() {

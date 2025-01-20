@@ -6,59 +6,94 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.HBaseLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** HBase server linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HBase")
+/**
+ * HBase server linked service.
+ */
 @Fluent
 public final class HBaseLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "HBase";
+
+    /*
      * HBase server linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private HBaseLinkedServiceTypeProperties innerTypeProperties = new HBaseLinkedServiceTypeProperties();
 
-    /** Creates an instance of HBaseLinkedService class. */
+    /**
+     * Creates an instance of HBaseLinkedService class.
+     */
     public HBaseLinkedService() {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: HBase server linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private HBaseLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HBaseLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HBaseLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HBaseLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HBaseLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HBaseLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -67,7 +102,7 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Get the host property: The IP address or host name of the HBase server. (i.e. 192.168.222.160).
-     *
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -76,7 +111,7 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Set the host property: The IP address or host name of the HBase server. (i.e. 192.168.222.160).
-     *
+     * 
      * @param host the host value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -91,7 +126,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Get the port property: The TCP port that the HBase instance uses to listen for client connections. The default
      * value is 9090.
-     *
+     * 
      * @return the port value.
      */
     public Object port() {
@@ -101,7 +136,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Set the port property: The TCP port that the HBase instance uses to listen for client connections. The default
      * value is 9090.
-     *
+     * 
      * @param port the port value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -116,7 +151,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Get the httpPath property: The partial URL corresponding to the HBase server. (i.e.
      * /gateway/sandbox/hbase/version).
-     *
+     * 
      * @return the httpPath value.
      */
     public Object httpPath() {
@@ -126,7 +161,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Set the httpPath property: The partial URL corresponding to the HBase server. (i.e.
      * /gateway/sandbox/hbase/version).
-     *
+     * 
      * @param httpPath the httpPath value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -140,7 +175,7 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: The authentication mechanism to use to connect to the HBase server.
-     *
+     * 
      * @return the authenticationType value.
      */
     public HBaseAuthenticationType authenticationType() {
@@ -149,7 +184,7 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The authentication mechanism to use to connect to the HBase server.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -163,7 +198,7 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Get the username property: The user name used to connect to the HBase instance.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -172,7 +207,7 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Set the username property: The user name used to connect to the HBase instance.
-     *
+     * 
      * @param username the username value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -186,7 +221,7 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password corresponding to the user name.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -195,7 +230,7 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password corresponding to the user name.
-     *
+     * 
      * @param password the password value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -210,7 +245,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Get the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
-     *
+     * 
      * @return the enableSsl value.
      */
     public Object enableSsl() {
@@ -220,7 +255,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Set the enableSsl property: Specifies whether the connections to the server are encrypted using SSL. The default
      * value is false.
-     *
+     * 
      * @param enableSsl the enableSsl value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -236,7 +271,7 @@ public final class HBaseLinkedService extends LinkedService {
      * Get the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
      * value is the cacerts.pem file installed with the IR.
-     *
+     * 
      * @return the trustedCertPath value.
      */
     public Object trustedCertPath() {
@@ -247,7 +282,7 @@ public final class HBaseLinkedService extends LinkedService {
      * Set the trustedCertPath property: The full path of the .pem file containing trusted CA certificates for verifying
      * the server when connecting over SSL. This property can only be set when using SSL on self-hosted IR. The default
      * value is the cacerts.pem file installed with the IR.
-     *
+     * 
      * @param trustedCertPath the trustedCertPath value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -262,7 +297,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Get the allowHostnameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
      * the host name of the server when connecting over SSL. The default value is false.
-     *
+     * 
      * @return the allowHostnameCNMismatch value.
      */
     public Object allowHostnameCNMismatch() {
@@ -272,7 +307,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Set the allowHostnameCNMismatch property: Specifies whether to require a CA-issued SSL certificate name to match
      * the host name of the server when connecting over SSL. The default value is false.
-     *
+     * 
      * @param allowHostnameCNMismatch the allowHostnameCNMismatch value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -287,7 +322,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Get the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
      * The default value is false.
-     *
+     * 
      * @return the allowSelfSignedServerCert value.
      */
     public Object allowSelfSignedServerCert() {
@@ -297,7 +332,7 @@ public final class HBaseLinkedService extends LinkedService {
     /**
      * Set the allowSelfSignedServerCert property: Specifies whether to allow self-signed certificates from the server.
      * The default value is false.
-     *
+     * 
      * @param allowSelfSignedServerCert the allowSelfSignedServerCert value to set.
      * @return the HBaseLinkedService object itself.
      */
@@ -311,22 +346,22 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HBaseLinkedService object itself.
      */
-    public HBaseLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public HBaseLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new HBaseLinkedServiceTypeProperties();
         }
@@ -336,21 +371,99 @@ public final class HBaseLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model HBaseLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model HBaseLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HBaseLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HBaseLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HBaseLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HBaseLinkedService.
+     */
+    public static HBaseLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HBaseLinkedService deserializedHBaseLinkedService = new HBaseLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedHBaseLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedHBaseLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedHBaseLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedHBaseLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHBaseLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedHBaseLinkedService.innerTypeProperties
+                        = HBaseLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedHBaseLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHBaseLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedHBaseLinkedService;
+        });
+    }
 }

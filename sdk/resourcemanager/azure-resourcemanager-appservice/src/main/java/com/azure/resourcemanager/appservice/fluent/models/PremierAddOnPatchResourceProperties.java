@@ -5,44 +5,52 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** PremierAddOnPatchResource resource specific properties. */
+/**
+ * PremierAddOnPatchResource resource specific properties.
+ */
 @Fluent
-public final class PremierAddOnPatchResourceProperties {
+public final class PremierAddOnPatchResourceProperties
+    implements JsonSerializable<PremierAddOnPatchResourceProperties> {
     /*
      * Premier add on SKU.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * Premier add on Product.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * Premier add on Vendor.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
      * Premier add on Marketplace publisher.
      */
-    @JsonProperty(value = "marketplacePublisher")
     private String marketplacePublisher;
 
     /*
      * Premier add on Marketplace offer.
      */
-    @JsonProperty(value = "marketplaceOffer")
     private String marketplaceOffer;
 
     /**
+     * Creates an instance of PremierAddOnPatchResourceProperties class.
+     */
+    public PremierAddOnPatchResourceProperties() {
+    }
+
+    /**
      * Get the sku property: Premier add on SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -51,7 +59,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the sku property: Premier add on SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -62,7 +70,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Get the product property: Premier add on Product.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -71,7 +79,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the product property: Premier add on Product.
-     *
+     * 
      * @param product the product value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -82,7 +90,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Get the vendor property: Premier add on Vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -91,7 +99,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the vendor property: Premier add on Vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -102,7 +110,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Get the marketplacePublisher property: Premier add on Marketplace publisher.
-     *
+     * 
      * @return the marketplacePublisher value.
      */
     public String marketplacePublisher() {
@@ -111,7 +119,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the marketplacePublisher property: Premier add on Marketplace publisher.
-     *
+     * 
      * @param marketplacePublisher the marketplacePublisher value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -122,7 +130,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Get the marketplaceOffer property: Premier add on Marketplace offer.
-     *
+     * 
      * @return the marketplaceOffer value.
      */
     public String marketplaceOffer() {
@@ -131,7 +139,7 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Set the marketplaceOffer property: Premier add on Marketplace offer.
-     *
+     * 
      * @param marketplaceOffer the marketplaceOffer value to set.
      * @return the PremierAddOnPatchResourceProperties object itself.
      */
@@ -142,9 +150,58 @@ public final class PremierAddOnPatchResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeStringField("marketplacePublisher", this.marketplacePublisher);
+        jsonWriter.writeStringField("marketplaceOffer", this.marketplaceOffer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PremierAddOnPatchResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PremierAddOnPatchResourceProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PremierAddOnPatchResourceProperties.
+     */
+    public static PremierAddOnPatchResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PremierAddOnPatchResourceProperties deserializedPremierAddOnPatchResourceProperties
+                = new PremierAddOnPatchResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedPremierAddOnPatchResourceProperties.sku = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPremierAddOnPatchResourceProperties.product = reader.getString();
+                } else if ("vendor".equals(fieldName)) {
+                    deserializedPremierAddOnPatchResourceProperties.vendor = reader.getString();
+                } else if ("marketplacePublisher".equals(fieldName)) {
+                    deserializedPremierAddOnPatchResourceProperties.marketplacePublisher = reader.getString();
+                } else if ("marketplaceOffer".equals(fieldName)) {
+                    deserializedPremierAddOnPatchResourceProperties.marketplaceOffer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPremierAddOnPatchResourceProperties;
+        });
     }
 }

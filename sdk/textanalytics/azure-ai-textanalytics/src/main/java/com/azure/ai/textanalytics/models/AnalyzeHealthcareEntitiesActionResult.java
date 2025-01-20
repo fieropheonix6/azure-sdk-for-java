@@ -8,15 +8,21 @@ import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link AnalyzeHealthcareEntitiesActionResult} model.
+ * The {@code AnalyzeHealthcareEntitiesActionResult} model.
  */
 @Immutable
 public final class AnalyzeHealthcareEntitiesActionResult extends TextAnalyticsActionResult {
     private AnalyzeHealthcareEntitiesResultCollection documentsResults;
 
     static {
-        AnalyzeHealthcareEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        AnalyzeHealthcareEntitiesActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code AnalyzeHealthcareEntitiesActionResult} model.
+     */
+    public AnalyzeHealthcareEntitiesActionResult() {
     }
 
     /**

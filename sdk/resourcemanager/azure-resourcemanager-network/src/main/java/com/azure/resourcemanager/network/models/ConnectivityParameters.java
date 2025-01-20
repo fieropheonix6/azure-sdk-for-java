@@ -6,48 +6,51 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters that determine how the connectivity check will be performed. */
+/**
+ * Parameters that determine how the connectivity check will be performed.
+ */
 @Fluent
-public final class ConnectivityParameters {
+public final class ConnectivityParameters implements JsonSerializable<ConnectivityParameters> {
     /*
      * The source of the connection.
      */
-    @JsonProperty(value = "source", required = true)
     private ConnectivitySource source;
 
     /*
      * The destination of connection.
      */
-    @JsonProperty(value = "destination", required = true)
     private ConnectivityDestination destination;
 
     /*
      * Network protocol.
      */
-    @JsonProperty(value = "protocol")
     private Protocol protocol;
 
     /*
      * Configuration of the protocol.
      */
-    @JsonProperty(value = "protocolConfiguration")
     private ProtocolConfiguration protocolConfiguration;
 
     /*
      * Preferred IP version of the connection.
      */
-    @JsonProperty(value = "preferredIPVersion")
     private IpVersion preferredIpVersion;
 
-    /** Creates an instance of ConnectivityParameters class. */
+    /**
+     * Creates an instance of ConnectivityParameters class.
+     */
     public ConnectivityParameters() {
     }
 
     /**
      * Get the source property: The source of the connection.
-     *
+     * 
      * @return the source value.
      */
     public ConnectivitySource source() {
@@ -56,7 +59,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the source property: The source of the connection.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -67,7 +70,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the destination property: The destination of connection.
-     *
+     * 
      * @return the destination value.
      */
     public ConnectivityDestination destination() {
@@ -76,7 +79,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the destination property: The destination of connection.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -87,7 +90,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the protocol property: Network protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public Protocol protocol() {
@@ -96,7 +99,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the protocol property: Network protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -107,7 +110,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the protocolConfiguration property: Configuration of the protocol.
-     *
+     * 
      * @return the protocolConfiguration value.
      */
     public ProtocolConfiguration protocolConfiguration() {
@@ -116,7 +119,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the protocolConfiguration property: Configuration of the protocol.
-     *
+     * 
      * @param protocolConfiguration the protocolConfiguration value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -127,7 +130,7 @@ public final class ConnectivityParameters {
 
     /**
      * Get the preferredIpVersion property: Preferred IP version of the connection.
-     *
+     * 
      * @return the preferredIpVersion value.
      */
     public IpVersion preferredIpVersion() {
@@ -136,7 +139,7 @@ public final class ConnectivityParameters {
 
     /**
      * Set the preferredIpVersion property: Preferred IP version of the connection.
-     *
+     * 
      * @param preferredIpVersion the preferredIpVersion value to set.
      * @return the ConnectivityParameters object itself.
      */
@@ -147,22 +150,20 @@ public final class ConnectivityParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property source in model ConnectivityParameters"));
         } else {
             source().validate();
         }
         if (destination() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property destination in model ConnectivityParameters"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property destination in model ConnectivityParameters"));
         } else {
             destination().validate();
         }
@@ -172,4 +173,54 @@ public final class ConnectivityParameters {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConnectivityParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("destination", this.destination);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeJsonField("protocolConfiguration", this.protocolConfiguration);
+        jsonWriter.writeStringField("preferredIPVersion",
+            this.preferredIpVersion == null ? null : this.preferredIpVersion.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectivityParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectivityParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectivityParameters.
+     */
+    public static ConnectivityParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectivityParameters deserializedConnectivityParameters = new ConnectivityParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedConnectivityParameters.source = ConnectivitySource.fromJson(reader);
+                } else if ("destination".equals(fieldName)) {
+                    deserializedConnectivityParameters.destination = ConnectivityDestination.fromJson(reader);
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedConnectivityParameters.protocol = Protocol.fromString(reader.getString());
+                } else if ("protocolConfiguration".equals(fieldName)) {
+                    deserializedConnectivityParameters.protocolConfiguration = ProtocolConfiguration.fromJson(reader);
+                } else if ("preferredIPVersion".equals(fieldName)) {
+                    deserializedConnectivityParameters.preferredIpVersion = IpVersion.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectivityParameters;
+        });
+    }
 }

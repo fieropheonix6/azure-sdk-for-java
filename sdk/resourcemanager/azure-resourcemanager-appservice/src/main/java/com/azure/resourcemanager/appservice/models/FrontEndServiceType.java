@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for FrontEndServiceType. */
+/**
+ * Defines values for FrontEndServiceType.
+ */
 public enum FrontEndServiceType {
-    /** Enum value NodePort. */
+    /**
+     * Enum value NodePort.
+     */
     NODE_PORT("NodePort"),
 
-    /** Enum value LoadBalancer. */
+    /**
+     * Enum value LoadBalancer.
+     */
     LOAD_BALANCER("LoadBalancer");
 
-    /** The actual serialized value for a FrontEndServiceType instance. */
+    /**
+     * The actual serialized value for a FrontEndServiceType instance.
+     */
     private final String value;
 
     FrontEndServiceType(String value) {
@@ -24,12 +29,14 @@ public enum FrontEndServiceType {
 
     /**
      * Parses a serialized value to a FrontEndServiceType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FrontEndServiceType object, or null if unable to parse.
      */
-    @JsonCreator
     public static FrontEndServiceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         FrontEndServiceType[] items = FrontEndServiceType.values();
         for (FrontEndServiceType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum FrontEndServiceType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

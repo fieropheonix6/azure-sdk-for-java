@@ -6,35 +6,43 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** RetentionTag Retention tag. */
+/**
+ * RetentionTag
+ * 
+ * Retention tag.
+ */
 @Fluent
-public final class RetentionTag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionTag.class);
-
+public final class RetentionTag implements JsonSerializable<RetentionTag> {
     /*
      * Retention Tag version.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Retention Tag version.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Retention Tag Name to relate it to retention rule.
      */
-    @JsonProperty(value = "tagName", required = true)
     private String tagName;
 
     /**
+     * Creates an instance of RetentionTag class.
+     */
+    public RetentionTag() {
+    }
+
+    /**
      * Get the etag property: Retention Tag version.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -43,7 +51,7 @@ public final class RetentionTag {
 
     /**
      * Get the id property: Retention Tag version.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +60,7 @@ public final class RetentionTag {
 
     /**
      * Get the tagName property: Retention Tag Name to relate it to retention rule.
-     *
+     * 
      * @return the tagName value.
      */
     public String tagName() {
@@ -61,7 +69,7 @@ public final class RetentionTag {
 
     /**
      * Set the tagName property: Retention Tag Name to relate it to retention rule.
-     *
+     * 
      * @param tagName the tagName value to set.
      * @return the RetentionTag object itself.
      */
@@ -72,14 +80,56 @@ public final class RetentionTag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tagName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tagName in model RetentionTag"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tagName in model RetentionTag"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RetentionTag.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("tagName", this.tagName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RetentionTag from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RetentionTag if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RetentionTag.
+     */
+    public static RetentionTag fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RetentionTag deserializedRetentionTag = new RetentionTag();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tagName".equals(fieldName)) {
+                    deserializedRetentionTag.tagName = reader.getString();
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedRetentionTag.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedRetentionTag.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRetentionTag;
+        });
     }
 }

@@ -6,20 +6,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.NodeStateCounts;
-import org.junit.jupiter.api.Test;
 
 public final class NodeStateCountsTests {
-    @Test
-    public void testDeserialize() {
-        NodeStateCounts model =
-            BinaryData
-                .fromString(
-                    "{\"idleNodeCount\":1191856604,\"runningNodeCount\":715935859,\"preparingNodeCount\":2047901283,\"unusableNodeCount\":1346181735,\"leavingNodeCount\":1358224808,\"preemptedNodeCount\":304822445}")
-                .toObject(NodeStateCounts.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NodeStateCounts model = BinaryData.fromString(
+            "{\"idleNodeCount\":17437062,\"runningNodeCount\":194546120,\"preparingNodeCount\":863569272,\"unusableNodeCount\":765041265,\"leavingNodeCount\":232651506,\"preemptedNodeCount\":1489395185}")
+            .toObject(NodeStateCounts.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         NodeStateCounts model = new NodeStateCounts();
         model = BinaryData.fromObject(model).toObject(NodeStateCounts.class);
     }

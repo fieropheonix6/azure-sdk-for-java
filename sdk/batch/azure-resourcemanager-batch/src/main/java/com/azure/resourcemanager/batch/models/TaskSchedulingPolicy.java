@@ -6,24 +6,31 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies how tasks should be distributed across compute nodes. */
+/**
+ * Specifies how tasks should be distributed across compute nodes.
+ */
 @Fluent
-public final class TaskSchedulingPolicy {
+public final class TaskSchedulingPolicy implements JsonSerializable<TaskSchedulingPolicy> {
     /*
      * How tasks should be distributed across compute nodes.
      */
-    @JsonProperty(value = "nodeFillType", required = true)
     private ComputeNodeFillType nodeFillType;
 
-    /** Creates an instance of TaskSchedulingPolicy class. */
+    /**
+     * Creates an instance of TaskSchedulingPolicy class.
+     */
     public TaskSchedulingPolicy() {
     }
 
     /**
      * Get the nodeFillType property: How tasks should be distributed across compute nodes.
-     *
+     * 
      * @return the nodeFillType value.
      */
     public ComputeNodeFillType nodeFillType() {
@@ -32,7 +39,7 @@ public final class TaskSchedulingPolicy {
 
     /**
      * Set the nodeFillType property: How tasks should be distributed across compute nodes.
-     *
+     * 
      * @param nodeFillType the nodeFillType value to set.
      * @return the TaskSchedulingPolicy object itself.
      */
@@ -43,17 +50,53 @@ public final class TaskSchedulingPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (nodeFillType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property nodeFillType in model TaskSchedulingPolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property nodeFillType in model TaskSchedulingPolicy"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TaskSchedulingPolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nodeFillType", this.nodeFillType == null ? null : this.nodeFillType.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaskSchedulingPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaskSchedulingPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaskSchedulingPolicy.
+     */
+    public static TaskSchedulingPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaskSchedulingPolicy deserializedTaskSchedulingPolicy = new TaskSchedulingPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nodeFillType".equals(fieldName)) {
+                    deserializedTaskSchedulingPolicy.nodeFillType = ComputeNodeFillType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaskSchedulingPolicy;
+        });
+    }
 }

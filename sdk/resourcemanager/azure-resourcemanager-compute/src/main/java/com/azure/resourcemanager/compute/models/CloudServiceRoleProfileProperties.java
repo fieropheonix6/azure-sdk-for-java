@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the role properties. */
+/**
+ * Describes the role properties.
+ */
 @Fluent
-public final class CloudServiceRoleProfileProperties {
+public final class CloudServiceRoleProfileProperties implements JsonSerializable<CloudServiceRoleProfileProperties> {
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Describes the cloud service role sku.
      */
-    @JsonProperty(value = "sku")
     private CloudServiceRoleSku sku;
 
-    /** Creates an instance of CloudServiceRoleProfileProperties class. */
+    /**
+     * Creates an instance of CloudServiceRoleProfileProperties class.
+     */
     public CloudServiceRoleProfileProperties() {
     }
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class CloudServiceRoleProfileProperties {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the CloudServiceRoleProfileProperties object itself.
      */
@@ -48,7 +54,7 @@ public final class CloudServiceRoleProfileProperties {
 
     /**
      * Get the sku property: Describes the cloud service role sku.
-     *
+     * 
      * @return the sku value.
      */
     public CloudServiceRoleSku sku() {
@@ -57,7 +63,7 @@ public final class CloudServiceRoleProfileProperties {
 
     /**
      * Set the sku property: Describes the cloud service role sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the CloudServiceRoleProfileProperties object itself.
      */
@@ -68,12 +74,52 @@ public final class CloudServiceRoleProfileProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServiceRoleProfileProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServiceRoleProfileProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServiceRoleProfileProperties.
+     */
+    public static CloudServiceRoleProfileProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServiceRoleProfileProperties deserializedCloudServiceRoleProfileProperties
+                = new CloudServiceRoleProfileProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedCloudServiceRoleProfileProperties.name = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedCloudServiceRoleProfileProperties.sku = CloudServiceRoleSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServiceRoleProfileProperties;
+        });
     }
 }

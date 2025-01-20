@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for GetPrivateDnsZoneSuffix Execute. */
+/**
+ * Samples for GetPrivateDnsZoneSuffix Execute.
+ */
 public final class GetPrivateDnsZoneSuffixExecuteSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/GetPrivateDnsZoneSuffix.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/
+     * GetPrivateDnsZoneSuffix.json
      */
     /**
      * Sample code: GetPrivateDnsZoneSuffix.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
-    public static void getPrivateDnsZoneSuffix(
-        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.getPrivateDnsZoneSuffixes().executeWithResponse(Context.NONE);
+    public static void
+        getPrivateDnsZoneSuffix(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
+        manager.getPrivateDnsZoneSuffixes().executeWithResponse(com.azure.core.util.Context.NONE);
     }
 }

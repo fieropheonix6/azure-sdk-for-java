@@ -7,31 +7,33 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointProperties;
 import com.azure.resourcemanager.kusto.models.EndpointDependency;
+import com.azure.resourcemanager.kusto.models.EndpointDetail;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OutboundNetworkDependenciesEndpointPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        OutboundNetworkDependenciesEndpointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"category\":\"nvpamq\",\"endpoints\":[{\"domainName\":\"u\",\"endpointDetails\":[]}],\"provisioningState\":\"Deleting\"}")
-                .toObject(OutboundNetworkDependenciesEndpointProperties.class);
-        Assertions.assertEquals("nvpamq", model.category());
-        Assertions.assertEquals("u", model.endpoints().get(0).domainName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OutboundNetworkDependenciesEndpointProperties model = BinaryData.fromString(
+            "{\"category\":\"jq\",\"endpoints\":[{\"domainName\":\"zpfrla\",\"endpointDetails\":[{\"port\":1822187571,\"ipAddress\":\"oiindfpwpjy\"}]}],\"provisioningState\":\"Moving\"}")
+            .toObject(OutboundNetworkDependenciesEndpointProperties.class);
+        Assertions.assertEquals("jq", model.category());
+        Assertions.assertEquals("zpfrla", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(1822187571, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("oiindfpwpjy", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
     }
 
-    @Test
-    public void testSerialize() {
-        OutboundNetworkDependenciesEndpointProperties model =
-            new OutboundNetworkDependenciesEndpointProperties()
-                .withCategory("nvpamq")
-                .withEndpoints(
-                    Arrays.asList(new EndpointDependency().withDomainName("u").withEndpointDetails(Arrays.asList())));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OutboundNetworkDependenciesEndpointProperties model
+            = new OutboundNetworkDependenciesEndpointProperties().withCategory("jq")
+                .withEndpoints(Arrays.asList(new EndpointDependency().withDomainName("zpfrla")
+                    .withEndpointDetails(
+                        Arrays.asList(new EndpointDetail().withPort(1822187571).withIpAddress("oiindfpwpjy")))));
         model = BinaryData.fromObject(model).toObject(OutboundNetworkDependenciesEndpointProperties.class);
-        Assertions.assertEquals("nvpamq", model.category());
-        Assertions.assertEquals("u", model.endpoints().get(0).domainName());
+        Assertions.assertEquals("jq", model.category());
+        Assertions.assertEquals("zpfrla", model.endpoints().get(0).domainName());
+        Assertions.assertEquals(1822187571, model.endpoints().get(0).endpointDetails().get(0).port());
+        Assertions.assertEquals("oiindfpwpjy", model.endpoints().get(0).endpointDetails().get(0).ipAddress());
     }
 }

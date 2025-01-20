@@ -6,20 +6,17 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListenerListResult;
-import org.junit.jupiter.api.Test;
 
 public final class AvailabilityGroupListenerListResultTests {
-    @Test
-    public void testDeserialize() {
-        AvailabilityGroupListenerListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"trg\",\"availabilityGroupName\":\"bpf\",\"loadBalancerConfigurations\":[],\"multiSubnetIpConfigurations\":[],\"createDefaultAvailabilityGroupIfNotExist\":false,\"port\":1078970203},\"id\":\"cjrwzoxxjtfellu\",\"name\":\"fziton\",\"type\":\"eqfpj\"}],\"nextLink\":\"lxofpdvhpfxxypin\"}")
-                .toObject(AvailabilityGroupListenerListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AvailabilityGroupListenerListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"wpdappdsbdkv\",\"availabilityGroupName\":\"wjfeusnhutjel\",\"loadBalancerConfigurations\":[{\"privateIpAddress\":{},\"publicIpAddressResourceId\":\"hugjzzdatqxhoc\",\"loadBalancerResourceId\":\"eablg\",\"probePort\":1780121294,\"sqlVirtualMachineInstances\":[\"cndvkaozwyiftyhx\",\"urokft\",\"xolniwpwcukjfk\",\"iawxklry\"]}],\"multiSubnetIpConfigurations\":[{\"privateIpAddress\":{},\"sqlVirtualMachineInstance\":\"ckbasyypndd\"},{\"privateIpAddress\":{},\"sqlVirtualMachineInstance\":\"sgcbac\"},{\"privateIpAddress\":{},\"sqlVirtualMachineInstance\":\"hejkotynqgou\"}],\"createDefaultAvailabilityGroupIfNotExist\":false,\"port\":1066822830,\"availabilityGroupConfiguration\":{\"replicas\":[{},{},{}]}},\"id\":\"qkgfgibma\",\"name\":\"gakeqsr\",\"type\":\"yb\"}],\"nextLink\":\"qedqytbciqfoufl\"}")
+            .toObject(AvailabilityGroupListenerListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         AvailabilityGroupListenerListResult model = new AvailabilityGroupListenerListResult();
         model = BinaryData.fromObject(model).toObject(AvailabilityGroupListenerListResult.class);
     }

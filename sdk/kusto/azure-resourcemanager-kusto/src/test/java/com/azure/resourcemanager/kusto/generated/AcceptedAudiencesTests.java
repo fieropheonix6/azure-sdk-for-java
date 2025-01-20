@@ -7,19 +7,19 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.AcceptedAudiences;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AcceptedAudiencesTests {
-    @Test
-    public void testDeserialize() {
-        AcceptedAudiences model = BinaryData.fromString("{\"value\":\"izgazxu\"}").toObject(AcceptedAudiences.class);
-        Assertions.assertEquals("izgazxu", model.value());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AcceptedAudiences model
+            = BinaryData.fromString("{\"value\":\"fpdvhpfxxypi\"}").toObject(AcceptedAudiences.class);
+        Assertions.assertEquals("fpdvhpfxxypi", model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        AcceptedAudiences model = new AcceptedAudiences().withValue("izgazxu");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AcceptedAudiences model = new AcceptedAudiences().withValue("fpdvhpfxxypi");
         model = BinaryData.fromObject(model).toObject(AcceptedAudiences.class);
-        Assertions.assertEquals("izgazxu", model.value());
+        Assertions.assertEquals("fpdvhpfxxypi", model.value());
     }
 }

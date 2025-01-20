@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Clusters List. */
+/**
+ * Samples for Clusters List.
+ */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/ListClustersBySubscription.json
+     * x-ms-original-file:
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * ListClustersBySubscription.json
      */
     /**
      * Sample code: List clusters in a given subscription.
-     *
+     * 
      * @param manager Entry point to AzureStackHciManager.
      */
-    public static void listClustersInAGivenSubscription(
-        com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.clusters().list(Context.NONE);
+    public static void
+        listClustersInAGivenSubscription(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
+        manager.clusters().list(com.azure.core.util.Context.NONE);
     }
 }

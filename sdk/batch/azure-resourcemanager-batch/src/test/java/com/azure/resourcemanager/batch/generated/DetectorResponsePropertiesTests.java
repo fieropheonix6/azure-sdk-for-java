@@ -7,20 +7,19 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.DetectorResponseProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DetectorResponsePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        DetectorResponseProperties model =
-            BinaryData.fromString("{\"value\":\"rbirphxe\"}").toObject(DetectorResponseProperties.class);
-        Assertions.assertEquals("rbirphxe", model.value());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DetectorResponseProperties model
+            = BinaryData.fromString("{\"value\":\"xoegukgjnpiucgy\"}").toObject(DetectorResponseProperties.class);
+        Assertions.assertEquals("xoegukgjnpiucgy", model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        DetectorResponseProperties model = new DetectorResponseProperties().withValue("rbirphxe");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DetectorResponseProperties model = new DetectorResponseProperties().withValue("xoegukgjnpiucgy");
         model = BinaryData.fromObject(model).toObject(DetectorResponseProperties.class);
-        Assertions.assertEquals("rbirphxe", model.value());
+        Assertions.assertEquals("xoegukgjnpiucgy", model.value());
     }
 }

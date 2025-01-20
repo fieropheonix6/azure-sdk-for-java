@@ -5,47 +5,54 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
 import com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Volume group resource for create. */
+/**
+ * Volume group resource for create.
+ */
 @Fluent
-public final class VolumeGroupDetailsInner {
+public final class VolumeGroupDetailsInner implements JsonSerializable<VolumeGroupDetailsInner> {
     /*
      * Resource location
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Resource Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Volume group properties
      */
-    @JsonProperty(value = "properties")
     private VolumeGroupProperties innerProperties;
 
     /**
+     * Creates an instance of VolumeGroupDetailsInner class.
+     */
+    public VolumeGroupDetailsInner() {
+    }
+
+    /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +61,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Set the location property: Resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the VolumeGroupDetailsInner object itself.
      */
@@ -65,7 +72,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -74,7 +81,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -83,7 +90,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -92,7 +99,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Get the innerProperties property: Volume group properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeGroupProperties innerProperties() {
@@ -101,7 +108,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -110,7 +117,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Get the groupMetadata property: Volume group details.
-     *
+     * 
      * @return the groupMetadata value.
      */
     public VolumeGroupMetadata groupMetadata() {
@@ -119,7 +126,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Set the groupMetadata property: Volume group details.
-     *
+     * 
      * @param groupMetadata the groupMetadata value to set.
      * @return the VolumeGroupDetailsInner object itself.
      */
@@ -133,7 +140,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Get the volumes property: List of volumes from group.
-     *
+     * 
      * @return the volumes value.
      */
     public List<VolumeGroupVolumeProperties> volumes() {
@@ -142,7 +149,7 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Set the volumes property: List of volumes from group.
-     *
+     * 
      * @param volumes the volumes value to set.
      * @return the VolumeGroupDetailsInner object itself.
      */
@@ -156,12 +163,57 @@ public final class VolumeGroupDetailsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeGroupDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeGroupDetailsInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeGroupDetailsInner.
+     */
+    public static VolumeGroupDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeGroupDetailsInner deserializedVolumeGroupDetailsInner = new VolumeGroupDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedVolumeGroupDetailsInner.location = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedVolumeGroupDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVolumeGroupDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVolumeGroupDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVolumeGroupDetailsInner.innerProperties = VolumeGroupProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeGroupDetailsInner;
+        });
     }
 }

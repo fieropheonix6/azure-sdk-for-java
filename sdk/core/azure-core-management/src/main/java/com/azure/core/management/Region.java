@@ -128,6 +128,10 @@ public final class Region {
      * UK West (Europe)
      */
     public static final Region UK_WEST = new Region("ukwest", "UK West");
+    /**
+     * Italy North (Europe)
+     */
+    public static final Region ITALY_NORTH = new Region("italynorth", "Italy North");
     /*
      * Azure Cloud - Asia
      */
@@ -194,6 +198,10 @@ public final class Region {
      * UAE Central (Middle East)
      */
     public static final Region UAE_CENTRAL = new Region("uaecentral", "UAE Central");
+    /**
+     * Israel Central (Middle East)
+     */
+    public static final Region ISRAEL_CENTRAL = new Region("israelcentral", "Israel Central");
     /**
      * Qatar Central (Middle East) (recommended)
      */
@@ -281,6 +289,8 @@ public final class Region {
     private final String label;
 
     /**
+     * Gets the predefined Azure regions.
+     *
      * @return predefined Azure regions.
      */
     public static Collection<Region> values() {
@@ -318,6 +328,8 @@ public final class Region {
     }
 
     /**
+     * Gets the name of the region.
+     *
      * @return the name of the region.
      */
     public String name() {
@@ -325,6 +337,8 @@ public final class Region {
     }
 
     /**
+     * Gets the label of the region.
+     *
      * @return the label of the region.
      */
     public String label() {
@@ -357,13 +371,15 @@ public final class Region {
 
     @Override
     public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
         if (!(obj instanceof Region)) {
             return false;
-        } else if (obj == this) {
-            return true;
-        } else {
-            Region rhs = (Region) obj;
-            return this.name.equalsIgnoreCase(rhs.name);
         }
+
+        Region rhs = (Region) obj;
+        return this.name.equalsIgnoreCase(rhs.name);
     }
 }

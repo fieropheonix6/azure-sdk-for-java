@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** SitePhpErrorLogFlag resource specific properties. */
+/**
+ * SitePhpErrorLogFlag resource specific properties.
+ */
 @Fluent
-public final class SitePhpErrorLogFlagProperties {
+public final class SitePhpErrorLogFlagProperties implements JsonSerializable<SitePhpErrorLogFlagProperties> {
     /*
      * Local log_errors setting.
      */
-    @JsonProperty(value = "localLogErrors")
     private String localLogErrors;
 
     /*
      * Master log_errors setting.
      */
-    @JsonProperty(value = "masterLogErrors")
     private String masterLogErrors;
 
     /*
      * Local log_errors_max_len setting.
      */
-    @JsonProperty(value = "localLogErrorsMaxLength")
     private String localLogErrorsMaxLength;
 
     /*
      * Master log_errors_max_len setting.
      */
-    @JsonProperty(value = "masterLogErrorsMaxLength")
     private String masterLogErrorsMaxLength;
 
     /**
+     * Creates an instance of SitePhpErrorLogFlagProperties class.
+     */
+    public SitePhpErrorLogFlagProperties() {
+    }
+
+    /**
      * Get the localLogErrors property: Local log_errors setting.
-     *
+     * 
      * @return the localLogErrors value.
      */
     public String localLogErrors() {
@@ -45,7 +53,7 @@ public final class SitePhpErrorLogFlagProperties {
 
     /**
      * Set the localLogErrors property: Local log_errors setting.
-     *
+     * 
      * @param localLogErrors the localLogErrors value to set.
      * @return the SitePhpErrorLogFlagProperties object itself.
      */
@@ -56,7 +64,7 @@ public final class SitePhpErrorLogFlagProperties {
 
     /**
      * Get the masterLogErrors property: Master log_errors setting.
-     *
+     * 
      * @return the masterLogErrors value.
      */
     public String masterLogErrors() {
@@ -65,7 +73,7 @@ public final class SitePhpErrorLogFlagProperties {
 
     /**
      * Set the masterLogErrors property: Master log_errors setting.
-     *
+     * 
      * @param masterLogErrors the masterLogErrors value to set.
      * @return the SitePhpErrorLogFlagProperties object itself.
      */
@@ -76,7 +84,7 @@ public final class SitePhpErrorLogFlagProperties {
 
     /**
      * Get the localLogErrorsMaxLength property: Local log_errors_max_len setting.
-     *
+     * 
      * @return the localLogErrorsMaxLength value.
      */
     public String localLogErrorsMaxLength() {
@@ -85,7 +93,7 @@ public final class SitePhpErrorLogFlagProperties {
 
     /**
      * Set the localLogErrorsMaxLength property: Local log_errors_max_len setting.
-     *
+     * 
      * @param localLogErrorsMaxLength the localLogErrorsMaxLength value to set.
      * @return the SitePhpErrorLogFlagProperties object itself.
      */
@@ -96,7 +104,7 @@ public final class SitePhpErrorLogFlagProperties {
 
     /**
      * Get the masterLogErrorsMaxLength property: Master log_errors_max_len setting.
-     *
+     * 
      * @return the masterLogErrorsMaxLength value.
      */
     public String masterLogErrorsMaxLength() {
@@ -105,7 +113,7 @@ public final class SitePhpErrorLogFlagProperties {
 
     /**
      * Set the masterLogErrorsMaxLength property: Master log_errors_max_len setting.
-     *
+     * 
      * @param masterLogErrorsMaxLength the masterLogErrorsMaxLength value to set.
      * @return the SitePhpErrorLogFlagProperties object itself.
      */
@@ -116,9 +124,55 @@ public final class SitePhpErrorLogFlagProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("localLogErrors", this.localLogErrors);
+        jsonWriter.writeStringField("masterLogErrors", this.masterLogErrors);
+        jsonWriter.writeStringField("localLogErrorsMaxLength", this.localLogErrorsMaxLength);
+        jsonWriter.writeStringField("masterLogErrorsMaxLength", this.masterLogErrorsMaxLength);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SitePhpErrorLogFlagProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SitePhpErrorLogFlagProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SitePhpErrorLogFlagProperties.
+     */
+    public static SitePhpErrorLogFlagProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SitePhpErrorLogFlagProperties deserializedSitePhpErrorLogFlagProperties
+                = new SitePhpErrorLogFlagProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("localLogErrors".equals(fieldName)) {
+                    deserializedSitePhpErrorLogFlagProperties.localLogErrors = reader.getString();
+                } else if ("masterLogErrors".equals(fieldName)) {
+                    deserializedSitePhpErrorLogFlagProperties.masterLogErrors = reader.getString();
+                } else if ("localLogErrorsMaxLength".equals(fieldName)) {
+                    deserializedSitePhpErrorLogFlagProperties.localLogErrorsMaxLength = reader.getString();
+                } else if ("masterLogErrorsMaxLength".equals(fieldName)) {
+                    deserializedSitePhpErrorLogFlagProperties.masterLogErrorsMaxLength = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSitePhpErrorLogFlagProperties;
+        });
     }
 }

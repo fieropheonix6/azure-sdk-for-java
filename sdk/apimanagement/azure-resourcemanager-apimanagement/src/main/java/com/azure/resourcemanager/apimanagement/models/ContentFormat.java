@@ -5,56 +5,91 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentFormat. */
+/**
+ * Format of the Content in which the API is getting imported.
+ */
 public final class ContentFormat extends ExpandableStringEnum<ContentFormat> {
-    /** Static value wadl-xml for ContentFormat. */
+    /**
+     * Static value wadl-xml for ContentFormat.
+     */
     public static final ContentFormat WADL_XML = fromString("wadl-xml");
 
-    /** Static value wadl-link-json for ContentFormat. */
+    /**
+     * Static value wadl-link-json for ContentFormat.
+     */
     public static final ContentFormat WADL_LINK_JSON = fromString("wadl-link-json");
 
-    /** Static value swagger-json for ContentFormat. */
+    /**
+     * Static value swagger-json for ContentFormat.
+     */
     public static final ContentFormat SWAGGER_JSON = fromString("swagger-json");
 
-    /** Static value swagger-link-json for ContentFormat. */
+    /**
+     * Static value swagger-link-json for ContentFormat.
+     */
     public static final ContentFormat SWAGGER_LINK_JSON = fromString("swagger-link-json");
 
-    /** Static value wsdl for ContentFormat. */
+    /**
+     * Static value wsdl for ContentFormat.
+     */
     public static final ContentFormat WSDL = fromString("wsdl");
 
-    /** Static value wsdl-link for ContentFormat. */
+    /**
+     * Static value wsdl-link for ContentFormat.
+     */
     public static final ContentFormat WSDL_LINK = fromString("wsdl-link");
 
-    /** Static value openapi for ContentFormat. */
+    /**
+     * Static value openapi for ContentFormat.
+     */
     public static final ContentFormat OPENAPI = fromString("openapi");
 
-    /** Static value openapi+json for ContentFormat. */
+    /**
+     * Static value openapi+json for ContentFormat.
+     */
     public static final ContentFormat OPENAPI_JSON = fromString("openapi+json");
 
-    /** Static value openapi-link for ContentFormat. */
+    /**
+     * Static value openapi-link for ContentFormat.
+     */
     public static final ContentFormat OPENAPI_LINK = fromString("openapi-link");
 
-    /** Static value openapi+json-link for ContentFormat. */
+    /**
+     * Static value openapi+json-link for ContentFormat.
+     */
     public static final ContentFormat OPENAPI_JSON_LINK = fromString("openapi+json-link");
 
-    /** Static value graphql-link for ContentFormat. */
+    /**
+     * Static value graphql-link for ContentFormat.
+     */
     public static final ContentFormat GRAPHQL_LINK = fromString("graphql-link");
 
     /**
+     * Creates a new instance of ContentFormat value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContentFormat() {
+    }
+
+    /**
      * Creates or finds a ContentFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContentFormat.
      */
-    @JsonCreator
     public static ContentFormat fromString(String name) {
         return fromString(name, ContentFormat.class);
     }
 
-    /** @return known ContentFormat values. */
+    /**
+     * Gets known ContentFormat values.
+     * 
+     * @return known ContentFormat values.
+     */
     public static Collection<ContentFormat> values() {
         return values(ContentFormat.class);
     }

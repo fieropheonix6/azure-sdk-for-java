@@ -5,39 +5,44 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes Protocol and thumbprint of Windows Remote Management listener. */
+/**
+ * Describes Protocol and thumbprint of Windows Remote Management listener.
+ */
 @Fluent
-public final class WinRMListener {
+public final class WinRMListener implements JsonSerializable<WinRMListener> {
     /*
-     * Specifies the protocol of WinRM listener. <br><br> Possible values are: <br>**http** <br><br> **https**
+     * Specifies the protocol of WinRM listener. Possible values are: **http,** **https.**
      */
-    @JsonProperty(value = "protocol")
     private ProtocolTypes protocol;
 
     /*
      * This is the URL of a certificate that has been uploaded to Key Vault as a secret. For adding a secret to the Key
      * Vault, see [Add a key or secret to the key
      * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate
-     * needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>
-     * "data":"<Base64-encoded-certificate>",<br>  "dataType":"pfx",<br>  "password":"<pfx-file-password>"<br>} <br> To
-     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine
-     * extension for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure
-     * Key Vault virtual machine extension for
+     * needs to be the Base64 encoding of the following JSON Object which is encoded in UTF-8: <br><br> {<br>
+     * "data":"<Base64-encoded-certificate>",<br> "dataType":"pfx",<br> "password":"<pfx-file-password>"<br>} <br> To
+     * install certificates on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension
+     * for Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
+     * virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
      */
-    @JsonProperty(value = "certificateUrl")
     private String certificateUrl;
 
-    /** Creates an instance of WinRMListener class. */
+    /**
+     * Creates an instance of WinRMListener class.
+     */
     public WinRMListener() {
     }
 
     /**
-     * Get the protocol property: Specifies the protocol of WinRM listener. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;**http** &lt;br&gt;&lt;br&gt; **https**.
-     *
+     * Get the protocol property: Specifies the protocol of WinRM listener. Possible values are: **http,** **https.**.
+     * 
      * @return the protocol value.
      */
     public ProtocolTypes protocol() {
@@ -45,9 +50,8 @@ public final class WinRMListener {
     }
 
     /**
-     * Set the protocol property: Specifies the protocol of WinRM listener. &lt;br&gt;&lt;br&gt; Possible values are:
-     * &lt;br&gt;**http** &lt;br&gt;&lt;br&gt; **https**.
-     *
+     * Set the protocol property: Specifies the protocol of WinRM listener. Possible values are: **http,** **https.**.
+     * 
      * @param protocol the protocol value to set.
      * @return the WinRMListener object itself.
      */
@@ -60,14 +64,14 @@ public final class WinRMListener {
      * Get the certificateUrl property: This is the URL of a certificate that has been uploaded to Key Vault as a
      * secret. For adding a secret to the Key Vault, see [Add a key or secret to the key
      * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate
-     * needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8:
-     * &lt;br&gt;&lt;br&gt; {&lt;br&gt; "data":"&lt;Base64-encoded-certificate&gt;",&lt;br&gt;
-     * "dataType":"pfx",&lt;br&gt; "password":"&lt;pfx-file-password&gt;"&lt;br&gt;} &lt;br&gt; To install certificates
-     * on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension for
+     * needs to be the Base64 encoding of the following JSON Object which is encoded in UTF-8: &lt;br&gt;&lt;br&gt;
+     * {&lt;br&gt; "data":"&lt;Base64-encoded-certificate&gt;",&lt;br&gt; "dataType":"pfx",&lt;br&gt;
+     * "password":"&lt;pfx-file-password&gt;"&lt;br&gt;} &lt;br&gt; To install certificates on a virtual machine it is
+     * recommended to use the [Azure Key Vault virtual machine extension for
      * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
      * virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
-     *
+     * 
      * @return the certificateUrl value.
      */
     public String certificateUrl() {
@@ -78,14 +82,14 @@ public final class WinRMListener {
      * Set the certificateUrl property: This is the URL of a certificate that has been uploaded to Key Vault as a
      * secret. For adding a secret to the Key Vault, see [Add a key or secret to the key
      * vault](https://docs.microsoft.com/azure/key-vault/key-vault-get-started/#add). In this case, your certificate
-     * needs to be It is the Base64 encoding of the following JSON Object which is encoded in UTF-8:
-     * &lt;br&gt;&lt;br&gt; {&lt;br&gt; "data":"&lt;Base64-encoded-certificate&gt;",&lt;br&gt;
-     * "dataType":"pfx",&lt;br&gt; "password":"&lt;pfx-file-password&gt;"&lt;br&gt;} &lt;br&gt; To install certificates
-     * on a virtual machine it is recommended to use the [Azure Key Vault virtual machine extension for
+     * needs to be the Base64 encoding of the following JSON Object which is encoded in UTF-8: &lt;br&gt;&lt;br&gt;
+     * {&lt;br&gt; "data":"&lt;Base64-encoded-certificate&gt;",&lt;br&gt; "dataType":"pfx",&lt;br&gt;
+     * "password":"&lt;pfx-file-password&gt;"&lt;br&gt;} &lt;br&gt; To install certificates on a virtual machine it is
+     * recommended to use the [Azure Key Vault virtual machine extension for
      * Linux](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-linux) or the [Azure Key Vault
      * virtual machine extension for
      * Windows](https://docs.microsoft.com/azure/virtual-machines/extensions/key-vault-windows).
-     *
+     * 
      * @param certificateUrl the certificateUrl value to set.
      * @return the WinRMListener object itself.
      */
@@ -96,9 +100,48 @@ public final class WinRMListener {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeStringField("certificateUrl", this.certificateUrl);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WinRMListener from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WinRMListener if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WinRMListener.
+     */
+    public static WinRMListener fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WinRMListener deserializedWinRMListener = new WinRMListener();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("protocol".equals(fieldName)) {
+                    deserializedWinRMListener.protocol = ProtocolTypes.fromString(reader.getString());
+                } else if ("certificateUrl".equals(fieldName)) {
+                    deserializedWinRMListener.certificateUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWinRMListener;
+        });
     }
 }

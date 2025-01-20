@@ -15,85 +15,91 @@ import com.azure.resourcemanager.hybridcompute.fluent.models.HybridComputePrivat
 import com.azure.resourcemanager.hybridcompute.fluent.models.PrivateLinkScopeValidationDetailsInner;
 import com.azure.resourcemanager.hybridcompute.models.TagsResource;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkScopesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkScopesClient.
+ */
 public interface PrivateLinkScopesClient {
     /**
      * Gets a list of all Azure Arc PrivateLinkScopes within a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridComputePrivateLinkScopeInner> list();
 
     /**
      * Gets a list of all Azure Arc PrivateLinkScopes within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all Azure Arc PrivateLinkScopes within a subscription.
+     * @return a list of all Azure Arc PrivateLinkScopes within a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridComputePrivateLinkScopeInner> list(Context context);
 
     /**
      * Gets a list of Azure Arc PrivateLinkScopes within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridComputePrivateLinkScopeInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets a list of Azure Arc PrivateLinkScopes within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Azure Arc PrivateLinkScopes within a resource group.
+     * @return a list of Azure Arc PrivateLinkScopes within a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<HybridComputePrivateLinkScopeInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Deletes a Azure Arc PrivateLinkScope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName);
 
     /**
      * Deletes a Azure Arc PrivateLinkScope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String scopeName, Context context);
 
     /**
      * Deletes a Azure Arc PrivateLinkScope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +111,7 @@ public interface PrivateLinkScopesClient {
 
     /**
      * Deletes a Azure Arc PrivateLinkScope.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param context The context to associate with this operation.
@@ -118,7 +124,22 @@ public interface PrivateLinkScopesClient {
 
     /**
      * Returns a Azure Arc PrivateLinkScope.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HybridComputePrivateLinkScopeInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String scopeName, Context context);
+
+    /**
+     * Returns a Azure Arc PrivateLinkScope.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,58 +151,59 @@ public interface PrivateLinkScopesClient {
     HybridComputePrivateLinkScopeInner getByResourceGroup(String resourceGroupName, String scopeName);
 
     /**
-     * Returns a Azure Arc PrivateLinkScope.
-     *
+     * Creates (or updates) a Azure Arc PrivateLinkScope. Note: You cannot specify a different value for
+     * InstrumentationKey nor AppId in the Put operation.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param parameters Properties that need to be specified to create or update a Azure Arc for Servers and Clusters
+     * PrivateLinkScope.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridComputePrivateLinkScopeInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String scopeName, Context context);
+    Response<HybridComputePrivateLinkScopeInner> createOrUpdateWithResponse(String resourceGroupName, String scopeName,
+        HybridComputePrivateLinkScopeInner parameters, Context context);
 
     /**
      * Creates (or updates) a Azure Arc PrivateLinkScope. Note: You cannot specify a different value for
      * InstrumentationKey nor AppId in the Put operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param parameters Properties that need to be specified to create or update a Azure Arc for Servers and Clusters
-     *     PrivateLinkScope.
+     * PrivateLinkScope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Azure Arc PrivateLinkScope definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridComputePrivateLinkScopeInner createOrUpdate(
-        String resourceGroupName, String scopeName, HybridComputePrivateLinkScopeInner parameters);
-
-    /**
-     * Creates (or updates) a Azure Arc PrivateLinkScope. Note: You cannot specify a different value for
-     * InstrumentationKey nor AppId in the Put operation.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param parameters Properties that need to be specified to create or update a Azure Arc for Servers and Clusters
-     *     PrivateLinkScope.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridComputePrivateLinkScopeInner> createOrUpdateWithResponse(
-        String resourceGroupName, String scopeName, HybridComputePrivateLinkScopeInner parameters, Context context);
+    HybridComputePrivateLinkScopeInner createOrUpdate(String resourceGroupName, String scopeName,
+        HybridComputePrivateLinkScopeInner parameters);
 
     /**
      * Updates an existing PrivateLinkScope's tags. To update other fields use the CreateOrUpdate method.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
+     * @param privateLinkScopeTags Updated tag information to set into the PrivateLinkScope instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Azure Arc PrivateLinkScope definition along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<HybridComputePrivateLinkScopeInner> updateTagsWithResponse(String resourceGroupName, String scopeName,
+        TagsResource privateLinkScopeTags, Context context);
+
+    /**
+     * Updates an existing PrivateLinkScope's tags. To update other fields use the CreateOrUpdate method.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
      * @param privateLinkScopeTags Updated tag information to set into the PrivateLinkScope instance.
@@ -191,28 +213,27 @@ public interface PrivateLinkScopesClient {
      * @return an Azure Arc PrivateLinkScope definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    HybridComputePrivateLinkScopeInner updateTags(
-        String resourceGroupName, String scopeName, TagsResource privateLinkScopeTags);
-
-    /**
-     * Updates an existing PrivateLinkScope's tags. To update other fields use the CreateOrUpdate method.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param scopeName The name of the Azure Arc PrivateLinkScope resource.
-     * @param privateLinkScopeTags Updated tag information to set into the PrivateLinkScope instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Azure Arc PrivateLinkScope definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HybridComputePrivateLinkScopeInner> updateTagsWithResponse(
-        String resourceGroupName, String scopeName, TagsResource privateLinkScopeTags, Context context);
+    HybridComputePrivateLinkScopeInner updateTags(String resourceGroupName, String scopeName,
+        TagsResource privateLinkScopeTags);
 
     /**
      * Returns a Azure Arc PrivateLinkScope's validation details.
-     *
+     * 
+     * @param location The location of the target resource.
+     * @param privateLinkScopeId The id (Guid) of the Azure Arc PrivateLinkScope resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateLinkScopeValidationDetailsInner> getValidationDetailsWithResponse(String location,
+        String privateLinkScopeId, Context context);
+
+    /**
+     * Returns a Azure Arc PrivateLinkScope's validation details.
+     * 
      * @param location The location of the target resource.
      * @param privateLinkScopeId The id (Guid) of the Azure Arc PrivateLinkScope resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -224,23 +245,23 @@ public interface PrivateLinkScopesClient {
     PrivateLinkScopeValidationDetailsInner getValidationDetails(String location, String privateLinkScopeId);
 
     /**
-     * Returns a Azure Arc PrivateLinkScope's validation details.
-     *
-     * @param location The location of the target resource.
-     * @param privateLinkScopeId The id (Guid) of the Azure Arc PrivateLinkScope resource.
+     * Returns a Azure Arc PrivateLinkScope's validation details for a given machine.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the target machine to get the private link scope validation details for.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkScopeValidationDetailsInner> getValidationDetailsWithResponse(
-        String location, String privateLinkScopeId, Context context);
+    Response<PrivateLinkScopeValidationDetailsInner>
+        getValidationDetailsForMachineWithResponse(String resourceGroupName, String machineName, Context context);
 
     /**
      * Returns a Azure Arc PrivateLinkScope's validation details for a given machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param machineName The name of the target machine to get the private link scope validation details for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -250,19 +271,4 @@ public interface PrivateLinkScopesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     PrivateLinkScopeValidationDetailsInner getValidationDetailsForMachine(String resourceGroupName, String machineName);
-
-    /**
-     * Returns a Azure Arc PrivateLinkScope's validation details for a given machine.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param machineName The name of the target machine to get the private link scope validation details for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkScopeValidationDetailsInner> getValidationDetailsForMachineWithResponse(
-        String resourceGroupName, String machineName, Context context);
 }

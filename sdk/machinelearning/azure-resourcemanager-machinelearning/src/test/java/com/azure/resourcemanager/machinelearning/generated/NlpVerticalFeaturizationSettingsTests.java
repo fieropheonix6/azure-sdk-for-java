@@ -7,20 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.NlpVerticalFeaturizationSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NlpVerticalFeaturizationSettingsTests {
-    @Test
-    public void testDeserialize() {
-        NlpVerticalFeaturizationSettings model =
-            BinaryData.fromString("{\"datasetLanguage\":\"ns\"}").toObject(NlpVerticalFeaturizationSettings.class);
-        Assertions.assertEquals("ns", model.datasetLanguage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NlpVerticalFeaturizationSettings model = BinaryData.fromString("{\"datasetLanguage\":\"svxupqt\"}")
+            .toObject(NlpVerticalFeaturizationSettings.class);
+        Assertions.assertEquals("svxupqt", model.datasetLanguage());
     }
 
-    @Test
-    public void testSerialize() {
-        NlpVerticalFeaturizationSettings model = new NlpVerticalFeaturizationSettings().withDatasetLanguage("ns");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NlpVerticalFeaturizationSettings model = new NlpVerticalFeaturizationSettings().withDatasetLanguage("svxupqt");
         model = BinaryData.fromObject(model).toObject(NlpVerticalFeaturizationSettings.class);
-        Assertions.assertEquals("ns", model.datasetLanguage());
+        Assertions.assertEquals("svxupqt", model.datasetLanguage());
     }
 }

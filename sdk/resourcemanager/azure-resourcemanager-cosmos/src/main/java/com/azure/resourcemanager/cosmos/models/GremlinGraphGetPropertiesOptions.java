@@ -5,18 +5,34 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The GremlinGraphGetPropertiesOptions model. */
+/**
+ * The GremlinGraphGetPropertiesOptions model.
+ */
 @Fluent
 public final class GremlinGraphGetPropertiesOptions extends OptionsResource {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of GremlinGraphGetPropertiesOptions class.
+     */
+    public GremlinGraphGetPropertiesOptions() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinGraphGetPropertiesOptions withThroughput(Integer throughput) {
         super.withThroughput(throughput);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GremlinGraphGetPropertiesOptions withAutoscaleSettings(AutoscaleSettings autoscaleSettings) {
         super.withAutoscaleSettings(autoscaleSettings);
@@ -25,11 +41,54 @@ public final class GremlinGraphGetPropertiesOptions extends OptionsResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (autoscaleSettings() != null) {
+            autoscaleSettings().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("throughput", throughput());
+        jsonWriter.writeJsonField("autoscaleSettings", autoscaleSettings());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GremlinGraphGetPropertiesOptions from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GremlinGraphGetPropertiesOptions if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GremlinGraphGetPropertiesOptions.
+     */
+    public static GremlinGraphGetPropertiesOptions fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GremlinGraphGetPropertiesOptions deserializedGremlinGraphGetPropertiesOptions
+                = new GremlinGraphGetPropertiesOptions();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("throughput".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesOptions.withThroughput(reader.getNullable(JsonReader::getInt));
+                } else if ("autoscaleSettings".equals(fieldName)) {
+                    deserializedGremlinGraphGetPropertiesOptions
+                        .withAutoscaleSettings(AutoscaleSettings.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGremlinGraphGetPropertiesOptions;
+        });
     }
 }

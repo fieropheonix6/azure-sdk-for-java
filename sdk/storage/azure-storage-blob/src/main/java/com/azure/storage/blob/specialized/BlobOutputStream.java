@@ -6,6 +6,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobAsyncClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.util.StorageBlockingSink;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
@@ -21,7 +22,6 @@ import com.azure.storage.common.StorageOutputStream;
 import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -82,11 +82,14 @@ public abstract class BlobOutputStream extends StorageOutputStream {
      */
     public static BlobOutputStream blockBlobOutputStream(final BlobAsyncClient client,
         final ParallelTransferOptions parallelTransferOptions, final BlobHttpHeaders headers,
-        final Map<String, String> metadata, final AccessTier tier,
-        final BlobRequestConditions requestConditions, Context context) {
-        return blockBlobOutputStream(client, new BlockBlobOutputStreamOptions()
-                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTier(tier).setRequestConditions(requestConditions),
+        final Map<String, String> metadata, final AccessTier tier, final BlobRequestConditions requestConditions,
+        Context context) {
+        return blockBlobOutputStream(client,
+            new BlockBlobOutputStreamOptions().setParallelTransferOptions(parallelTransferOptions)
+                .setHeaders(headers)
+                .setMetadata(metadata)
+                .setTier(tier)
+                .setRequestConditions(requestConditions),
             context);
     }
 
@@ -149,18 +152,24 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class AppendBlobOutputStream extends BlobOutputStream {
-        private static final String INVALID_BLOCK_SIZE =
-            "Block data should not exceed BlockBlobURL.MAX_STAGE_BLOCK_BYTES";
+        private static final String INVALID_BLOCK_SIZE
+            = "Block data should not exceed BlockBlobURL.MAX_STAGE_BLOCK_BYTES";
 
         private final AppendBlobRequestConditions appendBlobRequestConditions;
         private final AppendBlobAsyncClient client;
 
         private AppendBlobOutputStream(final AppendBlobAsyncClient client,
             final AppendBlobRequestConditions appendBlobRequestConditions) {
-            super(AppendBlobClient.MAX_APPEND_BLOCK_BYTES);
+            // service versions 2022-11-02 and above support uploading block bytes up to 100MB, all older service
+            // versions support up to 4MB
+            super(client.getServiceVersion().ordinal() < BlobServiceVersion.V2022_11_02.ordinal()
+                ? AppendBlobClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2021_12_02_AND_BELOW
+                : AppendBlobClient.MAX_APPEND_BLOCK_BYTES_VERSIONS_2022_11_02_AND_ABOVE);
+
             this.client = client;
             this.appendBlobRequestConditions = (appendBlobRequestConditions == null)
-                ? new AppendBlobRequestConditions() : appendBlobRequestConditions;
+                ? new AppendBlobRequestConditions()
+                : appendBlobRequestConditions;
 
             if (this.appendBlobRequestConditions.getAppendPosition() == null) {
                 this.appendBlobRequestConditions.setAppendPosition(client.getProperties().block().getBlobSize());
@@ -193,10 +202,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
                 return Mono.error(this.lastError);
             }
 
-            Flux<ByteBuffer> fbb = Flux.range(0, 1).concatMap(pos -> Mono.fromCallable(() ->
-                ByteBuffer.wrap(data, (int) offset, writeLength)));
-
-            return this.appendBlock(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength);
+            return this.appendBlock(Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)).flux(),
+                writeLength);
         }
 
         @Override
@@ -227,9 +234,14 @@ public abstract class BlobOutputStream extends StorageOutputStream {
 
             Flux<ByteBuffer> body = this.sink.asFlux();
 
-            client.uploadWithResponse(new BlobParallelUploadOptions(body)
-                .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-                .setTags(tags).setTier(tier).setRequestConditions(requestConditions))
+            client
+                .uploadWithResponse(
+                    new BlobParallelUploadOptions(body).setParallelTransferOptions(parallelTransferOptions)
+                        .setHeaders(headers)
+                        .setMetadata(metadata)
+                        .setTags(tags)
+                        .setTier(tier)
+                        .setRequestConditions(requestConditions))
                 // This allows the operation to continue while maintaining the error that occurred.
                 .onErrorResume(e -> {
                     if (e instanceof IOException) {
@@ -300,8 +312,8 @@ public abstract class BlobOutputStream extends StorageOutputStream {
     }
 
     private static final class PageBlobOutputStream extends BlobOutputStream {
-        private static final String INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER =
-            "Page data must be a multiple of 512 bytes. Buffer currently contains %d bytes.";
+        private static final String INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER
+            = "Page data must be a multiple of 512 bytes. Buffer currently contains %d bytes.";
 
         private static final ClientLogger LOGGER = new ClientLogger(PageBlobOutputStream.class);
         private final PageBlobAsyncClient client;
@@ -315,20 +327,21 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             this.pageRange = pageRange;
 
             if (blobRequestConditions != null) {
-                this.pageBlobRequestConditions = new PageBlobRequestConditions()
-                    .setLeaseId(blobRequestConditions.getLeaseId())
-                    .setIfMatch(blobRequestConditions.getIfMatch())
-                    .setIfNoneMatch(blobRequestConditions.getIfNoneMatch())
-                    .setIfModifiedSince(blobRequestConditions.getIfModifiedSince())
-                    .setIfUnmodifiedSince(blobRequestConditions.getIfUnmodifiedSince());
+                this.pageBlobRequestConditions
+                    = new PageBlobRequestConditions().setLeaseId(blobRequestConditions.getLeaseId())
+                        .setIfMatch(blobRequestConditions.getIfMatch())
+                        .setIfNoneMatch(blobRequestConditions.getIfNoneMatch())
+                        .setIfModifiedSince(blobRequestConditions.getIfModifiedSince())
+                        .setIfUnmodifiedSince(blobRequestConditions.getIfUnmodifiedSince());
             } else {
                 this.pageBlobRequestConditions = null;
             }
         }
 
         private Mono<Void> writePages(Flux<ByteBuffer> pageData, int length, long offset) {
-            return client.uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1),
-                pageData, null, pageBlobRequestConditions)
+            return client
+                .uploadPagesWithResponse(new PageRange().setStart(offset).setEnd(offset + length - 1), pageData, null,
+                    pageBlobRequestConditions)
                 .then()
                 .onErrorResume(BlobStorageException.class, e -> {
                     this.lastError = new IOException(e);
@@ -343,20 +356,18 @@ public abstract class BlobOutputStream extends StorageOutputStream {
             }
 
             if (writeLength % PageBlobAsyncClient.PAGE_BYTES != 0) {
-                return Mono.error(new IOException(String.format(INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER,
-                    writeLength)));
+                return Mono.error(new IOException(String.format(INVALID_NUMBER_OF_BYTES_IN_THE_BUFFER, writeLength)));
             }
-
-            Flux<ByteBuffer> fbb = Flux.range(0, 1)
-                .concatMap(pos -> Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)));
 
             long pageOffset = pageRange.getStart();
             if (pageOffset + writeLength - 1 > pageRange.getEnd()) {
-                throw LOGGER.logExceptionAsError(
-                    new RuntimeException("The input data length is larger than the page range."));
+                throw LOGGER
+                    .logExceptionAsError(new RuntimeException("The input data length is larger than the page range."));
             }
             pageRange.setStart(pageRange.getStart() + writeLength);
-            return this.writePages(fbb.subscribeOn(Schedulers.boundedElastic()), writeLength, pageOffset);
+
+            return this.writePages(Mono.fromCallable(() -> ByteBuffer.wrap(data, (int) offset, writeLength)).flux(),
+                writeLength, pageOffset);
         }
 
         @Override

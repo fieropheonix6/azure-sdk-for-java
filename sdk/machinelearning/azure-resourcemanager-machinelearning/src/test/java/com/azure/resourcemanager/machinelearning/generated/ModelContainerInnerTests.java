@@ -10,55 +10,34 @@ import com.azure.resourcemanager.machinelearning.models.ModelContainerProperties
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ModelContainerInnerTests {
-    @Test
-    public void testDeserialize() {
-        ModelContainerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"isArchived\":false,\"latestVersion\":\"gaqvlgafcqusrd\",\"nextVersion\":\"t\",\"description\":\"sdtutnwlduyc\",\"properties\":{\"kuqgsjjxundxgket\":\"hyrmewipmvekdx\",\"gpmuneqsxvmhfbuz\":\"zhhzjhfjmhvvmu\",\"ms\":\"yihsasbhudypohyu\"},\"tags\":{\"pfoobr\":\"sqy\",\"qdnfwqzdz\":\"ttymsjny\",\"fhqlyvi\":\"tilaxh\",\"ti\":\"ouwivkxoyzunbixx\"}},\"id\":\"cpwpg\",\"name\":\"lrcivtsoxfrke\",\"type\":\"xpmyyefrpmpdnq\"}")
-                .toObject(ModelContainerInner.class);
-        Assertions.assertEquals("sdtutnwlduyc", model.properties().description());
-        Assertions.assertEquals("hyrmewipmvekdx", model.properties().properties().get("kuqgsjjxundxgket"));
-        Assertions.assertEquals("sqy", model.properties().tags().get("pfoobr"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ModelContainerInner model = BinaryData.fromString(
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"isArchived\":false,\"latestVersion\":\"yrxpdlcgqls\",\"nextVersion\":\"mjqfrddgamquhio\",\"description\":\"sjuivfcdisyir\",\"tags\":{\"xrxzbujrtr\":\"hcz\",\"khgn\":\"qvwre\",\"piqywnc\":\"nzonzl\",\"zehtdhgb\":\"jtszcof\"},\"properties\":{\"zmlovuanash\":\"reljeamur\",\"erbdk\":\"xlpm\"}},\"id\":\"vidizozsdb\",\"name\":\"cxjmonfdgnwncyp\",\"type\":\"uwwltvuqjctz\"}")
+            .toObject(ModelContainerInner.class);
+        Assertions.assertEquals("sjuivfcdisyir", model.properties().description());
+        Assertions.assertEquals("hcz", model.properties().tags().get("xrxzbujrtr"));
+        Assertions.assertEquals("reljeamur", model.properties().properties().get("zmlovuanash"));
         Assertions.assertEquals(false, model.properties().isArchived());
     }
 
-    @Test
-    public void testSerialize() {
-        ModelContainerInner model =
-            new ModelContainerInner()
-                .withProperties(
-                    new ModelContainerProperties()
-                        .withDescription("sdtutnwlduyc")
-                        .withProperties(
-                            mapOf(
-                                "kuqgsjjxundxgket",
-                                "hyrmewipmvekdx",
-                                "gpmuneqsxvmhfbuz",
-                                "zhhzjhfjmhvvmu",
-                                "ms",
-                                "yihsasbhudypohyu"))
-                        .withTags(
-                            mapOf(
-                                "pfoobr",
-                                "sqy",
-                                "qdnfwqzdz",
-                                "ttymsjny",
-                                "fhqlyvi",
-                                "tilaxh",
-                                "ti",
-                                "ouwivkxoyzunbixx"))
-                        .withIsArchived(false));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ModelContainerInner model
+            = new ModelContainerInner().withProperties(new ModelContainerProperties().withDescription("sjuivfcdisyir")
+                .withTags(mapOf("xrxzbujrtr", "hcz", "khgn", "qvwre", "piqywnc", "nzonzl", "zehtdhgb", "jtszcof"))
+                .withProperties(mapOf("zmlovuanash", "reljeamur", "erbdk", "xlpm"))
+                .withIsArchived(false));
         model = BinaryData.fromObject(model).toObject(ModelContainerInner.class);
-        Assertions.assertEquals("sdtutnwlduyc", model.properties().description());
-        Assertions.assertEquals("hyrmewipmvekdx", model.properties().properties().get("kuqgsjjxundxgket"));
-        Assertions.assertEquals("sqy", model.properties().tags().get("pfoobr"));
+        Assertions.assertEquals("sjuivfcdisyir", model.properties().description());
+        Assertions.assertEquals("hcz", model.properties().tags().get("xrxzbujrtr"));
+        Assertions.assertEquals("reljeamur", model.properties().properties().get("zmlovuanash"));
         Assertions.assertEquals(false, model.properties().isArchived());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

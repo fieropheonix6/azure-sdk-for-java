@@ -5,66 +5,77 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/** An object representing the location and content of a table cell. */
+/**
+ * An object representing the location and content of a table cell.
+ */
 @Fluent
-public final class DocumentTableCell {
+public final class DocumentTableCell implements JsonSerializable<DocumentTableCell> {
     /*
      * Table cell kind.
      */
-    @JsonProperty(value = "kind")
     private DocumentTableCellKind kind;
 
     /*
      * Row index of the cell.
      */
-    @JsonProperty(value = "rowIndex", required = true)
-    private int rowIndex;
+    private final int rowIndex;
 
     /*
      * Column index of the cell.
      */
-    @JsonProperty(value = "columnIndex", required = true)
-    private int columnIndex;
+    private final int columnIndex;
 
     /*
      * Number of rows spanned by this cell.
      */
-    @JsonProperty(value = "rowSpan")
     private Integer rowSpan;
 
     /*
      * Number of columns spanned by this cell.
      */
-    @JsonProperty(value = "columnSpan")
     private Integer columnSpan;
 
     /*
      * Concatenated content of the table cell in reading order.
      */
-    @JsonProperty(value = "content", required = true)
-    private String content;
+    private final String content;
 
     /*
      * Bounding regions covering the table cell.
      */
-    @JsonProperty(value = "boundingRegions")
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the table cell in the reading order concatenated content.
      */
-    @JsonProperty(value = "spans", required = true)
-    private List<DocumentSpan> spans;
+    private final List<DocumentSpan> spans;
 
-    /** Creates an instance of DocumentTableCell class. */
-    public DocumentTableCell() {}
+    /**
+     * Creates an instance of DocumentTableCell class.
+     * 
+     * @param rowIndex the rowIndex value to set.
+     * @param columnIndex the columnIndex value to set.
+     * @param content the content value to set.
+     * @param spans the spans value to set.
+     */
+    public DocumentTableCell(int rowIndex, int columnIndex, String content, List<DocumentSpan> spans) {
+        this.rowIndex = rowIndex;
+        this.columnIndex = columnIndex;
+        this.content = content;
+        this.spans = spans;
+    }
 
     /**
      * Get the kind property: Table cell kind.
-     *
+     * 
      * @return the kind value.
      */
     public DocumentTableCellKind getKind() {
@@ -73,7 +84,7 @@ public final class DocumentTableCell {
 
     /**
      * Set the kind property: Table cell kind.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the DocumentTableCell object itself.
      */
@@ -84,7 +95,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the rowIndex property: Row index of the cell.
-     *
+     * 
      * @return the rowIndex value.
      */
     public int getRowIndex() {
@@ -92,19 +103,8 @@ public final class DocumentTableCell {
     }
 
     /**
-     * Set the rowIndex property: Row index of the cell.
-     *
-     * @param rowIndex the rowIndex value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setRowIndex(int rowIndex) {
-        this.rowIndex = rowIndex;
-        return this;
-    }
-
-    /**
      * Get the columnIndex property: Column index of the cell.
-     *
+     * 
      * @return the columnIndex value.
      */
     public int getColumnIndex() {
@@ -112,19 +112,8 @@ public final class DocumentTableCell {
     }
 
     /**
-     * Set the columnIndex property: Column index of the cell.
-     *
-     * @param columnIndex the columnIndex value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setColumnIndex(int columnIndex) {
-        this.columnIndex = columnIndex;
-        return this;
-    }
-
-    /**
      * Get the rowSpan property: Number of rows spanned by this cell.
-     *
+     * 
      * @return the rowSpan value.
      */
     public Integer getRowSpan() {
@@ -133,7 +122,7 @@ public final class DocumentTableCell {
 
     /**
      * Set the rowSpan property: Number of rows spanned by this cell.
-     *
+     * 
      * @param rowSpan the rowSpan value to set.
      * @return the DocumentTableCell object itself.
      */
@@ -144,7 +133,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the columnSpan property: Number of columns spanned by this cell.
-     *
+     * 
      * @return the columnSpan value.
      */
     public Integer getColumnSpan() {
@@ -153,7 +142,7 @@ public final class DocumentTableCell {
 
     /**
      * Set the columnSpan property: Number of columns spanned by this cell.
-     *
+     * 
      * @param columnSpan the columnSpan value to set.
      * @return the DocumentTableCell object itself.
      */
@@ -164,7 +153,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the content property: Concatenated content of the table cell in reading order.
-     *
+     * 
      * @return the content value.
      */
     public String getContent() {
@@ -172,19 +161,8 @@ public final class DocumentTableCell {
     }
 
     /**
-     * Set the content property: Concatenated content of the table cell in reading order.
-     *
-     * @param content the content value to set.
-     * @return the DocumentTableCell object itself.
-     */
-    public DocumentTableCell setContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
      * Get the boundingRegions property: Bounding regions covering the table cell.
-     *
+     * 
      * @return the boundingRegions value.
      */
     public List<BoundingRegion> getBoundingRegions() {
@@ -193,7 +171,7 @@ public final class DocumentTableCell {
 
     /**
      * Set the boundingRegions property: Bounding regions covering the table cell.
-     *
+     * 
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentTableCell object itself.
      */
@@ -204,7 +182,7 @@ public final class DocumentTableCell {
 
     /**
      * Get the spans property: Location of the table cell in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     public List<DocumentSpan> getSpans() {
@@ -212,13 +190,100 @@ public final class DocumentTableCell {
     }
 
     /**
-     * Set the spans property: Location of the table cell in the reading order concatenated content.
-     *
-     * @param spans the spans value to set.
-     * @return the DocumentTableCell object itself.
+     * {@inheritDoc}
      */
-    public DocumentTableCell setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("rowIndex", this.rowIndex);
+        jsonWriter.writeIntField("columnIndex", this.columnIndex);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeNumberField("rowSpan", this.rowSpan);
+        jsonWriter.writeNumberField("columnSpan", this.columnSpan);
+        jsonWriter.writeArrayField("boundingRegions", this.boundingRegions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentTableCell from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentTableCell if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentTableCell.
+     */
+    public static DocumentTableCell fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean rowIndexFound = false;
+            int rowIndex = 0;
+            boolean columnIndexFound = false;
+            int columnIndex = 0;
+            boolean contentFound = false;
+            String content = null;
+            boolean spansFound = false;
+            List<DocumentSpan> spans = null;
+            DocumentTableCellKind kind = null;
+            Integer rowSpan = null;
+            Integer columnSpan = null;
+            List<BoundingRegion> boundingRegions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rowIndex".equals(fieldName)) {
+                    rowIndex = reader.getInt();
+                    rowIndexFound = true;
+                } else if ("columnIndex".equals(fieldName)) {
+                    columnIndex = reader.getInt();
+                    columnIndexFound = true;
+                } else if ("content".equals(fieldName)) {
+                    content = reader.getString();
+                    contentFound = true;
+                } else if ("spans".equals(fieldName)) {
+                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
+                    spansFound = true;
+                } else if ("kind".equals(fieldName)) {
+                    kind = DocumentTableCellKind.fromString(reader.getString());
+                } else if ("rowSpan".equals(fieldName)) {
+                    rowSpan = reader.getNullable(JsonReader::getInt);
+                } else if ("columnSpan".equals(fieldName)) {
+                    columnSpan = reader.getNullable(JsonReader::getInt);
+                } else if ("boundingRegions".equals(fieldName)) {
+                    boundingRegions = reader.readArray(reader1 -> BoundingRegion.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (rowIndexFound && columnIndexFound && contentFound && spansFound) {
+                DocumentTableCell deserializedDocumentTableCell
+                    = new DocumentTableCell(rowIndex, columnIndex, content, spans);
+                deserializedDocumentTableCell.kind = kind;
+                deserializedDocumentTableCell.rowSpan = rowSpan;
+                deserializedDocumentTableCell.columnSpan = columnSpan;
+                deserializedDocumentTableCell.boundingRegions = boundingRegions;
+
+                return deserializedDocumentTableCell;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!rowIndexFound) {
+                missingProperties.add("rowIndex");
+            }
+            if (!columnIndexFound) {
+                missingProperties.add("columnIndex");
+            }
+            if (!contentFound) {
+                missingProperties.add("content");
+            }
+            if (!spansFound) {
+                missingProperties.add("spans");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

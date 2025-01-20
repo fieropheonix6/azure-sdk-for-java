@@ -15,11 +15,47 @@ import com.azure.resourcemanager.customerinsights.fluent.models.PredictionModelS
 import com.azure.resourcemanager.customerinsights.fluent.models.PredictionResourceFormatInner;
 import com.azure.resourcemanager.customerinsights.fluent.models.PredictionTrainingResultsInner;
 
-/** An instance of this class provides access to all the operations defined in PredictionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PredictionsClient.
+ */
 public interface PredictionsClient {
     /**
      * Creates a Prediction or updates an existing Prediction in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param predictionName The name of the Prediction.
+     * @param parameters Parameters supplied to the create/update Prediction operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the prediction resource format.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner> beginCreateOrUpdate(
+        String resourceGroupName, String hubName, String predictionName, PredictionResourceFormatInner parameters);
+
+    /**
+     * Creates a Prediction or updates an existing Prediction in the hub.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param predictionName The name of the Prediction.
+     * @param parameters Parameters supplied to the create/update Prediction operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the prediction resource format.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner> beginCreateOrUpdate(
+        String resourceGroupName, String hubName, String predictionName, PredictionResourceFormatInner parameters,
+        Context context);
+
+    /**
+     * Creates a Prediction or updates an existing Prediction in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -30,12 +66,12 @@ public interface PredictionsClient {
      * @return the prediction resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName, String hubName, String predictionName, PredictionResourceFormatInner parameters);
+    PredictionResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String predictionName,
+        PredictionResourceFormatInner parameters);
 
     /**
      * Creates a Prediction or updates an existing Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -47,53 +83,28 @@ public interface PredictionsClient {
      * @return the prediction resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<PredictionResourceFormatInner>, PredictionResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionResourceFormatInner parameters,
-        Context context);
-
-    /**
-     * Creates a Prediction or updates an existing Prediction in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param predictionName The name of the Prediction.
-     * @param parameters Parameters supplied to the create/update Prediction operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PredictionResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String predictionName, PredictionResourceFormatInner parameters);
-
-    /**
-     * Creates a Prediction or updates an existing Prediction in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param predictionName The name of the Prediction.
-     * @param parameters Parameters supplied to the create/update Prediction operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the prediction resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PredictionResourceFormatInner createOrUpdate(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionResourceFormatInner parameters,
-        Context context);
+    PredictionResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String predictionName,
+        PredictionResourceFormatInner parameters, Context context);
 
     /**
      * Gets a Prediction in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param predictionName The name of the Prediction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Prediction in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PredictionResourceFormatInner> getWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context);
+
+    /**
+     * Gets a Prediction in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -106,38 +117,22 @@ public interface PredictionsClient {
     PredictionResourceFormatInner get(String resourceGroupName, String hubName, String predictionName);
 
     /**
-     * Gets a Prediction in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param predictionName The name of the Prediction.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Prediction in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredictionResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
-
-    /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String predictionName);
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -145,15 +140,15 @@ public interface PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String predictionName,
+        Context context);
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -166,7 +161,7 @@ public interface PredictionsClient {
 
     /**
      * Deletes a Prediction in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -180,7 +175,23 @@ public interface PredictionsClient {
 
     /**
      * Gets training results.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param predictionName The name of the Prediction.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return training results along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PredictionTrainingResultsInner> getTrainingResultsWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context);
+
+    /**
+     * Gets training results.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -193,8 +204,8 @@ public interface PredictionsClient {
     PredictionTrainingResultsInner getTrainingResults(String resourceGroupName, String hubName, String predictionName);
 
     /**
-     * Gets training results.
-     *
+     * Gets model status of the prediction.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -202,15 +213,15 @@ public interface PredictionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return training results.
+     * @return model status of the prediction along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredictionTrainingResultsInner> getTrainingResultsWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    Response<PredictionModelStatusInner> getModelStatusWithResponse(String resourceGroupName, String hubName,
+        String predictionName, Context context);
 
     /**
      * Gets model status of the prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -223,24 +234,25 @@ public interface PredictionsClient {
     PredictionModelStatusInner getModelStatus(String resourceGroupName, String hubName, String predictionName);
 
     /**
-     * Gets model status of the prediction.
-     *
+     * Creates or updates the model status of prediction.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
+     * @param parameters Parameters supplied to the create/update prediction model status operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return model status of the prediction.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PredictionModelStatusInner> getModelStatusWithResponse(
-        String resourceGroupName, String hubName, String predictionName, Context context);
+    Response<Void> modelStatusWithResponse(String resourceGroupName, String hubName, String predictionName,
+        PredictionModelStatusInner parameters, Context context);
 
     /**
      * Creates or updates the model status of prediction.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param predictionName The name of the Prediction.
@@ -250,53 +262,32 @@ public interface PredictionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void modelStatus(
-        String resourceGroupName, String hubName, String predictionName, PredictionModelStatusInner parameters);
-
-    /**
-     * Creates or updates the model status of prediction.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param predictionName The name of the Prediction.
-     * @param parameters Parameters supplied to the create/update prediction model status operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> modelStatusWithResponse(
-        String resourceGroupName,
-        String hubName,
-        String predictionName,
-        PredictionModelStatusInner parameters,
-        Context context);
+    void modelStatus(String resourceGroupName, String hubName, String predictionName,
+        PredictionModelStatusInner parameters);
 
     /**
      * Gets all the predictions in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the predictions in the specified hub.
+     * @return all the predictions in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PredictionResourceFormatInner> listByHub(String resourceGroupName, String hubName);
 
     /**
      * Gets all the predictions in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the predictions in the specified hub.
+     * @return all the predictions in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PredictionResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context);

@@ -8,24 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.fluent.models.PrivateLinkResourceInner;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourceInnerTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"groupId\":\"tx\",\"requiredMembers\":[\"ukxit\",\"m\",\"tg\",\"qqxhrnxrxcpj\"],\"requiredZoneNames\":[\"av\",\"k\",\"dzf\"]},\"id\":\"zivj\",\"name\":\"frqttbajlkatnw\",\"type\":\"yiopi\"}")
-                .toObject(PrivateLinkResourceInner.class);
-        Assertions.assertEquals("av", model.requiredZoneNames().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"groupId\":\"ahhvjhhna\",\"requiredMembers\":[\"bbjjidjksyxk\",\"xvxevblbjednljla\",\"euaulxu\"],\"requiredZoneNames\":[\"jbnkpp\",\"ynenlsvxeizz\"]},\"id\":\"klnsrmffey\",\"name\":\"xcktpiymerteeamm\",\"type\":\"qiekkkzddrt\"}")
+            .toObject(PrivateLinkResourceInner.class);
+        Assertions.assertEquals("jbnkpp", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkResourceInner model =
-            new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("av", "k", "dzf"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkResourceInner model
+            = new PrivateLinkResourceInner().withRequiredZoneNames(Arrays.asList("jbnkpp", "ynenlsvxeizz"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceInner.class);
-        Assertions.assertEquals("av", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("jbnkpp", model.requiredZoneNames().get(0));
     }
 }

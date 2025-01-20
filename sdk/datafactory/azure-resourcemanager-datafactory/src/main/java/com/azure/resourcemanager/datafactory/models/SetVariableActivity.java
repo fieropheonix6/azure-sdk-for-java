@@ -6,58 +6,128 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SetVariableActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Set value for a Variable. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SetVariable")
+/**
+ * Set value for a Variable.
+ */
 @Fluent
 public final class SetVariableActivity extends ControlActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "SetVariable";
+
+    /*
      * Set Variable activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private SetVariableActivityTypeProperties innerTypeProperties = new SetVariableActivityTypeProperties();
 
-    /** Creates an instance of SetVariableActivity class. */
+    /*
+     * Activity policy.
+     */
+    private SecureInputOutputPolicy policy;
+
+    /**
+     * Creates an instance of SetVariableActivity class.
+     */
     public SetVariableActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Set Variable activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SetVariableActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the policy property: Activity policy.
+     * 
+     * @return the policy value.
+     */
+    public SecureInputOutputPolicy policy() {
+        return this.policy;
+    }
+
+    /**
+     * Set the policy property: Activity policy.
+     * 
+     * @param policy the policy value to set.
+     * @return the SetVariableActivity object itself.
+     */
+    public SetVariableActivity withPolicy(SecureInputOutputPolicy policy) {
+        this.policy = policy;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SetVariableActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SetVariableActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SetVariableActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -66,7 +136,7 @@ public final class SetVariableActivity extends ControlActivity {
 
     /**
      * Get the variableName property: Name of the variable whose value needs to be set.
-     *
+     * 
      * @return the variableName value.
      */
     public String variableName() {
@@ -75,7 +145,7 @@ public final class SetVariableActivity extends ControlActivity {
 
     /**
      * Set the variableName property: Name of the variable whose value needs to be set.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the SetVariableActivity object itself.
      */
@@ -89,7 +159,7 @@ public final class SetVariableActivity extends ControlActivity {
 
     /**
      * Get the value property: Value to be set. Could be a static value or Expression.
-     *
+     * 
      * @return the value value.
      */
     public Object value() {
@@ -98,7 +168,7 @@ public final class SetVariableActivity extends ControlActivity {
 
     /**
      * Set the value property: Value to be set. Could be a static value or Expression.
-     *
+     * 
      * @param value the value value to set.
      * @return the SetVariableActivity object itself.
      */
@@ -111,22 +181,134 @@ public final class SetVariableActivity extends ControlActivity {
     }
 
     /**
+     * Get the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     * 
+     * @return the setSystemVariable value.
+     */
+    public Boolean setSystemVariable() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().setSystemVariable();
+    }
+
+    /**
+     * Set the setSystemVariable property: If set to true, it sets the pipeline run return value.
+     * 
+     * @param setSystemVariable the setSystemVariable value to set.
+     * @return the SetVariableActivity object itself.
+     */
+    public SetVariableActivity withSetSystemVariable(Boolean setSystemVariable) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new SetVariableActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSetSystemVariable(setSystemVariable);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SetVariableActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SetVariableActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model SetVariableActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SetVariableActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("policy", this.policy);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SetVariableActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SetVariableActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SetVariableActivity.
+     */
+    public static SetVariableActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SetVariableActivity deserializedSetVariableActivity = new SetVariableActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSetVariableActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSetVariableActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedSetVariableActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedSetVariableActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedSetVariableActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedSetVariableActivity.withUserProperties(userProperties);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSetVariableActivity.innerTypeProperties
+                        = SetVariableActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSetVariableActivity.type = reader.getString();
+                } else if ("policy".equals(fieldName)) {
+                    deserializedSetVariableActivity.policy = SecureInputOutputPolicy.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSetVariableActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedSetVariableActivity;
+        });
+    }
 }

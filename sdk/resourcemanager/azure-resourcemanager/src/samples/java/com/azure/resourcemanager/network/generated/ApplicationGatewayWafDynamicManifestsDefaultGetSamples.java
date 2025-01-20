@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ApplicationGatewayWafDynamicManifestsDefault Get. */
+/**
+ * Samples for ApplicationGatewayWafDynamicManifestsDefault Get.
+ */
 public final class ApplicationGatewayWafDynamicManifestsDefaultGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/GetApplicationGatewayWafDynamicManifestsDefault.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * GetApplicationGatewayWafDynamicManifestsDefault.json
      */
     /**
      * Sample code: Gets WAF default manifest.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getsWAFDefaultManifest(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getApplicationGatewayWafDynamicManifestsDefaults()
-            .getWithResponse("westus", Context.NONE);
+            .getWithResponse("westus", com.azure.core.util.Context.NONE);
     }
 }

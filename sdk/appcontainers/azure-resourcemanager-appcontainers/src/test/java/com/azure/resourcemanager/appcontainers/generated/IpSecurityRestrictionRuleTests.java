@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.Action;
 import com.azure.resourcemanager.appcontainers.models.IpSecurityRestrictionRule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IpSecurityRestrictionRuleTests {
-    @Test
-    public void testDeserialize() {
-        IpSecurityRestrictionRule model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"gw\",\"description\":\"vlvqhjkbegi\",\"ipAddressRange\":\"t\",\"action\":\"Allow\"}")
-                .toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("gw", model.name());
-        Assertions.assertEquals("vlvqhjkbegi", model.description());
-        Assertions.assertEquals("t", model.ipAddressRange());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IpSecurityRestrictionRule model = BinaryData.fromString(
+            "{\"name\":\"oftrmaequia\",\"description\":\"icslfaoq\",\"ipAddressRange\":\"piyylhalnswhccsp\",\"action\":\"Allow\"}")
+            .toObject(IpSecurityRestrictionRule.class);
+        Assertions.assertEquals("oftrmaequia", model.name());
+        Assertions.assertEquals("icslfaoq", model.description());
+        Assertions.assertEquals("piyylhalnswhccsp", model.ipAddressRange());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 
-    @Test
-    public void testSerialize() {
-        IpSecurityRestrictionRule model =
-            new IpSecurityRestrictionRule()
-                .withName("gw")
-                .withDescription("vlvqhjkbegi")
-                .withIpAddressRange("t")
-                .withAction(Action.ALLOW);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IpSecurityRestrictionRule model = new IpSecurityRestrictionRule().withName("oftrmaequia")
+            .withDescription("icslfaoq")
+            .withIpAddressRange("piyylhalnswhccsp")
+            .withAction(Action.ALLOW);
         model = BinaryData.fromObject(model).toObject(IpSecurityRestrictionRule.class);
-        Assertions.assertEquals("gw", model.name());
-        Assertions.assertEquals("vlvqhjkbegi", model.description());
-        Assertions.assertEquals("t", model.ipAddressRange());
+        Assertions.assertEquals("oftrmaequia", model.name());
+        Assertions.assertEquals("icslfaoq", model.description());
+        Assertions.assertEquals("piyylhalnswhccsp", model.ipAddressRange());
         Assertions.assertEquals(Action.ALLOW, model.action());
     }
 }

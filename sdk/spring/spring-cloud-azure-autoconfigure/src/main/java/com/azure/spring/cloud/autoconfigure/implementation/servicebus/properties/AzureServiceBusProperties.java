@@ -27,7 +27,6 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     implements ServiceBusNamespaceProperties, InitializingBean {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
-    private static final String DEFAULT_DOMAIN_NAME = "servicebus.windows.net";
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProperties.class);
     /**
      * Whether to enable cross entity transaction on the connection to Service bus.
@@ -36,10 +35,6 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
     private final Producer producer = new Producer();
     private final Consumer consumer = new Consumer();
     private final Processor processor = new Processor();
-
-    public AzureServiceBusProperties() {
-        this.setDomainName(DEFAULT_DOMAIN_NAME);
-    }
 
     public Boolean getCrossEntityTransactions() {
         return crossEntityTransactions;
@@ -69,12 +64,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.producer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
         propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.producer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.producer.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.producer.getEntityType()).to(properties::setEntityType);
@@ -91,12 +88,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.consumer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
         propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.consumer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.consumer.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.consumer.getEntityType()).to(properties::setEntityType);
@@ -121,12 +120,14 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.processor, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
         propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
+        propertyMapper.from(this.processor.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.processor.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.processor.getEntityType()).to(properties::setEntityType);
@@ -163,7 +164,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         /**
          * Whether to enable auto-complete.
          */
-        private Boolean autoComplete = true;
+        private Boolean autoComplete;
         /**
          * Prefetch count of the consumer.
          */
@@ -175,7 +176,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         /**
          * Mode for receiving messages.
          */
-        private ServiceBusReceiveMode receiveMode = ServiceBusReceiveMode.PEEK_LOCK;
+        private ServiceBusReceiveMode receiveMode;
         /**
          * Name for a topic subscription.
          */
@@ -254,7 +255,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
      */
     public static class Processor extends Consumer implements ServiceBusProcessorClientProperties {
         /**
-         * Max concurrent messages to process.
+         * Max concurrent messages to process. When session enabled, it applies to each session.
          */
         private Integer maxConcurrentCalls;
         /**

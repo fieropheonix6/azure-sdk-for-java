@@ -6,36 +6,40 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureFileShareRecoveryPoint;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointProperties;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureFileShareRecoveryPointTests {
-    @Test
-    public void testDeserialize() {
-        AzureFileShareRecoveryPoint model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"AzureFileShareRecoveryPoint\",\"recoveryPointType\":\"ceacvlhvygdy\",\"recoveryPointTime\":\"2021-04-02T04:25:09Z\",\"fileShareSnapshotUri\":\"rtwnawjslbi\",\"recoveryPointSizeInGB\":1632414232}")
-                .toObject(AzureFileShareRecoveryPoint.class);
-        Assertions.assertEquals("ceacvlhvygdy", model.recoveryPointType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T04:25:09Z"), model.recoveryPointTime());
-        Assertions.assertEquals("rtwnawjslbi", model.fileShareSnapshotUri());
-        Assertions.assertEquals(1632414232, model.recoveryPointSizeInGB());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureFileShareRecoveryPoint model = BinaryData.fromString(
+            "{\"objectType\":\"AzureFileShareRecoveryPoint\",\"recoveryPointType\":\"h\",\"recoveryPointTime\":\"2021-03-17T00:42:38Z\",\"fileShareSnapshotUri\":\"fdntwjchrdgoih\",\"recoveryPointSizeInGB\":1654736009,\"recoveryPointProperties\":{\"expiryTime\":\"ton\",\"ruleName\":\"jl\",\"isSoftDeleted\":true}}")
+            .toObject(AzureFileShareRecoveryPoint.class);
+        Assertions.assertEquals("h", model.recoveryPointType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T00:42:38Z"), model.recoveryPointTime());
+        Assertions.assertEquals("fdntwjchrdgoih", model.fileShareSnapshotUri());
+        Assertions.assertEquals(1654736009, model.recoveryPointSizeInGB());
+        Assertions.assertEquals("ton", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("jl", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals(true, model.recoveryPointProperties().isSoftDeleted());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureFileShareRecoveryPoint model =
-            new AzureFileShareRecoveryPoint()
-                .withRecoveryPointType("ceacvlhvygdy")
-                .withRecoveryPointTime(OffsetDateTime.parse("2021-04-02T04:25:09Z"))
-                .withFileShareSnapshotUri("rtwnawjslbi")
-                .withRecoveryPointSizeInGB(1632414232);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureFileShareRecoveryPoint model = new AzureFileShareRecoveryPoint().withRecoveryPointType("h")
+            .withRecoveryPointTime(OffsetDateTime.parse("2021-03-17T00:42:38Z"))
+            .withFileShareSnapshotUri("fdntwjchrdgoih")
+            .withRecoveryPointSizeInGB(1654736009)
+            .withRecoveryPointProperties(
+                new RecoveryPointProperties().withExpiryTime("ton").withRuleName("jl").withIsSoftDeleted(true));
         model = BinaryData.fromObject(model).toObject(AzureFileShareRecoveryPoint.class);
-        Assertions.assertEquals("ceacvlhvygdy", model.recoveryPointType());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-02T04:25:09Z"), model.recoveryPointTime());
-        Assertions.assertEquals("rtwnawjslbi", model.fileShareSnapshotUri());
-        Assertions.assertEquals(1632414232, model.recoveryPointSizeInGB());
+        Assertions.assertEquals("h", model.recoveryPointType());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-17T00:42:38Z"), model.recoveryPointTime());
+        Assertions.assertEquals("fdntwjchrdgoih", model.fileShareSnapshotUri());
+        Assertions.assertEquals(1654736009, model.recoveryPointSizeInGB());
+        Assertions.assertEquals("ton", model.recoveryPointProperties().expiryTime());
+        Assertions.assertEquals("jl", model.recoveryPointProperties().ruleName());
+        Assertions.assertEquals(true, model.recoveryPointProperties().isSoftDeleted());
     }
 }

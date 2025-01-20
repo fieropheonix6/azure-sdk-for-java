@@ -5,47 +5,51 @@
 package com.azure.resourcemanager.quota.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.models.QuotaRequestState;
 import com.azure.resourcemanager.quota.models.ServiceErrorDetail;
 import com.azure.resourcemanager.quota.models.SubRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** List of quota requests with details. */
+/**
+ * List of quota requests with details.
+ */
 @Fluent
-public final class QuotaRequestDetailsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaRequestDetailsInner.class);
-
+public final class QuotaRequestDetailsInner implements JsonSerializable<QuotaRequestDetailsInner> {
     /*
      * Quota request ID.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Quota request name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type. "Microsoft.Quota/quotas".
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Quota request details.
      */
-    @JsonProperty(value = "properties")
     private QuotaRequestProperties innerProperties;
 
     /**
+     * Creates an instance of QuotaRequestDetailsInner class.
+     */
+    public QuotaRequestDetailsInner() {
+    }
+
+    /**
      * Get the id property: Quota request ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -54,7 +58,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Get the name property: Quota request name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +67,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Get the type property: Resource type. "Microsoft.Quota/quotas".
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -72,7 +76,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Get the innerProperties property: Quota request details.
-     *
+     * 
      * @return the innerProperties value.
      */
     private QuotaRequestProperties innerProperties() {
@@ -81,7 +85,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Get the provisioningState property: The quota request status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public QuotaRequestState provisioningState() {
@@ -90,7 +94,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Get the message property: User-friendly status message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -99,7 +103,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Get the error property: Error details of the quota request.
-     *
+     * 
      * @return the error value.
      */
     public ServiceErrorDetail error() {
@@ -108,7 +112,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Set the error property: Error details of the quota request.
-     *
+     * 
      * @param error the error value to set.
      * @return the QuotaRequestDetailsInner object itself.
      */
@@ -123,7 +127,7 @@ public final class QuotaRequestDetailsInner {
     /**
      * Get the requestSubmitTime property: The quota request submission time. The date conforms to the following format
      * specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ.
-     *
+     * 
      * @return the requestSubmitTime value.
      */
     public OffsetDateTime requestSubmitTime() {
@@ -132,7 +136,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Get the value property: Quota request details.
-     *
+     * 
      * @return the value value.
      */
     public List<SubRequest> value() {
@@ -141,7 +145,7 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Set the value property: Quota request details.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaRequestDetailsInner object itself.
      */
@@ -155,12 +159,54 @@ public final class QuotaRequestDetailsInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaRequestDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaRequestDetailsInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaRequestDetailsInner.
+     */
+    public static QuotaRequestDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaRequestDetailsInner deserializedQuotaRequestDetailsInner = new QuotaRequestDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedQuotaRequestDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedQuotaRequestDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedQuotaRequestDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedQuotaRequestDetailsInner.innerProperties = QuotaRequestProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaRequestDetailsInner;
+        });
     }
 }

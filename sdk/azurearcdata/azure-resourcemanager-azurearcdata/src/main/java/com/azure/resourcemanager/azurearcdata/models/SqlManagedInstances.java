@@ -8,54 +8,74 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SqlManagedInstances. */
+/**
+ * Resource collection API of SqlManagedInstances.
+ */
 public interface SqlManagedInstances {
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlManagedInstance> list();
 
     /**
      * List sqlManagedInstance resources in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of SqlManagedInstance.
+     * @return a list of SqlManagedInstance as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlManagedInstance> list(Context context);
 
     /**
+     * List sqlManagedInstance resources in the resource group
+     * 
      * Gets all sqlManagedInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlManagedInstance> listByResourceGroup(String resourceGroupName);
 
     /**
+     * List sqlManagedInstance resources in the resource group
+     * 
      * Gets all sqlManagedInstances in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all sqlManagedInstances in a resource group.
+     * @return all sqlManagedInstances in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SqlManagedInstance> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param sqlManagedInstanceName Name of SQL Managed Instance.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SqlManagedInstance along with {@link Response}.
+     */
+    Response<SqlManagedInstance> getByResourceGroupWithResponse(String resourceGroupName, String sqlManagedInstanceName,
+        Context context);
+
+    /**
+     * Retrieves a SQL Managed Instance resource.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName Name of SQL Managed Instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,22 +86,8 @@ public interface SqlManagedInstances {
     SqlManagedInstance getByResourceGroup(String resourceGroupName, String sqlManagedInstanceName);
 
     /**
-     * Retrieves a SQL Managed Instance resource.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param sqlManagedInstanceName Name of SQL Managed Instance.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
-     */
-    Response<SqlManagedInstance> getByResourceGroupWithResponse(
-        String resourceGroupName, String sqlManagedInstanceName, Context context);
-
-    /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +98,7 @@ public interface SqlManagedInstances {
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param sqlManagedInstanceName The name of Sql Managed Instances.
      * @param context The context to associate with this operation.
@@ -104,30 +110,30 @@ public interface SqlManagedInstances {
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response}.
      */
     SqlManagedInstance getById(String id);
 
     /**
      * Retrieves a SQL Managed Instance resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SqlManagedInstance.
+     * @return a SqlManagedInstance along with {@link Response}.
      */
     Response<SqlManagedInstance> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -137,7 +143,7 @@ public interface SqlManagedInstances {
 
     /**
      * Deletes a SQL Managed Instance resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -148,7 +154,7 @@ public interface SqlManagedInstances {
 
     /**
      * Begins definition for a new SqlManagedInstance resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SqlManagedInstance definition.
      */

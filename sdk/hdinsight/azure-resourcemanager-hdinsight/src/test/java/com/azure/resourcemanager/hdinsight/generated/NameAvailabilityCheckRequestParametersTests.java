@@ -7,25 +7,23 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.NameAvailabilityCheckRequestParameters;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NameAvailabilityCheckRequestParametersTests {
-    @Test
-    public void testDeserialize() {
-        NameAvailabilityCheckRequestParameters model =
-            BinaryData
-                .fromString("{\"name\":\"rwr\",\"type\":\"rtwaenuuzko\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NameAvailabilityCheckRequestParameters model
+            = BinaryData.fromString("{\"name\":\"ftumrtwnawjslbiw\",\"type\":\"jgcyztsfmznba\"}")
                 .toObject(NameAvailabilityCheckRequestParameters.class);
-        Assertions.assertEquals("rwr", model.name());
-        Assertions.assertEquals("rtwaenuuzko", model.type());
+        Assertions.assertEquals("ftumrtwnawjslbiw", model.name());
+        Assertions.assertEquals("jgcyztsfmznba", model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        NameAvailabilityCheckRequestParameters model =
-            new NameAvailabilityCheckRequestParameters().withName("rwr").withType("rtwaenuuzko");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NameAvailabilityCheckRequestParameters model
+            = new NameAvailabilityCheckRequestParameters().withName("ftumrtwnawjslbiw").withType("jgcyztsfmznba");
         model = BinaryData.fromObject(model).toObject(NameAvailabilityCheckRequestParameters.class);
-        Assertions.assertEquals("rwr", model.name());
-        Assertions.assertEquals("rtwaenuuzko", model.type());
+        Assertions.assertEquals("ftumrtwnawjslbiw", model.name());
+        Assertions.assertEquals("jgcyztsfmznba", model.type());
     }
 }

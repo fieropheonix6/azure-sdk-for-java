@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.StorageAccountCredentialsClient;
@@ -39,26 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StorageAccountCredentialsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageAccountCredentialsClient.
+ */
 public final class StorageAccountCredentialsClientImpl implements StorageAccountCredentialsClient {
-    private final ClientLogger logger = new ClientLogger(StorageAccountCredentialsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StorageAccountCredentialsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataBoxEdgeManagementClientImpl client;
 
     /**
      * Initializes an instance of StorageAccountCredentialsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StorageAccountCredentialsClientImpl(DataBoxEdgeManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    StorageAccountCredentialsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(StorageAccountCredentialsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,109 +69,80 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataBoxEdgeManagemen")
-    private interface StorageAccountCredentialsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials")
-        @ExpectedResponses({200})
+    public interface StorageAccountCredentialsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageAccountCredentialList>> listByDataBoxEdgeDevice(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<StorageAccountCredentialList>> listByDataBoxEdgeDevice(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageAccountCredentialInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<StorageAccountCredentialInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials/{name}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials/{name}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") StorageAccountCredentialInner storageAccountCredential,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge"
-                + "/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataBoxEdge/dataBoxEdgeDevices/{deviceName}/storageAccountCredentials/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("deviceName") String deviceName,
-            @PathParam("name") String name,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("deviceName") String deviceName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageAccountCredentialList>> listByDataBoxEdgeDeviceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName) {
+    private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -178,57 +150,38 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByDataBoxEdgeDevice(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<StorageAccountCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<StorageAccountCredentialInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceSinglePageAsync(
-        String deviceName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceSinglePageAsync(String deviceName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -237,114 +190,102 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByDataBoxEdgeDevice(
-                this.client.getEndpoint(),
-                deviceName,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByDataBoxEdgeDevice(this.client.getEndpoint(), deviceName, this.client.getSubscriptionId(),
+                resourceGroupName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageAccountCredentialInner> listByDataBoxEdgeDeviceAsync(
-        String deviceName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName),
+    private PagedFlux<StorageAccountCredentialInner> listByDataBoxEdgeDeviceAsync(String deviceName,
+        String resourceGroupName) {
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageAccountCredentialInner> listByDataBoxEdgeDeviceAsync(
-        String deviceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, context),
+    private PagedFlux<StorageAccountCredentialInner> listByDataBoxEdgeDeviceAsync(String deviceName,
+        String resourceGroupName, Context context) {
+        return new PagedFlux<>(() -> listByDataBoxEdgeDeviceSinglePageAsync(deviceName, resourceGroupName, context),
             nextLink -> listByDataBoxEdgeDeviceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName) {
+    public PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(String deviceName,
+        String resourceGroupName) {
         return new PagedIterable<>(listByDataBoxEdgeDeviceAsync(deviceName, resourceGroupName));
     }
 
     /**
      * Gets all the storage account credentials in a Data Box Edge/Data Box Gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device.
+     * @return all the storage account credentials in a Data Box Edge/Data Box Gateway device as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, Context context) {
+    public PagedIterable<StorageAccountCredentialInner> listByDataBoxEdgeDevice(String deviceName,
+        String resourceGroupName, Context context) {
         return new PagedIterable<>(listByDataBoxEdgeDeviceAsync(deviceName, resourceGroupName, context));
     }
 
     /**
      * Gets the properties of the specified storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageAccountCredentialInner>> getWithResponseAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private Mono<Response<StorageAccountCredentialInner>> getWithResponseAsync(String deviceName, String name,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -353,10 +294,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -364,24 +303,14 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -389,16 +318,15 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageAccountCredentialInner>> getWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<StorageAccountCredentialInner>> getWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -407,10 +335,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -418,45 +344,48 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the properties of the specified storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
+     * @return the properties of the specified storage account credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StorageAccountCredentialInner> getAsync(String deviceName, String name, String resourceGroupName) {
         return getWithResponseAsync(deviceName, name, resourceGroupName)
-            .flatMap(
-                (Response<StorageAccountCredentialInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the properties of the specified storage account credential.
-     *
+     * 
+     * @param deviceName The device name.
+     * @param name The storage account credential name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified storage account credential along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StorageAccountCredentialInner> getWithResponse(String deviceName, String name,
+        String resourceGroupName, Context context) {
+        return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
+    }
+
+    /**
+     * Gets the properties of the specified storage account credential.
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -467,30 +396,12 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StorageAccountCredentialInner get(String deviceName, String name, String resourceGroupName) {
-        return getAsync(deviceName, name, resourceGroupName).block();
-    }
-
-    /**
-     * Gets the properties of the specified storage account credential.
-     *
-     * @param deviceName The device name.
-     * @param name The storage account credential name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified storage account credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StorageAccountCredentialInner> getWithResponse(
-        String deviceName, String name, String resourceGroupName, Context context) {
-        return getWithResponseAsync(deviceName, name, resourceGroupName, context).block();
+        return getWithResponse(deviceName, name, resourceGroupName, Context.NONE).getValue();
     }
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -498,19 +409,14 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the storage account credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName,
-        String name,
-        String resourceGroupName,
-        StorageAccountCredentialInner storageAccountCredential) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, StorageAccountCredentialInner storageAccountCredential) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -519,43 +425,30 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (storageAccountCredential == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter storageAccountCredential is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageAccountCredential is required and cannot be null."));
         } else {
             storageAccountCredential.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            storageAccountCredential,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(),
+                storageAccountCredential, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -564,20 +457,14 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the storage account credential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String deviceName,
-        String name,
-        String resourceGroupName,
-        StorageAccountCredentialInner storageAccountCredential,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, StorageAccountCredentialInner storageAccountCredential, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -586,40 +473,28 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (storageAccountCredential == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter storageAccountCredential is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageAccountCredential is required and cannot be null."));
         } else {
             storageAccountCredential.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                storageAccountCredential,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), storageAccountCredential, accept, context);
     }
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -627,30 +502,22 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the {@link PollerFlux} for polling of the storage account credential.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner>
-        beginCreateOrUpdateAsync(
-            String deviceName,
-            String name,
-            String resourceGroupName,
+        beginCreateOrUpdateAsync(String deviceName, String name, String resourceGroupName,
             StorageAccountCredentialInner storageAccountCredential) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, storageAccountCredential);
-        return this
-            .client
-            .<StorageAccountCredentialInner, StorageAccountCredentialInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StorageAccountCredentialInner.class,
-                StorageAccountCredentialInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, storageAccountCredential);
+        return this.client.<StorageAccountCredentialInner, StorageAccountCredentialInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageAccountCredentialInner.class, StorageAccountCredentialInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -659,32 +526,23 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the {@link PollerFlux} for polling of the storage account credential.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner>
-        beginCreateOrUpdateAsync(
-            String deviceName,
-            String name,
-            String resourceGroupName,
-            StorageAccountCredentialInner storageAccountCredential,
-            Context context) {
+        beginCreateOrUpdateAsync(String deviceName, String name, String resourceGroupName,
+            StorageAccountCredentialInner storageAccountCredential, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, storageAccountCredential, context);
-        return this
-            .client
-            .<StorageAccountCredentialInner, StorageAccountCredentialInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StorageAccountCredentialInner.class,
-                StorageAccountCredentialInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(deviceName, name, resourceGroupName, storageAccountCredential, context);
+        return this.client.<StorageAccountCredentialInner, StorageAccountCredentialInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageAccountCredentialInner.class, StorageAccountCredentialInner.class,
+            context);
     }
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -692,67 +550,19 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the {@link SyncPoller} for polling of the storage account credential.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner> beginCreateOrUpdate(
-        String deviceName,
-        String name,
-        String resourceGroupName,
+        String deviceName, String name, String resourceGroupName,
         StorageAccountCredentialInner storageAccountCredential) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential).getSyncPoller();
-    }
-
-    /**
-     * Creates or updates the storage account credential.
-     *
-     * @param deviceName The device name.
-     * @param name The storage account credential name.
-     * @param resourceGroupName The resource group name.
-     * @param storageAccountCredential The storage account credential.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner> beginCreateOrUpdate(
-        String deviceName,
-        String name,
-        String resourceGroupName,
-        StorageAccountCredentialInner storageAccountCredential,
-        Context context) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential, context)
+        return this.beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates the storage account credential.
-     *
-     * @param deviceName The device name.
-     * @param name The storage account credential name.
-     * @param resourceGroupName The resource group name.
-     * @param storageAccountCredential The storage account credential.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageAccountCredentialInner> createOrUpdateAsync(
-        String deviceName,
-        String name,
-        String resourceGroupName,
-        StorageAccountCredentialInner storageAccountCredential) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -761,23 +571,58 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the storage account credential.
+     * @return the {@link SyncPoller} for polling of the storage account credential.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<StorageAccountCredentialInner>, StorageAccountCredentialInner> beginCreateOrUpdate(
+        String deviceName, String name, String resourceGroupName,
+        StorageAccountCredentialInner storageAccountCredential, Context context) {
+        return this.beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Creates or updates the storage account credential.
+     * 
+     * @param deviceName The device name.
+     * @param name The storage account credential name.
+     * @param resourceGroupName The resource group name.
+     * @param storageAccountCredential The storage account credential.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the storage account credential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageAccountCredentialInner> createOrUpdateAsync(
-        String deviceName,
-        String name,
-        String resourceGroupName,
-        StorageAccountCredentialInner storageAccountCredential,
-        Context context) {
-        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential, context)
-            .last()
+    private Mono<StorageAccountCredentialInner> createOrUpdateAsync(String deviceName, String name,
+        String resourceGroupName, StorageAccountCredentialInner storageAccountCredential) {
+        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
+     * @param deviceName The device name.
+     * @param name The storage account credential name.
+     * @param resourceGroupName The resource group name.
+     * @param storageAccountCredential The storage account credential.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the storage account credential on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StorageAccountCredentialInner> createOrUpdateAsync(String deviceName, String name,
+        String resourceGroupName, StorageAccountCredentialInner storageAccountCredential, Context context) {
+        return beginCreateOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Creates or updates the storage account credential.
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -788,17 +633,14 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @return the storage account credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageAccountCredentialInner createOrUpdate(
-        String deviceName,
-        String name,
-        String resourceGroupName,
+    public StorageAccountCredentialInner createOrUpdate(String deviceName, String name, String resourceGroupName,
         StorageAccountCredentialInner storageAccountCredential) {
         return createOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential).block();
     }
 
     /**
      * Creates or updates the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -810,34 +652,28 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @return the storage account credential.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageAccountCredentialInner createOrUpdate(
-        String deviceName,
-        String name,
-        String resourceGroupName,
-        StorageAccountCredentialInner storageAccountCredential,
-        Context context) {
+    public StorageAccountCredentialInner createOrUpdate(String deviceName, String name, String resourceGroupName,
+        StorageAccountCredentialInner storageAccountCredential, Context context) {
         return createOrUpdateAsync(deviceName, name, resourceGroupName, storageAccountCredential, context).block();
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String name, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String name,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -846,10 +682,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -857,24 +691,14 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            deviceName,
-                            name,
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), deviceName, name,
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -882,16 +706,14 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deviceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter deviceName is required and cannot be null."));
@@ -900,10 +722,8 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -911,41 +731,32 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                deviceName,
-                name,
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), deviceName, name, this.client.getSubscriptionId(),
+            resourceGroupName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String name, String resourceGroupName) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String name,
+        String resourceGroupName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -953,37 +764,36 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String deviceName, String name, String resourceGroupName, Context context) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String deviceName, String name,
+        String resourceGroupName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(deviceName, name, resourceGroupName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName).getSyncPoller();
+        return this.beginDeleteAsync(deviceName, name, resourceGroupName).getSyncPoller();
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -991,35 +801,34 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context) {
+        return this.beginDeleteAsync(deviceName, name, resourceGroupName, context).getSyncPoller();
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName)
-            .last()
+        return beginDeleteAsync(deviceName, name, resourceGroupName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -1027,18 +836,17 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String deviceName, String name, String resourceGroupName, Context context) {
-        return beginDeleteAsync(deviceName, name, resourceGroupName, context)
-            .last()
+        return beginDeleteAsync(deviceName, name, resourceGroupName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -1053,7 +861,7 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
 
     /**
      * Deletes the storage account credential.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The storage account credential name.
      * @param resourceGroupName The resource group name.
@@ -1069,75 +877,58 @@ public final class StorageAccountCredentialsClientImpl implements StorageAccount
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of storage account credentials.
+     * @return the collection of storage account credentials along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<StorageAccountCredentialInner>>
+        listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StorageAccountCredentialInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<StorageAccountCredentialInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of storage account credentials.
+     * @return the collection of storage account credentials along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageAccountCredentialInner>> listByDataBoxEdgeDeviceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<StorageAccountCredentialInner>>
+        listByDataBoxEdgeDeviceNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByDataBoxEdgeDeviceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

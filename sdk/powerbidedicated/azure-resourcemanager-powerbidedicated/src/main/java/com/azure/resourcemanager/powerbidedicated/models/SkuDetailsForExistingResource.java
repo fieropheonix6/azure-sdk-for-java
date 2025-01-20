@@ -5,24 +5,56 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An object that represents SKU details for existing resources. */
+/**
+ * An object that represents SKU details for existing resources.
+ */
 @Fluent
-public final class SkuDetailsForExistingResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuDetailsForExistingResource.class);
+public final class SkuDetailsForExistingResource implements JsonSerializable<SkuDetailsForExistingResource> {
+    /*
+     * The resource type
+     */
+    private String resourceType;
 
     /*
      * The SKU in SKU details for existing resources.
      */
-    @JsonProperty(value = "sku")
     private CapacitySku sku;
 
     /**
+     * Creates an instance of SkuDetailsForExistingResource class.
+     */
+    public SkuDetailsForExistingResource() {
+    }
+
+    /**
+     * Get the resourceType property: The resource type.
+     * 
+     * @return the resourceType value.
+     */
+    public String resourceType() {
+        return this.resourceType;
+    }
+
+    /**
+     * Set the resourceType property: The resource type.
+     * 
+     * @param resourceType the resourceType value to set.
+     * @return the SkuDetailsForExistingResource object itself.
+     */
+    public SkuDetailsForExistingResource withResourceType(String resourceType) {
+        this.resourceType = resourceType;
+        return this;
+    }
+
+    /**
      * Get the sku property: The SKU in SKU details for existing resources.
-     *
+     * 
      * @return the sku value.
      */
     public CapacitySku sku() {
@@ -31,7 +63,7 @@ public final class SkuDetailsForExistingResource {
 
     /**
      * Set the sku property: The SKU in SKU details for existing resources.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SkuDetailsForExistingResource object itself.
      */
@@ -42,12 +74,52 @@ public final class SkuDetailsForExistingResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", this.resourceType);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SkuDetailsForExistingResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SkuDetailsForExistingResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SkuDetailsForExistingResource.
+     */
+    public static SkuDetailsForExistingResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SkuDetailsForExistingResource deserializedSkuDetailsForExistingResource
+                = new SkuDetailsForExistingResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceType".equals(fieldName)) {
+                    deserializedSkuDetailsForExistingResource.resourceType = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedSkuDetailsForExistingResource.sku = CapacitySku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSkuDetailsForExistingResource;
+        });
     }
 }

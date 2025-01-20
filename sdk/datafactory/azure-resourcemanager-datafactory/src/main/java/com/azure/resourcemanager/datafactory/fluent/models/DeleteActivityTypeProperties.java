@@ -6,60 +6,62 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
 import com.azure.resourcemanager.datafactory.models.LogStorageSettings;
 import com.azure.resourcemanager.datafactory.models.StoreReadSettings;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Delete activity properties. */
+/**
+ * Delete activity properties.
+ */
 @Fluent
-public final class DeleteActivityTypeProperties {
+public final class DeleteActivityTypeProperties implements JsonSerializable<DeleteActivityTypeProperties> {
     /*
      * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type:
      * boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "recursive")
     private Object recursive;
 
     /*
      * The max concurrent connections to connect data source at the same time.
      */
-    @JsonProperty(value = "maxConcurrentConnections")
     private Integer maxConcurrentConnections;
 
     /*
      * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or
      * Expression with resultType boolean).
      */
-    @JsonProperty(value = "enableLogging")
     private Object enableLogging;
 
     /*
      * Log storage settings customer need to provide when enableLogging is true.
      */
-    @JsonProperty(value = "logStorageSettings")
     private LogStorageSettings logStorageSettings;
 
     /*
      * Delete activity dataset reference.
      */
-    @JsonProperty(value = "dataset", required = true)
     private DatasetReference dataset;
 
     /*
      * Delete activity store settings.
      */
-    @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
 
-    /** Creates an instance of DeleteActivityTypeProperties class. */
+    /**
+     * Creates an instance of DeleteActivityTypeProperties class.
+     */
     public DeleteActivityTypeProperties() {
     }
 
     /**
      * Get the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the recursive value.
      */
     public Object recursive() {
@@ -69,7 +71,7 @@ public final class DeleteActivityTypeProperties {
     /**
      * Set the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param recursive the recursive value to set.
      * @return the DeleteActivityTypeProperties object itself.
      */
@@ -81,7 +83,7 @@ public final class DeleteActivityTypeProperties {
     /**
      * Get the maxConcurrentConnections property: The max concurrent connections to connect data source at the same
      * time.
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Integer maxConcurrentConnections() {
@@ -91,7 +93,7 @@ public final class DeleteActivityTypeProperties {
     /**
      * Set the maxConcurrentConnections property: The max concurrent connections to connect data source at the same
      * time.
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the DeleteActivityTypeProperties object itself.
      */
@@ -103,7 +105,7 @@ public final class DeleteActivityTypeProperties {
     /**
      * Get the enableLogging property: Whether to record detailed logs of delete-activity execution. Default value is
      * false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the enableLogging value.
      */
     public Object enableLogging() {
@@ -113,7 +115,7 @@ public final class DeleteActivityTypeProperties {
     /**
      * Set the enableLogging property: Whether to record detailed logs of delete-activity execution. Default value is
      * false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param enableLogging the enableLogging value to set.
      * @return the DeleteActivityTypeProperties object itself.
      */
@@ -124,7 +126,7 @@ public final class DeleteActivityTypeProperties {
 
     /**
      * Get the logStorageSettings property: Log storage settings customer need to provide when enableLogging is true.
-     *
+     * 
      * @return the logStorageSettings value.
      */
     public LogStorageSettings logStorageSettings() {
@@ -133,7 +135,7 @@ public final class DeleteActivityTypeProperties {
 
     /**
      * Set the logStorageSettings property: Log storage settings customer need to provide when enableLogging is true.
-     *
+     * 
      * @param logStorageSettings the logStorageSettings value to set.
      * @return the DeleteActivityTypeProperties object itself.
      */
@@ -144,7 +146,7 @@ public final class DeleteActivityTypeProperties {
 
     /**
      * Get the dataset property: Delete activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference dataset() {
@@ -153,7 +155,7 @@ public final class DeleteActivityTypeProperties {
 
     /**
      * Set the dataset property: Delete activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the DeleteActivityTypeProperties object itself.
      */
@@ -164,7 +166,7 @@ public final class DeleteActivityTypeProperties {
 
     /**
      * Get the storeSettings property: Delete activity store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreReadSettings storeSettings() {
@@ -173,7 +175,7 @@ public final class DeleteActivityTypeProperties {
 
     /**
      * Set the storeSettings property: Delete activity store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the DeleteActivityTypeProperties object itself.
      */
@@ -184,7 +186,7 @@ public final class DeleteActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -192,10 +194,9 @@ public final class DeleteActivityTypeProperties {
             logStorageSettings().validate();
         }
         if (dataset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataset in model DeleteActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataset in model DeleteActivityTypeProperties"));
         } else {
             dataset().validate();
         }
@@ -205,4 +206,57 @@ public final class DeleteActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeleteActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataset", this.dataset);
+        jsonWriter.writeUntypedField("recursive", this.recursive);
+        jsonWriter.writeNumberField("maxConcurrentConnections", this.maxConcurrentConnections);
+        jsonWriter.writeUntypedField("enableLogging", this.enableLogging);
+        jsonWriter.writeJsonField("logStorageSettings", this.logStorageSettings);
+        jsonWriter.writeJsonField("storeSettings", this.storeSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeleteActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeleteActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeleteActivityTypeProperties.
+     */
+    public static DeleteActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeleteActivityTypeProperties deserializedDeleteActivityTypeProperties = new DeleteActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataset".equals(fieldName)) {
+                    deserializedDeleteActivityTypeProperties.dataset = DatasetReference.fromJson(reader);
+                } else if ("recursive".equals(fieldName)) {
+                    deserializedDeleteActivityTypeProperties.recursive = reader.readUntyped();
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedDeleteActivityTypeProperties.maxConcurrentConnections
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("enableLogging".equals(fieldName)) {
+                    deserializedDeleteActivityTypeProperties.enableLogging = reader.readUntyped();
+                } else if ("logStorageSettings".equals(fieldName)) {
+                    deserializedDeleteActivityTypeProperties.logStorageSettings = LogStorageSettings.fromJson(reader);
+                } else if ("storeSettings".equals(fieldName)) {
+                    deserializedDeleteActivityTypeProperties.storeSettings = StoreReadSettings.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeleteActivityTypeProperties;
+        });
+    }
 }

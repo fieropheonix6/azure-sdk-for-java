@@ -12,7 +12,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ConnectedEnvironmentsCertificatesClient;
 import com.azure.resourcemanager.appcontainers.fluent.models.CertificateInner;
 import com.azure.resourcemanager.appcontainers.models.Certificate;
-import com.azure.resourcemanager.appcontainers.models.CertificatePatch;
 import com.azure.resourcemanager.appcontainers.models.ConnectedEnvironmentsCertificates;
 
 public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnvironmentsCertificates {
@@ -22,8 +21,7 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
 
     private final com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager;
 
-    public ConnectedEnvironmentsCertificatesImpl(
-        ConnectedEnvironmentsCertificatesClient innerClient,
+    public ConnectedEnvironmentsCertificatesImpl(ConnectedEnvironmentsCertificatesClient innerClient,
         com.azure.resourcemanager.appcontainers.ContainerAppsApiManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,24 +29,21 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
 
     public PagedIterable<Certificate> list(String resourceGroupName, String connectedEnvironmentName) {
         PagedIterable<CertificateInner> inner = this.serviceClient().list(resourceGroupName, connectedEnvironmentName);
-        return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Certificate> list(String resourceGroupName, String connectedEnvironmentName, Context context) {
-        PagedIterable<CertificateInner> inner =
-            this.serviceClient().list(resourceGroupName, connectedEnvironmentName, context);
-        return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
+        PagedIterable<CertificateInner> inner
+            = this.serviceClient().list(resourceGroupName, connectedEnvironmentName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 
-    public Response<Certificate> getWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context) {
-        Response<CertificateInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
+    public Response<Certificate> getWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, Context context) {
+        Response<CertificateInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CertificateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -64,43 +59,9 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
         }
     }
 
-    public Response<Certificate> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificateInner certificateEnvelope,
-        Context context) {
-        Response<CertificateInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CertificateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public Certificate createOrUpdate(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName) {
-        CertificateInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, connectedEnvironmentName, certificateName);
-        if (inner != null) {
-            return new CertificateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String connectedEnvironmentName, String certificateName, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> deleteWithResponse(String resourceGroupName, String connectedEnvironmentName,
+        String certificateName, Context context) {
+        return this.serviceClient()
             .deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
     }
 
@@ -108,42 +69,81 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
         this.serviceClient().delete(resourceGroupName, connectedEnvironmentName, certificateName);
     }
 
-    public Response<Certificate> updateWithResponse(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope,
-        Context context) {
-        Response<CertificateInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(
-                    resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CertificateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
+    public Certificate getById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
+        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
+        if (connectedEnvironmentName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
+        }
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
+        if (certificateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE)
+            .getValue();
     }
 
-    public Certificate update(
-        String resourceGroupName,
-        String connectedEnvironmentName,
-        String certificateName,
-        CertificatePatch certificateEnvelope) {
-        CertificateInner inner =
-            this
-                .serviceClient()
-                .update(resourceGroupName, connectedEnvironmentName, certificateName, certificateEnvelope);
-        if (inner != null) {
-            return new CertificateImpl(inner, this.manager());
-        } else {
-            return null;
+    public Response<Certificate> getByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
+        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
+        if (connectedEnvironmentName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
+        }
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
+        if (certificateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+        }
+        return this.getWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
+    }
+
+    public void deleteById(String id) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
+        if (connectedEnvironmentName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
+        }
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
+        if (certificateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+        }
+        this.deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, Context.NONE);
+    }
+
+    public Response<Void> deleteByIdWithResponse(String id, Context context) {
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
+        if (resourceGroupName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String connectedEnvironmentName = ResourceManagerUtils.getValueFromIdByName(id, "connectedEnvironments");
+        if (connectedEnvironmentName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'connectedEnvironments'.", id)));
+        }
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
+        if (certificateName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+        }
+        return this.deleteWithResponse(resourceGroupName, connectedEnvironmentName, certificateName, context);
     }
 
     private ConnectedEnvironmentsCertificatesClient serviceClient() {
@@ -152,5 +152,9 @@ public final class ConnectedEnvironmentsCertificatesImpl implements ConnectedEnv
 
     private com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager() {
         return this.serviceManager;
+    }
+
+    public CertificateImpl define(String name) {
+        return new CertificateImpl(name, this.manager());
     }
 }

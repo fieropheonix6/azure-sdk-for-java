@@ -4,27 +4,32 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.devcenter.models.EnvironmentType;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for EnvironmentTypes Update. */
+/**
+ * Samples for EnvironmentTypes Update.
+ */
 public final class EnvironmentTypesUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/EnvironmentTypes_Patch.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/EnvironmentTypes_Patch.
+     * json
      */
     /**
      * Sample code: EnvironmentTypes_Update.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void environmentTypesUpdate(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        EnvironmentType resource =
-            manager.environmentTypes().getWithResponse("rg1", "Contoso", "DevTest", Context.NONE).getValue();
-        resource.update().withTags(mapOf("Owner", "superuser")).apply();
+        EnvironmentType resource = manager.environmentTypes()
+            .getWithResponse("rg1", "Contoso", "DevTest", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("Owner", "superuser")).withDisplayName("Dev").apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -7,9 +7,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JsonSerializer;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
-import com.fasterxml.jackson.annotation.JsonGetter;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import reactor.core.Disposable;
@@ -28,10 +25,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Codesnippets for {@link BinaryData}.
  */
+@SuppressWarnings("unused")
 public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#fromStream(InputStream)}.
@@ -40,7 +40,7 @@ public class BinaryDataJavaDocCodeSnippet {
         // BEGIN: com.azure.core.util.BinaryData.fromStream#InputStream
         final ByteArrayInputStream inputStream = new ByteArrayInputStream("Some Data".getBytes(StandardCharsets.UTF_8));
         BinaryData binaryData = BinaryData.fromStream(inputStream);
-        System.out.println(binaryData.toString());
+        System.out.println(binaryData);
         // END: com.azure.core.util.BinaryData.fromStream#InputStream
     }
 
@@ -52,7 +52,7 @@ public class BinaryDataJavaDocCodeSnippet {
         byte[] bytes = "Some Data".getBytes(StandardCharsets.UTF_8);
         final ByteArrayInputStream inputStream = new ByteArrayInputStream(bytes);
         BinaryData binaryData = BinaryData.fromStream(inputStream, (long) bytes.length);
-        System.out.println(binaryData.toString());
+        System.out.println(binaryData);
         // END: com.azure.core.util.BinaryData.fromStream#InputStream-Long
     }
 
@@ -208,6 +208,19 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     /**
+     * Codesnippets for {@link BinaryData#fromListByteBuffer(List)}.
+     */
+    public void fromListByteBuffer() {
+        // BEGIN: com.azure.core.util.BinaryData.fromListByteBuffer#List
+        final List<ByteBuffer> data = Stream.of("Some ", "data")
+            .map(s -> ByteBuffer.wrap(s.getBytes(StandardCharsets.UTF_8)))
+            .collect(Collectors.toList());
+        BinaryData binaryData = BinaryData.fromListByteBuffer(data);
+        System.out.println(binaryData);
+        // END: com.azure.core.util.BinaryData.fromListByteBuffer#List
+    }
+
+    /**
      * Codesnippets for {@link BinaryData#fromFile(Path)}.
      */
     public void fromFile() {
@@ -259,29 +272,14 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void fromObjectDefaultJsonSerializers() {
         // BEGIN: com.azure.core.util.BinaryData.fromObject#Object
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
         BinaryData binaryData = BinaryData.fromObject(data);
 
-        System.out.println(binaryData.toString());
+        System.out.println(binaryData);
         // END: com.azure.core.util.BinaryData.fromObject#Object
     }
 
@@ -290,26 +288,11 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void fromObjectAsyncDefaultJsonSerializer() throws InterruptedException {
         // BEGIN: com.azure.core.util.BinaryData.fromObjectAsync#Object
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
         Disposable subscriber = BinaryData.fromObjectAsync(data)
             .subscribe(binaryData -> System.out.println(binaryData.toString()));
 
@@ -328,28 +311,12 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void fromObjectObjectSerializer() {
         // BEGIN: com.azure.core.util.BinaryData.fromObject#Object-ObjectSerializer
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
-        final ObjectSerializer serializer =
-            new MyJsonSerializer(); // Replace this with your Serializer
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
+        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         System.out.println(binaryData.toString());
@@ -361,28 +328,12 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void fromObjectAsyncObjectSerializer() throws InterruptedException {
         // BEGIN: com.azure.core.util.BinaryData.fromObjectAsync#Object-ObjectSerializer
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
-        final ObjectSerializer serializer =
-            new MyJsonSerializer(); // Replace this with your Serializer
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
+        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         Disposable subscriber = BinaryData.fromObjectAsync(data, serializer)
             .subscribe(binaryData -> System.out.println(binaryData.toString()));
 
@@ -397,28 +348,13 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void toObjectClassDefaultJsonSerializer() {
         // BEGIN: com.azure.core.util.BinaryData.toObject#Class
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // com.azure.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
         BinaryData binaryData = BinaryData.fromObject(data);
 
@@ -432,28 +368,13 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void toObjectTypeReferenceDefaultJsonSerializer() {
         // BEGIN: com.azure.core.util.BinaryData.toObject#TypeReference
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // com.azure.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
         BinaryData binaryData = BinaryData.fromObject(data);
 
@@ -477,8 +398,8 @@ public class BinaryDataJavaDocCodeSnippet {
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // com.azure.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
 
         BinaryData binaryData = BinaryData.fromObject(personList);
@@ -493,29 +414,13 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void toObjectClassObjectSerializer() {
         // BEGIN: com.azure.core.util.BinaryData.toObject#Class-ObjectSerializer
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
-        final ObjectSerializer serializer =
-            new MyJsonSerializer(); // Replace this with your Serializer
+        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         Person person = binaryData.toObject(Person.class, serializer);
@@ -528,34 +433,17 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void toObjectTypeReferenceObjectSerializer() {
         // BEGIN: com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
-        final ObjectSerializer serializer =
-            new MyJsonSerializer(); // Replace this with your Serializer
+        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         Person person = binaryData.toObject(TypeReference.createInstance(Person.class), serializer);
         System.out.println("Name : " + person.getName());
-
         // END: com.azure.core.util.BinaryData.toObject#TypeReference-ObjectSerializer
     }
 
@@ -571,8 +459,7 @@ public class BinaryDataJavaDocCodeSnippet {
         personList.add(person1);
         personList.add(person2);
 
-        final ObjectSerializer serializer =
-            new MyJsonSerializer(); // Replace this with your Serializer
+        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(personList, serializer);
 
         // Retains the type of the list when deserializing
@@ -586,28 +473,13 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void toObjectAsyncClassDefaultJsonSerializer() throws InterruptedException {
         // BEGIN: com.azure.core.util.BinaryData.toObjectAsync#Class
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // com.azure.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
         BinaryData binaryData = BinaryData.fromObject(data);
 
@@ -625,28 +497,13 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void toObjectAsyncTypeReferenceDefaultJsonSerializer() throws InterruptedException {
         // BEGIN: com.azure.core.util.BinaryData.toObjectAsync#TypeReference
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Ensure your classpath have the Serializer to serialize the object which implement implement
         // com.azure.core.util.serializer.JsonSerializer interface.
         // Or use Azure provided libraries for this.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
         BinaryData binaryData = BinaryData.fromObject(data);
 
@@ -687,29 +544,13 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void toObjectAsyncClassObjectSerializer() throws InterruptedException {
         // BEGIN: com.azure.core.util.BinaryData.toObjectAsync#Class-ObjectSerializer
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
-        final ObjectSerializer serializer =
-            new MyJsonSerializer(); // Replace this with your Serializer
+        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         Disposable subscriber = binaryData.toObjectAsync(Person.class, serializer)
@@ -726,29 +567,13 @@ public class BinaryDataJavaDocCodeSnippet {
      */
     public void toObjectAsyncTypeReferenceObjectSerializer() throws InterruptedException {
         // BEGIN: com.azure.core.util.BinaryData.toObjectAsync#TypeReference-ObjectSerializer
-        class Person {
-            @JsonProperty
-            private String name;
-
-            @JsonSetter
-            public Person setName(String name) {
-                this.name = name;
-                return this;
-            }
-
-            @JsonGetter
-            public String getName() {
-                return name;
-            }
-        }
         final Person data = new Person().setName("John");
 
         // Provide your custom serializer or use Azure provided serializers.
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
-        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://central.sonatype.com/artifact/com.azure/azure-core-serializer-json-gson
 
-        final ObjectSerializer serializer =
-            new MyJsonSerializer(); // Replace this with your Serializer
+        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(data, serializer);
 
         Disposable subscriber = binaryData
@@ -773,8 +598,11 @@ public class BinaryDataJavaDocCodeSnippet {
         personList.add(person1);
         personList.add(person2);
 
-        final ObjectSerializer serializer =
-            new MyJsonSerializer(); // Replace this with your Serializer
+        // Provide your custom serializer or use Azure provided serializers.
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-jackson or
+        // https://mvnrepository.com/artifact/com.azure/azure-core-serializer-json-gson
+
+        final ObjectSerializer serializer = new MyJsonSerializer(); // Replace this with your Serializer
         BinaryData binaryData = BinaryData.fromObject(personList, serializer);
 
         Disposable subscriber = binaryData
@@ -790,13 +618,16 @@ public class BinaryDataJavaDocCodeSnippet {
     /**
      * Codesnippets for {@link BinaryData#toStream()}.
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void toStream() throws IOException {
         // BEGIN: com.azure.core.util.BinaryData.toStream
         final byte[] data = "Some Data".getBytes(StandardCharsets.UTF_8);
-        BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data));
+        BinaryData binaryData = BinaryData.fromStream(new ByteArrayInputStream(data), (long) data.length);
         final byte[] bytes = new byte[data.length];
-        binaryData.toStream().read(bytes, 0, data.length);
-        System.out.println(new String(bytes));
+        try (InputStream inputStream = binaryData.toStream()) {
+            inputStream.read(bytes, 0, data.length);
+            System.out.println(new String(bytes));
+        }
         // END: com.azure.core.util.BinaryData.toStream
     }
 
@@ -817,7 +648,7 @@ public class BinaryDataJavaDocCodeSnippet {
      * Codesnippets for {@link BinaryData#isReplayable()},
      * {@link BinaryData#toReplayableBinaryData()}
      */
-    public void replayablity() {
+    public void replayability() {
         // BEGIN: com.azure.util.BinaryData.replayability
         BinaryData binaryData = binaryDataProducer();
 
@@ -843,9 +674,9 @@ public class BinaryDataJavaDocCodeSnippet {
      * Codesnippets for {@link BinaryData#isReplayable()},
      * {@link BinaryData#toReplayableBinaryData()}
      */
-    public void replayablityAsync() {
+    public void replayabilityAsync() {
         // BEGIN: com.azure.util.BinaryData.replayabilityAsync
-        Mono.fromCallable(() -> binaryDataProducer())
+        Mono.fromCallable(this::binaryDataProducer)
             .flatMap(binaryData -> {
                 if (binaryData.isReplayable()) {
                     return Mono.just(binaryData);
@@ -866,13 +697,13 @@ public class BinaryDataJavaDocCodeSnippet {
     }
 
     public static class MyJsonSerializer implements JsonSerializer {
-        private final ClientLogger logger = new ClientLogger(MyJsonSerializer.class);
-        private final ObjectMapper mapper;
-        private final TypeFactory typeFactory;
+        private static final ClientLogger LOGGER = new ClientLogger(MyJsonSerializer.class);
+        private static final ObjectMapper MAPPER;
+        private static final TypeFactory TYPE_FACTORY;
 
-        public MyJsonSerializer() {
-            this.mapper = new ObjectMapper();
-            this.typeFactory = mapper.getTypeFactory();
+        static {
+            MAPPER = new ObjectMapper();
+            TYPE_FACTORY = MAPPER.getTypeFactory();
         }
 
         @Override
@@ -882,9 +713,9 @@ public class BinaryDataJavaDocCodeSnippet {
             }
 
             try {
-                return mapper.readValue(stream, typeFactory.constructType(typeReference.getJavaType()));
+                return MAPPER.readValue(stream, TYPE_FACTORY.constructType(typeReference.getJavaType()));
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
         }
 
@@ -897,9 +728,9 @@ public class BinaryDataJavaDocCodeSnippet {
         @Override
         public void serialize(OutputStream stream, Object value) {
             try {
-                mapper.writeValue(stream, value);
+                MAPPER.writeValue(stream, value);
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(new UncheckedIOException(ex));
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
             }
         }
 

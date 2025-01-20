@@ -5,14 +5,13 @@ package com.azure.core.test.http;
 
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.Form;
-import com.azure.core.test.implementation.entities.HttpBinFormDataJSON.PizzaSize;
-import com.azure.core.test.implementation.entities.HttpBinJSON;
-import com.azure.core.test.utils.MessageDigestUtils;
+import com.azure.core.test.implementation.models.HttpBinFormDataJson;
+import com.azure.core.test.implementation.models.HttpBinJson;
+import com.azure.core.test.implementation.models.PizzaSize;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -20,28 +19,31 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends NoOpHttpClient {
-    private static final HttpHeaders RESPONSE_HEADERS = new HttpHeaders()
-        .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
-        .set("Via", "1.1 vegur")
-        .set("Connection", "keep-alive")
-        .set("X-Processed-Time", "1.0")
-        .set("Access-Control-Allow-Credentials", "true")
-        .set("Content-Type", "application/json");
-    private static final Random RANDOM = new Random();
+    private static final HttpHeaders RESPONSE_HEADERS
+        = new HttpHeaders().set(HttpHeaderName.DATE, "Fri, 13 Oct 2017 20:33:09 GMT")
+            .set(HttpHeaderName.VIA, "1.1 via")
+            .set(HttpHeaderName.CONNECTION, "keep-alive")
+            .set(HttpHeaderName.fromString("X-Processed-Time"), "1.0")
+            .set(HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true")
+            .set(HttpHeaderName.CONTENT_TYPE, "application/json");
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request) {
@@ -50,30 +52,30 @@ public class MockHttpClient extends NoOpHttpClient {
         try {
             final URL requestUrl = request.getUrl();
             final String requestHost = requestUrl.getHost();
-            final String contentType = request.getHeaders().getValue("Content-Type");
+            final String contentType = request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
             if ("localhost".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
-                final String requestPathLower = requestPath.toLowerCase();
+                final String requestPathLower = requestPath.toLowerCase(Locale.ROOT);
                 if (requestPathLower.startsWith("/anything")) {
                     if ("HEAD".equals(request.getHttpMethod().name())) {
                         response = new MockHttpResponse(request, 200, new byte[0]);
                     } else {
-                        final HttpBinJSON json = new HttpBinJSON();
+                        final HttpBinJson json = new HttpBinJson();
                         json.url(cleanseUrl(requestUrl));
                         json.headers(toMap(request.getHeaders()));
-                        response = new MockHttpResponse(request, 200, json);
+                        response = new MockHttpResponse(request, 200, json.toJsonBytes());
                     }
                 } else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     HttpHeaders newHeaders = new HttpHeaders(RESPONSE_HEADERS)
-                        .set("Content-Type", ContentType.APPLICATION_OCTET_STREAM)
-                        .set("Content-Length", Integer.toString(byteCount));
+                        .set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM)
+                        .set(HttpHeaderName.CONTENT_LENGTH, Integer.toString(byteCount));
                     byte[] content;
                     if (byteCount > 0) {
                         content = new byte[byteCount];
-                        RANDOM.nextBytes(content);
-                        newHeaders = newHeaders.set("ETag", MessageDigestUtils.md5(content));
+                        ThreadLocalRandom.current().nextBytes(content);
+                        newHeaders = newHeaders.set(HttpHeaderName.ETAG, md5(content));
                     } else {
                         content = null;
                     }
@@ -132,51 +134,52 @@ public class MockHttpClient extends NoOpHttpClient {
                     }
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if ("/datetimerfc1123".equals(requestPathLower)) {
-                    final DateTimeRfc1123 now = new DateTimeRfc1123(OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
+                    final DateTimeRfc1123 now
+                        = new DateTimeRfc1123(OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
                     final String result = now.toString();
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, result);
                 } else if ("/unixtime".equals(requestPathLower)) {
                     response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, 0);
                 } else if ("/delete".equals(requestPathLower)) {
-                    final HttpBinJSON json = new HttpBinJSON();
+                    final HttpBinJson json = new HttpBinJson();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
-                    response = new MockHttpResponse(request, 200, json);
+                    response = new MockHttpResponse(request, 200, json.toJsonBytes());
                 } else if ("/get".equals(requestPathLower)) {
-                    final HttpBinJSON json = new HttpBinJSON();
+                    final HttpBinJson json = new HttpBinJson();
                     json.url(cleanseUrl(requestUrl));
                     json.headers(toMap(request.getHeaders()));
-                    response = new MockHttpResponse(request, 200, json);
+                    response = new MockHttpResponse(request, 200, json.toJsonBytes());
                 } else if ("/patch".equals(requestPathLower)) {
-                    final HttpBinJSON json = new HttpBinJSON();
+                    final HttpBinJson json = new HttpBinJson();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
-                    response = new MockHttpResponse(request, 200, json);
+                    response = new MockHttpResponse(request, 200, json.toJsonBytes());
                 } else if ("/post".equals(requestPathLower)) {
                     if (contentType != null && contentType.contains("x-www-form-urlencoded")) {
                         Map<String, String> parsed = bodyToMap(request);
-                        final HttpBinFormDataJSON json = new HttpBinFormDataJSON();
-                        Form form = new Form();
+                        final HttpBinFormDataJson json = new HttpBinFormDataJson();
+                        HttpBinFormDataJson.Form form = new HttpBinFormDataJson.Form();
                         form.customerName(parsed.get("custname"));
                         form.customerEmail(parsed.get("custemail"));
                         form.customerTelephone(parsed.get("custtel"));
                         form.pizzaSize(PizzaSize.valueOf(parsed.get("size")));
                         form.toppings(Arrays.asList(parsed.get("toppings").split(",")));
                         json.form(form);
-                        response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
+                        response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json.toJsonBytes());
                     } else {
-                        final HttpBinJSON json = new HttpBinJSON();
+                        final HttpBinJson json = new HttpBinJson();
                         json.url(cleanseUrl(requestUrl));
                         json.data(createHttpBinResponseDataForRequest(request));
                         json.headers(toMap(request.getHeaders()));
-                        response = new MockHttpResponse(request, 200, json);
+                        response = new MockHttpResponse(request, 200, json.toJsonBytes());
                     }
                 } else if ("/put".equals(requestPathLower)) {
-                    final HttpBinJSON json = new HttpBinJSON();
+                    final HttpBinJson json = new HttpBinJson();
                     json.url(cleanseUrl(requestUrl));
                     json.data(createHttpBinResponseDataForRequest(request));
                     json.headers(toMap(request.getHeaders()));
-                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json);
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json.toJsonBytes());
                 } else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
                     final int statusCode = Integer.parseInt(statusCodeString);
@@ -242,15 +245,29 @@ public class MockHttpClient extends NoOpHttpClient {
 
     private static String cleanseUrl(URL url) {
         StringBuilder builder = new StringBuilder();
-        builder.append(url.getProtocol())
-            .append("://")
-            .append(url.getHost())
-            .append(url.getPath().replace("%20", " "));
+        builder.append(url.getProtocol()).append("://").append(url.getHost()).append(url.getPath().replace("%20", " "));
 
         if (url.getQuery() != null) {
             builder.append("?").append(url.getQuery().replace("%20", " "));
         }
 
         return builder.toString();
+    }
+
+    /**
+     * Returns base64 encoded MD5 of bytes.
+     *
+     * @param bytes bytes.
+     * @return base64 encoded MD5 of bytes.
+     * @throws RuntimeException if md5 is not found.
+     */
+    public static String md5(byte[] bytes) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("MD5");
+            digest.update(bytes);
+            return Base64.getEncoder().encodeToString(digest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

@@ -6,43 +6,46 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayFrontendPortPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Frontend port of an application gateway. */
+/**
+ * Frontend port of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayFrontendPort extends SubResource {
     /*
      * Properties of the application gateway frontend port.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayFrontendPortPropertiesFormat innerProperties;
 
     /*
      * Name of the frontend port that is unique within an Application Gateway.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayFrontendPort class. */
+    /**
+     * Creates an instance of ApplicationGatewayFrontendPort class.
+     */
     public ApplicationGatewayFrontendPort() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway frontend port.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayFrontendPortPropertiesFormat innerProperties() {
@@ -51,7 +54,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the name property: Name of the frontend port that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +63,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Set the name property: Name of the frontend port that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayFrontendPort object itself.
      */
@@ -71,7 +74,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +83,16 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayFrontendPort withId(String id) {
         super.withId(id);
@@ -96,7 +101,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the port property: Frontend port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -105,7 +110,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Set the port property: Frontend port.
-     *
+     * 
      * @param port the port value to set.
      * @return the ApplicationGatewayFrontendPort object itself.
      */
@@ -119,7 +124,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the frontend port resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -128,12 +133,60 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayFrontendPort from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayFrontendPort if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayFrontendPort.
+     */
+    public static ApplicationGatewayFrontendPort fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayFrontendPort deserializedApplicationGatewayFrontendPort
+                = new ApplicationGatewayFrontendPort();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendPort.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendPort.innerProperties
+                        = ApplicationGatewayFrontendPortPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendPort.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendPort.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayFrontendPort.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayFrontendPort;
+        });
     }
 }

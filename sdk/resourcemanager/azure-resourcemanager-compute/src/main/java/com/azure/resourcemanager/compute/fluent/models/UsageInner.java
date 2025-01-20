@@ -6,44 +6,47 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.UsageName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes Compute Resource Usage. */
+/**
+ * Describes Compute Resource Usage.
+ */
 @Fluent
-public final class UsageInner {
+public final class UsageInner implements JsonSerializable<UsageInner> {
     /*
      * An enum describing the unit of usage measurement.
      */
-    @JsonProperty(value = "unit", required = true)
-    private String unit = "Count";
+    private final String unit = "Count";
 
     /*
      * The current usage of the resource.
      */
-    @JsonProperty(value = "currentValue", required = true)
     private int currentValue;
 
     /*
      * The maximum permitted usage of the resource.
      */
-    @JsonProperty(value = "limit", required = true)
     private long limit;
 
     /*
      * The name of the type of usage.
      */
-    @JsonProperty(value = "name", required = true)
     private UsageName name;
 
-    /** Creates an instance of UsageInner class. */
+    /**
+     * Creates an instance of UsageInner class.
+     */
     public UsageInner() {
-        unit = "Count";
     }
 
     /**
      * Get the unit property: An enum describing the unit of usage measurement.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -51,19 +54,8 @@ public final class UsageInner {
     }
 
     /**
-     * Set the unit property: An enum describing the unit of usage measurement.
-     *
-     * @param unit the unit value to set.
-     * @return the UsageInner object itself.
-     */
-    public UsageInner withUnit(String unit) {
-        this.unit = unit;
-        return this;
-    }
-
-    /**
      * Get the currentValue property: The current usage of the resource.
-     *
+     * 
      * @return the currentValue value.
      */
     public int currentValue() {
@@ -72,7 +64,7 @@ public final class UsageInner {
 
     /**
      * Set the currentValue property: The current usage of the resource.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the UsageInner object itself.
      */
@@ -83,7 +75,7 @@ public final class UsageInner {
 
     /**
      * Get the limit property: The maximum permitted usage of the resource.
-     *
+     * 
      * @return the limit value.
      */
     public long limit() {
@@ -92,7 +84,7 @@ public final class UsageInner {
 
     /**
      * Set the limit property: The maximum permitted usage of the resource.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the UsageInner object itself.
      */
@@ -103,7 +95,7 @@ public final class UsageInner {
 
     /**
      * Get the name property: The name of the type of usage.
-     *
+     * 
      * @return the name value.
      */
     public UsageName name() {
@@ -112,7 +104,7 @@ public final class UsageInner {
 
     /**
      * Set the name property: The name of the type of usage.
-     *
+     * 
      * @param name the name value to set.
      * @return the UsageInner object itself.
      */
@@ -123,18 +115,61 @@ public final class UsageInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model UsageInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model UsageInner"));
         } else {
             name().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(UsageInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeIntField("currentValue", this.currentValue);
+        jsonWriter.writeLongField("limit", this.limit);
+        jsonWriter.writeJsonField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UsageInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UsageInner.
+     */
+    public static UsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UsageInner deserializedUsageInner = new UsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentValue".equals(fieldName)) {
+                    deserializedUsageInner.currentValue = reader.getInt();
+                } else if ("limit".equals(fieldName)) {
+                    deserializedUsageInner.limit = reader.getLong();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUsageInner.name = UsageName.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUsageInner;
+        });
+    }
 }

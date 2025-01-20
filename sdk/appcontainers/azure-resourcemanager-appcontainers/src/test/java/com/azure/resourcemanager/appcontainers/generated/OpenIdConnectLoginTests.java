@@ -8,28 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.OpenIdConnectLogin;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OpenIdConnectLoginTests {
-    @Test
-    public void testDeserialize() {
-        OpenIdConnectLogin model =
-            BinaryData
-                .fromString(
-                    "{\"nameClaimType\":\"scxaq\",\"scopes\":[\"chcbonqvpkvlrxnj\",\"ase\",\"pheoflokeyy\",\"enjbdlwtgrhp\"]}")
-                .toObject(OpenIdConnectLogin.class);
-        Assertions.assertEquals("scxaq", model.nameClaimType());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.scopes().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OpenIdConnectLogin model = BinaryData.fromString("{\"nameClaimType\":\"evgbmqjq\",\"scopes\":[\"y\"]}")
+            .toObject(OpenIdConnectLogin.class);
+        Assertions.assertEquals("evgbmqjq", model.nameClaimType());
+        Assertions.assertEquals("y", model.scopes().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        OpenIdConnectLogin model =
-            new OpenIdConnectLogin()
-                .withNameClaimType("scxaq")
-                .withScopes(Arrays.asList("chcbonqvpkvlrxnj", "ase", "pheoflokeyy", "enjbdlwtgrhp"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OpenIdConnectLogin model
+            = new OpenIdConnectLogin().withNameClaimType("evgbmqjq").withScopes(Arrays.asList("y"));
         model = BinaryData.fromObject(model).toObject(OpenIdConnectLogin.class);
-        Assertions.assertEquals("scxaq", model.nameClaimType());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.scopes().get(0));
+        Assertions.assertEquals("evgbmqjq", model.nameClaimType());
+        Assertions.assertEquals("y", model.scopes().get(0));
     }
 }

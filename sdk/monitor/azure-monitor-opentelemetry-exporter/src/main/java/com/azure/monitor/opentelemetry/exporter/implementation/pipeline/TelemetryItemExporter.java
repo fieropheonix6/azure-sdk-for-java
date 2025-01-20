@@ -5,14 +5,17 @@ package com.azure.monitor.opentelemetry.exporter.implementation.pipeline;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonWriter;
+import com.azure.monitor.opentelemetry.exporter.implementation.builders.MetricTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.ContextTagKeys;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.io.SerializedString;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
+import com.azure.monitor.opentelemetry.exporter.implementation.utils.AksResourceAttributes;
 import io.opentelemetry.sdk.common.CompletableResultCode;
+import io.opentelemetry.sdk.resources.Resource;
+import io.opentelemetry.semconv.ServiceAttributes;
+import io.opentelemetry.semconv.incubating.ServiceIncubatingAttributes;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -22,6 +25,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.zip.GZIPOutputStream;
@@ -34,66 +38,55 @@ public class TelemetryItemExporter {
     // thread can drive, so anything higher than this should not increase throughput
     private static final int MAX_CONCURRENT_EXPORTS = 100;
 
+    private static final String _OTELRESOURCE_ = "_OTELRESOURCE_";
+
     private static final ClientLogger logger = new ClientLogger(TelemetryItemExporter.class);
 
-    private static final OperationLogger operationLogger =
-        new OperationLogger(
-            TelemetryItemExporter.class,
-            "Put export into the background (don't wait for it to return)");
+    private static final OperationLogger operationLogger = new OperationLogger(TelemetryItemExporter.class,
+        "Put export into the background (don't wait for it to return)");
 
-    private static final ObjectMapper mapper = createObjectMapper();
-
-    private static final AppInsightsByteBufferPool byteBufferPool = new AppInsightsByteBufferPool();
-
-    private static final OperationLogger encodeBatchOperationLogger =
-        new OperationLogger(TelemetryItemExporter.class, "Encoding telemetry batch into json");
-
-    private static ObjectMapper createObjectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-        // it's important to pass in the "agent class loader" since TelemetryItemPipeline is initialized
-        // lazily and can be initialized via an application thread, in which case the thread context
-        // class loader is used to look up jsr305 module and its not found
-        mapper.registerModules(ObjectMapper.findModules(TelemetryItemExporter.class.getClassLoader()));
-        mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-        return mapper;
-    }
+    private static final OperationLogger encodeBatchOperationLogger
+        = new OperationLogger(TelemetryItemExporter.class, "Encoding telemetry batch into json");
 
     private final TelemetryPipeline telemetryPipeline;
     private final TelemetryPipelineListener listener;
 
-    private final Set<CompletableResultCode> activeExportResults =
-        Collections.newSetFromMap(new ConcurrentHashMap<>());
+    private final Set<CompletableResultCode> activeExportResults = Collections.newSetFromMap(new ConcurrentHashMap<>());
 
     // e.g. construct with diagnostic listener and local storage listener
-    public TelemetryItemExporter(
-        TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener) {
+    public TelemetryItemExporter(TelemetryPipeline telemetryPipeline, TelemetryPipelineListener listener) {
         this.telemetryPipeline = telemetryPipeline;
         this.listener = listener;
     }
 
     public CompletableResultCode send(List<TelemetryItem> telemetryItems) {
-        Map<String, List<TelemetryItem>> groupings = new HashMap<>();
-        for (TelemetryItem telemetryItem : telemetryItems) {
-            groupings
-                .computeIfAbsent(telemetryItem.getConnectionString(), k -> new ArrayList<>())
-                .add(telemetryItem);
-        }
+        Map<TelemetryItemBatchKey, List<TelemetryItem>> batches = splitIntoBatches(telemetryItems);
         List<CompletableResultCode> resultCodeList = new ArrayList<>();
-        for (Map.Entry<String, List<TelemetryItem>> entry : groupings.entrySet()) {
-            resultCodeList.add(internalSendByConnectionString(entry.getValue(), entry.getKey()));
+        for (Map.Entry<TelemetryItemBatchKey, List<TelemetryItem>> batch : batches.entrySet()) {
+            resultCodeList.add(internalSendByBatch(batch.getKey(), batch.getValue()));
         }
-        return maybeAddToActiveExportResults(resultCodeList);
+        maybeAddToActiveExportResults(resultCodeList);
+        return CompletableResultCode.ofAll(resultCodeList);
     }
 
-    private CompletableResultCode maybeAddToActiveExportResults(List<CompletableResultCode> results) {
+    // visible for tests
+    Map<TelemetryItemBatchKey, List<TelemetryItem>> splitIntoBatches(List<TelemetryItem> telemetryItems) {
+
+        Map<TelemetryItemBatchKey, List<TelemetryItem>> groupings = new HashMap<>();
+        for (TelemetryItem telemetryItem : telemetryItems) {
+            TelemetryItemBatchKey telemetryItemBatchKey = new TelemetryItemBatchKey(telemetryItem.getConnectionString(),
+                telemetryItem.getResource(), telemetryItem.getResourceFromTags());
+            groupings.computeIfAbsent(telemetryItemBatchKey, k -> new ArrayList<>()).add(telemetryItem);
+        }
+        return groupings;
+    }
+
+    private void maybeAddToActiveExportResults(List<CompletableResultCode> results) {
         if (activeExportResults.size() >= MAX_CONCURRENT_EXPORTS) {
             // this is just a failsafe to limit concurrent exports, it's not ideal because it blocks
             // waiting for the most recent export instead of waiting for the first export to return
-            operationLogger.recordFailure(
-                "Hit max " + MAX_CONCURRENT_EXPORTS + " active concurrent requests",
+            operationLogger.recordFailure("Hit max " + MAX_CONCURRENT_EXPORTS + " active concurrent requests",
                 TELEMETRY_ITEM_EXPORTER_ERROR);
-            return CompletableResultCode.ofAll(results);
         }
 
         operationLogger.recordSuccess();
@@ -102,8 +95,6 @@ public class TelemetryItemExporter {
         for (CompletableResultCode result : results) {
             result.whenComplete(() -> activeExportResults.remove(result));
         }
-
-        return CompletableResultCode.ofSuccess();
     }
 
     public CompletableResultCode flush() {
@@ -114,52 +105,131 @@ public class TelemetryItemExporter {
         return listener.shutdown();
     }
 
-    CompletableResultCode internalSendByConnectionString(
-        List<TelemetryItem> telemetryItems, String connectionString) {
+    CompletableResultCode internalSendByBatch(TelemetryItemBatchKey telemetryItemBatchKey,
+        List<TelemetryItem> telemetryItems) {
         List<ByteBuffer> byteBuffers;
+        // Don't send _OTELRESOURCE_ custom metric when OTEL_RESOURCE_ATTRIBUTES env var is empty
+        // Don't send _OTELRESOURCE_ custom metric to Statsbeat yet
+        // Don't Send _OTELRESOURCE_ when the app is running on other env other than AKS
+        // insert _OTELRESOURCE_ at the beginning of each batch
+        // TODO (heya) add a json config for customers to disable _OTELRESOURCE_ metric to the ingestion service when this feature is GA
+        if (!"Statsbeat".equals(telemetryItems.get(0).getName())
+            && AksResourceAttributes.isAks(telemetryItemBatchKey.resource)) {
+            telemetryItems.add(0, createOtelResourceMetric(telemetryItemBatchKey));
+        }
         try {
-            byteBuffers = encode(telemetryItems);
+            byteBuffers = serialize(telemetryItems);
             encodeBatchOperationLogger.recordSuccess();
         } catch (Throwable t) {
             encodeBatchOperationLogger.recordFailure(t.getMessage(), t);
             return CompletableResultCode.ofFailure();
         }
-        return telemetryPipeline.send(byteBuffers, connectionString, listener);
+        return telemetryPipeline.send(byteBuffers, telemetryItemBatchKey.connectionString, listener);
     }
 
-    List<ByteBuffer> encode(List<TelemetryItem> telemetryItems) throws IOException {
+    // serialize an array of TelemetryItems to an array of byte buffers
+    private static List<ByteBuffer> serialize(List<TelemetryItem> telemetryItems) {
+        try {
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                try (StringWriter debug = new StringWriter()) {
+                    for (int i = 0; i < telemetryItems.size(); i++) {
+                        JsonWriter jsonWriter = JsonProviders.createWriter(debug);
+                        telemetryItems.get(i).toJson(jsonWriter);
+                        jsonWriter.flush();
 
-        if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
-            StringWriter debug = new StringWriter();
-            try (JsonGenerator jg = mapper.createGenerator(debug)) {
-                writeTelemetryItems(jg, telemetryItems);
+                        if (i < telemetryItems.size() - 1) {
+                            debug.write('\n');
+                        }
+                    }
+                    logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), debug);
+                }
             }
-            logger.verbose("sending telemetry to ingestion service:\n{}", debug);
-        }
 
-        ByteBufferOutputStream out = new ByteBufferOutputStream(byteBufferPool);
-
-        try (JsonGenerator jg = mapper.createGenerator(new GZIPOutputStream(out))) {
-            writeTelemetryItems(jg, telemetryItems);
+            ByteBufferOutputStream out = writeTelemetryItemsAsByteBufferOutputStream(telemetryItems);
+            out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy
+            List<ByteBuffer> byteBuffers = out.getByteBuffers();
+            for (ByteBuffer byteBuffer : byteBuffers) {
+                byteBuffer.flip();
+            }
+            return out.getByteBuffers();
         } catch (IOException e) {
-            byteBufferPool.offer(out.getByteBuffers());
-            throw e;
+            throw new IllegalStateException("Failed to serialize list of TelemetryItems to List<ByteBuffer>", e);
         }
-
-        out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy
-
-        List<ByteBuffer> byteBuffers = out.getByteBuffers();
-        for (ByteBuffer byteBuffer : byteBuffers) {
-            byteBuffer.flip();
-        }
-        return byteBuffers;
     }
 
-    private static void writeTelemetryItems(JsonGenerator jg, List<TelemetryItem> telemetryItems)
-        throws IOException {
-        jg.setRootValueSeparator(new SerializedString("\n"));
-        for (TelemetryItem telemetryItem : telemetryItems) {
-            mapper.writeValue(jg, telemetryItem);
+    // gzip and add new line delimiter from a list of telemetry items to a byte buffer output stream
+    private static ByteBufferOutputStream
+        writeTelemetryItemsAsByteBufferOutputStream(List<TelemetryItem> telemetryItems) throws IOException {
+        try (ByteBufferOutputStream result = new ByteBufferOutputStream(new AppInsightsByteBufferPool())) {
+            GZIPOutputStream gzipOutputStream = new GZIPOutputStream(result);
+            for (int i = 0; i < telemetryItems.size(); i++) {
+                JsonWriter jsonWriter = JsonProviders.createWriter(gzipOutputStream);
+                telemetryItems.get(i).toJson(jsonWriter);
+                jsonWriter.flush();
+
+                if (i < telemetryItems.size() - 1) {
+                    gzipOutputStream.write('\n');
+                }
+            }
+            gzipOutputStream.close();
+            return result;
+        }
+    }
+
+    private TelemetryItem createOtelResourceMetric(TelemetryItemBatchKey telemetryItemBatchKey) {
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create(_OTELRESOURCE_, 0);
+        builder.setConnectionString(telemetryItemBatchKey.connectionString);
+        telemetryItemBatchKey.resource.getAttributes().forEach((k, v) -> builder.addProperty(k.getKey(), v.toString()));
+        String roleName = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE.toString());
+        if (roleName != null) {
+            builder.addProperty(ServiceAttributes.SERVICE_NAME.getKey(), roleName);
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE.toString(), roleName);
+        }
+        String roleInstance
+            = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString());
+        if (roleInstance != null) {
+            builder.addProperty(ServiceIncubatingAttributes.SERVICE_INSTANCE_ID.getKey(), roleInstance);
+            builder.addTag(ContextTagKeys.AI_CLOUD_ROLE_INSTANCE.toString(), roleInstance);
+        }
+        String internalSdkVersion
+            = telemetryItemBatchKey.resourceFromTags.get(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString());
+        if (internalSdkVersion != null) {
+            builder.addTag(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), internalSdkVersion);
+        }
+
+        return builder.build();
+    }
+
+    private static class TelemetryItemBatchKey {
+
+        private final String connectionString;
+        private final Resource resource;
+        private final Map<String, String> resourceFromTags;
+
+        private TelemetryItemBatchKey(String connectionString, Resource resource,
+            Map<String, String> resourceFromTags) {
+            this.connectionString = connectionString;
+            this.resource = resource;
+            this.resourceFromTags = resourceFromTags;
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            if (this == other) {
+                return true;
+            }
+            if (other == null || getClass() != other.getClass()) {
+                return false;
+            }
+            TelemetryItemBatchKey that = (TelemetryItemBatchKey) other;
+            return Objects.equals(connectionString, that.connectionString)
+                && Objects.equals(resource, that.resource)
+                && Objects.equals(resourceFromTags, that.resourceFromTags);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(connectionString, resource, resourceFromTags);
         }
     }
 }

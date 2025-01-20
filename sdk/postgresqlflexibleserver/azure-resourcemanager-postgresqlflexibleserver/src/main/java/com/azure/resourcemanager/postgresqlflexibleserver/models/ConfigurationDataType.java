@@ -5,35 +5,56 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfigurationDataType. */
+/**
+ * Data type of the configuration.
+ */
 public final class ConfigurationDataType extends ExpandableStringEnum<ConfigurationDataType> {
-    /** Static value Boolean for ConfigurationDataType. */
+    /**
+     * Static value Boolean for ConfigurationDataType.
+     */
     public static final ConfigurationDataType BOOLEAN = fromString("Boolean");
 
-    /** Static value Numeric for ConfigurationDataType. */
+    /**
+     * Static value Numeric for ConfigurationDataType.
+     */
     public static final ConfigurationDataType NUMERIC = fromString("Numeric");
 
-    /** Static value Integer for ConfigurationDataType. */
+    /**
+     * Static value Integer for ConfigurationDataType.
+     */
     public static final ConfigurationDataType INTEGER = fromString("Integer");
 
-    /** Static value Enumeration for ConfigurationDataType. */
+    /**
+     * Static value Enumeration for ConfigurationDataType.
+     */
     public static final ConfigurationDataType ENUMERATION = fromString("Enumeration");
 
     /**
+     * Creates a new instance of ConfigurationDataType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ConfigurationDataType() {
+    }
+
+    /**
      * Creates or finds a ConfigurationDataType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConfigurationDataType.
      */
-    @JsonCreator
     public static ConfigurationDataType fromString(String name) {
         return fromString(name, ConfigurationDataType.class);
     }
 
-    /** @return known ConfigurationDataType values. */
+    /**
+     * Gets known ConfigurationDataType values.
+     * 
+     * @return known ConfigurationDataType values.
+     */
     public static Collection<ConfigurationDataType> values() {
         return values(ConfigurationDataType.class);
     }

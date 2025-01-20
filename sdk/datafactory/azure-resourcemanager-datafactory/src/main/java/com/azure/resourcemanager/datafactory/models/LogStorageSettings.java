@@ -6,53 +6,54 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** (Deprecated. Please use LogSettings) Log storage settings. */
+/**
+ * (Deprecated. Please use LogSettings) Log storage settings.
+ */
 @Fluent
-public final class LogStorageSettings {
+public final class LogStorageSettings implements JsonSerializable<LogStorageSettings> {
     /*
      * Log storage linked service reference.
      */
-    @JsonProperty(value = "linkedServiceName", required = true)
     private LinkedServiceReference linkedServiceName;
 
     /*
      * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "path")
     private Object path;
 
     /*
      * Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "logLevel")
     private Object logLevel;
 
     /*
      * Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "enableReliableLogging")
     private Object enableReliableLogging;
 
     /*
      * (Deprecated. Please use LogSettings) Log storage settings.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of LogStorageSettings class. */
+    /**
+     * Creates an instance of LogStorageSettings class.
+     */
     public LogStorageSettings() {
     }
 
     /**
      * Get the linkedServiceName property: Log storage linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference linkedServiceName() {
@@ -61,7 +62,7 @@ public final class LogStorageSettings {
 
     /**
      * Set the linkedServiceName property: Log storage linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -73,7 +74,7 @@ public final class LogStorageSettings {
     /**
      * Get the path property: The path to storage for storing detailed logs of activity execution. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object path() {
@@ -83,7 +84,7 @@ public final class LogStorageSettings {
     /**
      * Set the path property: The path to storage for storing detailed logs of activity execution. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -95,7 +96,7 @@ public final class LogStorageSettings {
     /**
      * Get the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the logLevel value.
      */
     public Object logLevel() {
@@ -105,7 +106,7 @@ public final class LogStorageSettings {
     /**
      * Set the logLevel property: Gets or sets the log level, support: Info, Warning. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param logLevel the logLevel value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -117,7 +118,7 @@ public final class LogStorageSettings {
     /**
      * Get the enableReliableLogging property: Specifies whether to enable reliable logging. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the enableReliableLogging value.
      */
     public Object enableReliableLogging() {
@@ -127,7 +128,7 @@ public final class LogStorageSettings {
     /**
      * Set the enableReliableLogging property: Specifies whether to enable reliable logging. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param enableReliableLogging the enableReliableLogging value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -138,17 +139,16 @@ public final class LogStorageSettings {
 
     /**
      * Get the additionalProperties property: (Deprecated. Please use LogSettings) Log storage settings.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: (Deprecated. Please use LogSettings) Log storage settings.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the LogStorageSettings object itself.
      */
@@ -157,29 +157,77 @@ public final class LogStorageSettings {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property linkedServiceName in model LogStorageSettings"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model LogStorageSettings"));
         } else {
             linkedServiceName().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LogStorageSettings.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
+        jsonWriter.writeUntypedField("path", this.path);
+        jsonWriter.writeUntypedField("logLevel", this.logLevel);
+        jsonWriter.writeUntypedField("enableReliableLogging", this.enableReliableLogging);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogStorageSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogStorageSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogStorageSettings.
+     */
+    public static LogStorageSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogStorageSettings deserializedLogStorageSettings = new LogStorageSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedLogStorageSettings.linkedServiceName = LinkedServiceReference.fromJson(reader);
+                } else if ("path".equals(fieldName)) {
+                    deserializedLogStorageSettings.path = reader.readUntyped();
+                } else if ("logLevel".equals(fieldName)) {
+                    deserializedLogStorageSettings.logLevel = reader.readUntyped();
+                } else if ("enableReliableLogging".equals(fieldName)) {
+                    deserializedLogStorageSettings.enableReliableLogging = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedLogStorageSettings.additionalProperties = additionalProperties;
+
+            return deserializedLogStorageSettings;
+        });
+    }
 }

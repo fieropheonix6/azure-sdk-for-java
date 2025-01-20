@@ -5,20 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The BackendsGetEntityTagHeaders model. */
+/**
+ * The BackendsGetEntityTagHeaders model.
+ */
 @Fluent
 public final class BackendsGetEntityTagHeaders {
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag")
     private String etag;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of BackendsGetEntityTagHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public BackendsGetEntityTagHeaders(HttpHeaders rawHeaders) {
+        this.etag = rawHeaders.getValue(HttpHeaderName.ETAG);
+    }
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -27,7 +39,7 @@ public final class BackendsGetEntityTagHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the BackendsGetEntityTagHeaders object itself.
      */
@@ -38,7 +50,7 @@ public final class BackendsGetEntityTagHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

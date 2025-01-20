@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.azurearcdata.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExtendedLocationTypes. */
+/**
+ * The type of extendedLocation.
+ */
 public final class ExtendedLocationTypes extends ExpandableStringEnum<ExtendedLocationTypes> {
-    /** Static value CustomLocation for ExtendedLocationTypes. */
+    /**
+     * Static value CustomLocation for ExtendedLocationTypes.
+     */
     public static final ExtendedLocationTypes CUSTOM_LOCATION = fromString("CustomLocation");
 
     /**
+     * Creates a new instance of ExtendedLocationTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExtendedLocationTypes() {
+    }
+
+    /**
      * Creates or finds a ExtendedLocationTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExtendedLocationTypes.
      */
-    @JsonCreator
     public static ExtendedLocationTypes fromString(String name) {
         return fromString(name, ExtendedLocationTypes.class);
     }
 
-    /** @return known ExtendedLocationTypes values. */
+    /**
+     * Gets known ExtendedLocationTypes values.
+     * 
+     * @return known ExtendedLocationTypes values.
+     */
     public static Collection<ExtendedLocationTypes> values() {
         return values(ExtendedLocationTypes.class);
     }

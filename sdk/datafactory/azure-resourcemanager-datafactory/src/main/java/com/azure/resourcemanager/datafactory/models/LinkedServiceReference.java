@@ -6,40 +6,42 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Linked service reference type. */
+/**
+ * Linked service reference type.
+ */
 @Fluent
-public final class LinkedServiceReference {
+public final class LinkedServiceReference implements JsonSerializable<LinkedServiceReference> {
     /*
      * Linked service reference type.
      */
-    @JsonProperty(value = "type", required = true)
-    private String type = "LinkedServiceReference";
+    private final String type = "LinkedServiceReference";
 
     /*
      * Reference LinkedService name.
      */
-    @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
     /*
      * Arguments for LinkedService.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> parameters;
 
-    /** Creates an instance of LinkedServiceReference class. */
+    /**
+     * Creates an instance of LinkedServiceReference class.
+     */
     public LinkedServiceReference() {
-        type = "LinkedServiceReference";
     }
 
     /**
      * Get the type property: Linked service reference type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -47,19 +49,8 @@ public final class LinkedServiceReference {
     }
 
     /**
-     * Set the type property: Linked service reference type.
-     *
-     * @param type the type value to set.
-     * @return the LinkedServiceReference object itself.
-     */
-    public LinkedServiceReference withType(String type) {
-        this.type = type;
-        return this;
-    }
-
-    /**
      * Get the referenceName property: Reference LinkedService name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String referenceName() {
@@ -68,7 +59,7 @@ public final class LinkedServiceReference {
 
     /**
      * Set the referenceName property: Reference LinkedService name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the LinkedServiceReference object itself.
      */
@@ -79,7 +70,7 @@ public final class LinkedServiceReference {
 
     /**
      * Get the parameters property: Arguments for LinkedService.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, Object> parameters() {
@@ -88,7 +79,7 @@ public final class LinkedServiceReference {
 
     /**
      * Set the parameters property: Arguments for LinkedService.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the LinkedServiceReference object itself.
      */
@@ -99,17 +90,58 @@ public final class LinkedServiceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property referenceName in model LinkedServiceReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property referenceName in model LinkedServiceReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LinkedServiceReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("referenceName", this.referenceName);
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeUntyped(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkedServiceReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkedServiceReference if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LinkedServiceReference.
+     */
+    public static LinkedServiceReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkedServiceReference deserializedLinkedServiceReference = new LinkedServiceReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("referenceName".equals(fieldName)) {
+                    deserializedLinkedServiceReference.referenceName = reader.getString();
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, Object> parameters = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedLinkedServiceReference.parameters = parameters;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkedServiceReference;
+        });
+    }
 }

@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SharedToValues. */
+/**
+ * Defines values for SharedToValues.
+ */
 public final class SharedToValues extends ExpandableStringEnum<SharedToValues> {
-    /** Static value tenant for SharedToValues. */
+    /**
+     * Static value tenant for SharedToValues.
+     */
     public static final SharedToValues TENANT = fromString("tenant");
 
     /**
+     * Creates a new instance of SharedToValues value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SharedToValues() {
+    }
+
+    /**
      * Creates or finds a SharedToValues from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SharedToValues.
      */
-    @JsonCreator
     public static SharedToValues fromString(String name) {
         return fromString(name, SharedToValues.class);
     }
 
     /**
      * Gets known SharedToValues values.
-     *
+     * 
      * @return known SharedToValues values.
      */
     public static Collection<SharedToValues> values() {

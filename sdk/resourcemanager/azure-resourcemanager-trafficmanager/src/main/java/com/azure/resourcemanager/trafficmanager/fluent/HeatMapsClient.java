@@ -12,29 +12,31 @@ import com.azure.resourcemanager.trafficmanager.fluent.models.HeatMapModelInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in HeatMapsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in HeatMapsClient.
+ */
 public interface HeatMapsClient {
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
      * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return latest heatmap for Traffic Manager profile along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<HeatMapModelInner>> getWithResponseAsync(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight);
+    Mono<Response<HeatMapModelInner>> getWithResponseAsync(String resourceGroupName, String profileName,
+        List<Double> topLeft, List<Double> botRight);
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,8 +48,8 @@ public interface HeatMapsClient {
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param topLeft The top left latitude,longitude pair of the rectangular viewport to query for.
      * @param botRight The bottom right latitude,longitude pair of the rectangular viewport to query for.
@@ -58,13 +60,13 @@ public interface HeatMapsClient {
      * @return latest heatmap for Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HeatMapModelInner> getWithResponse(
-        String resourceGroupName, String profileName, List<Double> topLeft, List<Double> botRight, Context context);
+    Response<HeatMapModelInner> getWithResponse(String resourceGroupName, String profileName, List<Double> topLeft,
+        List<Double> botRight, Context context);
 
     /**
      * Gets latest heatmap for Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager endpoint.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

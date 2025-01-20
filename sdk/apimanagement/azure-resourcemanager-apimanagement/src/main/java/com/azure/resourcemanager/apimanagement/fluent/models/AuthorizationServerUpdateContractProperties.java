@@ -5,63 +5,76 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationMethod;
 import com.azure.resourcemanager.apimanagement.models.AuthorizationServerContractBaseProperties;
 import com.azure.resourcemanager.apimanagement.models.BearerTokenSendingMethod;
 import com.azure.resourcemanager.apimanagement.models.ClientAuthenticationMethod;
 import com.azure.resourcemanager.apimanagement.models.GrantType;
 import com.azure.resourcemanager.apimanagement.models.TokenBodyParameterContract;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** External OAuth authorization server Update settings contract. */
+/**
+ * External OAuth authorization server Update settings contract.
+ */
 @Fluent
 public final class AuthorizationServerUpdateContractProperties extends AuthorizationServerContractBaseProperties {
     /*
      * User-friendly authorization server name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Optional reference to a page where client or app registration for this
-     * authorization server is performed. Contains absolute URL to entity being
-     * referenced.
+     * If true, the authorization server may be used in the developer portal test console. True by default if no value
+     * is provided.
      */
-    @JsonProperty(value = "clientRegistrationEndpoint")
+    private Boolean useInTestConsole;
+
+    /*
+     * If true, the authorization server will be used in the API documentation in the developer portal. False by default
+     * if no value is provided.
+     */
+    private Boolean useInApiDocumentation;
+
+    /*
+     * Optional reference to a page where client or app registration for this authorization server is performed.
+     * Contains absolute URL to entity being referenced.
+     */
     private String clientRegistrationEndpoint;
 
     /*
-     * OAuth authorization endpoint. See
-     * http://tools.ietf.org/html/rfc6749#section-3.2.
+     * OAuth authorization endpoint. See http://tools.ietf.org/html/rfc6749#section-3.2.
      */
-    @JsonProperty(value = "authorizationEndpoint")
     private String authorizationEndpoint;
 
     /*
-     * Form of an authorization grant, which the client uses to request the
-     * access token.
+     * Form of an authorization grant, which the client uses to request the access token.
      */
-    @JsonProperty(value = "grantTypes")
     private List<GrantType> grantTypes;
 
     /*
      * Client or app id registered with this authorization server.
      */
-    @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
-     * Client or app secret registered with this authorization server. This
-     * property will not be filled on 'GET' operations! Use '/listSecrets' POST
-     * request to get the value.
+     * Client or app secret registered with this authorization server. This property will not be filled on 'GET'
+     * operations! Use '/listSecrets' POST request to get the value.
      */
-    @JsonProperty(value = "clientSecret")
     private String clientSecret;
 
     /**
+     * Creates an instance of AuthorizationServerUpdateContractProperties class.
+     */
+    public AuthorizationServerUpdateContractProperties() {
+    }
+
+    /**
      * Get the displayName property: User-friendly authorization server name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -70,7 +83,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
 
     /**
      * Set the displayName property: User-friendly authorization server name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AuthorizationServerUpdateContractProperties object itself.
      */
@@ -80,9 +93,53 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
     }
 
     /**
+     * Get the useInTestConsole property: If true, the authorization server may be used in the developer portal test
+     * console. True by default if no value is provided.
+     * 
+     * @return the useInTestConsole value.
+     */
+    public Boolean useInTestConsole() {
+        return this.useInTestConsole;
+    }
+
+    /**
+     * Set the useInTestConsole property: If true, the authorization server may be used in the developer portal test
+     * console. True by default if no value is provided.
+     * 
+     * @param useInTestConsole the useInTestConsole value to set.
+     * @return the AuthorizationServerUpdateContractProperties object itself.
+     */
+    public AuthorizationServerUpdateContractProperties withUseInTestConsole(Boolean useInTestConsole) {
+        this.useInTestConsole = useInTestConsole;
+        return this;
+    }
+
+    /**
+     * Get the useInApiDocumentation property: If true, the authorization server will be used in the API documentation
+     * in the developer portal. False by default if no value is provided.
+     * 
+     * @return the useInApiDocumentation value.
+     */
+    public Boolean useInApiDocumentation() {
+        return this.useInApiDocumentation;
+    }
+
+    /**
+     * Set the useInApiDocumentation property: If true, the authorization server will be used in the API documentation
+     * in the developer portal. False by default if no value is provided.
+     * 
+     * @param useInApiDocumentation the useInApiDocumentation value to set.
+     * @return the AuthorizationServerUpdateContractProperties object itself.
+     */
+    public AuthorizationServerUpdateContractProperties withUseInApiDocumentation(Boolean useInApiDocumentation) {
+        this.useInApiDocumentation = useInApiDocumentation;
+        return this;
+    }
+
+    /**
      * Get the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
      * this authorization server is performed. Contains absolute URL to entity being referenced.
-     *
+     * 
      * @return the clientRegistrationEndpoint value.
      */
     public String clientRegistrationEndpoint() {
@@ -92,12 +149,12 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
     /**
      * Set the clientRegistrationEndpoint property: Optional reference to a page where client or app registration for
      * this authorization server is performed. Contains absolute URL to entity being referenced.
-     *
+     * 
      * @param clientRegistrationEndpoint the clientRegistrationEndpoint value to set.
      * @return the AuthorizationServerUpdateContractProperties object itself.
      */
-    public AuthorizationServerUpdateContractProperties withClientRegistrationEndpoint(
-        String clientRegistrationEndpoint) {
+    public AuthorizationServerUpdateContractProperties
+        withClientRegistrationEndpoint(String clientRegistrationEndpoint) {
         this.clientRegistrationEndpoint = clientRegistrationEndpoint;
         return this;
     }
@@ -105,7 +162,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
     /**
      * Get the authorizationEndpoint property: OAuth authorization endpoint. See
      * http://tools.ietf.org/html/rfc6749#section-3.2.
-     *
+     * 
      * @return the authorizationEndpoint value.
      */
     public String authorizationEndpoint() {
@@ -115,7 +172,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
     /**
      * Set the authorizationEndpoint property: OAuth authorization endpoint. See
      * http://tools.ietf.org/html/rfc6749#section-3.2.
-     *
+     * 
      * @param authorizationEndpoint the authorizationEndpoint value to set.
      * @return the AuthorizationServerUpdateContractProperties object itself.
      */
@@ -126,7 +183,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
 
     /**
      * Get the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
-     *
+     * 
      * @return the grantTypes value.
      */
     public List<GrantType> grantTypes() {
@@ -135,7 +192,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
 
     /**
      * Set the grantTypes property: Form of an authorization grant, which the client uses to request the access token.
-     *
+     * 
      * @param grantTypes the grantTypes value to set.
      * @return the AuthorizationServerUpdateContractProperties object itself.
      */
@@ -146,7 +203,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
 
     /**
      * Get the clientId property: Client or app id registered with this authorization server.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -155,7 +212,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
 
     /**
      * Set the clientId property: Client or app id registered with this authorization server.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the AuthorizationServerUpdateContractProperties object itself.
      */
@@ -167,7 +224,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
     /**
      * Get the clientSecret property: Client or app secret registered with this authorization server. This property will
      * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the clientSecret value.
      */
     public String clientSecret() {
@@ -177,7 +234,7 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
     /**
      * Set the clientSecret property: Client or app secret registered with this authorization server. This property will
      * not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the AuthorizationServerUpdateContractProperties object itself.
      */
@@ -186,74 +243,94 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AuthorizationServerUpdateContractProperties withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AuthorizationServerUpdateContractProperties withAuthorizationMethods(
-        List<AuthorizationMethod> authorizationMethods) {
+    public AuthorizationServerUpdateContractProperties
+        withAuthorizationMethods(List<AuthorizationMethod> authorizationMethods) {
         super.withAuthorizationMethods(authorizationMethods);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AuthorizationServerUpdateContractProperties withClientAuthenticationMethod(
-        List<ClientAuthenticationMethod> clientAuthenticationMethod) {
+    public AuthorizationServerUpdateContractProperties
+        withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod) {
         super.withClientAuthenticationMethod(clientAuthenticationMethod);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AuthorizationServerUpdateContractProperties withTokenBodyParameters(
-        List<TokenBodyParameterContract> tokenBodyParameters) {
+    public AuthorizationServerUpdateContractProperties
+        withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters) {
         super.withTokenBodyParameters(tokenBodyParameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AuthorizationServerUpdateContractProperties withTokenEndpoint(String tokenEndpoint) {
         super.withTokenEndpoint(tokenEndpoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AuthorizationServerUpdateContractProperties withSupportState(Boolean supportState) {
         super.withSupportState(supportState);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AuthorizationServerUpdateContractProperties withDefaultScope(String defaultScope) {
         super.withDefaultScope(defaultScope);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AuthorizationServerUpdateContractProperties withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
+    public AuthorizationServerUpdateContractProperties
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
         super.withBearerTokenSendingMethods(bearerTokenSendingMethods);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AuthorizationServerUpdateContractProperties withResourceOwnerUsername(String resourceOwnerUsername) {
         super.withResourceOwnerUsername(resourceOwnerUsername);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AuthorizationServerUpdateContractProperties withResourceOwnerPassword(String resourceOwnerPassword) {
         super.withResourceOwnerPassword(resourceOwnerPassword);
@@ -262,11 +339,125 @@ public final class AuthorizationServerUpdateContractProperties extends Authoriza
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (tokenBodyParameters() != null) {
+            tokenBodyParameters().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeArrayField("authorizationMethods", authorizationMethods(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("clientAuthenticationMethod", clientAuthenticationMethod(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("tokenBodyParameters", tokenBodyParameters(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("tokenEndpoint", tokenEndpoint());
+        jsonWriter.writeBooleanField("supportState", supportState());
+        jsonWriter.writeStringField("defaultScope", defaultScope());
+        jsonWriter.writeArrayField("bearerTokenSendingMethods", bearerTokenSendingMethods(),
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("resourceOwnerUsername", resourceOwnerUsername());
+        jsonWriter.writeStringField("resourceOwnerPassword", resourceOwnerPassword());
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeBooleanField("useInTestConsole", this.useInTestConsole);
+        jsonWriter.writeBooleanField("useInApiDocumentation", this.useInApiDocumentation);
+        jsonWriter.writeStringField("clientRegistrationEndpoint", this.clientRegistrationEndpoint);
+        jsonWriter.writeStringField("authorizationEndpoint", this.authorizationEndpoint);
+        jsonWriter.writeArrayField("grantTypes", this.grantTypes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeStringField("clientId", this.clientId);
+        jsonWriter.writeStringField("clientSecret", this.clientSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AuthorizationServerUpdateContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AuthorizationServerUpdateContractProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AuthorizationServerUpdateContractProperties.
+     */
+    public static AuthorizationServerUpdateContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AuthorizationServerUpdateContractProperties deserializedAuthorizationServerUpdateContractProperties
+                = new AuthorizationServerUpdateContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.withDescription(reader.getString());
+                } else if ("authorizationMethods".equals(fieldName)) {
+                    List<AuthorizationMethod> authorizationMethods
+                        = reader.readArray(reader1 -> AuthorizationMethod.fromString(reader1.getString()));
+                    deserializedAuthorizationServerUpdateContractProperties
+                        .withAuthorizationMethods(authorizationMethods);
+                } else if ("clientAuthenticationMethod".equals(fieldName)) {
+                    List<ClientAuthenticationMethod> clientAuthenticationMethod
+                        = reader.readArray(reader1 -> ClientAuthenticationMethod.fromString(reader1.getString()));
+                    deserializedAuthorizationServerUpdateContractProperties
+                        .withClientAuthenticationMethod(clientAuthenticationMethod);
+                } else if ("tokenBodyParameters".equals(fieldName)) {
+                    List<TokenBodyParameterContract> tokenBodyParameters
+                        = reader.readArray(reader1 -> TokenBodyParameterContract.fromJson(reader1));
+                    deserializedAuthorizationServerUpdateContractProperties
+                        .withTokenBodyParameters(tokenBodyParameters);
+                } else if ("tokenEndpoint".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.withTokenEndpoint(reader.getString());
+                } else if ("supportState".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties
+                        .withSupportState(reader.getNullable(JsonReader::getBoolean));
+                } else if ("defaultScope".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.withDefaultScope(reader.getString());
+                } else if ("bearerTokenSendingMethods".equals(fieldName)) {
+                    List<BearerTokenSendingMethod> bearerTokenSendingMethods
+                        = reader.readArray(reader1 -> BearerTokenSendingMethod.fromString(reader1.getString()));
+                    deserializedAuthorizationServerUpdateContractProperties
+                        .withBearerTokenSendingMethods(bearerTokenSendingMethods);
+                } else if ("resourceOwnerUsername".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties
+                        .withResourceOwnerUsername(reader.getString());
+                } else if ("resourceOwnerPassword".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties
+                        .withResourceOwnerPassword(reader.getString());
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.displayName = reader.getString();
+                } else if ("useInTestConsole".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.useInTestConsole
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("useInApiDocumentation".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.useInApiDocumentation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("clientRegistrationEndpoint".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.clientRegistrationEndpoint
+                        = reader.getString();
+                } else if ("authorizationEndpoint".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.authorizationEndpoint = reader.getString();
+                } else if ("grantTypes".equals(fieldName)) {
+                    List<GrantType> grantTypes = reader.readArray(reader1 -> GrantType.fromString(reader1.getString()));
+                    deserializedAuthorizationServerUpdateContractProperties.grantTypes = grantTypes;
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.clientId = reader.getString();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedAuthorizationServerUpdateContractProperties.clientSecret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAuthorizationServerUpdateContractProperties;
+        });
     }
 }

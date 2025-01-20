@@ -4,27 +4,32 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.models.VCenter;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VCenters Update. */
+/**
+ * Samples for VCenters Update.
+ */
 public final class VCentersUpdateSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/UpdateVCenter.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * UpdateVCenter.json
      */
     /**
      * Sample code: UpdateVCenter.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void updateVCenter(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        VCenter resource =
-            manager.vCenters().getByResourceGroupWithResponse("testrg", "ContosoVCenter", Context.NONE).getValue();
+        VCenter resource = manager.vCenters()
+            .getByResourceGroupWithResponse("testrg", "ContosoVCenter", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

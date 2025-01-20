@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies VM Size Property settings on the virtual machine. */
+/**
+ * Specifies VM Size Property settings on the virtual machine.
+ */
 @Fluent
-public final class VMSizeProperties {
+public final class VMSizeProperties implements JsonSerializable<VMSizeProperties> {
     /*
-     * Specifies the number of vCPUs available for the VM. <br><br> When this property is not specified in the request
-     * body the default behavior is to set it to the value of vCPUs available for that VM size exposed in api response
-     * of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) .
+     * Specifies the number of vCPUs available for the VM. When this property is not specified in the request body the
+     * default behavior is to set it to the value of vCPUs available for that VM size exposed in api response of [List
+     * all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
      */
-    @JsonProperty(value = "vCPUsAvailable")
     private Integer vCpusAvailable;
 
     /*
-     * Specifies the vCPU to physical core ratio. <br><br> When this property is not specified in the request body the
-     * default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response of [List all
-     * available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) <br><br> Setting this property to
-     * 1 also means that hyper-threading is disabled.
+     * Specifies the vCPU to physical core ratio. When this property is not specified in the request body the default
+     * behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response of [List all available
+     * virtual machine sizes in a region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * **Setting this property to 1 also means that hyper-threading is disabled.**
      */
-    @JsonProperty(value = "vCPUsPerCore")
     private Integer vCpusPerCore;
 
-    /** Creates an instance of VMSizeProperties class. */
+    /**
+     * Creates an instance of VMSizeProperties class.
+     */
     public VMSizeProperties() {
     }
 
     /**
-     * Get the vCpusAvailable property: Specifies the number of vCPUs available for the VM. &lt;br&gt;&lt;br&gt; When
-     * this property is not specified in the request body the default behavior is to set it to the value of vCPUs
-     * available for that VM size exposed in api response of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) .
-     *
+     * Get the vCpusAvailable property: Specifies the number of vCPUs available for the VM. When this property is not
+     * specified in the request body the default behavior is to set it to the value of vCPUs available for that VM size
+     * exposed in api response of [List all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * 
      * @return the vCpusAvailable value.
      */
     public Integer vCpusAvailable() {
@@ -46,11 +51,11 @@ public final class VMSizeProperties {
     }
 
     /**
-     * Set the vCpusAvailable property: Specifies the number of vCPUs available for the VM. &lt;br&gt;&lt;br&gt; When
-     * this property is not specified in the request body the default behavior is to set it to the value of vCPUs
-     * available for that VM size exposed in api response of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) .
-     *
+     * Set the vCpusAvailable property: Specifies the number of vCPUs available for the VM. When this property is not
+     * specified in the request body the default behavior is to set it to the value of vCPUs available for that VM size
+     * exposed in api response of [List all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list).
+     * 
      * @param vCpusAvailable the vCpusAvailable value to set.
      * @return the VMSizeProperties object itself.
      */
@@ -60,12 +65,12 @@ public final class VMSizeProperties {
     }
 
     /**
-     * Get the vCpusPerCore property: Specifies the vCPU to physical core ratio. &lt;br&gt;&lt;br&gt; When this property
-     * is not specified in the request body the default behavior is set to the value of vCPUsPerCore for the VM Size
-     * exposed in api response of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) &lt;br&gt;&lt;br&gt; Setting this
-     * property to 1 also means that hyper-threading is disabled.
-     *
+     * Get the vCpusPerCore property: Specifies the vCPU to physical core ratio. When this property is not specified in
+     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
+     * of [List all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list). **Setting this property to 1 also
+     * means that hyper-threading is disabled.**.
+     * 
      * @return the vCpusPerCore value.
      */
     public Integer vCpusPerCore() {
@@ -73,12 +78,12 @@ public final class VMSizeProperties {
     }
 
     /**
-     * Set the vCpusPerCore property: Specifies the vCPU to physical core ratio. &lt;br&gt;&lt;br&gt; When this property
-     * is not specified in the request body the default behavior is set to the value of vCPUsPerCore for the VM Size
-     * exposed in api response of [List all available virtual machine sizes in a
-     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list) &lt;br&gt;&lt;br&gt; Setting this
-     * property to 1 also means that hyper-threading is disabled.
-     *
+     * Set the vCpusPerCore property: Specifies the vCPU to physical core ratio. When this property is not specified in
+     * the request body the default behavior is set to the value of vCPUsPerCore for the VM Size exposed in api response
+     * of [List all available virtual machine sizes in a
+     * region](https://docs.microsoft.com/en-us/rest/api/compute/resource-skus/list). **Setting this property to 1 also
+     * means that hyper-threading is disabled.**.
+     * 
      * @param vCpusPerCore the vCpusPerCore value to set.
      * @return the VMSizeProperties object itself.
      */
@@ -89,9 +94,48 @@ public final class VMSizeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("vCPUsAvailable", this.vCpusAvailable);
+        jsonWriter.writeNumberField("vCPUsPerCore", this.vCpusPerCore);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VMSizeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VMSizeProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VMSizeProperties.
+     */
+    public static VMSizeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VMSizeProperties deserializedVMSizeProperties = new VMSizeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vCPUsAvailable".equals(fieldName)) {
+                    deserializedVMSizeProperties.vCpusAvailable = reader.getNullable(JsonReader::getInt);
+                } else if ("vCPUsPerCore".equals(fieldName)) {
+                    deserializedVMSizeProperties.vCpusPerCore = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVMSizeProperties;
+        });
     }
 }

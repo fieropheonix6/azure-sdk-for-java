@@ -11,11 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkResourceInner;
 
-/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient.
+ */
 public interface PrivateLinkResourcesClient {
     /**
+     * Private Link Resources
+     * 
      * Get all private link resources for a workspaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,8 +31,10 @@ public interface PrivateLinkResourcesClient {
     PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String workspaceName);
 
     /**
+     * Private Link Resources
+     * 
      * Get all private link resources for a workspaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -41,22 +47,10 @@ public interface PrivateLinkResourcesClient {
     PagedIterable<PrivateLinkResourceInner> list(String resourceGroupName, String workspaceName, Context context);
 
     /**
+     * Get Private Link Resource
+     * 
      * Get private link resource in workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateLinkResourceName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateLinkResourceInner get(String resourceGroupName, String workspaceName, String privateLinkResourceName);
-
-    /**
-     * Get private link resource in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -67,6 +61,22 @@ public interface PrivateLinkResourcesClient {
      * @return private link resource in workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResourceInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateLinkResourceName, Context context);
+
+    /**
+     * Get Private Link Resource
+     * 
+     * Get private link resource in workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateLinkResourceName The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private link resource in workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PrivateLinkResourceInner get(String resourceGroupName, String workspaceName, String privateLinkResourceName);
 }

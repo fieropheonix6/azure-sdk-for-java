@@ -5,34 +5,54 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StandardTierStorageRedundancy. */
+/**
+ * The storage redundancy setting of a vault.
+ */
 public final class StandardTierStorageRedundancy extends ExpandableStringEnum<StandardTierStorageRedundancy> {
-    /** Static value LocallyRedundant for StandardTierStorageRedundancy. */
+    /**
+     * Static value Invalid for StandardTierStorageRedundancy.
+     */
+    public static final StandardTierStorageRedundancy INVALID = fromString("Invalid");
+
+    /**
+     * Static value LocallyRedundant for StandardTierStorageRedundancy.
+     */
     public static final StandardTierStorageRedundancy LOCALLY_REDUNDANT = fromString("LocallyRedundant");
 
-    /** Static value GeoRedundant for StandardTierStorageRedundancy. */
+    /**
+     * Static value GeoRedundant for StandardTierStorageRedundancy.
+     */
     public static final StandardTierStorageRedundancy GEO_REDUNDANT = fromString("GeoRedundant");
 
-    /** Static value ZoneRedundant for StandardTierStorageRedundancy. */
+    /**
+     * Static value ZoneRedundant for StandardTierStorageRedundancy.
+     */
     public static final StandardTierStorageRedundancy ZONE_REDUNDANT = fromString("ZoneRedundant");
 
     /**
+     * Creates a new instance of StandardTierStorageRedundancy value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StandardTierStorageRedundancy() {
+    }
+
+    /**
      * Creates or finds a StandardTierStorageRedundancy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StandardTierStorageRedundancy.
      */
-    @JsonCreator
     public static StandardTierStorageRedundancy fromString(String name) {
         return fromString(name, StandardTierStorageRedundancy.class);
     }
 
     /**
      * Gets known StandardTierStorageRedundancy values.
-     *
+     * 
      * @return known StandardTierStorageRedundancy values.
      */
     public static Collection<StandardTierStorageRedundancy> values() {

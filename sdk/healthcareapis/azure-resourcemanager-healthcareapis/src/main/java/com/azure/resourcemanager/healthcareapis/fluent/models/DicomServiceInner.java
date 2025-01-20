@@ -6,41 +6,67 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.healthcareapis.models.CorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.DicomServiceAuthenticationConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
+import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
+import com.azure.resourcemanager.healthcareapis.models.StorageConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.TaggedResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The description of Dicom Service. */
+/**
+ * The description of Dicom Service.
+ */
 @Fluent
 public final class DicomServiceInner extends TaggedResource {
     /*
      * Dicom Service configuration.
      */
-    @JsonProperty(value = "properties")
     private DicomServiceProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
-     * Setting indicating whether the service has a managed identity associated
-     * with it.
+     * Setting indicating whether the service has a managed identity associated with it.
      */
-    @JsonProperty(value = "identity")
     private ServiceManagedIdentityIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DicomServiceInner class.
+     */
+    public DicomServiceInner() {
+    }
 
     /**
      * Get the innerProperties property: Dicom Service configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DicomServiceProperties innerProperties() {
@@ -49,7 +75,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -58,7 +84,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Get the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     public ServiceManagedIdentityIdentity identity() {
@@ -67,7 +93,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Set the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DicomServiceInner object itself.
      */
@@ -76,21 +102,57 @@ public final class DicomServiceInner extends TaggedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DicomServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DicomServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DicomServiceInner withEtag(String etag) {
         super.withEtag(etag);
@@ -99,7 +161,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -108,7 +170,7 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Get the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @return the authenticationConfiguration value.
      */
     public DicomServiceAuthenticationConfiguration authenticationConfiguration() {
@@ -117,12 +179,12 @@ public final class DicomServiceInner extends TaggedResource {
 
     /**
      * Set the authenticationConfiguration property: Dicom Service authentication configuration.
-     *
+     * 
      * @param authenticationConfiguration the authenticationConfiguration value to set.
      * @return the DicomServiceInner object itself.
      */
-    public DicomServiceInner withAuthenticationConfiguration(
-        DicomServiceAuthenticationConfiguration authenticationConfiguration) {
+    public DicomServiceInner
+        withAuthenticationConfiguration(DicomServiceAuthenticationConfiguration authenticationConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DicomServiceProperties();
         }
@@ -131,8 +193,31 @@ public final class DicomServiceInner extends TaggedResource {
     }
 
     /**
+     * Get the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @return the corsConfiguration value.
+     */
+    public CorsConfiguration corsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().corsConfiguration();
+    }
+
+    /**
+     * Set the corsConfiguration property: Dicom Service Cors configuration.
+     * 
+     * @param corsConfiguration the corsConfiguration value to set.
+     * @return the DicomServiceInner object itself.
+     */
+    public DicomServiceInner withCorsConfiguration(CorsConfiguration corsConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DicomServiceProperties();
+        }
+        this.innerProperties().withCorsConfiguration(corsConfiguration);
+        return this;
+    }
+
+    /**
      * Get the serviceUrl property: The url of the Dicom Services.
-     *
+     * 
      * @return the serviceUrl value.
      */
     public String serviceUrl() {
@@ -142,7 +227,7 @@ public final class DicomServiceInner extends TaggedResource {
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -152,7 +237,7 @@ public final class DicomServiceInner extends TaggedResource {
     /**
      * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
      * private endpoint is enabled.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -162,7 +247,7 @@ public final class DicomServiceInner extends TaggedResource {
     /**
      * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
      * private endpoint is enabled.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DicomServiceInner object itself.
      */
@@ -175,18 +260,153 @@ public final class DicomServiceInner extends TaggedResource {
     }
 
     /**
+     * Get the eventState property: DICOM Service event support status.
+     * 
+     * @return the eventState value.
+     */
+    public ServiceEventState eventState() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventState();
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of the DICOM service.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the DicomServiceInner object itself.
+     */
+    public DicomServiceInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DicomServiceProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the storageConfiguration property: The configuration of external storage account.
+     * 
+     * @return the storageConfiguration value.
+     */
+    public StorageConfiguration storageConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageConfiguration();
+    }
+
+    /**
+     * Set the storageConfiguration property: The configuration of external storage account.
+     * 
+     * @param storageConfiguration the storageConfiguration value to set.
+     * @return the DicomServiceInner object itself.
+     */
+    public DicomServiceInner withStorageConfiguration(StorageConfiguration storageConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DicomServiceProperties();
+        }
+        this.innerProperties().withStorageConfiguration(storageConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the enableDataPartitions property: If data partitions is enabled or not.
+     * 
+     * @return the enableDataPartitions value.
+     */
+    public Boolean enableDataPartitions() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableDataPartitions();
+    }
+
+    /**
+     * Set the enableDataPartitions property: If data partitions is enabled or not.
+     * 
+     * @param enableDataPartitions the enableDataPartitions value to set.
+     * @return the DicomServiceInner object itself.
+     */
+    public DicomServiceInner withEnableDataPartitions(Boolean enableDataPartitions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DicomServiceProperties();
+        }
+        this.innerProperties().withEnableDataPartitions(enableDataPartitions);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DicomServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DicomServiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DicomServiceInner.
+     */
+    public static DicomServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DicomServiceInner deserializedDicomServiceInner = new DicomServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDicomServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDicomServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDicomServiceInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDicomServiceInner.withEtag(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedDicomServiceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDicomServiceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDicomServiceInner.innerProperties = DicomServiceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDicomServiceInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDicomServiceInner.identity = ServiceManagedIdentityIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDicomServiceInner;
+        });
     }
 }

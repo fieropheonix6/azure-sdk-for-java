@@ -13,10 +13,9 @@ import com.azure.resourcemanager.mariadb.fluent.AdvisorsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.AdvisorInner;
 import com.azure.resourcemanager.mariadb.models.Advisor;
 import com.azure.resourcemanager.mariadb.models.Advisors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AdvisorsImpl implements Advisors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdvisorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AdvisorsImpl.class);
 
     private final AdvisorsClient innerClient;
 
@@ -25,6 +24,18 @@ public final class AdvisorsImpl implements Advisors {
     public AdvisorsImpl(AdvisorsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<Advisor> getWithResponse(String resourceGroupName, String serverName, String advisorName,
+        Context context) {
+        Response<AdvisorInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, advisorName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AdvisorImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Advisor get(String resourceGroupName, String serverName, String advisorName) {
@@ -36,29 +47,14 @@ public final class AdvisorsImpl implements Advisors {
         }
     }
 
-    public Response<Advisor> getWithResponse(
-        String resourceGroupName, String serverName, String advisorName, Context context) {
-        Response<AdvisorInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, advisorName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AdvisorImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<Advisor> listByServer(String resourceGroupName, String serverName) {
         PagedIterable<AdvisorInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Advisor> listByServer(String resourceGroupName, String serverName, Context context) {
         PagedIterable<AdvisorInner> inner = this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AdvisorImpl(inner1, this.manager()));
     }
 
     private AdvisorsClient serviceClient() {

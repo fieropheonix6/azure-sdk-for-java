@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.containerregistry.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections Get. */
+/**
+ * Samples for PrivateEndpointConnections Get.
+ */
 public final class PrivateEndpointConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2021-09-01/examples/PrivateEndpointConnectionGet.json
+     * x-ms-original-file:
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/
+     * PrivateEndpointConnectionGet.json
      */
     /**
      * Sample code: PrivateEndpointConnectionGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void privateEndpointConnectionGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerRegistries()
+        azure.containerRegistries()
             .manager()
             .serviceClient()
             .getPrivateEndpointConnections()
-            .getWithResponse("myResourceGroup", "myRegistry", "myConnection", Context.NONE);
+            .getWithResponse("myResourceGroup", "myRegistry", "myConnection", com.azure.core.util.Context.NONE);
     }
 }

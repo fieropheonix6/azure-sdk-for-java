@@ -30,10 +30,22 @@ public final class ResourceProvidersImpl implements ResourceProviders {
 
     private final com.azure.resourcemanager.workloads.WorkloadsManager serviceManager;
 
-    public ResourceProvidersImpl(
-        ResourceProvidersClient innerClient, com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
+    public ResourceProvidersImpl(ResourceProvidersClient innerClient,
+        com.azure.resourcemanager.workloads.WorkloadsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<SapSizingRecommendationResult> sapSizingRecommendationsWithResponse(String location,
+        SapSizingRecommendationRequest sapSizingRecommendation, Context context) {
+        Response<SapSizingRecommendationResultInner> inner
+            = this.serviceClient().sapSizingRecommendationsWithResponse(location, sapSizingRecommendation, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapSizingRecommendationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SapSizingRecommendationResult sapSizingRecommendations(String location) {
@@ -45,16 +57,13 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<SapSizingRecommendationResult> sapSizingRecommendationsWithResponse(
-        String location, SapSizingRecommendationRequest sapSizingRecommendation, Context context) {
-        Response<SapSizingRecommendationResultInner> inner =
-            this.serviceClient().sapSizingRecommendationsWithResponse(location, sapSizingRecommendation, context);
+    public Response<SapSupportedResourceSkusResult> sapSupportedSkuWithResponse(String location,
+        SapSupportedSkusRequest sapSupportedSku, Context context) {
+        Response<SapSupportedResourceSkusResultInner> inner
+            = this.serviceClient().sapSupportedSkuWithResponse(location, sapSupportedSku, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SapSizingRecommendationResultImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapSupportedResourceSkusResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -69,16 +78,13 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<SapSupportedResourceSkusResult> sapSupportedSkuWithResponse(
-        String location, SapSupportedSkusRequest sapSupportedSku, Context context) {
-        Response<SapSupportedResourceSkusResultInner> inner =
-            this.serviceClient().sapSupportedSkuWithResponse(location, sapSupportedSku, context);
+    public Response<SapDiskConfigurationsResult> sapDiskConfigurationsWithResponse(String location,
+        SapDiskConfigurationsRequest sapDiskConfigurations, Context context) {
+        Response<SapDiskConfigurationsResultInner> inner
+            = this.serviceClient().sapDiskConfigurationsWithResponse(location, sapDiskConfigurations, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SapSupportedResourceSkusResultImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapDiskConfigurationsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -93,16 +99,13 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         }
     }
 
-    public Response<SapDiskConfigurationsResult> sapDiskConfigurationsWithResponse(
-        String location, SapDiskConfigurationsRequest sapDiskConfigurations, Context context) {
-        Response<SapDiskConfigurationsResultInner> inner =
-            this.serviceClient().sapDiskConfigurationsWithResponse(location, sapDiskConfigurations, context);
+    public Response<SapAvailabilityZoneDetailsResult> sapAvailabilityZoneDetailsWithResponse(String location,
+        SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context) {
+        Response<SapAvailabilityZoneDetailsResultInner> inner = this.serviceClient()
+            .sapAvailabilityZoneDetailsWithResponse(location, sapAvailabilityZoneDetails, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SapDiskConfigurationsResultImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SapAvailabilityZoneDetailsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -112,21 +115,6 @@ public final class ResourceProvidersImpl implements ResourceProviders {
         SapAvailabilityZoneDetailsResultInner inner = this.serviceClient().sapAvailabilityZoneDetails(location);
         if (inner != null) {
             return new SapAvailabilityZoneDetailsResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<SapAvailabilityZoneDetailsResult> sapAvailabilityZoneDetailsWithResponse(
-        String location, SapAvailabilityZoneDetailsRequest sapAvailabilityZoneDetails, Context context) {
-        Response<SapAvailabilityZoneDetailsResultInner> inner =
-            this.serviceClient().sapAvailabilityZoneDetailsWithResponse(location, sapAvailabilityZoneDetails, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SapAvailabilityZoneDetailsResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

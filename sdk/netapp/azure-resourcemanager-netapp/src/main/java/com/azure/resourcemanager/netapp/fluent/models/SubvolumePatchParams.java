@@ -5,32 +5,36 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Parameters with which a subvolume can be updated. */
+/**
+ * Parameters with which a subvolume can be updated.
+ */
 @Fluent
-public final class SubvolumePatchParams {
+public final class SubvolumePatchParams implements JsonSerializable<SubvolumePatchParams> {
     /*
-     * size
-     *
      * Truncate subvolume to the provided size in bytes
      */
-    @JsonProperty(value = "size")
     private Long size;
 
     /*
-     * path
-     *
      * path to the subvolume
      */
-    @JsonProperty(value = "path")
     private String path;
 
     /**
-     * Get the size property: size
-     *
-     * <p>Truncate subvolume to the provided size in bytes.
-     *
+     * Creates an instance of SubvolumePatchParams class.
+     */
+    public SubvolumePatchParams() {
+    }
+
+    /**
+     * Get the size property: Truncate subvolume to the provided size in bytes.
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -38,10 +42,8 @@ public final class SubvolumePatchParams {
     }
 
     /**
-     * Set the size property: size
-     *
-     * <p>Truncate subvolume to the provided size in bytes.
-     *
+     * Set the size property: Truncate subvolume to the provided size in bytes.
+     * 
      * @param size the size value to set.
      * @return the SubvolumePatchParams object itself.
      */
@@ -51,10 +53,8 @@ public final class SubvolumePatchParams {
     }
 
     /**
-     * Get the path property: path
-     *
-     * <p>path to the subvolume.
-     *
+     * Get the path property: path to the subvolume.
+     * 
      * @return the path value.
      */
     public String path() {
@@ -62,10 +62,8 @@ public final class SubvolumePatchParams {
     }
 
     /**
-     * Set the path property: path
-     *
-     * <p>path to the subvolume.
-     *
+     * Set the path property: path to the subvolume.
+     * 
      * @param path the path value to set.
      * @return the SubvolumePatchParams object itself.
      */
@@ -76,9 +74,48 @@ public final class SubvolumePatchParams {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("size", this.size);
+        jsonWriter.writeStringField("path", this.path);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubvolumePatchParams from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubvolumePatchParams if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubvolumePatchParams.
+     */
+    public static SubvolumePatchParams fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubvolumePatchParams deserializedSubvolumePatchParams = new SubvolumePatchParams();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("size".equals(fieldName)) {
+                    deserializedSubvolumePatchParams.size = reader.getNullable(JsonReader::getLong);
+                } else if ("path".equals(fieldName)) {
+                    deserializedSubvolumePatchParams.path = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubvolumePatchParams;
+        });
     }
 }

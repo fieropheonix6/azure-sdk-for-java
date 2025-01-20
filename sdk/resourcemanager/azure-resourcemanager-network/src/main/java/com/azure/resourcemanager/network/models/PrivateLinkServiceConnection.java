@@ -6,44 +6,47 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.PrivateLinkServiceConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** PrivateLinkServiceConnection resource. */
+/**
+ * PrivateLinkServiceConnection resource.
+ */
 @Fluent
 public final class PrivateLinkServiceConnection extends SubResource {
     /*
      * Properties of the private link service connection.
      */
-    @JsonProperty(value = "properties")
     private PrivateLinkServiceConnectionProperties innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of PrivateLinkServiceConnection class. */
+    /**
+     * Creates an instance of PrivateLinkServiceConnection class.
+     */
     public PrivateLinkServiceConnection() {
     }
 
     /**
      * Get the innerProperties property: Properties of the private link service connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkServiceConnectionProperties innerProperties() {
@@ -53,7 +56,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +66,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -74,7 +77,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -83,14 +86,16 @@ public final class PrivateLinkServiceConnection extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateLinkServiceConnection withId(String id) {
         super.withId(id);
@@ -99,7 +104,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -108,7 +113,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
 
     /**
      * Get the privateLinkServiceId property: The resource id of private link service.
-     *
+     * 
      * @return the privateLinkServiceId value.
      */
     public String privateLinkServiceId() {
@@ -117,7 +122,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
 
     /**
      * Set the privateLinkServiceId property: The resource id of private link service.
-     *
+     * 
      * @param privateLinkServiceId the privateLinkServiceId value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -132,7 +137,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
     /**
      * Get the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
      * should connect to.
-     *
+     * 
      * @return the groupIds value.
      */
     public List<String> groupIds() {
@@ -142,7 +147,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
     /**
      * Set the groupIds property: The ID(s) of the group(s) obtained from the remote resource that this private endpoint
      * should connect to.
-     *
+     * 
      * @param groupIds the groupIds value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -157,7 +162,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
     /**
      * Get the requestMessage property: A message passed to the owner of the remote resource with this connection
      * request. Restricted to 140 chars.
-     *
+     * 
      * @return the requestMessage value.
      */
     public String requestMessage() {
@@ -167,7 +172,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
     /**
      * Set the requestMessage property: A message passed to the owner of the remote resource with this connection
      * request. Restricted to 140 chars.
-     *
+     * 
      * @param requestMessage the requestMessage value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
@@ -182,7 +187,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
     /**
      * Get the privateLinkServiceConnectionState property: A collection of read-only information about the state of the
      * connection to the remote resource.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -192,12 +197,12 @@ public final class PrivateLinkServiceConnection extends SubResource {
     /**
      * Set the privateLinkServiceConnectionState property: A collection of read-only information about the state of the
      * connection to the remote resource.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateLinkServiceConnection object itself.
      */
-    public PrivateLinkServiceConnection withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateLinkServiceConnection
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateLinkServiceConnectionProperties();
         }
@@ -207,12 +212,59 @@ public final class PrivateLinkServiceConnection extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkServiceConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkServiceConnection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkServiceConnection.
+     */
+    public static PrivateLinkServiceConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkServiceConnection deserializedPrivateLinkServiceConnection = new PrivateLinkServiceConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnection.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnection.innerProperties
+                        = PrivateLinkServiceConnectionProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnection.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnection.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedPrivateLinkServiceConnection.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkServiceConnection;
+        });
     }
 }

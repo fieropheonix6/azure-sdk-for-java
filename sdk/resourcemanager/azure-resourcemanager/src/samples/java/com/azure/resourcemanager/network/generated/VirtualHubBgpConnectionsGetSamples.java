@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualHubBgpConnections Get. */
+/**
+ * Samples for VirtualHubBgpConnections Get.
+ */
 public final class VirtualHubBgpConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualHubBgpConnectionGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VirtualHubBgpConnectionGet.
+     * json
      */
     /**
      * Sample code: VirtualHubVirtualHubRouteTableV2Get.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualHubVirtualHubRouteTableV2Get(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualHubBgpConnections()
-            .getWithResponse("rg1", "hub1", "conn1", Context.NONE);
+            .getWithResponse("rg1", "hub1", "conn1", com.azure.core.util.Context.NONE);
     }
 }

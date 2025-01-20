@@ -6,79 +6,47 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobResource;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class BackupJobsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"vrbnyrukoil\",\"backupManagementType\":\"DefaultBackup\",\"operation\":\"uwj\",\"status\":\"ipjlhwyxpzruz\",\"startTime\":\"2021-11-02T20:00:35Z\",\"endTime\":\"2021-02-24T23:49:38Z\",\"activityId\":\"whbgxvellvul\"},\"eTag\":\"d\",\"location\":\"nitmujdtvmclyymf\",\"tags\":{\"xfzuvrzmzqmzj\":\"jpddn\",\"pv\":\"rb\",\"pglaoh\":\"mdyfoebojtj\"},\"id\":\"qk\",\"name\":\"jtnqjil\",\"type\":\"ywkdcwmqsy\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"jobType\":\"Job\",\"entityFriendlyName\":\"kuejk\",\"backupManagementType\":\"AzureSql\",\"operation\":\"ztjofqcvovjufyc\",\"status\":\"mlbemy\",\"startTime\":\"2021-08-26T00:52:57Z\",\"endTime\":\"2021-03-10T12:58:51Z\",\"activityId\":\"xeg\"},\"eTag\":\"ortudawlpjfel\",\"location\":\"erppt\",\"tags\":{\"alwcjgckbb\":\"qnzmnhiil\",\"fa\":\"ccgzpraoxnyu\"},\"id\":\"sgftipwc\",\"name\":\"byubhiqdxyurnpn\",\"type\":\"hza\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<JobResource> response = manager.backupJobs()
+            .list("thvmaxgnuyeamcmh", "dfjeceho", "wcpqtwl", "esq", com.azure.core.util.Context.NONE);
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<JobResource> response = manager.backupJobs().list("z", "caqt", "ltcoqc", "jpds", Context.NONE);
-
-        Assertions.assertEquals("erppt", response.iterator().next().location());
-        Assertions.assertEquals("qnzmnhiil", response.iterator().next().tags().get("alwcjgckbb"));
-        Assertions.assertEquals("kuejk", response.iterator().next().properties().entityFriendlyName());
-        Assertions
-            .assertEquals(
-                BackupManagementType.AZURE_SQL, response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("ztjofqcvovjufyc", response.iterator().next().properties().operation());
-        Assertions.assertEquals("mlbemy", response.iterator().next().properties().status());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-26T00:52:57Z"), response.iterator().next().properties().startTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-03-10T12:58:51Z"), response.iterator().next().properties().endTime());
-        Assertions.assertEquals("xeg", response.iterator().next().properties().activityId());
-        Assertions.assertEquals("ortudawlpjfel", response.iterator().next().etag());
+        Assertions.assertEquals("nitmujdtvmclyymf", response.iterator().next().location());
+        Assertions.assertEquals("jpddn", response.iterator().next().tags().get("xfzuvrzmzqmzj"));
+        Assertions.assertEquals("vrbnyrukoil", response.iterator().next().properties().entityFriendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP,
+            response.iterator().next().properties().backupManagementType());
+        Assertions.assertEquals("uwj", response.iterator().next().properties().operation());
+        Assertions.assertEquals("ipjlhwyxpzruz", response.iterator().next().properties().status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-02T20:00:35Z"),
+            response.iterator().next().properties().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-24T23:49:38Z"),
+            response.iterator().next().properties().endTime());
+        Assertions.assertEquals("whbgxvellvul", response.iterator().next().properties().activityId());
+        Assertions.assertEquals("d", response.iterator().next().etag());
     }
 }

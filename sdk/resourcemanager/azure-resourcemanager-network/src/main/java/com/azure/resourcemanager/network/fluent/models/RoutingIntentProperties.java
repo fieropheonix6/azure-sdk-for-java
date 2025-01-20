@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingPolicy;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of a RoutingIntent resource. */
+/**
+ * The properties of a RoutingIntent resource.
+ */
 @Fluent
-public final class RoutingIntentProperties {
+public final class RoutingIntentProperties implements JsonSerializable<RoutingIntentProperties> {
     /*
      * List of routing policies.
      */
-    @JsonProperty(value = "routingPolicies")
     private List<RoutingPolicy> routingPolicies;
 
     /*
      * The provisioning state of the RoutingIntent resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RoutingIntentProperties class. */
+    /**
+     * Creates an instance of RoutingIntentProperties class.
+     */
     public RoutingIntentProperties() {
     }
 
     /**
      * Get the routingPolicies property: List of routing policies.
-     *
+     * 
      * @return the routingPolicies value.
      */
     public List<RoutingPolicy> routingPolicies() {
@@ -40,7 +46,7 @@ public final class RoutingIntentProperties {
 
     /**
      * Set the routingPolicies property: List of routing policies.
-     *
+     * 
      * @param routingPolicies the routingPolicies value to set.
      * @return the RoutingIntentProperties object itself.
      */
@@ -51,7 +57,7 @@ public final class RoutingIntentProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the RoutingIntent resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -60,12 +66,53 @@ public final class RoutingIntentProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (routingPolicies() != null) {
             routingPolicies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("routingPolicies", this.routingPolicies,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingIntentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingIntentProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RoutingIntentProperties.
+     */
+    public static RoutingIntentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingIntentProperties deserializedRoutingIntentProperties = new RoutingIntentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routingPolicies".equals(fieldName)) {
+                    List<RoutingPolicy> routingPolicies = reader.readArray(reader1 -> RoutingPolicy.fromJson(reader1));
+                    deserializedRoutingIntentProperties.routingPolicies = routingPolicies;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRoutingIntentProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingIntentProperties;
+        });
     }
 }

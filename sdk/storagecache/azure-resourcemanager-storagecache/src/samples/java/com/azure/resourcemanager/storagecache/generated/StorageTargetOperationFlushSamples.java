@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.storagecache.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for StorageTargetOperation Flush. */
+/**
+ * Samples for StorageTargetOperation Flush.
+ */
 public final class StorageTargetOperationFlushSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2022-05-01/examples/StorageTargets_Flush.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2024-03-01/examples/
+     * StorageTargets_Flush.json
      */
     /**
      * Sample code: StorageTargets_Flush.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void storageTargetsFlush(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager.storageTargetOperations().flush("scgroup", "sc", "st1", Context.NONE);
+        manager.storageTargetOperations().flush("scgroup", "sc", "st1", com.azure.core.util.Context.NONE);
     }
 }

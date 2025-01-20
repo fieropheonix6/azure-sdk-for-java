@@ -5,97 +5,86 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.ReplicationLinkType;
 import com.azure.resourcemanager.sql.models.ReplicationRole;
 import com.azure.resourcemanager.sql.models.ReplicationState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Represents the properties of a database replication link. */
+/**
+ * Properties of a replication link.
+ */
 @Immutable
-public final class ReplicationLinkProperties {
+public final class ReplicationLinkProperties implements JsonSerializable<ReplicationLinkProperties> {
     /*
-     * Legacy value indicating whether termination is allowed.  Currently
-     * always returns true.
+     * Resource partner server.
      */
-    @JsonProperty(value = "isTerminationAllowed", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isTerminationAllowed;
-
-    /*
-     * Replication mode of this replication link.
-     */
-    @JsonProperty(value = "replicationMode", access = JsonProperty.Access.WRITE_ONLY)
-    private String replicationMode;
-
-    /*
-     * The name of the server hosting the partner database.
-     */
-    @JsonProperty(value = "partnerServer", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerServer;
 
     /*
-     * The name of the partner database.
+     * Resource partner database.
      */
-    @JsonProperty(value = "partnerDatabase", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerDatabase;
 
     /*
-     * The Azure Region of the partner database.
+     * Resource partner location.
      */
-    @JsonProperty(value = "partnerLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String partnerLocation;
 
     /*
-     * The role of the database in the replication link.
+     * Local replication role.
      */
-    @JsonProperty(value = "role", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole role;
 
     /*
-     * The role of the partner database in the replication link.
+     * Partner replication role.
      */
-    @JsonProperty(value = "partnerRole", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationRole partnerRole;
 
     /*
-     * The start time for the replication link.
+     * Replication mode.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
+    private String replicationMode;
+
+    /*
+     * Time at which the link was created.
+     */
     private OffsetDateTime startTime;
 
     /*
-     * The percentage of seeding complete for the replication link.
+     * Seeding completion percentage for the link.
      */
-    @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /*
-     * The replication state for the replication link.
+     * Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED).
      */
-    @JsonProperty(value = "replicationState", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationState replicationState;
 
-    /**
-     * Get the isTerminationAllowed property: Legacy value indicating whether termination is allowed. Currently always
-     * returns true.
-     *
-     * @return the isTerminationAllowed value.
+    /*
+     * Whether the user is currently allowed to terminate the link.
      */
-    public Boolean isTerminationAllowed() {
-        return this.isTerminationAllowed;
+    private Boolean isTerminationAllowed;
+
+    /*
+     * Link type (GEO, NAMED, STANDBY).
+     */
+    private ReplicationLinkType linkType;
+
+    /**
+     * Creates an instance of ReplicationLinkProperties class.
+     */
+    public ReplicationLinkProperties() {
     }
 
     /**
-     * Get the replicationMode property: Replication mode of this replication link.
-     *
-     * @return the replicationMode value.
-     */
-    public String replicationMode() {
-        return this.replicationMode;
-    }
-
-    /**
-     * Get the partnerServer property: The name of the server hosting the partner database.
-     *
+     * Get the partnerServer property: Resource partner server.
+     * 
      * @return the partnerServer value.
      */
     public String partnerServer() {
@@ -103,8 +92,8 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the partnerDatabase property: The name of the partner database.
-     *
+     * Get the partnerDatabase property: Resource partner database.
+     * 
      * @return the partnerDatabase value.
      */
     public String partnerDatabase() {
@@ -112,8 +101,8 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the partnerLocation property: The Azure Region of the partner database.
-     *
+     * Get the partnerLocation property: Resource partner location.
+     * 
      * @return the partnerLocation value.
      */
     public String partnerLocation() {
@@ -121,8 +110,8 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the role property: The role of the database in the replication link.
-     *
+     * Get the role property: Local replication role.
+     * 
      * @return the role value.
      */
     public ReplicationRole role() {
@@ -130,8 +119,8 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the partnerRole property: The role of the partner database in the replication link.
-     *
+     * Get the partnerRole property: Partner replication role.
+     * 
      * @return the partnerRole value.
      */
     public ReplicationRole partnerRole() {
@@ -139,8 +128,17 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the startTime property: The start time for the replication link.
-     *
+     * Get the replicationMode property: Replication mode.
+     * 
+     * @return the replicationMode value.
+     */
+    public String replicationMode() {
+        return this.replicationMode;
+    }
+
+    /**
+     * Get the startTime property: Time at which the link was created.
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -148,8 +146,8 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the percentComplete property: The percentage of seeding complete for the replication link.
-     *
+     * Get the percentComplete property: Seeding completion percentage for the link.
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -157,8 +155,8 @@ public final class ReplicationLinkProperties {
     }
 
     /**
-     * Get the replicationState property: The replication state for the replication link.
-     *
+     * Get the replicationState property: Replication state (PENDING, SEEDING, CATCHUP, SUSPENDED).
+     * 
      * @return the replicationState value.
      */
     public ReplicationState replicationState() {
@@ -166,10 +164,86 @@ public final class ReplicationLinkProperties {
     }
 
     /**
+     * Get the isTerminationAllowed property: Whether the user is currently allowed to terminate the link.
+     * 
+     * @return the isTerminationAllowed value.
+     */
+    public Boolean isTerminationAllowed() {
+        return this.isTerminationAllowed;
+    }
+
+    /**
+     * Get the linkType property: Link type (GEO, NAMED, STANDBY).
+     * 
+     * @return the linkType value.
+     */
+    public ReplicationLinkType linkType() {
+        return this.linkType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationLinkProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationLinkProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationLinkProperties.
+     */
+    public static ReplicationLinkProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationLinkProperties deserializedReplicationLinkProperties = new ReplicationLinkProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partnerServer".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.partnerServer = reader.getString();
+                } else if ("partnerDatabase".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.partnerDatabase = reader.getString();
+                } else if ("partnerLocation".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.partnerLocation = reader.getString();
+                } else if ("role".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.role = ReplicationRole.fromString(reader.getString());
+                } else if ("partnerRole".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.partnerRole = ReplicationRole.fromString(reader.getString());
+                } else if ("replicationMode".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.replicationMode = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.percentComplete = reader.getNullable(JsonReader::getInt);
+                } else if ("replicationState".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.replicationState
+                        = ReplicationState.fromString(reader.getString());
+                } else if ("isTerminationAllowed".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.isTerminationAllowed
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("linkType".equals(fieldName)) {
+                    deserializedReplicationLinkProperties.linkType = ReplicationLinkType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationLinkProperties;
+        });
     }
 }

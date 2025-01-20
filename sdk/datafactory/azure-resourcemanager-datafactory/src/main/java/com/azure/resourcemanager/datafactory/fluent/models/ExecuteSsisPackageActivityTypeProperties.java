@@ -6,104 +6,95 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.SsisExecutionCredential;
 import com.azure.resourcemanager.datafactory.models.SsisExecutionParameter;
 import com.azure.resourcemanager.datafactory.models.SsisLogLocation;
 import com.azure.resourcemanager.datafactory.models.SsisPackageLocation;
 import com.azure.resourcemanager.datafactory.models.SsisPropertyOverride;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Execute SSIS package activity properties. */
+/**
+ * Execute SSIS package activity properties.
+ */
 @Fluent
-public final class ExecuteSsisPackageActivityTypeProperties {
+public final class ExecuteSsisPackageActivityTypeProperties
+    implements JsonSerializable<ExecuteSsisPackageActivityTypeProperties> {
     /*
      * SSIS package location.
      */
-    @JsonProperty(value = "packageLocation", required = true)
     private SsisPackageLocation packageLocation;
 
     /*
      * Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression
      * with resultType string).
      */
-    @JsonProperty(value = "runtime")
     private Object runtime;
 
     /*
      * The logging level of SSIS package execution. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "loggingLevel")
     private Object loggingLevel;
 
     /*
      * The environment path to execute the SSIS package. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "environmentPath")
     private Object environmentPath;
 
     /*
      * The package execution credential.
      */
-    @JsonProperty(value = "executionCredential")
     private SsisExecutionCredential executionCredential;
 
     /*
      * The integration runtime reference.
      */
-    @JsonProperty(value = "connectVia", required = true)
     private IntegrationRuntimeReference connectVia;
 
     /*
      * The project level parameters to execute the SSIS package.
      */
-    @JsonProperty(value = "projectParameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SsisExecutionParameter> projectParameters;
 
     /*
      * The package level parameters to execute the SSIS package.
      */
-    @JsonProperty(value = "packageParameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SsisExecutionParameter> packageParameters;
 
     /*
      * The project level connection managers to execute the SSIS package.
      */
-    @JsonProperty(value = "projectConnectionManagers")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers;
 
     /*
      * The package level connection managers to execute the SSIS package.
      */
-    @JsonProperty(value = "packageConnectionManagers")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers;
 
     /*
      * The property overrides to execute the SSIS package.
      */
-    @JsonProperty(value = "propertyOverrides")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, SsisPropertyOverride> propertyOverrides;
 
     /*
      * SSIS package execution log location.
      */
-    @JsonProperty(value = "logLocation")
     private SsisLogLocation logLocation;
 
-    /** Creates an instance of ExecuteSsisPackageActivityTypeProperties class. */
+    /**
+     * Creates an instance of ExecuteSsisPackageActivityTypeProperties class.
+     */
     public ExecuteSsisPackageActivityTypeProperties() {
     }
 
     /**
      * Get the packageLocation property: SSIS package location.
-     *
+     * 
      * @return the packageLocation value.
      */
     public SsisPackageLocation packageLocation() {
@@ -112,7 +103,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the packageLocation property: SSIS package location.
-     *
+     * 
      * @param packageLocation the packageLocation value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
@@ -124,7 +115,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     /**
      * Get the runtime property: Specifies the runtime to execute SSIS package. The value should be "x86" or "x64".
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the runtime value.
      */
     public Object runtime() {
@@ -134,7 +125,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     /**
      * Set the runtime property: Specifies the runtime to execute SSIS package. The value should be "x86" or "x64".
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param runtime the runtime value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
@@ -146,7 +137,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     /**
      * Get the loggingLevel property: The logging level of SSIS package execution. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the loggingLevel value.
      */
     public Object loggingLevel() {
@@ -156,7 +147,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     /**
      * Set the loggingLevel property: The logging level of SSIS package execution. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param loggingLevel the loggingLevel value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
@@ -168,7 +159,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     /**
      * Get the environmentPath property: The environment path to execute the SSIS package. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the environmentPath value.
      */
     public Object environmentPath() {
@@ -178,7 +169,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     /**
      * Set the environmentPath property: The environment path to execute the SSIS package. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param environmentPath the environmentPath value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
@@ -189,7 +180,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Get the executionCredential property: The package execution credential.
-     *
+     * 
      * @return the executionCredential value.
      */
     public SsisExecutionCredential executionCredential() {
@@ -198,19 +189,19 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the executionCredential property: The package execution credential.
-     *
+     * 
      * @param executionCredential the executionCredential value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
-    public ExecuteSsisPackageActivityTypeProperties withExecutionCredential(
-        SsisExecutionCredential executionCredential) {
+    public ExecuteSsisPackageActivityTypeProperties
+        withExecutionCredential(SsisExecutionCredential executionCredential) {
         this.executionCredential = executionCredential;
         return this;
     }
 
     /**
      * Get the connectVia property: The integration runtime reference.
-     *
+     * 
      * @return the connectVia value.
      */
     public IntegrationRuntimeReference connectVia() {
@@ -219,7 +210,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the connectVia property: The integration runtime reference.
-     *
+     * 
      * @param connectVia the connectVia value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
@@ -230,7 +221,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Get the projectParameters property: The project level parameters to execute the SSIS package.
-     *
+     * 
      * @return the projectParameters value.
      */
     public Map<String, SsisExecutionParameter> projectParameters() {
@@ -239,19 +230,19 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the projectParameters property: The project level parameters to execute the SSIS package.
-     *
+     * 
      * @param projectParameters the projectParameters value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
-    public ExecuteSsisPackageActivityTypeProperties withProjectParameters(
-        Map<String, SsisExecutionParameter> projectParameters) {
+    public ExecuteSsisPackageActivityTypeProperties
+        withProjectParameters(Map<String, SsisExecutionParameter> projectParameters) {
         this.projectParameters = projectParameters;
         return this;
     }
 
     /**
      * Get the packageParameters property: The package level parameters to execute the SSIS package.
-     *
+     * 
      * @return the packageParameters value.
      */
     public Map<String, SsisExecutionParameter> packageParameters() {
@@ -260,19 +251,19 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the packageParameters property: The package level parameters to execute the SSIS package.
-     *
+     * 
      * @param packageParameters the packageParameters value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
-    public ExecuteSsisPackageActivityTypeProperties withPackageParameters(
-        Map<String, SsisExecutionParameter> packageParameters) {
+    public ExecuteSsisPackageActivityTypeProperties
+        withPackageParameters(Map<String, SsisExecutionParameter> packageParameters) {
         this.packageParameters = packageParameters;
         return this;
     }
 
     /**
      * Get the projectConnectionManagers property: The project level connection managers to execute the SSIS package.
-     *
+     * 
      * @return the projectConnectionManagers value.
      */
     public Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers() {
@@ -281,19 +272,19 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the projectConnectionManagers property: The project level connection managers to execute the SSIS package.
-     *
+     * 
      * @param projectConnectionManagers the projectConnectionManagers value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
-    public ExecuteSsisPackageActivityTypeProperties withProjectConnectionManagers(
-        Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers) {
+    public ExecuteSsisPackageActivityTypeProperties
+        withProjectConnectionManagers(Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers) {
         this.projectConnectionManagers = projectConnectionManagers;
         return this;
     }
 
     /**
      * Get the packageConnectionManagers property: The package level connection managers to execute the SSIS package.
-     *
+     * 
      * @return the packageConnectionManagers value.
      */
     public Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers() {
@@ -302,19 +293,19 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the packageConnectionManagers property: The package level connection managers to execute the SSIS package.
-     *
+     * 
      * @param packageConnectionManagers the packageConnectionManagers value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
-    public ExecuteSsisPackageActivityTypeProperties withPackageConnectionManagers(
-        Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers) {
+    public ExecuteSsisPackageActivityTypeProperties
+        withPackageConnectionManagers(Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers) {
         this.packageConnectionManagers = packageConnectionManagers;
         return this;
     }
 
     /**
      * Get the propertyOverrides property: The property overrides to execute the SSIS package.
-     *
+     * 
      * @return the propertyOverrides value.
      */
     public Map<String, SsisPropertyOverride> propertyOverrides() {
@@ -323,19 +314,19 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the propertyOverrides property: The property overrides to execute the SSIS package.
-     *
+     * 
      * @param propertyOverrides the propertyOverrides value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
-    public ExecuteSsisPackageActivityTypeProperties withPropertyOverrides(
-        Map<String, SsisPropertyOverride> propertyOverrides) {
+    public ExecuteSsisPackageActivityTypeProperties
+        withPropertyOverrides(Map<String, SsisPropertyOverride> propertyOverrides) {
         this.propertyOverrides = propertyOverrides;
         return this;
     }
 
     /**
      * Get the logLocation property: SSIS package execution log location.
-     *
+     * 
      * @return the logLocation value.
      */
     public SsisLogLocation logLocation() {
@@ -344,7 +335,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Set the logLocation property: SSIS package execution log location.
-     *
+     * 
      * @param logLocation the logLocation value to set.
      * @return the ExecuteSsisPackageActivityTypeProperties object itself.
      */
@@ -355,15 +346,14 @@ public final class ExecuteSsisPackageActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (packageLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property packageLocation in model ExecuteSsisPackageActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property packageLocation in model ExecuteSsisPackageActivityTypeProperties"));
         } else {
             packageLocation().validate();
         }
@@ -371,76 +361,54 @@ public final class ExecuteSsisPackageActivityTypeProperties {
             executionCredential().validate();
         }
         if (connectVia() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectVia in model ExecuteSsisPackageActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectVia in model ExecuteSsisPackageActivityTypeProperties"));
         } else {
             connectVia().validate();
         }
         if (projectParameters() != null) {
-            projectParameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            projectParameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (packageParameters() != null) {
-            packageParameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            packageParameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (projectConnectionManagers() != null) {
-            projectConnectionManagers()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e
-                                .values()
-                                .forEach(
-                                    e1 -> {
-                                        if (e1 != null) {
-                                            e1.validate();
-                                        }
-                                    });
+            projectConnectionManagers().values().forEach(e -> {
+                if (e != null) {
+                    e.values().forEach(e1 -> {
+                        if (e1 != null) {
+                            e1.validate();
                         }
                     });
+                }
+            });
         }
         if (packageConnectionManagers() != null) {
-            packageConnectionManagers()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e
-                                .values()
-                                .forEach(
-                                    e1 -> {
-                                        if (e1 != null) {
-                                            e1.validate();
-                                        }
-                                    });
+            packageConnectionManagers().values().forEach(e -> {
+                if (e != null) {
+                    e.values().forEach(e1 -> {
+                        if (e1 != null) {
+                            e1.validate();
                         }
                     });
+                }
+            });
         }
         if (propertyOverrides() != null) {
-            propertyOverrides()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            propertyOverrides().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (logLocation() != null) {
             logLocation().validate();
@@ -448,4 +416,95 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExecuteSsisPackageActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("packageLocation", this.packageLocation);
+        jsonWriter.writeJsonField("connectVia", this.connectVia);
+        jsonWriter.writeUntypedField("runtime", this.runtime);
+        jsonWriter.writeUntypedField("loggingLevel", this.loggingLevel);
+        jsonWriter.writeUntypedField("environmentPath", this.environmentPath);
+        jsonWriter.writeJsonField("executionCredential", this.executionCredential);
+        jsonWriter.writeMapField("projectParameters", this.projectParameters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("packageParameters", this.packageParameters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("projectConnectionManagers", this.projectConnectionManagers,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeMapField("packageConnectionManagers", this.packageConnectionManagers,
+            (writer, element) -> writer.writeMap(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeMapField("propertyOverrides", this.propertyOverrides,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("logLocation", this.logLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecuteSsisPackageActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecuteSsisPackageActivityTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecuteSsisPackageActivityTypeProperties.
+     */
+    public static ExecuteSsisPackageActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecuteSsisPackageActivityTypeProperties deserializedExecuteSsisPackageActivityTypeProperties
+                = new ExecuteSsisPackageActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageLocation".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivityTypeProperties.packageLocation
+                        = SsisPackageLocation.fromJson(reader);
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivityTypeProperties.connectVia
+                        = IntegrationRuntimeReference.fromJson(reader);
+                } else if ("runtime".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivityTypeProperties.runtime = reader.readUntyped();
+                } else if ("loggingLevel".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivityTypeProperties.loggingLevel = reader.readUntyped();
+                } else if ("environmentPath".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivityTypeProperties.environmentPath = reader.readUntyped();
+                } else if ("executionCredential".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivityTypeProperties.executionCredential
+                        = SsisExecutionCredential.fromJson(reader);
+                } else if ("projectParameters".equals(fieldName)) {
+                    Map<String, SsisExecutionParameter> projectParameters
+                        = reader.readMap(reader1 -> SsisExecutionParameter.fromJson(reader1));
+                    deserializedExecuteSsisPackageActivityTypeProperties.projectParameters = projectParameters;
+                } else if ("packageParameters".equals(fieldName)) {
+                    Map<String, SsisExecutionParameter> packageParameters
+                        = reader.readMap(reader1 -> SsisExecutionParameter.fromJson(reader1));
+                    deserializedExecuteSsisPackageActivityTypeProperties.packageParameters = packageParameters;
+                } else if ("projectConnectionManagers".equals(fieldName)) {
+                    Map<String, Map<String, SsisExecutionParameter>> projectConnectionManagers = reader
+                        .readMap(reader1 -> reader1.readMap(reader2 -> SsisExecutionParameter.fromJson(reader2)));
+                    deserializedExecuteSsisPackageActivityTypeProperties.projectConnectionManagers
+                        = projectConnectionManagers;
+                } else if ("packageConnectionManagers".equals(fieldName)) {
+                    Map<String, Map<String, SsisExecutionParameter>> packageConnectionManagers = reader
+                        .readMap(reader1 -> reader1.readMap(reader2 -> SsisExecutionParameter.fromJson(reader2)));
+                    deserializedExecuteSsisPackageActivityTypeProperties.packageConnectionManagers
+                        = packageConnectionManagers;
+                } else if ("propertyOverrides".equals(fieldName)) {
+                    Map<String, SsisPropertyOverride> propertyOverrides
+                        = reader.readMap(reader1 -> SsisPropertyOverride.fromJson(reader1));
+                    deserializedExecuteSsisPackageActivityTypeProperties.propertyOverrides = propertyOverrides;
+                } else if ("logLocation".equals(fieldName)) {
+                    deserializedExecuteSsisPackageActivityTypeProperties.logLocation = SsisLogLocation.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExecuteSsisPackageActivityTypeProperties;
+        });
+    }
 }

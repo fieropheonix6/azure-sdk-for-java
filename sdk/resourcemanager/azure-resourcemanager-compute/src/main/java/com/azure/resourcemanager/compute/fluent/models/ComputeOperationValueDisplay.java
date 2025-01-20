@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the properties of a Compute Operation Value Display. */
+/**
+ * Describes the properties of a Compute Operation Value Display.
+ */
 @Immutable
-public final class ComputeOperationValueDisplay {
+public final class ComputeOperationValueDisplay implements JsonSerializable<ComputeOperationValueDisplay> {
     /*
      * The display name of the compute operation.
      */
-    @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
      * The display name of the resource the operation applies to.
      */
-    @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
      * The description of the operation.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * The resource provider for the operation.
      */
-    @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
-    /** Creates an instance of ComputeOperationValueDisplay class. */
+    /**
+     * Creates an instance of ComputeOperationValueDisplay class.
+     */
     public ComputeOperationValueDisplay() {
     }
 
     /**
      * Get the operation property: The display name of the compute operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -49,7 +53,7 @@ public final class ComputeOperationValueDisplay {
 
     /**
      * Get the resource property: The display name of the resource the operation applies to.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -58,7 +62,7 @@ public final class ComputeOperationValueDisplay {
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -67,7 +71,7 @@ public final class ComputeOperationValueDisplay {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -76,9 +80,50 @@ public final class ComputeOperationValueDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ComputeOperationValueDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ComputeOperationValueDisplay if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ComputeOperationValueDisplay.
+     */
+    public static ComputeOperationValueDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ComputeOperationValueDisplay deserializedComputeOperationValueDisplay = new ComputeOperationValueDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operation".equals(fieldName)) {
+                    deserializedComputeOperationValueDisplay.operation = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedComputeOperationValueDisplay.resource = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedComputeOperationValueDisplay.description = reader.getString();
+                } else if ("provider".equals(fieldName)) {
+                    deserializedComputeOperationValueDisplay.provider = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedComputeOperationValueDisplay;
+        });
     }
 }

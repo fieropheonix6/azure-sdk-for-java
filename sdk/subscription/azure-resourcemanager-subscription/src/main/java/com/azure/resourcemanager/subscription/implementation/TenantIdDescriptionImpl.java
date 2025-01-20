@@ -12,8 +12,7 @@ public final class TenantIdDescriptionImpl implements TenantIdDescription {
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    TenantIdDescriptionImpl(
-        TenantIdDescriptionInner innerObject,
+    TenantIdDescriptionImpl(TenantIdDescriptionInner innerObject,
         com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -25,6 +24,34 @@ public final class TenantIdDescriptionImpl implements TenantIdDescription {
 
     public String tenantId() {
         return this.innerModel().tenantId();
+    }
+
+    public String tenantCategory() {
+        return this.innerModel().tenantCategory();
+    }
+
+    public String country() {
+        return this.innerModel().country();
+    }
+
+    public String countryCode() {
+        return this.innerModel().countryCode();
+    }
+
+    public String displayName() {
+        return this.innerModel().displayName();
+    }
+
+    public String domains() {
+        return this.innerModel().domains();
+    }
+
+    public String defaultDomain() {
+        return this.innerModel().defaultDomain();
+    }
+
+    public String tenantType() {
+        return this.innerModel().tenantType();
     }
 
     public TenantIdDescriptionInner innerModel() {

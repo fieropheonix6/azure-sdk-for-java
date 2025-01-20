@@ -6,37 +6,137 @@ package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.models.CommunicationServicesProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.communication.models.ManagedServiceIdentity;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** A class representing a CommunicationService resource. */
+/**
+ * A class representing a CommunicationService resource.
+ */
 @Fluent
 public final class CommunicationServiceResourceInner extends Resource {
     /*
      * The properties of the service.
      */
-    @JsonProperty(value = "properties")
     private CommunicationServiceProperties innerProperties;
+
+    /*
+     * Managed service identity (system assigned and/or user assigned identities)
+     */
+    private ManagedServiceIdentity identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CommunicationServiceResourceInner class.
+     */
+    public CommunicationServiceResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CommunicationServiceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the identity property: Managed service identity (system assigned and/or user assigned identities).
+     * 
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Managed service identity (system assigned and/or user assigned identities).
+     * 
+     * @param identity the identity value to set.
+     * @return the CommunicationServiceResourceInner object itself.
+     */
+    public CommunicationServiceResourceInner withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommunicationServiceResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommunicationServiceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -45,7 +145,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CommunicationServicesProvisioningState provisioningState() {
@@ -54,7 +154,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the hostname property: FQDN of the CommunicationService instance.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -63,7 +163,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the dataLocation property: The location where the communication service stores its data at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -72,7 +172,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Set the dataLocation property: The location where the communication service stores its data at rest.
-     *
+     * 
      * @param dataLocation the dataLocation value to set.
      * @return the CommunicationServiceResourceInner object itself.
      */
@@ -86,7 +186,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the notificationHubId property: Resource ID of an Azure Notification Hub linked to this resource.
-     *
+     * 
      * @return the notificationHubId value.
      */
     public String notificationHubId() {
@@ -96,7 +196,7 @@ public final class CommunicationServiceResourceInner extends Resource {
     /**
      * Get the version property: Version of the CommunicationService resource. Probably you need the same or higher
      * version of client SDKs.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -105,7 +205,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the immutableResourceId property: The immutable resource Id of the communication service.
-     *
+     * 
      * @return the immutableResourceId value.
      */
     public String immutableResourceId() {
@@ -114,7 +214,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Get the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @return the linkedDomains value.
      */
     public List<String> linkedDomains() {
@@ -123,7 +223,7 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Set the linkedDomains property: List of email Domain resource Ids.
-     *
+     * 
      * @param linkedDomains the linkedDomains value to set.
      * @return the CommunicationServiceResourceInner object itself.
      */
@@ -137,12 +237,72 @@ public final class CommunicationServiceResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+        if (identity() != null) {
+            identity().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationServiceResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationServiceResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommunicationServiceResourceInner.
+     */
+    public static CommunicationServiceResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationServiceResourceInner deserializedCommunicationServiceResourceInner
+                = new CommunicationServiceResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCommunicationServiceResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCommunicationServiceResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCommunicationServiceResourceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCommunicationServiceResourceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCommunicationServiceResourceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCommunicationServiceResourceInner.innerProperties
+                        = CommunicationServiceProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedCommunicationServiceResourceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedCommunicationServiceResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationServiceResourceInner;
+        });
     }
 }

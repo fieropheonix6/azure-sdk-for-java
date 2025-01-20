@@ -6,74 +6,122 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.DatabricksSparkPythonActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** DatabricksSparkPython activity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DatabricksSparkPython")
+/**
+ * DatabricksSparkPython activity.
+ */
 @Fluent
 public final class DatabricksSparkPythonActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "DatabricksSparkPython";
+
+    /*
      * Databricks SparkPython activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
-    private DatabricksSparkPythonActivityTypeProperties innerTypeProperties =
-        new DatabricksSparkPythonActivityTypeProperties();
+    private DatabricksSparkPythonActivityTypeProperties innerTypeProperties
+        = new DatabricksSparkPythonActivityTypeProperties();
 
-    /** Creates an instance of DatabricksSparkPythonActivity class. */
+    /**
+     * Creates an instance of DatabricksSparkPythonActivity class.
+     */
     public DatabricksSparkPythonActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Databricks SparkPython activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private DatabricksSparkPythonActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DatabricksSparkPythonActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DatabricksSparkPythonActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DatabricksSparkPythonActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -83,7 +131,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * Get the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the pythonFile value.
      */
     public Object pythonFile() {
@@ -93,7 +141,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
     /**
      * Set the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param pythonFile the pythonFile value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -107,7 +155,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Get the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @return the parameters value.
      */
     public List<Object> parameters() {
@@ -116,7 +164,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Set the parameters property: Command line parameters that will be passed to the Python file.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -130,7 +178,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> libraries() {
@@ -139,7 +187,7 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkPythonActivity object itself.
      */
@@ -153,21 +201,119 @@ public final class DatabricksSparkPythonActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model DatabricksSparkPythonActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model DatabricksSparkPythonActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model DatabricksSparkPythonActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
+        if (linkedServiceName() != null) {
+            linkedServiceName().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabricksSparkPythonActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeJsonField("policy", policy());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabricksSparkPythonActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabricksSparkPythonActivity if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabricksSparkPythonActivity.
+     */
+    public static DatabricksSparkPythonActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabricksSparkPythonActivity deserializedDatabricksSparkPythonActivity
+                = new DatabricksSparkPythonActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedDatabricksSparkPythonActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedDatabricksSparkPythonActivity.withUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivity
+                        .withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivity.withPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivity.innerTypeProperties
+                        = DatabricksSparkPythonActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabricksSparkPythonActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDatabricksSparkPythonActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedDatabricksSparkPythonActivity;
+        });
+    }
 }

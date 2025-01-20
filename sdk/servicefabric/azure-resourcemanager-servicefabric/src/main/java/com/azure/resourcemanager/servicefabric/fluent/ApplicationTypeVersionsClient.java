@@ -6,37 +6,23 @@ package com.azure.resourcemanager.servicefabric.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceInner;
-import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeVersionResourceListInner;
 
-/** An instance of this class provides access to all the operations defined in ApplicationTypeVersionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationTypeVersionsClient.
+ */
 public interface ApplicationTypeVersionsClient {
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
      * Get a Service Fabric application type version resource created or in the process of being created in the Service
      * Fabric application type name resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param clusterName The name of the cluster resource.
-     * @param applicationTypeName The name of the application type name resource.
-     * @param version The application type version.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationTypeVersionResourceInner get(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version);
-
-    /**
-     * Get a Service Fabric application type version resource created or in the process of being created in the Service
-     * Fabric application type name resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -46,15 +32,37 @@ public interface ApplicationTypeVersionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type version resource created or in the process of being created in the
-     *     Service Fabric application type name resource.
+     * Service Fabric application type name resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationTypeVersionResourceInner> getWithResponse(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context);
+    Response<ApplicationTypeVersionResourceInner> getWithResponse(String resourceGroupName, String clusterName,
+        String applicationTypeName, String version, Context context);
 
     /**
+     * Gets a Service Fabric application type version resource.
+     * 
+     * Get a Service Fabric application type version resource created or in the process of being created in the Service
+     * Fabric application type name resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param applicationTypeName The name of the application type name resource.
+     * @param version The application type version.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Service Fabric application type version resource created or in the process of being created in the
+     * Service Fabric application type name resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationTypeVersionResourceInner get(String resourceGroupName, String clusterName, String applicationTypeName,
+        String version);
+
+    /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -63,20 +71,19 @@ public interface ApplicationTypeVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return the {@link SyncPoller} for polling of an application type version resource for the specified application
+     * type name resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationTypeVersionResourceInner>, ApplicationTypeVersionResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String applicationTypeName,
-            String version,
+        beginCreateOrUpdate(String resourceGroupName, String clusterName, String applicationTypeName, String version,
             ApplicationTypeVersionResourceInner parameters);
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -86,21 +93,19 @@ public interface ApplicationTypeVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application type version resource for the specified application type name resource.
+     * @return the {@link SyncPoller} for polling of an application type version resource for the specified application
+     * type name resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ApplicationTypeVersionResourceInner>, ApplicationTypeVersionResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String clusterName,
-            String applicationTypeName,
-            String version,
-            ApplicationTypeVersionResourceInner parameters,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String clusterName, String applicationTypeName, String version,
+            ApplicationTypeVersionResourceInner parameters, Context context);
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -112,16 +117,14 @@ public interface ApplicationTypeVersionsClient {
      * @return an application type version resource for the specified application type name resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationTypeVersionResourceInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationTypeName,
-        String version,
-        ApplicationTypeVersionResourceInner parameters);
+    ApplicationTypeVersionResourceInner createOrUpdate(String resourceGroupName, String clusterName,
+        String applicationTypeName, String version, ApplicationTypeVersionResourceInner parameters);
 
     /**
+     * Creates or updates a Service Fabric application type version resource.
+     * 
      * Create or update a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -134,17 +137,14 @@ public interface ApplicationTypeVersionsClient {
      * @return an application type version resource for the specified application type name resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationTypeVersionResourceInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationTypeName,
-        String version,
-        ApplicationTypeVersionResourceInner parameters,
-        Context context);
+    ApplicationTypeVersionResourceInner createOrUpdate(String resourceGroupName, String clusterName,
+        String applicationTypeName, String version, ApplicationTypeVersionResourceInner parameters, Context context);
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -152,15 +152,17 @@ public interface ApplicationTypeVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String applicationTypeName, String version);
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -169,15 +171,17 @@ public interface ApplicationTypeVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String applicationTypeName, String version, Context context);
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -190,8 +194,10 @@ public interface ApplicationTypeVersionsClient {
     void delete(String resourceGroupName, String clusterName, String applicationTypeName, String version);
 
     /**
+     * Deletes a Service Fabric application type version resource.
+     * 
      * Delete a Service Fabric application type version resource with the specified name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -202,13 +208,16 @@ public interface ApplicationTypeVersionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String clusterName, String applicationTypeName, String version, Context context);
+    void delete(String resourceGroupName, String clusterName, String applicationTypeName, String version,
+        Context context);
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -216,16 +225,19 @@ public interface ApplicationTypeVersionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type version resources created or in the process of being created in the Service Fabric
-     *     application type name resource.
+     * application type name resource as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationTypeVersionResourceListInner list(
-        String resourceGroupName, String clusterName, String applicationTypeName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ApplicationTypeVersionResourceInner> list(String resourceGroupName, String clusterName,
+        String applicationTypeName);
 
     /**
+     * Gets the list of application type version resources created in the specified Service Fabric application type name
+     * resource.
+     * 
      * Gets all application type version resources created or in the process of being created in the Service Fabric
      * application type name resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -234,9 +246,9 @@ public interface ApplicationTypeVersionsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type version resources created or in the process of being created in the Service Fabric
-     *     application type name resource.
+     * application type name resource as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationTypeVersionResourceListInner> listWithResponse(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ApplicationTypeVersionResourceInner> list(String resourceGroupName, String clusterName,
+        String applicationTypeName, Context context);
 }

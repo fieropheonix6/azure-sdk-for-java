@@ -9,6 +9,7 @@ import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -18,17 +19,16 @@ import static com.azure.security.keyvault.keys.cryptography.TestHelper.DISPLAY_N
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+@EnabledIf("shouldRunHsmTest")
 public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientManagedHsmTestBase {
     public KeyClientManagedHsmTest() {
         this.isHsmEnabled = Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null;
-        this.runManagedHsmTest = isHsmEnabled || getTestMode() == TestMode.PLAYBACK;
+        this.runManagedHsmTest = shouldRunHsmTest();
     }
 
-    @Override
-    protected void beforeTest() {
-        Assumptions.assumeTrue(runManagedHsmTest);
-
-        super.beforeTest();
+    public static boolean shouldRunHsmTest() {
+        return Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT") != null
+            || TEST_MODE == TestMode.PLAYBACK;
     }
 
     /**
@@ -54,8 +54,7 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
             KeyVaultKey rsaKey = keyClient.createRsaKey(keyToCreate);
 
             assertKeyEquals(keyToCreate, rsaKey);
-            assertEquals(BigInteger.valueOf(keyToCreate.getPublicExponent()),
-                toBigInteger(rsaKey.getKey().getE()));
+            assertEquals(BigInteger.valueOf(keyToCreate.getPublicExponent()), toBigInteger(rsaKey.getKey().getE()));
             assertEquals(keyToCreate.getKeySize(), rsaKey.getKey().getN().length * 8);
         });
     }
@@ -106,8 +105,8 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
     public void createOctKeyWithInvalidSize(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
 
-        createOctKeyRunner(64, (keyToCreate) ->
-            assertThrows(ResourceModifiedException.class, () -> keyClient.createOctKey(keyToCreate)));
+        createOctKeyRunner(64,
+            (keyToCreate) -> assertThrows(ResourceModifiedException.class, () -> keyClient.createOctKey(keyToCreate)));
     }
 
     /**
@@ -134,18 +133,8 @@ public class KeyClientManagedHsmTest extends KeyClientTest implements KeyClientM
     public void releaseKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         // Ignoring test until the service rolls out a fix for an issue with the "version" parameter of a release
         // policy.
-        Assumptions.assumeTrue(serviceVersion != KeyServiceVersion.V7_4_PREVIEW_1);
+        Assumptions.assumeTrue(serviceVersion != KeyServiceVersion.V7_4);
 
         super.releaseKey(httpClient, serviceVersion);
-    }
-
-    /**
-     * Tests that an RSA key is created.
-     */
-    @Override
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("getTestParameters")
-    public void createOkpKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        super.createOkpKey(httpClient, serviceVersion);
     }
 }

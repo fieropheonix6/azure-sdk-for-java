@@ -8,54 +8,69 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RemoteRenderingAccounts. */
+/**
+ * Resource collection API of RemoteRenderingAccounts.
+ */
 public interface RemoteRenderingAccounts {
     /**
      * List Remote Rendering Accounts by Subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RemoteRenderingAccount> list();
 
     /**
      * List Remote Rendering Accounts by Subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RemoteRenderingAccount> list(Context context);
 
     /**
      * List Resources by Resource Group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RemoteRenderingAccount> listByResourceGroup(String resourceGroupName);
 
     /**
      * List Resources by Resource Group.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to get resource collection.
+     * @return result of the request to get resource collection as paginated response with {@link PagedIterable}.
      */
     PagedIterable<RemoteRenderingAccount> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Delete a Remote Rendering Account.
-     *
+     * 
+     * @param resourceGroupName Name of an Azure resource group.
+     * @param accountName Name of an Mixed Reality Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Delete a Remote Rendering Account.
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,21 +80,22 @@ public interface RemoteRenderingAccounts {
     void deleteByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Delete a Remote Rendering Account.
-     *
+     * Retrieve a Remote Rendering Account.
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return remoteRenderingAccount Response along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<RemoteRenderingAccount> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context);
 
     /**
      * Retrieve a Remote Rendering Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,22 +106,21 @@ public interface RemoteRenderingAccounts {
     RemoteRenderingAccount getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Retrieve a Remote Rendering Account.
-     *
+     * List Both of the 2 Keys of a Remote Rendering Account.
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return developer Keys of account along with {@link Response}.
      */
-    Response<RemoteRenderingAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context);
+    Response<AccountKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
 
     /**
      * List Both of the 2 Keys of a Remote Rendering Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,21 +131,23 @@ public interface RemoteRenderingAccounts {
     AccountKeys listKeys(String resourceGroupName, String accountName);
 
     /**
-     * List Both of the 2 Keys of a Remote Rendering Account.
-     *
+     * Regenerate specified Key of a Remote Rendering Account.
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
+     * @param regenerate Required information for key regeneration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
+     * @return developer Keys of account along with {@link Response}.
      */
-    Response<AccountKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context);
+    Response<AccountKeys> regenerateKeysWithResponse(String resourceGroupName, String accountName,
+        AccountKeyRegenerateRequest regenerate, Context context);
 
     /**
      * Regenerate specified Key of a Remote Rendering Account.
-     *
+     * 
      * @param resourceGroupName Name of an Azure resource group.
      * @param accountName Name of an Mixed Reality Account.
      * @param regenerate Required information for key regeneration.
@@ -142,46 +159,31 @@ public interface RemoteRenderingAccounts {
     AccountKeys regenerateKeys(String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate);
 
     /**
-     * Regenerate specified Key of a Remote Rendering Account.
-     *
-     * @param resourceGroupName Name of an Azure resource group.
-     * @param accountName Name of an Mixed Reality Account.
-     * @param regenerate Required information for key regeneration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return developer Keys of account.
-     */
-    Response<AccountKeys> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context);
-
-    /**
      * Retrieve a Remote Rendering Account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response}.
      */
     RemoteRenderingAccount getById(String id);
 
     /**
      * Retrieve a Remote Rendering Account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remoteRenderingAccount Response.
+     * @return remoteRenderingAccount Response along with {@link Response}.
      */
     Response<RemoteRenderingAccount> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete a Remote Rendering Account.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,19 +193,19 @@ public interface RemoteRenderingAccounts {
 
     /**
      * Delete a Remote Rendering Account.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new RemoteRenderingAccount resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new RemoteRenderingAccount definition.
      */

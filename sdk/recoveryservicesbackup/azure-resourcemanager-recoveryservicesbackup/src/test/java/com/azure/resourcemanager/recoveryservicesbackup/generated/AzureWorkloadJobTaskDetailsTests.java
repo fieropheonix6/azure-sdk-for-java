@@ -7,25 +7,22 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureWorkloadJobTaskDetails;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureWorkloadJobTaskDetailsTests {
-    @Test
-    public void testDeserialize() {
-        AzureWorkloadJobTaskDetails model =
-            BinaryData
-                .fromString("{\"taskId\":\"fdn\",\"status\":\"ydvfvfcjnae\"}")
-                .toObject(AzureWorkloadJobTaskDetails.class);
-        Assertions.assertEquals("fdn", model.taskId());
-        Assertions.assertEquals("ydvfvfcjnae", model.status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureWorkloadJobTaskDetails model = BinaryData.fromString("{\"taskId\":\"riaa\",\"status\":\"uagydwqfbylyrf\"}")
+            .toObject(AzureWorkloadJobTaskDetails.class);
+        Assertions.assertEquals("riaa", model.taskId());
+        Assertions.assertEquals("uagydwqfbylyrf", model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureWorkloadJobTaskDetails model =
-            new AzureWorkloadJobTaskDetails().withTaskId("fdn").withStatus("ydvfvfcjnae");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureWorkloadJobTaskDetails model
+            = new AzureWorkloadJobTaskDetails().withTaskId("riaa").withStatus("uagydwqfbylyrf");
         model = BinaryData.fromObject(model).toObject(AzureWorkloadJobTaskDetails.class);
-        Assertions.assertEquals("fdn", model.taskId());
-        Assertions.assertEquals("ydvfvfcjnae", model.status());
+        Assertions.assertEquals("riaa", model.taskId());
+        Assertions.assertEquals("uagydwqfbylyrf", model.status());
     }
 }

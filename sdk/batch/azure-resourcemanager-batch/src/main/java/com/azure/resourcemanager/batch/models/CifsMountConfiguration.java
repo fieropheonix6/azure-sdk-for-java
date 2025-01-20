@@ -6,53 +6,52 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information used to connect to a CIFS file system. */
+/**
+ * Information used to connect to a CIFS file system.
+ */
 @Fluent
-public final class CifsMountConfiguration {
+public final class CifsMountConfiguration implements JsonSerializable<CifsMountConfiguration> {
     /*
      * The user to use for authentication against the CIFS file system.
      */
-    @JsonProperty(value = "userName", required = true)
     private String username;
 
     /*
      * The URI of the file system to mount.
      */
-    @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
-     * The relative path on the compute node where the file system will be mounted
-     *
      * All file systems are mounted relative to the Batch mounts directory, accessible via the AZ_BATCH_NODE_MOUNTS_DIR
      * environment variable.
      */
-    @JsonProperty(value = "relativeMountPath", required = true)
     private String relativeMountPath;
 
     /*
-     * Additional command line options to pass to the mount command.
-     *
      * These are 'net use' options in Windows and 'mount' options in Linux.
      */
-    @JsonProperty(value = "mountOptions")
     private String mountOptions;
 
     /*
      * The password to use for authentication against the CIFS file system.
      */
-    @JsonProperty(value = "password", required = true)
     private String password;
 
-    /** Creates an instance of CifsMountConfiguration class. */
+    /**
+     * Creates an instance of CifsMountConfiguration class.
+     */
     public CifsMountConfiguration() {
     }
 
     /**
      * Get the username property: The user to use for authentication against the CIFS file system.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -61,7 +60,7 @@ public final class CifsMountConfiguration {
 
     /**
      * Set the username property: The user to use for authentication against the CIFS file system.
-     *
+     * 
      * @param username the username value to set.
      * @return the CifsMountConfiguration object itself.
      */
@@ -72,7 +71,7 @@ public final class CifsMountConfiguration {
 
     /**
      * Get the source property: The URI of the file system to mount.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -81,7 +80,7 @@ public final class CifsMountConfiguration {
 
     /**
      * Set the source property: The URI of the file system to mount.
-     *
+     * 
      * @param source the source value to set.
      * @return the CifsMountConfiguration object itself.
      */
@@ -91,11 +90,9 @@ public final class CifsMountConfiguration {
     }
 
     /**
-     * Get the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     *
-     * <p>All file systems are mounted relative to the Batch mounts directory, accessible via the
-     * AZ_BATCH_NODE_MOUNTS_DIR environment variable.
-     *
+     * Get the relativeMountPath property: All file systems are mounted relative to the Batch mounts directory,
+     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
+     * 
      * @return the relativeMountPath value.
      */
     public String relativeMountPath() {
@@ -103,11 +100,9 @@ public final class CifsMountConfiguration {
     }
 
     /**
-     * Set the relativeMountPath property: The relative path on the compute node where the file system will be mounted
-     *
-     * <p>All file systems are mounted relative to the Batch mounts directory, accessible via the
-     * AZ_BATCH_NODE_MOUNTS_DIR environment variable.
-     *
+     * Set the relativeMountPath property: All file systems are mounted relative to the Batch mounts directory,
+     * accessible via the AZ_BATCH_NODE_MOUNTS_DIR environment variable.
+     * 
      * @param relativeMountPath the relativeMountPath value to set.
      * @return the CifsMountConfiguration object itself.
      */
@@ -117,10 +112,8 @@ public final class CifsMountConfiguration {
     }
 
     /**
-     * Get the mountOptions property: Additional command line options to pass to the mount command.
-     *
-     * <p>These are 'net use' options in Windows and 'mount' options in Linux.
-     *
+     * Get the mountOptions property: These are 'net use' options in Windows and 'mount' options in Linux.
+     * 
      * @return the mountOptions value.
      */
     public String mountOptions() {
@@ -128,10 +121,8 @@ public final class CifsMountConfiguration {
     }
 
     /**
-     * Set the mountOptions property: Additional command line options to pass to the mount command.
-     *
-     * <p>These are 'net use' options in Windows and 'mount' options in Linux.
-     *
+     * Set the mountOptions property: These are 'net use' options in Windows and 'mount' options in Linux.
+     * 
      * @param mountOptions the mountOptions value to set.
      * @return the CifsMountConfiguration object itself.
      */
@@ -142,7 +133,7 @@ public final class CifsMountConfiguration {
 
     /**
      * Get the password property: The password to use for authentication against the CIFS file system.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -151,7 +142,7 @@ public final class CifsMountConfiguration {
 
     /**
      * Set the password property: The password to use for authentication against the CIFS file system.
-     *
+     * 
      * @param password the password value to set.
      * @return the CifsMountConfiguration object itself.
      */
@@ -162,32 +153,79 @@ public final class CifsMountConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property username in model CifsMountConfiguration"));
         }
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model CifsMountConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property source in model CifsMountConfiguration"));
         }
         if (relativeMountPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property relativeMountPath in model CifsMountConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property relativeMountPath in model CifsMountConfiguration"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property password in model CifsMountConfiguration"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CifsMountConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("userName", this.username);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeStringField("relativeMountPath", this.relativeMountPath);
+        jsonWriter.writeStringField("password", this.password);
+        jsonWriter.writeStringField("mountOptions", this.mountOptions);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CifsMountConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CifsMountConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CifsMountConfiguration.
+     */
+    public static CifsMountConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CifsMountConfiguration deserializedCifsMountConfiguration = new CifsMountConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedCifsMountConfiguration.username = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedCifsMountConfiguration.source = reader.getString();
+                } else if ("relativeMountPath".equals(fieldName)) {
+                    deserializedCifsMountConfiguration.relativeMountPath = reader.getString();
+                } else if ("password".equals(fieldName)) {
+                    deserializedCifsMountConfiguration.password = reader.getString();
+                } else if ("mountOptions".equals(fieldName)) {
+                    deserializedCifsMountConfiguration.mountOptions = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCifsMountConfiguration;
+        });
+    }
 }

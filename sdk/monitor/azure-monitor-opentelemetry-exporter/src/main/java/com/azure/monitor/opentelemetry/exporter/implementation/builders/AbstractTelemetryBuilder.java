@@ -8,6 +8,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.configuration.Sta
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorBase;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.MonitorDomain;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
+import io.opentelemetry.sdk.resources.Resource;
 import reactor.util.annotation.Nullable;
 
 import java.time.OffsetDateTime;
@@ -60,6 +61,10 @@ public abstract class AbstractTelemetryBuilder {
         telemetryItem.setConnectionString(connectionString);
     }
 
+    public void setResource(Resource resource) {
+        telemetryItem.setResource(resource);
+    }
+
     public void addTag(String key, String value) {
         Map<String, String> tags = telemetryItem.getTags();
         if (tags == null) {
@@ -74,8 +79,7 @@ public abstract class AbstractTelemetryBuilder {
             // TODO (trask) log
             return;
         }
-        getProperties()
-            .put(key, TelemetryTruncation.truncatePropertyValue(value, MAX_PROPERTY_VALUE_LENGTH, key));
+        getProperties().put(key, TelemetryTruncation.truncatePropertyValue(value, MAX_PROPERTY_VALUE_LENGTH, key));
     }
 
     public TelemetryItem build() {

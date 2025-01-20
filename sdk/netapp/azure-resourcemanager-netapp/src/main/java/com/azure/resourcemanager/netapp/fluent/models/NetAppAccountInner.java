@@ -6,37 +6,66 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
-import com.azure.resourcemanager.netapp.models.Identity;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** NetApp account resource. */
+/**
+ * NetApp account resource.
+ */
 @Fluent
 public final class NetAppAccountInner extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * NetApp Account properties
      */
-    @JsonProperty(value = "properties")
     private AccountProperties innerProperties;
 
     /*
-     * The identity of the resource.
+     * The identity used for the resource.
      */
-    @JsonProperty(value = "identity")
-    private Identity identity;
+    private ManagedServiceIdentity identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of NetAppAccountInner class.
+     */
+    public NetAppAccountInner() {
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -45,7 +74,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the innerProperties property: NetApp Account properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccountProperties innerProperties() {
@@ -53,33 +82,76 @@ public final class NetAppAccountInner extends Resource {
     }
 
     /**
-     * Get the identity property: The identity of the resource.
-     *
+     * Get the identity property: The identity used for the resource.
+     * 
      * @return the identity value.
      */
-    public Identity identity() {
+    public ManagedServiceIdentity identity() {
         return this.identity;
     }
 
     /**
-     * Set the identity property: The identity of the resource.
-     *
+     * Set the identity property: The identity used for the resource.
+     * 
      * @param identity the identity value to set.
      * @return the NetAppAccountInner object itself.
      */
-    public NetAppAccountInner withIdentity(Identity identity) {
+    public NetAppAccountInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetAppAccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetAppAccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -88,7 +160,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -97,7 +169,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the activeDirectories property: Active Directories.
-     *
+     * 
      * @return the activeDirectories value.
      */
     public List<ActiveDirectory> activeDirectories() {
@@ -106,7 +178,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Set the activeDirectories property: Active Directories.
-     *
+     * 
      * @param activeDirectories the activeDirectories value to set.
      * @return the NetAppAccountInner object itself.
      */
@@ -120,7 +192,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Get the encryption property: Encryption settings.
-     *
+     * 
      * @return the encryption value.
      */
     public AccountEncryption encryption() {
@@ -129,7 +201,7 @@ public final class NetAppAccountInner extends Resource {
 
     /**
      * Set the encryption property: Encryption settings.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the NetAppAccountInner object itself.
      */
@@ -144,7 +216,7 @@ public final class NetAppAccountInner extends Resource {
     /**
      * Get the disableShowmount property: Shows the status of disableShowmount for all volumes under the subscription,
      * null equals false.
-     *
+     * 
      * @return the disableShowmount value.
      */
     public Boolean disableShowmount() {
@@ -152,8 +224,42 @@ public final class NetAppAccountInner extends Resource {
     }
 
     /**
+     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @return the nfsV4IdDomain value.
+     */
+    public String nfsV4IdDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IdDomain();
+    }
+
+    /**
+     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
+     * @return the NetAppAccountInner object itself.
+     */
+    public NetAppAccountInner withNfsV4IdDomain(String nfsV4IdDomain) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
+        return this;
+    }
+
+    /**
+     * Get the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
+     * 
+     * @return the isMultiAdEnabled value.
+     */
+    public Boolean isMultiAdEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isMultiAdEnabled();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -163,5 +269,62 @@ public final class NetAppAccountInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetAppAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetAppAccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetAppAccountInner.
+     */
+    public static NetAppAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetAppAccountInner deserializedNetAppAccountInner = new NetAppAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedNetAppAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedNetAppAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetAppAccountInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetAppAccountInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetAppAccountInner.withTags(tags);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedNetAppAccountInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetAppAccountInner.innerProperties = AccountProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedNetAppAccountInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedNetAppAccountInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetAppAccountInner;
+        });
     }
 }

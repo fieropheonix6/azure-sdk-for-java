@@ -12,38 +12,34 @@ import com.azure.resourcemanager.devtestlabs.fluent.OperationsClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.OperationResultInner;
 import com.azure.resourcemanager.devtestlabs.models.OperationResult;
 import com.azure.resourcemanager.devtestlabs.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationResult> getWithResponse(String locationName, String name, Context context) {
+        Response<OperationResultInner> inner = this.serviceClient().getWithResponse(locationName, name, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationResult get(String locationName, String name) {
         OperationResultInner inner = this.serviceClient().get(locationName, name);
         if (inner != null) {
             return new OperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationResult> getWithResponse(String locationName, String name, Context context) {
-        Response<OperationResultInner> inner = this.serviceClient().getWithResponse(locationName, name, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

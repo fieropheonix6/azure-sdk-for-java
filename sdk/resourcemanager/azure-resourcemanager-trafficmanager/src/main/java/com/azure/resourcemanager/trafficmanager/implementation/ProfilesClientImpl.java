@@ -41,21 +41,24 @@ import com.azure.resourcemanager.trafficmanager.models.CheckTrafficManagerRelati
 import com.azure.resourcemanager.trafficmanager.models.ProfileListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ProfilesClient. */
-public final class ProfilesClientImpl
-    implements InnerSupportsGet<ProfileInner>,
-        InnerSupportsListing<ProfileInner>,
-        InnerSupportsDelete<DeleteOperationResultInner>,
-        ProfilesClient {
-    /** The proxy service used to perform REST calls. */
+/**
+ * An instance of this class provides access to all the operations defined in ProfilesClient.
+ */
+public final class ProfilesClientImpl implements InnerSupportsGet<ProfileInner>, InnerSupportsListing<ProfileInner>,
+    InnerSupportsDelete<DeleteOperationResultInner>, ProfilesClient {
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ProfilesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TrafficManagerManagementClientImpl client;
 
     /**
      * Initializes an instance of ProfilesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ProfilesClientImpl(TrafficManagerManagementClientImpl client) {
@@ -69,126 +72,99 @@ public final class ProfilesClientImpl
      */
     @Host("{$host}")
     @ServiceInterface(name = "TrafficManagerManage")
-    private interface ProfilesService {
-        @Headers({"Content-Type: application/json"})
+    public interface ProfilesService {
+        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Network/checkTrafficManagerNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerRelativeDnsNameAvailability(
-            @HostParam("$host") String endpoint,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Network/checkTrafficManagerNameAvailabilityV2")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerNameAvailabilityV2(
+            @HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ProfileListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/trafficmanagerprofiles")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ProfileListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProfileInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ProfileInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ProfileInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeleteOperationResultInner>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficmanagerprofiles/{profileName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ProfileInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeleteOperationResultInner>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/trafficmanagerprofiles/{profileName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ProfileInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("profileName") String profileName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") ProfileInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<ProfileInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("profileName") String profileName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") ProfileInner parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
-     *
+     * 
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TrafficManagerNameAvailabilityInner>>
         checkTrafficManagerRelativeDnsNameAvailabilityWithResponseAsync(
             CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -197,35 +173,30 @@ public final class ProfilesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkTrafficManagerRelativeDnsNameAvailability(
-                            this.client.getEndpoint(), this.client.getApiVersion(), parameters, accept, context))
+            .withContext(context -> service.checkTrafficManagerRelativeDnsNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
-     *
+     * 
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrafficManagerNameAvailabilityInner>>
         checkTrafficManagerRelativeDnsNameAvailabilityWithResponseAsync(
             CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -234,16 +205,15 @@ public final class ProfilesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkTrafficManagerRelativeDnsNameAvailability(
-                this.client.getEndpoint(), this.client.getApiVersion(), parameters, accept, context);
+        return service.checkTrafficManagerRelativeDnsNameAvailability(this.client.getEndpoint(),
+            this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
-     *
+     * 
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -258,9 +228,9 @@ public final class ProfilesClientImpl
 
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
-     *
+     * 
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
-     *     operation.
+     * operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -275,9 +245,9 @@ public final class ProfilesClientImpl
 
     /**
      * Checks the availability of a Traffic Manager Relative DNS name.
-     *
+     * 
      * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
-     *     operation.
+     * operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,102 +260,195 @@ public final class ProfilesClientImpl
     }
 
     /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     * 
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerNameAvailabilityV2WithResponseAsync(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.checkTrafficManagerNameAvailabilityV2(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     * 
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     * completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<TrafficManagerNameAvailabilityInner>> checkTrafficManagerNameAvailabilityV2WithResponseAsync(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.checkTrafficManagerNameAvailabilityV2(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), parameters, accept, context);
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     * 
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<TrafficManagerNameAvailabilityInner> checkTrafficManagerNameAvailabilityV2Async(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
+        return checkTrafficManagerNameAvailabilityV2WithResponseAsync(parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     * 
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     * operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerNameAvailabilityV2WithResponse(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context) {
+        return checkTrafficManagerNameAvailabilityV2WithResponseAsync(parameters, context).block();
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     * 
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     * operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TrafficManagerNameAvailabilityInner
+        checkTrafficManagerNameAvailabilityV2(CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
+        return checkTrafficManagerNameAvailabilityV2WithResponse(parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Lists all Traffic Manager profiles within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Traffic Manager profiles operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Traffic Manager profiles within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Traffic Manager profiles operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all Traffic Manager profiles within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -398,8 +461,8 @@ public final class ProfilesClientImpl
 
     /**
      * Lists all Traffic Manager profiles within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -413,8 +476,8 @@ public final class ProfilesClientImpl
 
     /**
      * Lists all Traffic Manager profiles within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -427,8 +490,8 @@ public final class ProfilesClientImpl
 
     /**
      * Lists all Traffic Manager profiles within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profiles to be listed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -442,86 +505,63 @@ public final class ProfilesClientImpl
 
     /**
      * Lists all Traffic Manager profiles within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Traffic Manager profiles operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ProfileInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ProfileInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all Traffic Manager profiles within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Traffic Manager profiles operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Lists all Traffic Manager profiles within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedFlux}.
@@ -533,7 +573,7 @@ public final class ProfilesClientImpl
 
     /**
      * Lists all Traffic Manager profiles within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -547,7 +587,7 @@ public final class ProfilesClientImpl
 
     /**
      * Lists all Traffic Manager profiles within a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
@@ -559,7 +599,7 @@ public final class ProfilesClientImpl
 
     /**
      * Lists all Traffic Manager profiles within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -573,8 +613,8 @@ public final class ProfilesClientImpl
 
     /**
      * Gets a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -582,13 +622,11 @@ public final class ProfilesClientImpl
      * @return a Traffic Manager profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String profileName) {
+    public Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -598,31 +636,20 @@ public final class ProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                profileName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -631,13 +658,11 @@ public final class ProfilesClientImpl
      * @return a Traffic Manager profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String profileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -647,28 +672,19 @@ public final class ProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, profileName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -683,8 +699,8 @@ public final class ProfilesClientImpl
 
     /**
      * Gets a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -693,15 +709,15 @@ public final class ProfilesClientImpl
      * @return a Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String profileName, Context context) {
+    public Response<ProfileInner> getByResourceGroupWithResponse(String resourceGroupName, String profileName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
      * Gets a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -715,24 +731,22 @@ public final class ProfilesClientImpl
 
     /**
      * Create or update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProfileInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String profileName, ProfileInner parameters) {
+    public Mono<Response<ProfileInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -742,10 +756,8 @@ public final class ProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -754,25 +766,15 @@ public final class ProfilesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, profileName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -780,16 +782,14 @@ public final class ProfilesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProfileInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
+    private Mono<Response<ProfileInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -799,10 +799,8 @@ public final class ProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -811,22 +809,14 @@ public final class ProfilesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, profileName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Create or update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -835,16 +825,16 @@ public final class ProfilesClientImpl
      * @return class representing a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ProfileInner> createOrUpdateAsync(
-        String resourceGroupName, String profileName, ProfileInner parameters) {
+    public Mono<ProfileInner> createOrUpdateAsync(String resourceGroupName, String profileName,
+        ProfileInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, profileName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @param context The context to associate with this operation.
@@ -854,15 +844,15 @@ public final class ProfilesClientImpl
      * @return class representing a Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> createOrUpdateWithResponse(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
+    public Response<ProfileInner> createOrUpdateWithResponse(String resourceGroupName, String profileName,
+        ProfileInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
     }
 
     /**
      * Create or update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -877,23 +867,21 @@ public final class ProfilesClientImpl
 
     /**
      * Deletes a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the request or operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName) {
+    public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(String resourceGroupName,
+        String profileName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -903,47 +891,34 @@ public final class ProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, profileName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the result of the request or operation along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
-        String resourceGroupName, String profileName, Context context) {
+    private Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(String resourceGroupName,
+        String profileName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -953,28 +928,19 @@ public final class ProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, profileName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -988,8 +954,8 @@ public final class ProfilesClientImpl
 
     /**
      * Deletes a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -998,15 +964,15 @@ public final class ProfilesClientImpl
      * @return the result of the request or operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName, String profileName, Context context) {
+    public Response<DeleteOperationResultInner> deleteWithResponse(String resourceGroupName, String profileName,
+        Context context) {
         return deleteWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
      * Deletes a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile to be deleted.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1020,24 +986,22 @@ public final class ProfilesClientImpl
 
     /**
      * Update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ProfileInner>> updateWithResponseAsync(
-        String resourceGroupName, String profileName, ProfileInner parameters) {
+    public Mono<Response<ProfileInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1047,10 +1011,8 @@ public final class ProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1059,25 +1021,15 @@ public final class ProfilesClientImpl
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            profileName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, profileName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
@@ -1085,16 +1037,14 @@ public final class ProfilesClientImpl
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProfileInner>> updateWithResponseAsync(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
+    private Mono<Response<ProfileInner>> updateWithResponseAsync(String resourceGroupName, String profileName,
+        ProfileInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1104,10 +1054,8 @@ public final class ProfilesClientImpl
             return Mono.error(new IllegalArgumentException("Parameter profileName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1116,22 +1064,14 @@ public final class ProfilesClientImpl
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                profileName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, profileName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1147,8 +1087,8 @@ public final class ProfilesClientImpl
 
     /**
      * Update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @param context The context to associate with this operation.
@@ -1158,15 +1098,15 @@ public final class ProfilesClientImpl
      * @return class representing a Traffic Manager profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> updateWithResponse(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
+    public Response<ProfileInner> updateWithResponse(String resourceGroupName, String profileName,
+        ProfileInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
     }
 
     /**
      * Update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param profileName The name of the Traffic Manager profile.
      * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

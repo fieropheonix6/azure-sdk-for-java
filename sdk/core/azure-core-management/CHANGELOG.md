@@ -1,14 +1,225 @@
 # Release History
 
-## 1.10.0-beta.1 (Unreleased)
+## 1.16.0-beta.1 (Unreleased)
 
 ### Features Added
+
+- Added `AzureProfile(AzureCloud azureCloud)` constructor overload.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.15.6 (2024-11-14)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.54.0` to `1.54.1`.
+
+## 1.15.5 (2024-11-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to `1.54.0`.
+
+## 1.15.4 (2024-10-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to `1.53.0`.
+
+## 1.15.3 (2024-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to `1.52.0`.
+
+## 1.15.2 (2024-07-31)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to `1.51.0`.
+
+## 1.15.1 (2024-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to `1.50.0`.
+
+## 1.15.0 (2024-06-06)
+
+### Features Added
+
+- Added new Azure region `Region.ISRAEL_CENTRAL`.
+- `SubResource` now implements `JsonSerializable`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to `1.49.1`.
+
+## 1.14.0 (2024-05-01)
+
+### Features Added
+
+- Added `managedHsmDnsSuffix` getter and `storageEndpointSuffix` to `AzureEnvironment`. ([#39647](https://github.com/Azure/azure-sdk-for-java/pull/39647))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to `1.49.0`.
+
+## 1.13.0 (2024-04-05)
+
+### Features Added
+
+- Added support for `azure-json` by having serializable models implement `JsonSerializable`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to `1.48.0`.
+
+## 1.12.0 (2024-03-01)
+
+### Features Added
+
+- Added new Azure region `Region.ITALY_NORTH`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to `1.47.0`.
+
+## 1.11.10 (2024-02-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+
+## 1.11.8 (2023-11-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to `1.45.0`.
+
+## 1.11.7 (2023-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.0` to `1.44.1`.
+
+## 1.11.6 (2023-10-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to `1.44.0`.
+
+## 1.11.5 (2023-09-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.42.0` to `1.43.0`.
+
+## 1.11.4 (2023-08-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.41.0` to `1.42.0`.
+
+## 1.11.3 (2023-07-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to `1.41.0`.
+
+## 1.11.2 (2023-06-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to `1.40.0`.
+
+## 1.11.1 (2023-05-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to `1.39.0`.
+
+## 1.11.0 (2023-04-07)
+
+### Features Added
+
+- Added `MANAGED_HSM` to `AzureEnvironment`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to `1.38.0`.
+
+## 1.10.2 (2023-03-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.36.0` to `1.37.0`.
+
+## 1.10.1 (2023-02-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to `1.36.0`.
+
+## 1.10.0 (2023-01-05)
+
+### Breaking Changes
+
+- Deprecated `AzureEnvironment.AZURE_GERMANY`. Removed it from response of `AzureEnvironment.knownEnvironments`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to `1.35.0`.
 
 ## 1.9.0 (2022-11-04)
 

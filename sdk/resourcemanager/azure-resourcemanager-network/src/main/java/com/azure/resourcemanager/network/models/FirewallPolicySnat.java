@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The private IP addresses/IP ranges to which traffic will not be SNAT. */
+/**
+ * The private IP addresses/IP ranges to which traffic will not be SNAT.
+ */
 @Fluent
-public final class FirewallPolicySnat {
+public final class FirewallPolicySnat implements JsonSerializable<FirewallPolicySnat> {
     /*
      * List of private IP addresses/IP address ranges to not be SNAT.
      */
-    @JsonProperty(value = "privateRanges")
     private List<String> privateRanges;
 
     /*
      * The operation mode for automatically learning private ranges to not be SNAT
      */
-    @JsonProperty(value = "autoLearnPrivateRanges")
     private AutoLearnPrivateRangesMode autoLearnPrivateRanges;
 
-    /** Creates an instance of FirewallPolicySnat class. */
+    /**
+     * Creates an instance of FirewallPolicySnat class.
+     */
     public FirewallPolicySnat() {
     }
 
     /**
      * Get the privateRanges property: List of private IP addresses/IP address ranges to not be SNAT.
-     *
+     * 
      * @return the privateRanges value.
      */
     public List<String> privateRanges() {
@@ -38,7 +44,7 @@ public final class FirewallPolicySnat {
 
     /**
      * Set the privateRanges property: List of private IP addresses/IP address ranges to not be SNAT.
-     *
+     * 
      * @param privateRanges the privateRanges value to set.
      * @return the FirewallPolicySnat object itself.
      */
@@ -50,7 +56,7 @@ public final class FirewallPolicySnat {
     /**
      * Get the autoLearnPrivateRanges property: The operation mode for automatically learning private ranges to not be
      * SNAT.
-     *
+     * 
      * @return the autoLearnPrivateRanges value.
      */
     public AutoLearnPrivateRangesMode autoLearnPrivateRanges() {
@@ -60,7 +66,7 @@ public final class FirewallPolicySnat {
     /**
      * Set the autoLearnPrivateRanges property: The operation mode for automatically learning private ranges to not be
      * SNAT.
-     *
+     * 
      * @param autoLearnPrivateRanges the autoLearnPrivateRanges value to set.
      * @return the FirewallPolicySnat object itself.
      */
@@ -71,9 +77,52 @@ public final class FirewallPolicySnat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("privateRanges", this.privateRanges,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("autoLearnPrivateRanges",
+            this.autoLearnPrivateRanges == null ? null : this.autoLearnPrivateRanges.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FirewallPolicySnat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FirewallPolicySnat if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FirewallPolicySnat.
+     */
+    public static FirewallPolicySnat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FirewallPolicySnat deserializedFirewallPolicySnat = new FirewallPolicySnat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("privateRanges".equals(fieldName)) {
+                    List<String> privateRanges = reader.readArray(reader1 -> reader1.getString());
+                    deserializedFirewallPolicySnat.privateRanges = privateRanges;
+                } else if ("autoLearnPrivateRanges".equals(fieldName)) {
+                    deserializedFirewallPolicySnat.autoLearnPrivateRanges
+                        = AutoLearnPrivateRangesMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFirewallPolicySnat;
+        });
     }
 }

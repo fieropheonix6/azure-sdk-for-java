@@ -5,29 +5,86 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.RemotePrivateEndpointConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A remote private endpoint connection. */
+/**
+ * A remote private endpoint connection.
+ */
 @Fluent
 public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
     /*
      * RemotePrivateEndpointConnection resource specific properties
      */
-    @JsonProperty(value = "properties")
     private RemotePrivateEndpointConnectionProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RemotePrivateEndpointConnection class.
+     */
+    public RemotePrivateEndpointConnection() {
+    }
 
     /**
      * Get the innerProperties property: RemotePrivateEndpointConnection resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RemotePrivateEndpointConnectionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RemotePrivateEndpointConnection withKind(String kind) {
         super.withKind(kind);
@@ -36,7 +93,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -45,7 +102,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Get the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ArmIdWrapper privateEndpoint() {
@@ -54,7 +111,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Set the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the RemotePrivateEndpointConnection object itself.
      */
@@ -68,7 +125,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Get the privateLinkServiceConnectionState property: The state of a private link connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkConnectionState privateLinkServiceConnectionState() {
@@ -77,12 +134,12 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Set the privateLinkServiceConnectionState property: The state of a private link connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the RemotePrivateEndpointConnection object itself.
      */
-    public RemotePrivateEndpointConnection withPrivateLinkServiceConnectionState(
-        PrivateLinkConnectionState privateLinkServiceConnectionState) {
+    public RemotePrivateEndpointConnection
+        withPrivateLinkServiceConnectionState(PrivateLinkConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RemotePrivateEndpointConnectionProperties();
         }
@@ -92,7 +149,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Get the ipAddresses property: Private IPAddresses mapped to the remote private endpoint.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -101,7 +158,7 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Set the ipAddresses property: Private IPAddresses mapped to the remote private endpoint.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the RemotePrivateEndpointConnection object itself.
      */
@@ -115,14 +172,61 @@ public final class RemotePrivateEndpointConnection extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RemotePrivateEndpointConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RemotePrivateEndpointConnection if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RemotePrivateEndpointConnection.
+     */
+    public static RemotePrivateEndpointConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RemotePrivateEndpointConnection deserializedRemotePrivateEndpointConnection
+                = new RemotePrivateEndpointConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRemotePrivateEndpointConnection.innerProperties
+                        = RemotePrivateEndpointConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRemotePrivateEndpointConnection;
+        });
     }
 }

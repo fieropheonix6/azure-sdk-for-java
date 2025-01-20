@@ -6,43 +6,47 @@ package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Class representing Traffic Manager User Metrics. */
+/**
+ * Class representing Traffic Manager User Metrics.
+ */
 @Fluent
 public final class UserMetricsModelInner extends ProxyResource {
     /*
      * The properties of the Traffic Manager User Metrics.
      */
-    @JsonProperty(value = "properties")
     private UserMetricsProperties innerProperties;
 
     /*
      * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/
+     * trafficManagerProfiles/{resourceName}
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the resource
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of UserMetricsModelInner class. */
+    /**
+     * Creates an instance of UserMetricsModelInner class.
+     */
     public UserMetricsModelInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Traffic Manager User Metrics.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UserMetricsProperties innerProperties() {
@@ -52,7 +56,7 @@ public final class UserMetricsModelInner extends ProxyResource {
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -62,7 +66,7 @@ public final class UserMetricsModelInner extends ProxyResource {
     /**
      * Set the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
+     * 
      * @param id the id value to set.
      * @return the UserMetricsModelInner object itself.
      */
@@ -73,7 +77,7 @@ public final class UserMetricsModelInner extends ProxyResource {
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -82,7 +86,7 @@ public final class UserMetricsModelInner extends ProxyResource {
 
     /**
      * Set the name property: The name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the UserMetricsModelInner object itself.
      */
@@ -93,7 +97,7 @@ public final class UserMetricsModelInner extends ProxyResource {
 
     /**
      * Get the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -102,7 +106,7 @@ public final class UserMetricsModelInner extends ProxyResource {
 
     /**
      * Set the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
+     * 
      * @param type the type value to set.
      * @return the UserMetricsModelInner object itself.
      */
@@ -113,7 +117,7 @@ public final class UserMetricsModelInner extends ProxyResource {
 
     /**
      * Get the key property: The key returned by the User Metrics operation.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -122,7 +126,7 @@ public final class UserMetricsModelInner extends ProxyResource {
 
     /**
      * Set the key property: The key returned by the User Metrics operation.
-     *
+     * 
      * @param key the key value to set.
      * @return the UserMetricsModelInner object itself.
      */
@@ -136,12 +140,58 @@ public final class UserMetricsModelInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserMetricsModelInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserMetricsModelInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserMetricsModelInner.
+     */
+    public static UserMetricsModelInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserMetricsModelInner deserializedUserMetricsModelInner = new UserMetricsModelInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUserMetricsModelInner.innerProperties = UserMetricsProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedUserMetricsModelInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUserMetricsModelInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUserMetricsModelInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserMetricsModelInner;
+        });
     }
 }

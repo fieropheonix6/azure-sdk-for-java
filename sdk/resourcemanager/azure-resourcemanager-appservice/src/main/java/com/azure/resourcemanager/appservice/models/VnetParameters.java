@@ -5,28 +5,85 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.VnetParametersProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The required set of inputs to validate a VNET. */
+/**
+ * The required set of inputs to validate a VNET.
+ */
 @Fluent
 public final class VnetParameters extends ProxyOnlyResource {
     /*
      * VnetParameters resource specific properties
      */
-    @JsonProperty(value = "properties")
     private VnetParametersProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VnetParameters class.
+     */
+    public VnetParameters() {
+    }
 
     /**
      * Get the innerProperties property: VnetParameters resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VnetParametersProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VnetParameters withKind(String kind) {
         super.withKind(kind);
@@ -35,7 +92,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Get the vnetResourceGroup property: The Resource Group of the VNET to be validated.
-     *
+     * 
      * @return the vnetResourceGroup value.
      */
     public String vnetResourceGroup() {
@@ -44,7 +101,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Set the vnetResourceGroup property: The Resource Group of the VNET to be validated.
-     *
+     * 
      * @param vnetResourceGroup the vnetResourceGroup value to set.
      * @return the VnetParameters object itself.
      */
@@ -58,7 +115,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Get the vnetName property: The name of the VNET to be validated.
-     *
+     * 
      * @return the vnetName value.
      */
     public String vnetName() {
@@ -67,7 +124,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Set the vnetName property: The name of the VNET to be validated.
-     *
+     * 
      * @param vnetName the vnetName value to set.
      * @return the VnetParameters object itself.
      */
@@ -81,7 +138,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Get the vnetSubnetName property: The subnet name to be validated.
-     *
+     * 
      * @return the vnetSubnetName value.
      */
     public String vnetSubnetName() {
@@ -90,7 +147,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Set the vnetSubnetName property: The subnet name to be validated.
-     *
+     * 
      * @param vnetSubnetName the vnetSubnetName value to set.
      * @return the VnetParameters object itself.
      */
@@ -104,7 +161,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Get the subnetResourceId property: The ARM Resource ID of the subnet to validate.
-     *
+     * 
      * @return the subnetResourceId value.
      */
     public String subnetResourceId() {
@@ -113,7 +170,7 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Set the subnetResourceId property: The ARM Resource ID of the subnet to validate.
-     *
+     * 
      * @param subnetResourceId the subnetResourceId value to set.
      * @return the VnetParameters object itself.
      */
@@ -127,14 +184,59 @@ public final class VnetParameters extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VnetParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VnetParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VnetParameters.
+     */
+    public static VnetParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VnetParameters deserializedVnetParameters = new VnetParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVnetParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVnetParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVnetParameters.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedVnetParameters.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVnetParameters.innerProperties = VnetParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVnetParameters;
+        });
     }
 }

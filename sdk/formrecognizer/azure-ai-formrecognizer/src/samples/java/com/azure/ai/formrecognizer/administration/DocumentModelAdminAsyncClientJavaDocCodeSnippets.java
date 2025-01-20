@@ -5,9 +5,14 @@ package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationAsyncClient;
 import com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdministrationClientBuilder;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BlobFileListContentSource;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentClassifierOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.BuildDocumentModelOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ClassifierDocumentTypeDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ComposeDocumentModelOptions;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.CopyAuthorizationOptions;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentClassifierDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildMode;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelBuildOperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.DocumentModelCopyAuthorization;
@@ -15,10 +20,12 @@ import com.azure.ai.formrecognizer.documentanalysis.administration.models.Docume
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationDetails;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.OperationStatus;
 import com.azure.ai.formrecognizer.documentanalysis.administration.models.ResourceDetails;
+import com.azure.ai.formrecognizer.documentanalysis.administration.models.ContentSource;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.util.polling.AsyncPollResponse;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -37,9 +44,21 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
      */
     public void documentModelAdministrationAsyncClientInitialization() {
         // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization
-        DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
-            new DocumentModelAdministrationClientBuilder().buildAsyncClient();
+        DocumentModelAdministrationAsyncClient client = new DocumentModelAdministrationClientBuilder()
+            .endpoint("{endpoint}")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAsyncClient();
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.initialization
+    }
+
+    public void documentModelAdministrationAsyncClientKeyCred() {
+        // BEGIN: readme-sample-createDocumentModelAdministrationAsyncClient
+        DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
+            new DocumentModelAdministrationClientBuilder()
+                .credential(new AzureKeyCredential("{key}"))
+                .endpoint("{endpoint}")
+                .buildAsyncClient();
+        // END: readme-sample-createDocumentModelAdministrationAsyncClient
     }
 
     /**
@@ -120,6 +139,136 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 });
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#String-BuildMode-String-Options
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentClassifier(Map)}
+     */
+    public void beginBuildDocumentClassifier() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentClassifier#Map
+        String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
+        HashMap<String, ClassifierDocumentTypeDetails> documentTypesDetailsMap = new HashMap<>();
+        documentTypesDetailsMap.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
+        ));
+        documentTypesDetailsMap.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        ));
+
+        documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(documentTypesDetailsMap)
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(classifierDetails -> {
+                System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
+                System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
+                System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
+                System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
+                classifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
+                        System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
+                            .getContentSource()).getContainerUrl());
+                    }
+                });
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentClassifier#Map
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentClassifier(Map, BuildDocumentClassifierOptions)}
+     * with options
+     */
+    public void beginBuildDocumentClassifierWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentClassifier#Map-Options
+        String blobContainerUrl1040D = "{SAS_URL_of_your_container_in_blob_storage}";
+        String blobContainerUrl1040A = "{SAS_URL_of_your_container_in_blob_storage}";
+        HashMap<String, ClassifierDocumentTypeDetails> documentTypesDetailsMap = new HashMap<>();
+        documentTypesDetailsMap.put("1040-D", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040D)
+        ));
+        documentTypesDetailsMap.put("1040-A", new ClassifierDocumentTypeDetails(new BlobContentSource(blobContainerUrl1040A)
+        ));
+
+        documentModelAdministrationAsyncClient.beginBuildDocumentClassifier(documentTypesDetailsMap,
+                new BuildDocumentClassifierOptions()
+                    .setClassifierId("classifierId")
+                    .setDescription("classifier desc"))
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(classifierDetails -> {
+                System.out.printf("Classifier ID: %s%n", classifierDetails.getClassifierId());
+                System.out.printf("Classifier description: %s%n", classifierDetails.getDescription());
+                System.out.printf("Classifier created on: %s%n", classifierDetails.getCreatedOn());
+                System.out.printf("Classifier expires on: %s%n", classifierDetails.getExpiresOn());
+                classifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
+                        System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
+                            .getContentSource()).getContainerUrl());
+                    }
+                });
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentClassifier#Map-Options
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(ContentSource, DocumentModelBuildMode)}
+     */
+    public void beginBuildModelWithFileList() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#ContentSource-BuildMode
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String fileList = "";
+        documentModelAdministrationAsyncClient.beginBuildDocumentModel(
+            new BlobFileListContentSource(blobContainerUrl, fileList),
+                DocumentModelBuildMode.TEMPLATE)
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(documentModel -> {
+                System.out.printf("Model ID: %s%n", documentModel.getModelId());
+                System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                        System.out.printf("Field: %s", field);
+                        System.out.printf("Field type: %s", documentFieldSchema.getType());
+                        System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
+                    });
+                });
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#ContentSource-BuildMode
+    }
+
+    /**
+     * Code snippet for
+     * {@link DocumentModelAdministrationAsyncClient#beginBuildDocumentModel(ContentSource, DocumentModelBuildMode, BuildDocumentModelOptions)}
+     */
+    public void beginBuildModelWithFileListWithOptions() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#ContentSource-BuildMode-BuildDocumentModelOptions
+        String blobContainerUrl = "{SAS-URL-of-your-container-in-blob-storage}";
+        String fileList = "";
+        String modelId = "model-id";
+        Map<String, String> attrs = new HashMap<String, String>();
+        attrs.put("createdBy", "sample");
+        String prefix = "Invoice";
+
+        documentModelAdministrationAsyncClient.beginBuildDocumentModel(
+                new BlobFileListContentSource(blobContainerUrl, fileList),
+                DocumentModelBuildMode.TEMPLATE,
+            new BuildDocumentModelOptions()
+                .setModelId(modelId)
+                .setDescription("model desc")
+                .setTags(attrs))
+            // if polling operation completed, retrieve the final result.
+            .flatMap(AsyncPollResponse::getFinalResult)
+            .subscribe(documentModel -> {
+                System.out.printf("Model ID: %s%n", documentModel.getModelId());
+                System.out.printf("Model Description: %s%n", documentModel.getDescription());
+                System.out.printf("Model Created on: %s%n", documentModel.getCreatedOn());
+                System.out.printf("Model assigned tags: %s%n", documentModel.getTags());
+                documentModel.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                    documentTypeDetails.getFieldSchema().forEach((field, documentFieldSchema) -> {
+                        System.out.printf("Field: %s", field);
+                        System.out.printf("Field type: %s", documentFieldSchema.getType());
+                        System.out.printf("Field confidence: %.2f", documentTypeDetails.getFieldConfidence().get(field));
+                    });
+                });
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.beginBuildDocumentModel#ContentSource-BuildMode-BuildDocumentModelOptions
     }
 
     /**
@@ -421,5 +570,96 @@ public class DocumentModelAdminAsyncClientJavaDocCodeSnippets {
                 System.out.printf("Operation resource location: %s%n", modelOperationSummary.getResourceLocation());
             });
         // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listOperations
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteDocumentClassifier(String)}
+     */
+    public void deleteClassifier() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifier#string
+        String classifierId = "{classifierId}";
+        documentModelAdministrationAsyncClient.deleteDocumentClassifier(classifierId)
+            .subscribe(ignored -> System.out.printf("Classifier ID: %s is deleted%n", classifierId));
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifier#string
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#deleteDocumentClassifierWithResponse(String)}
+     */
+    public void deleteClassifierWithResponse() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string
+        String classifierId = "{classifierId}";
+        documentModelAdministrationAsyncClient.deleteDocumentClassifierWithResponse(classifierId)
+            .subscribe(response -> {
+                System.out.printf("Response Status Code: %d.", response.getStatusCode());
+                System.out.printf("Classifier ID: %s is deleted.%n", classifierId);
+            });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.deleteDocumentClassifierWithResponse#string
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#listDocumentClassifiers()}
+     */
+    public void listClassifiers() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listDocumentClassifiers
+        documentModelAdministrationAsyncClient.listDocumentClassifiers()
+            .subscribe(documentModelInfo ->
+                System.out.printf("Classifier ID: %s, Classifier description: %s, Created on: %s.%n",
+                    documentModelInfo.getClassifierId(),
+                    documentModelInfo.getDescription(),
+                    documentModelInfo.getCreatedOn()));
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.listDocumentClassifiers
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getDocumentClassifier(String)}
+     */
+    public void getDocumentClassifier() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifier#string
+        String modelId = "{model_id}";
+        documentModelAdministrationAsyncClient.getDocumentClassifier(modelId).subscribe(documentClassifier -> {
+            System.out.printf("Classifier ID: %s%n", documentClassifier.getClassifierId());
+            System.out.printf("Classifier Description: %s%n", documentClassifier.getDescription());
+            System.out.printf("Classifier Created on: %s%n", documentClassifier.getCreatedOn());
+            documentClassifier.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
+                    System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
+                        .getContentSource()).getContainerUrl());
+                }
+                if (documentTypeDetails.getContentSource() instanceof BlobFileListContentSource) {
+                    System.out.printf("Blob File List Source container Url: %s",
+                        ((BlobFileListContentSource) documentTypeDetails
+                        .getContentSource()).getContainerUrl());
+                }
+            });
+        });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifier#string
+    }
+
+    /**
+     * Code snippet for {@link DocumentModelAdministrationAsyncClient#getDocumentClassifierWithResponse(String)}
+     */
+    public void getClassifierWithResponse() {
+        // BEGIN: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string
+        String modelId = "{model_id}";
+        documentModelAdministrationAsyncClient.getDocumentClassifierWithResponse(modelId).subscribe(response -> {
+            System.out.printf("Response Status Code: %d.", response.getStatusCode());
+            DocumentClassifierDetails documentClassifierDetails = response.getValue();
+            System.out.printf("Classifier ID: %s%n", documentClassifierDetails.getClassifierId());
+            System.out.printf("Classifier Description: %s%n", documentClassifierDetails.getDescription());
+            System.out.printf("Classifier Created on: %s%n", documentClassifierDetails.getCreatedOn());
+            documentClassifierDetails.getDocumentTypes().forEach((key, documentTypeDetails) -> {
+                if (documentTypeDetails.getContentSource() instanceof BlobContentSource) {
+                    System.out.printf("Blob Source container Url: %s", ((BlobContentSource) documentTypeDetails
+                        .getContentSource()).getContainerUrl());
+                }
+                if (documentTypeDetails.getContentSource() instanceof BlobFileListContentSource) {
+                    System.out.printf("Blob File List Source container Url: %s",
+                        ((BlobFileListContentSource) documentTypeDetails
+                            .getContentSource()).getContainerUrl());
+                }
+            });
+        });
+        // END: com.azure.ai.formrecognizer.documentanalysis.administration.DocumentModelAdminAsyncClient.getDocumentClassifierWithResponse#string
     }
 }

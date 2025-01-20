@@ -5,54 +5,57 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network security rules evaluation result. */
+/**
+ * Network security rules evaluation result.
+ */
 @Fluent
-public final class NetworkSecurityRulesEvaluationResult {
+public final class NetworkSecurityRulesEvaluationResult
+    implements JsonSerializable<NetworkSecurityRulesEvaluationResult> {
     /*
      * Name of the network security rule.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Value indicating whether protocol is matched.
      */
-    @JsonProperty(value = "protocolMatched")
     private Boolean protocolMatched;
 
     /*
      * Value indicating whether source is matched.
      */
-    @JsonProperty(value = "sourceMatched")
     private Boolean sourceMatched;
 
     /*
      * Value indicating whether source port is matched.
      */
-    @JsonProperty(value = "sourcePortMatched")
     private Boolean sourcePortMatched;
 
     /*
      * Value indicating whether destination is matched.
      */
-    @JsonProperty(value = "destinationMatched")
     private Boolean destinationMatched;
 
     /*
      * Value indicating whether destination port is matched.
      */
-    @JsonProperty(value = "destinationPortMatched")
     private Boolean destinationPortMatched;
 
-    /** Creates an instance of NetworkSecurityRulesEvaluationResult class. */
+    /**
+     * Creates an instance of NetworkSecurityRulesEvaluationResult class.
+     */
     public NetworkSecurityRulesEvaluationResult() {
     }
 
     /**
      * Get the name property: Name of the network security rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +64,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the name property: Name of the network security rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -72,7 +75,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the protocolMatched property: Value indicating whether protocol is matched.
-     *
+     * 
      * @return the protocolMatched value.
      */
     public Boolean protocolMatched() {
@@ -81,7 +84,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the protocolMatched property: Value indicating whether protocol is matched.
-     *
+     * 
      * @param protocolMatched the protocolMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -92,7 +95,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the sourceMatched property: Value indicating whether source is matched.
-     *
+     * 
      * @return the sourceMatched value.
      */
     public Boolean sourceMatched() {
@@ -101,7 +104,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the sourceMatched property: Value indicating whether source is matched.
-     *
+     * 
      * @param sourceMatched the sourceMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -112,7 +115,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the sourcePortMatched property: Value indicating whether source port is matched.
-     *
+     * 
      * @return the sourcePortMatched value.
      */
     public Boolean sourcePortMatched() {
@@ -121,7 +124,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the sourcePortMatched property: Value indicating whether source port is matched.
-     *
+     * 
      * @param sourcePortMatched the sourcePortMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -132,7 +135,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the destinationMatched property: Value indicating whether destination is matched.
-     *
+     * 
      * @return the destinationMatched value.
      */
     public Boolean destinationMatched() {
@@ -141,7 +144,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the destinationMatched property: Value indicating whether destination is matched.
-     *
+     * 
      * @param destinationMatched the destinationMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -152,7 +155,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Get the destinationPortMatched property: Value indicating whether destination port is matched.
-     *
+     * 
      * @return the destinationPortMatched value.
      */
     public Boolean destinationPortMatched() {
@@ -161,7 +164,7 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Set the destinationPortMatched property: Value indicating whether destination port is matched.
-     *
+     * 
      * @param destinationPortMatched the destinationPortMatched value to set.
      * @return the NetworkSecurityRulesEvaluationResult object itself.
      */
@@ -172,9 +175,66 @@ public final class NetworkSecurityRulesEvaluationResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("protocolMatched", this.protocolMatched);
+        jsonWriter.writeBooleanField("sourceMatched", this.sourceMatched);
+        jsonWriter.writeBooleanField("sourcePortMatched", this.sourcePortMatched);
+        jsonWriter.writeBooleanField("destinationMatched", this.destinationMatched);
+        jsonWriter.writeBooleanField("destinationPortMatched", this.destinationPortMatched);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkSecurityRulesEvaluationResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkSecurityRulesEvaluationResult if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkSecurityRulesEvaluationResult.
+     */
+    public static NetworkSecurityRulesEvaluationResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkSecurityRulesEvaluationResult deserializedNetworkSecurityRulesEvaluationResult
+                = new NetworkSecurityRulesEvaluationResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkSecurityRulesEvaluationResult.name = reader.getString();
+                } else if ("protocolMatched".equals(fieldName)) {
+                    deserializedNetworkSecurityRulesEvaluationResult.protocolMatched
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceMatched".equals(fieldName)) {
+                    deserializedNetworkSecurityRulesEvaluationResult.sourceMatched
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourcePortMatched".equals(fieldName)) {
+                    deserializedNetworkSecurityRulesEvaluationResult.sourcePortMatched
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("destinationMatched".equals(fieldName)) {
+                    deserializedNetworkSecurityRulesEvaluationResult.destinationMatched
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("destinationPortMatched".equals(fieldName)) {
+                    deserializedNetworkSecurityRulesEvaluationResult.destinationPortMatched
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkSecurityRulesEvaluationResult;
+        });
     }
 }

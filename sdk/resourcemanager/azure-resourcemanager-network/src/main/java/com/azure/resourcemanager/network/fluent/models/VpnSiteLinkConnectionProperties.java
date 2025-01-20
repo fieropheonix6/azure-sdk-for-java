@@ -6,133 +6,128 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayCustomBgpIpAddressIpConfiguration;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
 import com.azure.resourcemanager.network.models.VpnLinkConnectionMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters for VpnConnection. */
+/**
+ * Parameters for VpnConnection.
+ */
 @Fluent
-public final class VpnSiteLinkConnectionProperties {
+public final class VpnSiteLinkConnectionProperties implements JsonSerializable<VpnSiteLinkConnectionProperties> {
     /*
      * Id of the connected vpn site link.
      */
-    @JsonProperty(value = "vpnSiteLink")
     private SubResource vpnSiteLink;
 
     /*
      * Routing weight for vpn connection.
      */
-    @JsonProperty(value = "routingWeight")
     private Integer routingWeight;
 
     /*
      * Vpn link connection mode.
      */
-    @JsonProperty(value = "vpnLinkConnectionMode")
     private VpnLinkConnectionMode vpnLinkConnectionMode;
 
     /*
      * The connection status.
      */
-    @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private VpnConnectionStatus connectionStatus;
 
     /*
      * Connection protocol used for this connection.
      */
-    @JsonProperty(value = "vpnConnectionProtocolType")
     private VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType;
 
     /*
      * Ingress bytes transferred.
      */
-    @JsonProperty(value = "ingressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long ingressBytesTransferred;
 
     /*
      * Egress bytes transferred.
      */
-    @JsonProperty(value = "egressBytesTransferred", access = JsonProperty.Access.WRITE_ONLY)
     private Long egressBytesTransferred;
 
     /*
      * Expected bandwidth in MBPS.
      */
-    @JsonProperty(value = "connectionBandwidth")
     private Integer connectionBandwidth;
 
     /*
      * SharedKey for the vpn connection.
      */
-    @JsonProperty(value = "sharedKey")
     private String sharedKey;
 
     /*
      * EnableBgp flag.
      */
-    @JsonProperty(value = "enableBgp")
     private Boolean enableBgp;
 
     /*
      * vpnGatewayCustomBgpAddresses used by this connection.
      */
-    @JsonProperty(value = "vpnGatewayCustomBgpAddresses")
     private List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses;
 
     /*
      * Enable policy-based traffic selectors.
      */
-    @JsonProperty(value = "usePolicyBasedTrafficSelectors")
     private Boolean usePolicyBasedTrafficSelectors;
 
     /*
      * The IPSec Policies to be considered by this connection.
      */
-    @JsonProperty(value = "ipsecPolicies")
     private List<IpsecPolicy> ipsecPolicies;
 
     /*
      * EnableBgp flag.
      */
-    @JsonProperty(value = "enableRateLimiting")
     private Boolean enableRateLimiting;
 
     /*
      * Use local azure ip to initiate connection.
      */
-    @JsonProperty(value = "useLocalAzureIpAddress")
     private Boolean useLocalAzureIpAddress;
 
     /*
      * The provisioning state of the VPN site link connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * List of ingress NatRules.
      */
-    @JsonProperty(value = "ingressNatRules")
     private List<SubResource> ingressNatRules;
 
     /*
      * List of egress NatRules.
      */
-    @JsonProperty(value = "egressNatRules")
     private List<SubResource> egressNatRules;
 
-    /** Creates an instance of VpnSiteLinkConnectionProperties class. */
+    /*
+     * Dead Peer Detection timeout in seconds for VpnLink connection.
+     */
+    private Integer dpdTimeoutSeconds;
+
+    /**
+     * Creates an instance of VpnSiteLinkConnectionProperties class.
+     */
     public VpnSiteLinkConnectionProperties() {
     }
 
     /**
      * Get the vpnSiteLink property: Id of the connected vpn site link.
-     *
+     * 
      * @return the vpnSiteLink value.
      */
     public SubResource vpnSiteLink() {
@@ -141,7 +136,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the vpnSiteLink property: Id of the connected vpn site link.
-     *
+     * 
      * @param vpnSiteLink the vpnSiteLink value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -152,7 +147,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the routingWeight property: Routing weight for vpn connection.
-     *
+     * 
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -161,7 +156,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the routingWeight property: Routing weight for vpn connection.
-     *
+     * 
      * @param routingWeight the routingWeight value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -172,7 +167,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the vpnLinkConnectionMode property: Vpn link connection mode.
-     *
+     * 
      * @return the vpnLinkConnectionMode value.
      */
     public VpnLinkConnectionMode vpnLinkConnectionMode() {
@@ -181,7 +176,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the vpnLinkConnectionMode property: Vpn link connection mode.
-     *
+     * 
      * @param vpnLinkConnectionMode the vpnLinkConnectionMode value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -192,7 +187,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the connectionStatus property: The connection status.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public VpnConnectionStatus connectionStatus() {
@@ -201,7 +196,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the vpnConnectionProtocolType property: Connection protocol used for this connection.
-     *
+     * 
      * @return the vpnConnectionProtocolType value.
      */
     public VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType() {
@@ -210,19 +205,19 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the vpnConnectionProtocolType property: Connection protocol used for this connection.
-     *
+     * 
      * @param vpnConnectionProtocolType the vpnConnectionProtocolType value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
-    public VpnSiteLinkConnectionProperties withVpnConnectionProtocolType(
-        VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
+    public VpnSiteLinkConnectionProperties
+        withVpnConnectionProtocolType(VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
         this.vpnConnectionProtocolType = vpnConnectionProtocolType;
         return this;
     }
 
     /**
      * Get the ingressBytesTransferred property: Ingress bytes transferred.
-     *
+     * 
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -231,7 +226,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the egressBytesTransferred property: Egress bytes transferred.
-     *
+     * 
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -240,7 +235,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the connectionBandwidth property: Expected bandwidth in MBPS.
-     *
+     * 
      * @return the connectionBandwidth value.
      */
     public Integer connectionBandwidth() {
@@ -249,7 +244,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the connectionBandwidth property: Expected bandwidth in MBPS.
-     *
+     * 
      * @param connectionBandwidth the connectionBandwidth value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -260,7 +255,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the sharedKey property: SharedKey for the vpn connection.
-     *
+     * 
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -269,7 +264,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the sharedKey property: SharedKey for the vpn connection.
-     *
+     * 
      * @param sharedKey the sharedKey value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -280,7 +275,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -289,7 +284,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the enableBgp property: EnableBgp flag.
-     *
+     * 
      * @param enableBgp the enableBgp value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -300,7 +295,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
-     *
+     * 
      * @return the vpnGatewayCustomBgpAddresses value.
      */
     public List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses() {
@@ -309,19 +304,19 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the vpnGatewayCustomBgpAddresses property: vpnGatewayCustomBgpAddresses used by this connection.
-     *
+     * 
      * @param vpnGatewayCustomBgpAddresses the vpnGatewayCustomBgpAddresses value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
-    public VpnSiteLinkConnectionProperties withVpnGatewayCustomBgpAddresses(
-        List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses) {
+    public VpnSiteLinkConnectionProperties
+        withVpnGatewayCustomBgpAddresses(List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses) {
         this.vpnGatewayCustomBgpAddresses = vpnGatewayCustomBgpAddresses;
         return this;
     }
 
     /**
      * Get the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * 
      * @return the usePolicyBasedTrafficSelectors value.
      */
     public Boolean usePolicyBasedTrafficSelectors() {
@@ -330,7 +325,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the usePolicyBasedTrafficSelectors property: Enable policy-based traffic selectors.
-     *
+     * 
      * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -341,7 +336,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * 
      * @return the ipsecPolicies value.
      */
     public List<IpsecPolicy> ipsecPolicies() {
@@ -350,7 +345,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the ipsecPolicies property: The IPSec Policies to be considered by this connection.
-     *
+     * 
      * @param ipsecPolicies the ipsecPolicies value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -361,7 +356,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the enableRateLimiting property: EnableBgp flag.
-     *
+     * 
      * @return the enableRateLimiting value.
      */
     public Boolean enableRateLimiting() {
@@ -370,7 +365,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the enableRateLimiting property: EnableBgp flag.
-     *
+     * 
      * @param enableRateLimiting the enableRateLimiting value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -381,7 +376,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
+     * 
      * @return the useLocalAzureIpAddress value.
      */
     public Boolean useLocalAzureIpAddress() {
@@ -390,7 +385,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the useLocalAzureIpAddress property: Use local azure ip to initiate connection.
-     *
+     * 
      * @param useLocalAzureIpAddress the useLocalAzureIpAddress value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -401,7 +396,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN site link connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -410,7 +405,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the ingressNatRules property: List of ingress NatRules.
-     *
+     * 
      * @return the ingressNatRules value.
      */
     public List<SubResource> ingressNatRules() {
@@ -419,7 +414,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the ingressNatRules property: List of ingress NatRules.
-     *
+     * 
      * @param ingressNatRules the ingressNatRules value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -430,7 +425,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Get the egressNatRules property: List of egress NatRules.
-     *
+     * 
      * @return the egressNatRules value.
      */
     public List<SubResource> egressNatRules() {
@@ -439,7 +434,7 @@ public final class VpnSiteLinkConnectionProperties {
 
     /**
      * Set the egressNatRules property: List of egress NatRules.
-     *
+     * 
      * @param egressNatRules the egressNatRules value to set.
      * @return the VpnSiteLinkConnectionProperties object itself.
      */
@@ -449,8 +444,28 @@ public final class VpnSiteLinkConnectionProperties {
     }
 
     /**
+     * Get the dpdTimeoutSeconds property: Dead Peer Detection timeout in seconds for VpnLink connection.
+     * 
+     * @return the dpdTimeoutSeconds value.
+     */
+    public Integer dpdTimeoutSeconds() {
+        return this.dpdTimeoutSeconds;
+    }
+
+    /**
+     * Set the dpdTimeoutSeconds property: Dead Peer Detection timeout in seconds for VpnLink connection.
+     * 
+     * @param dpdTimeoutSeconds the dpdTimeoutSeconds value to set.
+     * @return the VpnSiteLinkConnectionProperties object itself.
+     */
+    public VpnSiteLinkConnectionProperties withDpdTimeoutSeconds(Integer dpdTimeoutSeconds) {
+        this.dpdTimeoutSeconds = dpdTimeoutSeconds;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -460,5 +475,114 @@ public final class VpnSiteLinkConnectionProperties {
         if (ipsecPolicies() != null) {
             ipsecPolicies().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("vpnSiteLink", this.vpnSiteLink);
+        jsonWriter.writeNumberField("routingWeight", this.routingWeight);
+        jsonWriter.writeStringField("vpnLinkConnectionMode",
+            this.vpnLinkConnectionMode == null ? null : this.vpnLinkConnectionMode.toString());
+        jsonWriter.writeStringField("vpnConnectionProtocolType",
+            this.vpnConnectionProtocolType == null ? null : this.vpnConnectionProtocolType.toString());
+        jsonWriter.writeNumberField("connectionBandwidth", this.connectionBandwidth);
+        jsonWriter.writeStringField("sharedKey", this.sharedKey);
+        jsonWriter.writeBooleanField("enableBgp", this.enableBgp);
+        jsonWriter.writeArrayField("vpnGatewayCustomBgpAddresses", this.vpnGatewayCustomBgpAddresses,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("usePolicyBasedTrafficSelectors", this.usePolicyBasedTrafficSelectors);
+        jsonWriter.writeArrayField("ipsecPolicies", this.ipsecPolicies, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableRateLimiting", this.enableRateLimiting);
+        jsonWriter.writeBooleanField("useLocalAzureIpAddress", this.useLocalAzureIpAddress);
+        jsonWriter.writeArrayField("ingressNatRules", this.ingressNatRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("egressNatRules", this.egressNatRules,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("dpdTimeoutSeconds", this.dpdTimeoutSeconds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnSiteLinkConnectionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnSiteLinkConnectionProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnSiteLinkConnectionProperties.
+     */
+    public static VpnSiteLinkConnectionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnSiteLinkConnectionProperties deserializedVpnSiteLinkConnectionProperties
+                = new VpnSiteLinkConnectionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vpnSiteLink".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.vpnSiteLink = SubResource.fromJson(reader);
+                } else if ("routingWeight".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.routingWeight = reader.getNullable(JsonReader::getInt);
+                } else if ("vpnLinkConnectionMode".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.vpnLinkConnectionMode
+                        = VpnLinkConnectionMode.fromString(reader.getString());
+                } else if ("connectionStatus".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.connectionStatus
+                        = VpnConnectionStatus.fromString(reader.getString());
+                } else if ("vpnConnectionProtocolType".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.vpnConnectionProtocolType
+                        = VirtualNetworkGatewayConnectionProtocol.fromString(reader.getString());
+                } else if ("ingressBytesTransferred".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.ingressBytesTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("egressBytesTransferred".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.egressBytesTransferred
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("connectionBandwidth".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.connectionBandwidth
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("sharedKey".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.sharedKey = reader.getString();
+                } else if ("enableBgp".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.enableBgp = reader.getNullable(JsonReader::getBoolean);
+                } else if ("vpnGatewayCustomBgpAddresses".equals(fieldName)) {
+                    List<GatewayCustomBgpIpAddressIpConfiguration> vpnGatewayCustomBgpAddresses
+                        = reader.readArray(reader1 -> GatewayCustomBgpIpAddressIpConfiguration.fromJson(reader1));
+                    deserializedVpnSiteLinkConnectionProperties.vpnGatewayCustomBgpAddresses
+                        = vpnGatewayCustomBgpAddresses;
+                } else if ("usePolicyBasedTrafficSelectors".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.usePolicyBasedTrafficSelectors
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ipsecPolicies".equals(fieldName)) {
+                    List<IpsecPolicy> ipsecPolicies = reader.readArray(reader1 -> IpsecPolicy.fromJson(reader1));
+                    deserializedVpnSiteLinkConnectionProperties.ipsecPolicies = ipsecPolicies;
+                } else if ("enableRateLimiting".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.enableRateLimiting
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("useLocalAzureIpAddress".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.useLocalAzureIpAddress
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("ingressNatRules".equals(fieldName)) {
+                    List<SubResource> ingressNatRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVpnSiteLinkConnectionProperties.ingressNatRules = ingressNatRules;
+                } else if ("egressNatRules".equals(fieldName)) {
+                    List<SubResource> egressNatRules = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVpnSiteLinkConnectionProperties.egressNatRules = egressNatRules;
+                } else if ("dpdTimeoutSeconds".equals(fieldName)) {
+                    deserializedVpnSiteLinkConnectionProperties.dpdTimeoutSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnSiteLinkConnectionProperties;
+        });
     }
 }

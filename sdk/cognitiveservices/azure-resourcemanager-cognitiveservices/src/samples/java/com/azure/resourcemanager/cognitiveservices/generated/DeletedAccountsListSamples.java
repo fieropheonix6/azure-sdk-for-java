@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DeletedAccounts List. */
+/**
+ * Samples for DeletedAccounts List.
+ */
 public final class DeletedAccountsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListDeletedAccountsBySubscription.json
+     * x-ms-original-file:
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/
+     * ListDeletedAccountsBySubscription.json
      */
     /**
      * Sample code: List Deleted Accounts by Subscription.
-     *
+     * 
      * @param manager Entry point to CognitiveServicesManager.
      */
     public static void listDeletedAccountsBySubscription(
         com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.deletedAccounts().list(Context.NONE);
+        manager.deletedAccounts().list(com.azure.core.util.Context.NONE);
     }
 }

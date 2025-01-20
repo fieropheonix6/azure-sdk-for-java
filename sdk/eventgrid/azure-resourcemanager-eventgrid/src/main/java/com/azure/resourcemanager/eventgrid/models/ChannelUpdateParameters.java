@@ -5,22 +5,33 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.ChannelUpdateParametersProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of the Channel update. */
+/**
+ * Properties of the Channel update.
+ */
 @Fluent
-public final class ChannelUpdateParameters {
+public final class ChannelUpdateParameters implements JsonSerializable<ChannelUpdateParameters> {
     /*
      * Properties of the channel update parameters.
      */
-    @JsonProperty(value = "properties")
     private ChannelUpdateParametersProperties innerProperties;
 
     /**
+     * Creates an instance of ChannelUpdateParameters class.
+     */
+    public ChannelUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Properties of the channel update parameters.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ChannelUpdateParametersProperties innerProperties() {
@@ -29,9 +40,9 @@ public final class ChannelUpdateParameters {
 
     /**
      * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
-     * corresponding partner topic or partner destination is never activated, the channel and corresponding partner
-     * topic or partner destination are deleted.
-     *
+     * corresponding partner topic or partner destination is never activated,
+     * the channel and corresponding partner topic or partner destination are deleted.
+     * 
      * @return the expirationTimeIfNotActivatedUtc value.
      */
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
@@ -40,9 +51,9 @@ public final class ChannelUpdateParameters {
 
     /**
      * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
-     * corresponding partner topic or partner destination is never activated, the channel and corresponding partner
-     * topic or partner destination are deleted.
-     *
+     * corresponding partner topic or partner destination is never activated,
+     * the channel and corresponding partner topic or partner destination are deleted.
+     * 
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the ChannelUpdateParameters object itself.
      */
@@ -55,9 +66,34 @@ public final class ChannelUpdateParameters {
     }
 
     /**
+     * Get the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
+     * type PartnerDestination.
+     * 
+     * @return the partnerDestinationInfo value.
+     */
+    public PartnerUpdateDestinationInfo partnerDestinationInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDestinationInfo();
+    }
+
+    /**
+     * Set the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
+     * type PartnerDestination.
+     * 
+     * @param partnerDestinationInfo the partnerDestinationInfo value to set.
+     * @return the ChannelUpdateParameters object itself.
+     */
+    public ChannelUpdateParameters withPartnerDestinationInfo(PartnerUpdateDestinationInfo partnerDestinationInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ChannelUpdateParametersProperties();
+        }
+        this.innerProperties().withPartnerDestinationInfo(partnerDestinationInfo);
+        return this;
+    }
+
+    /**
      * Get the partnerTopicInfo property: Partner topic properties which can be updated if the channel is of type
      * PartnerTopic.
-     *
+     * 
      * @return the partnerTopicInfo value.
      */
     public PartnerUpdateTopicInfo partnerTopicInfo() {
@@ -67,7 +103,7 @@ public final class ChannelUpdateParameters {
     /**
      * Set the partnerTopicInfo property: Partner topic properties which can be updated if the channel is of type
      * PartnerTopic.
-     *
+     * 
      * @param partnerTopicInfo the partnerTopicInfo value to set.
      * @return the ChannelUpdateParameters object itself.
      */
@@ -81,12 +117,49 @@ public final class ChannelUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ChannelUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ChannelUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ChannelUpdateParameters.
+     */
+    public static ChannelUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ChannelUpdateParameters deserializedChannelUpdateParameters = new ChannelUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedChannelUpdateParameters.innerProperties
+                        = ChannelUpdateParametersProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedChannelUpdateParameters;
+        });
     }
 }

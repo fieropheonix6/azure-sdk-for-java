@@ -6,35 +6,34 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeProperties;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        VolumeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"volumeId\":\"pmng\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"aqw\"},\"sizeGiB\":8694303623294898689,\"storageTarget\":{\"targetIqn\":\"onq\",\"targetPortalHostname\":\"kvlrxnj\",\"targetPortalPort\":1486121572,\"provisioningState\":\"Deleting\",\"status\":\"Stopped"
-                        + " (deallocated)\"}}")
-                .toObject(VolumeProperties.class);
-        Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
-        Assertions.assertEquals("aqw", model.creationData().sourceUri());
-        Assertions.assertEquals(8694303623294898689L, model.sizeGiB());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VolumeProperties model = BinaryData.fromString(
+            "{\"volumeId\":\"qlfktsths\",\"creationData\":{\"createSource\":\"DiskRestorePoint\",\"sourceId\":\"nyyazttbtwwrqpue\"},\"sizeGiB\":7046941024314724077,\"storageTarget\":{\"targetIqn\":\"wbiexzfey\",\"targetPortalHostname\":\"axibxujw\",\"targetPortalPort\":1589097578,\"provisioningState\":\"Deleting\",\"status\":\"Running\"},\"managedBy\":{\"resourceId\":\"yoxa\"},\"provisioningState\":\"Creating\"}")
+            .toObject(VolumeProperties.class);
+        Assertions.assertEquals(VolumeCreateOption.DISK_RESTORE_POINT, model.creationData().createSource());
+        Assertions.assertEquals("nyyazttbtwwrqpue", model.creationData().sourceId());
+        Assertions.assertEquals(7046941024314724077L, model.sizeGiB());
+        Assertions.assertEquals("yoxa", model.managedBy().resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        VolumeProperties model =
-            new VolumeProperties()
-                .withCreationData(
-                    new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("aqw"))
-                .withSizeGiB(8694303623294898689L);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VolumeProperties model = new VolumeProperties()
+            .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_RESTORE_POINT)
+                .withSourceId("nyyazttbtwwrqpue"))
+            .withSizeGiB(7046941024314724077L)
+            .withManagedBy(new ManagedByInfo().withResourceId("yoxa"));
         model = BinaryData.fromObject(model).toObject(VolumeProperties.class);
-        Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
-        Assertions.assertEquals("aqw", model.creationData().sourceUri());
-        Assertions.assertEquals(8694303623294898689L, model.sizeGiB());
+        Assertions.assertEquals(VolumeCreateOption.DISK_RESTORE_POINT, model.creationData().createSource());
+        Assertions.assertEquals("nyyazttbtwwrqpue", model.creationData().sourceId());
+        Assertions.assertEquals(7046941024314724077L, model.sizeGiB());
+        Assertions.assertEquals("yoxa", model.managedBy().resourceId());
     }
 }

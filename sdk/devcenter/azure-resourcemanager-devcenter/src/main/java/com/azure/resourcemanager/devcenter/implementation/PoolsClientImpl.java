@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -40,17 +41,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PoolsClient.
+ */
 public final class PoolsClientImpl implements PoolsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PoolsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DevCenterManagementClientImpl client;
 
     /**
      * Initializes an instance of PoolsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PoolsClientImpl(DevCenterManagementClientImpl client) {
@@ -65,102 +72,73 @@ public final class PoolsClientImpl implements PoolsClient {
     @Host("{$host}")
     @ServiceInterface(name = "DevCenterManagementC")
     public interface PoolsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PoolListResult>> listByProject(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PoolListResult>> listByProject(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PoolInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<PoolInner>> get(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @BodyParam("application/json") PoolInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @BodyParam("application/json") PoolInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @BodyParam("application/json") PoolUpdate body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @BodyParam("application/json") PoolUpdate body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects"
-                + "/{projectName}/pools/{poolName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("projectName") String projectName,
-            @PathParam("poolName") String poolName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DevCenter/projects/{projectName}/pools/{poolName}/runHealthChecks")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> runHealthChecks(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("projectName") String projectName,
+            @PathParam("poolName") String poolName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PoolListResult>> listByProjectNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PoolListResult>> listByProjectNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -168,22 +146,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the machine pool list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PoolInner>> listByProjectSinglePageAsync(
-        String resourceGroupName, String projectName, Integer top) {
+    private Mono<PagedResponse<PoolInner>> listByProjectSinglePageAsync(String resourceGroupName, String projectName,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -194,33 +168,16 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByProject(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<PoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByProject(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, top, accept, context))
+            .<PagedResponse<PoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -229,22 +186,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the machine pool list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PoolInner>> listByProjectSinglePageAsync(
-        String resourceGroupName, String projectName, Integer top, Context context) {
+    private Mono<PagedResponse<PoolInner>> listByProjectSinglePageAsync(String resourceGroupName, String projectName,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -256,29 +209,15 @@ public final class PoolsClientImpl implements PoolsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByProject(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByProject(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, projectName, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -289,14 +228,13 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PoolInner> listByProjectAsync(String resourceGroupName, String projectName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
             nextLink -> listByProjectNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,14 +245,13 @@ public final class PoolsClientImpl implements PoolsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PoolInner> listByProjectAsync(String resourceGroupName, String projectName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top),
             nextLink -> listByProjectNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -325,16 +262,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return results of the machine pool list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PoolInner> listByProjectAsync(
-        String resourceGroupName, String projectName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByProjectSinglePageAsync(resourceGroupName, projectName, top, context),
+    private PagedFlux<PoolInner> listByProjectAsync(String resourceGroupName, String projectName, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listByProjectSinglePageAsync(resourceGroupName, projectName, top, context),
             nextLink -> listByProjectNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -350,7 +286,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Lists pools for a project.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -361,14 +297,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return results of the machine pool list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PoolInner> listByProject(
-        String resourceGroupName, String projectName, Integer top, Context context) {
+    public PagedIterable<PoolInner> listByProject(String resourceGroupName, String projectName, Integer top,
+        Context context) {
         return new PagedIterable<>(listByProjectAsync(resourceGroupName, projectName, top, context));
     }
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -378,19 +314,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a machine pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PoolInner>> getWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName) {
+    private Mono<Response<PoolInner>> getWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -404,24 +336,14 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -432,19 +354,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a machine pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PoolInner>> getWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName, Context context) {
+    private Mono<Response<PoolInner>> getWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -458,21 +376,13 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, projectName, poolName, accept, context);
     }
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -489,7 +399,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -500,14 +410,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a machine pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PoolInner> getWithResponse(
-        String resourceGroupName, String projectName, String poolName, Context context) {
+    public Response<PoolInner> getWithResponse(String resourceGroupName, String projectName, String poolName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, projectName, poolName, context).block();
     }
 
     /**
      * Gets a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -523,7 +433,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -534,19 +444,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName, PoolInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String projectName, String poolName, PoolInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -565,25 +471,14 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -595,19 +490,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName, PoolInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String projectName, String poolName, PoolInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -626,22 +517,13 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, body, accept, context);
     }
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -652,19 +534,17 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PoolInner>, PoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, PoolInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, body);
-        return this
-            .client
-            .<PoolInner, PoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PoolInner.class, PoolInner.class, this.client.getContext());
+    private PollerFlux<PollResult<PoolInner>, PoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String projectName, String poolName, PoolInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, body);
+        return this.client.<PoolInner, PoolInner>getLroResult(mono, this.client.getHttpPipeline(), PoolInner.class,
+            PoolInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -676,20 +556,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PoolInner>, PoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, PoolInner body, Context context) {
+    private PollerFlux<PollResult<PoolInner>, PoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String projectName, String poolName, PoolInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, body, context);
-        return this
-            .client
-            .<PoolInner, PoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PoolInner.class, PoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, projectName, poolName, body, context);
+        return this.client.<PoolInner, PoolInner>getLroResult(mono, this.client.getHttpPipeline(), PoolInner.class,
+            PoolInner.class, context);
     }
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -700,14 +578,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, body).getSyncPoller();
+    public SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String projectName, String poolName, PoolInner body) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, body).getSyncPoller();
     }
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -719,14 +597,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, body, context).getSyncPoller();
+    public SyncPoller<PollResult<PoolInner>, PoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String projectName, String poolName, PoolInner body, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, body, context).getSyncPoller();
     }
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -737,16 +615,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> createOrUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, PoolInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, body)
-            .last()
+    private Mono<PoolInner> createOrUpdateAsync(String resourceGroupName, String projectName, String poolName,
+        PoolInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -758,16 +635,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> createOrUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, PoolInner body, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, body, context)
-            .last()
+    private Mono<PoolInner> createOrUpdateAsync(String resourceGroupName, String projectName, String poolName,
+        PoolInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, projectName, poolName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -784,7 +660,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Creates or updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -796,14 +672,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner createOrUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolInner body, Context context) {
+    public PoolInner createOrUpdate(String resourceGroupName, String projectName, String poolName, PoolInner body,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, projectName, poolName, body, context).block();
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -814,19 +690,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, PoolUpdate body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -845,25 +717,14 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -875,19 +736,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, PoolUpdate body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -906,22 +763,13 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, projectName, poolName, body, accept, context);
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -932,18 +780,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PoolInner>, PoolInner> beginUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body) {
+    private PollerFlux<PollResult<PoolInner>, PoolInner> beginUpdateAsync(String resourceGroupName, String projectName,
+        String poolName, PoolUpdate body) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, projectName, poolName, body);
-        return this
-            .client
-            .<PoolInner, PoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PoolInner.class, PoolInner.class, this.client.getContext());
+        return this.client.<PoolInner, PoolInner>getLroResult(mono, this.client.getHttpPipeline(), PoolInner.class,
+            PoolInner.class, this.client.getContext());
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -955,20 +801,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<PoolInner>, PoolInner> beginUpdateAsync(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body, Context context) {
+    private PollerFlux<PollResult<PoolInner>, PoolInner> beginUpdateAsync(String resourceGroupName, String projectName,
+        String poolName, PoolUpdate body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, projectName, poolName, body, context);
-        return this
-            .client
-            .<PoolInner, PoolInner>getLroResult(
-                mono, this.client.getHttpPipeline(), PoolInner.class, PoolInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, projectName, poolName, body, context);
+        return this.client.<PoolInner, PoolInner>getLroResult(mono, this.client.getHttpPipeline(), PoolInner.class,
+            PoolInner.class, context);
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -979,14 +823,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body) {
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, body).getSyncPoller();
+    public SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String projectName,
+        String poolName, PoolUpdate body) {
+        return this.beginUpdateAsync(resourceGroupName, projectName, poolName, body).getSyncPoller();
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -998,14 +842,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body, Context context) {
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, body, context).getSyncPoller();
+    public SyncPoller<PollResult<PoolInner>, PoolInner> beginUpdate(String resourceGroupName, String projectName,
+        String poolName, PoolUpdate body, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, projectName, poolName, body, context).getSyncPoller();
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1016,16 +860,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> updateAsync(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body) {
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, body)
-            .last()
+    private Mono<PoolInner> updateAsync(String resourceGroupName, String projectName, String poolName,
+        PoolUpdate body) {
+        return beginUpdateAsync(resourceGroupName, projectName, poolName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1037,16 +880,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PoolInner> updateAsync(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body, Context context) {
-        return beginUpdateAsync(resourceGroupName, projectName, poolName, body, context)
-            .last()
+    private Mono<PoolInner> updateAsync(String resourceGroupName, String projectName, String poolName, PoolUpdate body,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, projectName, poolName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1063,7 +905,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Partially updates a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1075,14 +917,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return a pool of Virtual Machines.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PoolInner update(
-        String resourceGroupName, String projectName, String poolName, PoolUpdate body, Context context) {
+    public PoolInner update(String resourceGroupName, String projectName, String poolName, PoolUpdate body,
+        Context context) {
         return updateAsync(resourceGroupName, projectName, poolName, body, context).block();
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1092,19 +934,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1118,24 +956,14 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            projectName,
-                            poolName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1146,19 +974,15 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String projectName, String poolName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String projectName,
+        String poolName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1172,21 +996,13 @@ public final class PoolsClientImpl implements PoolsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                projectName,
-                poolName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, projectName, poolName, accept, context);
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1196,18 +1012,16 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String projectName, String poolName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String projectName,
+        String poolName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, projectName, poolName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1218,19 +1032,18 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String projectName, String poolName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String projectName,
+        String poolName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, projectName, poolName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, projectName, poolName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1240,14 +1053,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String projectName, String poolName) {
-        return beginDeleteAsync(resourceGroupName, projectName, poolName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String projectName,
+        String poolName) {
+        return this.beginDeleteAsync(resourceGroupName, projectName, poolName).getSyncPoller();
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1258,14 +1071,14 @@ public final class PoolsClientImpl implements PoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String projectName, String poolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, projectName, poolName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String projectName, String poolName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, projectName, poolName, context).getSyncPoller();
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1276,14 +1089,13 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String projectName, String poolName) {
-        return beginDeleteAsync(resourceGroupName, projectName, poolName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, projectName, poolName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1295,14 +1107,13 @@ public final class PoolsClientImpl implements PoolsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String projectName, String poolName, Context context) {
-        return beginDeleteAsync(resourceGroupName, projectName, poolName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, projectName, poolName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1317,7 +1128,7 @@ public final class PoolsClientImpl implements PoolsClient {
 
     /**
      * Deletes a machine pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param projectName The name of the project.
      * @param poolName Name of the pool.
@@ -1332,15 +1143,236 @@ public final class PoolsClientImpl implements PoolsClient {
     }
 
     /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> runHealthChecksWithResponseAsync(String resourceGroupName,
+        String projectName, String poolName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.runHealthChecks(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> runHealthChecksWithResponseAsync(String resourceGroupName,
+        String projectName, String poolName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (projectName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter projectName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.runHealthChecks(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), resourceGroupName, projectName, poolName, accept, context);
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRunHealthChecksAsync(String resourceGroupName, String projectName,
+        String poolName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = runHealthChecksWithResponseAsync(resourceGroupName, projectName, poolName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRunHealthChecksAsync(String resourceGroupName, String projectName,
+        String poolName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = runHealthChecksWithResponseAsync(resourceGroupName, projectName, poolName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(String resourceGroupName, String projectName,
+        String poolName) {
+        return this.beginRunHealthChecksAsync(resourceGroupName, projectName, poolName).getSyncPoller();
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRunHealthChecks(String resourceGroupName, String projectName,
+        String poolName, Context context) {
+        return this.beginRunHealthChecksAsync(resourceGroupName, projectName, poolName, context).getSyncPoller();
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> runHealthChecksAsync(String resourceGroupName, String projectName, String poolName) {
+        return beginRunHealthChecksAsync(resourceGroupName, projectName, poolName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> runHealthChecksAsync(String resourceGroupName, String projectName, String poolName,
+        Context context) {
+        return beginRunHealthChecksAsync(resourceGroupName, projectName, poolName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void runHealthChecks(String resourceGroupName, String projectName, String poolName) {
+        runHealthChecksAsync(resourceGroupName, projectName, poolName).block();
+    }
+
+    /**
+     * Triggers a refresh of the pool status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param projectName The name of the project.
+     * @param poolName Name of the pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void runHealthChecks(String resourceGroupName, String projectName, String poolName, Context context) {
+        runHealthChecksAsync(resourceGroupName, projectName, poolName, context).block();
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the machine pool list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PoolInner>> listByProjectNextSinglePageAsync(String nextLink) {
@@ -1348,37 +1380,27 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByProjectNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PoolInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PoolInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return results of the machine pool list operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PoolInner>> listByProjectNextSinglePageAsync(String nextLink, Context context) {
@@ -1386,23 +1408,13 @@ public final class PoolsClientImpl implements PoolsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByProjectNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByProjectNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

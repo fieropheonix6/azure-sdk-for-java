@@ -3,6 +3,7 @@
 package com.azure.resourcemanager.network.implementation;
 
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
 import com.azure.resourcemanager.network.models.LoadBalancerFrontend;
@@ -20,15 +21,16 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 
 /** Implementation for LoadBalancingRule. */
 class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, LoadBalancerImpl, LoadBalancer>
-    implements LoadBalancingRule,
-        LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLBRuleOrNatOrCreate>,
-        LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>,
-        LoadBalancingRule.Update {
+    implements LoadBalancingRule, LoadBalancingRule.Definition<LoadBalancer.DefinitionStages.WithLBRuleOrNatOrCreate>,
+    LoadBalancingRule.UpdateDefinition<LoadBalancer.Update>, LoadBalancingRule.Update {
 
     LoadBalancingRuleImpl(LoadBalancingRuleInner inner, LoadBalancerImpl parent) {
         super(inner, parent);
@@ -85,12 +87,15 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
     @Override
     public LoadBalancerBackend backend() {
         SubResource backendRef = this.innerModel().backendAddressPool();
-        if (backendRef == null) {
-            return null;
-        } else {
-            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
-            return this.parent().backends().get(backendName);
+        LoadBalancerBackend backend = this.backendFromSubResource(backendRef);
+        if (backend == null) {
+            // fallback to backendAddressPools
+            List<LoadBalancerBackend> backends = this.backends();
+            if (!backends.isEmpty()) {
+                backend = backends.iterator().next();
+            }
         }
+        return backend;
     }
 
     @Override
@@ -107,6 +112,26 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
             } else {
                 return null;
             }
+        }
+    }
+
+    @Override
+    public List<LoadBalancerBackend> backends() {
+        List<LoadBalancerBackend> backends = new ArrayList<>();
+        if (!CoreUtils.isNullOrEmpty(this.innerModel().backendAddressPools())) {
+            for (SubResource backendRef : this.innerModel().backendAddressPools()) {
+                backends.add(this.backendFromSubResource(backendRef));
+            }
+        }
+        return Collections.unmodifiableList(backends);
+    }
+
+    private LoadBalancerBackend backendFromSubResource(SubResource backendRef) {
+        if (backendRef == null) {
+            return null;
+        } else {
+            String backendName = ResourceUtils.nameFromResourceId(backendRef.id());
+            return this.parent().backends().get(backendName);
         }
     }
 
@@ -241,8 +266,8 @@ class LoadBalancingRuleImpl extends ChildResourceImpl<LoadBalancingRuleInner, Lo
         // Ensure existence of backend, creating one if needed
         this.parent().defineBackend(backendName).attach();
 
-        SubResource backendRef =
-            new SubResource().withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
+        SubResource backendRef
+            = new SubResource().withId(this.parent().futureResourceId() + "/backendAddressPools/" + backendName);
         this.innerModel().withBackendAddressPool(backendRef);
         return this;
     }

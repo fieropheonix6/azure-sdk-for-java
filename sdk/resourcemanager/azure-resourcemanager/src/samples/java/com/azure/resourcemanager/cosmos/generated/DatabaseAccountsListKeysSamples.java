@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DatabaseAccounts ListKeys. */
+/**
+ * Samples for DatabaseAccounts ListKeys.
+ */
 public final class DatabaseAccountsListKeysSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountListKeys.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBDatabaseAccountListKeys.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListKeys.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseAccountListKeys(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getDatabaseAccounts()
-            .listKeysWithResponse("rg1", "ddb1", Context.NONE);
+            .listKeysWithResponse("rg1", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

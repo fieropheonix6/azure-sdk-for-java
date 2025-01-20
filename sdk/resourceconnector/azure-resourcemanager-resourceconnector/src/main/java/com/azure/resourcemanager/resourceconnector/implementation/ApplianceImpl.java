@@ -10,8 +10,8 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourceconnector.fluent.models.ApplianceInner;
 import com.azure.resourcemanager.resourceconnector.models.Appliance;
-import com.azure.resourcemanager.resourceconnector.models.ApplianceListClusterCustomerUserCredentialResults;
 import com.azure.resourcemanager.resourceconnector.models.ApplianceListCredentialResults;
+import com.azure.resourcemanager.resourceconnector.models.ApplianceListKeysResults;
 import com.azure.resourcemanager.resourceconnector.models.AppliancePropertiesInfrastructureConfig;
 import com.azure.resourcemanager.resourceconnector.models.Distro;
 import com.azure.resourcemanager.resourceconnector.models.Identity;
@@ -23,7 +23,7 @@ import java.util.Map;
 public final class ApplianceImpl implements Appliance, Appliance.Definition, Appliance.Update {
     private ApplianceInner innerObject;
 
-    private final com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager;
+    private final com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager;
 
     public String id() {
         return this.innerModel().id();
@@ -98,7 +98,7 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
         return this.innerObject;
     }
 
-    private com.azure.resourcemanager.resourceconnector.AppliancesManager manager() {
+    private com.azure.resourcemanager.resourceconnector.ResourceConnectorManager manager() {
         return this.serviceManager;
     }
 
@@ -114,24 +114,20 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     public Appliance create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Appliance create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
-    ApplianceImpl(String name, com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
+    ApplianceImpl(String name, com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = new ApplianceInner();
         this.serviceManager = serviceManager;
         this.resourceName = name;
@@ -143,72 +139,60 @@ public final class ApplianceImpl implements Appliance, Appliance.Definition, App
     }
 
     public Appliance apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .updateWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .updateWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Appliance apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .updateWithResponse(resourceGroupName, resourceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .updateWithResponse(resourceGroupName, resourceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    ApplianceImpl(
-        ApplianceInner innerObject, com.azure.resourcemanager.resourceconnector.AppliancesManager serviceManager) {
+    ApplianceImpl(ApplianceInner innerObject,
+        com.azure.resourcemanager.resourceconnector.ResourceConnectorManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "appliances");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "appliances");
     }
 
     public Appliance refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Appliance refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAppliances()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAppliances()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 
-    public ApplianceListClusterCustomerUserCredentialResults listClusterCustomerUserCredential() {
-        return serviceManager.appliances().listClusterCustomerUserCredential(resourceGroupName, resourceName);
-    }
-
-    public Response<ApplianceListClusterCustomerUserCredentialResults> listClusterCustomerUserCredentialWithResponse(
-        Context context) {
-        return serviceManager
-            .appliances()
-            .listClusterCustomerUserCredentialWithResponse(resourceGroupName, resourceName, context);
+    public Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(Context context) {
+        return serviceManager.appliances()
+            .listClusterUserCredentialWithResponse(resourceGroupName, resourceName, context);
     }
 
     public ApplianceListCredentialResults listClusterUserCredential() {
         return serviceManager.appliances().listClusterUserCredential(resourceGroupName, resourceName);
     }
 
-    public Response<ApplianceListCredentialResults> listClusterUserCredentialWithResponse(Context context) {
-        return serviceManager
-            .appliances()
-            .listClusterUserCredentialWithResponse(resourceGroupName, resourceName, context);
+    public Response<ApplianceListKeysResults> listKeysWithResponse(String artifactType, Context context) {
+        return serviceManager.appliances().listKeysWithResponse(resourceGroupName, resourceName, artifactType, context);
+    }
+
+    public ApplianceListKeysResults listKeys() {
+        return serviceManager.appliances().listKeys(resourceGroupName, resourceName);
     }
 
     public ApplianceImpl withRegion(Region location) {

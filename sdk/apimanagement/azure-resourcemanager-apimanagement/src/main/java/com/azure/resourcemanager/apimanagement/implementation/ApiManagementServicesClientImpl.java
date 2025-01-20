@@ -47,23 +47,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApiManagementServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApiManagementServicesClient.
+ */
 public final class ApiManagementServicesClientImpl implements ApiManagementServicesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApiManagementServicesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ApiManagementClientImpl client;
 
     /**
      * Initializes an instance of ApiManagementServicesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApiManagementServicesClientImpl(ApiManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ApiManagementServicesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ApiManagementServicesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -73,222 +78,163 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @Host("{$host}")
     @ServiceInterface(name = "ApiManagementClientA")
-    private interface ApiManagementServicesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/restore")
-        @ExpectedResponses({200, 202})
+    public interface ApiManagementServicesService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/restore")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> restore(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> restore(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ApiManagementServiceBackupRestoreParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/backup")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/backup")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> backup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> backup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ApiManagementServiceBackupRestoreParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ApiManagementServiceResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ApiManagementServiceUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiManagementServiceResourceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApiManagementServiceResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/migrateToStv2")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiManagementServiceListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> migrateToStv2(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ApiManagementServiceListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/service")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiManagementServiceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApiManagementServiceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/getssotoken")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/getssotoken")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiManagementServiceGetSsoTokenResultInner>> getSsoToken(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApiManagementServiceGetSsoTokenResultInner>> getSsoToken(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/checkNameAvailability")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiManagementServiceNameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ApiManagementServiceCheckNameAvailabilityParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.ApiManagement/getDomainOwnershipIdentifier")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiManagementServiceGetDomainOwnershipIdentifierResultInner>> getDomainOwnershipIdentifier(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement"
-                + "/service/{serviceName}/applynetworkconfigurationupdates")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ApiManagement/service/{serviceName}/applynetworkconfigurationupdates")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> applyNetworkConfigurationUpdates(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serviceName") String serviceName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> applyNetworkConfigurationUpdates(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serviceName") String serviceName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiManagementServiceListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ApiManagementServiceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -298,10 +244,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -310,26 +254,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .restore(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.restore(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @param context The context to associate with this operation.
@@ -337,19 +271,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> restoreWithResponseAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -359,10 +288,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -371,23 +298,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .restore(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.restore(this.client.getEndpoint(), resourceGroupName, serviceName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -397,24 +316,19 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginRestoreAsync(
-            String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
+        beginRestoreAsync(String resourceGroupName, String serviceName,
+            ApiManagementServiceBackupRestoreParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = restoreWithResponseAsync(resourceGroupName, serviceName, parameters);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                this.client.getContext());
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @param context The context to associate with this operation.
@@ -425,29 +339,21 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginRestoreAsync(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceBackupRestoreParameters parameters,
-            Context context) {
+        beginRestoreAsync(String resourceGroupName, String serviceName,
+            ApiManagementServiceBackupRestoreParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            restoreWithResponseAsync(resourceGroupName, serviceName, parameters, context);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = restoreWithResponseAsync(resourceGroupName, serviceName, parameters, context);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, context);
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,14 +364,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginRestore(
         String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
-        return beginRestoreAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
+        return this.beginRestoreAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @param context The context to associate with this operation.
@@ -476,64 +382,57 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginRestore(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
+        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters,
         Context context) {
-        return beginRestoreAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
+        return this.beginRestoreAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> restoreAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
-        return beginRestoreAsync(resourceGroupName, serviceName, parameters)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> restoreAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters) {
+        return beginRestoreAsync(resourceGroupName, serviceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> restoreAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context) {
-        return beginRestoreAsync(resourceGroupName, serviceName, parameters, context)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> restoreAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context) {
+        return beginRestoreAsync(resourceGroupName, serviceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -542,16 +441,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner restore(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
+    public ApiManagementServiceResourceInner restore(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters) {
         return restoreAsync(resourceGroupName, serviceName, parameters).block();
     }
 
     /**
      * Restores a backup of an API Management service created using the ApiManagementService_Backup operation on the
      * current service. This is a long running operation and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Restore API Management service from backup operation.
      * @param context The context to associate with this operation.
@@ -561,35 +460,30 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner restore(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context) {
+    public ApiManagementServiceResourceInner restore(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context) {
         return restoreAsync(resourceGroupName, serviceName, parameters, context).block();
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> backupWithResponseAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> backupWithResponseAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -599,10 +493,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -611,26 +503,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .backup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.backup(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @param context The context to associate with this operation.
@@ -638,19 +520,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> backupWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> backupWithResponseAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -660,10 +537,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -672,23 +547,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .backup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.backup(this.client.getEndpoint(), resourceGroupName, serviceName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -698,24 +565,19 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginBackupAsync(
-            String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
+        beginBackupAsync(String resourceGroupName, String serviceName,
+            ApiManagementServiceBackupRestoreParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = backupWithResponseAsync(resourceGroupName, serviceName, parameters);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                this.client.getContext());
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @param context The context to associate with this operation.
@@ -726,29 +588,21 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginBackupAsync(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceBackupRestoreParameters parameters,
-            Context context) {
+        beginBackupAsync(String resourceGroupName, String serviceName,
+            ApiManagementServiceBackupRestoreParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            backupWithResponseAsync(resourceGroupName, serviceName, parameters, context);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = backupWithResponseAsync(resourceGroupName, serviceName, parameters, context);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, context);
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -759,14 +613,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginBackup(
         String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
-        return beginBackupAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
+        return this.beginBackupAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @param context The context to associate with this operation.
@@ -777,64 +631,57 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginBackup(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
+        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters,
         Context context) {
-        return beginBackupAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
+        return this.beginBackupAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> backupAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
-        return beginBackupAsync(resourceGroupName, serviceName, parameters)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> backupAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters) {
+        return beginBackupAsync(resourceGroupName, serviceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> backupAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context) {
-        return beginBackupAsync(resourceGroupName, serviceName, parameters, context)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> backupAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context) {
+        return beginBackupAsync(resourceGroupName, serviceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,16 +690,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner backup(
-        String resourceGroupName, String serviceName, ApiManagementServiceBackupRestoreParameters parameters) {
+    public ApiManagementServiceResourceInner backup(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters) {
         return backupAsync(resourceGroupName, serviceName, parameters).block();
     }
 
     /**
      * Creates a backup of the API Management service to the given Azure Storage Account. This is long running operation
      * and could take several minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the ApiManagementService_Backup operation.
      * @param context The context to associate with this operation.
@@ -862,35 +709,30 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner backup(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceBackupRestoreParameters parameters,
-        Context context) {
+    public ApiManagementServiceResourceInner backup(String resourceGroupName, String serviceName,
+        ApiManagementServiceBackupRestoreParameters parameters, Context context) {
         return backupAsync(resourceGroupName, serviceName, parameters, context).block();
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, ApiManagementServiceResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -900,10 +742,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -912,26 +752,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
@@ -939,16 +769,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceName, ApiManagementServiceResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -958,10 +786,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -970,23 +796,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -996,25 +814,20 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                this.client.getContext());
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName,
+            ApiManagementServiceResourceInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
@@ -1025,29 +838,21 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceResourceInner parameters,
-            Context context) {
+        beginCreateOrUpdateAsync(String resourceGroupName, String serviceName,
+            ApiManagementServiceResourceInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters, context);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, serviceName, parameters, context);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, context);
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1057,16 +862,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
+        beginCreateOrUpdate(String resourceGroupName, String serviceName,
+            ApiManagementServiceResourceInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
@@ -1077,62 +882,57 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceResourceInner parameters,
+        beginCreateOrUpdate(String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters,
             Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceResourceInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters, context)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> createOrUpdateAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceResourceInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1141,16 +941,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters) {
+    public ApiManagementServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        ApiManagementServiceResourceInner parameters) {
         return createOrUpdateAsync(resourceGroupName, serviceName, parameters).block();
     }
 
     /**
      * Creates or updates an API Management service. This is long running operation and could take several minutes to
      * complete.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
@@ -1160,31 +960,29 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, ApiManagementServiceResourceInner parameters, Context context) {
+    public ApiManagementServiceResourceInner createOrUpdate(String resourceGroupName, String serviceName,
+        ApiManagementServiceResourceInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, serviceName, parameters, context).block();
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1194,10 +992,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1206,25 +1002,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
@@ -1232,19 +1018,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceUpdateParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1254,10 +1035,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -1266,22 +1045,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, serviceName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1291,23 +1062,18 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginUpdateAsync(
-            String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters) {
+        beginUpdateAsync(String resourceGroupName, String serviceName,
+            ApiManagementServiceUpdateParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, serviceName, parameters);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                this.client.getContext());
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
@@ -1318,28 +1084,20 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceUpdateParameters parameters,
+        beginUpdateAsync(String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters,
             Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, parameters, context);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, serviceName, parameters, context);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, context);
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1348,15 +1106,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginUpdate(
-        String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
+    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginUpdate(String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters) {
+        return this.beginUpdateAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
@@ -1367,61 +1125,54 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginUpdate(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceUpdateParameters parameters,
+        String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, serviceName, parameters, context).getSyncPoller();
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> updateAsync(
-        String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, serviceName, parameters)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> updateAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceUpdateParameters parameters) {
+        return beginUpdateAsync(resourceGroupName, serviceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> updateAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceUpdateParameters parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, parameters, context)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> updateAsync(String resourceGroupName, String serviceName,
+        ApiManagementServiceUpdateParameters parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, serviceName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1430,15 +1181,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner update(
-        String resourceGroupName, String serviceName, ApiManagementServiceUpdateParameters parameters) {
+    public ApiManagementServiceResourceInner update(String resourceGroupName, String serviceName,
+        ApiManagementServiceUpdateParameters parameters) {
         return updateAsync(resourceGroupName, serviceName, parameters).block();
     }
 
     /**
      * Updates an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the CreateOrUpdate API Management service operation.
      * @param context The context to associate with this operation.
@@ -1448,33 +1199,28 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner update(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceUpdateParameters parameters,
-        Context context) {
+    public ApiManagementServiceResourceInner update(String resourceGroupName, String serviceName,
+        ApiManagementServiceUpdateParameters parameters, Context context) {
         return updateAsync(resourceGroupName, serviceName, parameters, context).block();
     }
 
     /**
      * Gets an API Management service resource description.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an API Management service resource description along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiManagementServiceResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<Response<ApiManagementServiceResourceInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1484,47 +1230,34 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an API Management service resource description.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an API Management service resource description along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiManagementServiceResourceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String serviceName, Context context) {
+    private Mono<Response<ApiManagementServiceResourceInner>>
+        getByResourceGroupWithResponseAsync(String resourceGroupName, String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1534,28 +1267,19 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets an API Management service resource description.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1563,38 +1287,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return an API Management service resource description on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> getByResourceGroupAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<ApiManagementServiceResourceInner> getByResourceGroupAsync(String resourceGroupName,
+        String serviceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serviceName)
-            .flatMap(
-                (Response<ApiManagementServiceResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets an API Management service resource description.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an API Management service resource description.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner getByResourceGroup(String resourceGroupName, String serviceName) {
-        return getByResourceGroupAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Gets an API Management service resource description.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1603,15 +1305,30 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return an API Management service resource description along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiManagementServiceResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
+    public Response<ApiManagementServiceResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String serviceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, serviceName, context).block();
     }
 
     /**
+     * Gets an API Management service resource description.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an API Management service resource description.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiManagementServiceResourceInner getByResourceGroup(String resourceGroupName, String serviceName) {
+        return getByResourceGroupWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1621,10 +1338,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1634,31 +1349,20 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1667,13 +1371,11 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serviceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1683,28 +1385,19 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serviceName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1715,20 +1408,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
         beginDeleteAsync(String resourceGroupName, String serviceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                this.client.getContext());
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
     }
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1741,20 +1429,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         beginDeleteAsync(String resourceGroupName, String serviceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, serviceName, context);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                context);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, context);
     }
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1762,15 +1445,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginDelete(
-        String resourceGroupName, String serviceName) {
-        return beginDeleteAsync(resourceGroupName, serviceName).getSyncPoller();
+    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginDelete(String resourceGroupName, String serviceName) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName).getSyncPoller();
     }
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1779,15 +1462,15 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner> beginDelete(
-        String resourceGroupName, String serviceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, context).getSyncPoller();
+    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginDelete(String resourceGroupName, String serviceName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, serviceName, context).getSyncPoller();
     }
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1801,8 +1484,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1811,17 +1494,16 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> deleteAsync(
-        String resourceGroupName, String serviceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, serviceName, context)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> deleteAsync(String resourceGroupName, String serviceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, serviceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1835,8 +1517,8 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
 
     /**
      * Deletes an existing API Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1850,113 +1532,301 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     }
 
     /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> migrateToStv2WithResponseAsync(String resourceGroupName,
+        String serviceName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.migrateToStv2(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> migrateToStv2WithResponseAsync(String resourceGroupName,
+        String serviceName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (serviceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.migrateToStv2(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginMigrateToStv2Async(String resourceGroupName, String serviceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateToStv2WithResponseAsync(resourceGroupName, serviceName);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginMigrateToStv2Async(String resourceGroupName, String serviceName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono = migrateToStv2WithResponseAsync(resourceGroupName, serviceName, context);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, context);
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginMigrateToStv2(String resourceGroupName, String serviceName) {
+        return this.beginMigrateToStv2Async(resourceGroupName, serviceName).getSyncPoller();
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginMigrateToStv2(String resourceGroupName, String serviceName, Context context) {
+        return this.beginMigrateToStv2Async(resourceGroupName, serviceName, context).getSyncPoller();
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ApiManagementServiceResourceInner> migrateToStv2Async(String resourceGroupName, String serviceName) {
+        return beginMigrateToStv2Async(resourceGroupName, serviceName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ApiManagementServiceResourceInner> migrateToStv2Async(String resourceGroupName, String serviceName,
+        Context context) {
+        return beginMigrateToStv2Async(resourceGroupName, serviceName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiManagementServiceResourceInner migrateToStv2(String resourceGroupName, String serviceName) {
+        return migrateToStv2Async(resourceGroupName, serviceName).block();
+    }
+
+    /**
+     * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
+     * This change is not reversible. This is long running operation and could take several minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiManagementServiceResourceInner migrateToStv2(String resourceGroupName, String serviceName,
+        Context context) {
+        return migrateToStv2Async(resourceGroupName, serviceName, context).block();
+    }
+
+    /**
      * List all API Management services within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiManagementServiceResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName) {
+    private Mono<PagedResponse<ApiManagementServiceResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ApiManagementServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ApiManagementServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List all API Management services within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiManagementServiceResourceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ApiManagementServiceResourceInner>>
+        listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List all API Management services within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1964,15 +1834,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApiManagementServiceResourceInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List all API Management services within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1980,22 +1849,21 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return the response of the List API Management services operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiManagementServiceResourceInner> listByResourceGroupAsync(
-        String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+    private PagedFlux<ApiManagementServiceResourceInner> listByResourceGroupAsync(String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List all API Management services within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List API Management services operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of the List API Management services operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApiManagementServiceResourceInner> listByResourceGroup(String resourceGroupName) {
@@ -2004,113 +1872,80 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
 
     /**
      * List all API Management services within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List API Management services operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of the List API Management services operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApiManagementServiceResourceInner> listByResourceGroup(
-        String resourceGroupName, Context context) {
+    public PagedIterable<ApiManagementServiceResourceInner> listByResourceGroup(String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
     }
 
     /**
      * Lists all API Management services within an Azure subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiManagementServiceResourceInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<ApiManagementServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ApiManagementServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all API Management services within an Azure subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiManagementServiceResourceInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all API Management services within an Azure subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation as paginated response with {@link PagedFlux}.
@@ -2122,7 +1957,7 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
 
     /**
      * Lists all API Management services within an Azure subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2131,17 +1966,17 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApiManagementServiceResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all API Management services within an Azure subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List API Management services operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of the List API Management services operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApiManagementServiceResourceInner> list() {
@@ -2150,13 +1985,13 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
 
     /**
      * Lists all API Management services within an Azure subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List API Management services operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of the List API Management services operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ApiManagementServiceResourceInner> list(Context context) {
@@ -2165,23 +2000,21 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiManagementServiceGetSsoTokenResultInner>> getSsoTokenWithResponseAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<Response<ApiManagementServiceGetSsoTokenResultInner>>
+        getSsoTokenWithResponseAsync(String resourceGroupName, String serviceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2191,47 +2024,34 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSsoToken(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getSsoToken(this.client.getEndpoint(), resourceGroupName, serviceName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiManagementServiceGetSsoTokenResultInner>> getSsoTokenWithResponseAsync(
-        String resourceGroupName, String serviceName, Context context) {
+    private Mono<Response<ApiManagementServiceGetSsoTokenResultInner>>
+        getSsoTokenWithResponseAsync(String resourceGroupName, String serviceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2241,53 +2061,55 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSsoToken(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getSsoToken(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceGetSsoTokenResultInner> getSsoTokenAsync(
-        String resourceGroupName, String serviceName) {
+    private Mono<ApiManagementServiceGetSsoTokenResultInner> getSsoTokenAsync(String resourceGroupName,
+        String serviceName) {
         return getSsoTokenWithResponseAsync(resourceGroupName, serviceName)
-            .flatMap(
-                (Response<ApiManagementServiceGetSsoTokenResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ApiManagementServiceGetSsoTokenResultInner> getSsoTokenWithResponse(String resourceGroupName,
+        String serviceName, Context context) {
+        return getSsoTokenWithResponseAsync(resourceGroupName, serviceName, context).block();
+    }
+
+    /**
+     * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2296,51 +2118,29 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApiManagementServiceGetSsoTokenResultInner getSsoToken(String resourceGroupName, String serviceName) {
-        return getSsoTokenAsync(resourceGroupName, serviceName).block();
-    }
-
-    /**
-     * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Single-Sign-On token for the API Management Service which is valid for 5 Minutes along with {@link
-     *     Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiManagementServiceGetSsoTokenResultInner> getSsoTokenWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        return getSsoTokenWithResponseAsync(resourceGroupName, serviceName, context).block();
+        return getSsoTokenWithResponse(resourceGroupName, serviceName, Context.NONE).getValue();
     }
 
     /**
      * Checks availability and correctness of a name for an API Management service.
-     *
+     * 
      * @param parameters Parameters supplied to the CheckNameAvailability operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of the CheckNameAvailability operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiManagementServiceNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        ApiManagementServiceCheckNameAvailabilityParameters parameters) {
+    private Mono<Response<ApiManagementServiceNameAvailabilityResultInner>>
+        checkNameAvailabilityWithResponseAsync(ApiManagementServiceCheckNameAvailabilityParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2349,44 +2149,32 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks availability and correctness of a name for an API Management service.
-     *
+     * 
      * @param parameters Parameters supplied to the CheckNameAvailability operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of the CheckNameAvailability operation along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApiManagementServiceNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
         ApiManagementServiceCheckNameAvailabilityParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -2395,19 +2183,13 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Checks availability and correctness of a name for an API Management service.
-     *
+     * 
      * @param parameters Parameters supplied to the CheckNameAvailability operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2415,37 +2197,14 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return response of the CheckNameAvailability operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceNameAvailabilityResultInner> checkNameAvailabilityAsync(
-        ApiManagementServiceCheckNameAvailabilityParameters parameters) {
-        return checkNameAvailabilityWithResponseAsync(parameters)
-            .flatMap(
-                (Response<ApiManagementServiceNameAvailabilityResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<ApiManagementServiceNameAvailabilityResultInner>
+        checkNameAvailabilityAsync(ApiManagementServiceCheckNameAvailabilityParameters parameters) {
+        return checkNameAvailabilityWithResponseAsync(parameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks availability and correctness of a name for an API Management service.
-     *
-     * @param parameters Parameters supplied to the CheckNameAvailability operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of the CheckNameAvailability operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceNameAvailabilityResultInner checkNameAvailability(
-        ApiManagementServiceCheckNameAvailabilityParameters parameters) {
-        return checkNameAvailabilityAsync(parameters).block();
-    }
-
-    /**
-     * Checks availability and correctness of a name for an API Management service.
-     *
+     * 
      * @param parameters Parameters supplied to the CheckNameAvailability operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2460,114 +2219,89 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     }
 
     /**
+     * Checks availability and correctness of a name for an API Management service.
+     * 
+     * @param parameters Parameters supplied to the CheckNameAvailability operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of the CheckNameAvailability operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiManagementServiceNameAvailabilityResultInner
+        checkNameAvailability(ApiManagementServiceCheckNameAvailabilityParameters parameters) {
+        return checkNameAvailabilityWithResponse(parameters, Context.NONE).getValue();
+    }
+
+    /**
      * Get the custom domain ownership identifier for an API Management service.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the custom domain ownership identifier for an API Management service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApiManagementServiceGetDomainOwnershipIdentifierResultInner>>
         getDomainOwnershipIdentifierWithResponseAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDomainOwnershipIdentifier(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getDomainOwnershipIdentifier(this.client.getEndpoint(),
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the custom domain ownership identifier for an API Management service.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the custom domain ownership identifier for an API Management service along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ApiManagementServiceGetDomainOwnershipIdentifierResultInner>>
         getDomainOwnershipIdentifierWithResponseAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDomainOwnershipIdentifier(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getDomainOwnershipIdentifier(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Get the custom domain ownership identifier for an API Management service.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain ownership identifier for an API Management service on successful completion of {@link
-     *     Mono}.
+     * @return the custom domain ownership identifier for an API Management service on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApiManagementServiceGetDomainOwnershipIdentifierResultInner> getDomainOwnershipIdentifierAsync() {
-        return getDomainOwnershipIdentifierWithResponseAsync()
-            .flatMap(
-                (Response<ApiManagementServiceGetDomainOwnershipIdentifierResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getDomainOwnershipIdentifierWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the custom domain ownership identifier for an API Management service.
-     *
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain ownership identifier for an API Management service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceGetDomainOwnershipIdentifierResultInner getDomainOwnershipIdentifier() {
-        return getDomainOwnershipIdentifierAsync().block();
-    }
-
-    /**
-     * Get the custom domain ownership identifier for an API Management service.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2581,29 +2315,37 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
     }
 
     /**
+     * Get the custom domain ownership identifier for an API Management service.
+     * 
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the custom domain ownership identifier for an API Management service.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiManagementServiceGetDomainOwnershipIdentifierResultInner getDomainOwnershipIdentifier() {
+        return getDomainOwnershipIdentifierWithResponse(Context.NONE).getValue();
+    }
+
+    /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> applyNetworkConfigurationUpdatesWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> applyNetworkConfigurationUpdatesWithResponseAsync(String resourceGroupName,
+        String serviceName, ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2613,57 +2355,41 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters != null) {
             parameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .applyNetworkConfigurationUpdates(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serviceName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.applyNetworkConfigurationUpdates(this.client.getEndpoint(),
+                resourceGroupName, serviceName, this.client.getApiVersion(), this.client.getSubscriptionId(),
+                parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> applyNetworkConfigurationUpdatesWithResponseAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> applyNetworkConfigurationUpdatesWithResponseAsync(String resourceGroupName,
+        String serviceName, ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2673,36 +2399,26 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter serviceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters != null) {
             parameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .applyNetworkConfigurationUpdates(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serviceName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.applyNetworkConfigurationUpdates(this.client.getEndpoint(), resourceGroupName, serviceName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2710,30 +2426,44 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginApplyNetworkConfigurationUpdatesAsync(
-            String resourceGroupName,
-            String serviceName,
+        beginApplyNetworkConfigurationUpdatesAsync(String resourceGroupName, String serviceName,
             ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            applyNetworkConfigurationUpdatesWithResponseAsync(resourceGroupName, serviceName, parameters);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = applyNetworkConfigurationUpdatesWithResponseAsync(resourceGroupName, serviceName, parameters);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
     }
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginApplyNetworkConfigurationUpdatesAsync(String resourceGroupName, String serviceName) {
+        final ApiManagementServiceApplyNetworkConfigurationParameters parameters = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = applyNetworkConfigurationUpdatesWithResponseAsync(resourceGroupName, serviceName, parameters);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, this.client.getContext());
+    }
+
+    /**
+     * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2742,32 +2472,21 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginApplyNetworkConfigurationUpdatesAsync(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-            Context context) {
+        beginApplyNetworkConfigurationUpdatesAsync(String resourceGroupName, String serviceName,
+            ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            applyNetworkConfigurationUpdatesWithResponseAsync(resourceGroupName, serviceName, parameters, context);
-        return this
-            .client
-            .<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ApiManagementServiceResourceInner.class,
-                ApiManagementServiceResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = applyNetworkConfigurationUpdatesWithResponseAsync(resourceGroupName, serviceName, parameters, context);
+        return this.client.<ApiManagementServiceResourceInner, ApiManagementServiceResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ApiManagementServiceResourceInner.class,
+            ApiManagementServiceResourceInner.class, context);
     }
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
-     * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2775,133 +2494,100 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginApplyNetworkConfigurationUpdates(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
-        return beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters).getSyncPoller();
-    }
-
-    /**
-     * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
-        beginApplyNetworkConfigurationUpdates(
-            String resourceGroupName,
-            String serviceName,
-            ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-            Context context) {
-        return beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters, context)
+        beginApplyNetworkConfigurationUpdates(String resourceGroupName, String serviceName) {
+        final ApiManagementServiceApplyNetworkConfigurationParameters parameters = null;
+        return this.beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters)
             .getSyncPoller();
     }
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> applyNetworkConfigurationUpdatesAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
-        return beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> applyNetworkConfigurationUpdatesAsync(
-        String resourceGroupName, String serviceName) {
-        final ApiManagementServiceApplyNetworkConfigurationParameters parameters = null;
-        return beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response on successful completion of {@link
-     *     Mono}.
+     * @return the {@link SyncPoller} for polling of a single API Management service resource in List or Get response.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<ApiManagementServiceResourceInner>, ApiManagementServiceResourceInner>
+        beginApplyNetworkConfigurationUpdates(String resourceGroupName, String serviceName,
+            ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context) {
+        return this.beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiManagementServiceResourceInner> applyNetworkConfigurationUpdatesAsync(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-        Context context) {
-        return beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters, context)
-            .last()
+    private Mono<ApiManagementServiceResourceInner> applyNetworkConfigurationUpdatesAsync(String resourceGroupName,
+        String serviceName, ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
+        return beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
-     * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single API Management service resource in List or Get response.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner applyNetworkConfigurationUpdates(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters) {
-        return applyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters).block();
+    private Mono<ApiManagementServiceResourceInner> applyNetworkConfigurationUpdatesAsync(String resourceGroupName,
+        String serviceName) {
+        final ApiManagementServiceApplyNetworkConfigurationParameters parameters = null;
+        return beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single API Management service resource in List or Get response on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<ApiManagementServiceResourceInner> applyNetworkConfigurationUpdatesAsync(String resourceGroupName,
+        String serviceName, ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context) {
+        return beginApplyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2909,20 +2595,20 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner applyNetworkConfigurationUpdates(
-        String resourceGroupName, String serviceName) {
+    public ApiManagementServiceResourceInner applyNetworkConfigurationUpdates(String resourceGroupName,
+        String serviceName) {
         final ApiManagementServiceApplyNetworkConfigurationParameters parameters = null;
         return applyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters).block();
     }
 
     /**
      * Updates the Microsoft.ApiManagement resource running in the Virtual network to pick the updated DNS changes.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Parameters supplied to the Apply Network Configuration operation. If the parameters are empty,
-     *     all the regions in which the Api Management service is deployed will be updated sequentially without
-     *     incurring downtime in the region.
+     * all the regions in which the Api Management service is deployed will be updated sequentially without incurring
+     * downtime in the region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2930,99 +2616,77 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
      * @return a single API Management service resource in List or Get response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiManagementServiceResourceInner applyNetworkConfigurationUpdates(
-        String resourceGroupName,
-        String serviceName,
-        ApiManagementServiceApplyNetworkConfigurationParameters parameters,
-        Context context) {
+    public ApiManagementServiceResourceInner applyNetworkConfigurationUpdates(String resourceGroupName,
+        String serviceName, ApiManagementServiceApplyNetworkConfigurationParameters parameters, Context context) {
         return applyNetworkConfigurationUpdatesAsync(resourceGroupName, serviceName, parameters, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiManagementServiceResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<ApiManagementServiceResourceInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApiManagementServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ApiManagementServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiManagementServiceResourceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApiManagementServiceResourceInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiManagementServiceResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -3030,61 +2694,41 @@ public final class ApiManagementServicesClientImpl implements ApiManagementServi
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApiManagementServiceResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ApiManagementServiceResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of the List API Management services operation along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiManagementServiceResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ApiManagementServiceResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

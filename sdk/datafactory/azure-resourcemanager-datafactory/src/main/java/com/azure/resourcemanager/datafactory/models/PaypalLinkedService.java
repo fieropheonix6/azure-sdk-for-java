@@ -6,59 +6,94 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.PaypalLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Paypal Service linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Paypal")
+/**
+ * Paypal Service linked service.
+ */
 @Fluent
 public final class PaypalLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "Paypal";
+
+    /*
      * Paypal Service linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private PaypalLinkedServiceTypeProperties innerTypeProperties = new PaypalLinkedServiceTypeProperties();
 
-    /** Creates an instance of PaypalLinkedService class. */
+    /**
+     * Creates an instance of PaypalLinkedService class.
+     */
     public PaypalLinkedService() {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Paypal Service linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private PaypalLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public PaypalLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PaypalLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PaypalLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PaypalLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PaypalLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -66,8 +101,8 @@ public final class PaypalLinkedService extends LinkedService {
     }
 
     /**
-     * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
-     *
+     * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     * 
      * @return the host value.
      */
     public Object host() {
@@ -75,8 +110,8 @@ public final class PaypalLinkedService extends LinkedService {
     }
 
     /**
-     * Set the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
-     *
+     * Set the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
+     * 
      * @param host the host value to set.
      * @return the PaypalLinkedService object itself.
      */
@@ -90,7 +125,7 @@ public final class PaypalLinkedService extends LinkedService {
 
     /**
      * Get the clientId property: The client ID associated with your PayPal application.
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -99,7 +134,7 @@ public final class PaypalLinkedService extends LinkedService {
 
     /**
      * Set the clientId property: The client ID associated with your PayPal application.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the PaypalLinkedService object itself.
      */
@@ -113,7 +148,7 @@ public final class PaypalLinkedService extends LinkedService {
 
     /**
      * Get the clientSecret property: The client secret associated with your PayPal application.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase clientSecret() {
@@ -122,7 +157,7 @@ public final class PaypalLinkedService extends LinkedService {
 
     /**
      * Set the clientSecret property: The client secret associated with your PayPal application.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the PaypalLinkedService object itself.
      */
@@ -137,7 +172,7 @@ public final class PaypalLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -147,7 +182,7 @@ public final class PaypalLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the PaypalLinkedService object itself.
      */
@@ -162,7 +197,7 @@ public final class PaypalLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -172,7 +207,7 @@ public final class PaypalLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the PaypalLinkedService object itself.
      */
@@ -187,7 +222,7 @@ public final class PaypalLinkedService extends LinkedService {
     /**
      * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -197,7 +232,7 @@ public final class PaypalLinkedService extends LinkedService {
     /**
      * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the PaypalLinkedService object itself.
      */
@@ -211,22 +246,22 @@ public final class PaypalLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PaypalLinkedService object itself.
      */
-    public PaypalLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public PaypalLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new PaypalLinkedServiceTypeProperties();
         }
@@ -236,21 +271,99 @@ public final class PaypalLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model PaypalLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model PaypalLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PaypalLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PaypalLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PaypalLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PaypalLinkedService.
+     */
+    public static PaypalLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PaypalLinkedService deserializedPaypalLinkedService = new PaypalLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedPaypalLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedPaypalLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedPaypalLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedPaypalLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedPaypalLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedPaypalLinkedService.innerTypeProperties
+                        = PaypalLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedPaypalLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedPaypalLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedPaypalLinkedService;
+        });
+    }
 }

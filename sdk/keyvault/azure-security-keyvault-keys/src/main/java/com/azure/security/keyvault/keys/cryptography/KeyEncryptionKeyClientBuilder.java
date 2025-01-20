@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
@@ -39,6 +40,16 @@ import reactor.core.publisher.Mono;
  * {@link AsyncKeyEncryptionKey} are {@link JsonWebKey jsonWebKey} or {@link String Azure Key Vault key identifier}
  * and {@link TokenCredential credential}.</p>
  *
+ * <p>When a {@link AsyncKeyEncryptionKey KeyEncryptionKey async client} or
+ * {@link KeyEncryptionKey KeyEncryptionKey sync client} gets created using a
+ * {@code Azure Key Vault key identifier}, the first time a cryptographic operation is attempted, the client will
+ * attempt to retrieve the key material from the service, cache it, and perform all future cryptographic operations
+ * locally, deferring to the service when that's not possible. If key retrieval and caching fails because of a
+ * non-retryable error, the client will not make any further attempts and will fall back to performing all cryptographic
+ * operations on the service side. Conversely, when a {@link AsyncKeyEncryptionKey KeyEncryptionKey async client} or
+ * {@link KeyEncryptionKey KeyEncryptionKey sync client} gets created using a {@link JsonWebKey JSON Web Key}, all
+ * cryptographic operations will be performed locally.</p>
+ *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link KeyEncryptionKeyClientBuilder}.</p>
  *
@@ -53,13 +64,14 @@ import reactor.core.publisher.Mono;
  * @see KeyEncryptionKeyAsyncClient
  * @see KeyEncryptionKeyClient
  */
-@ServiceClientBuilder(serviceClients = {KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class})
+@ServiceClientBuilder(serviceClients = { KeyEncryptionKeyClient.class, KeyEncryptionKeyAsyncClient.class })
 public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyResolver, AsyncKeyEncryptionKeyResolver,
-    TokenCredentialTrait<KeyEncryptionKeyClientBuilder>,
-    HttpTrait<KeyEncryptionKeyClientBuilder>,
+    TokenCredentialTrait<KeyEncryptionKeyClientBuilder>, HttpTrait<KeyEncryptionKeyClientBuilder>,
     ConfigurationTrait<KeyEncryptionKeyClientBuilder> {
-    private final ClientLogger logger = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KeyEncryptionKeyClientBuilder.class);
+
     private final CryptographyClientBuilder builder;
+    private boolean isKeyCachingDisabled = false;
 
     /**
      * The constructor with defaults.
@@ -87,7 +99,30 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     @Override
     public KeyEncryptionKey buildKeyEncryptionKey(String keyId) {
-        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(keyId).block());
+        builder.keyIdentifier(keyId);
+
+        if (CoreUtils.isNullOrEmpty(keyId)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("An Azure Key Vault key identifier cannot be null and is required to build "
+                    + "the key encryption key client."));
+        }
+
+        CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null
+            ? builder.getServiceVersion()
+            : CryptographyServiceVersion.getLatest();
+
+        if (builder.getPipeline() != null) {
+            return new KeyEncryptionKeyClient(keyId, builder.getPipeline(), serviceVersion, isKeyCachingDisabled);
+        }
+
+        if (builder.getCredential() == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "Azure Key Vault credentials cannot be null and are required to build a key encryption key client."));
+        }
+
+        HttpPipeline pipeline = builder.setupPipeline();
+
+        return new KeyEncryptionKeyClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled);
     }
 
     /**
@@ -104,7 +139,20 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * @throws IllegalStateException If {{@code key} is not set.
      */
     public KeyEncryptionKey buildKeyEncryptionKey(JsonWebKey key) {
-        return new KeyEncryptionKeyClient((KeyEncryptionKeyAsyncClient) buildAsyncKeyEncryptionKey(key).block());
+        if (key == null) {
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
+                "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
+        } else if (key.getId() == null) {
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("JSON Web Key's id property is not configured."));
+        }
+
+        if (isKeyCachingDisabled) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
+        }
+
+        return new KeyEncryptionKeyClient(key);
     }
 
     /**
@@ -133,26 +181,30 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(String keyId) {
         builder.keyIdentifier(keyId);
 
-        if (Strings.isNullOrEmpty(keyId)) {
-            throw logger.logExceptionAsError(new IllegalStateException(
-                "An Azure Key Vault key identifier cannot be null and is required to build the key encryption key "
-                    + "client."));
+        if (CoreUtils.isNullOrEmpty(keyId)) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("An Azure Key Vault key identifier cannot be null and is required to build "
+                    + "the key encryption key client."));
         }
 
-        CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null ? builder.getServiceVersion() : CryptographyServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion = builder.getServiceVersion() != null
+            ? builder.getServiceVersion()
+            : CryptographyServiceVersion.getLatest();
 
         if (builder.getPipeline() != null) {
-            return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, builder.getPipeline(), serviceVersion)));
+            return Mono.defer(() -> Mono.just(
+                new KeyEncryptionKeyAsyncClient(keyId, builder.getPipeline(), serviceVersion, isKeyCachingDisabled)));
         }
 
         if (builder.getCredential() == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "Azure Key Vault credentials cannot be null and are required to build a key encryption key client."));
         }
 
         HttpPipeline pipeline = builder.setupPipeline();
 
-        return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion)));
+        return Mono.defer(
+            () -> Mono.just(new KeyEncryptionKeyAsyncClient(keyId, pipeline, serviceVersion, isKeyCachingDisabled)));
     }
 
     /**
@@ -171,11 +223,16 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     public Mono<? extends AsyncKeyEncryptionKey> buildAsyncKeyEncryptionKey(JsonWebKey key) {
         if (key == null) {
-            throw logger.logExceptionAsError(new IllegalStateException(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(
                 "JSON Web Key cannot be null and is required to build a local key encryption key async client."));
         } else if (key.getId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "JSON Web Key's id property is not configured."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("JSON Web Key's id property is not configured."));
+        }
+
+        if (isKeyCachingDisabled) {
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
         }
 
         return Mono.defer(() -> Mono.just(new KeyEncryptionKeyAsyncClient(key)));
@@ -195,7 +252,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     @Override
     public KeyEncryptionKeyClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         builder.credential(credential);
@@ -216,6 +273,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      *
      * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
      * and from the service.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -236,6 +294,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param policy A {@link HttpPipelinePolicy pipeline policy}.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      *
      * @throws NullPointerException If {@code policy} is {@code null}.
@@ -243,7 +302,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
     @Override
     public KeyEncryptionKeyClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         builder.addPolicy(policy);
@@ -262,6 +321,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param client The {@link HttpClient} to use for requests.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -282,6 +342,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -308,7 +369,6 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
 
         return this;
     }
-
 
     /**
      * Sets the {@link CryptographyServiceVersion} that is used when making API requests.
@@ -355,6 +415,7 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
      *
      * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
      */
     @Override
@@ -378,8 +439,10 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param clientOptions A configured instance of {@link HttpClientOptions}.
-     * @see HttpClientOptions
+     *
      * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
+     *
+     * @see HttpClientOptions
      */
     @Override
     public KeyEncryptionKeyClientBuilder clientOptions(ClientOptions clientOptions) {
@@ -396,6 +459,21 @@ public final class KeyEncryptionKeyClientBuilder implements KeyEncryptionKeyReso
      */
     public KeyEncryptionKeyClientBuilder disableChallengeResourceVerification() {
         builder.disableChallengeResourceVerification();
+
+        return this;
+    }
+
+    /**
+     * Disables local key caching and defers all cryptographic operations to the service.
+     *
+     * <p>This method will have no effect if
+     * {@link KeyEncryptionKeyClientBuilder#buildAsyncKeyEncryptionKey(JsonWebKey)} or
+     * {@link KeyEncryptionKeyClientBuilder#buildKeyEncryptionKey(JsonWebKey)} are used to create a client.</p>
+     *
+     * @return The updated {@link KeyEncryptionKeyClientBuilder} object.
+     */
+    public KeyEncryptionKeyClientBuilder disableKeyCaching() {
+        this.isKeyCachingDisabled = true;
 
         return this;
     }

@@ -1,9 +1,17 @@
+> [!WARNING]  
+> [Spring Cloud Azure 4.19.0](https://github.com/Azure/azure-sdk-for-java/tree/spring-cloud-azure_4.19.0) is the final release in the 4.x series. We will continue to provide support for this version until June 2025. After June 2025 we will stop all support for Spring Cloud Azure 4.x
+
+
+> [!NOTE]  
+> Spring Cloud Azure 5.x now fully supports Spring Boot 3.3.0 and later versions, we strongly encourage you to upgrade. For more information, please refer to [Which Version of Spring Cloud Azure Should I Use](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping#which-version-of-spring-cloud-azure-should-i-use).
+
 # Spring Cloud Azure
 
 Spring Cloud Azure offers a convenient way to interact with **Azure** provided services using well-known Spring idioms and APIs for Spring developers. 
 
  - [Reference doc](https://aka.ms/spring/docs).
  - [Migration guide for 4.0](https://aka.ms/spring/docs#migration-guide-for-4-0).
+ - [Spring Boot Support Status](https://aka.ms/spring/versions)
 
 ## Build from Source
 
@@ -54,7 +62,7 @@ mvn clean install `
 
 ## Modules
 
-There're several modules in Spring Cloud Azure. Here is a quick review:
+There are several modules in Spring Cloud Azure. Here is a quick review:
 
 ### spring-cloud-azure-autoconfigure
 
@@ -71,12 +79,13 @@ The following application starters are provided by Spring Cloud Azure under the 
 | Name                                                 | Description                                                        |
 |------------------------------------------------------|--------------------------------------------------------------------|
 | spring-cloud-azure-starter                           | Core starter, including auto-configuration support                 |
-| spring-cloud-azure-starter-active-directory          | Starter for using Azure Active Directory with Spring Security      |
+| spring-cloud-azure-starter-active-directory          | Starter for using Microsoft Entra ID with Spring Security          |
 | spring-cloud-azure-starter-active-directory-b2c      | Starter for using Azure Active Directory B2C with Spring Security  |
 | spring-cloud-azure-starter-appconfiguration          | Starter for using Azure App Configuration                          |
 | spring-cloud-azure-starter-cosmos                    | Starter for using Azure Cosmos DB                                  |
 | spring-cloud-azure-starter-data-cosmos               | Starter for using Azure Cosmos DB and Spring Data Cosmos DB        |
 | spring-cloud-azure-starter-eventhubs                 | Starter for using Azure Event Hubs                                 |
+| spring-cloud-azure-starter-eventgrid                 | Starter for using Azure Event Grid                                 |
 | spring-cloud-azure-starter-integration-eventhubs     | Starter for using Azure Event Hubs and Spring Integration          |
 | spring-cloud-azure-starter-integration-servicebus    | Starter for using Azure Service Bus and Spring Integration         |
 | spring-cloud-azure-starter-integration-storage-queue | Starter for using Azure Storage Queue and Spring Integration       |
@@ -137,7 +146,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.5.0-beta.1</version>
+            <version>5.19.0</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
@@ -145,6 +154,77 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
 </dependencyManagement>
 ```
 [//]: # ({x-version-update-end})
+
+With Gradle, you can import the `spring-cloud-azure-dependencies` BOM in [two ways](https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/).
+
+You can use the Gradle’s native BOM support by adding dependencies:
+
+```kotlin
+import org.springframework.boot.gradle.plugin.SpringBootPlugin
+
+plugins {
+  id("java")
+  id("org.springframework.boot") version "3.2.O"
+}
+
+dependencies {
+    implementation(platform(SpringBootPlugin.BOM_COORDINATES))
+    implementation(platform("com.azure.spring:spring-cloud-azure-dependencies:{version}"))
+}
+```
+
+You can also use the `io.spring.dependency-management` plugin and import the BOM in `dependencyManagement`:
+
+```kotlin
+plugins {
+    id("io.spring.dependency-management") version "1.1.0"
+}
+
+dependencyManagement {
+    imports { 
+        mavenBom("com.azure.spring:spring-cloud-azure-dependencies:{version}")
+    }
+}
+```
+
+## Spring Boot 3 Support
+
+The source code of Spring Cloud Azure for Spring Boot 3.x can be found on the [feature/spring-boot-3](https://github.com/Azure/azure-sdk-for-java/tree/feature/spring-boot-3) branch.
+
+#### Spring AOT and Spring native images
+
+Azure SDK JARs are signed. [Spring Boot 3 does not support today signed JARs](https://github.com/Azure/azure-sdk-for-java/issues/30320) when you run your application with [AOT mode on a JVM](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.efficient.aot) or you [build a native image](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html).
+
+You can disable the JAR signature verification in the following way for GraalVM Native Build Tools:
+
+* Maven
+```xml
+<plugin>
+    <groupId>org.graalvm.buildtools</groupId>
+    <artifactId>native-maven-plugin</artifactId>
+    <configuration>
+        <buildArgs>
+            <arg>-Djava.security.properties=src/main/resources/custom.security</arg>
+        </buildArgs>
+    </configuration>
+</plugin>
+```
+
+* Gradle:
+```groovy
+graalvmNative {
+  binaries {
+    main {
+      buildArgs('-Djava.security.properties=' + file("$rootDir/custom.security").absolutePath)
+    }
+  }
+}
+```
+
+You have to create a `custom.security file` in `src/main/resources` with the following content:
+```
+jdk.jar.disabledAlgorithms=MD2, MD5, RSA, DSA
+```
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.

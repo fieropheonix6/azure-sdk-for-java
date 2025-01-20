@@ -9,7 +9,7 @@ import java.util.Objects;
 
 /**
  * This class represents an HTTP ETag. An ETag value could be strong or weak ETag.
- * For more information, check out <a href="https://en.wikipedia.org/wiki/HTTP_ETag">Wikipedia's HTTP Etag</a>.
+ * For more information, check out <a href="https://en.wikipedia.org/wiki/HTTP_ETag">Wikipedia's HTTP ETag</a>.
  */
 public final class ETag {
     private static final ClientLogger LOGGER = new ClientLogger(ETag.class);
@@ -39,15 +39,13 @@ public final class ETag {
     public boolean equals(Object o) {
         if (o == this) {
             return true;
-        } else if (o == null) {
-            return false;
-        } else if (!(o instanceof ETag)) {
-            return false;
-        } else if (eTag == null) {
-            return ((ETag) o).eTag == null;
-        } else {
-            return eTag.equals(((ETag) o).eTag);
         }
+
+        if (!(o instanceof ETag)) {
+            return false;
+        }
+
+        return Objects.equals(eTag, ((ETag) o).eTag);
     }
 
     @Override
@@ -74,7 +72,7 @@ public final class ETag {
         }
 
         if (!((eTag.startsWith(QUOTE_STRING) || eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE))
-                  && eTag.endsWith(QUOTE_STRING))) {
+            && eTag.endsWith(QUOTE_STRING))) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The value=%s should be equal to * , be wrapped in quotes, or be wrapped in quotes prefixed by W/",
                 eTag)));

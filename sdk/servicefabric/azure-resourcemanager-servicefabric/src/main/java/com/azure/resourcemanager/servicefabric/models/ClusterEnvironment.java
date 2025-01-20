@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ClusterEnvironment. */
+/**
+ * Cluster operating system, the default will be Windows.
+ */
 public final class ClusterEnvironment extends ExpandableStringEnum<ClusterEnvironment> {
-    /** Static value Windows for ClusterEnvironment. */
+    /**
+     * Static value Windows for ClusterEnvironment.
+     */
     public static final ClusterEnvironment WINDOWS = fromString("Windows");
 
-    /** Static value Linux for ClusterEnvironment. */
+    /**
+     * Static value Linux for ClusterEnvironment.
+     */
     public static final ClusterEnvironment LINUX = fromString("Linux");
 
     /**
+     * Creates a new instance of ClusterEnvironment value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ClusterEnvironment() {
+    }
+
+    /**
      * Creates or finds a ClusterEnvironment from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ClusterEnvironment.
      */
-    @JsonCreator
     public static ClusterEnvironment fromString(String name) {
         return fromString(name, ClusterEnvironment.class);
     }
 
-    /** @return known ClusterEnvironment values. */
+    /**
+     * Gets known ClusterEnvironment values.
+     * 
+     * @return known ClusterEnvironment values.
+     */
     public static Collection<ClusterEnvironment> values() {
         return values(ClusterEnvironment.class);
     }

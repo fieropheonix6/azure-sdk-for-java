@@ -7,27 +7,25 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.AmlUserFeatureInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AmlUserFeatureInnerTests {
-    @Test
-    public void testDeserialize() {
-        AmlUserFeatureInner model =
-            BinaryData
-                .fromString("{\"id\":\"pkt\",\"displayName\":\"ylkmqp\",\"description\":\"yhlfb\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AmlUserFeatureInner model
+            = BinaryData.fromString("{\"id\":\"yyyzlwhbw\",\"displayName\":\"nufzr\",\"description\":\"m\"}")
                 .toObject(AmlUserFeatureInner.class);
-        Assertions.assertEquals("pkt", model.id());
-        Assertions.assertEquals("ylkmqp", model.displayName());
-        Assertions.assertEquals("yhlfb", model.description());
+        Assertions.assertEquals("yyyzlwhbw", model.id());
+        Assertions.assertEquals("nufzr", model.displayName());
+        Assertions.assertEquals("m", model.description());
     }
 
-    @Test
-    public void testSerialize() {
-        AmlUserFeatureInner model =
-            new AmlUserFeatureInner().withId("pkt").withDisplayName("ylkmqp").withDescription("yhlfb");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AmlUserFeatureInner model
+            = new AmlUserFeatureInner().withId("yyyzlwhbw").withDisplayName("nufzr").withDescription("m");
         model = BinaryData.fromObject(model).toObject(AmlUserFeatureInner.class);
-        Assertions.assertEquals("pkt", model.id());
-        Assertions.assertEquals("ylkmqp", model.displayName());
-        Assertions.assertEquals("yhlfb", model.description());
+        Assertions.assertEquals("yyyzlwhbw", model.id());
+        Assertions.assertEquals("nufzr", model.displayName());
+        Assertions.assertEquals("m", model.description());
     }
 }

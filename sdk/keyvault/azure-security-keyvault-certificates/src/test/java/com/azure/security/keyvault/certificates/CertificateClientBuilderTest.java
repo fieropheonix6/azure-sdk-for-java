@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.certificates;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -37,10 +38,10 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void buildSyncClientTest() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(certificateClient);
@@ -49,9 +50,9 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void buildSyncClientUsingDefaultApiVersionTest() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildClient();
 
         assertNotNull(certificateClient);
@@ -60,10 +61,10 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void buildAsyncClientTest() {
-        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .serviceVersion(serviceVersion)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(certificateAsyncClient);
@@ -72,9 +73,9 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void buildAsyncClientUsingDefaultApiVersionTest() {
-        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         assertNotNull(certificateAsyncClient);
@@ -93,13 +94,12 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void clientOptionsIsPreferredOverLogOptions() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("aNewApplication"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
@@ -109,12 +109,11 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void applicationIdFallsBackToLogOptions() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("anOldApplication"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
@@ -124,13 +123,12 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void clientOptionHeadersAreAddedLast() {
-        CertificateClient certificateClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CertificateClient certificateClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
-            .clientOptions(new ClientOptions()
-                .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
+            .clientOptions(
+                new ClientOptions().setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .httpClient(httpRequest -> {
-                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
@@ -140,24 +138,25 @@ public class CertificateClientBuilderTest {
 
     @Test
     public void bothRetryOptionsAndRetryPolicySet() {
-        assertThrows(IllegalStateException.class, () ->  new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
-            .serviceVersion(serviceVersion)
-            .credential(new TestUtils.TestCredential())
-            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
-            .retryPolicy(new RetryPolicy())
-            .buildClient());
+        assertThrows(IllegalStateException.class,
+            () -> new CertificateClientBuilder().vaultUrl(vaultUrl)
+                .serviceVersion(serviceVersion)
+                .credential(new TestUtils.TestCredential())
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
+                .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials
     // and auth would fail because we changed a signed header.
     @Test
     public void addPerCallPolicy() {
-        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder()
-            .vaultUrl(vaultUrl)
+        CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder().vaultUrl(vaultUrl)
             .credential(new TestUtils.TestCredential())
             .addPolicy(new TestUtils.PerCallPolicy())
             .addPolicy(new TestUtils.PerRetryPolicy())
+            .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .buildAsyncClient();
 
         HttpPipeline pipeline = certificateAsyncClient.getHttpPipeline();

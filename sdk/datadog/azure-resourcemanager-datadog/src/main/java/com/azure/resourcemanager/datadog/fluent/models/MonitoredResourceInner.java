@@ -5,49 +5,51 @@
 package com.azure.resourcemanager.datadog.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties of a resource currently being monitored by the Datadog monitor resource. */
+/**
+ * The properties of a resource currently being monitored by the Datadog monitor resource.
+ */
 @Fluent
-public final class MonitoredResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonitoredResourceInner.class);
-
+public final class MonitoredResourceInner implements JsonSerializable<MonitoredResourceInner> {
     /*
      * The ARM id of the resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Flag indicating if resource is sending metrics to Datadog.
      */
-    @JsonProperty(value = "sendingMetrics")
     private Boolean sendingMetrics;
 
     /*
-     * Reason for why the resource is sending metrics (or why it is not
-     * sending).
+     * Reason for why the resource is sending metrics (or why it is not sending).
      */
-    @JsonProperty(value = "reasonForMetricsStatus")
     private String reasonForMetricsStatus;
 
     /*
      * Flag indicating if resource is sending logs to Datadog.
      */
-    @JsonProperty(value = "sendingLogs")
     private Boolean sendingLogs;
 
     /*
      * Reason for why the resource is sending logs (or why it is not sending).
      */
-    @JsonProperty(value = "reasonForLogsStatus")
     private String reasonForLogsStatus;
 
     /**
+     * Creates an instance of MonitoredResourceInner class.
+     */
+    public MonitoredResourceInner() {
+    }
+
+    /**
      * Get the id property: The ARM id of the resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -56,7 +58,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the id property: The ARM id of the resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -67,7 +69,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Get the sendingMetrics property: Flag indicating if resource is sending metrics to Datadog.
-     *
+     * 
      * @return the sendingMetrics value.
      */
     public Boolean sendingMetrics() {
@@ -76,7 +78,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the sendingMetrics property: Flag indicating if resource is sending metrics to Datadog.
-     *
+     * 
      * @param sendingMetrics the sendingMetrics value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -88,7 +90,7 @@ public final class MonitoredResourceInner {
     /**
      * Get the reasonForMetricsStatus property: Reason for why the resource is sending metrics (or why it is not
      * sending).
-     *
+     * 
      * @return the reasonForMetricsStatus value.
      */
     public String reasonForMetricsStatus() {
@@ -98,7 +100,7 @@ public final class MonitoredResourceInner {
     /**
      * Set the reasonForMetricsStatus property: Reason for why the resource is sending metrics (or why it is not
      * sending).
-     *
+     * 
      * @param reasonForMetricsStatus the reasonForMetricsStatus value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -109,7 +111,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Get the sendingLogs property: Flag indicating if resource is sending logs to Datadog.
-     *
+     * 
      * @return the sendingLogs value.
      */
     public Boolean sendingLogs() {
@@ -118,7 +120,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the sendingLogs property: Flag indicating if resource is sending logs to Datadog.
-     *
+     * 
      * @param sendingLogs the sendingLogs value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -129,7 +131,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Get the reasonForLogsStatus property: Reason for why the resource is sending logs (or why it is not sending).
-     *
+     * 
      * @return the reasonForLogsStatus value.
      */
     public String reasonForLogsStatus() {
@@ -138,7 +140,7 @@ public final class MonitoredResourceInner {
 
     /**
      * Set the reasonForLogsStatus property: Reason for why the resource is sending logs (or why it is not sending).
-     *
+     * 
      * @param reasonForLogsStatus the reasonForLogsStatus value to set.
      * @return the MonitoredResourceInner object itself.
      */
@@ -149,9 +151,57 @@ public final class MonitoredResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeBooleanField("sendingMetrics", this.sendingMetrics);
+        jsonWriter.writeStringField("reasonForMetricsStatus", this.reasonForMetricsStatus);
+        jsonWriter.writeBooleanField("sendingLogs", this.sendingLogs);
+        jsonWriter.writeStringField("reasonForLogsStatus", this.reasonForLogsStatus);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitoredResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitoredResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitoredResourceInner.
+     */
+    public static MonitoredResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitoredResourceInner deserializedMonitoredResourceInner = new MonitoredResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.id = reader.getString();
+                } else if ("sendingMetrics".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.sendingMetrics = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reasonForMetricsStatus".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.reasonForMetricsStatus = reader.getString();
+                } else if ("sendingLogs".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.sendingLogs = reader.getNullable(JsonReader::getBoolean);
+                } else if ("reasonForLogsStatus".equals(fieldName)) {
+                    deserializedMonitoredResourceInner.reasonForLogsStatus = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitoredResourceInner;
+        });
     }
 }

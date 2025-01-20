@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CassandraResources GetCassandraKeyspace. */
+/**
+ * Samples for CassandraResources GetCassandraKeyspace.
+ */
 public final class CassandraResourcesGetCassandraKeyspaceSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBCassandraKeyspaceGet.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBCassandraKeyspaceGet.json
      */
     /**
      * Sample code: CosmosDBCassandraKeyspaceGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBCassandraKeyspaceGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getCassandraResources()
-            .getCassandraKeyspaceWithResponse("rg1", "ddb1", "keyspaceName", Context.NONE);
+            .getCassandraKeyspaceWithResponse("rg1", "ddb1", "keyspaceName", com.azure.core.util.Context.NONE);
     }
 }

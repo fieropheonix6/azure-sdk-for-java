@@ -12,10 +12,9 @@ import com.azure.resourcemanager.commerce.fluent.RateCardsClient;
 import com.azure.resourcemanager.commerce.fluent.models.ResourceRateCardInfoInner;
 import com.azure.resourcemanager.commerce.models.RateCards;
 import com.azure.resourcemanager.commerce.models.ResourceRateCardInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RateCardsImpl implements RateCards {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RateCardsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RateCardsImpl.class);
 
     private final RateCardsClient innerClient;
 
@@ -26,23 +25,20 @@ public final class RateCardsImpl implements RateCards {
         this.serviceManager = serviceManager;
     }
 
-    public ResourceRateCardInfo get(String filter) {
-        ResourceRateCardInfoInner inner = this.serviceClient().get(filter);
+    public Response<ResourceRateCardInfo> getWithResponse(String filter, Context context) {
+        Response<ResourceRateCardInfoInner> inner = this.serviceClient().getWithResponse(filter, context);
         if (inner != null) {
-            return new ResourceRateCardInfoImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourceRateCardInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<ResourceRateCardInfo> getWithResponse(String filter, Context context) {
-        Response<ResourceRateCardInfoInner> inner = this.serviceClient().getWithResponse(filter, context);
+    public ResourceRateCardInfo get(String filter) {
+        ResourceRateCardInfoInner inner = this.serviceClient().get(filter);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ResourceRateCardInfoImpl(inner.getValue(), this.manager()));
+            return new ResourceRateCardInfoImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -3,12 +3,13 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import java.time.Instant;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.stream.Collectors;
  * Tests metadata operations with synchronous {@link EventHubClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubClientIntegrationTest extends IntegrationTestBase {
     private EventHubClient client;
 
@@ -57,14 +59,14 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
     @Test
     public void getMetadata() {
         // Arrange
-        final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
+        final String eventHubName = TestUtils.getEventHubName();
 
         // Act
         final EventHubProperties properties = client.getProperties();
 
         // Assert
         Assertions.assertNotNull(properties);
-        Assertions.assertEquals(connectionProperties.getEntityPath(), properties.getName());
+        Assertions.assertEquals(eventHubName, properties.getName());
         Assertions.assertTrue(properties.getCreatedAt().isBefore(Instant.now()));
 
         Assertions.assertNotNull(properties.getPartitionIds());
@@ -77,7 +79,6 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
     @Test
     public void getPartitionProperties() {
         // Arrange
-        final ConnectionStringProperties connectionProperties = getConnectionStringProperties();
         final EventHubProperties properties = client.getProperties();
         final Optional<String> firstPartition = properties.getPartitionIds().stream().findFirst();
 
@@ -90,7 +91,9 @@ public class EventHubClientIntegrationTest extends IntegrationTestBase {
         // Assert
         Assertions.assertNotNull(partitionProperties);
 
-        Assertions.assertEquals(connectionProperties.getEntityPath(), partitionProperties.getEventHubName());
+        final String eventHubName = TestUtils.getEventHubName();
+
+        Assertions.assertEquals(eventHubName, partitionProperties.getEventHubName());
         Assertions.assertEquals(partitionId, partitionProperties.getId());
     }
 }

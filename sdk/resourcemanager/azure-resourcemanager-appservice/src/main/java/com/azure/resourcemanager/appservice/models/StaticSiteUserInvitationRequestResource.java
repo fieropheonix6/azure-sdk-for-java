@@ -5,28 +5,85 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserInvitationRequestResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Static sites user roles invitation resource. */
+/**
+ * Static sites user roles invitation resource.
+ */
 @Fluent
 public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyResource {
     /*
      * StaticSiteUserInvitationRequestResource resource specific properties
      */
-    @JsonProperty(value = "properties")
     private StaticSiteUserInvitationRequestResourceProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of StaticSiteUserInvitationRequestResource class.
+     */
+    public StaticSiteUserInvitationRequestResource() {
+    }
 
     /**
      * Get the innerProperties property: StaticSiteUserInvitationRequestResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteUserInvitationRequestResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteUserInvitationRequestResource withKind(String kind) {
         super.withKind(kind);
@@ -35,7 +92,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the domain property: The domain name for the static site custom domain.
-     *
+     * 
      * @return the domain value.
      */
     public String domain() {
@@ -44,7 +101,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the domain property: The domain name for the static site custom domain.
-     *
+     * 
      * @param domain the domain value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -58,7 +115,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the provider property: The identity provider for the static site user.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -67,7 +124,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the provider property: The identity provider for the static site user.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -81,7 +138,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the userDetails property: The user id for the static site user.
-     *
+     * 
      * @return the userDetails value.
      */
     public String userDetails() {
@@ -90,7 +147,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the userDetails property: The user id for the static site user.
-     *
+     * 
      * @param userDetails the userDetails value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -104,7 +161,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @return the roles value.
      */
     public String roles() {
@@ -113,7 +170,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the roles property: The roles for the static site user, in free-form string format.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -127,7 +184,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Get the numHoursToExpiration property: The number of hours the sas token stays valid.
-     *
+     * 
      * @return the numHoursToExpiration value.
      */
     public Integer numHoursToExpiration() {
@@ -136,7 +193,7 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Set the numHoursToExpiration property: The number of hours the sas token stays valid.
-     *
+     * 
      * @param numHoursToExpiration the numHoursToExpiration value to set.
      * @return the StaticSiteUserInvitationRequestResource object itself.
      */
@@ -150,14 +207,61 @@ public final class StaticSiteUserInvitationRequestResource extends ProxyOnlyReso
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSiteUserInvitationRequestResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSiteUserInvitationRequestResource if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StaticSiteUserInvitationRequestResource.
+     */
+    public static StaticSiteUserInvitationRequestResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSiteUserInvitationRequestResource deserializedStaticSiteUserInvitationRequestResource
+                = new StaticSiteUserInvitationRequestResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedStaticSiteUserInvitationRequestResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStaticSiteUserInvitationRequestResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedStaticSiteUserInvitationRequestResource.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedStaticSiteUserInvitationRequestResource.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedStaticSiteUserInvitationRequestResource.innerProperties
+                        = StaticSiteUserInvitationRequestResourceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSiteUserInvitationRequestResource;
+        });
     }
 }

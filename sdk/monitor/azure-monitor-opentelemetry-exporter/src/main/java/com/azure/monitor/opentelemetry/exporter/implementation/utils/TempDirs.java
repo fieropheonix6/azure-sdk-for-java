@@ -5,7 +5,6 @@ package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import reactor.util.annotation.Nullable;
 
 import java.io.File;
@@ -15,8 +14,8 @@ import java.util.List;
 
 public class TempDirs {
 
-    private static final List<String> CANDIDATE_USERNAME_ENVIRONMENT_VARIABLES =
-        Collections.unmodifiableList(Arrays.asList("USER", "LOGNAME", "USERNAME"));
+    private static final List<String> CANDIDATE_USERNAME_ENVIRONMENT_VARIABLES
+        = Collections.unmodifiableList(Arrays.asList("USER", "LOGNAME", "USERNAME"));
 
     @Nullable
     public static File getApplicationInsightsTempDir(ClientLogger logger, String message) {
@@ -28,24 +27,21 @@ public class TempDirs {
             logger.info(
                 "Unable to create directory: {}. {}. If this is unexpected, please check"
                     + " that the process has the necessary permissions to create the directory.",
-                tempDir.getAbsolutePath(),
-                message);
+                tempDir.getAbsolutePath(), message);
             return null;
         }
         if (!tempDir.canRead()) {
             logger.info(
                 "Missing read permissions on directory: {}. {}. If this is unexpected, please check"
                     + " that the process has the necessary permissions to read from the directory.",
-                tempDir.getAbsolutePath(),
-                message);
+                tempDir.getAbsolutePath(), message);
             return null;
         }
         if (!tempDir.canWrite()) {
             logger.info(
                 "Missing write permissions on directory: {}. {}. If this is unexpected, please check"
                     + " that the process has the necessary permissions to write to the directory.",
-                tempDir.getAbsolutePath(),
-                message);
+                tempDir.getAbsolutePath(), message);
             return null;
         }
         return tempDir;
@@ -77,10 +73,6 @@ public class TempDirs {
      * @return a {@link File} representing a folder in which temporary files will be stored for the
      * current user.
      */
-    @SuppressFBWarnings(
-        value = "SECPTI", // Potential Path Traversal
-        justification =
-            "The constructed file path cannot be controlled by an end user of the instrumented application")
     private static File maybeAddUserSubDir(File dir) {
 
         // does it look shared?

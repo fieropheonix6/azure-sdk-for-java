@@ -9,27 +9,23 @@ import com.azure.resourcemanager.signalr.models.ManagedIdentitySettings;
 import com.azure.resourcemanager.signalr.models.UpstreamAuthSettings;
 import com.azure.resourcemanager.signalr.models.UpstreamAuthType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UpstreamAuthSettingsTests {
-    @Test
-    public void testDeserialize() {
-        UpstreamAuthSettings model =
-            BinaryData
-                .fromString("{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"gpfqbuace\"}}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UpstreamAuthSettings model
+            = BinaryData.fromString("{\"type\":\"ManagedIdentity\",\"managedIdentity\":{\"resource\":\"vz\"}}")
                 .toObject(UpstreamAuthSettings.class);
         Assertions.assertEquals(UpstreamAuthType.MANAGED_IDENTITY, model.type());
-        Assertions.assertEquals("gpfqbuace", model.managedIdentity().resource());
+        Assertions.assertEquals("vz", model.managedIdentity().resource());
     }
 
-    @Test
-    public void testSerialize() {
-        UpstreamAuthSettings model =
-            new UpstreamAuthSettings()
-                .withType(UpstreamAuthType.MANAGED_IDENTITY)
-                .withManagedIdentity(new ManagedIdentitySettings().withResource("gpfqbuace"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UpstreamAuthSettings model = new UpstreamAuthSettings().withType(UpstreamAuthType.MANAGED_IDENTITY)
+            .withManagedIdentity(new ManagedIdentitySettings().withResource("vz"));
         model = BinaryData.fromObject(model).toObject(UpstreamAuthSettings.class);
         Assertions.assertEquals(UpstreamAuthType.MANAGED_IDENTITY, model.type());
-        Assertions.assertEquals("gpfqbuace", model.managedIdentity().resource());
+        Assertions.assertEquals("vz", model.managedIdentity().resource());
     }
 }

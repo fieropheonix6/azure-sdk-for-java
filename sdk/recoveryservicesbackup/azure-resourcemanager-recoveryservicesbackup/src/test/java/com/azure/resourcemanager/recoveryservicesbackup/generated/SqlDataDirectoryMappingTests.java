@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SqlDataDirectoryMapping;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SqlDataDirectoryType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlDataDirectoryMappingTests {
-    @Test
-    public void testDeserialize() {
-        SqlDataDirectoryMapping model =
-            BinaryData
-                .fromString(
-                    "{\"mappingType\":\"Log\",\"sourceLogicalName\":\"yprotwyp\",\"sourcePath\":\"d\",\"targetPath\":\"xhugcm\"}")
-                .toObject(SqlDataDirectoryMapping.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SqlDataDirectoryMapping model = BinaryData.fromString(
+            "{\"mappingType\":\"Log\",\"sourceLogicalName\":\"mik\",\"sourcePath\":\"tbzbkiwbuqnyophz\",\"targetPath\":\"l\"}")
+            .toObject(SqlDataDirectoryMapping.class);
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.mappingType());
-        Assertions.assertEquals("yprotwyp", model.sourceLogicalName());
-        Assertions.assertEquals("d", model.sourcePath());
-        Assertions.assertEquals("xhugcm", model.targetPath());
+        Assertions.assertEquals("mik", model.sourceLogicalName());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.sourcePath());
+        Assertions.assertEquals("l", model.targetPath());
     }
 
-    @Test
-    public void testSerialize() {
-        SqlDataDirectoryMapping model =
-            new SqlDataDirectoryMapping()
-                .withMappingType(SqlDataDirectoryType.LOG)
-                .withSourceLogicalName("yprotwyp")
-                .withSourcePath("d")
-                .withTargetPath("xhugcm");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SqlDataDirectoryMapping model = new SqlDataDirectoryMapping().withMappingType(SqlDataDirectoryType.LOG)
+            .withSourceLogicalName("mik")
+            .withSourcePath("tbzbkiwbuqnyophz")
+            .withTargetPath("l");
         model = BinaryData.fromObject(model).toObject(SqlDataDirectoryMapping.class);
         Assertions.assertEquals(SqlDataDirectoryType.LOG, model.mappingType());
-        Assertions.assertEquals("yprotwyp", model.sourceLogicalName());
-        Assertions.assertEquals("d", model.sourcePath());
-        Assertions.assertEquals("xhugcm", model.targetPath());
+        Assertions.assertEquals("mik", model.sourceLogicalName());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.sourcePath());
+        Assertions.assertEquals("l", model.targetPath());
     }
 }

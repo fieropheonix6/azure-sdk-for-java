@@ -4,23 +4,20 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.logging;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.monitor.opentelemetry.exporter.implementation.models.Response;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineRequest;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.stream.Collectors;
 
 import static com.azure.monitor.opentelemetry.exporter.implementation.utils.AzureMonitorMsgId.INGESTION_ERROR;
-import static java.util.Collections.singleton;
 
 public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineListener {
 
@@ -31,13 +28,15 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     private static final AtomicBoolean friendlyExceptionThrown = new AtomicBoolean();
 
     private final OperationLogger operationLogger;
-    private final boolean suppressWarningsOnRetryableFailures;
+    private final boolean logRetryableFailures;
+    private final String retryableFailureSuffix;
 
     // e.g. "Sending telemetry to the ingestion service"
-    public DiagnosticTelemetryPipelineListener(
-        String operation, boolean suppressWarningsOnRetryableFailures) {
+    public DiagnosticTelemetryPipelineListener(String operation, boolean logRetryableFailures,
+        String retryableFailureSuffix) {
         operationLogger = new OperationLogger(FOR_CLASS, operation);
-        this.suppressWarningsOnRetryableFailures = suppressWarningsOnRetryableFailures;
+        this.logRetryableFailures = logRetryableFailures;
+        this.retryableFailureSuffix = retryableFailureSuffix;
     }
 
     @Override
@@ -47,49 +46,55 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
             case 200: // SUCCESS
                 operationLogger.recordSuccess();
                 break;
+
             case 206: // PARTIAL CONTENT, Breeze-specific: PARTIAL SUCCESS
             case 400: // breeze returns if json content is bad (e.g. missing required field)
-                Set<String> errors = getErrors(response.getBody());
+                Set<String> errors = response.getErrorMessages();
                 if (!errors.isEmpty()) {
                     operationLogger.recordFailure(
                         "Received response code " + responseCode + " (" + String.join(", ", errors) + ")",
                         INGESTION_ERROR);
                 }
                 break;
+
             case 307:
             case 308:
                 operationLogger.recordFailure("Too many redirects", INGESTION_ERROR);
                 break;
+
             case 401: // breeze returns if aad enabled and no authentication token provided
             case 403: // breeze returns if aad enabled or disabled (both cases) and
-                if (!suppressWarningsOnRetryableFailures) {
+                if (logRetryableFailures) {
                     operationLogger.recordFailure(
                         getErrorMessageFromCredentialRelatedResponse(responseCode, response.getBody()),
                         INGESTION_ERROR);
                 }
                 break;
+
             case 408: // REQUEST TIMEOUT
             case 429: // TOO MANY REQUESTS
             case 500: // INTERNAL SERVER ERROR
+            case 502: // BAD GATEWAY
             case 503: // SERVICE UNAVAILABLE
-                if (!suppressWarningsOnRetryableFailures) {
-                    operationLogger.recordFailure(
-                        "Received response code "
-                            + responseCode
-                            + " (telemetry will be stored to disk and retried later)",
+            case 504: // GATEWAY TIMEOUT
+                if (logRetryableFailures) {
+                    operationLogger.recordFailure("Received response code " + responseCode + retryableFailureSuffix,
                         INGESTION_ERROR);
                 }
                 break;
+
             case 402: // Breeze-specific: New Daily Quota Exceeded
                 operationLogger.recordFailure(
                     "Received response code 402 (daily quota exceeded and throttled over extended time)",
                     INGESTION_ERROR);
                 break;
+
             case 439: // Breeze-specific: Deprecated Daily Quota Exceeded
                 operationLogger.recordFailure(
                     "Received response code 439 (daily quota exceeded and throttled over extended time)",
                     INGESTION_ERROR);
                 break;
+
             default:
                 operationLogger.recordFailure("received response code: " + responseCode, INGESTION_ERROR);
         }
@@ -97,9 +102,11 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
 
     @Override
     public void onException(TelemetryPipelineRequest request, String reason, Throwable throwable) {
-        if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
-            throwable, request.getUrl().toString(), friendlyExceptionThrown, logger)) {
-            operationLogger.recordFailure(reason, throwable, INGESTION_ERROR);
+        if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(throwable, request.getUrl().toString(),
+            friendlyExceptionThrown, logger)) {
+            if (logRetryableFailures) {
+                operationLogger.recordFailure(reason + retryableFailureSuffix, throwable, INGESTION_ERROR);
+            }
         }
     }
 
@@ -108,41 +115,21 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
         return CompletableResultCode.ofSuccess();
     }
 
-    private static Set<String> getErrors(String body) {
-        JsonNode jsonNode;
-        try {
-            jsonNode = new ObjectMapper().readTree(body);
-        } catch (JsonProcessingException e) {
-            // fallback to generic message
-            return singleton("Could not parse response");
-        }
-        List<JsonNode> errorNodes = new ArrayList<>();
-        jsonNode.get("errors").forEach(errorNodes::add);
-        return errorNodes.stream()
-            .map(errorNode -> errorNode.get("message").asText())
-            .filter(s -> !s.equals("Telemetry sampled out."))
-            .collect(Collectors.toSet());
-    }
-
-    private static String getErrorMessageFromCredentialRelatedResponse(
-        int responseCode, String responseBody) {
-        JsonNode jsonNode;
-        try {
-            jsonNode = new ObjectMapper().readTree(responseBody);
-        } catch (JsonProcessingException e) {
-            return "Ingestion service returned "
-                + responseCode
-                + ", but could not parse response as json: "
+    public static String getErrorMessageFromCredentialRelatedResponse(int responseCode, String responseBody) {
+        String message = null;
+        try (JsonReader jsonReader = JsonProviders.createReader(responseBody)) {
+            Response response = Response.fromJson(jsonReader);
+            if (response.getErrors() != null && !response.getErrors().isEmpty()) {
+                message = response.getErrors().get(0).getMessage();
+            }
+        } catch (IOException e) {
+            return "Ingestion service returned " + responseCode + ", but could not parse response as json: "
                 + responseBody;
         }
-        String action =
-            responseCode == 401
-                ? ". Please provide Azure Active Directory credentials"
-                : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
-        List<JsonNode> errors = new ArrayList<>();
-        jsonNode.get("errors").forEach(errors::add);
-        return errors.get(0).get("message").asText()
-            + action
-            + " (telemetry will be stored to disk and retried later)";
+
+        String action = responseCode == 401
+            ? ". Please provide Azure Active Directory credentials"
+            : ". Please check your Azure Active Directory credentials, they might be incorrect or expired";
+        return message + action + " (telemetry will be stored to disk and retried)";
     }
 }

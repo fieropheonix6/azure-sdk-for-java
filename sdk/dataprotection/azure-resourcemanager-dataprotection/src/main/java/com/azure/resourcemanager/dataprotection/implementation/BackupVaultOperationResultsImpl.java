@@ -13,41 +13,36 @@ import com.azure.resourcemanager.dataprotection.fluent.models.BackupVaultResourc
 import com.azure.resourcemanager.dataprotection.models.BackupVaultOperationResults;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultOperationResultsGetResponse;
 import com.azure.resourcemanager.dataprotection.models.BackupVaultResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupVaultOperationResultsImpl implements BackupVaultOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupVaultOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupVaultOperationResultsImpl.class);
 
     private final BackupVaultOperationResultsClient innerClient;
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public BackupVaultOperationResultsImpl(
-        BackupVaultOperationResultsClient innerClient,
+    public BackupVaultOperationResultsImpl(BackupVaultOperationResultsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public BackupVaultResource get(String vaultName, String resourceGroupName, String operationId) {
-        BackupVaultResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, operationId);
+    public Response<BackupVaultResource> getWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context) {
+        BackupVaultOperationResultsGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
         if (inner != null) {
-            return new BackupVaultResourceImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BackupVaultResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<BackupVaultResource> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
-        BackupVaultOperationResultsGetResponse inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
+    public BackupVaultResource get(String resourceGroupName, String vaultName, String operationId) {
+        BackupVaultResourceInner inner = this.serviceClient().get(resourceGroupName, vaultName, operationId);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BackupVaultResourceImpl(inner.getValue(), this.manager()));
+            return new BackupVaultResourceImpl(inner, this.manager());
         } else {
             return null;
         }

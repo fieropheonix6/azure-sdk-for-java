@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for EmailServices List. */
+/**
+ * Samples for EmailServices List.
+ */
 public final class EmailServicesListSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/listBySubscription.json
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * listBySubscription.json
      */
     /**
      * Sample code: List EmailService resources by subscription.
-     *
+     * 
      * @param manager Entry point to CommunicationManager.
      */
-    public static void listEmailServiceResourcesBySubscription(
-        com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.emailServices().list(Context.NONE);
+    public static void
+        listEmailServiceResourcesBySubscription(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.emailServices().list(com.azure.core.util.Context.NONE);
     }
 }

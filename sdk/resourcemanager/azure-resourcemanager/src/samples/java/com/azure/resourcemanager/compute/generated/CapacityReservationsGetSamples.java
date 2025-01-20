@@ -4,30 +4,28 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceViewTypes;
 
-/** Samples for CapacityReservations Get. */
+/**
+ * Samples for CapacityReservations Get.
+ */
 public final class CapacityReservationsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/capacityReservationExamples/CapacityReservation_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * capacityReservationExamples/CapacityReservation_Get.json
      */
     /**
      * Sample code: Get a capacity reservation.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getACapacityReservation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getCapacityReservations()
-            .getWithResponse(
-                "myResourceGroup",
-                "myCapacityReservationGroup",
-                "myCapacityReservation",
-                CapacityReservationInstanceViewTypes.INSTANCE_VIEW,
-                Context.NONE);
+            .getWithResponse("myResourceGroup", "myCapacityReservationGroup", "myCapacityReservation",
+                CapacityReservationInstanceViewTypes.INSTANCE_VIEW, com.azure.core.util.Context.NONE);
     }
 }

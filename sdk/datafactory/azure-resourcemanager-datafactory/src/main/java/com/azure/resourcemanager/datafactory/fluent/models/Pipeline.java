@@ -5,83 +5,78 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.ParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.PipelineFolder;
 import com.azure.resourcemanager.datafactory.models.PipelinePolicy;
 import com.azure.resourcemanager.datafactory.models.VariableSpecification;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** A data factory pipeline. */
+/**
+ * A data factory pipeline.
+ */
 @Fluent
-public final class Pipeline {
+public final class Pipeline implements JsonSerializable<Pipeline> {
     /*
      * The description of the pipeline.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * List of activities in pipeline.
      */
-    @JsonProperty(value = "activities")
     private List<Activity> activities;
 
     /*
      * List of parameters for pipeline.
      */
-    @JsonProperty(value = "parameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ParameterSpecification> parameters;
 
     /*
      * List of variables for pipeline.
      */
-    @JsonProperty(value = "variables")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, VariableSpecification> variables;
 
     /*
      * The max number of concurrent runs for the pipeline.
      */
-    @JsonProperty(value = "concurrency")
     private Integer concurrency;
 
     /*
      * List of tags that can be used for describing the Pipeline.
      */
-    @JsonProperty(value = "annotations")
     private List<Object> annotations;
 
     /*
      * Dimensions emitted by Pipeline.
      */
-    @JsonProperty(value = "runDimensions")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> runDimensions;
 
     /*
      * The folder that this Pipeline is in. If not specified, Pipeline will appear at the root level.
      */
-    @JsonProperty(value = "folder")
     private PipelineFolder folder;
 
     /*
      * Pipeline Policy.
      */
-    @JsonProperty(value = "policy")
     private PipelinePolicy policy;
 
-    /** Creates an instance of Pipeline class. */
+    /**
+     * Creates an instance of Pipeline class.
+     */
     public Pipeline() {
     }
 
     /**
      * Get the description property: The description of the pipeline.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -90,7 +85,7 @@ public final class Pipeline {
 
     /**
      * Set the description property: The description of the pipeline.
-     *
+     * 
      * @param description the description value to set.
      * @return the Pipeline object itself.
      */
@@ -101,7 +96,7 @@ public final class Pipeline {
 
     /**
      * Get the activities property: List of activities in pipeline.
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> activities() {
@@ -110,7 +105,7 @@ public final class Pipeline {
 
     /**
      * Set the activities property: List of activities in pipeline.
-     *
+     * 
      * @param activities the activities value to set.
      * @return the Pipeline object itself.
      */
@@ -121,7 +116,7 @@ public final class Pipeline {
 
     /**
      * Get the parameters property: List of parameters for pipeline.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, ParameterSpecification> parameters() {
@@ -130,7 +125,7 @@ public final class Pipeline {
 
     /**
      * Set the parameters property: List of parameters for pipeline.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the Pipeline object itself.
      */
@@ -141,7 +136,7 @@ public final class Pipeline {
 
     /**
      * Get the variables property: List of variables for pipeline.
-     *
+     * 
      * @return the variables value.
      */
     public Map<String, VariableSpecification> variables() {
@@ -150,7 +145,7 @@ public final class Pipeline {
 
     /**
      * Set the variables property: List of variables for pipeline.
-     *
+     * 
      * @param variables the variables value to set.
      * @return the Pipeline object itself.
      */
@@ -161,7 +156,7 @@ public final class Pipeline {
 
     /**
      * Get the concurrency property: The max number of concurrent runs for the pipeline.
-     *
+     * 
      * @return the concurrency value.
      */
     public Integer concurrency() {
@@ -170,7 +165,7 @@ public final class Pipeline {
 
     /**
      * Set the concurrency property: The max number of concurrent runs for the pipeline.
-     *
+     * 
      * @param concurrency the concurrency value to set.
      * @return the Pipeline object itself.
      */
@@ -181,7 +176,7 @@ public final class Pipeline {
 
     /**
      * Get the annotations property: List of tags that can be used for describing the Pipeline.
-     *
+     * 
      * @return the annotations value.
      */
     public List<Object> annotations() {
@@ -190,7 +185,7 @@ public final class Pipeline {
 
     /**
      * Set the annotations property: List of tags that can be used for describing the Pipeline.
-     *
+     * 
      * @param annotations the annotations value to set.
      * @return the Pipeline object itself.
      */
@@ -201,7 +196,7 @@ public final class Pipeline {
 
     /**
      * Get the runDimensions property: Dimensions emitted by Pipeline.
-     *
+     * 
      * @return the runDimensions value.
      */
     public Map<String, Object> runDimensions() {
@@ -210,7 +205,7 @@ public final class Pipeline {
 
     /**
      * Set the runDimensions property: Dimensions emitted by Pipeline.
-     *
+     * 
      * @param runDimensions the runDimensions value to set.
      * @return the Pipeline object itself.
      */
@@ -222,7 +217,7 @@ public final class Pipeline {
     /**
      * Get the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
      * level.
-     *
+     * 
      * @return the folder value.
      */
     public PipelineFolder folder() {
@@ -232,7 +227,7 @@ public final class Pipeline {
     /**
      * Set the folder property: The folder that this Pipeline is in. If not specified, Pipeline will appear at the root
      * level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the Pipeline object itself.
      */
@@ -243,7 +238,7 @@ public final class Pipeline {
 
     /**
      * Get the policy property: Pipeline Policy.
-     *
+     * 
      * @return the policy value.
      */
     public PipelinePolicy policy() {
@@ -252,7 +247,7 @@ public final class Pipeline {
 
     /**
      * Set the policy property: Pipeline Policy.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the Pipeline object itself.
      */
@@ -263,7 +258,7 @@ public final class Pipeline {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -271,24 +266,18 @@ public final class Pipeline {
             activities().forEach(e -> e.validate());
         }
         if (parameters() != null) {
-            parameters()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (variables() != null) {
-            variables()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            variables().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (folder() != null) {
             folder().validate();
@@ -296,5 +285,73 @@ public final class Pipeline {
         if (policy() != null) {
             policy().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("activities", this.activities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeMapField("variables", this.variables, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("concurrency", this.concurrency);
+        jsonWriter.writeArrayField("annotations", this.annotations, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("runDimensions", this.runDimensions,
+            (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", this.folder);
+        jsonWriter.writeJsonField("policy", this.policy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Pipeline from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Pipeline if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Pipeline.
+     */
+    public static Pipeline fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Pipeline deserializedPipeline = new Pipeline();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("description".equals(fieldName)) {
+                    deserializedPipeline.description = reader.getString();
+                } else if ("activities".equals(fieldName)) {
+                    List<Activity> activities = reader.readArray(reader1 -> Activity.fromJson(reader1));
+                    deserializedPipeline.activities = activities;
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedPipeline.parameters = parameters;
+                } else if ("variables".equals(fieldName)) {
+                    Map<String, VariableSpecification> variables
+                        = reader.readMap(reader1 -> VariableSpecification.fromJson(reader1));
+                    deserializedPipeline.variables = variables;
+                } else if ("concurrency".equals(fieldName)) {
+                    deserializedPipeline.concurrency = reader.getNullable(JsonReader::getInt);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedPipeline.annotations = annotations;
+                } else if ("runDimensions".equals(fieldName)) {
+                    Map<String, Object> runDimensions = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedPipeline.runDimensions = runDimensions;
+                } else if ("folder".equals(fieldName)) {
+                    deserializedPipeline.folder = PipelineFolder.fromJson(reader);
+                } else if ("policy".equals(fieldName)) {
+                    deserializedPipeline.policy = PipelinePolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPipeline;
+        });
     }
 }

@@ -5,28 +5,85 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Process Module Information. */
+/**
+ * Process Module Information.
+ */
 @Fluent
 public final class ProcessModuleInfoInner extends ProxyOnlyResource {
     /*
      * ProcessModuleInfo resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ProcessModuleInfoProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProcessModuleInfoInner class.
+     */
+    public ProcessModuleInfoInner() {
+    }
 
     /**
      * Get the innerProperties property: ProcessModuleInfo resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProcessModuleInfoProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProcessModuleInfoInner withKind(String kind) {
         super.withKind(kind);
@@ -35,7 +92,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the baseAddress property: Base address. Used as module identifier in ARM resource URI.
-     *
+     * 
      * @return the baseAddress value.
      */
     public String baseAddress() {
@@ -44,7 +101,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the baseAddress property: Base address. Used as module identifier in ARM resource URI.
-     *
+     * 
      * @param baseAddress the baseAddress value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -58,7 +115,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the fileName property: File name.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -67,7 +124,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the fileName property: File name.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -81,7 +138,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the href property: HRef URI.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -90,7 +147,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the href property: HRef URI.
-     *
+     * 
      * @param href the href value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -104,7 +161,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the filePath property: File path.
-     *
+     * 
      * @return the filePath value.
      */
     public String filePath() {
@@ -113,7 +170,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the filePath property: File path.
-     *
+     * 
      * @param filePath the filePath value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -127,7 +184,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the moduleMemorySize property: Module memory size.
-     *
+     * 
      * @return the moduleMemorySize value.
      */
     public Integer moduleMemorySize() {
@@ -136,7 +193,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the moduleMemorySize property: Module memory size.
-     *
+     * 
      * @param moduleMemorySize the moduleMemorySize value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -150,7 +207,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the fileVersion property: File version.
-     *
+     * 
      * @return the fileVersion value.
      */
     public String fileVersion() {
@@ -159,7 +216,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the fileVersion property: File version.
-     *
+     * 
      * @param fileVersion the fileVersion value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -173,7 +230,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the fileDescription property: File description.
-     *
+     * 
      * @return the fileDescription value.
      */
     public String fileDescription() {
@@ -182,7 +239,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the fileDescription property: File description.
-     *
+     * 
      * @param fileDescription the fileDescription value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -196,7 +253,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the product property: Product name.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -205,7 +262,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the product property: Product name.
-     *
+     * 
      * @param product the product value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -219,7 +276,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the productVersion property: Product version.
-     *
+     * 
      * @return the productVersion value.
      */
     public String productVersion() {
@@ -228,7 +285,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the productVersion property: Product version.
-     *
+     * 
      * @param productVersion the productVersion value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -242,7 +299,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the isDebug property: Is debug?.
-     *
+     * 
      * @return the isDebug value.
      */
     public Boolean isDebug() {
@@ -251,7 +308,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the isDebug property: Is debug?.
-     *
+     * 
      * @param isDebug the isDebug value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -265,7 +322,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Get the language property: Module language (locale).
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -274,7 +331,7 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Set the language property: Module language (locale).
-     *
+     * 
      * @param language the language value to set.
      * @return the ProcessModuleInfoInner object itself.
      */
@@ -288,14 +345,59 @@ public final class ProcessModuleInfoInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessModuleInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessModuleInfoInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProcessModuleInfoInner.
+     */
+    public static ProcessModuleInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessModuleInfoInner deserializedProcessModuleInfoInner = new ProcessModuleInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProcessModuleInfoInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProcessModuleInfoInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProcessModuleInfoInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedProcessModuleInfoInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProcessModuleInfoInner.innerProperties = ProcessModuleInfoProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessModuleInfoInner;
+        });
     }
 }

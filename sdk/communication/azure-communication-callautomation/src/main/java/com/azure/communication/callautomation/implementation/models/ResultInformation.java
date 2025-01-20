@@ -5,32 +5,42 @@
 package com.azure.communication.callautomation.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ResultInformation model. */
+/**
+ * The ResultInformation model.
+ */
 @Fluent
-public final class ResultInformation {
+public final class ResultInformation implements JsonSerializable<ResultInformation> {
     /*
-     * The code property.
+     * Code of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result was unexpected.
      */
-    @JsonProperty(value = "code")
     private Integer code;
 
     /*
-     * The subCode property.
+     * Subcode of the current result. This can be helpful to Call Automation team to troubleshoot the issue if this result was unexpected.
      */
-    @JsonProperty(value = "subCode")
     private Integer subCode;
 
     /*
-     * The message property.
+     * Detail message that describes the current result.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
-     * Get the code property: The code property.
-     *
+     * Creates an instance of ResultInformation class.
+     */
+    public ResultInformation() {
+    }
+
+    /**
+     * Get the code property: Code of the current result. This can be helpful to Call Automation team to troubleshoot
+     * the issue if this result was unexpected.
+     * 
      * @return the code value.
      */
     public Integer getCode() {
@@ -38,8 +48,9 @@ public final class ResultInformation {
     }
 
     /**
-     * Set the code property: The code property.
-     *
+     * Set the code property: Code of the current result. This can be helpful to Call Automation team to troubleshoot
+     * the issue if this result was unexpected.
+     * 
      * @param code the code value to set.
      * @return the ResultInformation object itself.
      */
@@ -49,8 +60,9 @@ public final class ResultInformation {
     }
 
     /**
-     * Get the subCode property: The subCode property.
-     *
+     * Get the subCode property: Subcode of the current result. This can be helpful to Call Automation team to
+     * troubleshoot the issue if this result was unexpected.
+     * 
      * @return the subCode value.
      */
     public Integer getSubCode() {
@@ -58,8 +70,9 @@ public final class ResultInformation {
     }
 
     /**
-     * Set the subCode property: The subCode property.
-     *
+     * Set the subCode property: Subcode of the current result. This can be helpful to Call Automation team to
+     * troubleshoot the issue if this result was unexpected.
+     * 
      * @param subCode the subCode value to set.
      * @return the ResultInformation object itself.
      */
@@ -69,8 +82,8 @@ public final class ResultInformation {
     }
 
     /**
-     * Get the message property: The message property.
-     *
+     * Get the message property: Detail message that describes the current result.
+     * 
      * @return the message value.
      */
     public String getMessage() {
@@ -78,13 +91,55 @@ public final class ResultInformation {
     }
 
     /**
-     * Set the message property: The message property.
-     *
+     * Set the message property: Detail message that describes the current result.
+     * 
      * @param message the message value to set.
      * @return the ResultInformation object itself.
      */
     public ResultInformation setMessage(String message) {
         this.message = message;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("code", this.code);
+        jsonWriter.writeNumberField("subCode", this.subCode);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResultInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResultInformation if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResultInformation.
+     */
+    public static ResultInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResultInformation deserializedResultInformation = new ResultInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedResultInformation.code = reader.getNullable(JsonReader::getInt);
+                } else if ("subCode".equals(fieldName)) {
+                    deserializedResultInformation.subCode = reader.getNullable(JsonReader::getInt);
+                } else if ("message".equals(fieldName)) {
+                    deserializedResultInformation.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResultInformation;
+        });
     }
 }

@@ -6,33 +6,25 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeId;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A cognitive service resource provisioned with a key that is attached to a skillset. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.EXISTING_PROPERTY,
-        property = "@odata.type",
-        visible = true)
-@JsonTypeName("#Microsoft.Azure.Search.CognitiveServicesByKey")
+/**
+ * The multi-region account key of an Azure AI service resource that's attached to a skillset.
+ */
 @Fluent
 public final class CognitiveServicesAccountKey extends CognitiveServicesAccount {
 
     /*
-     * Identifies the concrete type of the cognitive service resource attached to a skillset.
+     * A URI fragment specifying the type of Azure AI service resource attached to a skillset.
      */
-    @JsonTypeId
-    @JsonProperty(value = "@odata.type", required = true)
     private String odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
 
     /*
-     * The key used to provision the cognitive service resource attached to a skillset.
+     * The key used to provision the Azure AI service resource attached to a skillset.
      */
-    @JsonProperty(value = "key", required = true)
     private String key;
 
     /**
@@ -40,13 +32,23 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
      *
      * @param key the key value to set.
      */
-    @JsonCreator
-    public CognitiveServicesAccountKey(@JsonProperty(value = "key", required = true) String key) {
+    public CognitiveServicesAccountKey(String key) {
         this.key = key;
     }
 
     /**
-     * Get the key property: The key used to provision the cognitive service resource attached to a skillset.
+     * Get the odataType property: A URI fragment specifying the type of Azure AI service resource attached to a
+     * skillset.
+     *
+     * @return the odataType value.
+     */
+    @Override
+    public String getOdataType() {
+        return this.odataType;
+    }
+
+    /**
+     * Get the key property: The key used to provision the Azure AI service resource attached to a skillset.
      *
      * @return the key value.
      */
@@ -54,11 +56,65 @@ public final class CognitiveServicesAccountKey extends CognitiveServicesAccount 
         return this.key;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CognitiveServicesAccountKey setDescription(String description) {
         super.setDescription(description);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("@odata.type", this.odataType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CognitiveServicesAccountKey from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CognitiveServicesAccountKey if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CognitiveServicesAccountKey.
+     */
+    public static CognitiveServicesAccountKey fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String description = null;
+            boolean keyFound = false;
+            String key = null;
+            String odataType = "#Microsoft.Azure.Search.CognitiveServicesByKey";
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("description".equals(fieldName)) {
+                    description = reader.getString();
+                } else if ("key".equals(fieldName)) {
+                    key = reader.getString();
+                    keyFound = true;
+                } else if ("@odata.type".equals(fieldName)) {
+                    odataType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (keyFound) {
+                CognitiveServicesAccountKey deserializedCognitiveServicesAccountKey
+                    = new CognitiveServicesAccountKey(key);
+                deserializedCognitiveServicesAccountKey.setDescription(description);
+                deserializedCognitiveServicesAccountKey.odataType = odataType;
+                return deserializedCognitiveServicesAccountKey;
+            }
+            throw new IllegalStateException("Missing required property: key");
+        });
     }
 
     /**

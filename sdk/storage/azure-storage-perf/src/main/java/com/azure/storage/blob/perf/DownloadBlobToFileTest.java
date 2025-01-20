@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.perf;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.blob.perf.core.AbstractDownloadTest;
 import reactor.core.publisher.Mono;
 
@@ -10,7 +11,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.file.Files;
-import java.util.UUID;
 
 /**
  * Use {@code downloadtofiletest} command to run this test.
@@ -36,32 +36,29 @@ public class DownloadBlobToFileTest extends AbstractDownloadTest<BlobPerfStressO
 
     @Override
     public void run() {
-        File file = new File(tempDir, UUID.randomUUID().toString());
+        File file = new File(tempDir, CoreUtils.randomUuid().toString());
         try {
             blobClient.downloadToFile(file.getAbsolutePath());
         } finally {
             // We don't use File.deleteOnExit.
             // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
             // and eventually take whole heap in long-running benchmarks.
-            if (!file.delete()){
+            if (!file.delete()) {
                 throw new IllegalStateException("Unable to delete test file");
             }
         }
     }
 
-
     @Override
     public Mono<Void> runAsync() {
-        File file = new File(tempDir, UUID.randomUUID().toString());
-        return blobAsyncClient.downloadToFile(file.getAbsolutePath())
-            .doFinally(ignored -> {
-                // We don't use File.deleteOnExit.
-                // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
-                // and eventually take whole heap in long-running benchmarks.
-                if (!file.delete()){
-                    throw new IllegalStateException("Unable to delete test file");
-                }
-            })
-            .then();
+        File file = new File(tempDir, CoreUtils.randomUuid().toString());
+        return blobAsyncClient.downloadToFile(file.getAbsolutePath()).doFinally(ignored -> {
+            // We don't use File.deleteOnExit.
+            // This would cause memory accumulation in the java.io.DeleteOnExitHook with random file names
+            // and eventually take whole heap in long-running benchmarks.
+            if (!file.delete()) {
+                throw new IllegalStateException("Unable to delete test file");
+            }
+        }).then();
     }
 }

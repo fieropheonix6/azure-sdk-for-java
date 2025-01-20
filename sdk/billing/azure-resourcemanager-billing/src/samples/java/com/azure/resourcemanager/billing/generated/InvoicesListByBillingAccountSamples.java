@@ -4,32 +4,27 @@
 
 package com.azure.resourcemanager.billing.generated;
 
-import com.azure.core.util.Context;
+import java.time.LocalDate;
 
-/** Samples for Invoices ListByBillingAccount. */
+/**
+ * Samples for Invoices ListByBillingAccount.
+ */
 public final class InvoicesListByBillingAccountSamples {
     /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountInvoicesList.json
+     * x-ms-original-file:
+     * specification/billing/resource-manager/Microsoft.Billing/stable/2024-04-01/examples/invoicesListByBillingAccount.
+     * json
      */
     /**
-     * Sample code: BillingAccountInvoicesList.
-     *
+     * Sample code: InvoicesListByBillingAccount.
+     * 
      * @param manager Entry point to BillingManager.
      */
-    public static void billingAccountInvoicesList(com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", Context.NONE);
-    }
-
-    /*
-     * x-ms-original-file: specification/billing/resource-manager/Microsoft.Billing/stable/2020-05-01/examples/BillingAccountInvoicesListWithRebillDetails.json
-     */
-    /**
-     * Sample code: BillingAccountInvoicesListWithRebillDetails.
-     *
-     * @param manager Entry point to BillingManager.
-     */
-    public static void billingAccountInvoicesListWithRebillDetails(
-        com.azure.resourcemanager.billing.BillingManager manager) {
-        manager.invoices().listByBillingAccount("{billingAccountName}", "2018-01-01", "2018-06-30", Context.NONE);
+    public static void invoicesListByBillingAccount(com.azure.resourcemanager.billing.BillingManager manager) {
+        manager.invoices()
+            .listByBillingAccount(
+                "00000000-0000-0000-0000-000000000000:00000000-0000-0000-0000-000000000000_2019-05-31",
+                LocalDate.parse("2023-01-01"), LocalDate.parse("2023-06-30"), null, null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
     }
 }

@@ -14,24 +14,26 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.VirtualNetworkInner;
 import com.azure.resourcemanager.devtestlabs.models.VirtualNetworkFragment;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworksClient.
+ */
 public interface VirtualNetworksClient {
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkInner> list(String resourceGroupName, String labName);
 
     /**
      * List virtual networks in a given lab.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
@@ -42,21 +44,32 @@ public interface VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualNetworkInner> list(
-        String resourceGroupName,
-        String labName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
+    PagedIterable<VirtualNetworkInner> list(String resourceGroupName, String labName, String expand, String filter,
+        Integer top, String orderby, Context context);
+
+    /**
+     * Get virtual network.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param name The name of the virtual network.
+     * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualNetworkInner> getWithResponse(String resourceGroupName, String labName, String name, String expand,
         Context context);
 
     /**
      * Get virtual network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -69,25 +82,8 @@ public interface VirtualNetworksClient {
     VirtualNetworkInner get(String resourceGroupName, String labName, String name);
 
     /**
-     * Get virtual network.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param expand Specify the $expand query. Example: 'properties($expand=externalSubnets)'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> getWithResponse(
-        String resourceGroupName, String labName, String name, String expand, Context context);
-
-    /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -95,15 +91,15 @@ public interface VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network.
+     * @return the {@link SyncPoller} for polling of a virtual network.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String labName, String name, VirtualNetworkInner virtualNetwork);
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -112,15 +108,15 @@ public interface VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network.
+     * @return the {@link SyncPoller} for polling of a virtual network.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VirtualNetworkInner>, VirtualNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String labName, String name, VirtualNetworkInner virtualNetwork, Context context);
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -131,12 +127,12 @@ public interface VirtualNetworksClient {
      * @return a virtual network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner createOrUpdate(
-        String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork);
+    VirtualNetworkInner createOrUpdate(String resourceGroupName, String labName, String name,
+        VirtualNetworkInner virtualNetwork);
 
     /**
      * Create or replace an existing virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -148,26 +144,26 @@ public interface VirtualNetworksClient {
      * @return a virtual network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner createOrUpdate(
-        String resourceGroupName, String labName, String name, VirtualNetworkInner virtualNetwork, Context context);
+    VirtualNetworkInner createOrUpdate(String resourceGroupName, String labName, String name,
+        VirtualNetworkInner virtualNetwork, Context context);
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name);
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -175,15 +171,15 @@ public interface VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String labName, String name, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labName, String name,
+        Context context);
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -196,7 +192,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Delete virtual network. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -210,23 +206,7 @@ public interface VirtualNetworksClient {
 
     /**
      * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param name The name of the virtual network.
-     * @param virtualNetwork A virtual network.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkInner update(
-        String resourceGroupName, String labName, String name, VirtualNetworkFragment virtualNetwork);
-
-    /**
-     * Allows modifying tags of virtual networks. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param name The name of the virtual network.
@@ -235,9 +215,25 @@ public interface VirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualNetworkInner> updateWithResponse(String resourceGroupName, String labName, String name,
+        VirtualNetworkFragment virtualNetwork, Context context);
+
+    /**
+     * Allows modifying tags of virtual networks. All other properties will be ignored.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param name The name of the virtual network.
+     * @param virtualNetwork A virtual network.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a virtual network.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkInner> updateWithResponse(
-        String resourceGroupName, String labName, String name, VirtualNetworkFragment virtualNetwork, Context context);
+    VirtualNetworkInner update(String resourceGroupName, String labName, String name,
+        VirtualNetworkFragment virtualNetwork);
 }

@@ -5,57 +5,60 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Virtual Network Tap properties. */
+/**
+ * Virtual Network Tap properties.
+ */
 @Fluent
-public final class VirtualNetworkTapPropertiesFormatInner {
+public final class VirtualNetworkTapPropertiesFormatInner
+    implements JsonSerializable<VirtualNetworkTapPropertiesFormatInner> {
     /*
      * Specifies the list of resource IDs for the network interface IP configuration that needs to be tapped.
      */
-    @JsonProperty(value = "networkInterfaceTapConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceTapConfigurationInner> networkInterfaceTapConfigurations;
 
     /*
      * The resource GUID property of the virtual network tap resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The provisioning state of the virtual network tap resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The reference to the private IP Address of the collector nic that will receive the tap.
      */
-    @JsonProperty(value = "destinationNetworkInterfaceIPConfiguration")
     private NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration;
 
     /*
      * The reference to the private IP address on the internal Load Balancer that will receive the tap.
      */
-    @JsonProperty(value = "destinationLoadBalancerFrontEndIPConfiguration")
     private FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration;
 
     /*
      * The VXLAN destination port that will receive the tapped traffic.
      */
-    @JsonProperty(value = "destinationPort")
     private Integer destinationPort;
 
-    /** Creates an instance of VirtualNetworkTapPropertiesFormatInner class. */
+    /**
+     * Creates an instance of VirtualNetworkTapPropertiesFormatInner class.
+     */
     public VirtualNetworkTapPropertiesFormatInner() {
     }
 
     /**
      * Get the networkInterfaceTapConfigurations property: Specifies the list of resource IDs for the network interface
      * IP configuration that needs to be tapped.
-     *
+     * 
      * @return the networkInterfaceTapConfigurations value.
      */
     public List<NetworkInterfaceTapConfigurationInner> networkInterfaceTapConfigurations() {
@@ -64,7 +67,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the virtual network tap resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -73,7 +76,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network tap resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -83,7 +86,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     /**
      * Get the destinationNetworkInterfaceIpConfiguration property: The reference to the private IP Address of the
      * collector nic that will receive the tap.
-     *
+     * 
      * @return the destinationNetworkInterfaceIpConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration() {
@@ -93,7 +96,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     /**
      * Set the destinationNetworkInterfaceIpConfiguration property: The reference to the private IP Address of the
      * collector nic that will receive the tap.
-     *
+     * 
      * @param destinationNetworkInterfaceIpConfiguration the destinationNetworkInterfaceIpConfiguration value to set.
      * @return the VirtualNetworkTapPropertiesFormatInner object itself.
      */
@@ -106,7 +109,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     /**
      * Get the destinationLoadBalancerFrontEndIpConfiguration property: The reference to the private IP address on the
      * internal Load Balancer that will receive the tap.
-     *
+     * 
      * @return the destinationLoadBalancerFrontEndIpConfiguration value.
      */
     public FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration() {
@@ -116,9 +119,9 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     /**
      * Set the destinationLoadBalancerFrontEndIpConfiguration property: The reference to the private IP address on the
      * internal Load Balancer that will receive the tap.
-     *
+     * 
      * @param destinationLoadBalancerFrontEndIpConfiguration the destinationLoadBalancerFrontEndIpConfiguration value to
-     *     set.
+     * set.
      * @return the VirtualNetworkTapPropertiesFormatInner object itself.
      */
     public VirtualNetworkTapPropertiesFormatInner withDestinationLoadBalancerFrontEndIpConfiguration(
@@ -129,7 +132,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
 
     /**
      * Get the destinationPort property: The VXLAN destination port that will receive the tapped traffic.
-     *
+     * 
      * @return the destinationPort value.
      */
     public Integer destinationPort() {
@@ -138,7 +141,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
 
     /**
      * Set the destinationPort property: The VXLAN destination port that will receive the tapped traffic.
-     *
+     * 
      * @param destinationPort the destinationPort value to set.
      * @return the VirtualNetworkTapPropertiesFormatInner object itself.
      */
@@ -149,7 +152,7 @@ public final class VirtualNetworkTapPropertiesFormatInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -162,5 +165,63 @@ public final class VirtualNetworkTapPropertiesFormatInner {
         if (destinationLoadBalancerFrontEndIpConfiguration() != null) {
             destinationLoadBalancerFrontEndIpConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("destinationNetworkInterfaceIPConfiguration",
+            this.destinationNetworkInterfaceIpConfiguration);
+        jsonWriter.writeJsonField("destinationLoadBalancerFrontEndIPConfiguration",
+            this.destinationLoadBalancerFrontEndIpConfiguration);
+        jsonWriter.writeNumberField("destinationPort", this.destinationPort);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkTapPropertiesFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkTapPropertiesFormatInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualNetworkTapPropertiesFormatInner.
+     */
+    public static VirtualNetworkTapPropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkTapPropertiesFormatInner deserializedVirtualNetworkTapPropertiesFormatInner
+                = new VirtualNetworkTapPropertiesFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("networkInterfaceTapConfigurations".equals(fieldName)) {
+                    List<NetworkInterfaceTapConfigurationInner> networkInterfaceTapConfigurations
+                        = reader.readArray(reader1 -> NetworkInterfaceTapConfigurationInner.fromJson(reader1));
+                    deserializedVirtualNetworkTapPropertiesFormatInner.networkInterfaceTapConfigurations
+                        = networkInterfaceTapConfigurations;
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedVirtualNetworkTapPropertiesFormatInner.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkTapPropertiesFormatInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("destinationNetworkInterfaceIPConfiguration".equals(fieldName)) {
+                    deserializedVirtualNetworkTapPropertiesFormatInner.destinationNetworkInterfaceIpConfiguration
+                        = NetworkInterfaceIpConfigurationInner.fromJson(reader);
+                } else if ("destinationLoadBalancerFrontEndIPConfiguration".equals(fieldName)) {
+                    deserializedVirtualNetworkTapPropertiesFormatInner.destinationLoadBalancerFrontEndIpConfiguration
+                        = FrontendIpConfigurationInner.fromJson(reader);
+                } else if ("destinationPort".equals(fieldName)) {
+                    deserializedVirtualNetworkTapPropertiesFormatInner.destinationPort
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkTapPropertiesFormatInner;
+        });
     }
 }

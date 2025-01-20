@@ -5,73 +5,78 @@
 package com.azure.resourcemanager.hdinsight.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The storage Account. */
+/**
+ * The storage Account.
+ */
 @Fluent
-public final class StorageAccount {
+public final class StorageAccount implements JsonSerializable<StorageAccount> {
     /*
      * The name of the storage account.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Whether or not the storage account is the default storage account.
      */
-    @JsonProperty(value = "isDefault")
     private Boolean isDefault;
 
     /*
      * The container in the storage account, only to be specified for WASB storage accounts.
      */
-    @JsonProperty(value = "container")
     private String container;
 
     /*
      * The filesystem, only to be specified for Azure Data Lake Storage Gen 2.
      */
-    @JsonProperty(value = "fileSystem")
     private String fileSystem;
 
     /*
      * The storage account access key.
      */
-    @JsonProperty(value = "key")
     private String key;
 
     /*
      * The resource ID of storage account, only to be specified for Azure Data Lake Storage Gen 2.
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
      * The managed identity (MSI) that is allowed to access the storage account, only to be specified for Azure Data
      * Lake Storage Gen 2.
      */
-    @JsonProperty(value = "msiResourceId")
     private String msiResourceId;
 
     /*
      * The shared access signature key.
      */
-    @JsonProperty(value = "saskey")
     private String saskey;
 
     /*
      * The file share name.
      */
-    @JsonProperty(value = "fileshare")
     private String fileshare;
 
-    /** Creates an instance of StorageAccount class. */
+    /*
+     * Enable secure channel or not, it's an optional field. Default value is false when cluster version < 5.1 and true
+     * when cluster version >= 5.1 ,
+     */
+    private Boolean enableSecureChannel;
+
+    /**
+     * Creates an instance of StorageAccount class.
+     */
     public StorageAccount() {
     }
 
     /**
      * Get the name property: The name of the storage account.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +85,7 @@ public final class StorageAccount {
 
     /**
      * Set the name property: The name of the storage account.
-     *
+     * 
      * @param name the name value to set.
      * @return the StorageAccount object itself.
      */
@@ -91,7 +96,7 @@ public final class StorageAccount {
 
     /**
      * Get the isDefault property: Whether or not the storage account is the default storage account.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -100,7 +105,7 @@ public final class StorageAccount {
 
     /**
      * Set the isDefault property: Whether or not the storage account is the default storage account.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the StorageAccount object itself.
      */
@@ -111,7 +116,7 @@ public final class StorageAccount {
 
     /**
      * Get the container property: The container in the storage account, only to be specified for WASB storage accounts.
-     *
+     * 
      * @return the container value.
      */
     public String container() {
@@ -120,7 +125,7 @@ public final class StorageAccount {
 
     /**
      * Set the container property: The container in the storage account, only to be specified for WASB storage accounts.
-     *
+     * 
      * @param container the container value to set.
      * @return the StorageAccount object itself.
      */
@@ -131,7 +136,7 @@ public final class StorageAccount {
 
     /**
      * Get the fileSystem property: The filesystem, only to be specified for Azure Data Lake Storage Gen 2.
-     *
+     * 
      * @return the fileSystem value.
      */
     public String fileSystem() {
@@ -140,7 +145,7 @@ public final class StorageAccount {
 
     /**
      * Set the fileSystem property: The filesystem, only to be specified for Azure Data Lake Storage Gen 2.
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the StorageAccount object itself.
      */
@@ -151,7 +156,7 @@ public final class StorageAccount {
 
     /**
      * Get the key property: The storage account access key.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -160,7 +165,7 @@ public final class StorageAccount {
 
     /**
      * Set the key property: The storage account access key.
-     *
+     * 
      * @param key the key value to set.
      * @return the StorageAccount object itself.
      */
@@ -172,7 +177,7 @@ public final class StorageAccount {
     /**
      * Get the resourceId property: The resource ID of storage account, only to be specified for Azure Data Lake Storage
      * Gen 2.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -182,7 +187,7 @@ public final class StorageAccount {
     /**
      * Set the resourceId property: The resource ID of storage account, only to be specified for Azure Data Lake Storage
      * Gen 2.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the StorageAccount object itself.
      */
@@ -194,7 +199,7 @@ public final class StorageAccount {
     /**
      * Get the msiResourceId property: The managed identity (MSI) that is allowed to access the storage account, only to
      * be specified for Azure Data Lake Storage Gen 2.
-     *
+     * 
      * @return the msiResourceId value.
      */
     public String msiResourceId() {
@@ -204,7 +209,7 @@ public final class StorageAccount {
     /**
      * Set the msiResourceId property: The managed identity (MSI) that is allowed to access the storage account, only to
      * be specified for Azure Data Lake Storage Gen 2.
-     *
+     * 
      * @param msiResourceId the msiResourceId value to set.
      * @return the StorageAccount object itself.
      */
@@ -215,7 +220,7 @@ public final class StorageAccount {
 
     /**
      * Get the saskey property: The shared access signature key.
-     *
+     * 
      * @return the saskey value.
      */
     public String saskey() {
@@ -224,7 +229,7 @@ public final class StorageAccount {
 
     /**
      * Set the saskey property: The shared access signature key.
-     *
+     * 
      * @param saskey the saskey value to set.
      * @return the StorageAccount object itself.
      */
@@ -235,7 +240,7 @@ public final class StorageAccount {
 
     /**
      * Get the fileshare property: The file share name.
-     *
+     * 
      * @return the fileshare value.
      */
     public String fileshare() {
@@ -244,7 +249,7 @@ public final class StorageAccount {
 
     /**
      * Set the fileshare property: The file share name.
-     *
+     * 
      * @param fileshare the fileshare value to set.
      * @return the StorageAccount object itself.
      */
@@ -254,10 +259,95 @@ public final class StorageAccount {
     }
 
     /**
+     * Get the enableSecureChannel property: Enable secure channel or not, it's an optional field. Default value is
+     * false when cluster version &lt; 5.1 and true when cluster version &gt;= 5.1 ,.
+     * 
+     * @return the enableSecureChannel value.
+     */
+    public Boolean enableSecureChannel() {
+        return this.enableSecureChannel;
+    }
+
+    /**
+     * Set the enableSecureChannel property: Enable secure channel or not, it's an optional field. Default value is
+     * false when cluster version &lt; 5.1 and true when cluster version &gt;= 5.1 ,.
+     * 
+     * @param enableSecureChannel the enableSecureChannel value to set.
+     * @return the StorageAccount object itself.
+     */
+    public StorageAccount withEnableSecureChannel(Boolean enableSecureChannel) {
+        this.enableSecureChannel = enableSecureChannel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeStringField("container", this.container);
+        jsonWriter.writeStringField("fileSystem", this.fileSystem);
+        jsonWriter.writeStringField("key", this.key);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("msiResourceId", this.msiResourceId);
+        jsonWriter.writeStringField("saskey", this.saskey);
+        jsonWriter.writeStringField("fileshare", this.fileshare);
+        jsonWriter.writeBooleanField("enableSecureChannel", this.enableSecureChannel);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageAccount from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageAccount if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageAccount.
+     */
+    public static StorageAccount fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageAccount deserializedStorageAccount = new StorageAccount();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStorageAccount.name = reader.getString();
+                } else if ("isDefault".equals(fieldName)) {
+                    deserializedStorageAccount.isDefault = reader.getNullable(JsonReader::getBoolean);
+                } else if ("container".equals(fieldName)) {
+                    deserializedStorageAccount.container = reader.getString();
+                } else if ("fileSystem".equals(fieldName)) {
+                    deserializedStorageAccount.fileSystem = reader.getString();
+                } else if ("key".equals(fieldName)) {
+                    deserializedStorageAccount.key = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedStorageAccount.resourceId = reader.getString();
+                } else if ("msiResourceId".equals(fieldName)) {
+                    deserializedStorageAccount.msiResourceId = reader.getString();
+                } else if ("saskey".equals(fieldName)) {
+                    deserializedStorageAccount.saskey = reader.getString();
+                } else if ("fileshare".equals(fieldName)) {
+                    deserializedStorageAccount.fileshare = reader.getString();
+                } else if ("enableSecureChannel".equals(fieldName)) {
+                    deserializedStorageAccount.enableSecureChannel = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageAccount;
+        });
     }
 }

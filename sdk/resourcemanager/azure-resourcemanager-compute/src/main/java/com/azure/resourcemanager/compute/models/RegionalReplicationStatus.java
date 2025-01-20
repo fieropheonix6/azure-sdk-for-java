@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** This is the regional replication status. */
+/**
+ * This is the regional replication status.
+ */
 @Immutable
-public final class RegionalReplicationStatus {
+public final class RegionalReplicationStatus implements JsonSerializable<RegionalReplicationStatus> {
     /*
      * The region to which the gallery image version is being replicated to.
      */
-    @JsonProperty(value = "region", access = JsonProperty.Access.WRITE_ONLY)
     private String region;
 
     /*
      * This is the regional replication state.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationState state;
 
     /*
      * The details of the replication status.
      */
-    @JsonProperty(value = "details", access = JsonProperty.Access.WRITE_ONLY)
     private String details;
 
     /*
      * It indicates progress of the replication job.
      */
-    @JsonProperty(value = "progress", access = JsonProperty.Access.WRITE_ONLY)
     private Integer progress;
 
-    /** Creates an instance of RegionalReplicationStatus class. */
+    /**
+     * Creates an instance of RegionalReplicationStatus class.
+     */
     public RegionalReplicationStatus() {
     }
 
     /**
      * Get the region property: The region to which the gallery image version is being replicated to.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -49,7 +53,7 @@ public final class RegionalReplicationStatus {
 
     /**
      * Get the state property: This is the regional replication state.
-     *
+     * 
      * @return the state value.
      */
     public ReplicationState state() {
@@ -58,7 +62,7 @@ public final class RegionalReplicationStatus {
 
     /**
      * Get the details property: The details of the replication status.
-     *
+     * 
      * @return the details value.
      */
     public String details() {
@@ -67,7 +71,7 @@ public final class RegionalReplicationStatus {
 
     /**
      * Get the progress property: It indicates progress of the replication job.
-     *
+     * 
      * @return the progress value.
      */
     public Integer progress() {
@@ -76,9 +80,50 @@ public final class RegionalReplicationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegionalReplicationStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegionalReplicationStatus if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RegionalReplicationStatus.
+     */
+    public static RegionalReplicationStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegionalReplicationStatus deserializedRegionalReplicationStatus = new RegionalReplicationStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("region".equals(fieldName)) {
+                    deserializedRegionalReplicationStatus.region = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedRegionalReplicationStatus.state = ReplicationState.fromString(reader.getString());
+                } else if ("details".equals(fieldName)) {
+                    deserializedRegionalReplicationStatus.details = reader.getString();
+                } else if ("progress".equals(fieldName)) {
+                    deserializedRegionalReplicationStatus.progress = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegionalReplicationStatus;
+        });
     }
 }

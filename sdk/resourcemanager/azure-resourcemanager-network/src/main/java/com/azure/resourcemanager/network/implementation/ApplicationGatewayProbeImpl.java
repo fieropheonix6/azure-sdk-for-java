@@ -17,11 +17,9 @@ import java.util.TreeSet;
 
 /** Implementation for ApplicationGatewayProbe. */
 class ApplicationGatewayProbeImpl
-    extends ChildResourceImpl<ApplicationGatewayProbeInner, ApplicationGatewayImpl, ApplicationGateway>
-    implements ApplicationGatewayProbe,
-        ApplicationGatewayProbe.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
-        ApplicationGatewayProbe.UpdateDefinition<ApplicationGateway.Update>,
-        ApplicationGatewayProbe.Update {
+    extends ChildResourceImpl<ApplicationGatewayProbeInner, ApplicationGatewayImpl, ApplicationGateway> implements
+    ApplicationGatewayProbe, ApplicationGatewayProbe.Definition<ApplicationGateway.DefinitionStages.WithCreate>,
+    ApplicationGatewayProbe.UpdateDefinition<ApplicationGateway.Update>, ApplicationGatewayProbe.Update {
     private final ClientLogger logger = new ClientLogger(getClass());
 
     ApplicationGatewayProbeImpl(ApplicationGatewayProbeInner inner, ApplicationGatewayImpl parent) {
@@ -85,6 +83,11 @@ class ApplicationGatewayProbeImpl
         return this.innerModel().host();
     }
 
+    @Override
+    public Boolean isHostNameFromBackendHttpSettings() {
+        return this.innerModel().pickHostnameFromBackendHttpSettings();
+    }
+
     // Fluent setters
 
     @Override
@@ -115,6 +118,18 @@ class ApplicationGatewayProbeImpl
     @Override
     public ApplicationGatewayProbeImpl withHost(String host) {
         this.innerModel().withHost(host);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayProbeImpl withHostNameFromBackendHttpSettings() {
+        this.innerModel().withPickHostnameFromBackendHttpSettings(true);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayProbeImpl withoutHostNameFromBackendHttpSettings() {
+        this.innerModel().withPickHostnameFromBackendHttpSettings(false);
         return this;
     }
 
@@ -172,13 +187,11 @@ class ApplicationGatewayProbeImpl
     @Override
     public ApplicationGatewayProbeImpl withHealthyHttpResponseStatusCodeRange(int from, int to) {
         if (from < 0 || to < 0) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("The start and end of a range cannot be negative numbers."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The start and end of a range cannot be negative numbers."));
         } else if (to < from) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("The end of the range cannot be less than the start of the range."));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The end of the range cannot be less than the start of the range."));
         } else {
             return this.withHealthyHttpResponseStatusCodeRange(String.valueOf(from) + "-" + String.valueOf(to));
         }

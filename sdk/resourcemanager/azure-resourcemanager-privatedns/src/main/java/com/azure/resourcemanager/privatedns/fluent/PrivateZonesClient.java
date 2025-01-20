@@ -21,88 +21,89 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateZonesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateZonesClient.
+ */
 public interface PrivateZonesClient
     extends InnerSupportsGet<PrivateZoneInner>, InnerSupportsListing<PrivateZoneInner>, InnerSupportsDelete<Void> {
     /**
      * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
+     * zone. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Private DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String privateZoneName,
+        PrivateZoneInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
+     * zone. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of describes a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+    PollerFlux<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String privateZoneName, PrivateZoneInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes a Private DNS zone.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String privateZoneName, PrivateZoneInner parameters);
+
+    /**
+     * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
+     * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of describes a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+    SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdate(String resourceGroupName,
+        String privateZoneName, PrivateZoneInner parameters);
 
     /**
      * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
+     * zone. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -110,40 +111,31 @@ public interface PrivateZonesClient
      * @return the {@link SyncPoller} for polling of describes a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginCreateOrUpdate(String resourceGroupName,
+        String privateZoneName, PrivateZoneInner parameters, String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
+     * zone. Other values will be ignored.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateZoneInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
+    Mono<PrivateZoneInner> createOrUpdateAsync(String resourceGroupName, String privateZoneName,
+        PrivateZoneInner parameters, String ifMatch, String ifNoneMatch);
 
     /**
      * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
@@ -153,35 +145,12 @@ public interface PrivateZonesClient
      * @return describes a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateZoneInner> createOrUpdateAsync(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters);
+    Mono<PrivateZoneInner> createOrUpdateAsync(String resourceGroupName, String privateZoneName,
+        PrivateZoneInner parameters);
 
     /**
      * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param parameters Parameters supplied to the CreateOrUpdate operation.
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Private DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateZoneInner createOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch);
-
-    /**
-     * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
@@ -195,14 +164,14 @@ public interface PrivateZonesClient
 
     /**
      * Creates or updates a Private DNS zone. Does not modify Links to virtual networks or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the CreateOrUpdate operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param ifNoneMatch Set to '*' to allow a new Private DNS zone to be created, but to prevent updating an existing
-     *     zone. Other values will be ignored.
+     * zone. Other values will be ignored.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -210,73 +179,81 @@ public interface PrivateZonesClient
      * @return describes a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateZoneInner createOrUpdate(
-        String resourceGroupName,
-        String privateZoneName,
-        PrivateZoneInner parameters,
-        String ifMatch,
-        String ifNoneMatch,
-        Context context);
+    PrivateZoneInner createOrUpdate(String resourceGroupName, String privateZoneName, PrivateZoneInner parameters,
+        String ifMatch, String ifNoneMatch, Context context);
 
     /**
      * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Private DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String privateZoneName,
+        PrivateZoneInner parameters, String ifMatch);
 
     /**
      * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of describes a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdateAsync(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch);
+    PollerFlux<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdateAsync(String resourceGroupName,
+        String privateZoneName, PrivateZoneInner parameters, String ifMatch);
 
     /**
      * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of describes a Private DNS zone.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdateAsync(String resourceGroupName,
+        String privateZoneName, PrivateZoneInner parameters);
+
+    /**
+     * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
+     * @param parameters Parameters supplied to the Update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of describes a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdate(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch);
+    SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdate(String resourceGroupName,
+        String privateZoneName, PrivateZoneInner parameters);
 
     /**
      * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -284,29 +261,29 @@ public interface PrivateZonesClient
      * @return the {@link SyncPoller} for polling of describes a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdate(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch, Context context);
+    SyncPoller<PollResult<PrivateZoneInner>, PrivateZoneInner> beginUpdate(String resourceGroupName,
+        String privateZoneName, PrivateZoneInner parameters, String ifMatch, Context context);
 
     /**
      * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Private DNS zone on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateZoneInner> updateAsync(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch);
+    Mono<PrivateZoneInner> updateAsync(String resourceGroupName, String privateZoneName, PrivateZoneInner parameters,
+        String ifMatch);
 
     /**
      * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
@@ -320,24 +297,7 @@ public interface PrivateZonesClient
 
     /**
      * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param parameters Parameters supplied to the Update operation.
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Private DNS zone.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateZoneInner update(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch);
-
-    /**
-     * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
@@ -351,12 +311,12 @@ public interface PrivateZonesClient
 
     /**
      * Updates a Private DNS zone. Does not modify virtual network links or DNS records within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param parameters Parameters supplied to the Update operation.
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always overwrite the current zone. Specify
-     *     the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
+     * the last-seen ETag value to prevent accidentally overwriting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -364,67 +324,79 @@ public interface PrivateZonesClient
      * @return describes a Private DNS zone.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateZoneInner update(
-        String resourceGroupName, String privateZoneName, PrivateZoneInner parameters, String ifMatch, Context context);
+    PrivateZoneInner update(String resourceGroupName, String privateZoneName, PrivateZoneInner parameters,
+        String ifMatch, Context context);
 
     /**
      * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
      * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String privateZoneName, String ifMatch);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String privateZoneName,
+        String ifMatch);
 
     /**
      * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
      * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String privateZoneName, String ifMatch);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateZoneName,
+        String ifMatch);
 
     /**
      * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
      * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String privateZoneName);
+
+    /**
+     * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
+     * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateZoneName, String ifMatch);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateZoneName);
 
     /**
      * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
      * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -432,17 +404,17 @@ public interface PrivateZonesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String privateZoneName, String ifMatch, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String privateZoneName, String ifMatch,
+        Context context);
 
     /**
      * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
      * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -454,7 +426,7 @@ public interface PrivateZonesClient
     /**
      * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
      * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -468,22 +440,7 @@ public interface PrivateZonesClient
     /**
      * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
      * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String privateZoneName, String ifMatch);
-
-    /**
-     * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
-     * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -496,11 +453,11 @@ public interface PrivateZonesClient
     /**
      * Deletes a Private DNS zone. WARNING: All DNS records in the zone will also be deleted. This operation cannot be
      * undone. Private DNS zone cannot be deleted unless all virtual network links to it are removed.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @param ifMatch The ETag of the Private DNS zone. Omit this value to always delete the current zone. Specify the
-     *     last-seen ETag value to prevent accidentally deleting any concurrent changes.
+     * last-seen ETag value to prevent accidentally deleting any concurrent changes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -512,7 +469,7 @@ public interface PrivateZonesClient
     /**
      * Gets a Private DNS zone. Retrieves the zone properties, but not the virtual networks links or the record sets
      * within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -521,13 +478,13 @@ public interface PrivateZonesClient
      * @return a Private DNS zone along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateZoneInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String privateZoneName);
+    Mono<Response<PrivateZoneInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String privateZoneName);
 
     /**
      * Gets a Private DNS zone. Retrieves the zone properties, but not the virtual networks links or the record sets
      * within the zone.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -541,7 +498,23 @@ public interface PrivateZonesClient
     /**
      * Gets a Private DNS zone. Retrieves the zone properties, but not the virtual networks links or the record sets
      * within the zone.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Private DNS zone along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PrivateZoneInner> getByResourceGroupWithResponse(String resourceGroupName, String privateZoneName,
+        Context context);
+
+    /**
+     * Gets a Private DNS zone. Retrieves the zone properties, but not the virtual networks links or the record sets
+     * within the zone.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -553,24 +526,8 @@ public interface PrivateZonesClient
     PrivateZoneInner getByResourceGroup(String resourceGroupName, String privateZoneName);
 
     /**
-     * Gets a Private DNS zone. Retrieves the zone properties, but not the virtual networks links or the record sets
-     * within the zone.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param privateZoneName The name of the Private DNS zone (without a terminating dot).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Private DNS zone along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateZoneInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String privateZoneName, Context context);
-
-    /**
      * Lists the Private DNS zones in all resource groups in a subscription.
-     *
+     * 
      * @param top The maximum number of Private DNS zones to return. If not specified, returns up to 100 zones.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -582,7 +539,7 @@ public interface PrivateZonesClient
 
     /**
      * Lists the Private DNS zones in all resource groups in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a Private DNS zone list operation as paginated response with {@link PagedFlux}.
@@ -592,7 +549,7 @@ public interface PrivateZonesClient
 
     /**
      * Lists the Private DNS zones in all resource groups in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to a Private DNS zone list operation as paginated response with {@link PagedIterable}.
@@ -602,7 +559,7 @@ public interface PrivateZonesClient
 
     /**
      * Lists the Private DNS zones in all resource groups in a subscription.
-     *
+     * 
      * @param top The maximum number of Private DNS zones to return. If not specified, returns up to 100 zones.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -615,7 +572,7 @@ public interface PrivateZonesClient
 
     /**
      * Lists the Private DNS zones within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -628,7 +585,7 @@ public interface PrivateZonesClient
 
     /**
      * Lists the Private DNS zones within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -640,7 +597,7 @@ public interface PrivateZonesClient
 
     /**
      * Lists the Private DNS zones within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -652,7 +609,7 @@ public interface PrivateZonesClient
 
     /**
      * Lists the Private DNS zones within a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param top The maximum number of record sets to return. If not specified, returns up to 100 record sets.
      * @param context The context to associate with this operation.

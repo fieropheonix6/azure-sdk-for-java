@@ -9,7 +9,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.ExecutableImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.models.AuthenticationType;
-import com.azure.resourcemanager.sql.models.ExportRequest;
+import com.azure.resourcemanager.sql.models.ExportDatabaseDefinition;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseExportRequest;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
@@ -27,12 +27,12 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
 
     private final SqlDatabaseImpl sqlDatabase;
     private final SqlServerManager sqlServerManager;
-    private ExportRequest inner;
+    private ExportDatabaseDefinition inner;
 
     SqlDatabaseExportRequestImpl(SqlDatabaseImpl sqlDatabase, SqlServerManager sqlServerManager) {
         this.sqlDatabase = sqlDatabase;
         this.sqlServerManager = sqlServerManager;
-        this.inner = new ExportRequest();
+        this.inner = new ExportDatabaseDefinition();
     }
 
     @Override
@@ -41,20 +41,15 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     @Override
-    public ExportRequest innerModel() {
+    public ExportDatabaseDefinition innerModel() {
         return this.inner;
     }
 
     @Override
     public Mono<SqlDatabaseImportExportResponse> executeWorkAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getDatabases()
-            .exportAsync(
-                this.sqlDatabase.resourceGroupName,
-                this.sqlDatabase.sqlServerName,
-                this.sqlDatabase.name(),
+            .exportAsync(this.sqlDatabase.resourceGroupName, this.sqlDatabase.sqlServerName, this.sqlDatabase.name(),
                 this.innerModel())
             .map(SqlDatabaseImportExportResponseImpl::new);
     }
@@ -62,80 +57,61 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     @Override
     public SqlDatabaseExportRequestImpl exportTo(String storageUri) {
         if (this.inner == null) {
-            this.inner = new ExportRequest();
+            this.inner = new ExportDatabaseDefinition();
         }
         this.inner.withStorageUri(storageUri);
         return this;
     }
 
-    private Mono<Indexable> getOrCreateStorageAccountContainer(
-        final StorageAccount storageAccount,
-        final String containerName,
-        final String fileName,
-        final FunctionalTaskItem.Context context) {
+    private Mono<Indexable> getOrCreateStorageAccountContainer(final StorageAccount storageAccount,
+        final String containerName, final String fileName, final FunctionalTaskItem.Context context) {
         final SqlDatabaseExportRequestImpl self = this;
-        return storageAccount
-            .getKeysAsync()
+        return storageAccount.getKeysAsync()
             .flatMap(storageAccountKeys -> Mono.justOrEmpty(storageAccountKeys.stream().findFirst()))
-            .flatMap(
-                storageAccountKey -> {
-                    self
-                        .inner
-                        .withStorageUri(
-                            String
-                                .format(
-                                    "%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
-                    self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
-                    self.inner.withStorageKey(storageAccountKey.value());
-                    BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
-                    return blobContainers
-                        .getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
-                        .onErrorResume(
-                            error -> {
-                                if (error instanceof ManagementException) {
-                                    if (((ManagementException) error).getResponse().getStatusCode() == 404) {
-                                        return blobContainers
-                                            .defineContainer(containerName)
-                                            .withExistingStorageAccount(
-                                                parent().resourceGroupName(), storageAccount.name())
-                                            .withPublicAccess(PublicAccess.NONE)
-                                            .createAsync();
-                                    }
-                                }
-                                return Mono.error(error);
-                            });
-                });
+            .flatMap(storageAccountKey -> {
+                self.inner.withStorageUri(
+                    String.format("%s%s/%s", storageAccount.endPoints().primary().blob(), containerName, fileName));
+                self.inner.withStorageKeyType(StorageKeyType.STORAGE_ACCESS_KEY);
+                self.inner.withStorageKey(storageAccountKey.value());
+                BlobContainers blobContainers = this.sqlServerManager.storageManager().blobContainers();
+                return blobContainers.getAsync(parent().resourceGroupName(), storageAccount.name(), containerName)
+                    .onErrorResume(error -> {
+                        if (error instanceof ManagementException) {
+                            if (((ManagementException) error).getResponse().getStatusCode() == 404) {
+                                return blobContainers.defineContainer(containerName)
+                                    .withExistingStorageAccount(parent().resourceGroupName(), storageAccount.name())
+                                    .withPublicAccess(PublicAccess.NONE)
+                                    .createAsync();
+                            }
+                        }
+                        return Mono.error(error);
+                    });
+            });
     }
 
     @Override
-    public SqlDatabaseExportRequestImpl exportTo(
-        final StorageAccount storageAccount, final String containerName, final String fileName) {
+    public SqlDatabaseExportRequestImpl exportTo(final StorageAccount storageAccount, final String containerName,
+        final String fileName) {
         Objects.requireNonNull(storageAccount);
         Objects.requireNonNull(containerName);
         Objects.requireNonNull(fileName);
         if (this.inner == null) {
-            this.inner = new ExportRequest();
+            this.inner = new ExportDatabaseDefinition();
         }
-        this
-            .addDependency(
-                context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));
+        this.addDependency(
+            context -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context));
         return this;
     }
 
     @Override
-    public SqlDatabaseExportRequestImpl exportTo(
-        final Creatable<StorageAccount> storageAccountCreatable, final String containerName, final String fileName) {
+    public SqlDatabaseExportRequestImpl exportTo(final Creatable<StorageAccount> storageAccountCreatable,
+        final String containerName, final String fileName) {
         if (this.inner == null) {
-            this.inner = new ExportRequest();
+            this.inner = new ExportDatabaseDefinition();
         }
-        this
-            .addDependency(
-                context ->
-                    storageAccountCreatable
-                        .createAsync()
-                        .flatMap(
-                            storageAccount ->
-                                getOrCreateStorageAccountContainer(storageAccount, containerName, fileName, context)));
+        this.addDependency(context -> storageAccountCreatable.createAsync()
+            .flatMap(storageAccount -> getOrCreateStorageAccountContainer(storageAccount, containerName, fileName,
+                context)));
         return this;
     }
 
@@ -164,21 +140,21 @@ public class SqlDatabaseExportRequestImpl extends ExecutableImpl<SqlDatabaseImpo
     }
 
     SqlDatabaseExportRequestImpl withAuthenticationType(AuthenticationType authenticationType) {
-        this.inner.withAuthenticationType(authenticationType);
+        this.inner.withAuthenticationType(authenticationType.toString());
         return this;
     }
 
     @Override
-    public SqlDatabaseExportRequestImpl withSqlAdministratorLoginAndPassword(
-        String administratorLogin, String administratorPassword) {
-        this.inner.withAuthenticationType(AuthenticationType.SQL);
+    public SqlDatabaseExportRequestImpl withSqlAdministratorLoginAndPassword(String administratorLogin,
+        String administratorPassword) {
+        this.inner.withAuthenticationType(AuthenticationType.SQL.toString());
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }
 
     @Override
-    public SqlDatabaseExportRequestImpl withActiveDirectoryLoginAndPassword(
-        String administratorLogin, String administratorPassword) {
-        this.inner.withAuthenticationType(AuthenticationType.ADPASSWORD);
+    public SqlDatabaseExportRequestImpl withActiveDirectoryLoginAndPassword(String administratorLogin,
+        String administratorPassword) {
+        this.inner.withAuthenticationType(AuthenticationType.ADPASSWORD.toString());
         return this.withLoginAndPassword(administratorLogin, administratorPassword);
     }
 

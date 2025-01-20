@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ContainerThrottlingData model. */
+/**
+ * The ContainerThrottlingData model.
+ */
 @Fluent
-public final class ContainerThrottlingData {
+public final class ContainerThrottlingData implements JsonSerializable<ContainerThrottlingData> {
     /*
      * The periods property.
      */
-    @JsonProperty(value = "periods")
     private Integer periods;
 
     /*
      * The throttledPeriods property.
      */
-    @JsonProperty(value = "throttledPeriods")
     private Integer throttledPeriods;
 
     /*
      * The throttledTime property.
      */
-    @JsonProperty(value = "throttledTime")
     private Integer throttledTime;
 
     /**
+     * Creates an instance of ContainerThrottlingData class.
+     */
+    public ContainerThrottlingData() {
+    }
+
+    /**
      * Get the periods property: The periods property.
-     *
+     * 
      * @return the periods value.
      */
     public Integer periods() {
@@ -39,7 +48,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Set the periods property: The periods property.
-     *
+     * 
      * @param periods the periods value to set.
      * @return the ContainerThrottlingData object itself.
      */
@@ -50,7 +59,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Get the throttledPeriods property: The throttledPeriods property.
-     *
+     * 
      * @return the throttledPeriods value.
      */
     public Integer throttledPeriods() {
@@ -59,7 +68,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Set the throttledPeriods property: The throttledPeriods property.
-     *
+     * 
      * @param throttledPeriods the throttledPeriods value to set.
      * @return the ContainerThrottlingData object itself.
      */
@@ -70,7 +79,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Get the throttledTime property: The throttledTime property.
-     *
+     * 
      * @return the throttledTime value.
      */
     public Integer throttledTime() {
@@ -79,7 +88,7 @@ public final class ContainerThrottlingData {
 
     /**
      * Set the throttledTime property: The throttledTime property.
-     *
+     * 
      * @param throttledTime the throttledTime value to set.
      * @return the ContainerThrottlingData object itself.
      */
@@ -90,9 +99,51 @@ public final class ContainerThrottlingData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("periods", this.periods);
+        jsonWriter.writeNumberField("throttledPeriods", this.throttledPeriods);
+        jsonWriter.writeNumberField("throttledTime", this.throttledTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerThrottlingData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerThrottlingData if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerThrottlingData.
+     */
+    public static ContainerThrottlingData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerThrottlingData deserializedContainerThrottlingData = new ContainerThrottlingData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("periods".equals(fieldName)) {
+                    deserializedContainerThrottlingData.periods = reader.getNullable(JsonReader::getInt);
+                } else if ("throttledPeriods".equals(fieldName)) {
+                    deserializedContainerThrottlingData.throttledPeriods = reader.getNullable(JsonReader::getInt);
+                } else if ("throttledTime".equals(fieldName)) {
+                    deserializedContainerThrottlingData.throttledTime = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerThrottlingData;
+        });
     }
 }

@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.postgresqlflexibleserver.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Servers Stop. */
+/**
+ * Samples for Servers Stop.
+ */
 public final class ServersStopSamples {
     /*
-     * x-ms-original-file: specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2021-06-01/examples/ServerStop.json
+     * x-ms-original-file:
+     * specification/postgresql/resource-manager/Microsoft.DBforPostgreSQL/stable/2024-08-01/examples/ServerStop.json
      */
     /**
      * Sample code: ServerStop.
-     *
+     * 
      * @param manager Entry point to PostgreSqlManager.
      */
     public static void serverStop(com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager manager) {
-        manager.servers().stop("testrg", "testserver", Context.NONE);
+        manager.servers().stop("testrg", "testserver", com.azure.core.util.Context.NONE);
     }
 }

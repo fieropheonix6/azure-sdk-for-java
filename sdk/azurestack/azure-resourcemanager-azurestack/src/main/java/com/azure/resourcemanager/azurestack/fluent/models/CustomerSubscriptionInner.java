@@ -5,70 +5,60 @@
 package com.azure.resourcemanager.azurestack.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Customer subscription. */
-@JsonFlatten
+/**
+ * Customer subscription.
+ */
 @Fluent
-public class CustomerSubscriptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomerSubscriptionInner.class);
+public final class CustomerSubscriptionInner extends ProxyResource {
+    /*
+     * Customer subscription properties.
+     */
+    private CustomerSubscriptionProperties innerProperties;
 
     /*
-     * Metadata pertaining to creation and last modification of the resource.
+     * The entity tag used for optimistic concurrency when modifying the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
-    private SystemData systemData;
-
-    /*
-     * Tenant Id.
-     */
-    @JsonProperty(value = "properties.tenantId")
-    private String tenantId;
-
-    /*
-     * The entity tag used for optimistic concurrency when modifying the
-     * resource.
-     */
-    @JsonProperty(value = "etag")
     private String etag;
 
-    /**
-     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
-     * @return the systemData value.
+    /*
+     * The type of the resource.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CustomerSubscriptionInner class.
+     */
+    public CustomerSubscriptionInner() {
     }
 
     /**
-     * Get the tenantId property: Tenant Id.
-     *
-     * @return the tenantId value.
+     * Get the innerProperties property: Customer subscription properties.
+     * 
+     * @return the innerProperties value.
      */
-    public String tenantId() {
-        return this.tenantId;
-    }
-
-    /**
-     * Set the tenantId property: Tenant Id.
-     *
-     * @param tenantId the tenantId value to set.
-     * @return the CustomerSubscriptionInner object itself.
-     */
-    public CustomerSubscriptionInner withTenantId(String tenantId) {
-        this.tenantId = tenantId;
-        return this;
+    private CustomerSubscriptionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
      * Get the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -77,7 +67,7 @@ public class CustomerSubscriptionInner extends ProxyResource {
 
     /**
      * Set the etag property: The entity tag used for optimistic concurrency when modifying the resource.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the CustomerSubscriptionInner object itself.
      */
@@ -87,10 +77,113 @@ public class CustomerSubscriptionInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the tenantId property: Tenant Id.
+     * 
+     * @return the tenantId value.
+     */
+    public String tenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
+    }
+
+    /**
+     * Set the tenantId property: Tenant Id.
+     * 
+     * @param tenantId the tenantId value to set.
+     * @return the CustomerSubscriptionInner object itself.
+     */
+    public CustomerSubscriptionInner withTenantId(String tenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CustomerSubscriptionProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomerSubscriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomerSubscriptionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomerSubscriptionInner.
+     */
+    public static CustomerSubscriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomerSubscriptionInner deserializedCustomerSubscriptionInner = new CustomerSubscriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomerSubscriptionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomerSubscriptionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomerSubscriptionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomerSubscriptionInner.innerProperties
+                        = CustomerSubscriptionProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedCustomerSubscriptionInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomerSubscriptionInner;
+        });
     }
 }

@@ -5,60 +5,76 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The NginxDeploymentProperties model. */
+/**
+ * The NginxDeploymentProperties model.
+ */
 @Fluent
-public final class NginxDeploymentProperties {
+public final class NginxDeploymentProperties implements JsonSerializable<NginxDeploymentProperties> {
     /*
      * The provisioningState property.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The nginxVersion property.
      */
-    @JsonProperty(value = "nginxVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String nginxVersion;
 
     /*
      * The managed resource group to deploy VNet injection related network resources.
      */
-    @JsonProperty(value = "managedResourceGroup")
     private String managedResourceGroup;
 
     /*
      * The networkProfile property.
      */
-    @JsonProperty(value = "networkProfile")
     private NginxNetworkProfile networkProfile;
 
     /*
      * The IP address of the deployment.
      */
-    @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
      * The enableDiagnosticsSupport property.
      */
-    @JsonProperty(value = "enableDiagnosticsSupport")
     private Boolean enableDiagnosticsSupport;
 
     /*
      * The logging property.
      */
-    @JsonProperty(value = "logging")
     private NginxLogging logging;
 
-    /** Creates an instance of NginxDeploymentProperties class. */
+    /*
+     * Information on how the deployment will be scaled.
+     */
+    private NginxDeploymentScalingProperties scalingProperties;
+
+    /*
+     * Autoupgrade settings of a deployment.
+     */
+    private AutoUpgradeProfile autoUpgradeProfile;
+
+    /*
+     * The userProfile property.
+     */
+    private NginxDeploymentUserProfile userProfile;
+
+    /**
+     * Creates an instance of NginxDeploymentProperties class.
+     */
     public NginxDeploymentProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -67,7 +83,7 @@ public final class NginxDeploymentProperties {
 
     /**
      * Get the nginxVersion property: The nginxVersion property.
-     *
+     * 
      * @return the nginxVersion value.
      */
     public String nginxVersion() {
@@ -77,7 +93,7 @@ public final class NginxDeploymentProperties {
     /**
      * Get the managedResourceGroup property: The managed resource group to deploy VNet injection related network
      * resources.
-     *
+     * 
      * @return the managedResourceGroup value.
      */
     public String managedResourceGroup() {
@@ -87,7 +103,7 @@ public final class NginxDeploymentProperties {
     /**
      * Set the managedResourceGroup property: The managed resource group to deploy VNet injection related network
      * resources.
-     *
+     * 
      * @param managedResourceGroup the managedResourceGroup value to set.
      * @return the NginxDeploymentProperties object itself.
      */
@@ -98,7 +114,7 @@ public final class NginxDeploymentProperties {
 
     /**
      * Get the networkProfile property: The networkProfile property.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NginxNetworkProfile networkProfile() {
@@ -107,7 +123,7 @@ public final class NginxDeploymentProperties {
 
     /**
      * Set the networkProfile property: The networkProfile property.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the NginxDeploymentProperties object itself.
      */
@@ -118,7 +134,7 @@ public final class NginxDeploymentProperties {
 
     /**
      * Get the ipAddress property: The IP address of the deployment.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -127,7 +143,7 @@ public final class NginxDeploymentProperties {
 
     /**
      * Get the enableDiagnosticsSupport property: The enableDiagnosticsSupport property.
-     *
+     * 
      * @return the enableDiagnosticsSupport value.
      */
     public Boolean enableDiagnosticsSupport() {
@@ -136,7 +152,7 @@ public final class NginxDeploymentProperties {
 
     /**
      * Set the enableDiagnosticsSupport property: The enableDiagnosticsSupport property.
-     *
+     * 
      * @param enableDiagnosticsSupport the enableDiagnosticsSupport value to set.
      * @return the NginxDeploymentProperties object itself.
      */
@@ -147,7 +163,7 @@ public final class NginxDeploymentProperties {
 
     /**
      * Get the logging property: The logging property.
-     *
+     * 
      * @return the logging value.
      */
     public NginxLogging logging() {
@@ -156,7 +172,7 @@ public final class NginxDeploymentProperties {
 
     /**
      * Set the logging property: The logging property.
-     *
+     * 
      * @param logging the logging value to set.
      * @return the NginxDeploymentProperties object itself.
      */
@@ -166,8 +182,68 @@ public final class NginxDeploymentProperties {
     }
 
     /**
+     * Get the scalingProperties property: Information on how the deployment will be scaled.
+     * 
+     * @return the scalingProperties value.
+     */
+    public NginxDeploymentScalingProperties scalingProperties() {
+        return this.scalingProperties;
+    }
+
+    /**
+     * Set the scalingProperties property: Information on how the deployment will be scaled.
+     * 
+     * @param scalingProperties the scalingProperties value to set.
+     * @return the NginxDeploymentProperties object itself.
+     */
+    public NginxDeploymentProperties withScalingProperties(NginxDeploymentScalingProperties scalingProperties) {
+        this.scalingProperties = scalingProperties;
+        return this;
+    }
+
+    /**
+     * Get the autoUpgradeProfile property: Autoupgrade settings of a deployment.
+     * 
+     * @return the autoUpgradeProfile value.
+     */
+    public AutoUpgradeProfile autoUpgradeProfile() {
+        return this.autoUpgradeProfile;
+    }
+
+    /**
+     * Set the autoUpgradeProfile property: Autoupgrade settings of a deployment.
+     * 
+     * @param autoUpgradeProfile the autoUpgradeProfile value to set.
+     * @return the NginxDeploymentProperties object itself.
+     */
+    public NginxDeploymentProperties withAutoUpgradeProfile(AutoUpgradeProfile autoUpgradeProfile) {
+        this.autoUpgradeProfile = autoUpgradeProfile;
+        return this;
+    }
+
+    /**
+     * Get the userProfile property: The userProfile property.
+     * 
+     * @return the userProfile value.
+     */
+    public NginxDeploymentUserProfile userProfile() {
+        return this.userProfile;
+    }
+
+    /**
+     * Set the userProfile property: The userProfile property.
+     * 
+     * @param userProfile the userProfile value to set.
+     * @return the NginxDeploymentProperties object itself.
+     */
+    public NginxDeploymentProperties withUserProfile(NginxDeploymentUserProfile userProfile) {
+        this.userProfile = userProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -177,5 +253,77 @@ public final class NginxDeploymentProperties {
         if (logging() != null) {
             logging().validate();
         }
+        if (scalingProperties() != null) {
+            scalingProperties().validate();
+        }
+        if (autoUpgradeProfile() != null) {
+            autoUpgradeProfile().validate();
+        }
+        if (userProfile() != null) {
+            userProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedResourceGroup", this.managedResourceGroup);
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeBooleanField("enableDiagnosticsSupport", this.enableDiagnosticsSupport);
+        jsonWriter.writeJsonField("logging", this.logging);
+        jsonWriter.writeJsonField("scalingProperties", this.scalingProperties);
+        jsonWriter.writeJsonField("autoUpgradeProfile", this.autoUpgradeProfile);
+        jsonWriter.writeJsonField("userProfile", this.userProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxDeploymentProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxDeploymentProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxDeploymentProperties.
+     */
+    public static NginxDeploymentProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxDeploymentProperties deserializedNginxDeploymentProperties = new NginxDeploymentProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("nginxVersion".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.nginxVersion = reader.getString();
+                } else if ("managedResourceGroup".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.managedResourceGroup = reader.getString();
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.networkProfile = NginxNetworkProfile.fromJson(reader);
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.ipAddress = reader.getString();
+                } else if ("enableDiagnosticsSupport".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.enableDiagnosticsSupport
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("logging".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.logging = NginxLogging.fromJson(reader);
+                } else if ("scalingProperties".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.scalingProperties
+                        = NginxDeploymentScalingProperties.fromJson(reader);
+                } else if ("autoUpgradeProfile".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.autoUpgradeProfile = AutoUpgradeProfile.fromJson(reader);
+                } else if ("userProfile".equals(fieldName)) {
+                    deserializedNginxDeploymentProperties.userProfile = NginxDeploymentUserProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxDeploymentProperties;
+        });
     }
 }

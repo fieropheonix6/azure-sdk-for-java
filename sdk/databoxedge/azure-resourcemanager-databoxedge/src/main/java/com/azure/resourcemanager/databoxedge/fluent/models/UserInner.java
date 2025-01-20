@@ -5,121 +5,215 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.AsymmetricEncryptedSecret;
 import com.azure.resourcemanager.databoxedge.models.ShareAccessRight;
 import com.azure.resourcemanager.databoxedge.models.UserType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Represents a user who has access to one or more shares on the Data Box Edge/Gateway device. */
-@JsonFlatten
+/**
+ * Represents a user who has access to one or more shares on the Data Box Edge/Gateway device.
+ */
 @Fluent
-public class UserInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
+public final class UserInner extends ArmBaseModel {
+    /*
+     * The storage account credential properties.
+     */
+    private UserProperties innerProperties = new UserProperties();
 
     /*
-     * The password details.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.encryptedPassword")
-    private AsymmetricEncryptedSecret encryptedPassword;
+    private String type;
 
     /*
-     * List of shares that the user has rights on. This field should not be
-     * specified during user creation.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.shareAccessRights")
-    private List<ShareAccessRight> shareAccessRights;
+    private String name;
 
     /*
-     * Type of the user.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.userType", required = true)
-    private UserType userType;
+    private String id;
+
+    /**
+     * Creates an instance of UserInner class.
+     */
+    public UserInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The storage account credential properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private UserProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the encryptedPassword property: The password details.
-     *
+     * 
      * @return the encryptedPassword value.
      */
     public AsymmetricEncryptedSecret encryptedPassword() {
-        return this.encryptedPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().encryptedPassword();
     }
 
     /**
      * Set the encryptedPassword property: The password details.
-     *
+     * 
      * @param encryptedPassword the encryptedPassword value to set.
      * @return the UserInner object itself.
      */
     public UserInner withEncryptedPassword(AsymmetricEncryptedSecret encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withEncryptedPassword(encryptedPassword);
         return this;
     }
 
     /**
      * Get the shareAccessRights property: List of shares that the user has rights on. This field should not be
      * specified during user creation.
-     *
+     * 
      * @return the shareAccessRights value.
      */
     public List<ShareAccessRight> shareAccessRights() {
-        return this.shareAccessRights;
+        return this.innerProperties() == null ? null : this.innerProperties().shareAccessRights();
     }
 
     /**
      * Set the shareAccessRights property: List of shares that the user has rights on. This field should not be
      * specified during user creation.
-     *
+     * 
      * @param shareAccessRights the shareAccessRights value to set.
      * @return the UserInner object itself.
      */
     public UserInner withShareAccessRights(List<ShareAccessRight> shareAccessRights) {
-        this.shareAccessRights = shareAccessRights;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withShareAccessRights(shareAccessRights);
         return this;
     }
 
     /**
      * Get the userType property: Type of the user.
-     *
+     * 
      * @return the userType value.
      */
     public UserType userType() {
-        return this.userType;
+        return this.innerProperties() == null ? null : this.innerProperties().userType();
     }
 
     /**
      * Set the userType property: Type of the user.
-     *
+     * 
      * @param userType the userType value to set.
      * @return the UserInner object itself.
      */
     public UserInner withUserType(UserType userType) {
-        this.userType = userType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withUserType(userType);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (encryptedPassword() != null) {
-            encryptedPassword().validate();
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property innerProperties in model UserInner"));
+        } else {
+            innerProperties().validate();
         }
-        if (shareAccessRights() != null) {
-            shareAccessRights().forEach(e -> e.validate());
-        }
-        if (userType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property userType in model UserInner"));
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserInner.
+     */
+    public static UserInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserInner deserializedUserInner = new UserInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUserInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUserInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUserInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUserInner.innerProperties = UserProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserInner;
+        });
     }
 }

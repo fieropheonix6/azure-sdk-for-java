@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
@@ -12,65 +16,62 @@ import com.azure.resourcemanager.batch.models.KeyVaultReference;
 import com.azure.resourcemanager.batch.models.NetworkProfile;
 import com.azure.resourcemanager.batch.models.PoolAllocationMode;
 import com.azure.resourcemanager.batch.models.PublicNetworkAccessType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The properties of a Batch account. */
+/**
+ * The properties of a Batch account.
+ */
 @Fluent
-public final class BatchAccountCreateProperties {
+public final class BatchAccountCreateProperties implements JsonSerializable<BatchAccountCreateProperties> {
     /*
      * The properties related to the auto-storage account.
      */
-    @JsonProperty(value = "autoStorage")
     private AutoStorageBaseProperties autoStorage;
 
     /*
      * The pool allocation mode also affects how clients may authenticate to the Batch Service API. If the mode is
-     * BatchService, clients may authenticate using access keys or Azure Active Directory. If the mode is
-     * UserSubscription, clients must use Azure Active Directory. The default is BatchService.
+     * BatchService, clients may authenticate using access keys or Microsoft Entra ID. If the mode is UserSubscription,
+     * clients must use Microsoft Entra ID. The default is BatchService.
      */
-    @JsonProperty(value = "poolAllocationMode")
     private PoolAllocationMode poolAllocationMode;
 
     /*
      * A reference to the Azure key vault associated with the Batch account.
      */
-    @JsonProperty(value = "keyVaultReference")
     private KeyVaultReference keyVaultReference;
 
     /*
      * If not specified, the default value is 'enabled'.
      */
-    @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccessType publicNetworkAccess;
 
     /*
      * The network profile only takes effect when publicNetworkAccess is enabled.
      */
-    @JsonProperty(value = "networkProfile")
     private NetworkProfile networkProfile;
 
     /*
      * Configures how customer data is encrypted inside the Batch account. By default, accounts are encrypted using a
      * Microsoft managed key. For additional control, a customer-managed key can be used instead.
      */
-    @JsonProperty(value = "encryption")
     private EncryptionProperties encryption;
 
     /*
      * List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.
      * This does not affect authentication with the control plane.
      */
-    @JsonProperty(value = "allowedAuthenticationModes")
     private List<AuthenticationMode> allowedAuthenticationModes;
 
-    /** Creates an instance of BatchAccountCreateProperties class. */
+    /**
+     * Creates an instance of BatchAccountCreateProperties class.
+     */
     public BatchAccountCreateProperties() {
     }
 
     /**
      * Get the autoStorage property: The properties related to the auto-storage account.
-     *
+     * 
      * @return the autoStorage value.
      */
     public AutoStorageBaseProperties autoStorage() {
@@ -79,7 +80,7 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Set the autoStorage property: The properties related to the auto-storage account.
-     *
+     * 
      * @param autoStorage the autoStorage value to set.
      * @return the BatchAccountCreateProperties object itself.
      */
@@ -90,9 +91,9 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Get the poolAllocationMode property: The pool allocation mode also affects how clients may authenticate to the
-     * Batch Service API. If the mode is BatchService, clients may authenticate using access keys or Azure Active
-     * Directory. If the mode is UserSubscription, clients must use Azure Active Directory. The default is BatchService.
-     *
+     * Batch Service API. If the mode is BatchService, clients may authenticate using access keys or Microsoft Entra ID.
+     * If the mode is UserSubscription, clients must use Microsoft Entra ID. The default is BatchService.
+     * 
      * @return the poolAllocationMode value.
      */
     public PoolAllocationMode poolAllocationMode() {
@@ -101,9 +102,9 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Set the poolAllocationMode property: The pool allocation mode also affects how clients may authenticate to the
-     * Batch Service API. If the mode is BatchService, clients may authenticate using access keys or Azure Active
-     * Directory. If the mode is UserSubscription, clients must use Azure Active Directory. The default is BatchService.
-     *
+     * Batch Service API. If the mode is BatchService, clients may authenticate using access keys or Microsoft Entra ID.
+     * If the mode is UserSubscription, clients must use Microsoft Entra ID. The default is BatchService.
+     * 
      * @param poolAllocationMode the poolAllocationMode value to set.
      * @return the BatchAccountCreateProperties object itself.
      */
@@ -114,7 +115,7 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Get the keyVaultReference property: A reference to the Azure key vault associated with the Batch account.
-     *
+     * 
      * @return the keyVaultReference value.
      */
     public KeyVaultReference keyVaultReference() {
@@ -123,7 +124,7 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Set the keyVaultReference property: A reference to the Azure key vault associated with the Batch account.
-     *
+     * 
      * @param keyVaultReference the keyVaultReference value to set.
      * @return the BatchAccountCreateProperties object itself.
      */
@@ -134,7 +135,7 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Get the publicNetworkAccess property: If not specified, the default value is 'enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessType publicNetworkAccess() {
@@ -143,7 +144,7 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the BatchAccountCreateProperties object itself.
      */
@@ -154,7 +155,7 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -163,7 +164,7 @@ public final class BatchAccountCreateProperties {
 
     /**
      * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the BatchAccountCreateProperties object itself.
      */
@@ -176,7 +177,7 @@ public final class BatchAccountCreateProperties {
      * Get the encryption property: Configures how customer data is encrypted inside the Batch account. By default,
      * accounts are encrypted using a Microsoft managed key. For additional control, a customer-managed key can be used
      * instead.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -187,7 +188,7 @@ public final class BatchAccountCreateProperties {
      * Set the encryption property: Configures how customer data is encrypted inside the Batch account. By default,
      * accounts are encrypted using a Microsoft managed key. For additional control, a customer-managed key can be used
      * instead.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the BatchAccountCreateProperties object itself.
      */
@@ -199,7 +200,7 @@ public final class BatchAccountCreateProperties {
     /**
      * Get the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
      * be used to authenticate with the data plane. This does not affect authentication with the control plane.
-     *
+     * 
      * @return the allowedAuthenticationModes value.
      */
     public List<AuthenticationMode> allowedAuthenticationModes() {
@@ -209,19 +210,19 @@ public final class BatchAccountCreateProperties {
     /**
      * Set the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
      * be used to authenticate with the data plane. This does not affect authentication with the control plane.
-     *
+     * 
      * @param allowedAuthenticationModes the allowedAuthenticationModes value to set.
      * @return the BatchAccountCreateProperties object itself.
      */
-    public BatchAccountCreateProperties withAllowedAuthenticationModes(
-        List<AuthenticationMode> allowedAuthenticationModes) {
+    public BatchAccountCreateProperties
+        withAllowedAuthenticationModes(List<AuthenticationMode> allowedAuthenticationModes) {
         this.allowedAuthenticationModes = allowedAuthenticationModes;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -237,5 +238,66 @@ public final class BatchAccountCreateProperties {
         if (encryption() != null) {
             encryption().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("autoStorage", this.autoStorage);
+        jsonWriter.writeStringField("poolAllocationMode",
+            this.poolAllocationMode == null ? null : this.poolAllocationMode.toString());
+        jsonWriter.writeJsonField("keyVaultReference", this.keyVaultReference);
+        jsonWriter.writeStringField("publicNetworkAccess",
+            this.publicNetworkAccess == null ? null : this.publicNetworkAccess.toString());
+        jsonWriter.writeJsonField("networkProfile", this.networkProfile);
+        jsonWriter.writeJsonField("encryption", this.encryption);
+        jsonWriter.writeArrayField("allowedAuthenticationModes", this.allowedAuthenticationModes,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAccountCreateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAccountCreateProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BatchAccountCreateProperties.
+     */
+    public static BatchAccountCreateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchAccountCreateProperties deserializedBatchAccountCreateProperties = new BatchAccountCreateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("autoStorage".equals(fieldName)) {
+                    deserializedBatchAccountCreateProperties.autoStorage = AutoStorageBaseProperties.fromJson(reader);
+                } else if ("poolAllocationMode".equals(fieldName)) {
+                    deserializedBatchAccountCreateProperties.poolAllocationMode
+                        = PoolAllocationMode.fromString(reader.getString());
+                } else if ("keyVaultReference".equals(fieldName)) {
+                    deserializedBatchAccountCreateProperties.keyVaultReference = KeyVaultReference.fromJson(reader);
+                } else if ("publicNetworkAccess".equals(fieldName)) {
+                    deserializedBatchAccountCreateProperties.publicNetworkAccess
+                        = PublicNetworkAccessType.fromString(reader.getString());
+                } else if ("networkProfile".equals(fieldName)) {
+                    deserializedBatchAccountCreateProperties.networkProfile = NetworkProfile.fromJson(reader);
+                } else if ("encryption".equals(fieldName)) {
+                    deserializedBatchAccountCreateProperties.encryption = EncryptionProperties.fromJson(reader);
+                } else if ("allowedAuthenticationModes".equals(fieldName)) {
+                    List<AuthenticationMode> allowedAuthenticationModes
+                        = reader.readArray(reader1 -> AuthenticationMode.fromString(reader1.getString()));
+                    deserializedBatchAccountCreateProperties.allowedAuthenticationModes = allowedAuthenticationModes;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchAccountCreateProperties;
+        });
     }
 }

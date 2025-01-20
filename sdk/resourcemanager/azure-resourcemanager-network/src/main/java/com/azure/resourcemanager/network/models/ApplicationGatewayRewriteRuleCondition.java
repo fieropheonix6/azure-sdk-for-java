@@ -5,42 +5,47 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Set of conditions in the Rewrite Rule in Application Gateway. */
+/**
+ * Set of conditions in the Rewrite Rule in Application Gateway.
+ */
 @Fluent
-public final class ApplicationGatewayRewriteRuleCondition {
+public final class ApplicationGatewayRewriteRuleCondition
+    implements JsonSerializable<ApplicationGatewayRewriteRuleCondition> {
     /*
      * The condition parameter of the RewriteRuleCondition.
      */
-    @JsonProperty(value = "variable")
     private String variable;
 
     /*
      * The pattern, either fixed string or regular expression, that evaluates the truthfulness of the condition.
      */
-    @JsonProperty(value = "pattern")
     private String pattern;
 
     /*
      * Setting this parameter to truth value with force the pattern to do a case in-sensitive comparison.
      */
-    @JsonProperty(value = "ignoreCase")
     private Boolean ignoreCase;
 
     /*
      * Setting this value as truth will force to check the negation of the condition given by the user.
      */
-    @JsonProperty(value = "negate")
     private Boolean negate;
 
-    /** Creates an instance of ApplicationGatewayRewriteRuleCondition class. */
+    /**
+     * Creates an instance of ApplicationGatewayRewriteRuleCondition class.
+     */
     public ApplicationGatewayRewriteRuleCondition() {
     }
 
     /**
      * Get the variable property: The condition parameter of the RewriteRuleCondition.
-     *
+     * 
      * @return the variable value.
      */
     public String variable() {
@@ -49,7 +54,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
 
     /**
      * Set the variable property: The condition parameter of the RewriteRuleCondition.
-     *
+     * 
      * @param variable the variable value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.
      */
@@ -61,7 +66,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Get the pattern property: The pattern, either fixed string or regular expression, that evaluates the truthfulness
      * of the condition.
-     *
+     * 
      * @return the pattern value.
      */
     public String pattern() {
@@ -71,7 +76,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Set the pattern property: The pattern, either fixed string or regular expression, that evaluates the truthfulness
      * of the condition.
-     *
+     * 
      * @param pattern the pattern value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.
      */
@@ -83,7 +88,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Get the ignoreCase property: Setting this parameter to truth value with force the pattern to do a case
      * in-sensitive comparison.
-     *
+     * 
      * @return the ignoreCase value.
      */
     public Boolean ignoreCase() {
@@ -93,7 +98,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Set the ignoreCase property: Setting this parameter to truth value with force the pattern to do a case
      * in-sensitive comparison.
-     *
+     * 
      * @param ignoreCase the ignoreCase value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.
      */
@@ -105,7 +110,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Get the negate property: Setting this value as truth will force to check the negation of the condition given by
      * the user.
-     *
+     * 
      * @return the negate value.
      */
     public Boolean negate() {
@@ -115,7 +120,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Set the negate property: Setting this value as truth will force to check the negation of the condition given by
      * the user.
-     *
+     * 
      * @param negate the negate value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.
      */
@@ -126,9 +131,57 @@ public final class ApplicationGatewayRewriteRuleCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("variable", this.variable);
+        jsonWriter.writeStringField("pattern", this.pattern);
+        jsonWriter.writeBooleanField("ignoreCase", this.ignoreCase);
+        jsonWriter.writeBooleanField("negate", this.negate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayRewriteRuleCondition from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayRewriteRuleCondition if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayRewriteRuleCondition.
+     */
+    public static ApplicationGatewayRewriteRuleCondition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayRewriteRuleCondition deserializedApplicationGatewayRewriteRuleCondition
+                = new ApplicationGatewayRewriteRuleCondition();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("variable".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleCondition.variable = reader.getString();
+                } else if ("pattern".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleCondition.pattern = reader.getString();
+                } else if ("ignoreCase".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleCondition.ignoreCase
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("negate".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleCondition.negate
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayRewriteRuleCondition;
+        });
     }
 }

@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for PrivateCloudResourceType. */
+/**
+ * Azure Resource type.
+ */
 public enum PrivateCloudResourceType {
-    /** Enum value Microsoft.VMwareCloudSimple/privateClouds. */
+    /**
+     * Enum value Microsoft.VMwareCloudSimple/privateClouds.
+     */
     MICROSOFT_VMWARE_CLOUD_SIMPLE_PRIVATE_CLOUDS("Microsoft.VMwareCloudSimple/privateClouds");
 
-    /** The actual serialized value for a PrivateCloudResourceType instance. */
+    /**
+     * The actual serialized value for a PrivateCloudResourceType instance.
+     */
     private final String value;
 
     PrivateCloudResourceType(String value) {
@@ -21,12 +24,14 @@ public enum PrivateCloudResourceType {
 
     /**
      * Parses a serialized value to a PrivateCloudResourceType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PrivateCloudResourceType object, or null if unable to parse.
      */
-    @JsonCreator
     public static PrivateCloudResourceType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PrivateCloudResourceType[] items = PrivateCloudResourceType.values();
         for (PrivateCloudResourceType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,7 +41,9 @@ public enum PrivateCloudResourceType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

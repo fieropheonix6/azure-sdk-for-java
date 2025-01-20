@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ApplicationTypeVersionsCleanupPolicy model. */
+/**
+ * The ApplicationTypeVersionsCleanupPolicy model.
+ */
 @Fluent
-public final class ApplicationTypeVersionsCleanupPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeVersionsCleanupPolicy.class);
-
+public final class ApplicationTypeVersionsCleanupPolicy
+    implements JsonSerializable<ApplicationTypeVersionsCleanupPolicy> {
     /*
      * Number of unused versions per application type to keep.
      */
-    @JsonProperty(value = "maxUnusedVersionsToKeep", required = true)
     private long maxUnusedVersionsToKeep;
 
     /**
+     * Creates an instance of ApplicationTypeVersionsCleanupPolicy class.
+     */
+    public ApplicationTypeVersionsCleanupPolicy() {
+    }
+
+    /**
      * Get the maxUnusedVersionsToKeep property: Number of unused versions per application type to keep.
-     *
+     * 
      * @return the maxUnusedVersionsToKeep value.
      */
     public long maxUnusedVersionsToKeep() {
@@ -31,7 +39,7 @@ public final class ApplicationTypeVersionsCleanupPolicy {
 
     /**
      * Set the maxUnusedVersionsToKeep property: Number of unused versions per application type to keep.
-     *
+     * 
      * @param maxUnusedVersionsToKeep the maxUnusedVersionsToKeep value to set.
      * @return the ApplicationTypeVersionsCleanupPolicy object itself.
      */
@@ -42,9 +50,47 @@ public final class ApplicationTypeVersionsCleanupPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeLongField("maxUnusedVersionsToKeep", this.maxUnusedVersionsToKeep);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationTypeVersionsCleanupPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationTypeVersionsCleanupPolicy if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationTypeVersionsCleanupPolicy.
+     */
+    public static ApplicationTypeVersionsCleanupPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationTypeVersionsCleanupPolicy deserializedApplicationTypeVersionsCleanupPolicy
+                = new ApplicationTypeVersionsCleanupPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxUnusedVersionsToKeep".equals(fieldName)) {
+                    deserializedApplicationTypeVersionsCleanupPolicy.maxUnusedVersionsToKeep = reader.getLong();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationTypeVersionsCleanupPolicy;
+        });
     }
 }

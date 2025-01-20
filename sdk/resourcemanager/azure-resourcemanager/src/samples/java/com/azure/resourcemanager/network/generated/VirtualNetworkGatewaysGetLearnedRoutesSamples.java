@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkGateways GetLearnedRoutes. */
+/**
+ * Samples for VirtualNetworkGateways GetLearnedRoutes.
+ */
 public final class VirtualNetworkGatewaysGetLearnedRoutesSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayLearnedRoutes.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualNetworkGatewayLearnedRoutes.json
      */
     /**
      * Sample code: GetVirtualNetworkGatewayLearnedRoutes.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualNetworkGatewayLearnedRoutes(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualNetworkGateways()
-            .getLearnedRoutes("rg1", "vpngw", Context.NONE);
+            .getLearnedRoutes("rg1", "vpngw", com.azure.core.util.Context.NONE);
     }
 }

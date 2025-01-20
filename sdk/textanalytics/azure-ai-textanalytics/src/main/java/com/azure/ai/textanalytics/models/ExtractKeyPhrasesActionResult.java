@@ -3,21 +3,26 @@
 
 package com.azure.ai.textanalytics.models;
 
-
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link ExtractKeyPhrasesActionResult} model.
+ * The {@code ExtractKeyPhrasesActionResult} model.
  */
 @Immutable
 public final class ExtractKeyPhrasesActionResult extends TextAnalyticsActionResult {
     private ExtractKeyPhrasesResultCollection documentsResults;
 
     static {
-        ExtractKeyPhrasesActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        ExtractKeyPhrasesActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code ExtractKeyPhrasesActionResult} model.
+     */
+    public ExtractKeyPhrasesActionResult() {
     }
 
     /**

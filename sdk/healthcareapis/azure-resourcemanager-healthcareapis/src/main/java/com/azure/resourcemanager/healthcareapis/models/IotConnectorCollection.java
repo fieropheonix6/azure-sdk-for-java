@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.fluent.models.IotConnectorInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A collection of IoT Connectors. */
+/**
+ * A collection of IoT Connectors.
+ */
 @Fluent
-public final class IotConnectorCollection {
+public final class IotConnectorCollection implements JsonSerializable<IotConnectorCollection> {
     /*
      * The link used to get the next page of IoT Connectors.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of IoT Connectors.
      */
-    @JsonProperty(value = "value")
     private List<IotConnectorInner> value;
 
     /**
+     * Creates an instance of IotConnectorCollection class.
+     */
+    public IotConnectorCollection() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of IoT Connectors.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class IotConnectorCollection {
 
     /**
      * Set the nextLink property: The link used to get the next page of IoT Connectors.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IotConnectorCollection object itself.
      */
@@ -46,7 +56,7 @@ public final class IotConnectorCollection {
 
     /**
      * Get the value property: The list of IoT Connectors.
-     *
+     * 
      * @return the value value.
      */
     public List<IotConnectorInner> value() {
@@ -55,7 +65,7 @@ public final class IotConnectorCollection {
 
     /**
      * Set the value property: The list of IoT Connectors.
-     *
+     * 
      * @param value the value value to set.
      * @return the IotConnectorCollection object itself.
      */
@@ -66,12 +76,52 @@ public final class IotConnectorCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotConnectorCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotConnectorCollection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotConnectorCollection.
+     */
+    public static IotConnectorCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotConnectorCollection deserializedIotConnectorCollection = new IotConnectorCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedIotConnectorCollection.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<IotConnectorInner> value = reader.readArray(reader1 -> IotConnectorInner.fromJson(reader1));
+                    deserializedIotConnectorCollection.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotConnectorCollection;
+        });
     }
 }

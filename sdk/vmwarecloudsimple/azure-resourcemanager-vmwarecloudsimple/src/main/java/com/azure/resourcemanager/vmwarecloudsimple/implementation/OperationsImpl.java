@@ -16,17 +16,15 @@ import com.azure.resourcemanager.vmwarecloudsimple.models.AvailableOperation;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OperationResource;
 import com.azure.resourcemanager.vmwarecloudsimple.models.Operations;
 import com.azure.resourcemanager.vmwarecloudsimple.models.OperationsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient,
+    public OperationsImpl(OperationsClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,31 +32,29 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<AvailableOperation> list() {
         PagedIterable<AvailableOperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new AvailableOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailableOperation> list(Context context) {
         PagedIterable<AvailableOperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new AvailableOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AvailableOperationImpl(inner1, this.manager()));
     }
 
-    public OperationResource get(String regionId, String operationId) {
-        OperationResourceInner inner = this.serviceClient().get(regionId, operationId);
+    public Response<OperationResource> getWithResponse(String regionId, String referer, String operationId,
+        Context context) {
+        OperationsGetResponse inner = this.serviceClient().getWithResponse(regionId, referer, operationId, context);
         if (inner != null) {
-            return new OperationResourceImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<OperationResource> getWithResponse(String regionId, String operationId, Context context) {
-        OperationsGetResponse inner = this.serviceClient().getWithResponse(regionId, operationId, context);
+    public OperationResource get(String regionId, String referer, String operationId) {
+        OperationResourceInner inner = this.serviceClient().get(regionId, referer, operationId);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationResourceImpl(inner.getValue(), this.manager()));
+            return new OperationResourceImpl(inner, this.manager());
         } else {
             return null;
         }

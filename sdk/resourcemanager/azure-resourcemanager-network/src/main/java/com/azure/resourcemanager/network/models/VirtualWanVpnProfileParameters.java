@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Virtual Wan Vpn profile parameters Vpn profile generation. */
+/**
+ * Virtual Wan Vpn profile parameters Vpn profile generation.
+ */
 @Fluent
-public final class VirtualWanVpnProfileParameters {
+public final class VirtualWanVpnProfileParameters implements JsonSerializable<VirtualWanVpnProfileParameters> {
     /*
      * VpnServerConfiguration partial resource uri with which VirtualWan is associated to.
      */
-    @JsonProperty(value = "vpnServerConfigurationResourceId")
     private String vpnServerConfigurationResourceId;
 
     /*
      * VPN client authentication method.
      */
-    @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
 
-    /** Creates an instance of VirtualWanVpnProfileParameters class. */
+    /**
+     * Creates an instance of VirtualWanVpnProfileParameters class.
+     */
     public VirtualWanVpnProfileParameters() {
     }
 
     /**
      * Get the vpnServerConfigurationResourceId property: VpnServerConfiguration partial resource uri with which
      * VirtualWan is associated to.
-     *
+     * 
      * @return the vpnServerConfigurationResourceId value.
      */
     public String vpnServerConfigurationResourceId() {
@@ -39,19 +45,19 @@ public final class VirtualWanVpnProfileParameters {
     /**
      * Set the vpnServerConfigurationResourceId property: VpnServerConfiguration partial resource uri with which
      * VirtualWan is associated to.
-     *
+     * 
      * @param vpnServerConfigurationResourceId the vpnServerConfigurationResourceId value to set.
      * @return the VirtualWanVpnProfileParameters object itself.
      */
-    public VirtualWanVpnProfileParameters withVpnServerConfigurationResourceId(
-        String vpnServerConfigurationResourceId) {
+    public VirtualWanVpnProfileParameters
+        withVpnServerConfigurationResourceId(String vpnServerConfigurationResourceId) {
         this.vpnServerConfigurationResourceId = vpnServerConfigurationResourceId;
         return this;
     }
 
     /**
      * Get the authenticationMethod property: VPN client authentication method.
-     *
+     * 
      * @return the authenticationMethod value.
      */
     public AuthenticationMethod authenticationMethod() {
@@ -60,7 +66,7 @@ public final class VirtualWanVpnProfileParameters {
 
     /**
      * Set the authenticationMethod property: VPN client authentication method.
-     *
+     * 
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the VirtualWanVpnProfileParameters object itself.
      */
@@ -71,9 +77,51 @@ public final class VirtualWanVpnProfileParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vpnServerConfigurationResourceId", this.vpnServerConfigurationResourceId);
+        jsonWriter.writeStringField("authenticationMethod",
+            this.authenticationMethod == null ? null : this.authenticationMethod.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualWanVpnProfileParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualWanVpnProfileParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualWanVpnProfileParameters.
+     */
+    public static VirtualWanVpnProfileParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualWanVpnProfileParameters deserializedVirtualWanVpnProfileParameters
+                = new VirtualWanVpnProfileParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vpnServerConfigurationResourceId".equals(fieldName)) {
+                    deserializedVirtualWanVpnProfileParameters.vpnServerConfigurationResourceId = reader.getString();
+                } else if ("authenticationMethod".equals(fieldName)) {
+                    deserializedVirtualWanVpnProfileParameters.authenticationMethod
+                        = AuthenticationMethod.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualWanVpnProfileParameters;
+        });
     }
 }

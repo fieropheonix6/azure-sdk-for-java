@@ -5,30 +5,87 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.VnetValidationTestFailure;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A class that describes the reason for a validation failure. */
+/**
+ * A class that describes the reason for a validation failure.
+ */
 @Fluent
 public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     /*
      * VnetValidationFailureDetails resource specific properties
      */
-    @JsonProperty(value = "properties")
     private VnetValidationFailureDetailsProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VnetValidationFailureDetailsInner class.
+     */
+    public VnetValidationFailureDetailsInner() {
+    }
 
     /**
      * Get the innerProperties property: VnetValidationFailureDetails resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VnetValidationFailureDetailsProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VnetValidationFailureDetailsInner withKind(String kind) {
         super.withKind(kind);
@@ -37,7 +94,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Get the message property: Text describing the validation outcome.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -46,7 +103,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Set the message property: Text describing the validation outcome.
-     *
+     * 
      * @param message the message value to set.
      * @return the VnetValidationFailureDetailsInner object itself.
      */
@@ -60,7 +117,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Get the failed property: A flag describing whether or not validation failed.
-     *
+     * 
      * @return the failed value.
      */
     public Boolean failed() {
@@ -69,7 +126,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Set the failed property: A flag describing whether or not validation failed.
-     *
+     * 
      * @param failed the failed value to set.
      * @return the VnetValidationFailureDetailsInner object itself.
      */
@@ -83,7 +140,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Get the failedTests property: A list of tests that failed in the validation.
-     *
+     * 
      * @return the failedTests value.
      */
     public List<VnetValidationTestFailure> failedTests() {
@@ -92,7 +149,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Set the failedTests property: A list of tests that failed in the validation.
-     *
+     * 
      * @param failedTests the failedTests value to set.
      * @return the VnetValidationFailureDetailsInner object itself.
      */
@@ -106,7 +163,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Get the warnings property: A list of warnings generated during validation.
-     *
+     * 
      * @return the warnings value.
      */
     public List<VnetValidationTestFailure> warnings() {
@@ -115,7 +172,7 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Set the warnings property: A list of warnings generated during validation.
-     *
+     * 
      * @param warnings the warnings value to set.
      * @return the VnetValidationFailureDetailsInner object itself.
      */
@@ -129,14 +186,61 @@ public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VnetValidationFailureDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VnetValidationFailureDetailsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VnetValidationFailureDetailsInner.
+     */
+    public static VnetValidationFailureDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VnetValidationFailureDetailsInner deserializedVnetValidationFailureDetailsInner
+                = new VnetValidationFailureDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVnetValidationFailureDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVnetValidationFailureDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVnetValidationFailureDetailsInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedVnetValidationFailureDetailsInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVnetValidationFailureDetailsInner.innerProperties
+                        = VnetValidationFailureDetailsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVnetValidationFailureDetailsInner;
+        });
     }
 }

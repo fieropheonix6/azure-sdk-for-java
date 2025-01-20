@@ -10,20 +10,22 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 ### Prerequisites
 
 - An Azure account with an active subscription. [Create an account for free](https://azure.microsoft.com/free/?WT.mc_id=A261C142F).
-- [Java Development Kit (JDK)](https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
+- [Java Development Kit (JDK)](https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable) version 8 or above.
 - [Apache Maven](https://maven.apache.org/download.cgi).
-- A deployed Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
+- A deployed Communication Services resource. You can use the [Azure Portal](https://learn.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://learn.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
 
 [//]: # ({x-version-update-start;com.azure:azure-communication-callautomation;current})
+
 ```xml
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callautomation</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.1.0</version>
 </dependency>
 ```
+
 [//]: # ({x-version-update-end})
 
 ## Key concepts
@@ -37,52 +39,67 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 
 `CallRecording` provides the functionality of recording the call.
 
-`EventHandler` provides the functionality to handle events from the ACS resource.
-
-### Idempotent Requests
-An operation is idempotent if it can be performed multiple times and have the same result as a single execution.
-
-The following operations are idempotent:
-- `answerCall`
-- `redirectCall`
-- `rejectCall`
-- `createCall`
-- `hangUp` when terminating the call for everyone, ie. `forEveryone` parameter is set to `true`.
-- `transferToParticipantCall`
-- `addParticipants`
-- `removeParticipants`
-
-By default, SDK generates a new `RepeatabilityHeaders` object every time the above operation is called. If you would
-like to provide your own `RepeatabilityHeaders` for your application (eg. for your own retry mechanism), you can do so by specifying
-the `RepeatabilityHeaders` in the operation's `Options` object. If this is not set by user, then the SDK will generate
-it.
-
-The parameters for the `RepeatabilityHeaders` class are `repeatabilityRequestId` and `repeatabilityFirstSent`. Two or
-more requests are considered the same request **if and only if** both repeatability parameters are the same.
-- `repeatabilityRequestId`: an opaque string representing a client-generated unique identifier for the request.
-  It is a version 4 (random) UUID.
-- `repeatabilityFirstSent`: The value should be the date and time at which the request was **first** created.
-
-To set repeatability parameters, see below Java code snippet as an example:
-```java
-CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets, callbackUrl)
-    .setRepeatabilityHeaders(new RepeatabilityHeaders(UUID.randomUUID(), Instant.now()));
-Response<CreateCallResult> response1 = callAsyncClient.createCallWithResponse(createCallOptions).block();
-
-await Task.Delay(5000);
-
-Response<CreateCallResult> response2 = callAsyncClient.createCallWithResponse(createCallOptions).block();
-// response1 and response2 will have the same callConnectionId as they have the same reapeatability parameters which means that the CreateCall operation was only executed once.
-```
+`CallAutomationEventParser` provides the functionality to handle events from the ACS resource.
 
 ## Examples
 
-To be determined.
+### Handle Mid-Connection events with CallAutomation's EventProcessor
+
+To easily handle mid-connection events, Call Automation's SDK provides easier way to handle these events.
+Take a look at `CallAutomationEventProcessor`. This will ensure correlation between call and events more easily.
+
+```Java
+@RestController
+public class ActionController {
+    // Controller implementation...
+
+    @RequestMapping(value = "/api/events", method = POST)
+    public ResponseEntity<?> handleCallEvents(@RequestBody String requestBody) {
+        try {
+            CallAutomationAsyncClient client = getCallAutomationAsyncClient();
+            client.getEventProcessor().processEvents(requestBody);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+}
+```
+
+`processEvents` is required for EventProcessor to work.
+After event is being consumed by EventProcessor, you can start using its feature.
+
+See below for example: where you are making a call with `CreateCall`, and wait for `CallConnected` event of the call.
+
+```Java
+public class commandClass {
+    // Class implementation...
+
+    public void createCallCommand() {
+        CallAutomationAsyncClient client = getCallAutomationAsyncClient(); // Should be the same instance as the one used in the example above.
+        String callbackUrl = "<YOUR_CALL_BACK_URL>";
+        CallInvite callInvite = new CallInvite(new CommunicationUserIdentifier("<TARGET_USER_ID>"));
+        CreateCallResult result = client.createCall(callInvite, callbackUrl).block();
+
+        try {
+            // This will wait until CallConnected event is arrived or Timesout!
+            CreateCallEventResult eventResult = result.waitForEventProcessorAsync(Duration.ofSeconds(30)).block();
+            CallConnected returnedEvent = eventResult.successResult();
+        } catch (Exception e) {
+            // Timeout exception happend!
+            // Call likely was never answered.
+        }
+    }
+}
+```
+
+If timeout was not set when calling "waitForEventProcessorAsync", the default timeout is 4 minutes.
 
 ## Troubleshooting
 
 If you recieve a CommunicationErrorException with the messagae: "Action is invalid when call is not in Established state." This usually means the call has ended. This can occur if the participants all leave
-the call, or participants did not accept the call before the call timed out. 
+the call, or participants did not accept the call before the call timed out.
 
 If you fail to start a call because of an HMAC validation error, be sure your access key is correct, and
 that you are passing in a valid conversation id.
@@ -97,19 +114,31 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 ## Next steps
 
-- [Read more about Call Automation in Azure Communication Services][call_automation_apis_overview]
-- [Read more about Call Recording in Azure Communication Services][call_recording_overview]
-- For a basic guide on how to record and download calls with Event Grid please refer to the [Record and download calls with Event Grid][record_and_download_calls_with_event_grid].
+- [Call Automation Overview][overview]
+- [Incoming Call Concept][incomingcall]
+- [Build a customer interaction workflow using Call Automation][build1]
+- [Redirect inbound telephony calls with Call Automation][build2]
+- [Connect Azure Communication Services with Azure AI services][cognitive_integration]
+- [Quickstart: Play action][build3]
+- [Quickstart: Recognize action][build4]
+- [Read more about Call Recording in Azure Communication Services][recording1]
+- [Record and download calls with Event Grid][recording2]
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
-[product_docs]: https://docs.microsoft.com/azure/communication-services/
+[product_docs]: https://learn.microsoft.com/azure/communication-services/
 [package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
 [api_documentation]: https://aka.ms/java-docs
-[call_automation_apis_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
-[call_recording_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
-[record_and_download_calls_with_event_grid]:https://docs.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/src
+[overview]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation
+[incomingcall]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/incoming-call-notification
+[build1]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/callflows-for-customer-interactions?pivots=programming-language-java
+[build2]: https://learn.microsoft.com/azure/communication-services/how-tos/call-automation-sdk/redirect-inbound-telephony-calls?pivots=programming-language-java
+[build3]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/play-action?pivots=programming-language-java
+[build4]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/recognize-action?pivots=programming-language-java
+[recording1]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
+[recording2]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/get-started-call-recording?pivots=programming-language-java
+[cognitive_integration]: https://learn.microsoft.com/azure/communication-services/concepts/call-automation/azure-communication-services-azure-cognitive-services-integration

@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AsyncOperationStatus Get. */
+/**
+ * Samples for AsyncOperationStatus Get.
+ */
 public final class AsyncOperationStatusGetSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCacheAsyncOperationStatus.json
+     * x-ms-original-file:
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCacheAsyncOperationStatus.
+     * json
      */
     /**
      * Sample code: RedisCacheAsyncOperationStatus.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCacheAsyncOperationStatus(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getAsyncOperationStatus()
-            .getWithResponse("East US", "c7ba2bf5-5939-4d79-b037-2964ccf097da", Context.NONE);
+            .getWithResponse("East US", "c7ba2bf5-5939-4d79-b037-2964ccf097da", com.azure.core.util.Context.NONE);
     }
 }

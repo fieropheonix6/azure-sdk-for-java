@@ -20,57 +20,32 @@ public final class FluxConfigOperationStatusImpl implements FluxConfigOperationS
 
     private final com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager;
 
-    public FluxConfigOperationStatusImpl(
-        FluxConfigOperationStatusClient innerClient,
+    public FluxConfigOperationStatusImpl(FluxConfigOperationStatusClient innerClient,
         com.azure.resourcemanager.kubernetesconfiguration.SourceControlConfigurationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public OperationStatusResult get(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId) {
-        OperationStatusResultInner inner =
-            this
-                .serviceClient()
-                .get(
-                    resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationId);
+    public Response<OperationStatusResult> getWithResponse(String resourceGroupName, String clusterRp,
+        String clusterResourceName, String clusterName, String fluxConfigurationName, String operationId,
+        Context context) {
+        Response<OperationStatusResultInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName,
+                operationId, context);
         if (inner != null) {
-            return new OperationStatusResultImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationStatusResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<OperationStatusResult> getWithResponse(
-        String resourceGroupName,
-        String clusterRp,
-        String clusterResourceName,
-        String clusterName,
-        String fluxConfigurationName,
-        String operationId,
-        Context context) {
-        Response<OperationStatusResultInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(
-                    resourceGroupName,
-                    clusterRp,
-                    clusterResourceName,
-                    clusterName,
-                    fluxConfigurationName,
-                    operationId,
-                    context);
+    public OperationStatusResult get(String resourceGroupName, String clusterRp, String clusterResourceName,
+        String clusterName, String fluxConfigurationName, String operationId) {
+        OperationStatusResultInner inner = this.serviceClient()
+            .get(resourceGroupName, clusterRp, clusterResourceName, clusterName, fluxConfigurationName, operationId);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationStatusResultImpl(inner.getValue(), this.manager()));
+            return new OperationStatusResultImpl(inner, this.manager());
         } else {
             return null;
         }

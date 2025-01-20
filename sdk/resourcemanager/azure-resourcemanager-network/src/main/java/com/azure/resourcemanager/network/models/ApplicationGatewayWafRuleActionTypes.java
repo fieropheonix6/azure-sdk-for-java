@@ -5,41 +5,60 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The string representation of the web application firewall rule action. */
+/**
+ * The string representation of the web application firewall rule action.
+ */
 public final class ApplicationGatewayWafRuleActionTypes
     extends ExpandableStringEnum<ApplicationGatewayWafRuleActionTypes> {
-    /** Static value None for ApplicationGatewayWafRuleActionTypes. */
+    /**
+     * Static value None for ApplicationGatewayWafRuleActionTypes.
+     */
     public static final ApplicationGatewayWafRuleActionTypes NONE = fromString("None");
 
-    /** Static value AnomalyScoring for ApplicationGatewayWafRuleActionTypes. */
+    /**
+     * Static value AnomalyScoring for ApplicationGatewayWafRuleActionTypes.
+     */
     public static final ApplicationGatewayWafRuleActionTypes ANOMALY_SCORING = fromString("AnomalyScoring");
 
-    /** Static value Allow for ApplicationGatewayWafRuleActionTypes. */
+    /**
+     * Static value Allow for ApplicationGatewayWafRuleActionTypes.
+     */
     public static final ApplicationGatewayWafRuleActionTypes ALLOW = fromString("Allow");
 
-    /** Static value Block for ApplicationGatewayWafRuleActionTypes. */
+    /**
+     * Static value Block for ApplicationGatewayWafRuleActionTypes.
+     */
     public static final ApplicationGatewayWafRuleActionTypes BLOCK = fromString("Block");
 
-    /** Static value Log for ApplicationGatewayWafRuleActionTypes. */
+    /**
+     * Static value Log for ApplicationGatewayWafRuleActionTypes.
+     */
     public static final ApplicationGatewayWafRuleActionTypes LOG = fromString("Log");
 
     /**
+     * Creates a new instance of ApplicationGatewayWafRuleActionTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ApplicationGatewayWafRuleActionTypes() {
+    }
+
+    /**
      * Creates or finds a ApplicationGatewayWafRuleActionTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ApplicationGatewayWafRuleActionTypes.
      */
-    @JsonCreator
     public static ApplicationGatewayWafRuleActionTypes fromString(String name) {
         return fromString(name, ApplicationGatewayWafRuleActionTypes.class);
     }
 
     /**
      * Gets known ApplicationGatewayWafRuleActionTypes values.
-     *
+     * 
      * @return known ApplicationGatewayWafRuleActionTypes values.
      */
     public static Collection<ApplicationGatewayWafRuleActionTypes> values() {

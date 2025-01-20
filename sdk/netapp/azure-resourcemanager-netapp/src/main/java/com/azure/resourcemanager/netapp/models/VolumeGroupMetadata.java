@@ -5,53 +5,52 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Volume group properties. */
+/**
+ * Volume group properties.
+ */
 @Fluent
-public final class VolumeGroupMetadata {
+public final class VolumeGroupMetadata implements JsonSerializable<VolumeGroupMetadata> {
     /*
      * Group Description
      */
-    @JsonProperty(value = "groupDescription")
     private String groupDescription;
 
     /*
      * Application Type
      */
-    @JsonProperty(value = "applicationType")
     private ApplicationType applicationType;
 
     /*
      * Application specific identifier
      */
-    @JsonProperty(value = "applicationIdentifier")
     private String applicationIdentifier;
 
     /*
-     * Global volume placement rules
-     *
      * Application specific placement rules for the volume group
      */
-    @JsonProperty(value = "globalPlacementRules")
     private List<PlacementKeyValuePairs> globalPlacementRules;
-
-    /*
-     * Application specific identifier of deployment rules for the volume group
-     */
-    @JsonProperty(value = "deploymentSpecId")
-    private String deploymentSpecId;
 
     /*
      * Number of volumes in volume group
      */
-    @JsonProperty(value = "volumesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long volumesCount;
 
     /**
+     * Creates an instance of VolumeGroupMetadata class.
+     */
+    public VolumeGroupMetadata() {
+    }
+
+    /**
      * Get the groupDescription property: Group Description.
-     *
+     * 
      * @return the groupDescription value.
      */
     public String groupDescription() {
@@ -60,7 +59,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Set the groupDescription property: Group Description.
-     *
+     * 
      * @param groupDescription the groupDescription value to set.
      * @return the VolumeGroupMetadata object itself.
      */
@@ -71,7 +70,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Get the applicationType property: Application Type.
-     *
+     * 
      * @return the applicationType value.
      */
     public ApplicationType applicationType() {
@@ -80,7 +79,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Set the applicationType property: Application Type.
-     *
+     * 
      * @param applicationType the applicationType value to set.
      * @return the VolumeGroupMetadata object itself.
      */
@@ -91,7 +90,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Get the applicationIdentifier property: Application specific identifier.
-     *
+     * 
      * @return the applicationIdentifier value.
      */
     public String applicationIdentifier() {
@@ -100,7 +99,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Set the applicationIdentifier property: Application specific identifier.
-     *
+     * 
      * @param applicationIdentifier the applicationIdentifier value to set.
      * @return the VolumeGroupMetadata object itself.
      */
@@ -110,10 +109,8 @@ public final class VolumeGroupMetadata {
     }
 
     /**
-     * Get the globalPlacementRules property: Global volume placement rules
-     *
-     * <p>Application specific placement rules for the volume group.
-     *
+     * Get the globalPlacementRules property: Application specific placement rules for the volume group.
+     * 
      * @return the globalPlacementRules value.
      */
     public List<PlacementKeyValuePairs> globalPlacementRules() {
@@ -121,10 +118,8 @@ public final class VolumeGroupMetadata {
     }
 
     /**
-     * Set the globalPlacementRules property: Global volume placement rules
-     *
-     * <p>Application specific placement rules for the volume group.
-     *
+     * Set the globalPlacementRules property: Application specific placement rules for the volume group.
+     * 
      * @param globalPlacementRules the globalPlacementRules value to set.
      * @return the VolumeGroupMetadata object itself.
      */
@@ -134,28 +129,8 @@ public final class VolumeGroupMetadata {
     }
 
     /**
-     * Get the deploymentSpecId property: Application specific identifier of deployment rules for the volume group.
-     *
-     * @return the deploymentSpecId value.
-     */
-    public String deploymentSpecId() {
-        return this.deploymentSpecId;
-    }
-
-    /**
-     * Set the deploymentSpecId property: Application specific identifier of deployment rules for the volume group.
-     *
-     * @param deploymentSpecId the deploymentSpecId value to set.
-     * @return the VolumeGroupMetadata object itself.
-     */
-    public VolumeGroupMetadata withDeploymentSpecId(String deploymentSpecId) {
-        this.deploymentSpecId = deploymentSpecId;
-        return this;
-    }
-
-    /**
      * Get the volumesCount property: Number of volumes in volume group.
-     *
+     * 
      * @return the volumesCount value.
      */
     public Long volumesCount() {
@@ -164,12 +139,63 @@ public final class VolumeGroupMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (globalPlacementRules() != null) {
             globalPlacementRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("groupDescription", this.groupDescription);
+        jsonWriter.writeStringField("applicationType",
+            this.applicationType == null ? null : this.applicationType.toString());
+        jsonWriter.writeStringField("applicationIdentifier", this.applicationIdentifier);
+        jsonWriter.writeArrayField("globalPlacementRules", this.globalPlacementRules,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumeGroupMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumeGroupMetadata if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumeGroupMetadata.
+     */
+    public static VolumeGroupMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumeGroupMetadata deserializedVolumeGroupMetadata = new VolumeGroupMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("groupDescription".equals(fieldName)) {
+                    deserializedVolumeGroupMetadata.groupDescription = reader.getString();
+                } else if ("applicationType".equals(fieldName)) {
+                    deserializedVolumeGroupMetadata.applicationType = ApplicationType.fromString(reader.getString());
+                } else if ("applicationIdentifier".equals(fieldName)) {
+                    deserializedVolumeGroupMetadata.applicationIdentifier = reader.getString();
+                } else if ("globalPlacementRules".equals(fieldName)) {
+                    List<PlacementKeyValuePairs> globalPlacementRules
+                        = reader.readArray(reader1 -> PlacementKeyValuePairs.fromJson(reader1));
+                    deserializedVolumeGroupMetadata.globalPlacementRules = globalPlacementRules;
+                } else if ("volumesCount".equals(fieldName)) {
+                    deserializedVolumeGroupMetadata.volumesCount = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumeGroupMetadata;
+        });
     }
 }

@@ -1,6 +1,6 @@
 # Release History
 
-## 5.3.0-beta.2 (Unreleased)
+## 5.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,280 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.5.4 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+
+## 5.5.3 (2024-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+## 5.5.2 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+
+
+## 5.5.1 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+
+
+## 5.5.0 (2024-07-25)
+
+### Other Changes
+
+- Removed remaining `jackson-databind` usages and dependency from the project.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+
+
+## 5.4.7 (2024-06-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+
+## 5.4.6 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+
+## 5.4.5 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 5.4.4 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
+## 5.4.3 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
+## 5.4.2 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
+## 5.4.1 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
+## 5.4.0 (2023-10-19)
+
+### Features Added
+- Added new default constructor to existing models for compatible with JDK 21. [#36371](https://github.com/Azure/azure-sdk-for-java/pull/36371/files#diff-97ab179febbd379931e540173f1655dca32fb9794ff5acb90c593e08bca67939R37)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 5.3.3 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 5.3.2 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 5.3.1 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
+
+## 5.3.0 (2023-06-15)
+
+This version of the client library defaults to the service API version 2023-04-01.
+
+### Features Added
+- Added `values()` methods to all ExpandableStringEnum models.
+- Added more values to enum class: `HealthcareEntityCategory` and `HealthcareEntityRelationType`.
+
+### Breaking Changes
+> Note: The following changes are only breaking from the previous beta. They are not breaking against previous stable versions.
+- Removed `Auto Language Detection`, `Dynamic Classification`, `Entity Resoluton`, and `Healthcare FHIR` features,
+  which were introduced in the previous beta releases.
+- Renamed class:
+  `SummaryContext` to `AbstractiveSummaryContext`,
+  `SummarySentence` to `ExtractiveSummarySentence`,
+  `SummarySentencesOrder` to `ExtractiveSummarySentencesOrder`,
+  `ExtractSummaryOptions` to `ExtractiveSummaryOptions`,
+  `ExtractSummaryAction` to `ExtractiveSummaryAction`,
+  `ExtractSummaryActionResult` to `ExtractiveSummaryActionResult`,
+  `ExtractSummaryResult` to `ExtractiveSummaryResult`,
+  `ExtractSummaryResultCollection` to `ExtractiveSummaryResultCollection`,
+  `ExtractSummaryOperationDetail` to `ExtractiveSummaryOperationDetail`,
+  `ExtractSummaryPagedFlux` to `ExtractiveSummaryPagedFlux`,
+  `ExtractSummaryPagedIterable` to `ExtractiveSummaryPagedIterable`,
+  `AbstractSummaryOptions` to `AbstractiveSummaryOptions`,
+  `AbstractSummaryAction` to `AbstractiveSummaryAction`,
+  `AbstractSummaryActionResult` to `AbtractiveSummaryActionResult`,
+  `AbstractSummaryResultCollection` to `AbstractiveSummaryResultCollection`
+  `AbstractSummaryResult` to `AbstractiveSummaryResult`,
+  `AbstractSummaryOperationDetail` to `AbstractiveSummaryOperationDetail`,
+  `AbstractSummaryPagedFlux` to `AbstractiveSummaryPagedFlux`,
+  `AbstractSummaryPagedIterable` to `AbstractiveSummaryPagedIterable`,
+- Renamed methods:
+  `getExtractSummaryActions()` to `getExtractiveSummaryActions()`,
+  `getAbstractSummaryActions()` to `getAbstractiveSummaryActions()`,
+  `setAbstractSummaryActions(AbstractSummaryAction... abstractSummaryActions)` to 
+  `setAbstractiveSummaryActions(AbstractiveSummaryAction... abstractiveSummaryActions)`,
+  `setExtractSummaryActions(ExtractSummaryAction... extractSummaryActions)` to
+  `setExtractiveSummaryActions(ExtractiveSummaryAction... extractiveSummaryActions)`,
+  `getAbstractSummaryResults` to `getAbstractiveSummaryResults`,
+  `getExtractSummaryResults` to `getExtractiveSummaryResults`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 5.2.7 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+
+## 5.2.6 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
+## 5.2.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 5.3.0-beta.2 (2023-03-07)
+
+### Features Added
+- Added the following methods for performing abstractive summarization and extractive summarization actions:
+    - `beginAbstractSummary(...)`
+    - `beginExtractSummary(...)`
+- Added the following types for the newly added methods
+    - `AbstractSummaryOperationDetail`, `AbstractSummaryOptions`, `AbstractSummaryPagedFlux`, `AbstractSummaryPagedIterable`
+    - `ExtractSummaryOperationDetail`, `ExtractSummaryOptions`, `ExtractSummaryPagedFlux`, `ExtractSummaryPagedIterable`
+
+### Breaking Changes
+- Changed `dynamic classify categories` as a required parameter in dynamic text classification methods.
+- Renamed naming phrase `DynamicClassficationXXX` to `DynamicClassifyXXX` in class name, method name.
+- Changed `BaseResolution` to an abstract class.
+- Removed class `BooleanResolution` and enum value `BooleanResolution` in the class `ResolutionKind`.
+- Renamed `maxSentenceCount` to `sentenceCount` in abstractive summarization.
+
+### Other Changes
+- Integrate synchronous workflow for sync clients so that they do not block on async client APIs. 
+  It simplifies stack traces and improves debugging experience.
+
+## 5.2.4 (2023-02-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+
+## 5.2.3 (2023-01-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.35.0`.
+- Updated `azure-core-http-netty` to `1.12.8`.
 
 ## 5.3.0-beta.1 (2022-11-18)
 

@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.CosmosExcludedRegions;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
@@ -13,6 +14,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Represents the Connection policy associated with a Cosmos client in the Azure Cosmos DB service.
@@ -26,6 +28,7 @@ public final class ConnectionPolicy {
     private boolean endpointDiscoveryEnabled;
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
+    private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
@@ -46,6 +49,11 @@ public final class ConnectionPolicy {
     private boolean tcpConnectionEndpointRediscoveryEnabled;
     private int ioThreadCountPerCoreFactor;
     private int ioThreadPriority;
+    private boolean tcpHealthCheckTimeoutDetectionEnabled;
+    private int minConnectionPoolSizePerEndpoint;
+    private int openConnectionsConcurrency;
+    private int aggressiveWarmupConcurrency;
+    private boolean serverCertValidationDisabled = false;
 
     /**
      * Constructor.
@@ -62,7 +70,10 @@ public final class ConnectionPolicy {
         this(ConnectionMode.GATEWAY, DirectConnectionConfig.getDefaultConfig(), gatewayConnectionConfig);
     }
 
-    private ConnectionPolicy(ConnectionMode connectionMode, DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
+    private ConnectionPolicy(
+        ConnectionMode connectionMode,
+        DirectConnectionConfig directConnectionConfig,
+        GatewayConnectionConfig gatewayConnectionConfig) {
         this();
         this.connectionMode = connectionMode;
         this.connectTimeout = directConnectionConfig.getConnectTimeout();
@@ -84,6 +95,19 @@ public final class ConnectionPolicy {
         this.maxConnectionPoolSize = gatewayConnectionConfig.getMaxConnectionPoolSize();
         this.httpNetworkRequestTimeout = BridgeInternal.getNetworkRequestTimeoutFromGatewayConnectionConfig(gatewayConnectionConfig);
         this.proxy = gatewayConnectionConfig.getProxy();
+        this.tcpHealthCheckTimeoutDetectionEnabled =
+            ImplementationBridgeHelpers
+                .DirectConnectionConfigHelper
+                .getDirectConnectionConfigAccessor()
+                .isHealthCheckTimeoutDetectionEnabled(directConnectionConfig);
+
+        // NOTE: should be compared with COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT
+        // read during client initialization before connections are created for the container
+        this.minConnectionPoolSizePerEndpoint =
+                Math.max(ImplementationBridgeHelpers
+                    .DirectConnectionConfigHelper
+                    .getDirectConnectionConfigAccessor()
+                    .getMinConnectionPoolSizePerEndpoint(directConnectionConfig), Configs.getMinConnectionPoolSizePerEndpoint());
     }
 
     private ConnectionPolicy() {
@@ -94,6 +118,10 @@ public final class ConnectionPolicy {
         this.throttlingRetryOptions = new ThrottlingRetryOptions();
         this.userAgentSuffix = "";
         this.ioThreadPriority = Thread.NORM_PRIORITY;
+        this.tcpHealthCheckTimeoutDetectionEnabled = true;
+        this.minConnectionPoolSizePerEndpoint = Configs.getMinConnectionPoolSizePerEndpoint();
+        this.openConnectionsConcurrency = Configs.getOpenConnectionsConcurrency();
+        this.aggressiveWarmupConcurrency = Configs.getAggressiveWarmupConcurrency();
     }
 
     /**
@@ -451,6 +479,15 @@ public final class ConnectionPolicy {
         return this;
     }
 
+    public ConnectionPolicy setExcludedRegionsSupplier(Supplier<CosmosExcludedRegions> excludedRegionsSupplier) {
+        this.excludedRegionsSupplier = excludedRegionsSupplier;
+        return this;
+    }
+
+    public Supplier<CosmosExcludedRegions> getExcludedRegionsSupplier() {
+        return this.excludedRegionsSupplier;
+    }
+
     /**
      * Gets the proxy options which contain the InetSocketAddress of proxy server.
      *
@@ -550,6 +587,10 @@ public final class ConnectionPolicy {
 
     public int getIoThreadPriority() { return this.ioThreadPriority; }
 
+    public boolean isTcpHealthCheckTimeoutDetectionEnabled() {
+        return this.tcpHealthCheckTimeoutDetectionEnabled;
+    }
+
     public ConnectionPolicy setIoThreadCountPerCoreFactor(int ioThreadCountPerCoreFactor) {
         this.ioThreadCountPerCoreFactor = ioThreadCountPerCoreFactor;
         return this;
@@ -558,6 +599,40 @@ public final class ConnectionPolicy {
     public ConnectionPolicy setIoThreadPriority(int ioThreadPriority) {
         this.ioThreadPriority = ioThreadPriority;
         return this;
+    }
+
+    public int getMinConnectionPoolSizePerEndpoint() {
+        return minConnectionPoolSizePerEndpoint;
+    }
+
+    public String getExcludedRegionsAsString() {
+        if (this.excludedRegionsSupplier != null && this.excludedRegionsSupplier.get() != null) {
+            CosmosExcludedRegions excludedRegions = this.excludedRegionsSupplier.get();
+            return excludedRegions.toString();
+        }
+        return "[]";
+    }
+
+    /***
+     * Flag to indicate whether disable server cert validation.
+     * Should only be used in local develop or test environment against emulator.
+     *
+     * @param serverCertValidationDisabled flag to indicate whether disable server cert verification.
+     * @return the ConnectionPolicy.
+     */
+    public ConnectionPolicy setServerCertValidationDisabled(boolean serverCertValidationDisabled) {
+        this.serverCertValidationDisabled = serverCertValidationDisabled;
+        return this;
+    }
+
+    /**
+     * Get the value to indicate whether disable server cert verification.
+     * Should only be used in local develop or test environment.
+     *
+     * @return {@code true} if server cert verification is disabled; {@code false} otherwise.
+     */
+    public boolean isServerCertValidationDisabled() {
+        return this.serverCertValidationDisabled;
     }
 
     @Override
@@ -582,6 +657,12 @@ public final class ConnectionPolicy {
             ", maxConnectionsPerEndpoint=" + maxConnectionsPerEndpoint +
             ", maxRequestsPerConnection=" + maxRequestsPerConnection +
             ", tcpConnectionEndpointRediscoveryEnabled=" + tcpConnectionEndpointRediscoveryEnabled +
+            ", ioThreadPriority=" + ioThreadPriority +
+            ", ioThreadCountPerCoreFactor=" + ioThreadCountPerCoreFactor +
+            ", tcpHealthCheckTimeoutDetectionEnabled=" + tcpHealthCheckTimeoutDetectionEnabled +
+            ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
+            ", openConnectionsConcurrency=" + openConnectionsConcurrency +
+            ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             '}';
     }
 }

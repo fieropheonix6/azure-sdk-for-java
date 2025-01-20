@@ -8,35 +8,26 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Agreements. */
+/**
+ * Resource collection API of Agreements.
+ */
 public interface Agreements {
     /**
-     * Lists the agreements for a billing account.
-     *
+     * Gets an agreement by ID.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing agreements.
-     */
-    PagedIterable<Agreement> listByBillingAccount(String billingAccountName);
-
-    /**
-     * Lists the agreements for a billing account.
-     *
-     * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param expand May be used to expand the participants.
+     * @param agreementName The ID that uniquely identifies an agreement.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of listing agreements.
+     * @return an agreement by ID along with {@link Response}.
      */
-    PagedIterable<Agreement> listByBillingAccount(String billingAccountName, String expand, Context context);
+    Response<Agreement> getWithResponse(String billingAccountName, String agreementName, Context context);
 
     /**
      * Gets an agreement by ID.
-     *
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param agreementName The ID that uniquely identifies an agreement.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,17 +38,26 @@ public interface Agreements {
     Agreement get(String billingAccountName, String agreementName);
 
     /**
-     * Gets an agreement by ID.
-     *
+     * Lists the agreements for a billing account.
+     * 
      * @param billingAccountName The ID that uniquely identifies a billing account.
-     * @param agreementName The ID that uniquely identifies an agreement.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
+     */
+    PagedIterable<Agreement> listByBillingAccount(String billingAccountName);
+
+    /**
+     * Lists the agreements for a billing account.
+     * 
+     * @param billingAccountName The ID that uniquely identifies a billing account.
      * @param expand May be used to expand the participants.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an agreement by ID.
+     * @return a container for a list of resources as paginated response with {@link PagedIterable}.
      */
-    Response<Agreement> getWithResponse(
-        String billingAccountName, String agreementName, String expand, Context context);
+    PagedIterable<Agreement> listByBillingAccount(String billingAccountName, String expand, Context context);
 }

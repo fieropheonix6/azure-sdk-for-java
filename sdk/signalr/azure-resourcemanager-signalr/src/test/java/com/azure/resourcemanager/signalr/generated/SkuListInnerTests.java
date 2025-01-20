@@ -6,20 +6,17 @@ package com.azure.resourcemanager.signalr.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.SkuListInner;
-import org.junit.jupiter.api.Test;
 
 public final class SkuListInnerTests {
-    @Test
-    public void testDeserialize() {
-        SkuListInner model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"ipfpubji\",\"sku\":{\"name\":\"wifto\",\"tier\":\"Premium\",\"size\":\"puvks\",\"family\":\"lsa\",\"capacity\":931393503},\"capacity\":{\"minimum\":1486406311,\"maximum\":10368328,\"default\":962840058,\"allowedValues\":[],\"scaleType\":\"Automatic\"}},{\"resourceType\":\"pxodlqiyntorzih\",\"sku\":{\"name\":\"osjswsr\",\"tier\":\"Premium\",\"size\":\"zrpzb\",\"family\":\"ckqqzqioxiysui\",\"capacity\":2121235922},\"capacity\":{\"minimum\":2066516032,\"maximum\":1368967398,\"default\":2903501,\"allowedValues\":[],\"scaleType\":\"Manual\"}}],\"nextLink\":\"q\"}")
-                .toObject(SkuListInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SkuListInner model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"rihpfhoq\",\"sku\":{\"name\":\"a\",\"tier\":\"Free\",\"size\":\"omdjvlpjxxkzbrm\",\"family\":\"eivsiykzkdnc\",\"capacity\":1416610190},\"capacity\":{\"minimum\":782500811,\"maximum\":170670215,\"default\":1358958496,\"allowedValues\":[2059665337,535574830,15755117],\"scaleType\":\"Manual\"}},{\"resourceType\":\"rpgogtqxep\",\"sku\":{\"name\":\"lbfu\",\"tier\":\"Free\",\"size\":\"jtlvofqzhvfciby\",\"family\":\"owuxrkjpvdwx\",\"capacity\":1171857310},\"capacity\":{\"minimum\":2090183437,\"maximum\":615358685,\"default\":1971215082,\"allowedValues\":[1608749608,1253939074,954639384,1858009162],\"scaleType\":\"Automatic\"}}],\"nextLink\":\"mbtrnegvmnvu\"}")
+            .toObject(SkuListInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuListInner model = new SkuListInner();
         model = BinaryData.fromObject(model).toObject(SkuListInner.class);
     }

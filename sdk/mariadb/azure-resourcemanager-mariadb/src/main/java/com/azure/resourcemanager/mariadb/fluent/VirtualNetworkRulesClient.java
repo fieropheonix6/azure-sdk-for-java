@@ -13,11 +13,29 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mariadb.fluent.models.VirtualNetworkRuleInner;
 
-/** An instance of this class provides access to all the operations defined in VirtualNetworkRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VirtualNetworkRulesClient.
+ */
 public interface VirtualNetworkRulesClient {
     /**
      * Gets a virtual network rule.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serverName The name of the server.
+     * @param virtualNetworkRuleName The name of the virtual network rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual network rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualNetworkRuleInner> getWithResponse(String resourceGroupName, String serverName,
+        String virtualNetworkRuleName, Context context);
+
+    /**
+     * Gets a virtual network rule.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
@@ -30,24 +48,8 @@ public interface VirtualNetworkRulesClient {
     VirtualNetworkRuleInner get(String resourceGroupName, String serverName, String virtualNetworkRuleName);
 
     /**
-     * Gets a virtual network rule.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param serverName The name of the server.
-     * @param virtualNetworkRuleName The name of the virtual network rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkRuleInner> getWithResponse(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName, Context context);
-
-    /**
      * Creates or updates an existing virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
@@ -55,15 +57,15 @@ public interface VirtualNetworkRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
+     * @return the {@link SyncPoller} for polling of a virtual network rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkRuleInner>, VirtualNetworkRuleInner> beginCreateOrUpdate(
         String resourceGroupName, String serverName, String virtualNetworkRuleName, VirtualNetworkRuleInner parameters);
 
     /**
      * Creates or updates an existing virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
@@ -72,19 +74,16 @@ public interface VirtualNetworkRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual network rule.
+     * @return the {@link SyncPoller} for polling of a virtual network rule.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkRuleInner>, VirtualNetworkRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String virtualNetworkRuleName,
-        VirtualNetworkRuleInner parameters,
+        String resourceGroupName, String serverName, String virtualNetworkRuleName, VirtualNetworkRuleInner parameters,
         Context context);
 
     /**
      * Creates or updates an existing virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
@@ -95,12 +94,12 @@ public interface VirtualNetworkRulesClient {
      * @return a virtual network rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkRuleInner createOrUpdate(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName, VirtualNetworkRuleInner parameters);
+    VirtualNetworkRuleInner createOrUpdate(String resourceGroupName, String serverName, String virtualNetworkRuleName,
+        VirtualNetworkRuleInner parameters);
 
     /**
      * Creates or updates an existing virtual network rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
@@ -112,31 +111,27 @@ public interface VirtualNetworkRulesClient {
      * @return a virtual network rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkRuleInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String virtualNetworkRuleName,
-        VirtualNetworkRuleInner parameters,
-        Context context);
+    VirtualNetworkRuleInner createOrUpdate(String resourceGroupName, String serverName, String virtualNetworkRuleName,
+        VirtualNetworkRuleInner parameters, Context context);
 
     /**
      * Deletes the virtual network rule with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String virtualNetworkRuleName);
 
     /**
      * Deletes the virtual network rule with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
@@ -144,15 +139,15 @@ public interface VirtualNetworkRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String virtualNetworkRuleName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName,
+        String virtualNetworkRuleName, Context context);
 
     /**
      * Deletes the virtual network rule with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
@@ -165,7 +160,7 @@ public interface VirtualNetworkRulesClient {
 
     /**
      * Deletes the virtual network rule with the given name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param virtualNetworkRuleName The name of the virtual network rule.
@@ -179,27 +174,27 @@ public interface VirtualNetworkRulesClient {
 
     /**
      * Gets a list of virtual network rules in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual network rules in a server.
+     * @return a list of virtual network rules in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkRuleInner> listByServer(String resourceGroupName, String serverName);
 
     /**
      * Gets a list of virtual network rules in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of virtual network rules in a server.
+     * @return a list of virtual network rules in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkRuleInner> listByServer(String resourceGroupName, String serverName, Context context);

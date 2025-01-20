@@ -5,29 +5,47 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AofFrequency. */
+/**
+ * Sets the frequency at which data is written to disk. Defaults to '1s', meaning 'every second'. Note that the 'always'
+ * setting is deprecated, because of its performance impact.
+ */
 public final class AofFrequency extends ExpandableStringEnum<AofFrequency> {
-    /** Static value 1s for AofFrequency. */
+    /**
+     * Static value 1s for AofFrequency.
+     */
     public static final AofFrequency ONES = fromString("1s");
 
-    /** Static value always for AofFrequency. */
+    /**
+     * Static value always for AofFrequency.
+     */
     public static final AofFrequency ALWAYS = fromString("always");
 
     /**
+     * Creates a new instance of AofFrequency value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public AofFrequency() {
+    }
+
+    /**
      * Creates or finds a AofFrequency from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AofFrequency.
      */
-    @JsonCreator
     public static AofFrequency fromString(String name) {
         return fromString(name, AofFrequency.class);
     }
 
-    /** @return known AofFrequency values. */
+    /**
+     * Gets known AofFrequency values.
+     * 
+     * @return known AofFrequency values.
+     */
     public static Collection<AofFrequency> values() {
         return values(AofFrequency.class);
     }

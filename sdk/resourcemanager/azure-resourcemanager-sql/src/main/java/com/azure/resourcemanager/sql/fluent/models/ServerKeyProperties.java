@@ -5,47 +5,61 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sql.models.ServerKeyType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties for a server key execution. */
+/**
+ * Properties for a server key execution.
+ */
 @Fluent
-public final class ServerKeyProperties {
+public final class ServerKeyProperties implements JsonSerializable<ServerKeyProperties> {
     /*
      * Subregion of the server key.
      */
-    @JsonProperty(value = "subregion", access = JsonProperty.Access.WRITE_ONLY)
     private String subregion;
 
     /*
      * The server key type like 'ServiceManaged', 'AzureKeyVault'.
      */
-    @JsonProperty(value = "serverKeyType", required = true)
     private ServerKeyType serverKeyType;
 
     /*
-     * The URI of the server key.
+     * The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required. The AKV URI is
+     * required to be in this format: 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'
      */
-    @JsonProperty(value = "uri")
     private String uri;
 
     /*
      * Thumbprint of the server key.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
     /*
      * The server key creation date.
      */
-    @JsonProperty(value = "creationDate")
     private OffsetDateTime creationDate;
+
+    /*
+     * Key auto rotation opt-in flag. Either true or false.
+     */
+    private Boolean autoRotationEnabled;
+
+    /**
+     * Creates an instance of ServerKeyProperties class.
+     */
+    public ServerKeyProperties() {
+    }
 
     /**
      * Get the subregion property: Subregion of the server key.
-     *
+     * 
      * @return the subregion value.
      */
     public String subregion() {
@@ -54,7 +68,7 @@ public final class ServerKeyProperties {
 
     /**
      * Get the serverKeyType property: The server key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @return the serverKeyType value.
      */
     public ServerKeyType serverKeyType() {
@@ -63,7 +77,7 @@ public final class ServerKeyProperties {
 
     /**
      * Set the serverKeyType property: The server key type like 'ServiceManaged', 'AzureKeyVault'.
-     *
+     * 
      * @param serverKeyType the serverKeyType value to set.
      * @return the ServerKeyProperties object itself.
      */
@@ -73,8 +87,10 @@ public final class ServerKeyProperties {
     }
 
     /**
-     * Get the uri property: The URI of the server key.
-     *
+     * Get the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
+     * The AKV URI is required to be in this format:
+     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -82,8 +98,10 @@ public final class ServerKeyProperties {
     }
 
     /**
-     * Set the uri property: The URI of the server key.
-     *
+     * Set the uri property: The URI of the server key. If the ServerKeyType is AzureKeyVault, then the URI is required.
+     * The AKV URI is required to be in this format:
+     * 'https://YourVaultName.vault.azure.net/keys/YourKeyName/YourKeyVersion'.
+     * 
      * @param uri the uri value to set.
      * @return the ServerKeyProperties object itself.
      */
@@ -94,7 +112,7 @@ public final class ServerKeyProperties {
 
     /**
      * Get the thumbprint property: Thumbprint of the server key.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -102,19 +120,8 @@ public final class ServerKeyProperties {
     }
 
     /**
-     * Set the thumbprint property: Thumbprint of the server key.
-     *
-     * @param thumbprint the thumbprint value to set.
-     * @return the ServerKeyProperties object itself.
-     */
-    public ServerKeyProperties withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
-        return this;
-    }
-
-    /**
      * Get the creationDate property: The server key creation date.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -122,29 +129,75 @@ public final class ServerKeyProperties {
     }
 
     /**
-     * Set the creationDate property: The server key creation date.
-     *
-     * @param creationDate the creationDate value to set.
-     * @return the ServerKeyProperties object itself.
+     * Get the autoRotationEnabled property: Key auto rotation opt-in flag. Either true or false.
+     * 
+     * @return the autoRotationEnabled value.
      */
-    public ServerKeyProperties withCreationDate(OffsetDateTime creationDate) {
-        this.creationDate = creationDate;
-        return this;
+    public Boolean autoRotationEnabled() {
+        return this.autoRotationEnabled;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serverKeyType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serverKeyType in model ServerKeyProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property serverKeyType in model ServerKeyProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServerKeyProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serverKeyType", this.serverKeyType == null ? null : this.serverKeyType.toString());
+        jsonWriter.writeStringField("uri", this.uri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerKeyProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerKeyProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServerKeyProperties.
+     */
+    public static ServerKeyProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerKeyProperties deserializedServerKeyProperties = new ServerKeyProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serverKeyType".equals(fieldName)) {
+                    deserializedServerKeyProperties.serverKeyType = ServerKeyType.fromString(reader.getString());
+                } else if ("subregion".equals(fieldName)) {
+                    deserializedServerKeyProperties.subregion = reader.getString();
+                } else if ("uri".equals(fieldName)) {
+                    deserializedServerKeyProperties.uri = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedServerKeyProperties.thumbprint = reader.getString();
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedServerKeyProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("autoRotationEnabled".equals(fieldName)) {
+                    deserializedServerKeyProperties.autoRotationEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerKeyProperties;
+        });
+    }
 }

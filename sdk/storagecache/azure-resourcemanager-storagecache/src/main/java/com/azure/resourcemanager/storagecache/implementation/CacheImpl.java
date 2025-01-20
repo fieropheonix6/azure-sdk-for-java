@@ -174,20 +174,16 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .createOrUpdate(resourceGroupName, cacheName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .createOrUpdate(resourceGroupName, cacheName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Cache create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .createOrUpdate(resourceGroupName, cacheName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .createOrUpdate(resourceGroupName, cacheName, this.innerModel(), context);
         return this;
     }
 
@@ -202,49 +198,39 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
     }
 
     public Cache apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .updateWithResponse(resourceGroupName, cacheName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .update(resourceGroupName, cacheName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Cache apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .updateWithResponse(resourceGroupName, cacheName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .update(resourceGroupName, cacheName, this.innerModel(), context);
         return this;
     }
 
     CacheImpl(CacheInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourcegroups");
-        this.cacheName = Utils.getValueFromIdByName(innerObject.id(), "caches");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourcegroups");
+        this.cacheName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "caches");
     }
 
     public Cache refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .getByResourceGroupWithResponse(resourceGroupName, cacheName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .getByResourceGroupWithResponse(resourceGroupName, cacheName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Cache refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCaches()
-                .getByResourceGroupWithResponse(resourceGroupName, cacheName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCaches()
+            .getByResourceGroupWithResponse(resourceGroupName, cacheName, context)
+            .getValue();
         return this;
     }
 
@@ -280,20 +266,12 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         serviceManager.caches().stop(resourceGroupName, cacheName, context);
     }
 
-    public void startPrimingJob(PrimingJob primingjob) {
-        serviceManager.caches().startPrimingJob(resourceGroupName, cacheName, primingjob);
-    }
-
     public void startPrimingJob() {
         serviceManager.caches().startPrimingJob(resourceGroupName, cacheName);
     }
 
     public void startPrimingJob(PrimingJob primingjob, Context context) {
         serviceManager.caches().startPrimingJob(resourceGroupName, cacheName, primingjob, context);
-    }
-
-    public void stopPrimingJob(PrimingJobIdParameter primingJobId) {
-        serviceManager.caches().stopPrimingJob(resourceGroupName, cacheName, primingJobId);
     }
 
     public void stopPrimingJob() {
@@ -304,20 +282,12 @@ public final class CacheImpl implements Cache, Cache.Definition, Cache.Update {
         serviceManager.caches().stopPrimingJob(resourceGroupName, cacheName, primingJobId, context);
     }
 
-    public void pausePrimingJob(PrimingJobIdParameter primingJobId) {
-        serviceManager.caches().pausePrimingJob(resourceGroupName, cacheName, primingJobId);
-    }
-
     public void pausePrimingJob() {
         serviceManager.caches().pausePrimingJob(resourceGroupName, cacheName);
     }
 
     public void pausePrimingJob(PrimingJobIdParameter primingJobId, Context context) {
         serviceManager.caches().pausePrimingJob(resourceGroupName, cacheName, primingJobId, context);
-    }
-
-    public void resumePrimingJob(PrimingJobIdParameter primingJobId) {
-        serviceManager.caches().resumePrimingJob(resourceGroupName, cacheName, primingJobId);
     }
 
     public void resumePrimingJob() {

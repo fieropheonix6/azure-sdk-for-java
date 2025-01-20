@@ -6,31 +6,46 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Network Intent Policy resource. */
+/**
+ * Network Intent Policy resource.
+ */
 @Fluent
 public final class NetworkIntentPolicy extends Resource {
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of NetworkIntentPolicy class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of NetworkIntentPolicy class.
+     */
     public NetworkIntentPolicy() {
     }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -39,7 +54,7 @@ public final class NetworkIntentPolicy extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -48,7 +63,7 @@ public final class NetworkIntentPolicy extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the NetworkIntentPolicy object itself.
      */
@@ -57,14 +72,38 @@ public final class NetworkIntentPolicy extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkIntentPolicy withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkIntentPolicy withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -73,9 +112,59 @@ public final class NetworkIntentPolicy extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkIntentPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkIntentPolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkIntentPolicy.
+     */
+    public static NetworkIntentPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkIntentPolicy deserializedNetworkIntentPolicy = new NetworkIntentPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkIntentPolicy.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkIntentPolicy.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkIntentPolicy.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkIntentPolicy.withTags(tags);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedNetworkIntentPolicy.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedNetworkIntentPolicy.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkIntentPolicy;
+        });
     }
 }

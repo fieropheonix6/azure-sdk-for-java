@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.purview.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Name. */
+/**
+ * Gets or sets the sku name.
+ */
 public final class Name extends ExpandableStringEnum<Name> {
-    /** Static value Standard for Name. */
+    /**
+     * Static value Standard for Name.
+     */
     public static final Name STANDARD = fromString("Standard");
 
     /**
+     * Creates a new instance of Name value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Name() {
+    }
+
+    /**
      * Creates or finds a Name from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Name.
      */
-    @JsonCreator
     public static Name fromString(String name) {
         return fromString(name, Name.class);
     }
 
-    /** @return known Name values. */
+    /**
+     * Gets known Name values.
+     * 
+     * @return known Name values.
+     */
     public static Collection<Name> values() {
         return values(Name.class);
     }

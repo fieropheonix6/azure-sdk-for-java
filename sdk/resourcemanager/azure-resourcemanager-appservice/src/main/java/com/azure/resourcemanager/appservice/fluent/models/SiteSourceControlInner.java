@@ -5,29 +5,86 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.GitHubActionConfiguration;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Source control configuration for an app. */
+/**
+ * Source control configuration for an app.
+ */
 @Fluent
 public final class SiteSourceControlInner extends ProxyOnlyResource {
     /*
      * SiteSourceControl resource specific properties
      */
-    @JsonProperty(value = "properties")
     private SiteSourceControlProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SiteSourceControlInner class.
+     */
+    public SiteSourceControlInner() {
+    }
 
     /**
      * Get the innerProperties property: SiteSourceControl resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SiteSourceControlProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SiteSourceControlInner withKind(String kind) {
         super.withKind(kind);
@@ -36,7 +93,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the repoUrl property: Repository or source control URL.
-     *
+     * 
      * @return the repoUrl value.
      */
     public String repoUrl() {
@@ -45,7 +102,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the repoUrl property: Repository or source control URL.
-     *
+     * 
      * @param repoUrl the repoUrl value to set.
      * @return the SiteSourceControlInner object itself.
      */
@@ -59,7 +116,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the branch property: Name of branch to use for deployment.
-     *
+     * 
      * @return the branch value.
      */
     public String branch() {
@@ -68,7 +125,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the branch property: Name of branch to use for deployment.
-     *
+     * 
      * @param branch the branch value to set.
      * @return the SiteSourceControlInner object itself.
      */
@@ -84,7 +141,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
      * Get the isManualIntegration property: &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
      * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like
      * GitHub).
-     *
+     * 
      * @return the isManualIntegration value.
      */
     public Boolean isManualIntegration() {
@@ -95,7 +152,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
      * Set the isManualIntegration property: &lt;code&gt;true&lt;/code&gt; to limit to manual integration;
      * &lt;code&gt;false&lt;/code&gt; to enable continuous integration (which configures webhooks into online repos like
      * GitHub).
-     *
+     * 
      * @param isManualIntegration the isManualIntegration value to set.
      * @return the SiteSourceControlInner object itself.
      */
@@ -109,7 +166,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
-     *
+     * 
      * @return the isGitHubAction value.
      */
     public Boolean isGitHubAction() {
@@ -118,7 +175,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the isGitHubAction property: &lt;code&gt;true&lt;/code&gt; if this is deployed via GitHub action.
-     *
+     * 
      * @param isGitHubAction the isGitHubAction value to set.
      * @return the SiteSourceControlInner object itself.
      */
@@ -133,7 +190,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
     /**
      * Get the deploymentRollbackEnabled property: &lt;code&gt;true&lt;/code&gt; to enable deployment rollback;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the deploymentRollbackEnabled value.
      */
     public Boolean deploymentRollbackEnabled() {
@@ -143,7 +200,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
     /**
      * Set the deploymentRollbackEnabled property: &lt;code&gt;true&lt;/code&gt; to enable deployment rollback;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param deploymentRollbackEnabled the deploymentRollbackEnabled value to set.
      * @return the SiteSourceControlInner object itself.
      */
@@ -158,7 +215,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
     /**
      * Get the isMercurial property: &lt;code&gt;true&lt;/code&gt; for a Mercurial repository;
      * &lt;code&gt;false&lt;/code&gt; for a Git repository.
-     *
+     * 
      * @return the isMercurial value.
      */
     public Boolean isMercurial() {
@@ -168,7 +225,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
     /**
      * Set the isMercurial property: &lt;code&gt;true&lt;/code&gt; for a Mercurial repository;
      * &lt;code&gt;false&lt;/code&gt; for a Git repository.
-     *
+     * 
      * @param isMercurial the isMercurial value to set.
      * @return the SiteSourceControlInner object itself.
      */
@@ -182,7 +239,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
-     *
+     * 
      * @return the gitHubActionConfiguration value.
      */
     public GitHubActionConfiguration gitHubActionConfiguration() {
@@ -191,7 +248,7 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the gitHubActionConfiguration property: If GitHub Action is selected, than the associated configuration.
-     *
+     * 
      * @param gitHubActionConfiguration the gitHubActionConfiguration value to set.
      * @return the SiteSourceControlInner object itself.
      */
@@ -205,14 +262,59 @@ public final class SiteSourceControlInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteSourceControlInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteSourceControlInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SiteSourceControlInner.
+     */
+    public static SiteSourceControlInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteSourceControlInner deserializedSiteSourceControlInner = new SiteSourceControlInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSiteSourceControlInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSiteSourceControlInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSiteSourceControlInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSiteSourceControlInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSiteSourceControlInner.innerProperties = SiteSourceControlProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteSourceControlInner;
+        });
     }
 }

@@ -9,28 +9,23 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDuration
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDurationType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SimpleRetentionPolicy;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SimpleRetentionPolicyTests {
-    @Test
-    public void testDeserialize() {
-        SimpleRetentionPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"retentionPolicyType\":\"SimpleRetentionPolicy\",\"retentionDuration\":{\"count\":1472417276,\"durationType\":\"Invalid\"}}")
-                .toObject(SimpleRetentionPolicy.class);
-        Assertions.assertEquals(1472417276, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.INVALID, model.retentionDuration().durationType());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SimpleRetentionPolicy model = BinaryData.fromString(
+            "{\"retentionPolicyType\":\"SimpleRetentionPolicy\",\"retentionDuration\":{\"count\":592038420,\"durationType\":\"Months\"}}")
+            .toObject(SimpleRetentionPolicy.class);
+        Assertions.assertEquals(592038420, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
     }
 
-    @Test
-    public void testSerialize() {
-        SimpleRetentionPolicy model =
-            new SimpleRetentionPolicy()
-                .withRetentionDuration(
-                    new RetentionDuration().withCount(1472417276).withDurationType(RetentionDurationType.INVALID));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SimpleRetentionPolicy model = new SimpleRetentionPolicy().withRetentionDuration(
+            new RetentionDuration().withCount(592038420).withDurationType(RetentionDurationType.MONTHS));
         model = BinaryData.fromObject(model).toObject(SimpleRetentionPolicy.class);
-        Assertions.assertEquals(1472417276, model.retentionDuration().count());
-        Assertions.assertEquals(RetentionDurationType.INVALID, model.retentionDuration().durationType());
+        Assertions.assertEquals(592038420, model.retentionDuration().count());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.retentionDuration().durationType());
     }
 }

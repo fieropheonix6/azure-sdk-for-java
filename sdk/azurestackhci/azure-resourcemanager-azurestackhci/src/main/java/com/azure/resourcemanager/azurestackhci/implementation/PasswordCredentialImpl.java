@@ -13,8 +13,7 @@ public final class PasswordCredentialImpl implements PasswordCredential {
 
     private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
 
-    PasswordCredentialImpl(
-        PasswordCredentialInner innerObject,
+    PasswordCredentialImpl(PasswordCredentialInner innerObject,
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

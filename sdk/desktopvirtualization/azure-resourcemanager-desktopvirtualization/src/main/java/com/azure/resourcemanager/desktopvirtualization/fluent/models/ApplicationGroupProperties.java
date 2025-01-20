@@ -6,64 +6,67 @@ package com.azure.resourcemanager.desktopvirtualization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.desktopvirtualization.models.ApplicationGroupType;
-import com.azure.resourcemanager.desktopvirtualization.models.MigrationRequestProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Schema for ApplicationGroup properties. */
+/**
+ * Schema for ApplicationGroup properties.
+ */
 @Fluent
-public final class ApplicationGroupProperties {
+public final class ApplicationGroupProperties implements JsonSerializable<ApplicationGroupProperties> {
     /*
      * ObjectId of ApplicationGroup. (internal use)
      */
-    @JsonProperty(value = "objectId", access = JsonProperty.Access.WRITE_ONLY)
     private String objectId;
 
     /*
      * Description of ApplicationGroup.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Friendly name of ApplicationGroup.
      */
-    @JsonProperty(value = "friendlyName")
     private String friendlyName;
 
     /*
      * HostPool arm path of ApplicationGroup.
      */
-    @JsonProperty(value = "hostPoolArmPath", required = true)
     private String hostPoolArmPath;
 
     /*
      * Workspace arm path of ApplicationGroup.
      */
-    @JsonProperty(value = "workspaceArmPath", access = JsonProperty.Access.WRITE_ONLY)
     private String workspaceArmPath;
 
     /*
      * Resource Type of ApplicationGroup.
      */
-    @JsonProperty(value = "applicationGroupType", required = true)
     private ApplicationGroupType applicationGroupType;
-
-    /*
-     * The registration info of HostPool.
-     */
-    @JsonProperty(value = "migrationRequest")
-    private MigrationRequestProperties migrationRequest;
 
     /*
      * Is cloud pc resource.
      */
-    @JsonProperty(value = "cloudPcResource", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean cloudPcResource;
+
+    /*
+     * Boolean representing whether the applicationGroup is show in the feed.
+     */
+    private Boolean showInFeed;
+
+    /**
+     * Creates an instance of ApplicationGroupProperties class.
+     */
+    public ApplicationGroupProperties() {
+    }
 
     /**
      * Get the objectId property: ObjectId of ApplicationGroup. (internal use).
-     *
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -72,7 +75,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Get the description property: Description of ApplicationGroup.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -81,7 +84,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Set the description property: Description of ApplicationGroup.
-     *
+     * 
      * @param description the description value to set.
      * @return the ApplicationGroupProperties object itself.
      */
@@ -92,7 +95,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Get the friendlyName property: Friendly name of ApplicationGroup.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -101,7 +104,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Set the friendlyName property: Friendly name of ApplicationGroup.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ApplicationGroupProperties object itself.
      */
@@ -112,7 +115,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Get the hostPoolArmPath property: HostPool arm path of ApplicationGroup.
-     *
+     * 
      * @return the hostPoolArmPath value.
      */
     public String hostPoolArmPath() {
@@ -121,7 +124,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Set the hostPoolArmPath property: HostPool arm path of ApplicationGroup.
-     *
+     * 
      * @param hostPoolArmPath the hostPoolArmPath value to set.
      * @return the ApplicationGroupProperties object itself.
      */
@@ -132,7 +135,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Get the workspaceArmPath property: Workspace arm path of ApplicationGroup.
-     *
+     * 
      * @return the workspaceArmPath value.
      */
     public String workspaceArmPath() {
@@ -141,7 +144,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Get the applicationGroupType property: Resource Type of ApplicationGroup.
-     *
+     * 
      * @return the applicationGroupType value.
      */
     public ApplicationGroupType applicationGroupType() {
@@ -150,7 +153,7 @@ public final class ApplicationGroupProperties {
 
     /**
      * Set the applicationGroupType property: Resource Type of ApplicationGroup.
-     *
+     * 
      * @param applicationGroupType the applicationGroupType value to set.
      * @return the ApplicationGroupProperties object itself.
      */
@@ -160,28 +163,8 @@ public final class ApplicationGroupProperties {
     }
 
     /**
-     * Get the migrationRequest property: The registration info of HostPool.
-     *
-     * @return the migrationRequest value.
-     */
-    public MigrationRequestProperties migrationRequest() {
-        return this.migrationRequest;
-    }
-
-    /**
-     * Set the migrationRequest property: The registration info of HostPool.
-     *
-     * @param migrationRequest the migrationRequest value to set.
-     * @return the ApplicationGroupProperties object itself.
-     */
-    public ApplicationGroupProperties withMigrationRequest(MigrationRequestProperties migrationRequest) {
-        this.migrationRequest = migrationRequest;
-        return this;
-    }
-
-    /**
      * Get the cloudPcResource property: Is cloud pc resource.
-     *
+     * 
      * @return the cloudPcResource value.
      */
     public Boolean cloudPcResource() {
@@ -189,27 +172,99 @@ public final class ApplicationGroupProperties {
     }
 
     /**
+     * Get the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     * 
+     * @return the showInFeed value.
+     */
+    public Boolean showInFeed() {
+        return this.showInFeed;
+    }
+
+    /**
+     * Set the showInFeed property: Boolean representing whether the applicationGroup is show in the feed.
+     * 
+     * @param showInFeed the showInFeed value to set.
+     * @return the ApplicationGroupProperties object itself.
+     */
+    public ApplicationGroupProperties withShowInFeed(Boolean showInFeed) {
+        this.showInFeed = showInFeed;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (hostPoolArmPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property hostPoolArmPath in model ApplicationGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property hostPoolArmPath in model ApplicationGroupProperties"));
         }
         if (applicationGroupType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationGroupType in model ApplicationGroupProperties"));
-        }
-        if (migrationRequest() != null) {
-            migrationRequest().validate();
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property applicationGroupType in model ApplicationGroupProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationGroupProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("hostPoolArmPath", this.hostPoolArmPath);
+        jsonWriter.writeStringField("applicationGroupType",
+            this.applicationGroupType == null ? null : this.applicationGroupType.toString());
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("friendlyName", this.friendlyName);
+        jsonWriter.writeBooleanField("showInFeed", this.showInFeed);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGroupProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGroupProperties.
+     */
+    public static ApplicationGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGroupProperties deserializedApplicationGroupProperties = new ApplicationGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hostPoolArmPath".equals(fieldName)) {
+                    deserializedApplicationGroupProperties.hostPoolArmPath = reader.getString();
+                } else if ("applicationGroupType".equals(fieldName)) {
+                    deserializedApplicationGroupProperties.applicationGroupType
+                        = ApplicationGroupType.fromString(reader.getString());
+                } else if ("objectId".equals(fieldName)) {
+                    deserializedApplicationGroupProperties.objectId = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedApplicationGroupProperties.description = reader.getString();
+                } else if ("friendlyName".equals(fieldName)) {
+                    deserializedApplicationGroupProperties.friendlyName = reader.getString();
+                } else if ("workspaceArmPath".equals(fieldName)) {
+                    deserializedApplicationGroupProperties.workspaceArmPath = reader.getString();
+                } else if ("cloudPcResource".equals(fieldName)) {
+                    deserializedApplicationGroupProperties.cloudPcResource = reader.getNullable(JsonReader::getBoolean);
+                } else if ("showInFeed".equals(fieldName)) {
+                    deserializedApplicationGroupProperties.showInFeed = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGroupProperties;
+        });
+    }
 }

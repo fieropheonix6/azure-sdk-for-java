@@ -8,114 +8,116 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupPolicies. */
+/**
+ * Resource collection API of BackupPolicies.
+ */
 public interface BackupPolicies {
     /**
      * Returns list of backup policies belonging to a backup vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BaseBackupPolicyResource> list(String vaultName, String resourceGroupName);
+    PagedIterable<BaseBackupPolicyResource> list(String resourceGroupName, String vaultName);
 
     /**
      * Returns list of backup policies belonging to a backup vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return baseBackupPolicyResourceList.
+     * @return baseBackupPolicyResourceList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<BaseBackupPolicyResource> list(String vaultName, String resourceGroupName, Context context);
+    PagedIterable<BaseBackupPolicyResource> list(String resourceGroupName, String vaultName, Context context);
 
     /**
      * Gets a backup policy belonging to a backup vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
+     * @param backupPolicyName The backupPolicyName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a backup policy belonging to a backup vault along with {@link Response}.
+     */
+    Response<BaseBackupPolicyResource> getWithResponse(String resourceGroupName, String vaultName,
+        String backupPolicyName, Context context);
+
+    /**
+     * Gets a backup policy belonging to a backup vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a backup policy belonging to a backup vault.
      */
-    BaseBackupPolicyResource get(String vaultName, String resourceGroupName, String backupPolicyName);
+    BaseBackupPolicyResource get(String resourceGroupName, String vaultName, String backupPolicyName);
 
     /**
-     * Gets a backup policy belonging to a backup vault.
-     *
+     * Deletes a backup policy belonging to a backup vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupPolicyName The backupPolicyName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
+     * @return the {@link Response}.
      */
-    Response<BaseBackupPolicyResource> getWithResponse(
-        String vaultName, String resourceGroupName, String backupPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, String backupPolicyName,
+        Context context);
 
     /**
      * Deletes a backup policy belonging to a backup vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupPolicyName The backupPolicyName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String vaultName, String resourceGroupName, String backupPolicyName);
-
-    /**
-     * Deletes a backup policy belonging to a backup vault.
-     *
-     * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param backupPolicyName The backupPolicyName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<Void> deleteWithResponse(
-        String vaultName, String resourceGroupName, String backupPolicyName, Context context);
+    void delete(String resourceGroupName, String vaultName, String backupPolicyName);
 
     /**
      * Gets a backup policy belonging to a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
+     * @return a backup policy belonging to a backup vault along with {@link Response}.
      */
     BaseBackupPolicyResource getById(String id);
 
     /**
      * Gets a backup policy belonging to a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a backup policy belonging to a backup vault.
+     * @return a backup policy belonging to a backup vault along with {@link Response}.
      */
     Response<BaseBackupPolicyResource> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes a backup policy belonging to a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,19 +127,19 @@ public interface BackupPolicies {
 
     /**
      * Deletes a backup policy belonging to a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new BaseBackupPolicyResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new BaseBackupPolicyResource definition.
      */

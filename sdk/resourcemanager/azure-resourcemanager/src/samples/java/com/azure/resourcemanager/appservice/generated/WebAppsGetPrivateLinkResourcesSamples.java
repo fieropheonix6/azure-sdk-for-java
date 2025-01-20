@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for WebApps GetPrivateLinkResources. */
+/**
+ * Samples for WebApps GetPrivateLinkResources.
+ */
 public final class WebAppsGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetSitePrivateLinkResources.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/GetSitePrivateLinkResources.json
      */
     /**
      * Sample code: Get private link resources of a site.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getPrivateLinkResourcesOfASite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+        azure.webApps()
             .manager()
             .serviceClient()
             .getWebApps()
-            .getPrivateLinkResourcesWithResponse("rg", "testSite", Context.NONE);
+            .getPrivateLinkResourcesWithResponse("rg", "testSite", com.azure.core.util.Context.NONE);
     }
 }

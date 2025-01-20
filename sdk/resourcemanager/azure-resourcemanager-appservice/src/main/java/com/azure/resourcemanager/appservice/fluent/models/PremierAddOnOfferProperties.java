@@ -5,76 +5,77 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.AppServicePlanRestrictions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** PremierAddOnOffer resource specific properties. */
+/**
+ * PremierAddOnOffer resource specific properties.
+ */
 @Fluent
-public final class PremierAddOnOfferProperties {
+public final class PremierAddOnOfferProperties implements JsonSerializable<PremierAddOnOfferProperties> {
     /*
      * Premier add on SKU.
      */
-    @JsonProperty(value = "sku")
     private String sku;
 
     /*
      * Premier add on offer Product.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * Premier add on offer Vendor.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
-     * <code>true</code> if promotion code is required; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if promotion code is required; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "promoCodeRequired")
     private Boolean promoCodeRequired;
 
     /*
      * Premier add on offer Quota.
      */
-    @JsonProperty(value = "quota")
     private Integer quota;
 
     /*
      * App Service plans this offer is restricted to.
      */
-    @JsonProperty(value = "webHostingPlanRestrictions")
     private AppServicePlanRestrictions webHostingPlanRestrictions;
 
     /*
      * Privacy policy URL.
      */
-    @JsonProperty(value = "privacyPolicyUrl")
     private String privacyPolicyUrl;
 
     /*
      * Legal terms URL.
      */
-    @JsonProperty(value = "legalTermsUrl")
     private String legalTermsUrl;
 
     /*
      * Marketplace publisher.
      */
-    @JsonProperty(value = "marketplacePublisher")
     private String marketplacePublisher;
 
     /*
      * Marketplace offer.
      */
-    @JsonProperty(value = "marketplaceOffer")
     private String marketplaceOffer;
 
     /**
+     * Creates an instance of PremierAddOnOfferProperties class.
+     */
+    public PremierAddOnOfferProperties() {
+    }
+
+    /**
      * Get the sku property: Premier add on SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -83,7 +84,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the sku property: Premier add on SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -94,7 +95,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Get the product property: Premier add on offer Product.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -103,7 +104,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the product property: Premier add on offer Product.
-     *
+     * 
      * @param product the product value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -114,7 +115,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Get the vendor property: Premier add on offer Vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -123,7 +124,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the vendor property: Premier add on offer Vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -135,7 +136,7 @@ public final class PremierAddOnOfferProperties {
     /**
      * Get the promoCodeRequired property: &lt;code&gt;true&lt;/code&gt; if promotion code is required; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the promoCodeRequired value.
      */
     public Boolean promoCodeRequired() {
@@ -145,7 +146,7 @@ public final class PremierAddOnOfferProperties {
     /**
      * Set the promoCodeRequired property: &lt;code&gt;true&lt;/code&gt; if promotion code is required; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param promoCodeRequired the promoCodeRequired value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -156,7 +157,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Get the quota property: Premier add on offer Quota.
-     *
+     * 
      * @return the quota value.
      */
     public Integer quota() {
@@ -165,7 +166,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the quota property: Premier add on offer Quota.
-     *
+     * 
      * @param quota the quota value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -176,7 +177,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Get the webHostingPlanRestrictions property: App Service plans this offer is restricted to.
-     *
+     * 
      * @return the webHostingPlanRestrictions value.
      */
     public AppServicePlanRestrictions webHostingPlanRestrictions() {
@@ -185,19 +186,19 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the webHostingPlanRestrictions property: App Service plans this offer is restricted to.
-     *
+     * 
      * @param webHostingPlanRestrictions the webHostingPlanRestrictions value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
-    public PremierAddOnOfferProperties withWebHostingPlanRestrictions(
-        AppServicePlanRestrictions webHostingPlanRestrictions) {
+    public PremierAddOnOfferProperties
+        withWebHostingPlanRestrictions(AppServicePlanRestrictions webHostingPlanRestrictions) {
         this.webHostingPlanRestrictions = webHostingPlanRestrictions;
         return this;
     }
 
     /**
      * Get the privacyPolicyUrl property: Privacy policy URL.
-     *
+     * 
      * @return the privacyPolicyUrl value.
      */
     public String privacyPolicyUrl() {
@@ -206,7 +207,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the privacyPolicyUrl property: Privacy policy URL.
-     *
+     * 
      * @param privacyPolicyUrl the privacyPolicyUrl value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -217,7 +218,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Get the legalTermsUrl property: Legal terms URL.
-     *
+     * 
      * @return the legalTermsUrl value.
      */
     public String legalTermsUrl() {
@@ -226,7 +227,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the legalTermsUrl property: Legal terms URL.
-     *
+     * 
      * @param legalTermsUrl the legalTermsUrl value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -237,7 +238,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Get the marketplacePublisher property: Marketplace publisher.
-     *
+     * 
      * @return the marketplacePublisher value.
      */
     public String marketplacePublisher() {
@@ -246,7 +247,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the marketplacePublisher property: Marketplace publisher.
-     *
+     * 
      * @param marketplacePublisher the marketplacePublisher value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -257,7 +258,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Get the marketplaceOffer property: Marketplace offer.
-     *
+     * 
      * @return the marketplaceOffer value.
      */
     public String marketplaceOffer() {
@@ -266,7 +267,7 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Set the marketplaceOffer property: Marketplace offer.
-     *
+     * 
      * @param marketplaceOffer the marketplaceOffer value to set.
      * @return the PremierAddOnOfferProperties object itself.
      */
@@ -277,9 +278,75 @@ public final class PremierAddOnOfferProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("sku", this.sku);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeBooleanField("promoCodeRequired", this.promoCodeRequired);
+        jsonWriter.writeNumberField("quota", this.quota);
+        jsonWriter.writeStringField("webHostingPlanRestrictions",
+            this.webHostingPlanRestrictions == null ? null : this.webHostingPlanRestrictions.toString());
+        jsonWriter.writeStringField("privacyPolicyUrl", this.privacyPolicyUrl);
+        jsonWriter.writeStringField("legalTermsUrl", this.legalTermsUrl);
+        jsonWriter.writeStringField("marketplacePublisher", this.marketplacePublisher);
+        jsonWriter.writeStringField("marketplaceOffer", this.marketplaceOffer);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PremierAddOnOfferProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PremierAddOnOfferProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PremierAddOnOfferProperties.
+     */
+    public static PremierAddOnOfferProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PremierAddOnOfferProperties deserializedPremierAddOnOfferProperties = new PremierAddOnOfferProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.sku = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.product = reader.getString();
+                } else if ("vendor".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.vendor = reader.getString();
+                } else if ("promoCodeRequired".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.promoCodeRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("quota".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.quota = reader.getNullable(JsonReader::getInt);
+                } else if ("webHostingPlanRestrictions".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.webHostingPlanRestrictions
+                        = AppServicePlanRestrictions.fromString(reader.getString());
+                } else if ("privacyPolicyUrl".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.privacyPolicyUrl = reader.getString();
+                } else if ("legalTermsUrl".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.legalTermsUrl = reader.getString();
+                } else if ("marketplacePublisher".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.marketplacePublisher = reader.getString();
+                } else if ("marketplaceOffer".equals(fieldName)) {
+                    deserializedPremierAddOnOfferProperties.marketplaceOffer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPremierAddOnOfferProperties;
+        });
     }
 }

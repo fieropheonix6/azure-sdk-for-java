@@ -7,24 +7,21 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.MetricName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MetricNameTests {
-    @Test
-    public void testDeserialize() {
-        MetricName model =
-            BinaryData
-                .fromString("{\"value\":\"pqyegualhbxxh\",\"localizedValue\":\"jzzvdud\"}")
-                .toObject(MetricName.class);
-        Assertions.assertEquals("pqyegualhbxxh", model.value());
-        Assertions.assertEquals("jzzvdud", model.localizedValue());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        MetricName model
+            = BinaryData.fromString("{\"value\":\"ys\",\"localizedValue\":\"i\"}").toObject(MetricName.class);
+        Assertions.assertEquals("ys", model.value());
+        Assertions.assertEquals("i", model.localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
-        MetricName model = new MetricName().withValue("pqyegualhbxxh").withLocalizedValue("jzzvdud");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        MetricName model = new MetricName().withValue("ys").withLocalizedValue("i");
         model = BinaryData.fromObject(model).toObject(MetricName.class);
-        Assertions.assertEquals("pqyegualhbxxh", model.value());
-        Assertions.assertEquals("jzzvdud", model.localizedValue());
+        Assertions.assertEquals("ys", model.value());
+        Assertions.assertEquals("i", model.localizedValue());
     }
 }

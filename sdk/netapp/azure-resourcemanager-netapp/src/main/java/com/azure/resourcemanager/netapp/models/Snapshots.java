@@ -8,14 +8,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Snapshots. */
+/**
+ * Resource collection API of Snapshots.
+ */
 public interface Snapshots {
     /**
      * Describe all snapshots
-     *
-     * <p>List all snapshots associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all snapshots associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -28,10 +30,10 @@ public interface Snapshots {
 
     /**
      * Describe all snapshots
-     *
-     * <p>List all snapshots associated with the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all snapshots associated with the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -41,15 +43,34 @@ public interface Snapshots {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Snapshots as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Snapshot> list(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    PagedIterable<Snapshot> list(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
      * Describe a snapshot
-     *
-     * <p>Get details of the specified snapshot.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified snapshot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details of the specified snapshot along with {@link Response}.
+     */
+    Response<Snapshot> getWithResponse(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, Context context);
+
+    /**
+     * Describe a snapshot
+     * 
+     * Get details of the specified snapshot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -62,35 +83,11 @@ public interface Snapshots {
     Snapshot get(String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
 
     /**
-     * Describe a snapshot
-     *
-     * <p>Get details of the specified snapshot.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param snapshotName The name of the snapshot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified snapshot along with {@link Response}.
-     */
-    Response<Snapshot> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Context context);
-
-    /**
      * Update a snapshot
-     *
-     * <p>Patch a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a snapshot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -101,20 +98,15 @@ public interface Snapshots {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    Snapshot update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Object body);
+    Snapshot update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, Object body);
 
     /**
      * Update a snapshot
-     *
-     * <p>Patch a snapshot.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a snapshot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -126,21 +118,15 @@ public interface Snapshots {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return snapshot of a Volume.
      */
-    Snapshot update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Object body,
-        Context context);
+    Snapshot update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, Object body, Context context);
 
     /**
      * Delete a snapshot
-     *
-     * <p>Delete snapshot.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete snapshot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -153,10 +139,10 @@ public interface Snapshots {
 
     /**
      * Delete a snapshot
-     *
-     * <p>Delete snapshot.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete snapshot.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -166,20 +152,15 @@ public interface Snapshots {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
+    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName,
         Context context);
 
     /**
      * Create a new Snapshot Restore Files request
-     *
-     * <p>Restore the specified files from the specified snapshot to the active filesystem.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -189,20 +170,15 @@ public interface Snapshots {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void restoreFiles(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotRestoreFiles body);
+    void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, SnapshotRestoreFiles body);
 
     /**
      * Create a new Snapshot Restore Files request
-     *
-     * <p>Restore the specified files from the specified snapshot to the active filesystem.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -213,20 +189,14 @@ public interface Snapshots {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void restoreFiles(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotRestoreFiles body,
-        Context context);
+    void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, SnapshotRestoreFiles body, Context context);
 
     /**
      * Describe a snapshot
-     *
-     * <p>Get details of the specified snapshot.
-     *
+     * 
+     * Get details of the specified snapshot.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -237,9 +207,9 @@ public interface Snapshots {
 
     /**
      * Describe a snapshot
-     *
-     * <p>Get details of the specified snapshot.
-     *
+     * 
+     * Get details of the specified snapshot.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -251,9 +221,9 @@ public interface Snapshots {
 
     /**
      * Delete a snapshot
-     *
-     * <p>Delete snapshot.
-     *
+     * 
+     * Delete snapshot.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -263,9 +233,9 @@ public interface Snapshots {
 
     /**
      * Delete a snapshot
-     *
-     * <p>Delete snapshot.
-     *
+     * 
+     * Delete snapshot.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,7 +246,7 @@ public interface Snapshots {
 
     /**
      * Begins definition for a new Snapshot resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Snapshot definition.
      */

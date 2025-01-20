@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceInner;
 import com.azure.resourcemanager.synapse.models.WorkspacePatchInfo;
 
-/** An instance of this class provides access to all the operations defined in WorkspacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacesClient.
+ */
 public interface WorkspacesClient {
     /**
      * Returns a list of workspaces in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -30,7 +32,7 @@ public interface WorkspacesClient {
 
     /**
      * Returns a list of workspaces in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,7 +45,22 @@ public interface WorkspacesClient {
 
     /**
      * Gets a workspace.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a workspace along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkspaceInner> getByResourceGroupWithResponse(String resourceGroupName, String workspaceName,
+        Context context);
+
+    /**
+     * Gets a workspace.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,23 +72,8 @@ public interface WorkspacesClient {
     WorkspaceInner getByResourceGroup(String resourceGroupName, String workspaceName);
 
     /**
-     * Gets a workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workspace along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkspaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String workspaceName, Context context);
-
-    /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspacePatchInfo Workspace patch request properties.
@@ -81,12 +83,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of a workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(String resourceGroupName, String workspaceName,
+        WorkspacePatchInfo workspacePatchInfo);
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspacePatchInfo Workspace patch request properties.
@@ -97,12 +99,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of a workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo, Context context);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginUpdate(String resourceGroupName, String workspaceName,
+        WorkspacePatchInfo workspacePatchInfo, Context context);
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspacePatchInfo Workspace patch request properties.
@@ -116,7 +118,7 @@ public interface WorkspacesClient {
 
     /**
      * Updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspacePatchInfo Workspace patch request properties.
@@ -127,12 +129,12 @@ public interface WorkspacesClient {
      * @return a workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner update(
-        String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo, Context context);
+    WorkspaceInner update(String resourceGroupName, String workspaceName, WorkspacePatchInfo workspacePatchInfo,
+        Context context);
 
     /**
      * Creates or updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspaceInfo Workspace create or update request properties.
@@ -142,12 +144,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of a workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner workspaceInfo);
 
     /**
      * Creates or updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspaceInfo Workspace create or update request properties.
@@ -158,12 +160,12 @@ public interface WorkspacesClient {
      * @return the {@link SyncPoller} for polling of a workspace.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo, Context context);
+    SyncPoller<PollResult<WorkspaceInner>, WorkspaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, WorkspaceInner workspaceInfo, Context context);
 
     /**
      * Creates or updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspaceInfo Workspace create or update request properties.
@@ -177,7 +179,7 @@ public interface WorkspacesClient {
 
     /**
      * Creates or updates a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param workspaceInfo Workspace create or update request properties.
@@ -188,12 +190,12 @@ public interface WorkspacesClient {
      * @return a workspace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkspaceInner createOrUpdate(
-        String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo, Context context);
+    WorkspaceInner createOrUpdate(String resourceGroupName, String workspaceName, WorkspaceInner workspaceInfo,
+        Context context);
 
     /**
      * Deletes a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,7 +208,7 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -220,7 +222,7 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,7 +235,7 @@ public interface WorkspacesClient {
 
     /**
      * Deletes a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -247,7 +249,7 @@ public interface WorkspacesClient {
 
     /**
      * Returns a list of workspaces in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of workspaces as paginated response with {@link PagedIterable}.
@@ -257,7 +259,7 @@ public interface WorkspacesClient {
 
     /**
      * Returns a list of workspaces in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

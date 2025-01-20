@@ -9,39 +9,35 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.LoadBalancerConfigurat
 import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LoadBalancerConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        LoadBalancerConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"privateIpAddress\":{\"ipAddress\":\"jye\",\"subnetResourceId\":\"kvnipjoxz\"},\"publicIpAddressResourceId\":\"chgejspodm\",\"loadBalancerResourceId\":\"lzydehojwyahux\",\"probePort\":1511051439,\"sqlVirtualMachineInstances\":[\"njaqwixjspro\",\"vcputegj\"]}")
-                .toObject(LoadBalancerConfiguration.class);
-        Assertions.assertEquals("jye", model.privateIpAddress().ipAddress());
-        Assertions.assertEquals("kvnipjoxz", model.privateIpAddress().subnetResourceId());
-        Assertions.assertEquals("chgejspodm", model.publicIpAddressResourceId());
-        Assertions.assertEquals("lzydehojwyahux", model.loadBalancerResourceId());
-        Assertions.assertEquals(1511051439, model.probePort());
-        Assertions.assertEquals("njaqwixjspro", model.sqlVirtualMachineInstances().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LoadBalancerConfiguration model = BinaryData.fromString(
+            "{\"privateIpAddress\":{\"ipAddress\":\"fxxypininmayhuy\",\"subnetResourceId\":\"kpode\"},\"publicIpAddressResourceId\":\"oginuvamiheognar\",\"loadBalancerResourceId\":\"xth\",\"probePort\":1638968400,\"sqlVirtualMachineInstances\":[\"ivyevcciqihnhun\"]}")
+            .toObject(LoadBalancerConfiguration.class);
+        Assertions.assertEquals("fxxypininmayhuy", model.privateIpAddress().ipAddress());
+        Assertions.assertEquals("kpode", model.privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("oginuvamiheognar", model.publicIpAddressResourceId());
+        Assertions.assertEquals("xth", model.loadBalancerResourceId());
+        Assertions.assertEquals(1638968400, model.probePort());
+        Assertions.assertEquals("ivyevcciqihnhun", model.sqlVirtualMachineInstances().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        LoadBalancerConfiguration model =
-            new LoadBalancerConfiguration()
-                .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("jye").withSubnetResourceId("kvnipjoxz"))
-                .withPublicIpAddressResourceId("chgejspodm")
-                .withLoadBalancerResourceId("lzydehojwyahux")
-                .withProbePort(1511051439)
-                .withSqlVirtualMachineInstances(Arrays.asList("njaqwixjspro", "vcputegj"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LoadBalancerConfiguration model = new LoadBalancerConfiguration()
+            .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("fxxypininmayhuy").withSubnetResourceId("kpode"))
+            .withPublicIpAddressResourceId("oginuvamiheognar")
+            .withLoadBalancerResourceId("xth")
+            .withProbePort(1638968400)
+            .withSqlVirtualMachineInstances(Arrays.asList("ivyevcciqihnhun"));
         model = BinaryData.fromObject(model).toObject(LoadBalancerConfiguration.class);
-        Assertions.assertEquals("jye", model.privateIpAddress().ipAddress());
-        Assertions.assertEquals("kvnipjoxz", model.privateIpAddress().subnetResourceId());
-        Assertions.assertEquals("chgejspodm", model.publicIpAddressResourceId());
-        Assertions.assertEquals("lzydehojwyahux", model.loadBalancerResourceId());
-        Assertions.assertEquals(1511051439, model.probePort());
-        Assertions.assertEquals("njaqwixjspro", model.sqlVirtualMachineInstances().get(0));
+        Assertions.assertEquals("fxxypininmayhuy", model.privateIpAddress().ipAddress());
+        Assertions.assertEquals("kpode", model.privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("oginuvamiheognar", model.publicIpAddressResourceId());
+        Assertions.assertEquals("xth", model.loadBalancerResourceId());
+        Assertions.assertEquals(1638968400, model.probePort());
+        Assertions.assertEquals("ivyevcciqihnhun", model.sqlVirtualMachineInstances().get(0));
     }
 }

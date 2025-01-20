@@ -5,44 +5,51 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The plan object in Azure Resource Manager, represents a marketplace plan. */
+/**
+ * The plan object in Azure Resource Manager, represents a marketplace plan.
+ */
 @Fluent
-public final class ArmPlan {
+public final class ArmPlan implements JsonSerializable<ArmPlan> {
     /*
      * The name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The publisher.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * The product.
      */
-    @JsonProperty(value = "product")
     private String product;
 
     /*
      * The promotion code.
      */
-    @JsonProperty(value = "promotionCode")
     private String promotionCode;
 
     /*
      * Version of product.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /**
+     * Creates an instance of ArmPlan class.
+     */
+    public ArmPlan() {
+    }
+
+    /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -51,7 +58,7 @@ public final class ArmPlan {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ArmPlan object itself.
      */
@@ -62,7 +69,7 @@ public final class ArmPlan {
 
     /**
      * Get the publisher property: The publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -71,7 +78,7 @@ public final class ArmPlan {
 
     /**
      * Set the publisher property: The publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ArmPlan object itself.
      */
@@ -82,7 +89,7 @@ public final class ArmPlan {
 
     /**
      * Get the product property: The product.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -91,7 +98,7 @@ public final class ArmPlan {
 
     /**
      * Set the product property: The product.
-     *
+     * 
      * @param product the product value to set.
      * @return the ArmPlan object itself.
      */
@@ -102,7 +109,7 @@ public final class ArmPlan {
 
     /**
      * Get the promotionCode property: The promotion code.
-     *
+     * 
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -111,7 +118,7 @@ public final class ArmPlan {
 
     /**
      * Set the promotionCode property: The promotion code.
-     *
+     * 
      * @param promotionCode the promotionCode value to set.
      * @return the ArmPlan object itself.
      */
@@ -122,7 +129,7 @@ public final class ArmPlan {
 
     /**
      * Get the version property: Version of product.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -131,7 +138,7 @@ public final class ArmPlan {
 
     /**
      * Set the version property: Version of product.
-     *
+     * 
      * @param version the version value to set.
      * @return the ArmPlan object itself.
      */
@@ -142,9 +149,57 @@ public final class ArmPlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        jsonWriter.writeStringField("promotionCode", this.promotionCode);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArmPlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArmPlan if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the ArmPlan.
+     */
+    public static ArmPlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArmPlan deserializedArmPlan = new ArmPlan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedArmPlan.name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedArmPlan.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedArmPlan.product = reader.getString();
+                } else if ("promotionCode".equals(fieldName)) {
+                    deserializedArmPlan.promotionCode = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedArmPlan.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArmPlan;
+        });
     }
 }

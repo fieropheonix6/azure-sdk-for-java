@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datalakestore.fluent.AccountsClient;
@@ -46,19 +45,23 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountsClient.
+ */
 public final class AccountsClientImpl implements AccountsClient {
-    private final ClientLogger logger = new ClientLogger(AccountsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AccountsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataLakeStoreAccountManagementClientImpl client;
 
     /**
      * Initializes an instance of AccountsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AccountsClientImpl(DataLakeStoreAccountManagementClientImpl client) {
@@ -72,313 +75,215 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataLakeStoreAccount")
-    private interface AccountsService {
-        @Headers({"Content-Type: application/json"})
+    public interface AccountsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/accounts")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataLakeStoreAccountListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$select") String select,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DataLakeStoreAccountListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip, @QueryParam("$select") String select,
+            @QueryParam("$orderby") String orderby, @QueryParam("$count") Boolean count,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataLakeStoreAccountListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DataLakeStoreAccountListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$select") String select,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$filter") String filter,
+            @QueryParam("$top") Integer top, @QueryParam("$skip") Integer skip, @QueryParam("$select") String select,
+            @QueryParam("$orderby") String orderby, @QueryParam("$count") Boolean count,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CreateDataLakeStoreAccountParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DataLakeStoreAccountInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DataLakeStoreAccountInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") UpdateDataLakeStoreAccountParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore"
-                + "/accounts/{accountName}/enableKeyVault")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeStore/accounts/{accountName}/enableKeyVault")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> enableKeyVault(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> enableKeyVault(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/locations/{location}"
-                + "/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataLakeStore/locations/{location}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NameAvailabilityInformationInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
+        Mono<Response<NameAvailabilityInformationInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CheckNameAvailabilityParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataLakeStoreAccountListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DataLakeStoreAccountListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listSinglePageAsync(
-        String filter, Integer top, Integer skip, String select, String orderby, Boolean count) {
+    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listSinglePageAsync(String filter, Integer top,
+        Integer skip, String select, String orderby, Boolean count) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            filter,
-                            top,
-                            skip,
-                            select,
-                            orderby,
-                            count,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DataLakeStoreAccountBasicInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), filter,
+                top, skip, select, orderby, count, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DataLakeStoreAccountBasicInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listSinglePageAsync(
-        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context) {
+    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listSinglePageAsync(String filter, Integer top,
+        Integer skip, String select, String orderby, Boolean count, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                filter,
-                top,
-                skip,
-                select,
-                orderby,
-                count,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), filter, top, skip, select, orderby, count,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataLakeStoreAccountBasicInner> listAsync(
-        String filter, Integer top, Integer skip, String select, String orderby, Boolean count) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, skip, select, orderby, count),
+    private PagedFlux<DataLakeStoreAccountBasicInner> listAsync(String filter, Integer top, Integer skip, String select,
+        String orderby, Boolean count) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, skip, select, orderby, count),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataLakeStoreAccountBasicInner> listAsync() {
@@ -388,46 +293,43 @@ public final class AccountsClientImpl implements AccountsClient {
         final String select = null;
         final String orderby = null;
         final Boolean count = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, skip, select, orderby, count),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, skip, select, orderby, count),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataLakeStoreAccountBasicInner> listAsync(
-        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, skip, select, orderby, count, context),
+    private PagedFlux<DataLakeStoreAccountBasicInner> listAsync(String filter, Integer top, Integer skip, String select,
+        String orderby, Boolean count, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, skip, select, orderby, count, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataLakeStoreAccountBasicInner> list() {
@@ -443,69 +345,59 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of
      * results, if any.
-     *
+     * 
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataLakeStoreAccountBasicInner> list(
-        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context) {
+    public PagedIterable<DataLakeStoreAccountBasicInner> list(String filter, Integer top, Integer skip, String select,
+        String orderby, Boolean count, Context context) {
         return new PagedIterable<>(listAsync(filter, top, skip, select, orderby, count, context));
     }
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
+        String resourceGroupName, String filter, Integer top, Integer skip, String select, String orderby,
         Boolean count) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -513,76 +405,46 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            filter,
-                            top,
-                            skip,
-                            select,
-                            orderby,
-                            count,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DataLakeStoreAccountBasicInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, filter, top, skip, select, orderby, count,
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DataLakeStoreAccountBasicInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context) {
+        String resourceGroupName, String filter, Integer top, Integer skip, String select, String orderby,
+        Boolean count, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -591,59 +453,34 @@ public final class AccountsClientImpl implements AccountsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                filter,
-                top,
-                skip,
-                select,
-                orderby,
-                count,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, filter,
+                top, skip, select, orderby, count, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataLakeStoreAccountBasicInner> listByResourceGroupAsync(
-        String resourceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count) {
+    private PagedFlux<DataLakeStoreAccountBasicInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Integer top, Integer skip, String select, String orderby, Boolean count) {
         return new PagedFlux<>(
             () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skip, select, orderby, count),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
@@ -652,12 +489,12 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataLakeStoreAccountBasicInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -675,50 +512,39 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DataLakeStoreAccountBasicInner> listByResourceGroupAsync(
-        String resourceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listByResourceGroupSinglePageAsync(
-                    resourceGroupName, filter, top, skip, select, orderby, count, context),
-            nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
+    private PagedFlux<DataLakeStoreAccountBasicInner> listByResourceGroupAsync(String resourceGroupName, String filter,
+        Integer top, Integer skip, String select, String orderby, Boolean count, Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skip, select,
+            orderby, count, context), nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataLakeStoreAccountBasicInner> listByResourceGroup(String resourceGroupName) {
@@ -735,63 +561,51 @@ public final class AccountsClientImpl implements AccountsClient {
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next
      * page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param filter OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataLakeStoreAccountBasicInner> listByResourceGroup(
-        String resourceGroupName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context) {
+    public PagedIterable<DataLakeStoreAccountBasicInner> listByResourceGroup(String resourceGroupName, String filter,
+        Integer top, Integer skip, String select, String orderby, Boolean count, Context context) {
         return new PagedIterable<>(
             listByResourceGroupAsync(resourceGroupName, filter, top, skip, select, orderby, count, context));
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return data Lake Store account information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        CreateDataLakeStoreAccountParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -807,24 +621,14 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -832,25 +636,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return data Lake Store account information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        CreateDataLakeStoreAccountParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        CreateDataLakeStoreAccountParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -866,46 +663,33 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link PollerFlux} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreateAsync(
         String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, accountName, parameters);
-        return this
-            .client
-            .<DataLakeStoreAccountInner, DataLakeStoreAccountInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataLakeStoreAccountInner.class,
-                DataLakeStoreAccountInner.class,
-                Context.NONE);
+        return this.client.<DataLakeStoreAccountInner, DataLakeStoreAccountInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DataLakeStoreAccountInner.class, DataLakeStoreAccountInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -913,47 +697,39 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link PollerFlux} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreateAsync(
-        String resourceGroupName,
-        String accountName,
-        CreateDataLakeStoreAccountParameters parameters,
+        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, parameters, context);
-        return this
-            .client
-            .<DataLakeStoreAccountInner, DataLakeStoreAccountInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataLakeStoreAccountInner.class,
-                DataLakeStoreAccountInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, parameters, context);
+        return this.client.<DataLakeStoreAccountInner, DataLakeStoreAccountInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DataLakeStoreAccountInner.class, DataLakeStoreAccountInner.class, context);
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreate(
-        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters) {
-        return beginCreateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner>
+        beginCreate(String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters) {
+        return this.beginCreateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -961,39 +737,36 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        CreateDataLakeStoreAccountParameters parameters,
+        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return data Lake Store account information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataLakeStoreAccountInner> createAsync(
-        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters) {
-        return beginCreateAsync(resourceGroupName, accountName, parameters)
-            .last()
+    private Mono<DataLakeStoreAccountInner> createAsync(String resourceGroupName, String accountName,
+        CreateDataLakeStoreAccountParameters parameters) {
+        return beginCreateAsync(resourceGroupName, accountName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -1001,22 +774,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return data Lake Store account information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataLakeStoreAccountInner> createAsync(
-        String resourceGroupName,
-        String accountName,
-        CreateDataLakeStoreAccountParameters parameters,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, parameters, context)
-            .last()
+    private Mono<DataLakeStoreAccountInner> createAsync(String resourceGroupName, String accountName,
+        CreateDataLakeStoreAccountParameters parameters, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -1026,14 +795,14 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataLakeStoreAccountInner create(
-        String resourceGroupName, String accountName, CreateDataLakeStoreAccountParameters parameters) {
+    public DataLakeStoreAccountInner create(String resourceGroupName, String accountName,
+        CreateDataLakeStoreAccountParameters parameters) {
         return createAsync(resourceGroupName, accountName, parameters).block();
     }
 
     /**
      * Creates the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to create the Data Lake Store account.
@@ -1044,38 +813,32 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataLakeStoreAccountInner create(
-        String resourceGroupName,
-        String accountName,
-        CreateDataLakeStoreAccountParameters parameters,
-        Context context) {
+    public DataLakeStoreAccountInner create(String resourceGroupName, String accountName,
+        CreateDataLakeStoreAccountParameters parameters, Context context) {
         return createAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account.
+     * @return the specified Data Lake Store account along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataLakeStoreAccountInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<Response<DataLakeStoreAccountInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1087,44 +850,33 @@ public final class AccountsClientImpl implements AccountsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, accountName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account.
+     * @return the specified Data Lake Store account along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DataLakeStoreAccountInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<DataLakeStoreAccountInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1135,43 +887,46 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account.
+     * @return the specified Data Lake Store account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DataLakeStoreAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, accountName)
-            .flatMap(
-                (Response<DataLakeStoreAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified Data Lake Store account.
-     *
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Data Lake Store account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DataLakeStoreAccountInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String accountName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Gets the specified Data Lake Store account.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1181,51 +936,30 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeStoreAccountInner getByResourceGroup(String resourceGroupName, String accountName) {
-        return getByResourceGroupAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Gets the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Data Lake Store account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataLakeStoreAccountInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, accountName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return data Lake Store account information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        UpdateDataLakeStoreAccountParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1241,24 +975,14 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -1266,25 +990,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return data Lake Store account information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        UpdateDataLakeStoreAccountParameters parameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        UpdateDataLakeStoreAccountParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1300,46 +1017,33 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link PollerFlux} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdateAsync(
         String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, accountName, parameters);
-        return this
-            .client
-            .<DataLakeStoreAccountInner, DataLakeStoreAccountInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataLakeStoreAccountInner.class,
-                DataLakeStoreAccountInner.class,
-                Context.NONE);
+        return this.client.<DataLakeStoreAccountInner, DataLakeStoreAccountInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DataLakeStoreAccountInner.class, DataLakeStoreAccountInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -1347,47 +1051,39 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link PollerFlux} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdateAsync(
-        String resourceGroupName,
-        String accountName,
-        UpdateDataLakeStoreAccountParameters parameters,
+        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, accountName, parameters, context);
-        return this
-            .client
-            .<DataLakeStoreAccountInner, DataLakeStoreAccountInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DataLakeStoreAccountInner.class,
-                DataLakeStoreAccountInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, parameters, context);
+        return this.client.<DataLakeStoreAccountInner, DataLakeStoreAccountInner>getLroResult(mono,
+            this.client.getHttpPipeline(), DataLakeStoreAccountInner.class, DataLakeStoreAccountInner.class, context);
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdate(
-        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner>
+        beginUpdate(String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters) {
+        return this.beginUpdateAsync(resourceGroupName, accountName, parameters).getSyncPoller();
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -1395,39 +1091,36 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return the {@link SyncPoller} for polling of data Lake Store account information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataLakeStoreAccountInner>, DataLakeStoreAccountInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        UpdateDataLakeStoreAccountParameters parameters,
+        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, accountName, parameters, context).getSyncPoller();
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return data Lake Store account information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataLakeStoreAccountInner> updateAsync(
-        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, accountName, parameters)
-            .last()
+    private Mono<DataLakeStoreAccountInner> updateAsync(String resourceGroupName, String accountName,
+        UpdateDataLakeStoreAccountParameters parameters) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -1435,22 +1128,18 @@ public final class AccountsClientImpl implements AccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account information.
+     * @return data Lake Store account information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DataLakeStoreAccountInner> updateAsync(
-        String resourceGroupName,
-        String accountName,
-        UpdateDataLakeStoreAccountParameters parameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, accountName, parameters, context)
-            .last()
+    private Mono<DataLakeStoreAccountInner> updateAsync(String resourceGroupName, String accountName,
+        UpdateDataLakeStoreAccountParameters parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -1460,14 +1149,14 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataLakeStoreAccountInner update(
-        String resourceGroupName, String accountName, UpdateDataLakeStoreAccountParameters parameters) {
+    public DataLakeStoreAccountInner update(String resourceGroupName, String accountName,
+        UpdateDataLakeStoreAccountParameters parameters) {
         return updateAsync(resourceGroupName, accountName, parameters).block();
     }
 
     /**
      * Updates the specified Data Lake Store account information.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param parameters Parameters supplied to update the Data Lake Store account.
@@ -1478,37 +1167,30 @@ public final class AccountsClientImpl implements AccountsClient {
      * @return data Lake Store account information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DataLakeStoreAccountInner update(
-        String resourceGroupName,
-        String accountName,
-        UpdateDataLakeStoreAccountParameters parameters,
-        Context context) {
+    public DataLakeStoreAccountInner update(String resourceGroupName, String accountName,
+        UpdateDataLakeStoreAccountParameters parameters, Context context) {
         return updateAsync(resourceGroupName, accountName, parameters, context).block();
     }
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1518,44 +1200,32 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1565,96 +1235,88 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), context);
     }
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, Context context) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName) {
-        return beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, accountName).getSyncPoller();
     }
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName) {
@@ -1663,25 +1325,24 @@ public final class AccountsClientImpl implements AccountsClient {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1695,7 +1356,7 @@ public final class AccountsClientImpl implements AccountsClient {
 
     /**
      * Deletes the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
@@ -1710,27 +1371,23 @@ public final class AccountsClientImpl implements AccountsClient {
 
     /**
      * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableKeyVaultWithResponseAsync(String resourceGroupName, String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1740,44 +1397,32 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .enableKeyVault(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            this.client.getApiVersion(),
-                            context))
+            .withContext(context -> service.enableKeyVault(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> enableKeyVaultWithResponseAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<Response<Void>> enableKeyVaultWithResponseAsync(String resourceGroupName, String accountName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1787,35 +1432,44 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .enableKeyVault(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                this.client.getApiVersion(),
-                context);
+        return service.enableKeyVault(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, this.client.getApiVersion(), context);
     }
 
     /**
      * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> enableKeyVaultAsync(String resourceGroupName, String accountName) {
-        return enableKeyVaultWithResponseAsync(resourceGroupName, accountName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return enableKeyVaultWithResponseAsync(resourceGroupName, accountName).flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Store account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> enableKeyVaultWithResponse(String resourceGroupName, String accountName, Context context) {
+        return enableKeyVaultWithResponseAsync(resourceGroupName, accountName, context).block();
+    }
+
+    /**
+     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Store account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1824,49 +1478,30 @@ public final class AccountsClientImpl implements AccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void enableKeyVault(String resourceGroupName, String accountName) {
-        enableKeyVaultAsync(resourceGroupName, accountName).block();
-    }
-
-    /**
-     * Attempts to enable a user managed Key Vault for encryption of the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Store account.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> enableKeyVaultWithResponse(String resourceGroupName, String accountName, Context context) {
-        return enableKeyVaultWithResponseAsync(resourceGroupName, accountName, context).block();
+        enableKeyVaultWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     /**
      * Checks whether the specified account name is available or taken.
-     *
+     * 
      * @param location The resource location without whitespace.
      * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account name availability result information.
+     * @return data Lake Store account name availability result information along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityInformationInner>> checkNameAvailabilityWithResponseAsync(
-        String location, CheckNameAvailabilityParameters parameters) {
+    private Mono<Response<NameAvailabilityInformationInner>> checkNameAvailabilityWithResponseAsync(String location,
+        CheckNameAvailabilityParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -1878,45 +1513,33 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), location, this.client.getApiVersion(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks whether the specified account name is available or taken.
-     *
+     * 
      * @param location The resource location without whitespace.
      * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account name availability result information.
+     * @return data Lake Store account name availability result information along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NameAvailabilityInformationInner>> checkNameAvailabilityWithResponseAsync(
-        String location, CheckNameAvailabilityParameters parameters, Context context) {
+    private Mono<Response<NameAvailabilityInformationInner>> checkNameAvailabilityWithResponseAsync(String location,
+        CheckNameAvailabilityParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -1928,82 +1551,69 @@ public final class AccountsClientImpl implements AccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                location,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
+            this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Checks whether the specified account name is available or taken.
-     *
+     * 
      * @param location The resource location without whitespace.
      * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account name availability result information.
+     * @return data Lake Store account name availability result information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NameAvailabilityInformationInner> checkNameAvailabilityAsync(
-        String location, CheckNameAvailabilityParameters parameters) {
+    private Mono<NameAvailabilityInformationInner> checkNameAvailabilityAsync(String location,
+        CheckNameAvailabilityParameters parameters) {
         return checkNameAvailabilityWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<NameAvailabilityInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks whether the specified account name is available or taken.
-     *
-     * @param location The resource location without whitespace.
-     * @param parameters Parameters supplied to check the Data Lake Store account name availability.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account name availability result information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public NameAvailabilityInformationInner checkNameAvailability(
-        String location, CheckNameAvailabilityParameters parameters) {
-        return checkNameAvailabilityAsync(location, parameters).block();
-    }
-
-    /**
-     * Checks whether the specified account name is available or taken.
-     *
+     * 
      * @param location The resource location without whitespace.
      * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account name availability result information.
+     * @return data Lake Store account name availability result information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NameAvailabilityInformationInner> checkNameAvailabilityWithResponse(
-        String location, CheckNameAvailabilityParameters parameters, Context context) {
+    public Response<NameAvailabilityInformationInner> checkNameAvailabilityWithResponse(String location,
+        CheckNameAvailabilityParameters parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(location, parameters, context).block();
     }
 
     /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * Checks whether the specified account name is available or taken.
+     * 
+     * @param location The resource location without whitespace.
+     * @param parameters Parameters supplied to check the Data Lake Store account name availability.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account name availability result information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public NameAvailabilityInformationInner checkNameAvailability(String location,
+        CheckNameAvailabilityParameters parameters) {
+        return checkNameAvailabilityWithResponse(location, parameters, Context.NONE).getValue();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Lake Store account list information response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listNextSinglePageAsync(String nextLink) {
@@ -2011,134 +1621,98 @@ public final class AccountsClientImpl implements AccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataLakeStoreAccountBasicInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DataLakeStoreAccountBasicInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink) {
+    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>>
+        listByResourceGroupNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DataLakeStoreAccountBasicInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DataLakeStoreAccountBasicInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Lake Store account list information response.
+     * @return data Lake Store account list information response along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DataLakeStoreAccountBasicInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

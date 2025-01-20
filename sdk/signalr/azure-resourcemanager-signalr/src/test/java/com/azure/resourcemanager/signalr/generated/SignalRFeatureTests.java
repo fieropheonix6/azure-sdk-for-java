@@ -10,34 +10,31 @@ import com.azure.resourcemanager.signalr.models.SignalRFeature;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SignalRFeatureTests {
-    @Test
-    public void testDeserialize() {
-        SignalRFeature model =
-            BinaryData
-                .fromString(
-                    "{\"flag\":\"EnableMessagingLogs\",\"value\":\"wxosowzxcug\",\"properties\":{\"wfvovbv\":\"ooxdjebwpuc\",\"jrwjueiotwm\":\"euecivyhzceuoj\",\"rjaw\":\"dytdxwitx\"}}")
-                .toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.ENABLE_MESSAGING_LOGS, model.flag());
-        Assertions.assertEquals("wxosowzxcug", model.value());
-        Assertions.assertEquals("ooxdjebwpuc", model.properties().get("wfvovbv"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SignalRFeature model = BinaryData
+            .fromString(
+                "{\"flag\":\"EnableConnectivityLogs\",\"value\":\"s\",\"properties\":{\"hgfipnsxkmcw\":\"nzm\"}}")
+            .toObject(SignalRFeature.class);
+        Assertions.assertEquals(FeatureFlags.ENABLE_CONNECTIVITY_LOGS, model.flag());
+        Assertions.assertEquals("s", model.value());
+        Assertions.assertEquals("nzm", model.properties().get("hgfipnsxkmcw"));
     }
 
-    @Test
-    public void testSerialize() {
-        SignalRFeature model =
-            new SignalRFeature()
-                .withFlag(FeatureFlags.ENABLE_MESSAGING_LOGS)
-                .withValue("wxosowzxcug")
-                .withProperties(mapOf("wfvovbv", "ooxdjebwpuc", "jrwjueiotwm", "euecivyhzceuoj", "rjaw", "dytdxwitx"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SignalRFeature model = new SignalRFeature().withFlag(FeatureFlags.ENABLE_CONNECTIVITY_LOGS)
+            .withValue("s")
+            .withProperties(mapOf("hgfipnsxkmcw", "nzm"));
         model = BinaryData.fromObject(model).toObject(SignalRFeature.class);
-        Assertions.assertEquals(FeatureFlags.ENABLE_MESSAGING_LOGS, model.flag());
-        Assertions.assertEquals("wxosowzxcug", model.value());
-        Assertions.assertEquals("ooxdjebwpuc", model.properties().get("wfvovbv"));
+        Assertions.assertEquals(FeatureFlags.ENABLE_CONNECTIVITY_LOGS, model.flag());
+        Assertions.assertEquals("s", model.value());
+        Assertions.assertEquals("nzm", model.properties().get("hgfipnsxkmcw"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

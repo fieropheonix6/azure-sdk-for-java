@@ -8,15 +8,14 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/monitor/ci.yml
-      - sdk/monitor/azure-monitor-ingestion/
-      - sdk/monitor/azure-monitor-opentelemetry-exporter/
-      - sdk/monitor/azure-monitor-query/
+      - sdk/monitor/
     exclude:
-      - sdk/monitor/pom.xml
       - sdk/monitor/azure-monitor-ingestion/pom.xml
+      - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
+      - sdk/monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
+      - sdk/monitor/azure-monitor-query-perf/pom.xml
 
 pr:
   branches:
@@ -27,14 +26,14 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/monitor/ci.yml
-      - sdk/monitor/azure-monitor-ingestion/
-      - sdk/monitor/azure-monitor-opentelemetry-exporter/
-      - sdk/monitor/azure-monitor-query/
+      - sdk/monitor/
     exclude:
-      - sdk/monitor/pom.xml
+      - sdk/monitor/azure-monitor-ingestion/pom.xml
+      - sdk/monitor/azure-monitor-ingestion-perf/pom.xml
       - sdk/monitor/azure-monitor-opentelemetry-exporter/pom.xml
+      - sdk/monitor/azure-monitor-opentelemetry-autoconfigure/pom.xml
       - sdk/monitor/azure-monitor-query/pom.xml
+      - sdk/monitor/azure-monitor-query-perf/pom.xml
 
 parameters:
 - name: release_dependsonlivetests
@@ -49,6 +48,10 @@ parameters:
   displayName: 'azure-monitor-opentelemetry-exporter'
   type: boolean
   default: true
+- name: release_azuremonitoropentelemetryautoconfigure
+  displayName: 'azure-monitor-opentelemetry-autoconfigure'
+  type: boolean
+  default: true
 - name: release_azuremonitorquery
   displayName: 'azure-monitor-query'
   type: boolean
@@ -58,7 +61,6 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: monitor
-    EnableBatchRelease: true
     Artifacts:
       - name: azure-monitor-ingestion
         groupId: com.azure
@@ -68,6 +70,10 @@ extends:
         groupId: com.azure
         safeName: azuremonitoropentelemetryexporter
         releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryexporter }}
+      - name: azure-monitor-opentelemetry-autoconfigure
+        groupId: com.azure
+        safeName: azuremonitoropentelemetryautoconfigure
+        releaseInBatch: ${{ parameters.release_azuremonitoropentelemetryautoconfigure }}
       - name: azure-monitor-query
         groupId: com.azure
         safeName: azuremonitorquery

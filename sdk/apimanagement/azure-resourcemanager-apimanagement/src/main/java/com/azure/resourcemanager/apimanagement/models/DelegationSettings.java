@@ -8,12 +8,28 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalDelegationSettingsInner;
 
-/** Resource collection API of DelegationSettings. */
+/**
+ * Resource collection API of DelegationSettings.
+ */
 public interface DelegationSettings {
     /**
      * Gets the entity state (Etag) version of the DelegationSettings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the entity state (Etag) version of the DelegationSettings.
+     */
+    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context);
+
+    /**
+     * Gets the entity state (Etag) version of the DelegationSettings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -22,35 +38,9 @@ public interface DelegationSettings {
     void getEntityTag(String resourceGroupName, String serviceName);
 
     /**
-     * Gets the entity state (Etag) version of the DelegationSettings.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the DelegationSettings.
-     */
-    DelegationSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context);
-
-    /**
      * Get Delegation Settings for the Portal.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delegation Settings for the Portal.
-     */
-    PortalDelegationSettings get(String resourceGroupName, String serviceName);
-
-    /**
-     * Get Delegation Settings for the Portal.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -61,12 +51,41 @@ public interface DelegationSettings {
     Response<PortalDelegationSettings> getWithResponse(String resourceGroupName, String serviceName, Context context);
 
     /**
+     * Get Delegation Settings for the Portal.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return delegation Settings for the Portal.
+     */
+    PortalDelegationSettings get(String resourceGroupName, String serviceName);
+
+    /**
      * Update Delegation settings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
+     * @param parameters Update Delegation settings.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalDelegationSettingsInner parameters, Context context);
+
+    /**
+     * Update Delegation settings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
      * @param parameters Update Delegation settings.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -75,44 +94,9 @@ public interface DelegationSettings {
     void update(String resourceGroupName, String serviceName, String ifMatch, PortalDelegationSettingsInner parameters);
 
     /**
-     * Update Delegation settings.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
-     * @param parameters Update Delegation settings.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalDelegationSettingsInner parameters,
-        Context context);
-
-    /**
      * Create or Update Delegation settings.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param parameters Create or update parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delegation settings for a developer portal.
-     */
-    PortalDelegationSettings createOrUpdate(
-        String resourceGroupName, String serviceName, PortalDelegationSettingsInner parameters);
-
-    /**
-     * Create or Update Delegation settings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param parameters Create or update parameters.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
@@ -122,29 +106,27 @@ public interface DelegationSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return delegation settings for a developer portal along with {@link Response}.
      */
-    Response<PortalDelegationSettings> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalDelegationSettingsInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PortalDelegationSettings> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalDelegationSettingsInner parameters, String ifMatch, Context context);
 
     /**
-     * Gets the secret validation key of the DelegationSettings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Create or Update Delegation settings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param parameters Create or update parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the secret validation key of the DelegationSettings.
+     * @return delegation settings for a developer portal.
      */
-    PortalSettingValidationKeyContract listSecrets(String resourceGroupName, String serviceName);
+    PortalDelegationSettings createOrUpdate(String resourceGroupName, String serviceName,
+        PortalDelegationSettingsInner parameters);
 
     /**
      * Gets the secret validation key of the DelegationSettings.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -152,6 +134,18 @@ public interface DelegationSettings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret validation key of the DelegationSettings along with {@link Response}.
      */
-    Response<PortalSettingValidationKeyContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, Context context);
+    Response<PortalSettingValidationKeyContract> listSecretsWithResponse(String resourceGroupName, String serviceName,
+        Context context);
+
+    /**
+     * Gets the secret validation key of the DelegationSettings.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the secret validation key of the DelegationSettings.
+     */
+    PortalSettingValidationKeyContract listSecrets(String resourceGroupName, String serviceName);
 }

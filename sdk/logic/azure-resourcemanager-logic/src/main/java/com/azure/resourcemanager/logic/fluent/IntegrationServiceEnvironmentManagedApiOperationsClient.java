@@ -17,22 +17,22 @@ import com.azure.resourcemanager.logic.fluent.models.ApiOperationInner;
 public interface IntegrationServiceEnvironmentManagedApiOperationsClient {
     /**
      * Gets the managed Api operations.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed Api operations.
+     * @return the managed Api operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiOperationInner> list(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName);
+    PagedIterable<ApiOperationInner> list(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName);
 
     /**
      * Gets the managed Api operations.
-     *
+     * 
      * @param resourceGroup The resource group.
      * @param integrationServiceEnvironmentName The integration service environment name.
      * @param apiName The api name.
@@ -40,9 +40,9 @@ public interface IntegrationServiceEnvironmentManagedApiOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed Api operations.
+     * @return the managed Api operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApiOperationInner> list(
-        String resourceGroup, String integrationServiceEnvironmentName, String apiName, Context context);
+    PagedIterable<ApiOperationInner> list(String resourceGroup, String integrationServiceEnvironmentName,
+        String apiName, Context context);
 }

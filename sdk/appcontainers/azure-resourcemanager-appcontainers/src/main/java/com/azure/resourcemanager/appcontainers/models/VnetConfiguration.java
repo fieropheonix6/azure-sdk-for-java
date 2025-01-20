@@ -5,68 +5,57 @@
 package com.azure.resourcemanager.appcontainers.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Configuration properties for apps environment to join a Virtual Network. */
+/**
+ * Configuration properties for apps environment to join a Virtual Network.
+ */
 @Fluent
-public final class VnetConfiguration {
+public final class VnetConfiguration implements JsonSerializable<VnetConfiguration> {
     /*
      * Boolean indicating the environment only has an internal load balancer. These environments do not have a public
-     * static IP resource. They must provide runtimeSubnetId and infrastructureSubnetId if enabling this property
+     * static IP resource. They must provide infrastructureSubnetId if enabling this property
      */
-    @JsonProperty(value = "internal")
     private Boolean internal;
 
     /*
-     * Resource ID of a subnet for infrastructure components. This subnet must be in the same VNET as the subnet
-     * defined in runtimeSubnetId. Must not overlap with any other provided IP ranges.
+     * Resource ID of a subnet for infrastructure components. Must not overlap with any other provided IP ranges.
      */
-    @JsonProperty(value = "infrastructureSubnetId")
     private String infrastructureSubnetId;
-
-    /*
-     * Resource ID of a subnet that Container App containers are injected into. This subnet must be in the same VNET as
-     * the subnet defined in infrastructureSubnetId. Must not overlap with any other provided IP ranges.
-     */
-    @JsonProperty(value = "runtimeSubnetId")
-    private String runtimeSubnetId;
 
     /*
      * CIDR notation IP range assigned to the Docker bridge, network. Must not overlap with any other provided IP
      * ranges.
      */
-    @JsonProperty(value = "dockerBridgeCidr")
     private String dockerBridgeCidr;
 
     /*
-     * IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap
-     * with any other provided IP ranges.
+     * IP range in CIDR notation that can be reserved for environment infrastructure IP addresses. Must not overlap with
+     * any other provided IP ranges.
      */
-    @JsonProperty(value = "platformReservedCidr")
     private String platformReservedCidr;
 
     /*
      * An IP address from the IP range defined by platformReservedCidr that will be reserved for the internal DNS
      * server.
      */
-    @JsonProperty(value = "platformReservedDnsIP")
     private String platformReservedDnsIp;
 
-    /*
-     * Configuration used to control the Environment Egress outbound traffic
+    /**
+     * Creates an instance of VnetConfiguration class.
      */
-    @JsonProperty(value = "outboundSettings")
-    private ManagedEnvironmentOutboundSettings outboundSettings;
-
-    /** Creates an instance of VnetConfiguration class. */
     public VnetConfiguration() {
     }
 
     /**
      * Get the internal property: Boolean indicating the environment only has an internal load balancer. These
-     * environments do not have a public static IP resource. They must provide runtimeSubnetId and
-     * infrastructureSubnetId if enabling this property.
-     *
+     * environments do not have a public static IP resource. They must provide infrastructureSubnetId if enabling this
+     * property.
+     * 
      * @return the internal value.
      */
     public Boolean internal() {
@@ -75,9 +64,9 @@ public final class VnetConfiguration {
 
     /**
      * Set the internal property: Boolean indicating the environment only has an internal load balancer. These
-     * environments do not have a public static IP resource. They must provide runtimeSubnetId and
-     * infrastructureSubnetId if enabling this property.
-     *
+     * environments do not have a public static IP resource. They must provide infrastructureSubnetId if enabling this
+     * property.
+     * 
      * @param internal the internal value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -87,9 +76,9 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Get the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. This subnet must
-     * be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges.
-     *
+     * Get the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. Must not overlap
+     * with any other provided IP ranges.
+     * 
      * @return the infrastructureSubnetId value.
      */
     public String infrastructureSubnetId() {
@@ -97,9 +86,9 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Set the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. This subnet must
-     * be in the same VNET as the subnet defined in runtimeSubnetId. Must not overlap with any other provided IP ranges.
-     *
+     * Set the infrastructureSubnetId property: Resource ID of a subnet for infrastructure components. Must not overlap
+     * with any other provided IP ranges.
+     * 
      * @param infrastructureSubnetId the infrastructureSubnetId value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -109,33 +98,9 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Get the runtimeSubnetId property: Resource ID of a subnet that Container App containers are injected into. This
-     * subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other
-     * provided IP ranges.
-     *
-     * @return the runtimeSubnetId value.
-     */
-    public String runtimeSubnetId() {
-        return this.runtimeSubnetId;
-    }
-
-    /**
-     * Set the runtimeSubnetId property: Resource ID of a subnet that Container App containers are injected into. This
-     * subnet must be in the same VNET as the subnet defined in infrastructureSubnetId. Must not overlap with any other
-     * provided IP ranges.
-     *
-     * @param runtimeSubnetId the runtimeSubnetId value to set.
-     * @return the VnetConfiguration object itself.
-     */
-    public VnetConfiguration withRuntimeSubnetId(String runtimeSubnetId) {
-        this.runtimeSubnetId = runtimeSubnetId;
-        return this;
-    }
-
-    /**
      * Get the dockerBridgeCidr property: CIDR notation IP range assigned to the Docker bridge, network. Must not
      * overlap with any other provided IP ranges.
-     *
+     * 
      * @return the dockerBridgeCidr value.
      */
     public String dockerBridgeCidr() {
@@ -145,7 +110,7 @@ public final class VnetConfiguration {
     /**
      * Set the dockerBridgeCidr property: CIDR notation IP range assigned to the Docker bridge, network. Must not
      * overlap with any other provided IP ranges.
-     *
+     * 
      * @param dockerBridgeCidr the dockerBridgeCidr value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -157,7 +122,7 @@ public final class VnetConfiguration {
     /**
      * Get the platformReservedCidr property: IP range in CIDR notation that can be reserved for environment
      * infrastructure IP addresses. Must not overlap with any other provided IP ranges.
-     *
+     * 
      * @return the platformReservedCidr value.
      */
     public String platformReservedCidr() {
@@ -167,7 +132,7 @@ public final class VnetConfiguration {
     /**
      * Set the platformReservedCidr property: IP range in CIDR notation that can be reserved for environment
      * infrastructure IP addresses. Must not overlap with any other provided IP ranges.
-     *
+     * 
      * @param platformReservedCidr the platformReservedCidr value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -179,7 +144,7 @@ public final class VnetConfiguration {
     /**
      * Get the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that will
      * be reserved for the internal DNS server.
-     *
+     * 
      * @return the platformReservedDnsIp value.
      */
     public String platformReservedDnsIp() {
@@ -189,7 +154,7 @@ public final class VnetConfiguration {
     /**
      * Set the platformReservedDnsIp property: An IP address from the IP range defined by platformReservedCidr that will
      * be reserved for the internal DNS server.
-     *
+     * 
      * @param platformReservedDnsIp the platformReservedDnsIp value to set.
      * @return the VnetConfiguration object itself.
      */
@@ -199,33 +164,58 @@ public final class VnetConfiguration {
     }
 
     /**
-     * Get the outboundSettings property: Configuration used to control the Environment Egress outbound traffic.
-     *
-     * @return the outboundSettings value.
-     */
-    public ManagedEnvironmentOutboundSettings outboundSettings() {
-        return this.outboundSettings;
-    }
-
-    /**
-     * Set the outboundSettings property: Configuration used to control the Environment Egress outbound traffic.
-     *
-     * @param outboundSettings the outboundSettings value to set.
-     * @return the VnetConfiguration object itself.
-     */
-    public VnetConfiguration withOutboundSettings(ManagedEnvironmentOutboundSettings outboundSettings) {
-        this.outboundSettings = outboundSettings;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (outboundSettings() != null) {
-            outboundSettings().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("internal", this.internal);
+        jsonWriter.writeStringField("infrastructureSubnetId", this.infrastructureSubnetId);
+        jsonWriter.writeStringField("dockerBridgeCidr", this.dockerBridgeCidr);
+        jsonWriter.writeStringField("platformReservedCidr", this.platformReservedCidr);
+        jsonWriter.writeStringField("platformReservedDnsIP", this.platformReservedDnsIp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VnetConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VnetConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VnetConfiguration.
+     */
+    public static VnetConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VnetConfiguration deserializedVnetConfiguration = new VnetConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("internal".equals(fieldName)) {
+                    deserializedVnetConfiguration.internal = reader.getNullable(JsonReader::getBoolean);
+                } else if ("infrastructureSubnetId".equals(fieldName)) {
+                    deserializedVnetConfiguration.infrastructureSubnetId = reader.getString();
+                } else if ("dockerBridgeCidr".equals(fieldName)) {
+                    deserializedVnetConfiguration.dockerBridgeCidr = reader.getString();
+                } else if ("platformReservedCidr".equals(fieldName)) {
+                    deserializedVnetConfiguration.platformReservedCidr = reader.getString();
+                } else if ("platformReservedDnsIP".equals(fieldName)) {
+                    deserializedVnetConfiguration.platformReservedDnsIp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVnetConfiguration;
+        });
     }
 }

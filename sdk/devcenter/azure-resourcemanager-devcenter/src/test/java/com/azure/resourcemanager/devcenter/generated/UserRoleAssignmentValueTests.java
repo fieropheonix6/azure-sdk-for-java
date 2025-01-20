@@ -9,26 +9,24 @@ import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
 import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import java.util.HashMap;
 import java.util.Map;
-import org.junit.jupiter.api.Test;
 
 public final class UserRoleAssignmentValueTests {
-    @Test
-    public void testDeserialize() {
-        UserRoleAssignmentValue model =
-            BinaryData
-                .fromString(
-                    "{\"roles\":{\"rnwb\":{\"roleName\":\"sbkyvpycanuzbp\",\"description\":\"afkuwb\"},\"ofmxagkvtmelmqkr\":{\"roleName\":\"hhseyv\",\"description\":\"srtslhspkdeem\"}}}")
-                .toObject(UserRoleAssignmentValue.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UserRoleAssignmentValue model = BinaryData.fromString(
+            "{\"roles\":{\"evfdnwnwm\":{\"roleName\":\"nbyxbaaabjyv\",\"description\":\"ffimrzrtuzqogsex\"},\"thzvaytdwkqbrqu\":{\"roleName\":\"zsyyceuzso\",\"description\":\"judpfrxt\"},\"oaxoruzfgsqu\":{\"roleName\":\"axhexiilivp\",\"description\":\"iirqtd\"},\"wxuqlcvydypatdoo\":{\"roleName\":\"xrxxlep\",\"description\":\"amxjezwlw\"}}}")
+            .toObject(UserRoleAssignmentValue.class);
     }
 
-    @Test
-    public void testSerialize() {
-        UserRoleAssignmentValue model =
-            new UserRoleAssignmentValue()
-                .withRoles(mapOf("rnwb", new EnvironmentRole(), "ofmxagkvtmelmqkr", new EnvironmentRole()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UserRoleAssignmentValue model = new UserRoleAssignmentValue()
+            .withRoles(mapOf("evfdnwnwm", new EnvironmentRole(), "thzvaytdwkqbrqu", new EnvironmentRole(),
+                "oaxoruzfgsqu", new EnvironmentRole(), "wxuqlcvydypatdoo", new EnvironmentRole()));
         model = BinaryData.fromObject(model).toObject(UserRoleAssignmentValue.class);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

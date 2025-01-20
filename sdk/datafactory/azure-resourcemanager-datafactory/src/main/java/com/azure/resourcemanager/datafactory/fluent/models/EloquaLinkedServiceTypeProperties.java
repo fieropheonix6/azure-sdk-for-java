@@ -6,63 +6,64 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Eloqua server linked service properties. */
+/**
+ * Eloqua server linked service properties.
+ */
 @Fluent
-public final class EloquaLinkedServiceTypeProperties {
+public final class EloquaLinkedServiceTypeProperties implements JsonSerializable<EloquaLinkedServiceTypeProperties> {
     /*
      * The endpoint of the Eloqua server. (i.e. eloqua.example.com)
      */
-    @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
      * The site name and user name of your Eloqua account in the form: sitename/username. (i.e. Eloqua/Alice)
      */
-    @JsonProperty(value = "username", required = true)
     private Object username;
 
     /*
      * The password corresponding to the user name.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of EloquaLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of EloquaLinkedServiceTypeProperties class.
+     */
     public EloquaLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object endpoint() {
@@ -71,7 +72,7 @@ public final class EloquaLinkedServiceTypeProperties {
 
     /**
      * Set the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the EloquaLinkedServiceTypeProperties object itself.
      */
@@ -83,7 +84,7 @@ public final class EloquaLinkedServiceTypeProperties {
     /**
      * Get the username property: The site name and user name of your Eloqua account in the form: sitename/username.
      * (i.e. Eloqua/Alice).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -93,7 +94,7 @@ public final class EloquaLinkedServiceTypeProperties {
     /**
      * Set the username property: The site name and user name of your Eloqua account in the form: sitename/username.
      * (i.e. Eloqua/Alice).
-     *
+     * 
      * @param username the username value to set.
      * @return the EloquaLinkedServiceTypeProperties object itself.
      */
@@ -104,7 +105,7 @@ public final class EloquaLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password corresponding to the user name.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -113,7 +114,7 @@ public final class EloquaLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password corresponding to the user name.
-     *
+     * 
      * @param password the password value to set.
      * @return the EloquaLinkedServiceTypeProperties object itself.
      */
@@ -125,7 +126,7 @@ public final class EloquaLinkedServiceTypeProperties {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -135,7 +136,7 @@ public final class EloquaLinkedServiceTypeProperties {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the EloquaLinkedServiceTypeProperties object itself.
      */
@@ -147,7 +148,7 @@ public final class EloquaLinkedServiceTypeProperties {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -157,7 +158,7 @@ public final class EloquaLinkedServiceTypeProperties {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the EloquaLinkedServiceTypeProperties object itself.
      */
@@ -169,7 +170,7 @@ public final class EloquaLinkedServiceTypeProperties {
     /**
      * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -179,7 +180,7 @@ public final class EloquaLinkedServiceTypeProperties {
     /**
      * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the EloquaLinkedServiceTypeProperties object itself.
      */
@@ -190,43 +191,41 @@ public final class EloquaLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the EloquaLinkedServiceTypeProperties object itself.
      */
-    public EloquaLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public EloquaLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpoint in model EloquaLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpoint in model EloquaLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model EloquaLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model EloquaLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
@@ -234,4 +233,60 @@ public final class EloquaLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EloquaLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EloquaLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EloquaLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EloquaLinkedServiceTypeProperties.
+     */
+    public static EloquaLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EloquaLinkedServiceTypeProperties deserializedEloquaLinkedServiceTypeProperties
+                = new EloquaLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedEloquaLinkedServiceTypeProperties.endpoint = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedEloquaLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedEloquaLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedEloquaLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("useHostVerification".equals(fieldName)) {
+                    deserializedEloquaLinkedServiceTypeProperties.useHostVerification = reader.readUntyped();
+                } else if ("usePeerVerification".equals(fieldName)) {
+                    deserializedEloquaLinkedServiceTypeProperties.usePeerVerification = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedEloquaLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEloquaLinkedServiceTypeProperties;
+        });
+    }
 }

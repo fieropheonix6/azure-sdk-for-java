@@ -16,12 +16,15 @@ import com.azure.resourcemanager.eventgrid.models.DomainProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.DomainRegenerateKeyRequest;
 import com.azure.resourcemanager.eventgrid.models.DomainSharedAccessKeys;
 import com.azure.resourcemanager.eventgrid.models.DomainUpdateParameters;
+import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.InputSchema;
 import com.azure.resourcemanager.eventgrid.models.InputSchemaMapping;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
+import com.azure.resourcemanager.eventgrid.models.ResourceSku;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -57,23 +60,24 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         }
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public ResourceSku sku() {
+        return this.innerModel().sku();
     }
 
     public IdentityInfo identity() {
         return this.innerModel().identity();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -83,12 +87,20 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         return this.innerModel().provisioningState();
     }
 
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerModel().minimumTlsVersionAllowed();
+    }
+
     public String endpoint() {
         return this.innerModel().endpoint();
     }
 
     public InputSchema inputSchema() {
         return this.innerModel().inputSchema();
+    }
+
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerModel().eventTypeInfo();
     }
 
     public InputSchemaMapping inputSchemaMapping() {
@@ -160,20 +172,16 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     }
 
     public Domain create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .createOrUpdate(resourceGroupName, domainName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDomains()
+            .createOrUpdate(resourceGroupName, domainName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Domain create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .createOrUpdate(resourceGroupName, domainName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDomains()
+            .createOrUpdate(resourceGroupName, domainName, this.innerModel(), context);
         return this;
     }
 
@@ -189,67 +197,58 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
     }
 
     public Domain apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .update(resourceGroupName, domainName, updateDomainUpdateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getDomains()
+            .update(resourceGroupName, domainName, updateDomainUpdateParameters, Context.NONE);
         return this;
     }
 
     public Domain apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .update(resourceGroupName, domainName, updateDomainUpdateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getDomains()
+            .update(resourceGroupName, domainName, updateDomainUpdateParameters, context);
         return this;
     }
 
     DomainImpl(DomainInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.domainName = Utils.getValueFromIdByName(innerObject.id(), "domains");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.domainName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "domains");
     }
 
     public Domain refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .getByResourceGroupWithResponse(resourceGroupName, domainName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDomains()
+            .getByResourceGroupWithResponse(resourceGroupName, domainName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Domain refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .getByResourceGroupWithResponse(resourceGroupName, domainName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getDomains()
+            .getByResourceGroupWithResponse(resourceGroupName, domainName, context)
+            .getValue();
         return this;
-    }
-
-    public DomainSharedAccessKeys listSharedAccessKeys() {
-        return serviceManager.domains().listSharedAccessKeys(resourceGroupName, domainName);
     }
 
     public Response<DomainSharedAccessKeys> listSharedAccessKeysWithResponse(Context context) {
         return serviceManager.domains().listSharedAccessKeysWithResponse(resourceGroupName, domainName, context);
     }
 
-    public DomainSharedAccessKeys regenerateKey(DomainRegenerateKeyRequest regenerateKeyRequest) {
-        return serviceManager.domains().regenerateKey(resourceGroupName, domainName, regenerateKeyRequest);
+    public DomainSharedAccessKeys listSharedAccessKeys() {
+        return serviceManager.domains().listSharedAccessKeys(resourceGroupName, domainName);
     }
 
-    public Response<DomainSharedAccessKeys> regenerateKeyWithResponse(
-        DomainRegenerateKeyRequest regenerateKeyRequest, Context context) {
-        return serviceManager
-            .domains()
+    public Response<DomainSharedAccessKeys> regenerateKeyWithResponse(DomainRegenerateKeyRequest regenerateKeyRequest,
+        Context context) {
+        return serviceManager.domains()
             .regenerateKeyWithResponse(resourceGroupName, domainName, regenerateKeyRequest, context);
+    }
+
+    public DomainSharedAccessKeys regenerateKey(DomainRegenerateKeyRequest regenerateKeyRequest) {
+        return serviceManager.domains().regenerateKey(resourceGroupName, domainName, regenerateKeyRequest);
     }
 
     public DomainImpl withRegion(Region location) {
@@ -272,6 +271,16 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         }
     }
 
+    public DomainImpl withSku(ResourceSku sku) {
+        if (isInCreateMode()) {
+            this.innerModel().withSku(sku);
+            return this;
+        } else {
+            this.updateDomainUpdateParameters.withSku(sku);
+            return this;
+        }
+    }
+
     public DomainImpl withIdentity(IdentityInfo identity) {
         if (isInCreateMode()) {
             this.innerModel().withIdentity(identity);
@@ -282,9 +291,29 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
         }
     }
 
+    public DomainImpl withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (isInCreateMode()) {
+            this.innerModel().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        } else {
+            this.updateDomainUpdateParameters.withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+            return this;
+        }
+    }
+
     public DomainImpl withInputSchema(InputSchema inputSchema) {
         this.innerModel().withInputSchema(inputSchema);
         return this;
+    }
+
+    public DomainImpl withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        if (isInCreateMode()) {
+            this.innerModel().withEventTypeInfo(eventTypeInfo);
+            return this;
+        } else {
+            this.updateDomainUpdateParameters.withEventTypeInfo(eventTypeInfo);
+            return this;
+        }
     }
 
     public DomainImpl withInputSchemaMapping(InputSchemaMapping inputSchemaMapping) {
@@ -327,8 +356,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
             this.innerModel().withAutoCreateTopicWithFirstSubscription(autoCreateTopicWithFirstSubscription);
             return this;
         } else {
-            this
-                .updateDomainUpdateParameters
+            this.updateDomainUpdateParameters
                 .withAutoCreateTopicWithFirstSubscription(autoCreateTopicWithFirstSubscription);
             return this;
         }
@@ -339,8 +367,7 @@ public final class DomainImpl implements Domain, Domain.Definition, Domain.Updat
             this.innerModel().withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
             return this;
         } else {
-            this
-                .updateDomainUpdateParameters
+            this.updateDomainUpdateParameters
                 .withAutoDeleteTopicWithLastSubscription(autoDeleteTopicWithLastSubscription);
             return this;
         }

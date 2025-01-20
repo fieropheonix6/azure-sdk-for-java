@@ -5,22 +5,26 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Application logs azure blob storage configuration. */
+/**
+ * Application logs azure blob storage configuration.
+ */
 @Fluent
-public final class AzureBlobStorageApplicationLogsConfig {
+public final class AzureBlobStorageApplicationLogsConfig
+    implements JsonSerializable<AzureBlobStorageApplicationLogsConfig> {
     /*
      * Log level.
      */
-    @JsonProperty(value = "level")
     private LogLevel level;
 
     /*
-     * SAS url to a azure blob container with read/write/list/delete
-     * permissions.
+     * SAS url to a azure blob container with read/write/list/delete permissions.
      */
-    @JsonProperty(value = "sasUrl")
     private String sasUrl;
 
     /*
@@ -28,12 +32,17 @@ public final class AzureBlobStorageApplicationLogsConfig {
      * Remove blobs older than X days.
      * 0 or lower means no retention.
      */
-    @JsonProperty(value = "retentionInDays")
     private Integer retentionInDays;
 
     /**
+     * Creates an instance of AzureBlobStorageApplicationLogsConfig class.
+     */
+    public AzureBlobStorageApplicationLogsConfig() {
+    }
+
+    /**
      * Get the level property: Log level.
-     *
+     * 
      * @return the level value.
      */
     public LogLevel level() {
@@ -42,7 +51,7 @@ public final class AzureBlobStorageApplicationLogsConfig {
 
     /**
      * Set the level property: Log level.
-     *
+     * 
      * @param level the level value to set.
      * @return the AzureBlobStorageApplicationLogsConfig object itself.
      */
@@ -53,7 +62,7 @@ public final class AzureBlobStorageApplicationLogsConfig {
 
     /**
      * Get the sasUrl property: SAS url to a azure blob container with read/write/list/delete permissions.
-     *
+     * 
      * @return the sasUrl value.
      */
     public String sasUrl() {
@@ -62,7 +71,7 @@ public final class AzureBlobStorageApplicationLogsConfig {
 
     /**
      * Set the sasUrl property: SAS url to a azure blob container with read/write/list/delete permissions.
-     *
+     * 
      * @param sasUrl the sasUrl value to set.
      * @return the AzureBlobStorageApplicationLogsConfig object itself.
      */
@@ -72,9 +81,10 @@ public final class AzureBlobStorageApplicationLogsConfig {
     }
 
     /**
-     * Get the retentionInDays property: Retention in days. Remove blobs older than X days. 0 or lower means no
-     * retention.
-     *
+     * Get the retentionInDays property: Retention in days.
+     * Remove blobs older than X days.
+     * 0 or lower means no retention.
+     * 
      * @return the retentionInDays value.
      */
     public Integer retentionInDays() {
@@ -82,9 +92,10 @@ public final class AzureBlobStorageApplicationLogsConfig {
     }
 
     /**
-     * Set the retentionInDays property: Retention in days. Remove blobs older than X days. 0 or lower means no
-     * retention.
-     *
+     * Set the retentionInDays property: Retention in days.
+     * Remove blobs older than X days.
+     * 0 or lower means no retention.
+     * 
      * @param retentionInDays the retentionInDays value to set.
      * @return the AzureBlobStorageApplicationLogsConfig object itself.
      */
@@ -95,9 +106,53 @@ public final class AzureBlobStorageApplicationLogsConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("level", this.level == null ? null : this.level.toString());
+        jsonWriter.writeStringField("sasUrl", this.sasUrl);
+        jsonWriter.writeNumberField("retentionInDays", this.retentionInDays);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBlobStorageApplicationLogsConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBlobStorageApplicationLogsConfig if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureBlobStorageApplicationLogsConfig.
+     */
+    public static AzureBlobStorageApplicationLogsConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBlobStorageApplicationLogsConfig deserializedAzureBlobStorageApplicationLogsConfig
+                = new AzureBlobStorageApplicationLogsConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("level".equals(fieldName)) {
+                    deserializedAzureBlobStorageApplicationLogsConfig.level = LogLevel.fromString(reader.getString());
+                } else if ("sasUrl".equals(fieldName)) {
+                    deserializedAzureBlobStorageApplicationLogsConfig.sasUrl = reader.getString();
+                } else if ("retentionInDays".equals(fieldName)) {
+                    deserializedAzureBlobStorageApplicationLogsConfig.retentionInDays
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBlobStorageApplicationLogsConfig;
+        });
     }
 }

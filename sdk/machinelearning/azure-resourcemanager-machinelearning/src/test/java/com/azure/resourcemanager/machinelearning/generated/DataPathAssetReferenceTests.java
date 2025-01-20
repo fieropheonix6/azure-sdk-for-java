@@ -7,26 +7,24 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.DataPathAssetReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataPathAssetReferenceTests {
-    @Test
-    public void testDeserialize() {
-        DataPathAssetReference model =
-            BinaryData
-                .fromString(
-                    "{\"referenceType\":\"DataPath\",\"datastoreId\":\"uwxeoiojfizf\",\"path\":\"kjzwfbcyayk\"}")
-                .toObject(DataPathAssetReference.class);
-        Assertions.assertEquals("uwxeoiojfizf", model.datastoreId());
-        Assertions.assertEquals("kjzwfbcyayk", model.path());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DataPathAssetReference model = BinaryData
+            .fromString(
+                "{\"referenceType\":\"DataPath\",\"path\":\"wvumosqircamqprl\",\"datastoreId\":\"rugejcvjkjy\"}")
+            .toObject(DataPathAssetReference.class);
+        Assertions.assertEquals("wvumosqircamqprl", model.path());
+        Assertions.assertEquals("rugejcvjkjy", model.datastoreId());
     }
 
-    @Test
-    public void testSerialize() {
-        DataPathAssetReference model =
-            new DataPathAssetReference().withDatastoreId("uwxeoiojfizf").withPath("kjzwfbcyayk");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataPathAssetReference model
+            = new DataPathAssetReference().withPath("wvumosqircamqprl").withDatastoreId("rugejcvjkjy");
         model = BinaryData.fromObject(model).toObject(DataPathAssetReference.class);
-        Assertions.assertEquals("uwxeoiojfizf", model.datastoreId());
-        Assertions.assertEquals("kjzwfbcyayk", model.path());
+        Assertions.assertEquals("wvumosqircamqprl", model.path());
+        Assertions.assertEquals("rugejcvjkjy", model.datastoreId());
     }
 }

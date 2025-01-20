@@ -8,6 +8,8 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Defines an interface for operations with {@link Lease}.
@@ -38,6 +40,11 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
     Flux<Lease> getAllLeases();
 
     /**
+     * @return Get top {@code count} leases.
+     * */
+    Flux<Lease> getTopLeases(int topCount);
+
+    /**
      * @return all leases owned by the current host.
      */
     Flux<Lease> getOwnedLeases();
@@ -54,11 +61,31 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
     /**
      * Checks whether the lease exists and creates it if it does not exist.
      *
+     * @param leaseToken the partition to work on.
+     * @param continuationToken the continuation token if it exists.
+     * @param properties the properties.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(String leaseToken, String continuationToken, Map<String, String> properties);
+
+    /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
      * @param feedRange the epk range for the lease.
      * @param continuationToken the continuation token if it exists.
      * @return the lease.
      */
     Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken);
+
+    /**
+     * Checks whether the lease exists and creates it if it does not exist.
+     *
+     * @param feedRange the epk range for the lease.
+     * @param continuationToken the continuation token if it exists.
+     * @param properties the properties.
+     * @return the lease.
+     */
+    Mono<Lease> createLeaseIfNotExist(FeedRangeEpkImpl feedRange, String continuationToken, Map<String, String> properties);
 
     /**
      * DELETE the lease.
@@ -67,6 +94,14 @@ public interface LeaseStoreManager extends LeaseContainer, LeaseManager, LeaseSt
      * @return a representation of the deferred computation of this call.
      */
     Mono<Void> delete(Lease lease);
+
+    /**
+     * DELETE all the leases passed in.
+     *
+     * @param leases the leases to be removed.
+     * @return a representation of the deferred computation of this call.
+     */
+    Mono<Void> deleteAll(List<Lease> leases);
 
     /**
      * Acquire ownership of the lease.

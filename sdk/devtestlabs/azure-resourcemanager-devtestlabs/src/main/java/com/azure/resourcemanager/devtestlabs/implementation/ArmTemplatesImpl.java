@@ -13,67 +13,49 @@ import com.azure.resourcemanager.devtestlabs.fluent.ArmTemplatesClient;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ArmTemplateInner;
 import com.azure.resourcemanager.devtestlabs.models.ArmTemplate;
 import com.azure.resourcemanager.devtestlabs.models.ArmTemplates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ArmTemplatesImpl implements ArmTemplates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmTemplatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ArmTemplatesImpl.class);
 
     private final ArmTemplatesClient innerClient;
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public ArmTemplatesImpl(
-        ArmTemplatesClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public ArmTemplatesImpl(ArmTemplatesClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ArmTemplate> list(String resourceGroupName, String labName, String artifactSourceName) {
-        PagedIterable<ArmTemplateInner> inner =
-            this.serviceClient().list(resourceGroupName, labName, artifactSourceName);
-        return Utils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
+        PagedIterable<ArmTemplateInner> inner
+            = this.serviceClient().list(resourceGroupName, labName, artifactSourceName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ArmTemplate> list(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context) {
-        PagedIterable<ArmTemplateInner> inner =
-            this
-                .serviceClient()
-                .list(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
+    public PagedIterable<ArmTemplate> list(String resourceGroupName, String labName, String artifactSourceName,
+        String expand, String filter, Integer top, String orderby, Context context) {
+        PagedIterable<ArmTemplateInner> inner = this.serviceClient()
+            .list(resourceGroupName, labName, artifactSourceName, expand, filter, top, orderby, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ArmTemplateImpl(inner1, this.manager()));
+    }
+
+    public Response<ArmTemplate> getWithResponse(String resourceGroupName, String labName, String artifactSourceName,
+        String name, String expand, Context context) {
+        Response<ArmTemplateInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, labName, artifactSourceName, name, expand, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ArmTemplateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ArmTemplate get(String resourceGroupName, String labName, String artifactSourceName, String name) {
         ArmTemplateInner inner = this.serviceClient().get(resourceGroupName, labName, artifactSourceName, name);
         if (inner != null) {
             return new ArmTemplateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ArmTemplate> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String artifactSourceName,
-        String name,
-        String expand,
-        Context context) {
-        Response<ArmTemplateInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, labName, artifactSourceName, name, expand, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ArmTemplateImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

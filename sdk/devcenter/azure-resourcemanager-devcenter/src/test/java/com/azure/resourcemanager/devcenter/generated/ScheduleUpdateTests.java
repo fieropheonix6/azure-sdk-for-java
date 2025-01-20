@@ -5,53 +5,49 @@
 package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduleUpdate;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleUpdateTests {
-    @Test
-    public void testDeserialize() {
-        ScheduleUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"njijpxacqqudf\",\"timeZone\":\"yxbaaabjyvayf\",\"state\":\"Enabled\"},\"tags\":{\"xnevfdnwn\":\"rtuzqogs\",\"uzsoi\":\"mewzsyyc\"},\"location\":\"ud\"}")
-                .toObject(ScheduleUpdate.class);
-        Assertions.assertEquals("rtuzqogs", model.tags().get("xnevfdnwn"));
-        Assertions.assertEquals("ud", model.location());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ScheduleUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"ofjchvcyyysf\",\"timeZone\":\"otcubi\",\"state\":\"Disabled\",\"tags\":{\"qonmacj\":\"w\",\"izsh\":\"k\"},\"location\":\"cimpevfg\"}}")
+            .toObject(ScheduleUpdate.class);
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("njijpxacqqudf", model.time());
-        Assertions.assertEquals("yxbaaabjyvayf", model.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("ofjchvcyyysf", model.time());
+        Assertions.assertEquals("otcubi", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("w", model.tags().get("qonmacj"));
+        Assertions.assertEquals("cimpevfg", model.location());
     }
 
-    @Test
-    public void testSerialize() {
-        ScheduleUpdate model =
-            new ScheduleUpdate()
-                .withTags(mapOf("xnevfdnwn", "rtuzqogs", "uzsoi", "mewzsyyc"))
-                .withLocation("ud")
-                .withType(ScheduledType.STOP_DEV_BOX)
-                .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("njijpxacqqudf")
-                .withTimeZone("yxbaaabjyvayf")
-                .withState(EnableStatus.ENABLED);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ScheduleUpdate model = new ScheduleUpdate().withType(ScheduledType.STOP_DEV_BOX)
+            .withFrequency(ScheduledFrequency.DAILY)
+            .withTime("ofjchvcyyysf")
+            .withTimeZone("otcubi")
+            .withState(ScheduleEnableStatus.DISABLED)
+            .withTags(mapOf("qonmacj", "w", "izsh", "k"))
+            .withLocation("cimpevfg");
         model = BinaryData.fromObject(model).toObject(ScheduleUpdate.class);
-        Assertions.assertEquals("rtuzqogs", model.tags().get("xnevfdnwn"));
-        Assertions.assertEquals("ud", model.location());
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("njijpxacqqudf", model.time());
-        Assertions.assertEquals("yxbaaabjyvayf", model.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("ofjchvcyyysf", model.time());
+        Assertions.assertEquals("otcubi", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
+        Assertions.assertEquals("w", model.tags().get("qonmacj"));
+        Assertions.assertEquals("cimpevfg", model.location());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

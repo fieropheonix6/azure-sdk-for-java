@@ -21,8 +21,7 @@ public final class DeletedServicesImpl implements DeletedServices {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public DeletedServicesImpl(
-        DeletedServicesClient innerClient,
+    public DeletedServicesImpl(DeletedServicesClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -30,33 +29,30 @@ public final class DeletedServicesImpl implements DeletedServices {
 
     public PagedIterable<DeletedServiceContract> list() {
         PagedIterable<DeletedServiceContractInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DeletedServiceContract> list(Context context) {
         PagedIterable<DeletedServiceContractInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DeletedServiceContractImpl(inner1, this.manager()));
+    }
+
+    public Response<DeletedServiceContract> getByNameWithResponse(String serviceName, String location,
+        Context context) {
+        Response<DeletedServiceContractInner> inner
+            = this.serviceClient().getByNameWithResponse(serviceName, location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DeletedServiceContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DeletedServiceContract getByName(String serviceName, String location) {
         DeletedServiceContractInner inner = this.serviceClient().getByName(serviceName, location);
         if (inner != null) {
             return new DeletedServiceContractImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<DeletedServiceContract> getByNameWithResponse(
-        String serviceName, String location, Context context) {
-        Response<DeletedServiceContractInner> inner =
-            this.serviceClient().getByNameWithResponse(serviceName, location, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DeletedServiceContractImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

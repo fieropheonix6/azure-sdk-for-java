@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the properties of a Operation value. */
+/**
+ * Describes the properties of a Operation value.
+ */
 @Immutable
-public final class OperationValueInner {
+public final class OperationValueInner implements JsonSerializable<OperationValueInner> {
     /*
      * The origin of the operation.
      */
-    @JsonProperty(value = "origin", access = JsonProperty.Access.WRITE_ONLY)
     private String origin;
 
     /*
      * The name of the operation.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Describes the properties of a Operation Value Display.
      */
-    @JsonProperty(value = "display")
     private OperationValueDisplay innerDisplay;
 
-    /** Creates an instance of OperationValueInner class. */
+    /**
+     * Creates an instance of OperationValueInner class.
+     */
     public OperationValueInner() {
     }
 
     /**
      * Get the origin property: The origin of the operation.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -43,7 +48,7 @@ public final class OperationValueInner {
 
     /**
      * Get the name property: The name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +57,7 @@ public final class OperationValueInner {
 
     /**
      * Get the innerDisplay property: Describes the properties of a Operation Value Display.
-     *
+     * 
      * @return the innerDisplay value.
      */
     private OperationValueDisplay innerDisplay() {
@@ -61,7 +66,7 @@ public final class OperationValueInner {
 
     /**
      * Get the operation property: The display name of the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -70,7 +75,7 @@ public final class OperationValueInner {
 
     /**
      * Get the resource property: The display name of the resource the operation applies to.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -79,7 +84,7 @@ public final class OperationValueInner {
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -88,7 +93,7 @@ public final class OperationValueInner {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -97,12 +102,52 @@ public final class OperationValueInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerDisplay() != null) {
             innerDisplay().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("display", this.innerDisplay);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationValueInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationValueInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationValueInner.
+     */
+    public static OperationValueInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationValueInner deserializedOperationValueInner = new OperationValueInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("origin".equals(fieldName)) {
+                    deserializedOperationValueInner.origin = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationValueInner.name = reader.getString();
+                } else if ("display".equals(fieldName)) {
+                    deserializedOperationValueInner.innerDisplay = OperationValueDisplay.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationValueInner;
+        });
     }
 }

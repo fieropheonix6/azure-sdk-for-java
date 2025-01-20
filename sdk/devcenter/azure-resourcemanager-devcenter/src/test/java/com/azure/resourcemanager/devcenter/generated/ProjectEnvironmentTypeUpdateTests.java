@@ -5,7 +5,8 @@
 package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.EnvironmentRole;
+import com.azure.resourcemanager.devcenter.models.EnvironmentTypeEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.devcenter.models.ProjectEnvironmentTypeUpdate;
@@ -15,66 +16,52 @@ import com.azure.resourcemanager.devcenter.models.UserRoleAssignmentValue;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProjectEnvironmentTypeUpdateTests {
-    @Test
-    public void testDeserialize() {
-        ProjectEnvironmentTypeUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"deploymentTargetId\":\"vljua\",\"status\":\"Disabled\",\"creatorRoleAssignment\":{\"roles\":{}},\"userRoleAssignments\":{\"duala\":{\"roles\":{}},\"qpv\":{\"roles\":{}}}},\"tags\":{\"zlfmisgwbnbbeld\":\"mwsrcrgvxpvgo\",\"ali\":\"wkz\",\"hashsfwxosow\":\"urqhaka\",\"cjooxdjebwpucwwf\":\"xcug\"},\"identity\":{\"principalId\":\"6742d2e9-e100-46cf-a94b-c0f3df8495a8\",\"tenantId\":\"03252bf8-6bd4-4afc-815f-bcf2a7b948f2\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"civyhzceuo\":{\"principalId\":\"6daccd11-405d-4191-91c1-8afc0daefdf7\",\"clientId\":\"8c083203-ae8b-4d69-ad81-0c90465fc213\"},\"rw\":{\"principalId\":\"9909f97f-0739-47de-9c2d-421123b4dbba\",\"clientId\":\"21dba054-952a-4a4a-bc9d-db9471c8987f\"},\"iotwmcdytdxwit\":{\"principalId\":\"0cdb1901-ace9-4f71-97c4-5175c549cb7d\",\"clientId\":\"6cd3aac3-1b3c-4ed2-8c8b-4249a4b54c80\"},\"jawgqwg\":{\"principalId\":\"91e2baca-39cf-4691-9a85-a3ff81761540\",\"clientId\":\"457385ab-df81-439e-b88a-b897eef886b5\"}}}}")
-                .toObject(ProjectEnvironmentTypeUpdate.class);
-        Assertions.assertEquals("mwsrcrgvxpvgo", model.tags().get("zlfmisgwbnbbeld"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("vljua", model.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProjectEnvironmentTypeUpdate model = BinaryData.fromString(
+            "{\"properties\":{\"deploymentTargetId\":\"kniod\",\"displayName\":\"oebwnujhemms\",\"status\":\"Enabled\",\"creatorRoleAssignment\":{\"roles\":{\"f\":{\"roleName\":\"dtjinfw\",\"description\":\"fltkacjv\"},\"blylsyxkqjnsj\":{\"roleName\":\"lfoakg\",\"description\":\"fpagaowpulp\"},\"kfzbeyvpnqicvi\":{\"roleName\":\"vti\",\"description\":\"xsdszuempsb\"},\"hmlwpaztzpo\":{\"roleName\":\"kjj\",\"description\":\"xrbuukzclew\"}}},\"userRoleAssignments\":{\"aznqntoru\":{\"roles\":{\"zfeqztppri\":{\"roleName\":\"yfzqwhxxbu\",\"description\":\"a\"},\"dpfuvg\":{\"roleName\":\"xorjaltolmncwsob\",\"description\":\"csdbnwdcfhuc\"},\"udutnco\":{\"roleName\":\"bjj\",\"description\":\"nvxbvt\"},\"bgdknnqv\":{\"roleName\":\"r\",\"description\":\"qtvcofudflvkgj\"}}},\"khazxkhnzbonlwn\":{\"roles\":{\"etaebu\":{\"roleName\":\"a\",\"description\":\"kycgrauwj\"},\"tpuqujmq\":{\"roleName\":\"vdmovsmzlxwabm\",\"description\":\"efkifr\"},\"ezkojvdcp\":{\"roleName\":\"kfbtndoaongbjc\",\"description\":\"ujitcjedftww\"},\"iqopidoamciod\":{\"roleName\":\"oqouicybxarzgszu\",\"description\":\"x\"}}},\"dcngqqmoakufgmj\":{\"roles\":{\"t\":{\"roleName\":\"okdwb\",\"description\":\"kszzcmrvexztv\"},\"aw\":{\"roleName\":\"sfraoyzko\",\"description\":\"tlmngu\"},\"r\":{\"roleName\":\"ldsyuuximerqfob\",\"description\":\"znkbykutwpfhpagm\"},\"twvogvbbe\":{\"roleName\":\"dsnfdsdoakgtdl\",\"description\":\"kzevdlhewpusds\"}}},\"l\":{\"roles\":{\"hziuiefozbhdms\":{\"roleName\":\"dgrtwaenuuzkopbm\",\"description\":\"rfdwoyu\"}}}}},\"tags\":{\"ae\":\"hoftr\",\"ah\":\"u\",\"piyylhalnswhccsp\":\"icslfaoq\",\"scywuggwoluhc\":\"kaivwit\"},\"identity\":{\"principalId\":\"a1a137ed-7aca-4b3b-be54-6c687f49e61b\",\"tenantId\":\"72d30c96-04c8-4b18-a886-9f22b12d7eed\",\"type\":\"SystemAssigned, UserAssigned\",\"userAssignedIdentities\":{\"sbrgz\":{\"principalId\":\"f0ba38c0-ed17-4977-ab24-6fabc582b397\",\"clientId\":\"096ab311-e1dd-43f1-81de-bb6fb2e6c733\"}}}}")
+            .toObject(ProjectEnvironmentTypeUpdate.class);
+        Assertions.assertEquals("hoftr", model.tags().get("ae"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("kniod", model.deploymentTargetId());
+        Assertions.assertEquals("oebwnujhemms", model.displayName());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        ProjectEnvironmentTypeUpdate model =
-            new ProjectEnvironmentTypeUpdate()
-                .withTags(
-                    mapOf(
-                        "zlfmisgwbnbbeld",
-                        "mwsrcrgvxpvgo",
-                        "ali",
-                        "wkz",
-                        "hashsfwxosow",
-                        "urqhaka",
-                        "cjooxdjebwpucwwf",
-                        "xcug"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "civyhzceuo",
-                                new UserAssignedIdentity(),
-                                "rw",
-                                new UserAssignedIdentity(),
-                                "iotwmcdytdxwit",
-                                new UserAssignedIdentity(),
-                                "jawgqwg",
-                                new UserAssignedIdentity())))
-                .withDeploymentTargetId("vljua")
-                .withStatus(EnableStatus.DISABLED)
-                .withCreatorRoleAssignment(
-                    new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment().withRoles(mapOf()))
-                .withUserRoleAssignments(
-                    mapOf(
-                        "duala",
-                        new UserRoleAssignmentValue().withRoles(mapOf()),
-                        "qpv",
-                        new UserRoleAssignmentValue().withRoles(mapOf())));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProjectEnvironmentTypeUpdate model = new ProjectEnvironmentTypeUpdate()
+            .withTags(mapOf("ae", "hoftr", "ah", "u", "piyylhalnswhccsp", "icslfaoq", "scywuggwoluhc", "kaivwit"))
+            .withIdentity(
+                new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("sbrgz", new UserAssignedIdentity())))
+            .withDeploymentTargetId("kniod")
+            .withDisplayName("oebwnujhemms")
+            .withStatus(EnvironmentTypeEnableStatus.ENABLED)
+            .withCreatorRoleAssignment(new ProjectEnvironmentTypeUpdatePropertiesCreatorRoleAssignment()
+                .withRoles(mapOf("f", new EnvironmentRole(), "blylsyxkqjnsj", new EnvironmentRole(), "kfzbeyvpnqicvi",
+                    new EnvironmentRole(), "hmlwpaztzpo", new EnvironmentRole())))
+            .withUserRoleAssignments(mapOf("aznqntoru",
+                new UserRoleAssignmentValue().withRoles(mapOf("zfeqztppri", new EnvironmentRole(), "dpfuvg",
+                    new EnvironmentRole(), "udutnco", new EnvironmentRole(), "bgdknnqv", new EnvironmentRole())),
+                "khazxkhnzbonlwn",
+                new UserRoleAssignmentValue().withRoles(mapOf("etaebu", new EnvironmentRole(), "tpuqujmq",
+                    new EnvironmentRole(), "ezkojvdcp", new EnvironmentRole(), "iqopidoamciod", new EnvironmentRole())),
+                "dcngqqmoakufgmj",
+                new UserRoleAssignmentValue().withRoles(mapOf("t", new EnvironmentRole(), "aw", new EnvironmentRole(),
+                    "r", new EnvironmentRole(), "twvogvbbe", new EnvironmentRole())),
+                "l", new UserRoleAssignmentValue().withRoles(mapOf("hziuiefozbhdms", new EnvironmentRole()))));
         model = BinaryData.fromObject(model).toObject(ProjectEnvironmentTypeUpdate.class);
-        Assertions.assertEquals("mwsrcrgvxpvgo", model.tags().get("zlfmisgwbnbbeld"));
-        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
-        Assertions.assertEquals("vljua", model.deploymentTargetId());
-        Assertions.assertEquals(EnableStatus.DISABLED, model.status());
+        Assertions.assertEquals("hoftr", model.tags().get("ae"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("kniod", model.deploymentTargetId());
+        Assertions.assertEquals("oebwnujhemms", model.displayName());
+        Assertions.assertEquals(EnvironmentTypeEnableStatus.ENABLED, model.status());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

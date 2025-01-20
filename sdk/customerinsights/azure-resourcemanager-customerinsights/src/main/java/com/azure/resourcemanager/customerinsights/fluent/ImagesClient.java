@@ -11,57 +11,44 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.customerinsights.fluent.models.ImageDefinitionInner;
 import com.azure.resourcemanager.customerinsights.models.GetImageUploadUrlInput;
 
-/** An instance of this class provides access to all the operations defined in ImagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ImagesClient.
+ */
 public interface ImagesClient {
     /**
      * Gets entity type (profile or interaction) image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity type (profile or interaction) image upload URL.
+     * @return entity type (profile or interaction) image upload URL along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageDefinitionInner getUploadUrlForEntityType(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters);
+    Response<ImageDefinitionInner> getUploadUrlForEntityTypeWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context);
 
     /**
      * Gets entity type (profile or interaction) image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForEntityType operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return entity type (profile or interaction) image upload URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageDefinitionInner> getUploadUrlForEntityTypeWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context);
+    ImageDefinitionInner getUploadUrlForEntityType(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters);
 
     /**
      * Gets data image upload URL.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param parameters Parameters supplied to the GetUploadUrlForData operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data image upload URL.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ImageDefinitionInner getUploadUrlForData(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters);
-
-    /**
-     * Gets data image upload URL.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param parameters Parameters supplied to the GetUploadUrlForData operation.
@@ -69,9 +56,24 @@ public interface ImagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data image upload URL along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ImageDefinitionInner> getUploadUrlForDataWithResponse(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters, Context context);
+
+    /**
+     * Gets data image upload URL.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param parameters Parameters supplied to the GetUploadUrlForData operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return data image upload URL.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageDefinitionInner> getUploadUrlForDataWithResponse(
-        String resourceGroupName, String hubName, GetImageUploadUrlInput parameters, Context context);
+    ImageDefinitionInner getUploadUrlForData(String resourceGroupName, String hubName,
+        GetImageUploadUrlInput parameters);
 }

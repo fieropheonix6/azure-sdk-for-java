@@ -5,43 +5,63 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.NetworkExperimentResourceState;
 import com.azure.resourcemanager.frontdoor.models.State;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Defines an Network Experiment Profile and lists of Experiments. */
-@JsonFlatten
+/**
+ * Defines an Network Experiment Profile and lists of Experiments.
+ */
 @Fluent
-public class ProfileInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProfileInner.class);
+public final class ProfileInner extends Resource {
+    /*
+     * The properties of a Profile
+     */
+    private ProfileProperties innerProperties;
 
     /*
-     * Gets a unique read-only string that changes whenever the resource is
-     * updated.
+     * Gets a unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
-     * Resource status.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private NetworkExperimentResourceState resourceState;
+    private String type;
 
     /*
-     * The state of the Experiment
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.enabledState")
-    private State enabledState;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProfileInner class.
+     */
+    public ProfileInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties of a Profile.
+     * 
+     * @return the innerProperties value.
+     */
+    private ProfileProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -50,7 +70,7 @@ public class ProfileInner extends Resource {
 
     /**
      * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ProfileInner object itself.
      */
@@ -60,42 +80,47 @@ public class ProfileInner extends Resource {
     }
 
     /**
-     * Get the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public NetworkExperimentResourceState resourceState() {
-        return this.resourceState;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the enabledState property: The state of the Experiment.
-     *
-     * @return the enabledState value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public State enabledState() {
-        return this.enabledState;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the enabledState property: The state of the Experiment.
-     *
-     * @param enabledState the enabledState value to set.
-     * @return the ProfileInner object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public ProfileInner withEnabledState(State enabledState) {
-        this.enabledState = enabledState;
-        return this;
+    @Override
+    public String id() {
+        return this.id;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProfileInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,10 +128,98 @@ public class ProfileInner extends Resource {
     }
 
     /**
+     * Get the resourceState property: Resource status.
+     * 
+     * @return the resourceState value.
+     */
+    public NetworkExperimentResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
+    /**
+     * Get the enabledState property: The state of the Experiment.
+     * 
+     * @return the enabledState value.
+     */
+    public State enabledState() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabledState();
+    }
+
+    /**
+     * Set the enabledState property: The state of the Experiment.
+     * 
+     * @param enabledState the enabledState value to set.
+     * @return the ProfileInner object itself.
+     */
+    public ProfileInner withEnabledState(State enabledState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ProfileProperties();
+        }
+        this.innerProperties().withEnabledState(enabledState);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("etag", this.etag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProfileInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProfileInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProfileInner.
+     */
+    public static ProfileInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProfileInner deserializedProfileInner = new ProfileInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProfileInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProfileInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProfileInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedProfileInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProfileInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProfileInner.innerProperties = ProfileProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedProfileInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProfileInner;
+        });
     }
 }

@@ -8,22 +8,19 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.JobLimits;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobLimitsTests {
-    @Test
-    public void testDeserialize() {
-        JobLimits model =
-            BinaryData
-                .fromString("{\"jobLimitsType\":\"JobLimits\",\"timeout\":\"PT90H18M40S\"}")
-                .toObject(JobLimits.class);
-        Assertions.assertEquals(Duration.parse("PT90H18M40S"), model.timeout());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        JobLimits model = BinaryData.fromString("{\"jobLimitsType\":\"JobLimits\",\"timeout\":\"PT90H5M41S\"}")
+            .toObject(JobLimits.class);
+        Assertions.assertEquals(Duration.parse("PT90H5M41S"), model.timeout());
     }
 
-    @Test
-    public void testSerialize() {
-        JobLimits model = new JobLimits().withTimeout(Duration.parse("PT90H18M40S"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        JobLimits model = new JobLimits().withTimeout(Duration.parse("PT90H5M41S"));
         model = BinaryData.fromObject(model).toObject(JobLimits.class);
-        Assertions.assertEquals(Duration.parse("PT90H18M40S"), model.timeout());
+        Assertions.assertEquals(Duration.parse("PT90H5M41S"), model.timeout());
     }
 }

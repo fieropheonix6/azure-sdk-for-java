@@ -6,44 +6,47 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayLoadDistributionPolicyPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Load Distribution Policy of an application gateway. */
+/**
+ * Load Distribution Policy of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayLoadDistributionPolicy extends SubResource {
     /*
      * Properties of the application gateway load distribution policy.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayLoadDistributionPolicyPropertiesFormat innerProperties;
 
     /*
      * Name of the load distribution policy that is unique within an Application Gateway.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayLoadDistributionPolicy class. */
+    /**
+     * Creates an instance of ApplicationGatewayLoadDistributionPolicy class.
+     */
     public ApplicationGatewayLoadDistributionPolicy() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway load distribution policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayLoadDistributionPolicyPropertiesFormat innerProperties() {
@@ -52,7 +55,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the name property: Name of the load distribution policy that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +64,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Set the name property: Name of the load distribution policy that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayLoadDistributionPolicy object itself.
      */
@@ -72,7 +75,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +84,16 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayLoadDistributionPolicy withId(String id) {
         super.withId(id);
@@ -97,7 +102,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the loadDistributionTargets property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @return the loadDistributionTargets value.
      */
     public List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets() {
@@ -106,12 +111,12 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Set the loadDistributionTargets property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @param loadDistributionTargets the loadDistributionTargets value to set.
      * @return the ApplicationGatewayLoadDistributionPolicy object itself.
      */
-    public ApplicationGatewayLoadDistributionPolicy withLoadDistributionTargets(
-        List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets) {
+    public ApplicationGatewayLoadDistributionPolicy
+        withLoadDistributionTargets(List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayLoadDistributionPolicyPropertiesFormat();
         }
@@ -121,7 +126,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the loadDistributionAlgorithm property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @return the loadDistributionAlgorithm value.
      */
     public ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm() {
@@ -130,12 +135,12 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Set the loadDistributionAlgorithm property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @param loadDistributionAlgorithm the loadDistributionAlgorithm value to set.
      * @return the ApplicationGatewayLoadDistributionPolicy object itself.
      */
-    public ApplicationGatewayLoadDistributionPolicy withLoadDistributionAlgorithm(
-        ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm) {
+    public ApplicationGatewayLoadDistributionPolicy
+        withLoadDistributionAlgorithm(ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayLoadDistributionPolicyPropertiesFormat();
         }
@@ -145,7 +150,7 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Get the provisioningState property: The provisioning state of the Load Distribution Policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -154,12 +159,60 @@ public final class ApplicationGatewayLoadDistributionPolicy extends SubResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayLoadDistributionPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayLoadDistributionPolicy if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayLoadDistributionPolicy.
+     */
+    public static ApplicationGatewayLoadDistributionPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayLoadDistributionPolicy deserializedApplicationGatewayLoadDistributionPolicy
+                = new ApplicationGatewayLoadDistributionPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayLoadDistributionPolicy.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayLoadDistributionPolicy.innerProperties
+                        = ApplicationGatewayLoadDistributionPolicyPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayLoadDistributionPolicy.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayLoadDistributionPolicy.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayLoadDistributionPolicy.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayLoadDistributionPolicy;
+        });
     }
 }

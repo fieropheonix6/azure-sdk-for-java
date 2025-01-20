@@ -13,7 +13,7 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.test.ResourceManagerTestBase;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestDelayProvider;
 
 import java.io.ByteArrayOutputStream;
@@ -24,26 +24,15 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 /** The base for storage manager tests. */
-public abstract class GraphRbacManagementTest extends ResourceManagerTestBase {
+public abstract class GraphRbacManagementTest extends ResourceManagerTestProxyTestBase {
     protected AuthorizationManager authorizationManager;
     protected ResourceManager resourceManager;
 
     @Override
-    protected HttpPipeline buildHttpPipeline(
-        TokenCredential credential,
-        AzureProfile profile,
-        HttpLogOptions httpLogOptions,
-        List<HttpPipelinePolicy> policies,
-        HttpClient httpClient) {
-        return HttpPipelineProvider.buildHttpPipeline(
-            credential,
-            profile,
-            null,
-            httpLogOptions,
-            null,
-            new RetryPolicy("Retry-After", ChronoUnit.SECONDS),
-            policies,
-            httpClient);
+    protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile,
+        HttpLogOptions httpLogOptions, List<HttpPipelinePolicy> policies, HttpClient httpClient) {
+        return HttpPipelineProvider.buildHttpPipeline(credential, profile, null, httpLogOptions, null,
+            new RetryPolicy("Retry-After", ChronoUnit.SECONDS), policies, httpClient);
     }
 
     @Override
@@ -52,7 +41,6 @@ public abstract class GraphRbacManagementTest extends ResourceManagerTestBase {
         authorizationManager = buildManager(AuthorizationManager.class, httpPipeline, profile);
         resourceManager = buildManager(ResourceManager.class, httpPipeline, profile);
     }
-
 
     @Override
     protected void cleanUpResources() {
@@ -69,8 +57,6 @@ public abstract class GraphRbacManagementTest extends ResourceManagerTestBase {
     }
 
     protected byte[] replaceCRLF(byte[] bytes) {
-        return new String(bytes, StandardCharsets.UTF_8)
-            .replace("\r\n", "\n")
-            .getBytes(StandardCharsets.UTF_8);
+        return new String(bytes, StandardCharsets.UTF_8).replace("\r\n", "\n").getBytes(StandardCharsets.UTF_8);
     }
 }

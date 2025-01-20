@@ -5,43 +5,48 @@
 package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ExportJobsResult The result for export jobs containing blob details. */
+/**
+ * ExportJobsResult
+ * 
+ * The result for export jobs containing blob details.
+ */
 @Immutable
-public final class ExportJobsResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportJobsResultInner.class);
-
+public final class ExportJobsResultInner implements JsonSerializable<ExportJobsResultInner> {
     /*
-     * URL of the blob into which the serialized string of list of jobs is
-     * exported.
+     * URL of the blob into which the serialized string of list of jobs is exported.
      */
-    @JsonProperty(value = "blobUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String blobUrl;
 
     /*
      * SAS key to access the blob.
      */
-    @JsonProperty(value = "blobSasKey", access = JsonProperty.Access.WRITE_ONLY)
     private String blobSasKey;
 
     /*
      * URL of the blob into which the ExcelFile is uploaded.
      */
-    @JsonProperty(value = "excelFileBlobUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String excelFileBlobUrl;
 
     /*
      * SAS key to access the ExcelFile blob.
      */
-    @JsonProperty(value = "excelFileBlobSasKey", access = JsonProperty.Access.WRITE_ONLY)
     private String excelFileBlobSasKey;
 
     /**
+     * Creates an instance of ExportJobsResultInner class.
+     */
+    public ExportJobsResultInner() {
+    }
+
+    /**
      * Get the blobUrl property: URL of the blob into which the serialized string of list of jobs is exported.
-     *
+     * 
      * @return the blobUrl value.
      */
     public String blobUrl() {
@@ -50,7 +55,7 @@ public final class ExportJobsResultInner {
 
     /**
      * Get the blobSasKey property: SAS key to access the blob.
-     *
+     * 
      * @return the blobSasKey value.
      */
     public String blobSasKey() {
@@ -59,7 +64,7 @@ public final class ExportJobsResultInner {
 
     /**
      * Get the excelFileBlobUrl property: URL of the blob into which the ExcelFile is uploaded.
-     *
+     * 
      * @return the excelFileBlobUrl value.
      */
     public String excelFileBlobUrl() {
@@ -68,7 +73,7 @@ public final class ExportJobsResultInner {
 
     /**
      * Get the excelFileBlobSasKey property: SAS key to access the ExcelFile blob.
-     *
+     * 
      * @return the excelFileBlobSasKey value.
      */
     public String excelFileBlobSasKey() {
@@ -77,9 +82,50 @@ public final class ExportJobsResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportJobsResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportJobsResultInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExportJobsResultInner.
+     */
+    public static ExportJobsResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportJobsResultInner deserializedExportJobsResultInner = new ExportJobsResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("blobUrl".equals(fieldName)) {
+                    deserializedExportJobsResultInner.blobUrl = reader.getString();
+                } else if ("blobSasKey".equals(fieldName)) {
+                    deserializedExportJobsResultInner.blobSasKey = reader.getString();
+                } else if ("excelFileBlobUrl".equals(fieldName)) {
+                    deserializedExportJobsResultInner.excelFileBlobUrl = reader.getString();
+                } else if ("excelFileBlobSasKey".equals(fieldName)) {
+                    deserializedExportJobsResultInner.excelFileBlobSasKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportJobsResultInner;
+        });
     }
 }

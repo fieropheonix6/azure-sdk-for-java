@@ -8,38 +8,34 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ContainerResourceRequirements;
 import com.azure.resourcemanager.machinelearning.models.ContainerResourceSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerResourceRequirementsTests {
-    @Test
-    public void testDeserialize() {
-        ContainerResourceRequirements model =
-            BinaryData
-                .fromString(
-                    "{\"containerResourceLimits\":{\"cpu\":\"wllcolsr\",\"gpu\":\"apte\",\"memory\":\"excgjokjljnhvl\"},\"containerResourceRequests\":{\"cpu\":\"ek\",\"gpu\":\"eksnbksdqhjvyk\",\"memory\":\"eslk\"}}")
-                .toObject(ContainerResourceRequirements.class);
-        Assertions.assertEquals("wllcolsr", model.containerResourceLimits().cpu());
-        Assertions.assertEquals("apte", model.containerResourceLimits().gpu());
-        Assertions.assertEquals("excgjokjljnhvl", model.containerResourceLimits().memory());
-        Assertions.assertEquals("ek", model.containerResourceRequests().cpu());
-        Assertions.assertEquals("eksnbksdqhjvyk", model.containerResourceRequests().gpu());
-        Assertions.assertEquals("eslk", model.containerResourceRequests().memory());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ContainerResourceRequirements model = BinaryData.fromString(
+            "{\"containerResourceRequests\":{\"cpu\":\"cnxtpzdlysei\",\"memory\":\"oa\",\"gpu\":\"t\"},\"containerResourceLimits\":{\"cpu\":\"tgrhz\",\"memory\":\"fdpfawrptvcsht\",\"gpu\":\"tzc\"}}")
+            .toObject(ContainerResourceRequirements.class);
+        Assertions.assertEquals("cnxtpzdlysei", model.containerResourceRequests().cpu());
+        Assertions.assertEquals("oa", model.containerResourceRequests().memory());
+        Assertions.assertEquals("t", model.containerResourceRequests().gpu());
+        Assertions.assertEquals("tgrhz", model.containerResourceLimits().cpu());
+        Assertions.assertEquals("fdpfawrptvcsht", model.containerResourceLimits().memory());
+        Assertions.assertEquals("tzc", model.containerResourceLimits().gpu());
     }
 
-    @Test
-    public void testSerialize() {
-        ContainerResourceRequirements model =
-            new ContainerResourceRequirements()
-                .withContainerResourceLimits(
-                    new ContainerResourceSettings().withCpu("wllcolsr").withGpu("apte").withMemory("excgjokjljnhvl"))
-                .withContainerResourceRequests(
-                    new ContainerResourceSettings().withCpu("ek").withGpu("eksnbksdqhjvyk").withMemory("eslk"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ContainerResourceRequirements model = new ContainerResourceRequirements()
+            .withContainerResourceRequests(
+                new ContainerResourceSettings().withCpu("cnxtpzdlysei").withMemory("oa").withGpu("t"))
+            .withContainerResourceLimits(
+                new ContainerResourceSettings().withCpu("tgrhz").withMemory("fdpfawrptvcsht").withGpu("tzc"));
         model = BinaryData.fromObject(model).toObject(ContainerResourceRequirements.class);
-        Assertions.assertEquals("wllcolsr", model.containerResourceLimits().cpu());
-        Assertions.assertEquals("apte", model.containerResourceLimits().gpu());
-        Assertions.assertEquals("excgjokjljnhvl", model.containerResourceLimits().memory());
-        Assertions.assertEquals("ek", model.containerResourceRequests().cpu());
-        Assertions.assertEquals("eksnbksdqhjvyk", model.containerResourceRequests().gpu());
-        Assertions.assertEquals("eslk", model.containerResourceRequests().memory());
+        Assertions.assertEquals("cnxtpzdlysei", model.containerResourceRequests().cpu());
+        Assertions.assertEquals("oa", model.containerResourceRequests().memory());
+        Assertions.assertEquals("t", model.containerResourceRequests().gpu());
+        Assertions.assertEquals("tgrhz", model.containerResourceLimits().cpu());
+        Assertions.assertEquals("fdpfawrptvcsht", model.containerResourceLimits().memory());
+        Assertions.assertEquals("tzc", model.containerResourceLimits().gpu());
     }
 }

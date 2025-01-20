@@ -4,21 +4,44 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound, 2 - Bidirectional. */
+/**
+ * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 -
+ * InternalOutbound, 5 - InternalInbound.
+ */
 public enum FirewallPolicyIdpsSignatureDirection {
-    /** Enum value 0. */
+    /**
+     * Enum value 0.
+     */
     ZERO(0),
 
-    /** Enum value 1. */
+    /**
+     * Enum value 1.
+     */
     ONE(1),
 
-    /** Enum value 2. */
-    TWO(2);
+    /**
+     * Enum value 2.
+     */
+    TWO(2),
 
-    /** The actual serialized value for a FirewallPolicyIdpsSignatureDirection instance. */
+    /**
+     * Enum value 3.
+     */
+    THREE(3),
+
+    /**
+     * Enum value 4.
+     */
+    FOUR(4),
+
+    /**
+     * Enum value 5.
+     */
+    FIVE(5);
+
+    /**
+     * The actual serialized value for a FirewallPolicyIdpsSignatureDirection instance.
+     */
     private final int value;
 
     FirewallPolicyIdpsSignatureDirection(int value) {
@@ -27,11 +50,10 @@ public enum FirewallPolicyIdpsSignatureDirection {
 
     /**
      * Parses a serialized value to a FirewallPolicyIdpsSignatureDirection instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed FirewallPolicyIdpsSignatureDirection object, or null if unable to parse.
      */
-    @JsonCreator
     public static FirewallPolicyIdpsSignatureDirection fromInt(int value) {
         FirewallPolicyIdpsSignatureDirection[] items = FirewallPolicyIdpsSignatureDirection.values();
         for (FirewallPolicyIdpsSignatureDirection item : items) {
@@ -44,10 +66,9 @@ public enum FirewallPolicyIdpsSignatureDirection {
 
     /**
      * De-serializes the instance to int value.
-     *
+     * 
      * @return the int value.
      */
-    @JsonValue
     public int toInt() {
         return this.value;
     }

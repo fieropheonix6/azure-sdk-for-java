@@ -5,38 +5,46 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Container App container scaling rule. */
+/**
+ * Container App container scaling rule.
+ */
 @Fluent
-public final class ScaleRule {
+public final class ScaleRule implements JsonSerializable<ScaleRule> {
     /*
      * Scale Rule Name
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Azure Queue based scaling.
      */
-    @JsonProperty(value = "azureQueue")
     private QueueScaleRule azureQueue;
 
     /*
      * Custom scale rule.
      */
-    @JsonProperty(value = "custom")
     private CustomScaleRule custom;
 
     /*
      * HTTP requests based scaling.
      */
-    @JsonProperty(value = "http")
     private HttpScaleRule http;
 
     /**
+     * Creates an instance of ScaleRule class.
+     */
+    public ScaleRule() {
+    }
+
+    /**
      * Get the name property: Scale Rule Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,7 +53,7 @@ public final class ScaleRule {
 
     /**
      * Set the name property: Scale Rule Name.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScaleRule object itself.
      */
@@ -56,7 +64,7 @@ public final class ScaleRule {
 
     /**
      * Get the azureQueue property: Azure Queue based scaling.
-     *
+     * 
      * @return the azureQueue value.
      */
     public QueueScaleRule azureQueue() {
@@ -65,7 +73,7 @@ public final class ScaleRule {
 
     /**
      * Set the azureQueue property: Azure Queue based scaling.
-     *
+     * 
      * @param azureQueue the azureQueue value to set.
      * @return the ScaleRule object itself.
      */
@@ -76,7 +84,7 @@ public final class ScaleRule {
 
     /**
      * Get the custom property: Custom scale rule.
-     *
+     * 
      * @return the custom value.
      */
     public CustomScaleRule custom() {
@@ -85,7 +93,7 @@ public final class ScaleRule {
 
     /**
      * Set the custom property: Custom scale rule.
-     *
+     * 
      * @param custom the custom value to set.
      * @return the ScaleRule object itself.
      */
@@ -96,7 +104,7 @@ public final class ScaleRule {
 
     /**
      * Get the http property: HTTP requests based scaling.
-     *
+     * 
      * @return the http value.
      */
     public HttpScaleRule http() {
@@ -105,7 +113,7 @@ public final class ScaleRule {
 
     /**
      * Set the http property: HTTP requests based scaling.
-     *
+     * 
      * @param http the http value to set.
      * @return the ScaleRule object itself.
      */
@@ -116,7 +124,7 @@ public final class ScaleRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -129,5 +137,50 @@ public final class ScaleRule {
         if (http() != null) {
             http().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("azureQueue", this.azureQueue);
+        jsonWriter.writeJsonField("custom", this.custom);
+        jsonWriter.writeJsonField("http", this.http);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScaleRule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScaleRule if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the ScaleRule.
+     */
+    public static ScaleRule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScaleRule deserializedScaleRule = new ScaleRule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedScaleRule.name = reader.getString();
+                } else if ("azureQueue".equals(fieldName)) {
+                    deserializedScaleRule.azureQueue = QueueScaleRule.fromJson(reader);
+                } else if ("custom".equals(fieldName)) {
+                    deserializedScaleRule.custom = CustomScaleRule.fromJson(reader);
+                } else if ("http".equals(fieldName)) {
+                    deserializedScaleRule.http = HttpScaleRule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScaleRule;
+        });
     }
 }

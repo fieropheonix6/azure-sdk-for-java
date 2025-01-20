@@ -6,38 +6,46 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Legal agreement for a top level domain. */
+/**
+ * Legal agreement for a top level domain.
+ */
 @Fluent
-public final class TldLegalAgreementInner {
+public final class TldLegalAgreementInner implements JsonSerializable<TldLegalAgreementInner> {
     /*
      * Unique identifier for the agreement.
      */
-    @JsonProperty(value = "agreementKey", required = true)
     private String agreementKey;
 
     /*
      * Agreement title.
      */
-    @JsonProperty(value = "title", required = true)
     private String title;
 
     /*
      * Agreement details.
      */
-    @JsonProperty(value = "content", required = true)
     private String content;
 
     /*
      * URL where a copy of the agreement details is hosted.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /**
+     * Creates an instance of TldLegalAgreementInner class.
+     */
+    public TldLegalAgreementInner() {
+    }
+
+    /**
      * Get the agreementKey property: Unique identifier for the agreement.
-     *
+     * 
      * @return the agreementKey value.
      */
     public String agreementKey() {
@@ -46,7 +54,7 @@ public final class TldLegalAgreementInner {
 
     /**
      * Set the agreementKey property: Unique identifier for the agreement.
-     *
+     * 
      * @param agreementKey the agreementKey value to set.
      * @return the TldLegalAgreementInner object itself.
      */
@@ -57,7 +65,7 @@ public final class TldLegalAgreementInner {
 
     /**
      * Get the title property: Agreement title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -66,7 +74,7 @@ public final class TldLegalAgreementInner {
 
     /**
      * Set the title property: Agreement title.
-     *
+     * 
      * @param title the title value to set.
      * @return the TldLegalAgreementInner object itself.
      */
@@ -77,7 +85,7 @@ public final class TldLegalAgreementInner {
 
     /**
      * Get the content property: Agreement details.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -86,7 +94,7 @@ public final class TldLegalAgreementInner {
 
     /**
      * Set the content property: Agreement details.
-     *
+     * 
      * @param content the content value to set.
      * @return the TldLegalAgreementInner object itself.
      */
@@ -97,7 +105,7 @@ public final class TldLegalAgreementInner {
 
     /**
      * Get the url property: URL where a copy of the agreement details is hosted.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -106,7 +114,7 @@ public final class TldLegalAgreementInner {
 
     /**
      * Set the url property: URL where a copy of the agreement details is hosted.
-     *
+     * 
      * @param url the url value to set.
      * @return the TldLegalAgreementInner object itself.
      */
@@ -117,27 +125,70 @@ public final class TldLegalAgreementInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (agreementKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property agreementKey in model TldLegalAgreementInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property agreementKey in model TldLegalAgreementInner"));
         }
         if (title() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property title in model TldLegalAgreementInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property title in model TldLegalAgreementInner"));
         }
         if (content() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property content in model TldLegalAgreementInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property content in model TldLegalAgreementInner"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TldLegalAgreementInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("agreementKey", this.agreementKey);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("content", this.content);
+        jsonWriter.writeStringField("url", this.url);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TldLegalAgreementInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TldLegalAgreementInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TldLegalAgreementInner.
+     */
+    public static TldLegalAgreementInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TldLegalAgreementInner deserializedTldLegalAgreementInner = new TldLegalAgreementInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("agreementKey".equals(fieldName)) {
+                    deserializedTldLegalAgreementInner.agreementKey = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedTldLegalAgreementInner.title = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedTldLegalAgreementInner.content = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedTldLegalAgreementInner.url = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTldLegalAgreementInner;
+        });
+    }
 }

@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.HealthCheckStatusDetailsProperties;
-import org.junit.jupiter.api.Test;
 
 public final class HealthCheckStatusDetailsPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        HealthCheckStatusDetailsProperties model =
-            BinaryData
-                .fromString(
-                    "{\"startDateTime\":\"2021-07-04T15:12:18Z\",\"endDateTime\":\"2021-08-31T00:24:47Z\",\"healthChecks\":[{\"status\":\"Passed\",\"displayName\":\"merqfobwyznkb\",\"startDateTime\":\"2021-09-01T21:16:52Z\",\"endDateTime\":\"2021-02-09T02:12:11Z\",\"errorType\":\"fhpagmhrskdsnf\",\"recommendedAction\":\"doakgtdlmkkzevdl\",\"additionalDetails\":\"wpusdsttwvogv\"},{\"status\":\"Failed\",\"displayName\":\"dcngqqmoakufgmj\",\"startDateTime\":\"2021-08-21T00:33:47Z\",\"endDateTime\":\"2021-10-15T18:34:13Z\",\"errorType\":\"rtwaenuuzko\",\"recommendedAction\":\"minrfdw\",\"additionalDetails\":\"uhhziuiefozbhdm\"}]}")
-                .toObject(HealthCheckStatusDetailsProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        HealthCheckStatusDetailsProperties model = BinaryData.fromString(
+            "{\"startDateTime\":\"2021-07-04T23:53:04Z\",\"endDateTime\":\"2021-05-04T05:51:41Z\",\"healthChecks\":[{\"status\":\"Unknown\",\"displayName\":\"vkjlmxhom\",\"startDateTime\":\"2021-10-09T04:46:26Z\",\"endDateTime\":\"2021-11-30T18:11:35Z\",\"errorType\":\"digumbnr\",\"recommendedAction\":\"uzzptjazysdz\",\"additionalDetails\":\"zwwva\"}]}")
+            .toObject(HealthCheckStatusDetailsProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         HealthCheckStatusDetailsProperties model = new HealthCheckStatusDetailsProperties();
         model = BinaryData.fromObject(model).toObject(HealthCheckStatusDetailsProperties.class);
     }

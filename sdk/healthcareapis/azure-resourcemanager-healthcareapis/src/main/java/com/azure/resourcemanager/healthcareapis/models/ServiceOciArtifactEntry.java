@@ -5,32 +5,41 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An Open Container Initiative (OCI) artifact. */
+/**
+ * An Open Container Initiative (OCI) artifact.
+ */
 @Fluent
-public final class ServiceOciArtifactEntry {
+public final class ServiceOciArtifactEntry implements JsonSerializable<ServiceOciArtifactEntry> {
     /*
      * The Azure Container Registry login server.
      */
-    @JsonProperty(value = "loginServer")
     private String loginServer;
 
     /*
      * The artifact name.
      */
-    @JsonProperty(value = "imageName")
     private String imageName;
 
     /*
      * The artifact digest.
      */
-    @JsonProperty(value = "digest")
     private String digest;
 
     /**
+     * Creates an instance of ServiceOciArtifactEntry class.
+     */
+    public ServiceOciArtifactEntry() {
+    }
+
+    /**
      * Get the loginServer property: The Azure Container Registry login server.
-     *
+     * 
      * @return the loginServer value.
      */
     public String loginServer() {
@@ -39,7 +48,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Set the loginServer property: The Azure Container Registry login server.
-     *
+     * 
      * @param loginServer the loginServer value to set.
      * @return the ServiceOciArtifactEntry object itself.
      */
@@ -50,7 +59,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Get the imageName property: The artifact name.
-     *
+     * 
      * @return the imageName value.
      */
     public String imageName() {
@@ -59,7 +68,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Set the imageName property: The artifact name.
-     *
+     * 
      * @param imageName the imageName value to set.
      * @return the ServiceOciArtifactEntry object itself.
      */
@@ -70,7 +79,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Get the digest property: The artifact digest.
-     *
+     * 
      * @return the digest value.
      */
     public String digest() {
@@ -79,7 +88,7 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Set the digest property: The artifact digest.
-     *
+     * 
      * @param digest the digest value to set.
      * @return the ServiceOciArtifactEntry object itself.
      */
@@ -90,9 +99,51 @@ public final class ServiceOciArtifactEntry {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("loginServer", this.loginServer);
+        jsonWriter.writeStringField("imageName", this.imageName);
+        jsonWriter.writeStringField("digest", this.digest);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceOciArtifactEntry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceOciArtifactEntry if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceOciArtifactEntry.
+     */
+    public static ServiceOciArtifactEntry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceOciArtifactEntry deserializedServiceOciArtifactEntry = new ServiceOciArtifactEntry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("loginServer".equals(fieldName)) {
+                    deserializedServiceOciArtifactEntry.loginServer = reader.getString();
+                } else if ("imageName".equals(fieldName)) {
+                    deserializedServiceOciArtifactEntry.imageName = reader.getString();
+                } else if ("digest".equals(fieldName)) {
+                    deserializedServiceOciArtifactEntry.digest = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceOciArtifactEntry;
+        });
     }
 }

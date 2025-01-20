@@ -5,27 +5,31 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The agent that initiated the event. For most situations, this could be from the authorization context of the request.
  */
 @Fluent
-public final class Actor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Actor.class);
-
+public final class Actor implements JsonSerializable<Actor> {
     /*
-     * The subject or username associated with the request context that
-     * generated the event.
+     * The subject or username associated with the request context that generated the event.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
+     * Creates an instance of Actor class.
+     */
+    public Actor() {
+    }
+
+    /**
      * Get the name property: The subject or username associated with the request context that generated the event.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -34,7 +38,7 @@ public final class Actor {
 
     /**
      * Set the name property: The subject or username associated with the request context that generated the event.
-     *
+     * 
      * @param name the name value to set.
      * @return the Actor object itself.
      */
@@ -45,9 +49,45 @@ public final class Actor {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Actor from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Actor if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Actor.
+     */
+    public static Actor fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Actor deserializedActor = new Actor();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedActor.name = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedActor;
+        });
     }
 }

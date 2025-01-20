@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachines Delete. */
+/**
+ * Samples for VirtualMachines Delete.
+ */
 public final class VirtualMachinesDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachine_Delete_Force.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineExamples/VirtualMachine_Delete_Force.json
      */
     /**
      * Sample code: Force delete a VM.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void forceDeleteAVM(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .delete("myResourceGroup", "myVM", true, Context.NONE);
+            .delete("myResourceGroup", "myVM", true, com.azure.core.util.Context.NONE);
     }
 }

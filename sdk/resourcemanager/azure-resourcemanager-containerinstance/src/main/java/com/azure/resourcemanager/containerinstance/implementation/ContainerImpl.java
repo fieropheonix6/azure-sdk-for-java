@@ -4,11 +4,14 @@
 package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.resourcemanager.containerinstance.models.Container;
+import com.azure.resourcemanager.containerinstance.models.ContainerExec;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroup;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupIpAddressType;
 import com.azure.resourcemanager.containerinstance.models.ContainerGroupNetworkProtocol;
+import com.azure.resourcemanager.containerinstance.models.ContainerHttpGet;
 import com.azure.resourcemanager.containerinstance.models.ContainerNetworkProtocol;
 import com.azure.resourcemanager.containerinstance.models.ContainerPort;
+import com.azure.resourcemanager.containerinstance.models.ContainerProbe;
 import com.azure.resourcemanager.containerinstance.models.EnvironmentVariable;
 import com.azure.resourcemanager.containerinstance.models.GpuResource;
 import com.azure.resourcemanager.containerinstance.models.GpuSku;
@@ -18,22 +21,20 @@ import com.azure.resourcemanager.containerinstance.models.ResourceRequests;
 import com.azure.resourcemanager.containerinstance.models.ResourceRequirements;
 import com.azure.resourcemanager.containerinstance.models.VolumeMount;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /** Implementation for container group's container instance definition stages interface. */
-class ContainerImpl
-    implements ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.ContainerInstanceDefinition<
-        ContainerGroup.DefinitionStages.WithNextContainerInstance> {
+class ContainerImpl implements
+    ContainerGroup.DefinitionStages.ContainerInstanceDefinitionStages.ContainerInstanceDefinition<ContainerGroup.DefinitionStages.WithNextContainerInstance> {
     private Container innerContainer;
     private ContainerGroupImpl parent;
 
     ContainerImpl(ContainerGroupImpl parent, String containerName) {
         this.parent = parent;
-        this.innerContainer =
-            new Container()
-                .withName(containerName)
-                .withResources(
-                    new ResourceRequirements().withRequests(new ResourceRequests().withCpu(1).withMemoryInGB(1.5)));
+        this.innerContainer = new Container().withName(containerName)
+            .withResources(
+                new ResourceRequirements().withRequests(new ResourceRequests().withCpu(1).withMemoryInGB(1.5)));
     }
 
     @Override
@@ -223,8 +224,7 @@ class ContainerImpl
             innerContainer.withEnvironmentVariables(new ArrayList<EnvironmentVariable>());
         }
 
-        innerContainer
-            .environmentVariables()
+        innerContainer.environmentVariables()
             .add(new EnvironmentVariable().withName(envName).withSecureValue(securedValue));
 
         return this;
@@ -235,8 +235,7 @@ class ContainerImpl
         if (innerContainer.volumeMounts() == null) {
             innerContainer.withVolumeMounts(new ArrayList<VolumeMount>());
         }
-        innerContainer
-            .volumeMounts()
+        innerContainer.volumeMounts()
             .add(new VolumeMount().withName(volumeName).withMountPath(mountPath).withReadOnly(false));
 
         return this;
@@ -256,8 +255,7 @@ class ContainerImpl
         if (innerContainer.volumeMounts() == null) {
             innerContainer.withVolumeMounts(new ArrayList<VolumeMount>());
         }
-        innerContainer
-            .volumeMounts()
+        innerContainer.volumeMounts()
             .add(new VolumeMount().withName(volumeName).withMountPath(mountPath).withReadOnly(true));
 
         return this;
@@ -269,6 +267,81 @@ class ContainerImpl
             this.withReadOnlyVolumeMountSetting(entry.getKey(), entry.getValue());
         }
 
+        return this;
+    }
+
+    @Override
+    public ContainerImpl withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds) {
+        return this.withLivenessProbe(new ContainerProbe().withExec(new ContainerExec().withCommand(command))
+            .withPeriodSeconds(probePeriodSeconds));
+    }
+
+    @Override
+    public ContainerImpl withLivenessProbeExecutionCommand(List<String> command, int probePeriodSeconds,
+        int failureThreshold) {
+        return this.withLivenessProbe(new ContainerProbe().withExec(new ContainerExec().withCommand(command))
+            .withPeriodSeconds(probePeriodSeconds)
+            .withFailureThreshold(failureThreshold));
+    }
+
+    @Override
+    public ContainerImpl withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds) {
+        return this
+            .withLivenessProbe(new ContainerProbe().withHttpGet(new ContainerHttpGet().withPath(path).withPort(port))
+                .withPeriodSeconds(probePeriodSeconds));
+    }
+
+    @Override
+    public ContainerImpl withLivenessProbeHttpGet(String path, int port, int probePeriodSeconds, int failureThreshold) {
+        return this
+            .withLivenessProbe(new ContainerProbe().withHttpGet(new ContainerHttpGet().withPath(path).withPort(port))
+                .withPeriodSeconds(probePeriodSeconds)
+                .withFailureThreshold(failureThreshold));
+    }
+
+    @Override
+    public ContainerImpl withLivenessProbe(ContainerProbe livenessProbe) {
+        if (livenessProbe != null) {
+            this.innerContainer.withLivenessProbe(livenessProbe);
+        }
+        return this;
+    }
+
+    @Override
+    public ContainerImpl withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds) {
+        return this.withReadinessProbe(new ContainerProbe().withExec(new ContainerExec().withCommand(command))
+            .withPeriodSeconds(probePeriodSeconds));
+    }
+
+    @Override
+    public ContainerImpl withReadinessProbeExecutionCommand(List<String> command, int probePeriodSeconds,
+        int failureThreshold) {
+        return this.withReadinessProbe(new ContainerProbe().withExec(new ContainerExec().withCommand(command))
+            .withPeriodSeconds(probePeriodSeconds)
+            .withFailureThreshold(failureThreshold));
+    }
+
+    @Override
+    public ContainerImpl withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds) {
+        return this
+            .withReadinessProbe(new ContainerProbe().withHttpGet(new ContainerHttpGet().withPath(path).withPort(port))
+                .withPeriodSeconds(probePeriodSeconds));
+    }
+
+    @Override
+    public ContainerImpl withReadinessProbeHttpGet(String path, int port, int probePeriodSeconds,
+        int failureThreshold) {
+        return this
+            .withReadinessProbe(new ContainerProbe().withHttpGet(new ContainerHttpGet().withPath(path).withPort(port))
+                .withPeriodSeconds(probePeriodSeconds)
+                .withFailureThreshold(failureThreshold));
+    }
+
+    @Override
+    public ContainerImpl withReadinessProbe(ContainerProbe readinessProbe) {
+        if (readinessProbe != null) {
+            this.innerContainer.withReadinessProbe(readinessProbe);
+        }
         return this;
     }
 }

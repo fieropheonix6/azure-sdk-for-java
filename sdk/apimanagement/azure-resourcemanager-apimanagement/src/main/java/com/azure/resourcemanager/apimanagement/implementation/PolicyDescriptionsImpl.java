@@ -21,32 +21,28 @@ public final class PolicyDescriptionsImpl implements PolicyDescriptions {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public PolicyDescriptionsImpl(
-        PolicyDescriptionsClient innerClient,
+    public PolicyDescriptionsImpl(PolicyDescriptionsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<PolicyDescriptionCollection> listByServiceWithResponse(String resourceGroupName, String serviceName,
+        PolicyScopeContract scope, Context context) {
+        Response<PolicyDescriptionCollectionInner> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, scope, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PolicyDescriptionCollectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PolicyDescriptionCollection listByService(String resourceGroupName, String serviceName) {
         PolicyDescriptionCollectionInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
         if (inner != null) {
             return new PolicyDescriptionCollectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<PolicyDescriptionCollection> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, PolicyScopeContract scope, Context context) {
-        Response<PolicyDescriptionCollectionInner> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, scope, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PolicyDescriptionCollectionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -12,19 +12,30 @@ import com.azure.resourcemanager.billing.fluent.BillingPropertiesClient;
 import com.azure.resourcemanager.billing.fluent.models.BillingPropertyInner;
 import com.azure.resourcemanager.billing.models.BillingProperties;
 import com.azure.resourcemanager.billing.models.BillingProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BillingPropertiesImpl implements BillingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BillingPropertiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BillingPropertiesImpl.class);
 
     private final BillingPropertiesClient innerClient;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public BillingPropertiesImpl(
-        BillingPropertiesClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public BillingPropertiesImpl(BillingPropertiesClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<BillingProperty> getWithResponse(Boolean includeBillingCountry, Boolean includeTransitionStatus,
+        Context context) {
+        Response<BillingPropertyInner> inner
+            = this.serviceClient().getWithResponse(includeBillingCountry, includeTransitionStatus, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BillingPropertyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public BillingProperty get() {
@@ -36,13 +47,10 @@ public final class BillingPropertiesImpl implements BillingProperties {
         }
     }
 
-    public Response<BillingProperty> getWithResponse(Context context) {
-        Response<BillingPropertyInner> inner = this.serviceClient().getWithResponse(context);
+    public Response<BillingProperty> updateWithResponse(BillingPropertyInner parameters, Context context) {
+        Response<BillingPropertyInner> inner = this.serviceClient().updateWithResponse(parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BillingPropertyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,19 +61,6 @@ public final class BillingPropertiesImpl implements BillingProperties {
         BillingPropertyInner inner = this.serviceClient().update(parameters);
         if (inner != null) {
             return new BillingPropertyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<BillingProperty> updateWithResponse(BillingPropertyInner parameters, Context context) {
-        Response<BillingPropertyInner> inner = this.serviceClient().updateWithResponse(parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BillingPropertyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -5,35 +5,50 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ValidateResourceTypes. */
+/**
+ * Resource type used for verification.
+ */
 public final class ValidateResourceTypes extends ExpandableStringEnum<ValidateResourceTypes> {
-    /** Static value ServerFarm for ValidateResourceTypes. */
+    /**
+     * Static value ServerFarm for ValidateResourceTypes.
+     */
     public static final ValidateResourceTypes SERVER_FARM = fromString("ServerFarm");
 
-    /** Static value Site for ValidateResourceTypes. */
+    /**
+     * Static value Site for ValidateResourceTypes.
+     */
     public static final ValidateResourceTypes SITE = fromString("Site");
 
-    /** Static value Microsoft.Web/hostingEnvironments for ValidateResourceTypes. */
-    public static final ValidateResourceTypes MICROSOFT_WEB_HOSTING_ENVIRONMENTS =
-        fromString("Microsoft.Web/hostingEnvironments");
+    /**
+     * Static value Microsoft.Web/hostingEnvironments for ValidateResourceTypes.
+     */
+    public static final ValidateResourceTypes MICROSOFT_WEB_HOSTING_ENVIRONMENTS
+        = fromString("Microsoft.Web/hostingEnvironments");
+
+    /**
+     * Creates a new instance of ValidateResourceTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ValidateResourceTypes() {
+    }
 
     /**
      * Creates or finds a ValidateResourceTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ValidateResourceTypes.
      */
-    @JsonCreator
     public static ValidateResourceTypes fromString(String name) {
         return fromString(name, ValidateResourceTypes.class);
     }
 
     /**
      * Gets known ValidateResourceTypes values.
-     *
+     * 
      * @return known ValidateResourceTypes values.
      */
     public static Collection<ValidateResourceTypes> values() {

@@ -3,30 +3,24 @@
 
 package com.azure.communication.callautomation.models;
 
-import com.azure.core.annotation.Fluent;
+import java.util.HashMap;
 
-import java.time.Instant;
-import java.util.UUID;
+import com.azure.core.annotation.Fluent;
 
 /**
  * The options for creating a call.
  */
 @Fluent
-public class AnswerCallOptions {
+public final class AnswerCallOptions {
     /**
      * The incoming call context.
      */
     private final String incomingCallContext;
 
     /**
-     * The call back URI.
+     * The call back URl.
      */
     private final String callbackUrl;
-
-    /**
-     * Repeatability Headers Configuration
-     */
-    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Media Streaming Configuration.
@@ -34,15 +28,36 @@ public class AnswerCallOptions {
     private MediaStreamingOptions mediaStreamingOptions;
 
     /**
+     * Transcription Configuration.
+     */
+    private TranscriptionOptions transcriptionOptions;
+
+    /*
+     * AI options for the call.
+     */
+    private CallIntelligenceOptions callIntelligenceOptions;
+
+    /**
+     * The operational context
+     */
+    private String operationContext;
+
+    /**
+     * Custom Context
+     */
+    private final CustomCallingContext customCallingContext;
+
+    /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
-     * @param callbackUrl The call back URI.
+     * @param callbackUrl The call back URl.
      */
     public AnswerCallOptions(String incomingCallContext, String callbackUrl) {
         this.incomingCallContext = incomingCallContext;
         this.callbackUrl = callbackUrl;
-        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
+        this.customCallingContext
+            = new CustomCallingContext(new HashMap<String, String>(), new HashMap<String, String>());
     }
 
     /**
@@ -55,51 +70,99 @@ public class AnswerCallOptions {
     }
 
     /**
-     * Get the call back uri.
+     * Get the call back url.
      *
-     * @return the call back uri.
+     * @return the call back url.
      */
     public String getCallbackUrl() {
         return callbackUrl;
     }
 
     /**
-     * Get the Media Streaming configuration.
+     * Get the Transcription configuration.
      *
-     * @return the mediaStreamingConfiguration.
+     * @return the transcriptionOptions.
      */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
+    public TranscriptionOptions getTranscriptionOptions() {
+        return transcriptionOptions;
     }
 
     /**
-     * Get the Repeatability headers configuration.
+     * Get the operationContext.
      *
-     * @return the repeatabilityHeaders
+     * @return the operationContext
      */
-    public RepeatabilityHeaders getRepeatabilityHeaders() {
-        return repeatabilityHeaders;
+    public String getOperationContext() {
+        return operationContext;
     }
 
     /**
-     * Set the repeatability headers
+     * Set the transcription configuration.
      *
-     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @param transcriptionOptions The transcription options.
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
-        this.repeatabilityHeaders = repeatabilityHeaders;
+    public AnswerCallOptions setTranscriptionOptions(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
         return this;
+    }
+
+    /**
+    * Set the operationContext.
+    *
+    * @param operationContext the operationContext to set
+    * @return the AnswerCallOptions object itself.
+    */
+    public AnswerCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @return the callIntelligenceOptions value.
+     */
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
+    }
+
+    /**
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
+        return this;
+    }
+
+    /**
+     * Get the Media Streaming configuration.
+     *
+     * @return the mediaStreamingOptions.
+     */
+    public MediaStreamingOptions getMediaStreamingOptions() {
+        return mediaStreamingOptions;
     }
 
     /**
      * Set the media streaming configuration.
      *
-     * @param mediaStreamingOptions The media streaming configuration.
+     * @param mediaStreamingOptions The media streaming options.
      * @return the AnswerCallOptions object itself.
      */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
+    public AnswerCallOptions setMediaStreamingOptions(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
+    }
+
+    /**
+     *  get custom context
+     * @return custom context
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return customCallingContext;
     }
 }

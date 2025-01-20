@@ -6,35 +6,51 @@ package com.azure.resourcemanager.confluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Subscriber detail. */
+/**
+ * Subscriber detail.
+ */
 @Fluent
-public final class UserDetail {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserDetail.class);
-
+public final class UserDetail implements JsonSerializable<UserDetail> {
     /*
      * First name
      */
-    @JsonProperty(value = "firstName")
     private String firstName;
 
     /*
      * Last name
      */
-    @JsonProperty(value = "lastName")
     private String lastName;
 
     /*
      * Email address
      */
-    @JsonProperty(value = "emailAddress", required = true)
     private String emailAddress;
+
+    /*
+     * User principal name
+     */
+    private String userPrincipalName;
+
+    /*
+     * AAD email address
+     */
+    private String aadEmail;
+
+    /**
+     * Creates an instance of UserDetail class.
+     */
+    public UserDetail() {
+    }
 
     /**
      * Get the firstName property: First name.
-     *
+     * 
      * @return the firstName value.
      */
     public String firstName() {
@@ -43,7 +59,7 @@ public final class UserDetail {
 
     /**
      * Set the firstName property: First name.
-     *
+     * 
      * @param firstName the firstName value to set.
      * @return the UserDetail object itself.
      */
@@ -54,7 +70,7 @@ public final class UserDetail {
 
     /**
      * Get the lastName property: Last name.
-     *
+     * 
      * @return the lastName value.
      */
     public String lastName() {
@@ -63,7 +79,7 @@ public final class UserDetail {
 
     /**
      * Set the lastName property: Last name.
-     *
+     * 
      * @param lastName the lastName value to set.
      * @return the UserDetail object itself.
      */
@@ -74,7 +90,7 @@ public final class UserDetail {
 
     /**
      * Get the emailAddress property: Email address.
-     *
+     * 
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -83,7 +99,7 @@ public final class UserDetail {
 
     /**
      * Set the emailAddress property: Email address.
-     *
+     * 
      * @param emailAddress the emailAddress value to set.
      * @return the UserDetail object itself.
      */
@@ -93,15 +109,105 @@ public final class UserDetail {
     }
 
     /**
+     * Get the userPrincipalName property: User principal name.
+     * 
+     * @return the userPrincipalName value.
+     */
+    public String userPrincipalName() {
+        return this.userPrincipalName;
+    }
+
+    /**
+     * Set the userPrincipalName property: User principal name.
+     * 
+     * @param userPrincipalName the userPrincipalName value to set.
+     * @return the UserDetail object itself.
+     */
+    public UserDetail withUserPrincipalName(String userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
+        return this;
+    }
+
+    /**
+     * Get the aadEmail property: AAD email address.
+     * 
+     * @return the aadEmail value.
+     */
+    public String aadEmail() {
+        return this.aadEmail;
+    }
+
+    /**
+     * Set the aadEmail property: AAD email address.
+     * 
+     * @param aadEmail the aadEmail value to set.
+     * @return the UserDetail object itself.
+     */
+    public UserDetail withAadEmail(String aadEmail) {
+        this.aadEmail = aadEmail;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (emailAddress() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property emailAddress in model UserDetail"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property emailAddress in model UserDetail"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserDetail.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("emailAddress", this.emailAddress);
+        jsonWriter.writeStringField("firstName", this.firstName);
+        jsonWriter.writeStringField("lastName", this.lastName);
+        jsonWriter.writeStringField("userPrincipalName", this.userPrincipalName);
+        jsonWriter.writeStringField("aadEmail", this.aadEmail);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserDetail from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserDetail if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserDetail.
+     */
+    public static UserDetail fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserDetail deserializedUserDetail = new UserDetail();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("emailAddress".equals(fieldName)) {
+                    deserializedUserDetail.emailAddress = reader.getString();
+                } else if ("firstName".equals(fieldName)) {
+                    deserializedUserDetail.firstName = reader.getString();
+                } else if ("lastName".equals(fieldName)) {
+                    deserializedUserDetail.lastName = reader.getString();
+                } else if ("userPrincipalName".equals(fieldName)) {
+                    deserializedUserDetail.userPrincipalName = reader.getString();
+                } else if ("aadEmail".equals(fieldName)) {
+                    deserializedUserDetail.aadEmail = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserDetail;
+        });
     }
 }

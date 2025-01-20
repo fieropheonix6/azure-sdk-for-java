@@ -5,63 +5,73 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** Sftp read settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HttpReadSettings")
+/**
+ * Http read settings.
+ */
 @Fluent
 public final class HttpReadSettings extends StoreReadSettings {
+    /*
+     * The read setting type.
+     */
+    private String type = "HttpReadSettings";
+
     /*
      * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
      * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
      * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. Type: string (or Expression with
+     * resultType string).
      */
-    @JsonProperty(value = "requestTimeout")
     private Object requestTimeout;
 
     /*
-     * Indicates whether to enable partition discovery.
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "enablePartitionDiscovery")
-    private Boolean enablePartitionDiscovery;
+    private Object additionalColumns;
 
-    /*
-     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
-     * string).
+    /**
+     * Creates an instance of HttpReadSettings class.
      */
-    @JsonProperty(value = "partitionRootPath")
-    private Object partitionRootPath;
-
-    /** Creates an instance of HttpReadSettings class. */
     public HttpReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the requestMethod value.
      */
     public Object requestMethod() {
@@ -71,7 +81,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * Set the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param requestMethod the requestMethod value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -83,7 +93,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * Get the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the requestBody value.
      */
     public Object requestBody() {
@@ -93,7 +103,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * Set the requestBody property: The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param requestBody the requestBody value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -105,7 +115,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * Get the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the additionalHeaders value.
      */
     public Object additionalHeaders() {
@@ -115,7 +125,7 @@ public final class HttpReadSettings extends StoreReadSettings {
     /**
      * Set the additionalHeaders property: The additional HTTP headers in the request to the RESTful API. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param additionalHeaders the additionalHeaders value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -126,7 +136,8 @@ public final class HttpReadSettings extends StoreReadSettings {
 
     /**
      * Get the requestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
-     *
+     * Type: string (or Expression with resultType string).
+     * 
      * @return the requestTimeout value.
      */
     public Object requestTimeout() {
@@ -135,7 +146,8 @@ public final class HttpReadSettings extends StoreReadSettings {
 
     /**
      * Set the requestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
-     *
+     * Type: string (or Expression with resultType string).
+     * 
      * @param requestTimeout the requestTimeout value to set.
      * @return the HttpReadSettings object itself.
      */
@@ -145,55 +157,39 @@ public final class HttpReadSettings extends StoreReadSettings {
     }
 
     /**
-     * Get the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
-     *
-     * @return the enablePartitionDiscovery value.
+     * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * 
+     * @return the additionalColumns value.
      */
-    public Boolean enablePartitionDiscovery() {
-        return this.enablePartitionDiscovery;
+    public Object additionalColumns() {
+        return this.additionalColumns;
     }
 
     /**
-     * Set the enablePartitionDiscovery property: Indicates whether to enable partition discovery.
-     *
-     * @param enablePartitionDiscovery the enablePartitionDiscovery value to set.
+     * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
+     * objects(AdditionalColumns) (or Expression with resultType array of objects).
+     * 
+     * @param additionalColumns the additionalColumns value to set.
      * @return the HttpReadSettings object itself.
      */
-    public HttpReadSettings withEnablePartitionDiscovery(Boolean enablePartitionDiscovery) {
-        this.enablePartitionDiscovery = enablePartitionDiscovery;
+    public HttpReadSettings withAdditionalColumns(Object additionalColumns) {
+        this.additionalColumns = additionalColumns;
         return this;
     }
 
     /**
-     * Get the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
-     * Expression with resultType string).
-     *
-     * @return the partitionRootPath value.
+     * {@inheritDoc}
      */
-    public Object partitionRootPath() {
-        return this.partitionRootPath;
-    }
-
-    /**
-     * Set the partitionRootPath property: Specify the root path where partition discovery starts from. Type: string (or
-     * Expression with resultType string).
-     *
-     * @param partitionRootPath the partitionRootPath value to set.
-     * @return the HttpReadSettings object itself.
-     */
-    public HttpReadSettings withPartitionRootPath(Object partitionRootPath) {
-        this.partitionRootPath = partitionRootPath;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public HttpReadSettings withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpReadSettings withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -202,11 +198,78 @@ public final class HttpReadSettings extends StoreReadSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("requestMethod", this.requestMethod);
+        jsonWriter.writeUntypedField("requestBody", this.requestBody);
+        jsonWriter.writeUntypedField("additionalHeaders", this.additionalHeaders);
+        jsonWriter.writeUntypedField("requestTimeout", this.requestTimeout);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpReadSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HttpReadSettings.
+     */
+    public static HttpReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpReadSettings deserializedHttpReadSettings = new HttpReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedHttpReadSettings.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedHttpReadSettings.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedHttpReadSettings.type = reader.getString();
+                } else if ("requestMethod".equals(fieldName)) {
+                    deserializedHttpReadSettings.requestMethod = reader.readUntyped();
+                } else if ("requestBody".equals(fieldName)) {
+                    deserializedHttpReadSettings.requestBody = reader.readUntyped();
+                } else if ("additionalHeaders".equals(fieldName)) {
+                    deserializedHttpReadSettings.additionalHeaders = reader.readUntyped();
+                } else if ("requestTimeout".equals(fieldName)) {
+                    deserializedHttpReadSettings.requestTimeout = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedHttpReadSettings.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHttpReadSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedHttpReadSettings;
+        });
     }
 }

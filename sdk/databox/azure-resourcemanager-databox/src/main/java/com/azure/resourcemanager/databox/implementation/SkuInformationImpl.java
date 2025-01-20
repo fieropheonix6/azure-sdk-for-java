@@ -19,8 +19,8 @@ public final class SkuInformationImpl implements SkuInformation {
 
     private final com.azure.resourcemanager.databox.DataBoxManager serviceManager;
 
-    SkuInformationImpl(
-        SkuInformationInner innerObject, com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
+    SkuInformationImpl(SkuInformationInner innerObject,
+        com.azure.resourcemanager.databox.DataBoxManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -74,6 +74,15 @@ public final class SkuInformationImpl implements SkuInformation {
 
     public String requiredFeature() {
         return this.innerModel().requiredFeature();
+    }
+
+    public List<String> countriesWithinCommerceBoundary() {
+        List<String> inner = this.innerModel().countriesWithinCommerceBoundary();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public SkuInformationInner innerModel() {

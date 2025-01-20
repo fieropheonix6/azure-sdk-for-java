@@ -5,32 +5,39 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewaySslPredefinedPolicyInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Response for ApplicationGatewayAvailableSslOptions API service call. */
+/**
+ * Response for ApplicationGatewayAvailableSslOptions API service call.
+ */
 @Fluent
-public final class ApplicationGatewayAvailableSslPredefinedPolicies {
+public final class ApplicationGatewayAvailableSslPredefinedPolicies
+    implements JsonSerializable<ApplicationGatewayAvailableSslPredefinedPolicies> {
     /*
      * List of available Ssl predefined policy.
      */
-    @JsonProperty(value = "value")
     private List<ApplicationGatewaySslPredefinedPolicyInner> value;
 
     /*
      * URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ApplicationGatewayAvailableSslPredefinedPolicies class. */
+    /**
+     * Creates an instance of ApplicationGatewayAvailableSslPredefinedPolicies class.
+     */
     public ApplicationGatewayAvailableSslPredefinedPolicies() {
     }
 
     /**
      * Get the value property: List of available Ssl predefined policy.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplicationGatewaySslPredefinedPolicyInner> value() {
@@ -39,19 +46,19 @@ public final class ApplicationGatewayAvailableSslPredefinedPolicies {
 
     /**
      * Set the value property: List of available Ssl predefined policy.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApplicationGatewayAvailableSslPredefinedPolicies object itself.
      */
-    public ApplicationGatewayAvailableSslPredefinedPolicies withValue(
-        List<ApplicationGatewaySslPredefinedPolicyInner> value) {
+    public ApplicationGatewayAvailableSslPredefinedPolicies
+        withValue(List<ApplicationGatewaySslPredefinedPolicyInner> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +67,7 @@ public final class ApplicationGatewayAvailableSslPredefinedPolicies {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ApplicationGatewayAvailableSslPredefinedPolicies object itself.
      */
@@ -71,12 +78,54 @@ public final class ApplicationGatewayAvailableSslPredefinedPolicies {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayAvailableSslPredefinedPolicies from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayAvailableSslPredefinedPolicies if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayAvailableSslPredefinedPolicies.
+     */
+    public static ApplicationGatewayAvailableSslPredefinedPolicies fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayAvailableSslPredefinedPolicies deserializedApplicationGatewayAvailableSslPredefinedPolicies
+                = new ApplicationGatewayAvailableSslPredefinedPolicies();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<ApplicationGatewaySslPredefinedPolicyInner> value
+                        = reader.readArray(reader1 -> ApplicationGatewaySslPredefinedPolicyInner.fromJson(reader1));
+                    deserializedApplicationGatewayAvailableSslPredefinedPolicies.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedApplicationGatewayAvailableSslPredefinedPolicies.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayAvailableSslPredefinedPolicies;
+        });
     }
 }

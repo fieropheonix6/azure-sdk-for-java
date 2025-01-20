@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -18,41 +17,63 @@ import java.util.Collection;
  * https://docs.microsoft.com/azure/virtual-machines/linux/disks-types.
  */
 public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccountTypes> {
-    /** Static value Standard_LRS for StorageAccountTypes. */
+    /**
+     * Static value Standard_LRS for StorageAccountTypes.
+     */
     public static final StorageAccountTypes STANDARD_LRS = fromString("Standard_LRS");
 
-    /** Static value Premium_LRS for StorageAccountTypes. */
+    /**
+     * Static value Premium_LRS for StorageAccountTypes.
+     */
     public static final StorageAccountTypes PREMIUM_LRS = fromString("Premium_LRS");
 
-    /** Static value StandardSSD_LRS for StorageAccountTypes. */
+    /**
+     * Static value StandardSSD_LRS for StorageAccountTypes.
+     */
     public static final StorageAccountTypes STANDARD_SSD_LRS = fromString("StandardSSD_LRS");
 
-    /** Static value UltraSSD_LRS for StorageAccountTypes. */
+    /**
+     * Static value UltraSSD_LRS for StorageAccountTypes.
+     */
     public static final StorageAccountTypes ULTRA_SSD_LRS = fromString("UltraSSD_LRS");
 
-    /** Static value Premium_ZRS for StorageAccountTypes. */
+    /**
+     * Static value Premium_ZRS for StorageAccountTypes.
+     */
     public static final StorageAccountTypes PREMIUM_ZRS = fromString("Premium_ZRS");
 
-    /** Static value StandardSSD_ZRS for StorageAccountTypes. */
+    /**
+     * Static value StandardSSD_ZRS for StorageAccountTypes.
+     */
     public static final StorageAccountTypes STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
 
-    /** Static value PremiumV2_LRS for StorageAccountTypes. */
+    /**
+     * Static value PremiumV2_LRS for StorageAccountTypes.
+     */
     public static final StorageAccountTypes PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 
     /**
+     * Creates a new instance of StorageAccountTypes value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public StorageAccountTypes() {
+    }
+
+    /**
      * Creates or finds a StorageAccountTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageAccountTypes.
      */
-    @JsonCreator
     public static StorageAccountTypes fromString(String name) {
         return fromString(name, StorageAccountTypes.class);
     }
 
     /**
      * Gets known StorageAccountTypes values.
-     *
+     * 
      * @return known StorageAccountTypes values.
      */
     public static Collection<StorageAccountTypes> values() {

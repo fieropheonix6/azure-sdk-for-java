@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobAuditingPolicyName. */
+/**
+ * Defines values for BlobAuditingPolicyName.
+ */
 public final class BlobAuditingPolicyName extends ExpandableStringEnum<BlobAuditingPolicyName> {
-    /** Static value default for BlobAuditingPolicyName. */
+    /**
+     * Static value default for BlobAuditingPolicyName.
+     */
     public static final BlobAuditingPolicyName DEFAULT = fromString("default");
 
     /**
+     * Creates a new instance of BlobAuditingPolicyName value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BlobAuditingPolicyName() {
+    }
+
+    /**
      * Creates or finds a BlobAuditingPolicyName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BlobAuditingPolicyName.
      */
-    @JsonCreator
     public static BlobAuditingPolicyName fromString(String name) {
         return fromString(name, BlobAuditingPolicyName.class);
     }
 
-    /** @return known BlobAuditingPolicyName values. */
+    /**
+     * Gets known BlobAuditingPolicyName values.
+     * 
+     * @return known BlobAuditingPolicyName values.
+     */
     public static Collection<BlobAuditingPolicyName> values() {
         return values(BlobAuditingPolicyName.class);
     }

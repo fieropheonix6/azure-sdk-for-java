@@ -5,70 +5,125 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExtensionAggregateState. */
+/**
+ * Aggregate state of Arc Extensions across the nodes in this HCI cluster.
+ */
 public final class ExtensionAggregateState extends ExpandableStringEnum<ExtensionAggregateState> {
-    /** Static value NotSpecified for ExtensionAggregateState. */
+    /**
+     * Static value NotSpecified for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Error for ExtensionAggregateState. */
+    /**
+     * Static value Error for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState ERROR = fromString("Error");
 
-    /** Static value Succeeded for ExtensionAggregateState. */
+    /**
+     * Static value Succeeded for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Canceled for ExtensionAggregateState. */
+    /**
+     * Static value Canceled for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for ExtensionAggregateState. */
+    /**
+     * Static value Failed for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState FAILED = fromString("Failed");
 
-    /** Static value Connected for ExtensionAggregateState. */
+    /**
+     * Static value Connected for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState CONNECTED = fromString("Connected");
 
-    /** Static value Disconnected for ExtensionAggregateState. */
+    /**
+     * Static value Disconnected for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState DISCONNECTED = fromString("Disconnected");
 
-    /** Static value Deleted for ExtensionAggregateState. */
+    /**
+     * Static value Deleted for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState DELETED = fromString("Deleted");
 
-    /** Static value Creating for ExtensionAggregateState. */
+    /**
+     * Static value Creating for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState CREATING = fromString("Creating");
 
-    /** Static value Updating for ExtensionAggregateState. */
+    /**
+     * Static value Updating for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for ExtensionAggregateState. */
+    /**
+     * Static value Deleting for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState DELETING = fromString("Deleting");
 
-    /** Static value Moving for ExtensionAggregateState. */
+    /**
+     * Static value Moving for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState MOVING = fromString("Moving");
 
-    /** Static value PartiallySucceeded for ExtensionAggregateState. */
+    /**
+     * Static value PartiallySucceeded for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState PARTIALLY_SUCCEEDED = fromString("PartiallySucceeded");
 
-    /** Static value PartiallyConnected for ExtensionAggregateState. */
+    /**
+     * Static value PartiallyConnected for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState PARTIALLY_CONNECTED = fromString("PartiallyConnected");
 
-    /** Static value InProgress for ExtensionAggregateState. */
+    /**
+     * Static value InProgress for ExtensionAggregateState.
+     */
     public static final ExtensionAggregateState IN_PROGRESS = fromString("InProgress");
 
     /**
+     * Static value Accepted for ExtensionAggregateState.
+     */
+    public static final ExtensionAggregateState ACCEPTED = fromString("Accepted");
+
+    /**
+     * Static value Provisioning for ExtensionAggregateState.
+     */
+    public static final ExtensionAggregateState PROVISIONING = fromString("Provisioning");
+
+    /**
+     * Static value UpgradeFailedRollbackSucceeded for ExtensionAggregateState.
+     */
+    public static final ExtensionAggregateState UPGRADE_FAILED_ROLLBACK_SUCCEEDED
+        = fromString("UpgradeFailedRollbackSucceeded");
+
+    /**
+     * Creates a new instance of ExtensionAggregateState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ExtensionAggregateState() {
+    }
+
+    /**
      * Creates or finds a ExtensionAggregateState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExtensionAggregateState.
      */
-    @JsonCreator
     public static ExtensionAggregateState fromString(String name) {
         return fromString(name, ExtensionAggregateState.class);
     }
 
     /**
      * Gets known ExtensionAggregateState values.
-     *
+     * 
      * @return known ExtensionAggregateState values.
      */
     public static Collection<ExtensionAggregateState> values() {

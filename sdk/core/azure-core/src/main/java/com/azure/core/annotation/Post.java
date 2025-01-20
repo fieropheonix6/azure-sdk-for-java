@@ -12,10 +12,14 @@ import java.lang.annotation.Target;
 /**
  * HTTP POST method annotation describing the parameterized relative path to a REST endpoint for an action.
  *
- * <p>The required value can be either a relative path or an absolute path. When it's an absolute path, it must start
- * with a protocol or a parameterized segment (Otherwise the parse cannot tell if it's absolute or relative).</p>
+ * <p>
+ * The required value can be either a relative path or an absolute path. When it's an absolute path, it must start
+ * with a protocol or a parameterized segment (Otherwise the parse cannot tell if it's absolute or relative).
+ * </p>
  *
- * <p><strong>Example 1: Relative path segments</strong></p>
+ * <p>
+ * <strong>Example 1: Relative path segments</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.Post.class1 -->
  * <pre>
@@ -27,12 +31,14 @@ import java.lang.annotation.Target;
  * </pre>
  * <!-- end com.azure.core.annotation.Post.class1 -->
  *
- * <p><strong>Example 2: Absolute path segment</strong></p>
+ * <p>
+ * <strong>Example 2: Absolute path segment</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.annotation.Post.class2 -->
  * <pre>
  * &#64;Post&#40;&quot;https:&#47;&#47;&#123;functionApp&#125;.azurewebsites.net&#47;admin&#47;functions&#47;&#123;name&#125;&#47;keys&#47;&#123;keyName&#125;&quot;&#41;
- * NameValuePair generateFunctionKey&#40;&#64;PathParam&#40;&quot;functionApp&quot;&#41; String functionApp,
+ * KeyValuePair generateFunctionKey&#40;&#64;PathParam&#40;&quot;functionApp&quot;&#41; String functionApp,
  *     &#64;PathParam&#40;&quot;name&quot;&#41; String name,
  *     &#64;PathParam&#40;&quot;keyName&quot;&#41; String keyName&#41;;
  * </pre>

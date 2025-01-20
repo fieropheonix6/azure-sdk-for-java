@@ -5,57 +5,62 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SentenceSentiment model. */
+/**
+ * The SentenceSentiment model.
+ */
 @Fluent
-public final class SentenceSentiment {
+public final class SentenceSentiment implements JsonSerializable<SentenceSentiment> {
     /*
      * The sentence text.
      */
-    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * The predicted Sentiment for the sentence.
      */
-    @JsonProperty(value = "sentiment", required = true)
     private SentenceSentimentValue sentiment;
 
     /*
      * The sentiment confidence score between 0 and 1 for the sentence for all classes.
      */
-    @JsonProperty(value = "confidenceScores", required = true)
     private SentimentConfidenceScorePerLabel confidenceScores;
 
     /*
      * The sentence offset from the start of the document.
      */
-    @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
      * The length of the sentence.
      */
-    @JsonProperty(value = "length", required = true)
     private int length;
 
     /*
      * The array of sentence targets for the sentence.
      */
-    @JsonProperty(value = "targets")
     private List<SentenceTarget> targets;
 
     /*
      * The array of assessments for the sentence.
      */
-    @JsonProperty(value = "assessments")
     private List<SentenceAssessment> assessments;
 
     /**
+     * Creates an instance of SentenceSentiment class.
+     */
+    public SentenceSentiment() {
+    }
+
+    /**
      * Get the text property: The sentence text.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -64,7 +69,7 @@ public final class SentenceSentiment {
 
     /**
      * Set the text property: The sentence text.
-     *
+     * 
      * @param text the text value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -75,7 +80,7 @@ public final class SentenceSentiment {
 
     /**
      * Get the sentiment property: The predicted Sentiment for the sentence.
-     *
+     * 
      * @return the sentiment value.
      */
     public SentenceSentimentValue getSentiment() {
@@ -84,7 +89,7 @@ public final class SentenceSentiment {
 
     /**
      * Set the sentiment property: The predicted Sentiment for the sentence.
-     *
+     * 
      * @param sentiment the sentiment value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -96,7 +101,7 @@ public final class SentenceSentiment {
     /**
      * Get the confidenceScores property: The sentiment confidence score between 0 and 1 for the sentence for all
      * classes.
-     *
+     * 
      * @return the confidenceScores value.
      */
     public SentimentConfidenceScorePerLabel getConfidenceScores() {
@@ -106,7 +111,7 @@ public final class SentenceSentiment {
     /**
      * Set the confidenceScores property: The sentiment confidence score between 0 and 1 for the sentence for all
      * classes.
-     *
+     * 
      * @param confidenceScores the confidenceScores value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -117,7 +122,7 @@ public final class SentenceSentiment {
 
     /**
      * Get the offset property: The sentence offset from the start of the document.
-     *
+     * 
      * @return the offset value.
      */
     public int getOffset() {
@@ -126,7 +131,7 @@ public final class SentenceSentiment {
 
     /**
      * Set the offset property: The sentence offset from the start of the document.
-     *
+     * 
      * @param offset the offset value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -137,7 +142,7 @@ public final class SentenceSentiment {
 
     /**
      * Get the length property: The length of the sentence.
-     *
+     * 
      * @return the length value.
      */
     public int getLength() {
@@ -146,7 +151,7 @@ public final class SentenceSentiment {
 
     /**
      * Set the length property: The length of the sentence.
-     *
+     * 
      * @param length the length value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -157,7 +162,7 @@ public final class SentenceSentiment {
 
     /**
      * Get the targets property: The array of sentence targets for the sentence.
-     *
+     * 
      * @return the targets value.
      */
     public List<SentenceTarget> getTargets() {
@@ -166,7 +171,7 @@ public final class SentenceSentiment {
 
     /**
      * Set the targets property: The array of sentence targets for the sentence.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the SentenceSentiment object itself.
      */
@@ -177,7 +182,7 @@ public final class SentenceSentiment {
 
     /**
      * Get the assessments property: The array of assessments for the sentence.
-     *
+     * 
      * @return the assessments value.
      */
     public List<SentenceAssessment> getAssessments() {
@@ -186,12 +191,70 @@ public final class SentenceSentiment {
 
     /**
      * Set the assessments property: The array of assessments for the sentence.
-     *
+     * 
      * @param assessments the assessments value to set.
      * @return the SentenceSentiment object itself.
      */
     public SentenceSentiment setAssessments(List<SentenceAssessment> assessments) {
         this.assessments = assessments;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("sentiment", this.sentiment == null ? null : this.sentiment.toString());
+        jsonWriter.writeJsonField("confidenceScores", this.confidenceScores);
+        jsonWriter.writeIntField("offset", this.offset);
+        jsonWriter.writeIntField("length", this.length);
+        jsonWriter.writeArrayField("targets", this.targets, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("assessments", this.assessments, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SentenceSentiment from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SentenceSentiment if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SentenceSentiment.
+     */
+    public static SentenceSentiment fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SentenceSentiment deserializedSentenceSentiment = new SentenceSentiment();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("text".equals(fieldName)) {
+                    deserializedSentenceSentiment.text = reader.getString();
+                } else if ("sentiment".equals(fieldName)) {
+                    deserializedSentenceSentiment.sentiment = SentenceSentimentValue.fromString(reader.getString());
+                } else if ("confidenceScores".equals(fieldName)) {
+                    deserializedSentenceSentiment.confidenceScores = SentimentConfidenceScorePerLabel.fromJson(reader);
+                } else if ("offset".equals(fieldName)) {
+                    deserializedSentenceSentiment.offset = reader.getInt();
+                } else if ("length".equals(fieldName)) {
+                    deserializedSentenceSentiment.length = reader.getInt();
+                } else if ("targets".equals(fieldName)) {
+                    List<SentenceTarget> targets = reader.readArray(reader1 -> SentenceTarget.fromJson(reader1));
+                    deserializedSentenceSentiment.targets = targets;
+                } else if ("assessments".equals(fieldName)) {
+                    List<SentenceAssessment> assessments
+                        = reader.readArray(reader1 -> SentenceAssessment.fromJson(reader1));
+                    deserializedSentenceSentiment.assessments = assessments;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSentenceSentiment;
+        });
     }
 }

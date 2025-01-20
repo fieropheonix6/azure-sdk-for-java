@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeComputeProperties;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeCustomerVirtualNetwork;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeSsisProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Managed integration runtime type properties. */
+/**
+ * Managed integration runtime type properties.
+ */
 @Fluent
-public final class ManagedIntegrationRuntimeTypeProperties {
+public final class ManagedIntegrationRuntimeTypeProperties
+    implements JsonSerializable<ManagedIntegrationRuntimeTypeProperties> {
     /*
      * The compute resource for managed integration runtime.
      */
-    @JsonProperty(value = "computeProperties")
     private IntegrationRuntimeComputeProperties computeProperties;
 
     /*
      * SSIS properties for managed integration runtime.
      */
-    @JsonProperty(value = "ssisProperties")
     private IntegrationRuntimeSsisProperties ssisProperties;
 
     /*
      * The name of virtual network to which Azure-SSIS integration runtime will join
      */
-    @JsonProperty(value = "customerVirtualNetwork")
     private IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork;
 
-    /** Creates an instance of ManagedIntegrationRuntimeTypeProperties class. */
+    /**
+     * Creates an instance of ManagedIntegrationRuntimeTypeProperties class.
+     */
     public ManagedIntegrationRuntimeTypeProperties() {
     }
 
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.
-     *
+     * 
      * @return the computeProperties value.
      */
     public IntegrationRuntimeComputeProperties computeProperties() {
@@ -46,19 +52,19 @@ public final class ManagedIntegrationRuntimeTypeProperties {
 
     /**
      * Set the computeProperties property: The compute resource for managed integration runtime.
-     *
+     * 
      * @param computeProperties the computeProperties value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
-    public ManagedIntegrationRuntimeTypeProperties withComputeProperties(
-        IntegrationRuntimeComputeProperties computeProperties) {
+    public ManagedIntegrationRuntimeTypeProperties
+        withComputeProperties(IntegrationRuntimeComputeProperties computeProperties) {
         this.computeProperties = computeProperties;
         return this;
     }
 
     /**
      * Get the ssisProperties property: SSIS properties for managed integration runtime.
-     *
+     * 
      * @return the ssisProperties value.
      */
     public IntegrationRuntimeSsisProperties ssisProperties() {
@@ -67,7 +73,7 @@ public final class ManagedIntegrationRuntimeTypeProperties {
 
     /**
      * Set the ssisProperties property: SSIS properties for managed integration runtime.
-     *
+     * 
      * @param ssisProperties the ssisProperties value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
@@ -79,7 +85,7 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     /**
      * Get the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
      * join.
-     *
+     * 
      * @return the customerVirtualNetwork value.
      */
     public IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork() {
@@ -89,19 +95,19 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     /**
      * Set the customerVirtualNetwork property: The name of virtual network to which Azure-SSIS integration runtime will
      * join.
-     *
+     * 
      * @param customerVirtualNetwork the customerVirtualNetwork value to set.
      * @return the ManagedIntegrationRuntimeTypeProperties object itself.
      */
-    public ManagedIntegrationRuntimeTypeProperties withCustomerVirtualNetwork(
-        IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork) {
+    public ManagedIntegrationRuntimeTypeProperties
+        withCustomerVirtualNetwork(IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork) {
         this.customerVirtualNetwork = customerVirtualNetwork;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -114,5 +120,51 @@ public final class ManagedIntegrationRuntimeTypeProperties {
         if (customerVirtualNetwork() != null) {
             customerVirtualNetwork().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("computeProperties", this.computeProperties);
+        jsonWriter.writeJsonField("ssisProperties", this.ssisProperties);
+        jsonWriter.writeJsonField("customerVirtualNetwork", this.customerVirtualNetwork);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedIntegrationRuntimeTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedIntegrationRuntimeTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedIntegrationRuntimeTypeProperties.
+     */
+    public static ManagedIntegrationRuntimeTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedIntegrationRuntimeTypeProperties deserializedManagedIntegrationRuntimeTypeProperties
+                = new ManagedIntegrationRuntimeTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computeProperties".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeTypeProperties.computeProperties
+                        = IntegrationRuntimeComputeProperties.fromJson(reader);
+                } else if ("ssisProperties".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeTypeProperties.ssisProperties
+                        = IntegrationRuntimeSsisProperties.fromJson(reader);
+                } else if ("customerVirtualNetwork".equals(fieldName)) {
+                    deserializedManagedIntegrationRuntimeTypeProperties.customerVirtualNetwork
+                        = IntegrationRuntimeCustomerVirtualNetwork.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedIntegrationRuntimeTypeProperties;
+        });
     }
 }

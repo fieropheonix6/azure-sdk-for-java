@@ -10,23 +10,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.LiveTokenResponseInner;
 
-/** An instance of this class provides access to all the operations defined in LiveTokensClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LiveTokensClient.
+ */
 public interface LiveTokensClient {
     /**
      * **Gets an access token for live metrics stream data.**.
-     *
-     * @param resourceUri The identifier of the resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a live token query.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    LiveTokenResponseInner get(String resourceUri);
-
-    /**
-     * **Gets an access token for live metrics stream data.**.
-     *
+     * 
      * @param resourceUri The identifier of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,4 +26,16 @@ public interface LiveTokensClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<LiveTokenResponseInner> getWithResponse(String resourceUri, Context context);
+
+    /**
+     * **Gets an access token for live metrics stream data.**.
+     * 
+     * @param resourceUri The identifier of the resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to a live token query.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    LiveTokenResponseInner get(String resourceUri);
 }

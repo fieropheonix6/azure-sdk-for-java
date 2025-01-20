@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DefaultSecurityRules Get. */
+/**
+ * Samples for DefaultSecurityRules Get.
+ */
 public final class DefaultSecurityRulesGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/DefaultSecurityRuleGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/DefaultSecurityRuleGet.json
      */
     /**
      * Sample code: DefaultSecurityRuleGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void defaultSecurityRuleGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getDefaultSecurityRules()
-            .getWithResponse("testrg", "nsg1", "AllowVnetInBound", Context.NONE);
+            .getWithResponse("testrg", "nsg1", "AllowVnetInBound", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,27 +6,37 @@ package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.models.EmailServicesProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A class that describes the properties of the EmailService. */
+/**
+ * A class that describes the properties of the EmailService.
+ */
 @Fluent
-public final class EmailServiceProperties {
+public final class EmailServiceProperties implements JsonSerializable<EmailServiceProperties> {
     /*
      * Provisioning state of the resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private EmailServicesProvisioningState provisioningState;
 
     /*
      * The location where the email service stores its data at rest.
      */
-    @JsonProperty(value = "dataLocation", required = true)
     private String dataLocation;
 
     /**
+     * Creates an instance of EmailServiceProperties class.
+     */
+    public EmailServiceProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public EmailServicesProvisioningState provisioningState() {
@@ -35,7 +45,7 @@ public final class EmailServiceProperties {
 
     /**
      * Get the dataLocation property: The location where the email service stores its data at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -44,7 +54,7 @@ public final class EmailServiceProperties {
 
     /**
      * Set the dataLocation property: The location where the email service stores its data at rest.
-     *
+     * 
      * @param dataLocation the dataLocation value to set.
      * @return the EmailServiceProperties object itself.
      */
@@ -55,17 +65,56 @@ public final class EmailServiceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataLocation in model EmailServiceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataLocation in model EmailServiceProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(EmailServiceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataLocation", this.dataLocation);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailServiceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailServiceProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmailServiceProperties.
+     */
+    public static EmailServiceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailServiceProperties deserializedEmailServiceProperties = new EmailServiceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataLocation".equals(fieldName)) {
+                    deserializedEmailServiceProperties.dataLocation = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedEmailServiceProperties.provisioningState
+                        = EmailServicesProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailServiceProperties;
+        });
+    }
 }

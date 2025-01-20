@@ -25,23 +25,20 @@ public final class OperationsImpl implements Operations {
         this.serviceManager = serviceManager;
     }
 
-    public OperationListResult list() {
-        OperationListResultInner inner = this.serviceClient().list();
+    public Response<OperationListResult> listWithResponse(Context context) {
+        Response<OperationListResultInner> inner = this.serviceClient().listWithResponse(context);
         if (inner != null) {
-            return new OperationListResultImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<OperationListResult> listWithResponse(Context context) {
-        Response<OperationListResultInner> inner = this.serviceClient().listWithResponse(context);
+    public OperationListResult list() {
+        OperationListResultInner inner = this.serviceClient().list();
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationListResultImpl(inner.getValue(), this.manager()));
+            return new OperationListResultImpl(inner, this.manager());
         } else {
             return null;
         }

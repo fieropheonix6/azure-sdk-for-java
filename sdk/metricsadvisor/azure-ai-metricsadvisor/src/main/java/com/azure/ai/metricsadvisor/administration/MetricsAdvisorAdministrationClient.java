@@ -6,28 +6,122 @@ package com.azure.ai.metricsadvisor.administration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.DataFeed;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionSettings;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionStatus;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMissingDataPointFillSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedMissingDataPointFillType;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedRollupSettings;
+import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
+import com.azure.ai.metricsadvisor.implementation.models.CreateAnomalyAlertingConfigurationHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateAnomalyDetectionConfigurationHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateCredentialHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateDataFeedHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.CreateHookHeaders;
+import com.azure.ai.metricsadvisor.implementation.models.DataFeedDetail;
+import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredential;
+import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredentialPatch;
+import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
+import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
+import com.azure.ai.metricsadvisor.implementation.models.FillMissingPointType;
+import com.azure.ai.metricsadvisor.implementation.models.Granularity;
+import com.azure.ai.metricsadvisor.implementation.models.HookInfo;
+import com.azure.ai.metricsadvisor.implementation.models.IngestionProgressResetOptions;
+import com.azure.ai.metricsadvisor.implementation.models.IngestionStatusQueryOptions;
+import com.azure.ai.metricsadvisor.implementation.models.NeedRollupEnum;
+import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
+import com.azure.ai.metricsadvisor.implementation.models.ViewMode;
+import com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DataSourceCredentialEntityTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.HookTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.Utility;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 
 import java.time.OffsetDateTime;
+import java.util.Objects;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.CUSTOM;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.toDataFeedIngestionProgress;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.toDataFeedIngestionStatus;
 
 /**
- * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
- * <p><strong>Instantiating a synchronous Metrics Advisor Administration Client</strong></p>
+ * <p>This class provides a synchronous client to connect to the Metrics Advisor Azure Cognitive Service.</p>
+ * <p>This client provides synchronous methods to perform:</p>
+ * <ol>
+ *     <li>Connect to a variety of data sources, Metrics Advisor can connect to, and ingest multi-dimensional metric data
+ *     from many data stores, including: SQL Server, Azure Blob Storage, and MongoDB. Use
+ *     {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient#createDataFeed(DataFeed)}
+ *     method to add your respective data source.</li>
+ *     <li>Customize anomaly detection configuration to detect anomalies for your needs using the
+ *     {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient#createDetectionConfig(String, AnomalyDetectionConfiguration)}
+ *     method.</li>
+ *     <li>Add real-time notification through multiple channels. Configure hooks for multiple alerting and detection
+ *     configuration using the
+ *     {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient#createHook(NotificationHook)}
+ *     method./li>
+ * </ol>
+ *
+ * <p>Service clients are the point of interaction for developers to use Azure Metrics Advisor.
+ * {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient} is the synchronous service client and
+ * {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient} is the asynchronous service client.
+ * The examples shown in this document use a credential object named DefaultAzureCredential for authentication, which is
+ * appropriate for most scenarios, including local development and production environments. Additionally, we
+ * recommend using
+ * <a href="https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/">managed identity</a>
+ * for authentication in production environments.
+ * You can find more information on different ways of authenticating and their corresponding credential types in the
+ * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme">Azure Identity documentation"</a>.
+ * </p>
+ *
+ * <p><strong>Sample: Construct a MetricsAdvisorAdministrationClient with DefaultAzureCredential</strong></p>
+ *
+ * <p>The following code sample demonstrates the creation of a
+ * {@link com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient}, using the `DefaultAzureCredentialBuilder` to configure it.</p>
+ *
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD -->
+ * <pre>
+ * MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
+ *     new MetricsAdvisorAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation.withAAD  -->
+ *
+ * <p>Further, see the code sample below to use
+ * {@link com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential MetricsAdvisorKeyCredential} for client creation.</p>
+ *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
  * <pre>
  * MetricsAdvisorAdministrationClient metricsAdvisorAdminClient =
@@ -36,23 +130,26 @@ import java.time.OffsetDateTime;
  *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
  *         .buildClient&#40;&#41;;
  * </pre>
- * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation  -->
  *
+ * @see com.azure.ai.metricsadvisor
+ * @see MetricsAdvisorAdministrationAsyncClient
  * @see MetricsAdvisorAdministrationClientBuilder
  */
 @ServiceClient(builder = MetricsAdvisorAdministrationClientBuilder.class)
 public final class MetricsAdvisorAdministrationClient {
-    final MetricsAdvisorAdministrationAsyncClient client;
+    private final ClientLogger logger = new ClientLogger(MetricsAdvisorAdministrationClient.class);
+    private final MetricsAdvisorImpl service;
 
     /**
      * Create a {@link MetricsAdvisorAdministrationClient client} that sends requests to the Metrics Advisor service's
      * endpoint.
      * Each service call goes through the {@link MetricsAdvisorAdministrationClientBuilder#pipeline http pipeline}.
      *
-     * @param client The {@link MetricsAdvisorAdministrationAsyncClient} that the client routes its request through.
+     * @param service The proxy service used to perform REST calls.
      */
-    MetricsAdvisorAdministrationClient(MetricsAdvisorAdministrationAsyncClient client) {
-        this.client = client;
+    MetricsAdvisorAdministrationClient(MetricsAdvisorImpl service) {
+        this.service = service;
     }
 
     /**
@@ -147,7 +244,99 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeed> createDataFeedWithResponse(DataFeed dataFeed, Context context) {
-        return client.createDataFeedWithResponse(dataFeed, context).block();
+        return createDataFeedWithResponseSync(dataFeed, context);
+    }
+
+    Response<DataFeed> createDataFeedWithResponseSync(DataFeed dataFeed, Context context) {
+        Objects.requireNonNull(dataFeed, "'dataFeed' is required and cannot be null.");
+        Objects.requireNonNull(dataFeed.getSource(), "'dataFeedSource' is required and cannot be null.");
+        Objects.requireNonNull(dataFeed.getName(), "'dataFeedName' cannot be null or empty.");
+        final DataFeedSchema dataFeedSchema = dataFeed.getSchema();
+        final DataFeedGranularity dataFeedGranularity = dataFeed.getGranularity();
+        final DataFeedIngestionSettings dataFeedIngestionSettings = dataFeed.getIngestionSettings();
+
+        if (dataFeedSchema == null) {
+            throw logger
+                .logExceptionAsError(new NullPointerException("'dataFeedSchema.metrics' cannot be null or empty."));
+        } else {
+            Objects.requireNonNull(dataFeedSchema.getMetrics(), "'dataFeedSchema.metrics' cannot be null or empty.");
+        }
+
+        if (dataFeedGranularity == null) {
+            throw logger.logExceptionAsError(
+                new NullPointerException("'dataFeedGranularity.granularityType' is required and cannot be null."));
+
+        } else {
+            Objects.requireNonNull(dataFeedGranularity.getGranularityType(),
+                "'dataFeedGranularity.granularityType' is required.");
+            if (CUSTOM.equals(dataFeedGranularity.getGranularityType())) {
+                Objects.requireNonNull(dataFeedGranularity.getCustomGranularityValue(),
+                    "'dataFeedGranularity.customGranularityValue' is required when granularity type is CUSTOM");
+            }
+        }
+
+        if (dataFeedIngestionSettings == null) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                "'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null."));
+        } else {
+            Objects.requireNonNull(dataFeedIngestionSettings.getIngestionStartTime(),
+                "'dataFeedIngestionSettings.ingestionStartTime' is required and cannot be null.");
+        }
+
+        final DataFeedOptions finalDataFeedOptions
+            = dataFeed.getOptions() == null ? new DataFeedOptions() : dataFeed.getOptions();
+        final DataFeedRollupSettings dataFeedRollupSettings = finalDataFeedOptions.getRollupSettings() == null
+            ? new DataFeedRollupSettings()
+            : finalDataFeedOptions.getRollupSettings();
+        final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings
+            = finalDataFeedOptions.getMissingDataPointFillSettings() == null
+                ? new DataFeedMissingDataPointFillSettings()
+                : finalDataFeedOptions.getMissingDataPointFillSettings();
+
+        ResponseBase<CreateDataFeedHeaders, Void> createDataFeedResponse
+            = service.createDataFeedWithResponse(DataFeedTransforms.toDataFeedDetailSource(dataFeed.getSource())
+                .setDataFeedName(dataFeed.getName())
+                .setDataFeedDescription(finalDataFeedOptions.getDescription())
+                .setGranularityName(Granularity.fromString(dataFeedGranularity.getGranularityType() == null
+                    ? null
+                    : dataFeedGranularity.getGranularityType().toString()))
+                .setGranularityAmount(dataFeedGranularity.getCustomGranularityValue())
+                .setDimension(DataFeedTransforms.toInnerDimensionsListForCreate(dataFeedSchema.getDimensions()))
+                .setMetrics(DataFeedTransforms.toInnerMetricsListForCreate(dataFeedSchema.getMetrics()))
+                .setTimestampColumn(dataFeedSchema.getTimestampColumn())
+                .setDataStartFrom(dataFeedIngestionSettings.getIngestionStartTime())
+                .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
+                .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
+                .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
+                    ? null
+                    : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
+                .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
+                .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
+                .setRollUpMethod(RollUpMethod.fromString(dataFeedRollupSettings.getDataFeedAutoRollUpMethod() == null
+                    ? null
+                    : dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString()))
+                .setNeedRollup(NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType() == null
+                    ? null
+                    : dataFeedRollupSettings.getRollupType().toString()))
+                .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
+                .setFillMissingPointType(
+                    FillMissingPointType.fromString(dataFeedMissingDataPointFillSettings.getFillType() == null
+                        ? null
+                        : dataFeedMissingDataPointFillSettings.getFillType().toString()))
+                .setFillMissingPointValue(dataFeedMissingDataPointFillSettings.getCustomFillValue())
+                .setViewMode(ViewMode.fromString(finalDataFeedOptions.getAccessMode() == null
+                    ? null
+                    : finalDataFeedOptions.getAccessMode().toString()))
+                .setViewers(finalDataFeedOptions.getViewers())
+                .setAdmins(finalDataFeedOptions.getAdmins())
+                .setActionLinkTemplate(finalDataFeedOptions.getActionLinkTemplate()), context);
+
+        final String dataFeedId = parseOperationId(createDataFeedResponse.getDeserializedHeaders().getLocation());
+        return getDataFeedWithResponse(dataFeedId, context);
     }
 
     /**
@@ -204,7 +393,14 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeed> getDataFeedWithResponse(String dataFeedId, Context context) {
-        return client.getDataFeedWithResponse(dataFeedId, context).block();
+        return getDataFeedWithResponseSync(dataFeedId, context);
+    }
+
+    Response<DataFeed> getDataFeedWithResponseSync(String dataFeedId, Context context) {
+        Objects.requireNonNull(dataFeedId, "'dataFeedId' cannot be null.");
+
+        Response<DataFeedDetail> response = service.getDataFeedByIdWithResponse(UUID.fromString(dataFeedId), context);
+        return new SimpleResponse<>(response, DataFeedTransforms.fromInner(response.getValue()));
     }
 
     /**
@@ -213,8 +409,8 @@ public final class MetricsAdvisorAdministrationClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeed#DataFeed -->
      * <pre>
-     *
-     * DataFeed existingDataFeed = new DataFeed&#40;&#41;;
+     * final String dataFeedId = &quot;r47053f1-9080-09lo-bacf-8dccf2e86f&quot;;
+     * DataFeed existingDataFeed = metricsAdvisorAdminClient.getDataFeed&#40;dataFeedId&#41;;
      * final DataFeed updatedDataFeed = metricsAdvisorAdminClient.updateDataFeed&#40;
      *     existingDataFeed.setOptions&#40;new DataFeedOptions&#40;&#41;.setDescription&#40;&quot;set updated description&quot;&#41;&#41;&#41;;
      *
@@ -258,7 +454,63 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeed> updateDataFeedWithResponse(DataFeed dataFeed, Context context) {
-        return client.updateDataFeedWithResponse(dataFeed, context).block();
+        return updateDataFeedWithResponseSync(dataFeed, context);
+    }
+
+    Response<DataFeed> updateDataFeedWithResponseSync(DataFeed dataFeed, Context context) {
+        final DataFeedIngestionSettings dataFeedIngestionSettings = dataFeed.getIngestionSettings();
+        final DataFeedOptions dataFeedOptions
+            = dataFeed.getOptions() == null ? new DataFeedOptions() : dataFeed.getOptions();
+        final DataFeedRollupSettings dataFeedRollupSettings = dataFeedOptions.getRollupSettings() == null
+            ? new DataFeedRollupSettings()
+            : dataFeedOptions.getRollupSettings();
+        final DataFeedMissingDataPointFillSettings dataFeedMissingDataPointFillSettings
+            = dataFeedOptions.getMissingDataPointFillSettings() == null
+                ? new DataFeedMissingDataPointFillSettings()
+                : dataFeedOptions.getMissingDataPointFillSettings();
+
+        service.updateDataFeedWithResponse(UUID.fromString(dataFeed.getId()),
+            DataFeedTransforms.toInnerForUpdate(dataFeed.getSource())
+                .setDataFeedName(dataFeed.getName())
+                .setDataFeedDescription(dataFeedOptions.getDescription())
+                .setTimestampColumn(dataFeed.getSchema() == null ? null : dataFeed.getSchema().getTimestampColumn())
+                .setDataStartFrom(dataFeed.getIngestionSettings().getIngestionStartTime())
+                .setStartOffsetInSeconds(dataFeedIngestionSettings.getIngestionStartOffset() == null
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionStartOffset().getSeconds())
+                .setMaxConcurrency(dataFeedIngestionSettings.getDataSourceRequestConcurrency())
+                .setStopRetryAfterInSeconds(dataFeedIngestionSettings.getStopRetryAfter() == null
+                    ? null
+                    : dataFeedIngestionSettings.getStopRetryAfter().getSeconds())
+                .setMinRetryIntervalInSeconds(dataFeedIngestionSettings.getIngestionRetryDelay() == null
+                    ? null
+                    : dataFeedIngestionSettings.getIngestionRetryDelay().getSeconds())
+                .setNeedRollup(dataFeedRollupSettings.getRollupType() != null
+                    ? NeedRollupEnum.fromString(dataFeedRollupSettings.getRollupType().toString())
+                    : null)
+                .setRollUpColumns(dataFeedRollupSettings.getAutoRollupGroupByColumnNames())
+                .setRollUpMethod(dataFeedRollupSettings.getDataFeedAutoRollUpMethod() != null
+                    ? RollUpMethod.fromString(dataFeedRollupSettings.getDataFeedAutoRollUpMethod().toString())
+                    : null)
+                .setAllUpIdentification(dataFeedRollupSettings.getRollupIdentificationValue())
+                .setFillMissingPointType(dataFeedMissingDataPointFillSettings.getFillType() != null
+                    ? FillMissingPointType.fromString(dataFeedMissingDataPointFillSettings.getFillType().toString())
+                    : null)
+                .setFillMissingPointValue(
+                    // For PATCH send 'fill-custom-value' over wire only for 'fill-custom-type'.
+                    dataFeedMissingDataPointFillSettings.getFillType() == DataFeedMissingDataPointFillType.CUSTOM_VALUE
+                        ? dataFeedMissingDataPointFillSettings.getCustomFillValue()
+                        : null)
+                .setViewMode(dataFeedOptions.getAccessMode() != null
+                    ? ViewMode.fromString(dataFeedOptions.getAccessMode().toString())
+                    : null)
+                .setViewers(dataFeedOptions.getViewers())
+                .setAdmins(dataFeedOptions.getAdmins())
+                .setStatus(
+                    dataFeed.getStatus() != null ? EntityStatus.fromString(dataFeed.getStatus().toString()) : null)
+                .setActionLinkTemplate(dataFeedOptions.getActionLinkTemplate()),
+            context);
+        return getDataFeedWithResponse(dataFeed.getId(), context);
     }
 
     /**
@@ -304,7 +556,13 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataFeedWithResponse(String dataFeedId, Context context) {
-        return client.deleteDataFeedWithResponse(dataFeedId, context).block();
+        return deleteDataFeedWithResponseSync(dataFeedId, context);
+    }
+
+    Response<Void> deleteDataFeedWithResponseSync(String dataFeedId, Context context) {
+        Objects.requireNonNull(dataFeedId, "'dataFeedId' cannot be null.");
+        Response<Void> response = service.deleteDataFeedWithResponse(UUID.fromString(dataFeedId), context);
+        return new SimpleResponse<>(response, null);
     }
 
     /**
@@ -361,7 +619,44 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataFeed> listDataFeeds(ListDataFeedOptions options, Context context) {
-        return new PagedIterable<>(client.listDataFeeds(options, context));
+        return listDataFeedsSync(options, context);
+    }
+
+    PagedIterable<DataFeed> listDataFeedsSync(ListDataFeedOptions options, Context context) {
+        return new PagedIterable<>(() -> listDataFeedsSinglePageSync(options, context),
+            continuationToken -> listDataFeedsNextPageSync(continuationToken, context));
+    }
+
+    private PagedResponse<DataFeed> listDataFeedsSinglePageSync(ListDataFeedOptions options, Context context) {
+
+        options = options != null ? options : new ListDataFeedOptions();
+        final ListDataFeedFilter dataFeedFilter
+            = options.getListDataFeedFilter() != null ? options.getListDataFeedFilter() : new ListDataFeedFilter();
+
+        PagedResponse<DataFeedDetail> res = service.listDataFeedsSinglePage(dataFeedFilter.getName(),
+            dataFeedFilter.getSourceType() != null
+                ? DataSourceType.fromString(dataFeedFilter.getSourceType().toString())
+                : null,
+            dataFeedFilter.getGranularityType() != null
+                ? Granularity.fromString(dataFeedFilter.getGranularityType().toString())
+                : null,
+            dataFeedFilter.getStatus() != null ? EntityStatus.fromString(dataFeedFilter.getStatus().toString()) : null,
+            dataFeedFilter.getCreator(), options.getSkip(), options.getMaxPageSize(), context);
+
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().stream().map(DataFeedTransforms::fromInner).collect(Collectors.toList()),
+            res.getContinuationToken(), null);
+    }
+
+    private PagedResponse<DataFeed> listDataFeedsNextPageSync(String nextPageLink, Context context) {
+
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return null;
+        }
+        PagedResponse<DataFeedDetail> res = service.listDataFeedsNextSinglePage(nextPageLink, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().stream().map(DataFeedTransforms::fromInner).collect(Collectors.toList()),
+            res.getContinuationToken(), null);
     }
 
     /**
@@ -393,8 +688,8 @@ public final class MetricsAdvisorAdministrationClient {
      *     {@code options.endTime}  is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatus(
-        String dataFeedId, ListDataFeedIngestionOptions options) {
+    public PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatus(String dataFeedId,
+        ListDataFeedIngestionOptions options) {
         return listDataFeedIngestionStatus(dataFeedId, options, Context.NONE);
     }
 
@@ -432,12 +727,47 @@ public final class MetricsAdvisorAdministrationClient {
      *     {@code options.endTime}  is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatus(
-        String dataFeedId,
+    public PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatus(String dataFeedId,
         ListDataFeedIngestionOptions options, Context context) {
-        return new PagedIterable<>(client.listDataFeedIngestionStatus(dataFeedId,
-            options,
-            context == null ? Context.NONE : context));
+        return listDataFeedIngestionStatusSync(dataFeedId, options, context);
+    }
+
+    PagedIterable<DataFeedIngestionStatus> listDataFeedIngestionStatusSync(String dataFeedId,
+        ListDataFeedIngestionOptions options, Context context) {
+        return new PagedIterable<>(() -> listDataFeedIngestionStatusSinglePageSync(dataFeedId, options, context),
+            continuationToken -> listDataFeedIngestionStatusNextPageSync(continuationToken, options, context));
+    }
+
+    private PagedResponse<DataFeedIngestionStatus> listDataFeedIngestionStatusSinglePageSync(String dataFeedId,
+        ListDataFeedIngestionOptions options, Context context) {
+        Objects.requireNonNull(dataFeedId, "'dataFeedId' is required.");
+        Objects.requireNonNull(options, "'options' is required.");
+        Objects.requireNonNull(options.getStartTime(), "'options.startTime' is required.");
+        Objects.requireNonNull(options.getEndTime(), "'options.endTime' is required.");
+
+        IngestionStatusQueryOptions queryOptions
+            = new IngestionStatusQueryOptions().setStartTime(options.getStartTime()).setEndTime(options.getEndTime());
+
+        PagedResponse<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> res
+            = service.getDataFeedIngestionStatusSinglePage(UUID.fromString(dataFeedId), queryOptions, options.getSkip(),
+                options.getMaxPageSize(), context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            toDataFeedIngestionStatus(res.getValue()), res.getContinuationToken(), null);
+    }
+
+    private PagedResponse<DataFeedIngestionStatus> listDataFeedIngestionStatusNextPageSync(String nextPageLink,
+        ListDataFeedIngestionOptions options, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return null;
+        }
+
+        IngestionStatusQueryOptions queryOptions
+            = new IngestionStatusQueryOptions().setStartTime(options.getStartTime()).setEndTime(options.getEndTime());
+
+        PagedResponse<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionStatus> res
+            = service.getDataFeedIngestionStatusNextSinglePage(nextPageLink, queryOptions, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            toDataFeedIngestionStatus(res.getValue()), res.getContinuationToken(), null);
     }
 
     /**
@@ -461,15 +791,12 @@ public final class MetricsAdvisorAdministrationClient {
      *
      * @param dataFeedId The data feed id.
      * @param startTime The start point of the period.
-     * @param endTime The end point of of the period.
+     * @param endTime The end point of the period.
      * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
      * @throws NullPointerException If {@code dataFeedId}, {@code startTime}, {@code endTime}  is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void refreshDataFeedIngestion(
-        String dataFeedId,
-        OffsetDateTime startTime,
-        OffsetDateTime endTime) {
+    public void refreshDataFeedIngestion(String dataFeedId, OffsetDateTime startTime, OffsetDateTime endTime) {
         refreshDataFeedIngestionWithResponse(dataFeedId, startTime, endTime, Context.NONE);
     }
 
@@ -496,21 +823,26 @@ public final class MetricsAdvisorAdministrationClient {
      *
      * @param dataFeedId The data feed id.
      * @param startTime The start point of the period.
-     * @param endTime The end point of of the period.
+     * @param endTime The end point of the period.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The response.
      * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
      * @throws NullPointerException If {@code dataFeedId}, {@code startTime}, {@code endTime}  is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> refreshDataFeedIngestionWithResponse(
-        String dataFeedId,
-        OffsetDateTime startTime,
+    public Response<Void> refreshDataFeedIngestionWithResponse(String dataFeedId, OffsetDateTime startTime,
         OffsetDateTime endTime, Context context) {
-        return client.refreshDataFeedIngestionWithResponse(dataFeedId,
-            startTime,
-            endTime,
-            context == null ? Context.NONE : context).block();
+        return refreshDataFeedIngestionWithResponseSync(dataFeedId, startTime, endTime, context);
+    }
+
+    Response<Void> refreshDataFeedIngestionWithResponseSync(String dataFeedId, OffsetDateTime startTime,
+        OffsetDateTime endTime, Context context) {
+        Objects.requireNonNull(dataFeedId, "'dataFeedId' is required.");
+        Objects.requireNonNull(startTime, "'startTime' is required.");
+        Objects.requireNonNull(endTime, "'endTime' is required.");
+
+        return service.resetDataFeedIngestionStatusWithResponse(UUID.fromString(dataFeedId),
+            new IngestionProgressResetOptions().setStartTime(startTime).setEndTime(endTime), context);
     }
 
     /**
@@ -534,8 +866,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataFeedIngestionProgress getDataFeedIngestionProgress(String dataFeedId) {
-        return getDataFeedIngestionProgressWithResponse(dataFeedId, Context.NONE)
-            .getValue();
+        return getDataFeedIngestionProgressWithResponse(dataFeedId, Context.NONE).getValue();
     }
 
     /**
@@ -562,9 +893,16 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataFeedIngestionProgress> getDataFeedIngestionProgressWithResponse(String dataFeedId,
-                                                                                        Context context) {
-        return client.getDataFeedIngestionProgressWithResponse(dataFeedId,
-            context == null ? Context.NONE : context).block();
+        Context context) {
+        return getDataFeedIngestionProgressWithResponseSync(dataFeedId, context);
+    }
+
+    Response<DataFeedIngestionProgress> getDataFeedIngestionProgressWithResponseSync(String dataFeedId,
+        Context context) {
+        Objects.requireNonNull(dataFeedId, "'dataFeedId' is required.");
+        Response<com.azure.ai.metricsadvisor.implementation.models.DataFeedIngestionProgress> response
+            = service.getIngestionProgressWithResponse(UUID.fromString(dataFeedId), context);
+        return new SimpleResponse<>(response, toDataFeedIngestionProgress(response.getValue()));
     }
 
     /**
@@ -622,12 +960,9 @@ public final class MetricsAdvisorAdministrationClient {
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyDetectionConfiguration createDetectionConfig(
-        String metricId,
+    public AnomalyDetectionConfiguration createDetectionConfig(String metricId,
         AnomalyDetectionConfiguration detectionConfiguration) {
-        return createDetectionConfigWithResponse(metricId,
-            detectionConfiguration,
-            Context.NONE).getValue();
+        return createDetectionConfigWithResponse(metricId, detectionConfiguration, Context.NONE).getValue();
     }
 
     /**
@@ -688,12 +1023,25 @@ public final class MetricsAdvisorAdministrationClient {
      *      {@code MetricSingleSeriesDetectionCondition} or {@code MetricSeriesGroupDetectionCondition}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyDetectionConfiguration> createDetectionConfigWithResponse(
-        String metricId,
-        AnomalyDetectionConfiguration detectionConfiguration,
-        Context context) {
-        return client.createDetectionConfigWithResponse(metricId, detectionConfiguration,
-            context == null ? Context.NONE : context).block();
+    public Response<AnomalyDetectionConfiguration> createDetectionConfigWithResponse(String metricId,
+        AnomalyDetectionConfiguration detectionConfiguration, Context context) {
+        return createDetectionConfigWithResponseSync(metricId, detectionConfiguration, context);
+    }
+
+    Response<AnomalyDetectionConfiguration> createDetectionConfigWithResponseSync(String metricId,
+        AnomalyDetectionConfiguration detectionConfiguration, Context context) {
+        Objects.requireNonNull(metricId, "metricId is required");
+        Objects.requireNonNull(detectionConfiguration, "detectionConfiguration is required");
+
+        final com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration innerDetectionConfiguration
+            = DetectionConfigurationTransforms.toInnerForCreate(logger, metricId, detectionConfiguration);
+        ResponseBase<CreateAnomalyDetectionConfigurationHeaders, Void> response
+            = service.createAnomalyDetectionConfigurationWithResponse(innerDetectionConfiguration, context);
+        final String configurationId = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
+        Response<AnomalyDetectionConfiguration> configurationResponse
+            = getDetectionConfigWithResponse(configurationId, context);
+        return new ResponseBase<Void, AnomalyDetectionConfiguration>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), configurationResponse.getValue(), null);
     }
 
     /**
@@ -879,8 +1227,7 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyDetectionConfiguration getDetectionConfig(
-        String detectionConfigurationId) {
+    public AnomalyDetectionConfiguration getDetectionConfig(String detectionConfigurationId) {
         return getDetectionConfigWithResponse(detectionConfigurationId, Context.NONE).getValue();
     }
 
@@ -1070,10 +1417,21 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyDetectionConfiguration> getDetectionConfigWithResponse(
-        String detectionConfigurationId, Context context) {
-        return client.getDetectionConfigWithResponse(detectionConfigurationId,
-            context == null ? Context.NONE : context).block();
+    public Response<AnomalyDetectionConfiguration> getDetectionConfigWithResponse(String detectionConfigurationId,
+        Context context) {
+        return getDetectionConfigWithResponseSync(detectionConfigurationId, context);
+    }
+
+    Response<AnomalyDetectionConfiguration> getDetectionConfigWithResponseSync(String detectionConfigurationId,
+        Context context) {
+        Objects.requireNonNull(detectionConfigurationId, "detectionConfigurationId is required.");
+
+        Response<com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration> response
+            = service.getAnomalyDetectionConfigurationWithResponse(UUID.fromString(detectionConfigurationId), context);
+
+        AnomalyDetectionConfiguration configuration = DetectionConfigurationTransforms.fromInner(response.getValue());
+        return new ResponseBase<Void, AnomalyDetectionConfiguration>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), configuration, null);
     }
 
     /**
@@ -1113,10 +1471,8 @@ public final class MetricsAdvisorAdministrationClient {
      *   or {@code detectionConfiguration.id} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyDetectionConfiguration updateDetectionConfig(
-        AnomalyDetectionConfiguration detectionConfiguration) {
-        return updateDetectionConfigWithResponse(detectionConfiguration, Context.NONE)
-            .getValue();
+    public AnomalyDetectionConfiguration updateDetectionConfig(AnomalyDetectionConfiguration detectionConfiguration) {
+        return updateDetectionConfigWithResponse(detectionConfiguration, Context.NONE).getValue();
     }
 
     /**
@@ -1159,11 +1515,26 @@ public final class MetricsAdvisorAdministrationClient {
      *   or {@code detectionConfiguration.id} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyDetectionConfiguration> updateDetectionConfigWithResponse(
-        AnomalyDetectionConfiguration detectionConfiguration,
-        Context context) {
-        return client.updateDetectionConfigWithResponse(detectionConfiguration,
-            context == null ? Context.NONE : context).block();
+    public Response<AnomalyDetectionConfiguration>
+        updateDetectionConfigWithResponse(AnomalyDetectionConfiguration detectionConfiguration, Context context) {
+        return updateDetectionConfigWithResponseSync(detectionConfiguration, context);
+    }
+
+    Response<AnomalyDetectionConfiguration>
+        updateDetectionConfigWithResponseSync(AnomalyDetectionConfiguration detectionConfiguration, Context context) {
+        Objects.requireNonNull(detectionConfiguration, "detectionConfiguration is required");
+        Objects.requireNonNull(detectionConfiguration.getId(), "detectionConfiguration.id is required");
+
+        final AnomalyDetectionConfigurationPatch innerDetectionConfigurationPatch
+            = DetectionConfigurationTransforms.toInnerForUpdate(logger, detectionConfiguration);
+        Response<com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration> response
+            = service.updateAnomalyDetectionConfigurationWithResponse(UUID.fromString(detectionConfiguration.getId()),
+                innerDetectionConfigurationPatch, context);
+
+        Response<AnomalyDetectionConfiguration> configurationResponse
+            = getDetectionConfigWithResponse(detectionConfiguration.getId(), context);
+        return new ResponseBase<Void, AnomalyDetectionConfiguration>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), configurationResponse.getValue(), null);
     }
 
     /**
@@ -1186,8 +1557,7 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteDetectionConfig(String detectionConfigurationId) {
-        deleteDetectionConfigWithResponse(detectionConfigurationId, Context.NONE)
-            .getValue();
+        deleteDetectionConfigWithResponse(detectionConfigurationId, Context.NONE).getValue();
     }
 
     /**
@@ -1211,12 +1581,13 @@ public final class MetricsAdvisorAdministrationClient {
      *     format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteDetectionConfigWithResponse(
-        String detectionConfigurationId,
-        Context context) {
-        return client.deleteDetectionConfigWithResponse(
-            detectionConfigurationId,
-            context == null ? Context.NONE : context).block();
+    public Response<Void> deleteDetectionConfigWithResponse(String detectionConfigurationId, Context context) {
+        return deleteDetectionConfigWithResponseSync(detectionConfigurationId, context);
+    }
+
+    Response<Void> deleteDetectionConfigWithResponseSync(String detectionConfigurationId, Context context) {
+        Objects.requireNonNull(detectionConfigurationId, "detectionConfigurationId is required.");
+        return service.deleteHookWithResponse(UUID.fromString(detectionConfigurationId), context);
     }
 
     /**
@@ -1244,10 +1615,8 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> listDetectionConfigs(
-        String metricId) {
-        return new PagedIterable<>(client.listDetectionConfigs(metricId, null,
-            Context.NONE));
+    public PagedIterable<AnomalyDetectionConfiguration> listDetectionConfigs(String metricId) {
+        return listDetectionConfigs(metricId, null, Context.NONE);
     }
 
     /**
@@ -1284,12 +1653,37 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyDetectionConfiguration> listDetectionConfigs(
-        String metricId,
-        ListDetectionConfigsOptions options,
+    public PagedIterable<AnomalyDetectionConfiguration> listDetectionConfigs(String metricId,
+        ListDetectionConfigsOptions options, Context context) {
+        return listDetectionConfigsSync(metricId, options, context);
+    }
+
+    PagedIterable<AnomalyDetectionConfiguration> listDetectionConfigsSync(String metricId,
+        ListDetectionConfigsOptions options, Context context) {
+        return new PagedIterable<>(() -> listAnomalyDetectionConfigsSinglePageSync(metricId, options, context),
+            continuationToken -> listAnomalyDetectionConfigsNextPageSync(continuationToken, context));
+    }
+
+    private PagedResponse<AnomalyDetectionConfiguration> listAnomalyDetectionConfigsSinglePageSync(String metricId,
+        ListDetectionConfigsOptions options, Context context) {
+        if (options == null) {
+            options = new ListDetectionConfigsOptions();
+        }
+        PagedResponse<com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration> response
+            = service.getAnomalyDetectionConfigurationsByMetricSinglePage(UUID.fromString(metricId), options.getSkip(),
+                options.getMaxPageSize(), context);
+        return DetectionConfigurationTransforms.fromInnerPagedResponse(response);
+    }
+
+    private PagedResponse<AnomalyDetectionConfiguration> listAnomalyDetectionConfigsNextPageSync(String nextPageLink,
         Context context) {
-        return new PagedIterable<>(client.listDetectionConfigs(metricId, options,
-            context == null ? Context.NONE : context));
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return null;
+        }
+        PagedResponse<com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfiguration> response
+            = service.getAnomalyDetectionConfigurationsByMetricNextSinglePage(nextPageLink, context);
+
+        return DetectionConfigurationTransforms.fromInnerPagedResponse(response);
     }
 
     /**
@@ -1362,8 +1756,18 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationHook> createHookWithResponse(NotificationHook notificationHook, Context context) {
-        return client.createHookWithResponse(notificationHook, context == null ? Context.NONE : context)
-            .block();
+        return createHookWithResponseSync(notificationHook, context);
+    }
+
+    Response<NotificationHook> createHookWithResponseSync(NotificationHook notificationHook, Context context) {
+        Objects.requireNonNull(notificationHook, "'notificationHook' cannot be null.");
+        ResponseBase<CreateHookHeaders, Void> response
+            = service.createHookWithResponse(HookTransforms.toInnerForCreate(logger, notificationHook), context);
+        final String hookUri = response.getDeserializedHeaders().getLocation();
+        final String hookId = parseOperationId(hookUri);
+        Response<NotificationHook> hookResponse = getHookWithResponse(hookId, context);
+        return new ResponseBase<Void, NotificationHook>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), hookResponse.getValue(), null);
     }
 
     /**
@@ -1440,8 +1844,14 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationHook> getHookWithResponse(String hookId, Context context) {
-        return client.getHookWithResponse(hookId, context == null ? Context.NONE : context)
-            .block();
+        return getHookWithResponseSync(hookId, context);
+    }
+
+    Response<NotificationHook> getHookWithResponseSync(String hookId, Context context) {
+        Objects.requireNonNull(hookId, "hookId is required.");
+        Response<HookInfo> innerResponse = service.getHookWithResponse(UUID.fromString(hookId), context);
+        return new ResponseBase<Void, NotificationHook>(innerResponse.getRequest(), innerResponse.getStatusCode(),
+            innerResponse.getHeaders(), HookTransforms.fromInner(logger, innerResponse.getValue()), null);
     }
 
     /**
@@ -1514,8 +1924,17 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<NotificationHook> updateHookWithResponse(NotificationHook notificationHook, Context context) {
-        return client.updateHookWithResponse(notificationHook, context == null ? Context.NONE : context)
-            .block();
+        return updateHookWithResponseSync(notificationHook, context);
+    }
+
+    Response<NotificationHook> updateHookWithResponseSync(NotificationHook notificationHook, Context context) {
+        Objects.requireNonNull(notificationHook, "'notificationHook' cannot be null.");
+        Objects.requireNonNull(notificationHook.getId(), "'notificationHook.id' cannot be null.");
+        Response<HookInfo> response = service.updateHookWithResponse(UUID.fromString(notificationHook.getId()),
+            HookTransforms.toInnerForUpdate(logger, notificationHook), context);
+        Response<NotificationHook> hookResponse = getHookWithResponse(notificationHook.getId(), context);
+        return new ResponseBase<Void, NotificationHook>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), hookResponse.getValue(), null);
     }
 
     /**
@@ -1560,7 +1979,12 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteHookWithResponse(String hookId, Context context) {
-        return client.deleteHookWithResponse(hookId, context == null ? Context.NONE : context).block();
+        return deleteHookWithResponseSync(hookId, context);
+    }
+
+    Response<Void> deleteHookWithResponseSync(String hookId, Context context) {
+        Objects.requireNonNull(hookId, "hookId is required.");
+        return service.deleteHookWithResponse(UUID.fromString(hookId), context);
     }
 
     /**
@@ -1643,7 +2067,27 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NotificationHook> listHooks(ListHookOptions options, Context context) {
-        return new PagedIterable<>(client.listHooks(options, context == null ? Context.NONE : context));
+        return listHooksSync(options, context);
+    }
+
+    PagedIterable<NotificationHook> listHooksSync(ListHookOptions options, Context context) {
+        return new PagedIterable<>(() -> listHooksSinglePageSync(options, context),
+            continuationToken -> listHooksNextPageSync(continuationToken, context));
+    }
+
+    private PagedResponse<NotificationHook> listHooksSinglePageSync(ListHookOptions options, Context context) {
+        PagedResponse<HookInfo> response
+            = service.listHooksSinglePage(options != null ? options.getHookNameFilter() : null,
+                options != null ? options.getSkip() : null, options != null ? options.getMaxPageSize() : null, context);
+        return HookTransforms.fromInnerPagedResponse(logger, response);
+    }
+
+    private PagedResponse<NotificationHook> listHooksNextPageSync(String nextPageLink, Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return null;
+        }
+        PagedResponse<HookInfo> response = service.listHooksNextSinglePage(nextPageLink, context);
+        return HookTransforms.fromInnerPagedResponse(logger, response);
     }
 
     /**
@@ -1688,8 +2132,7 @@ public final class MetricsAdvisorAdministrationClient {
      * @return The {@link AnomalyAlertConfiguration} that was created.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyAlertConfiguration createAlertConfig(
-        AnomalyAlertConfiguration alertConfiguration) {
+    public AnomalyAlertConfiguration createAlertConfig(AnomalyAlertConfiguration alertConfiguration) {
         return createAlertConfigWithResponse(alertConfiguration, Context.NONE).getValue();
     }
 
@@ -1739,10 +2182,33 @@ public final class MetricsAdvisorAdministrationClient {
      * @return A {@link Response} containing the created {@link AnomalyAlertConfiguration}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyAlertConfiguration> createAlertConfigWithResponse(
-        AnomalyAlertConfiguration alertConfiguration, Context context) {
-        return client.createAlertConfigWithResponse(alertConfiguration, context == null
-            ? Context.NONE : context).block();
+    public Response<AnomalyAlertConfiguration>
+        createAlertConfigWithResponse(AnomalyAlertConfiguration alertConfiguration, Context context) {
+        return createAlertConfigWithResponseSync(alertConfiguration, context);
+    }
+
+    Response<AnomalyAlertConfiguration> createAlertConfigWithResponseSync(AnomalyAlertConfiguration alertConfiguration,
+        Context context) {
+        Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required.");
+        if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
+            throw logger.logExceptionAsError(
+                new NullPointerException("'alertConfiguration.metricAnomalyAlertConfigurations' is required"));
+        }
+        if (alertConfiguration.getCrossMetricsOperator() == null
+            && alertConfiguration.getMetricAlertConfigurations().size() > 1) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("crossMetricsOperator is required"
+                + " when there are more than one metric level alert configuration."));
+        }
+
+        final AnomalyAlertingConfiguration innerAlertConfiguration
+            = AlertConfigurationTransforms.toInnerForCreate(alertConfiguration);
+
+        ResponseBase<CreateAnomalyAlertingConfigurationHeaders, Void> response
+            = service.createAnomalyAlertingConfigurationWithResponse(innerAlertConfiguration, context);
+        final String configurationId = parseOperationId(response.getDeserializedHeaders().getLocation());
+        Response<AnomalyAlertConfiguration> getResponse = getAlertConfigWithResponse(configurationId, context);
+        return new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), getResponse.getValue(), null);
     }
 
     /**
@@ -1774,8 +2240,7 @@ public final class MetricsAdvisorAdministrationClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyAlertConfiguration getAlertConfig(
-        String alertConfigurationId) {
+    public AnomalyAlertConfiguration getAlertConfig(String alertConfigurationId) {
         return getAlertConfigWithResponse(alertConfigurationId, Context.NONE).getValue();
     }
 
@@ -1811,10 +2276,18 @@ public final class MetricsAdvisorAdministrationClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyAlertConfiguration> getAlertConfigWithResponse(
-        String alertConfigurationId, Context context) {
-        return client.getAlertConfigWithResponse(alertConfigurationId, context == null
-            ? Context.NONE : context).block();
+    public Response<AnomalyAlertConfiguration> getAlertConfigWithResponse(String alertConfigurationId,
+        Context context) {
+        return getAlertConfigWithResponseSync(alertConfigurationId, context);
+    }
+
+    Response<AnomalyAlertConfiguration> getAlertConfigWithResponseSync(String alertConfigurationId, Context context) {
+        Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
+
+        Response<AnomalyAlertingConfiguration> response
+            = service.getAnomalyAlertingConfigurationWithResponse(UUID.fromString(alertConfigurationId), context);
+        return new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), AlertConfigurationTransforms.fromInner(response.getValue()), null);
     }
 
     /**
@@ -1855,8 +2328,7 @@ public final class MetricsAdvisorAdministrationClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AnomalyAlertConfiguration updateAlertConfig(
-        AnomalyAlertConfiguration alertConfiguration) {
+    public AnomalyAlertConfiguration updateAlertConfig(AnomalyAlertConfiguration alertConfiguration) {
         return updateAlertConfigWithResponse(alertConfiguration, Context.NONE).getValue();
     }
 
@@ -1900,10 +2372,27 @@ public final class MetricsAdvisorAdministrationClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AnomalyAlertConfiguration> updateAlertConfigWithResponse(
-        AnomalyAlertConfiguration alertConfiguration, Context context) {
-        return client.updateAlertConfigWithResponse(alertConfiguration, context == null
-            ? Context.NONE : context).block();
+    public Response<AnomalyAlertConfiguration>
+        updateAlertConfigWithResponse(AnomalyAlertConfiguration alertConfiguration, Context context) {
+        return updateAlertConfigWithResponseSync(alertConfiguration, context);
+    }
+
+    Response<AnomalyAlertConfiguration> updateAlertConfigWithResponseSync(AnomalyAlertConfiguration alertConfiguration,
+        Context context) {
+        Objects.requireNonNull(alertConfiguration, "'alertConfiguration' is required");
+        if (CoreUtils.isNullOrEmpty(alertConfiguration.getMetricAlertConfigurations())) {
+            throw logger.logExceptionAsError(new NullPointerException(
+                "'alertConfiguration.metricAnomalyAlertConfigurations' is required and cannot be empty"));
+        }
+        final AnomalyAlertingConfigurationPatch innerAlertConfiguration
+            = AlertConfigurationTransforms.toInnerForUpdate(alertConfiguration);
+
+        Response<AnomalyAlertingConfiguration> response = service.updateAnomalyAlertingConfigurationWithResponse(
+            UUID.fromString(alertConfiguration.getId()), innerAlertConfiguration, context);
+        Response<AnomalyAlertConfiguration> getResponse
+            = getAlertConfigWithResponse(alertConfiguration.getId(), context);
+        return new ResponseBase<Void, AnomalyAlertConfiguration>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), getResponse.getValue(), null);
     }
 
     /**
@@ -1951,8 +2440,13 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAlertConfigWithResponse(String alertConfigurationId, Context context) {
-        return client.deleteAlertConfigWithResponse(alertConfigurationId, context == null
-            ? Context.NONE : context).block();
+        return deleteAlertConfigWithResponseSync(alertConfigurationId, context);
+    }
+
+    Response<Void> deleteAlertConfigWithResponseSync(String alertConfigurationId, Context context) {
+        Objects.requireNonNull(alertConfigurationId, "'alertConfigurationId' is required.");
+
+        return service.deleteAnomalyAlertingConfigurationWithResponse(UUID.fromString(alertConfigurationId), context);
     }
 
     /**
@@ -1985,8 +2479,8 @@ public final class MetricsAdvisorAdministrationClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyAlertConfiguration> listAlertConfigs(
-        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options) {
+    public PagedIterable<AnomalyAlertConfiguration> listAlertConfigs(String detectionConfigurationId,
+        ListAnomalyAlertConfigsOptions options) {
         return listAlertConfigs(detectionConfigurationId, options, Context.NONE);
     }
 
@@ -2022,10 +2516,38 @@ public final class MetricsAdvisorAdministrationClient {
      * UUID format specification.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AnomalyAlertConfiguration> listAlertConfigs(
+    public PagedIterable<AnomalyAlertConfiguration> listAlertConfigs(String detectionConfigurationId,
+        ListAnomalyAlertConfigsOptions options, Context context) {
+        return listAlertConfigsSync(detectionConfigurationId, options, context);
+    }
+
+    PagedIterable<AnomalyAlertConfiguration> listAlertConfigsSync(String detectionConfigurationId,
+        ListAnomalyAlertConfigsOptions options, Context context) {
+        return new PagedIterable<>(
+            () -> listAnomalyAlertConfigsSinglePageSync(detectionConfigurationId, options, context),
+            continuationToken -> listAnomalyAlertConfigsNextPageSync(continuationToken, context));
+    }
+
+    private PagedResponse<AnomalyAlertConfiguration> listAnomalyAlertConfigsSinglePageSync(
         String detectionConfigurationId, ListAnomalyAlertConfigsOptions options, Context context) {
-        return new PagedIterable<>(client.listAlertConfigs(detectionConfigurationId, options,
-            context == null ? Context.NONE : context));
+        Objects.requireNonNull(detectionConfigurationId, "'detectionConfigurationId' is required.");
+        if (options == null) {
+            options = new ListAnomalyAlertConfigsOptions();
+        }
+        PagedResponse<AnomalyAlertingConfiguration> response
+            = service.getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationSinglePage(
+                UUID.fromString(detectionConfigurationId), options.getSkip(), options.getMaxPageSize(), context);
+        return AlertConfigurationTransforms.fromInnerPagedResponse(response);
+    }
+
+    private PagedResponse<AnomalyAlertConfiguration> listAnomalyAlertConfigsNextPageSync(String nextPageLink,
+        Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return null;
+        }
+        PagedResponse<AnomalyAlertingConfiguration> response = service
+            .getAnomalyAlertingConfigurationsByAnomalyDetectionConfigurationNextSinglePage(nextPageLink, context);
+        return AlertConfigurationTransforms.fromInnerPagedResponse(response);
     }
 
     /**
@@ -2121,9 +2643,25 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredentialEntity> createDataSourceCredentialWithResponse(
-            DataSourceCredentialEntity dataSourceCredential, Context context) {
-        return client.createDataSourceCredentialWithResponse(dataSourceCredential, context).block();
+    public Response<DataSourceCredentialEntity>
+        createDataSourceCredentialWithResponse(DataSourceCredentialEntity dataSourceCredential, Context context) {
+        return createDataSourceCredentialWithResponseSync(dataSourceCredential, context);
+    }
+
+    Response<DataSourceCredentialEntity>
+        createDataSourceCredentialWithResponseSync(DataSourceCredentialEntity dataSourceCredential, Context context) {
+        Objects.requireNonNull(dataSourceCredential, "dataSourceCredential is required");
+
+        final DataSourceCredential innerDataSourceCredential
+            = DataSourceCredentialEntityTransforms.toInnerForCreate(dataSourceCredential);
+        ResponseBase<CreateCredentialHeaders, Void> response
+            = service.createCredentialWithResponse(innerDataSourceCredential, context);
+
+        final String credentialId = Utility.parseOperationId(response.getDeserializedHeaders().getLocation());
+        Response<DataSourceCredentialEntity> configurationResponse
+            = this.getDataSourceCredentialWithResponse(credentialId, context);
+        return new ResponseBase<Void, DataSourceCredentialEntity>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), configurationResponse.getValue(), null);
     }
 
     /**
@@ -2200,8 +2738,16 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataSourceCredentialEntity> getDataSourceCredentialWithResponse(String credentialId,
-                                                                                    Context context) {
-        return client.getDataSourceCredentialWithResponse(credentialId, context).block();
+        Context context) {
+        return getDataSourceCredentialWithResponseSync(credentialId, context);
+    }
+
+    Response<DataSourceCredentialEntity> getDataSourceCredentialWithResponseSync(String credentialId, Context context) {
+        Objects.requireNonNull(credentialId, "'credentialId' cannot be null.");
+
+        Response<DataSourceCredential> response
+            = service.getCredentialWithResponse(UUID.fromString(credentialId), context);
+        return new SimpleResponse<>(response, DataSourceCredentialEntityTransforms.fromInner(response.getValue()));
     }
 
     /**
@@ -2280,9 +2826,23 @@ public final class MetricsAdvisorAdministrationClient {
      * @throws NullPointerException thrown if the {@code credentialEntity} is null
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataSourceCredentialEntity> updateDataSourceCredentialWithResponse(
-            DataSourceCredentialEntity dataSourceCredential, Context context) {
-        return client.updateDataSourceCredentialWithResponse(dataSourceCredential, context).block();
+    public Response<DataSourceCredentialEntity>
+        updateDataSourceCredentialWithResponse(DataSourceCredentialEntity dataSourceCredential, Context context) {
+        return updateDataSourceCredentialWithResponseSync(dataSourceCredential, context);
+    }
+
+    Response<DataSourceCredentialEntity>
+        updateDataSourceCredentialWithResponseSync(DataSourceCredentialEntity dataSourceCredential, Context context) {
+        Objects.requireNonNull(dataSourceCredential, "dataSourceCredential is required");
+
+        final DataSourceCredentialPatch innerDataSourceCredential
+            = DataSourceCredentialEntityTransforms.toInnerForUpdate(dataSourceCredential);
+        Response<DataSourceCredential> response = service.updateCredentialWithResponse(
+            UUID.fromString(dataSourceCredential.getId()), innerDataSourceCredential, context);
+        Response<DataSourceCredentialEntity> configurationResponse
+            = getDataSourceCredentialWithResponse(dataSourceCredential.getId(), context);
+        return new ResponseBase<Void, DataSourceCredentialEntity>(response.getRequest(), response.getStatusCode(),
+            response.getHeaders(), configurationResponse.getValue(), null);
     }
 
     /**
@@ -2328,7 +2888,13 @@ public final class MetricsAdvisorAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDataSourceCredentialWithResponse(String credentialId, Context context) {
-        return client.deleteDataFeedWithResponse(credentialId, context).block();
+        return deleteDataSourceCredentialWithResponseSync(credentialId, context);
+    }
+
+    Response<Void> deleteDataSourceCredentialWithResponseSync(String credentialId, Context context) {
+        Objects.requireNonNull(credentialId, "'credentialId' is required.");
+
+        return service.deleteCredentialWithResponse(UUID.fromString(credentialId), context);
     }
 
     /**
@@ -2400,8 +2966,35 @@ public final class MetricsAdvisorAdministrationClient {
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials(
-        ListCredentialEntityOptions options, Context context) {
-        return new PagedIterable<>(client.listDataSourceCredentials(options, context));
+    public PagedIterable<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions options,
+        Context context) {
+        return listDataSourceCredentialsSync(options, context);
+    }
+
+    PagedIterable<DataSourceCredentialEntity> listDataSourceCredentialsSync(ListCredentialEntityOptions options,
+        Context context) {
+        return new PagedIterable<>(() -> listCredentialEntitiesSinglePageSync(options, context),
+            continuationToken -> listCredentialEntitiesSNextPageSync(continuationToken, context));
+    }
+
+    private PagedResponse<DataSourceCredentialEntity>
+        listCredentialEntitiesSinglePageSync(ListCredentialEntityOptions options, Context context) {
+        options = options != null ? options : new ListCredentialEntityOptions();
+        PagedResponse<DataSourceCredential> res
+            = service.listCredentialsSinglePage(options.getSkip(), options.getMaxPageSize(), context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().stream().map(DataSourceCredentialEntityTransforms::fromInner).collect(Collectors.toList()),
+            res.getContinuationToken(), null);
+    }
+
+    private PagedResponse<DataSourceCredentialEntity> listCredentialEntitiesSNextPageSync(String nextPageLink,
+        Context context) {
+        if (CoreUtils.isNullOrEmpty(nextPageLink)) {
+            return null;
+        }
+        PagedResponse<DataSourceCredential> res = service.listCredentialsNextSinglePage(nextPageLink, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().stream().map(DataSourceCredentialEntityTransforms::fromInner).collect(Collectors.toList()),
+            res.getContinuationToken(), null);
     }
 }

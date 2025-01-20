@@ -13,24 +13,26 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
 
-/** An instance of this class provides access to all the operations defined in TriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in TriggersClient.
+ */
 public interface TriggersClient {
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all trigger on the data box edge device.
+     * @return collection of all trigger on the data box edge device as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TriggerInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName);
 
     /**
      * Lists all the triggers configured in the device.
-     *
+     * 
      * @param deviceName The device name.
      * @param resourceGroupName The resource group name.
      * @param filter Specify $filter='CustomContextTag eq &lt;tag&gt;' to filter on custom context tag property.
@@ -38,15 +40,30 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of all trigger on the data box edge device.
+     * @return collection of all trigger on the data box edge device as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<TriggerInner> listByDataBoxEdgeDevice(
-        String deviceName, String resourceGroupName, String filter, Context context);
+    PagedIterable<TriggerInner> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, String filter,
+        Context context);
 
     /**
      * Get a specific trigger by name.
-     *
+     * 
+     * @param deviceName The device name.
+     * @param name The trigger name.
+     * @param resourceGroupName The resource group name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific trigger by name along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<TriggerInner> getWithResponse(String deviceName, String name, String resourceGroupName, Context context);
+
+    /**
+     * Get a specific trigger by name.
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -59,23 +76,8 @@ public interface TriggersClient {
     TriggerInner get(String deviceName, String name, String resourceGroupName);
 
     /**
-     * Get a specific trigger by name.
-     *
-     * @param deviceName The device name.
-     * @param name The trigger name.
-     * @param resourceGroupName The resource group name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific trigger by name.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TriggerInner> getWithResponse(String deviceName, String name, String resourceGroupName, Context context);
-
-    /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -83,15 +85,15 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger details.
+     * @return the {@link SyncPoller} for polling of trigger details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, TriggerInner trigger);
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -100,15 +102,15 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger details.
+     * @return the {@link SyncPoller} for polling of trigger details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<TriggerInner>, TriggerInner> beginCreateOrUpdate(String deviceName, String name,
+        String resourceGroupName, TriggerInner trigger, Context context);
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -123,7 +125,7 @@ public interface TriggersClient {
 
     /**
      * Creates or updates a trigger.
-     *
+     * 
      * @param deviceName Creates or updates a trigger.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -135,26 +137,26 @@ public interface TriggersClient {
      * @return trigger details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TriggerInner createOrUpdate(
-        String deviceName, String name, String resourceGroupName, TriggerInner trigger, Context context);
+    TriggerInner createOrUpdate(String deviceName, String name, String resourceGroupName, TriggerInner trigger,
+        Context context);
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName);
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -162,15 +164,15 @@ public interface TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String deviceName, String name, String resourceGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String deviceName, String name, String resourceGroupName,
+        Context context);
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.
@@ -183,7 +185,7 @@ public interface TriggersClient {
 
     /**
      * Deletes the trigger on the gateway device.
-     *
+     * 
      * @param deviceName The device name.
      * @param name The trigger name.
      * @param resourceGroupName The resource group name.

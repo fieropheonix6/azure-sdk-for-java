@@ -7,11 +7,10 @@ package com.azure.resourcemanager.delegatednetwork.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.OrchestratorInner;
-import com.azure.resourcemanager.delegatednetwork.models.ControllerDetails;
 import com.azure.resourcemanager.delegatednetwork.models.Orchestrator;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorIdentity;
-import com.azure.resourcemanager.delegatednetwork.models.OrchestratorInstanceState;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorKind;
+import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResourceProperties;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResourceUpdateParameters;
 import java.util.Collections;
 import java.util.Map;
@@ -54,36 +53,8 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
         return this.innerModel().identity();
     }
 
-    public String resourceGuid() {
-        return this.innerModel().resourceGuid();
-    }
-
-    public OrchestratorInstanceState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String orchestratorAppId() {
-        return this.innerModel().orchestratorAppId();
-    }
-
-    public String orchestratorTenantId() {
-        return this.innerModel().orchestratorTenantId();
-    }
-
-    public String clusterRootCA() {
-        return this.innerModel().clusterRootCA();
-    }
-
-    public String apiServerEndpoint() {
-        return this.innerModel().apiServerEndpoint();
-    }
-
-    public String privateLinkResourceId() {
-        return this.innerModel().privateLinkResourceId();
-    }
-
-    public ControllerDetails controllerDetails() {
-        return this.innerModel().controllerDetails();
+    public OrchestratorResourceProperties properties() {
+        return this.innerModel().properties();
     }
 
     public Region region() {
@@ -92,6 +63,10 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public OrchestratorInner innerModel() {
@@ -114,20 +89,16 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
     }
 
     public Orchestrator create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .create(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .create(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Orchestrator create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .create(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .create(resourceGroupName, resourceName, this.innerModel(), context);
         return this;
     }
 
@@ -143,51 +114,42 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
     }
 
     public Orchestrator apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .patchWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .patchWithResponse(resourceGroupName, resourceName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Orchestrator apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .patchWithResponse(resourceGroupName, resourceName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .patchWithResponse(resourceGroupName, resourceName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    OrchestratorImpl(
-        OrchestratorInner innerObject,
+    OrchestratorImpl(OrchestratorInner innerObject,
         com.azure.resourcemanager.delegatednetwork.DelegatedNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "orchestrators");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "orchestrators");
     }
 
     public Orchestrator refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Orchestrator refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getOrchestratorInstanceServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getOrchestratorInstanceServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
+            .getValue();
         return this;
     }
 
@@ -221,33 +183,8 @@ public final class OrchestratorImpl implements Orchestrator, Orchestrator.Defini
         return this;
     }
 
-    public OrchestratorImpl withOrchestratorAppId(String orchestratorAppId) {
-        this.innerModel().withOrchestratorAppId(orchestratorAppId);
-        return this;
-    }
-
-    public OrchestratorImpl withOrchestratorTenantId(String orchestratorTenantId) {
-        this.innerModel().withOrchestratorTenantId(orchestratorTenantId);
-        return this;
-    }
-
-    public OrchestratorImpl withClusterRootCA(String clusterRootCA) {
-        this.innerModel().withClusterRootCA(clusterRootCA);
-        return this;
-    }
-
-    public OrchestratorImpl withApiServerEndpoint(String apiServerEndpoint) {
-        this.innerModel().withApiServerEndpoint(apiServerEndpoint);
-        return this;
-    }
-
-    public OrchestratorImpl withPrivateLinkResourceId(String privateLinkResourceId) {
-        this.innerModel().withPrivateLinkResourceId(privateLinkResourceId);
-        return this;
-    }
-
-    public OrchestratorImpl withControllerDetails(ControllerDetails controllerDetails) {
-        this.innerModel().withControllerDetails(controllerDetails);
+    public OrchestratorImpl withProperties(OrchestratorResourceProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

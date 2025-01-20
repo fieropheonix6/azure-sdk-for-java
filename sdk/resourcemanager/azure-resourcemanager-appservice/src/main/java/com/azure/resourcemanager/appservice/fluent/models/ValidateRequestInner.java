@@ -6,39 +6,47 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ValidateResourceTypes;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Resource validation request content. */
+/**
+ * Resource validation request content.
+ */
 @Fluent
-public final class ValidateRequestInner {
+public final class ValidateRequestInner implements JsonSerializable<ValidateRequestInner> {
     /*
      * Resource name to verify.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * Resource type used for verification.
      */
-    @JsonProperty(value = "type", required = true)
     private ValidateResourceTypes type;
 
     /*
      * Expected location of the resource.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * Properties of the resource to validate.
      */
-    @JsonProperty(value = "properties", required = true)
     private ValidatePropertiesInner innerProperties = new ValidatePropertiesInner();
 
     /**
+     * Creates an instance of ValidateRequestInner class.
+     */
+    public ValidateRequestInner() {
+    }
+
+    /**
      * Get the name property: Resource name to verify.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +55,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the name property: Resource name to verify.
-     *
+     * 
      * @param name the name value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -58,7 +66,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the type property: Resource type used for verification.
-     *
+     * 
      * @return the type value.
      */
     public ValidateResourceTypes type() {
@@ -67,7 +75,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the type property: Resource type used for verification.
-     *
+     * 
      * @param type the type value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -78,7 +86,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the location property: Expected location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -87,7 +95,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the location property: Expected location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -98,7 +106,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the innerProperties property: Properties of the resource to validate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ValidatePropertiesInner innerProperties() {
@@ -107,7 +115,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the serverFarmId property: ARM resource ID of an App Service plan that would host the app.
-     *
+     * 
      * @return the serverFarmId value.
      */
     public String serverFarmId() {
@@ -116,7 +124,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the serverFarmId property: ARM resource ID of an App Service plan that would host the app.
-     *
+     * 
      * @param serverFarmId the serverFarmId value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -130,7 +138,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the skuName property: Name of the target SKU for the App Service plan.
-     *
+     * 
      * @return the skuName value.
      */
     public String skuName() {
@@ -139,7 +147,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the skuName property: Name of the target SKU for the App Service plan.
-     *
+     * 
      * @param skuName the skuName value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -154,7 +162,7 @@ public final class ValidateRequestInner {
     /**
      * Get the needLinuxWorkers property: &lt;code&gt;true&lt;/code&gt; if App Service plan is for Linux workers;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the needLinuxWorkers value.
      */
     public Boolean needLinuxWorkers() {
@@ -164,7 +172,7 @@ public final class ValidateRequestInner {
     /**
      * Set the needLinuxWorkers property: &lt;code&gt;true&lt;/code&gt; if App Service plan is for Linux workers;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param needLinuxWorkers the needLinuxWorkers value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -179,7 +187,7 @@ public final class ValidateRequestInner {
     /**
      * Get the isSpot property: &lt;code&gt;true&lt;/code&gt; if App Service plan is for Spot instances; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isSpot value.
      */
     public Boolean isSpot() {
@@ -189,7 +197,7 @@ public final class ValidateRequestInner {
     /**
      * Set the isSpot property: &lt;code&gt;true&lt;/code&gt; if App Service plan is for Spot instances; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param isSpot the isSpot value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -203,7 +211,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the capacity property: Target capacity of the App Service plan (number of VMs).
-     *
+     * 
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -212,7 +220,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the capacity property: Target capacity of the App Service plan (number of VMs).
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -227,7 +235,7 @@ public final class ValidateRequestInner {
     /**
      * Get the hostingEnvironment property: Name of App Service Environment where app or App Service plan should be
      * created.
-     *
+     * 
      * @return the hostingEnvironment value.
      */
     public String hostingEnvironment() {
@@ -237,7 +245,7 @@ public final class ValidateRequestInner {
     /**
      * Set the hostingEnvironment property: Name of App Service Environment where app or App Service plan should be
      * created.
-     *
+     * 
      * @param hostingEnvironment the hostingEnvironment value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -251,7 +259,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the isXenon property: &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a windows container.
-     *
+     * 
      * @return the isXenon value.
      */
     public Boolean isXenon() {
@@ -260,7 +268,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the isXenon property: &lt;code&gt;true&lt;/code&gt; if App Service plan is running as a windows container.
-     *
+     * 
      * @param isXenon the isXenon value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -274,7 +282,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the containerRegistryBaseUrl property: Base URL of the container registry.
-     *
+     * 
      * @return the containerRegistryBaseUrl value.
      */
     public String containerRegistryBaseUrl() {
@@ -283,7 +291,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the containerRegistryBaseUrl property: Base URL of the container registry.
-     *
+     * 
      * @param containerRegistryBaseUrl the containerRegistryBaseUrl value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -297,7 +305,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the containerRegistryUsername property: Username for to access the container registry.
-     *
+     * 
      * @return the containerRegistryUsername value.
      */
     public String containerRegistryUsername() {
@@ -306,7 +314,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the containerRegistryUsername property: Username for to access the container registry.
-     *
+     * 
      * @param containerRegistryUsername the containerRegistryUsername value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -320,7 +328,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the containerRegistryPassword property: Password for to access the container registry.
-     *
+     * 
      * @return the containerRegistryPassword value.
      */
     public String containerRegistryPassword() {
@@ -329,7 +337,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the containerRegistryPassword property: Password for to access the container registry.
-     *
+     * 
      * @param containerRegistryPassword the containerRegistryPassword value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -343,7 +351,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the containerImageRepository property: Repository name (image name).
-     *
+     * 
      * @return the containerImageRepository value.
      */
     public String containerImageRepository() {
@@ -352,7 +360,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the containerImageRepository property: Repository name (image name).
-     *
+     * 
      * @param containerImageRepository the containerImageRepository value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -366,7 +374,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the containerImageTag property: Image tag.
-     *
+     * 
      * @return the containerImageTag value.
      */
     public String containerImageTag() {
@@ -375,7 +383,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the containerImageTag property: Image tag.
-     *
+     * 
      * @param containerImageTag the containerImageTag value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -389,7 +397,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the containerImagePlatform property: Platform (windows or linux).
-     *
+     * 
      * @return the containerImagePlatform value.
      */
     public String containerImagePlatform() {
@@ -398,7 +406,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the containerImagePlatform property: Platform (windows or linux).
-     *
+     * 
      * @param containerImagePlatform the containerImagePlatform value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -412,7 +420,7 @@ public final class ValidateRequestInner {
 
     /**
      * Get the appServiceEnvironment property: App Service Environment Properties.
-     *
+     * 
      * @return the appServiceEnvironment value.
      */
     public AppServiceEnvironmentInner appServiceEnvironment() {
@@ -421,7 +429,7 @@ public final class ValidateRequestInner {
 
     /**
      * Set the appServiceEnvironment property: App Service Environment Properties.
-     *
+     * 
      * @param appServiceEnvironment the appServiceEnvironment value to set.
      * @return the ValidateRequestInner object itself.
      */
@@ -435,34 +443,76 @@ public final class ValidateRequestInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model ValidateRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ValidateRequestInner"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ValidateRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ValidateRequestInner"));
         }
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model ValidateRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model ValidateRequestInner"));
         }
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ValidateRequestInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ValidateRequestInner"));
         } else {
             innerProperties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ValidateRequestInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateRequestInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateRequestInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ValidateRequestInner.
+     */
+    public static ValidateRequestInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateRequestInner deserializedValidateRequestInner = new ValidateRequestInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedValidateRequestInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedValidateRequestInner.type = ValidateResourceTypes.fromString(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedValidateRequestInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedValidateRequestInner.innerProperties = ValidatePropertiesInner.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateRequestInner;
+        });
+    }
 }

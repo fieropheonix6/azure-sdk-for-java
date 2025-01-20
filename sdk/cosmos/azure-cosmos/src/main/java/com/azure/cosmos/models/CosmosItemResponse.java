@@ -4,17 +4,26 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
+import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.SerializationDiagnosticsContext;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * The type Cosmos item response. This contains the item and response methods
@@ -23,23 +32,60 @@ import java.util.Map;
  */
 public class CosmosItemResponse<T> {
     private final Class<T> itemClassType;
-    private final ItemDeserializer itemDeserializer;
-    byte[] responseBodyAsByteArray;
+    private final CosmosItemSerializer itemSerializer;
+
     //  Converting item to volatile to fix Double-checked locking - https://en.wikipedia.org/wiki/Double-checked_locking
     //  http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
     private volatile T item;
+    private volatile JsonNode itemBodyOverride;
     final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
 
-    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
-        this(response, response.getBodyAsByteArray(), classType, itemDeserializer);
+    private final AtomicBoolean hasTrackingIdCalculated = new AtomicBoolean(false);
+
+    private boolean hasTrackingId;
+
+    private final Supplier<Boolean> hasPayload;
+
+    CosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, CosmosItemSerializer itemSerializer) {
+        this.itemClassType = classType;
+        this.resourceResponse = response;
+        this.itemSerializer = itemSerializer;
+        this.item = null;
+        this.hasPayload = response::hasPayload;
+        this.itemBodyOverride = null;
     }
 
-    CosmosItemResponse(ResourceResponse<Document> response, byte[] responseBodyAsByteArray, Class<T> classType, ItemDeserializer itemDeserializer) {
+    private CosmosItemResponse(ResourceResponse<Document> response, T item, JsonNode itemBodyOverride, Class<T> classType, CosmosItemSerializer itemSerializer) {
         this.itemClassType = classType;
-        this.responseBodyAsByteArray = responseBodyAsByteArray;
         this.resourceResponse = response;
-        this.itemDeserializer = itemDeserializer;
+        this.itemSerializer = itemSerializer;
+        this.item = item;
+        this.itemBodyOverride = itemBodyOverride;
+        boolean hasPayloadStaticValue = item != null;
+        this.hasPayload = () -> hasPayloadStaticValue;
+    }
+
+    /**
+     * Gets the resource.
+     *
+     * @return the resource
+     */
+    @SuppressWarnings("unchecked") // Casting getProperties() to T is safe given T is of InternalObjectNode.
+    private byte[] getItemAsByteArray() {
+        if (item != null && this.itemClassType == Utils.byteArrayClass) {
+            return (byte[])item;
+        }
+
+        JsonNode effectiveJson = this.itemBodyOverride != null
+            ? this.itemBodyOverride
+            : this.resourceResponse.getBody();
+
+        if (effectiveJson == null) {
+            return null;
+        }
+
+        return effectiveJson.toString().getBytes(StandardCharsets.UTF_8);
     }
 
     /**
@@ -54,31 +100,59 @@ public class CosmosItemResponse<T> {
         }
 
         SerializationDiagnosticsContext serializationDiagnosticsContext = BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
-        if (item == null && this.itemClassType == InternalObjectNode.class) {
-            Instant serializationStartTime = Instant.now();
-            item =(T) getProperties();
-            Instant serializationEndTime = Instant.now();
-            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-                serializationStartTime,
-                serializationEndTime,
-                SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
-            );
-            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
-            return item;
-        }
 
         if (item == null) {
             synchronized (this) {
-                if (item == null && !Utils.isEmpty(responseBodyAsByteArray)) {
-                    Instant serializationStartTime = Instant.now();
-                    item = Utils.parse(responseBodyAsByteArray, itemClassType, itemDeserializer);
-                    Instant serializationEndTime = Instant.now();
-                    SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
-                        serializationStartTime,
-                        serializationEndTime,
-                        SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
-                    );
-                    serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                if (item == null && hasPayload.get()) {
+                    if (this.itemClassType == Utils.byteArrayClass) {
+                        Instant serializationStartTime = Instant.now();
+                        JsonNode json = this.resourceResponse.getBody();
+                        item = (T) json.toString().getBytes(StandardCharsets.UTF_8);
+                        Instant serializationEndTime = Instant.now();
+                        SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                            serializationStartTime,
+                            serializationEndTime,
+                            SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                        );
+                        serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                        return item;
+                    } else if (this.itemClassType == String.class) {
+                        Instant serializationStartTime = Instant.now();
+                        JsonNode json = this.resourceResponse.getBody();
+                        item = (T) json.toString();
+                        Instant serializationEndTime = Instant.now();
+                        SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                            serializationStartTime,
+                            serializationEndTime,
+                            SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                        );
+                        serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                        return item;
+                    } else if (this.itemClassType == InternalObjectNode.class) {
+                        Instant serializationStartTime = Instant.now();
+                        item = (T) getProperties();
+                        Instant serializationEndTime = Instant.now();
+                        SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                            serializationStartTime,
+                            serializationEndTime,
+                            SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                        );
+                        serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                        return item;
+                    } else {
+                        Instant serializationStartTime = Instant.now();
+                        item = Utils.parse((ObjectNode)this.resourceResponse.getBody(), itemClassType, itemSerializer);
+
+                        Instant serializationEndTime = Instant.now();
+                        SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(
+                            serializationStartTime,
+                            serializationEndTime,
+                            SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                        );
+                        serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+                    }
+
+                    return item;
                 }
             }
         }
@@ -96,12 +170,16 @@ public class CosmosItemResponse<T> {
         return props;
     }
 
+    int getResponsePayloadLength() {
+        return this.resourceResponse.getResponsePayloadLength();
+    }
+
     private void ensureInternalObjectNodeInitialized() {
         synchronized (this) {
-            if (Utils.isEmpty(responseBodyAsByteArray)) {
+            if (!this.resourceResponse.hasPayload()) {
                 props = null;
             } else {
-                props = new InternalObjectNode(responseBodyAsByteArray);
+                props = new InternalObjectNode((ObjectNode)this.resourceResponse.getBody());
             }
 
         }
@@ -195,7 +273,6 @@ public class CosmosItemResponse<T> {
     /**
      * Gets the ETag from the response headers.
      * This is only relevant when getting response from the server.
-     *
      * Null in case of delete operation.
      *
      * @return ETag
@@ -204,29 +281,100 @@ public class CosmosItemResponse<T> {
         return resourceResponse.getETag();
     }
 
+    CosmosItemResponse<T> withRemappedStatusCode(
+        int statusCode,
+        double additionalRequestCharge,
+        boolean isContentResponseOnWriteEnabled) {
+
+        ResourceResponse<Document> mappedResourceResponse =
+            this.resourceResponse.withRemappedStatusCode(statusCode, additionalRequestCharge);
+
+        T payload = null;
+        JsonNode itemBodyOverride = null;
+        if (isContentResponseOnWriteEnabled) {
+            payload = this.getItem();
+            itemBodyOverride = this.itemBodyOverride;
+        }
+
+        return new CosmosItemResponse<>(
+            mappedResourceResponse, payload, itemBodyOverride, this.itemClassType, this.itemSerializer);
+    }
+
+    boolean hasTrackingId(String candidate) {
+        if (this.hasTrackingIdCalculated.compareAndSet(false, true)) {
+            SerializationDiagnosticsContext serializationDiagnosticsContext =
+                BridgeInternal.getSerializationDiagnosticsContext(this.getDiagnostics());
+            Instant serializationStartTime = Instant.now();
+            InternalObjectNode itemNode = getProperties();
+            Instant serializationEndTime = Instant.now();
+            SerializationDiagnosticsContext.SerializationDiagnostics diagnostics =
+                new SerializationDiagnosticsContext.SerializationDiagnostics(
+                    serializationStartTime,
+                    serializationEndTime,
+                    SerializationDiagnosticsContext.SerializationType.ITEM_DESERIALIZATION
+                );
+            serializationDiagnosticsContext.addSerializationDiagnostics(diagnostics);
+
+            return this.hasTrackingId = (itemNode != null && candidate.equals(itemNode.get(Constants.Properties.TRACKING_ID)));
+        } else {
+            return this.hasTrackingId;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
     static void initialize() {
         ImplementationBridgeHelpers.CosmosItemResponseHelper.setCosmosItemResponseBuilderAccessor(
             new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
-                public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
-                                                                          byte[] contentAsByteArray,
+                public <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosItemResponse<byte[]> response,
                                                                           Class<T> classType,
-                                                                          ItemDeserializer itemDeserializer) {
-                    return new CosmosItemResponse<>(response, contentAsByteArray, classType, itemDeserializer);
+                                                                          CosmosItemSerializer serializer) {
+                    return new CosmosItemResponse<>(
+                        response.resourceResponse,
+                        Utils.parse(response.getItemAsByteArray(), classType, serializer),
+                        response.itemBodyOverride,
+                        classType,
+                        serializer);
+                }
+
+                @Override
+                public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response, Class<T> classType, CosmosItemSerializer serializer) {
+                    return new CosmosItemResponse<>(
+                        response,
+                        classType,
+                        serializer);
+                }
+
+                @Override
+                public <T> CosmosItemResponse<T> withRemappedStatusCode(CosmosItemResponse<T> originalResponse,
+                                                                        int newStatusCode,
+                                                                        double additionalRequestCharge,
+                                                                        boolean isContentResponseOnWriteEnabled) {
+
+                    return originalResponse
+                        .withRemappedStatusCode(newStatusCode, additionalRequestCharge, isContentResponseOnWriteEnabled);
                 }
 
                 public byte[] getByteArrayContent(CosmosItemResponse<byte[]> response) {
-                    return response.responseBodyAsByteArray;
+                    return response.getItemAsByteArray();
                 }
 
-                public void setByteArrayContent(CosmosItemResponse<byte[]> response, byte[] content) {
-                    response.responseBodyAsByteArray = content;
+                public void setByteArrayContent(CosmosItemResponse<byte[]> response, Pair<byte[], JsonNode> content) {
+                    response.item = content.getLeft();
+                    response.itemBodyOverride = content.getRight();
                 }
 
                 public ResourceResponse<Document> getResourceResponse(CosmosItemResponse<byte[]> response) {
                     return response.resourceResponse;
+                }
+
+                @Override
+                public boolean hasTrackingId(CosmosItemResponse<?> response, String candidate) {
+                    checkNotNull(response, "Argument 'response' must not be null.");
+                    checkNotNull(candidate, "Argument 'candidate' must not be null.");
+
+                    return response.hasTrackingId(candidate);
                 }
             });
     }

@@ -4,18 +4,24 @@
 
 package com.azure.resourcemanager.datalakestore.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for EncryptionConfigType. */
+/**
+ * The type of encryption configuration being used. Currently the only supported types are 'UserManaged' and
+ * 'ServiceManaged'.
+ */
 public enum EncryptionConfigType {
-    /** Enum value UserManaged. */
+    /**
+     * Enum value UserManaged.
+     */
     USER_MANAGED("UserManaged"),
 
-    /** Enum value ServiceManaged. */
+    /**
+     * Enum value ServiceManaged.
+     */
     SERVICE_MANAGED("ServiceManaged");
 
-    /** The actual serialized value for a EncryptionConfigType instance. */
+    /**
+     * The actual serialized value for a EncryptionConfigType instance.
+     */
     private final String value;
 
     EncryptionConfigType(String value) {
@@ -24,12 +30,14 @@ public enum EncryptionConfigType {
 
     /**
      * Parses a serialized value to a EncryptionConfigType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EncryptionConfigType object, or null if unable to parse.
      */
-    @JsonCreator
     public static EncryptionConfigType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EncryptionConfigType[] items = EncryptionConfigType.values();
         for (EncryptionConfigType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +47,9 @@ public enum EncryptionConfigType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

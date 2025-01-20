@@ -5,43 +5,65 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningStateType. */
+/**
+ * ARM provisioning state, see
+ * https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#provisioningstate-property.
+ */
 public final class ProvisioningStateType extends ExpandableStringEnum<ProvisioningStateType> {
-    /** Static value Succeeded for ProvisioningStateType. */
+    /**
+     * Static value Succeeded for ProvisioningStateType.
+     */
     public static final ProvisioningStateType SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for ProvisioningStateType. */
+    /**
+     * Static value Failed for ProvisioningStateType.
+     */
     public static final ProvisioningStateType FAILED = fromString("Failed");
 
-    /** Static value Cancelled for ProvisioningStateType. */
-    public static final ProvisioningStateType CANCELLED = fromString("Cancelled");
+    /**
+     * Static value Canceled for ProvisioningStateType.
+     */
+    public static final ProvisioningStateType CANCELED = fromString("Canceled");
 
-    /** Static value Creating for ProvisioningStateType. */
+    /**
+     * Static value Creating for ProvisioningStateType.
+     */
     public static final ProvisioningStateType CREATING = fromString("Creating");
 
-    /** Static value Deleting for ProvisioningStateType. */
+    /**
+     * Static value Deleting for ProvisioningStateType.
+     */
     public static final ProvisioningStateType DELETING = fromString("Deleting");
 
-    /** Static value Updating for ProvisioningStateType. */
+    /**
+     * Static value Updating for ProvisioningStateType.
+     */
     public static final ProvisioningStateType UPDATING = fromString("Updating");
 
     /**
+     * Creates a new instance of ProvisioningStateType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProvisioningStateType() {
+    }
+
+    /**
      * Creates or finds a ProvisioningStateType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProvisioningStateType.
      */
-    @JsonCreator
     public static ProvisioningStateType fromString(String name) {
         return fromString(name, ProvisioningStateType.class);
     }
 
     /**
      * Gets known ProvisioningStateType values.
-     *
+     * 
      * @return known ProvisioningStateType values.
      */
     public static Collection<ProvisioningStateType> values() {

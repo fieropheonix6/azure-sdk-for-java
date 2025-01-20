@@ -8,49 +8,44 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlTempDbSettings;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlTempDbSettingsTests {
-    @Test
-    public void testDeserialize() {
-        SqlTempDbSettings model =
-            BinaryData
-                .fromString(
-                    "{\"dataFileSize\":1610498845,\"dataGrowth\":650318692,\"logFileSize\":315992042,\"logGrowth\":2071345899,\"dataFileCount\":1202809910,\"persistFolder\":true,\"persistFolderPath\":\"rp\",\"luns\":[1035885378,380689806],\"defaultFilePath\":\"nuqqkpikadrgvt\"}")
-                .toObject(SqlTempDbSettings.class);
-        Assertions.assertEquals(1610498845, model.dataFileSize());
-        Assertions.assertEquals(650318692, model.dataGrowth());
-        Assertions.assertEquals(315992042, model.logFileSize());
-        Assertions.assertEquals(2071345899, model.logGrowth());
-        Assertions.assertEquals(1202809910, model.dataFileCount());
-        Assertions.assertEquals(true, model.persistFolder());
-        Assertions.assertEquals("rp", model.persistFolderPath());
-        Assertions.assertEquals(1035885378, model.luns().get(0));
-        Assertions.assertEquals("nuqqkpikadrgvt", model.defaultFilePath());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SqlTempDbSettings model = BinaryData.fromString(
+            "{\"dataFileSize\":26085617,\"dataGrowth\":998039935,\"logFileSize\":1027022233,\"logGrowth\":1162722818,\"dataFileCount\":1075133602,\"persistFolder\":false,\"persistFolderPath\":\"ddystkiiuxhqy\",\"luns\":[186143874,2120884016],\"defaultFilePath\":\"qn\"}")
+            .toObject(SqlTempDbSettings.class);
+        Assertions.assertEquals(26085617, model.dataFileSize());
+        Assertions.assertEquals(998039935, model.dataGrowth());
+        Assertions.assertEquals(1027022233, model.logFileSize());
+        Assertions.assertEquals(1162722818, model.logGrowth());
+        Assertions.assertEquals(1075133602, model.dataFileCount());
+        Assertions.assertEquals(false, model.persistFolder());
+        Assertions.assertEquals("ddystkiiuxhqy", model.persistFolderPath());
+        Assertions.assertEquals(186143874, model.luns().get(0));
+        Assertions.assertEquals("qn", model.defaultFilePath());
     }
 
-    @Test
-    public void testSerialize() {
-        SqlTempDbSettings model =
-            new SqlTempDbSettings()
-                .withDataFileSize(1610498845)
-                .withDataGrowth(650318692)
-                .withLogFileSize(315992042)
-                .withLogGrowth(2071345899)
-                .withDataFileCount(1202809910)
-                .withPersistFolder(true)
-                .withPersistFolderPath("rp")
-                .withLuns(Arrays.asList(1035885378, 380689806))
-                .withDefaultFilePath("nuqqkpikadrgvt");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SqlTempDbSettings model = new SqlTempDbSettings().withDataFileSize(26085617)
+            .withDataGrowth(998039935)
+            .withLogFileSize(1027022233)
+            .withLogGrowth(1162722818)
+            .withDataFileCount(1075133602)
+            .withPersistFolder(false)
+            .withPersistFolderPath("ddystkiiuxhqy")
+            .withLuns(Arrays.asList(186143874, 2120884016))
+            .withDefaultFilePath("qn");
         model = BinaryData.fromObject(model).toObject(SqlTempDbSettings.class);
-        Assertions.assertEquals(1610498845, model.dataFileSize());
-        Assertions.assertEquals(650318692, model.dataGrowth());
-        Assertions.assertEquals(315992042, model.logFileSize());
-        Assertions.assertEquals(2071345899, model.logGrowth());
-        Assertions.assertEquals(1202809910, model.dataFileCount());
-        Assertions.assertEquals(true, model.persistFolder());
-        Assertions.assertEquals("rp", model.persistFolderPath());
-        Assertions.assertEquals(1035885378, model.luns().get(0));
-        Assertions.assertEquals("nuqqkpikadrgvt", model.defaultFilePath());
+        Assertions.assertEquals(26085617, model.dataFileSize());
+        Assertions.assertEquals(998039935, model.dataGrowth());
+        Assertions.assertEquals(1027022233, model.logFileSize());
+        Assertions.assertEquals(1162722818, model.logGrowth());
+        Assertions.assertEquals(1075133602, model.dataFileCount());
+        Assertions.assertEquals(false, model.persistFolder());
+        Assertions.assertEquals("ddystkiiuxhqy", model.persistFolderPath());
+        Assertions.assertEquals(186143874, model.luns().get(0));
+        Assertions.assertEquals("qn", model.defaultFilePath());
     }
 }

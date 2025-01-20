@@ -7,20 +7,19 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ManagedIdentitySettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedIdentitySettingsTests {
-    @Test
-    public void testDeserialize() {
-        ManagedIdentitySettings model =
-            BinaryData.fromString("{\"resource\":\"exilzznfqqnvwpmq\"}").toObject(ManagedIdentitySettings.class);
-        Assertions.assertEquals("exilzznfqqnvwpmq", model.resource());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ManagedIdentitySettings model
+            = BinaryData.fromString("{\"resource\":\"udfdlwgg\"}").toObject(ManagedIdentitySettings.class);
+        Assertions.assertEquals("udfdlwgg", model.resource());
     }
 
-    @Test
-    public void testSerialize() {
-        ManagedIdentitySettings model = new ManagedIdentitySettings().withResource("exilzznfqqnvwpmq");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ManagedIdentitySettings model = new ManagedIdentitySettings().withResource("udfdlwgg");
         model = BinaryData.fromObject(model).toObject(ManagedIdentitySettings.class);
-        Assertions.assertEquals("exilzznfqqnvwpmq", model.resource());
+        Assertions.assertEquals("udfdlwgg", model.resource());
     }
 }

@@ -5,37 +5,43 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.UpgradeOperationHistoricalStatusInfoProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Virtual Machine Scale Set OS Upgrade History operation response. */
+/**
+ * Virtual Machine Scale Set OS Upgrade History operation response.
+ */
 @Immutable
-public final class UpgradeOperationHistoricalStatusInfoInner {
+public final class UpgradeOperationHistoricalStatusInfoInner
+    implements JsonSerializable<UpgradeOperationHistoricalStatusInfoInner> {
     /*
      * Information about the properties of the upgrade operation.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private UpgradeOperationHistoricalStatusInfoProperties properties;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Resource location
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
-    /** Creates an instance of UpgradeOperationHistoricalStatusInfoInner class. */
+    /**
+     * Creates an instance of UpgradeOperationHistoricalStatusInfoInner class.
+     */
     public UpgradeOperationHistoricalStatusInfoInner() {
     }
 
     /**
      * Get the properties property: Information about the properties of the upgrade operation.
-     *
+     * 
      * @return the properties value.
      */
     public UpgradeOperationHistoricalStatusInfoProperties properties() {
@@ -44,7 +50,7 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -53,7 +59,7 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -62,12 +68,53 @@ public final class UpgradeOperationHistoricalStatusInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradeOperationHistoricalStatusInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradeOperationHistoricalStatusInfoInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpgradeOperationHistoricalStatusInfoInner.
+     */
+    public static UpgradeOperationHistoricalStatusInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradeOperationHistoricalStatusInfoInner deserializedUpgradeOperationHistoricalStatusInfoInner
+                = new UpgradeOperationHistoricalStatusInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoInner.properties
+                        = UpgradeOperationHistoricalStatusInfoProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedUpgradeOperationHistoricalStatusInfoInner.location = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradeOperationHistoricalStatusInfoInner;
+        });
     }
 }

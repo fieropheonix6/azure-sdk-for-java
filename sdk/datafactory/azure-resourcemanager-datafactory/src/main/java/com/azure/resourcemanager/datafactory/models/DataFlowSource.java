@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Transformation for data flow source. */
+/**
+ * Transformation for data flow source.
+ */
 @Fluent
 public class DataFlowSource extends Transformation {
     /*
      * Schema linked service reference.
      */
-    @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
 
-    /** Creates an instance of DataFlowSource class. */
+    /**
+     * Creates an instance of DataFlowSource class.
+     */
     public DataFlowSource() {
     }
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @return the schemaLinkedService value.
      */
     public LinkedServiceReference schemaLinkedService() {
@@ -31,7 +38,7 @@ public class DataFlowSource extends Transformation {
 
     /**
      * Set the schemaLinkedService property: Schema linked service reference.
-     *
+     * 
      * @param schemaLinkedService the schemaLinkedService value to set.
      * @return the DataFlowSource object itself.
      */
@@ -40,35 +47,45 @@ public class DataFlowSource extends Transformation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withDataset(DatasetReference dataset) {
         super.withDataset(dataset);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withLinkedService(LinkedServiceReference linkedService) {
         super.withLinkedService(linkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowSource withFlowlet(DataFlowReference flowlet) {
         super.withFlowlet(flowlet);
@@ -77,14 +94,80 @@ public class DataFlowSource extends Transformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (schemaLinkedService() != null) {
             schemaLinkedService().validate();
         }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DataFlowSource"));
+        }
+        if (dataset() != null) {
+            dataset().validate();
+        }
+        if (linkedService() != null) {
+            linkedService().validate();
+        }
+        if (flowlet() != null) {
+            flowlet().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowSource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeJsonField("dataset", dataset());
+        jsonWriter.writeJsonField("linkedService", linkedService());
+        jsonWriter.writeJsonField("flowlet", flowlet());
+        jsonWriter.writeJsonField("schemaLinkedService", this.schemaLinkedService);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowSource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowSource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowSource.
+     */
+    public static DataFlowSource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowSource deserializedDataFlowSource = new DataFlowSource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDataFlowSource.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedDataFlowSource.withDescription(reader.getString());
+                } else if ("dataset".equals(fieldName)) {
+                    deserializedDataFlowSource.withDataset(DatasetReference.fromJson(reader));
+                } else if ("linkedService".equals(fieldName)) {
+                    deserializedDataFlowSource.withLinkedService(LinkedServiceReference.fromJson(reader));
+                } else if ("flowlet".equals(fieldName)) {
+                    deserializedDataFlowSource.withFlowlet(DataFlowReference.fromJson(reader));
+                } else if ("schemaLinkedService".equals(fieldName)) {
+                    deserializedDataFlowSource.schemaLinkedService = LinkedServiceReference.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowSource;
+        });
     }
 }

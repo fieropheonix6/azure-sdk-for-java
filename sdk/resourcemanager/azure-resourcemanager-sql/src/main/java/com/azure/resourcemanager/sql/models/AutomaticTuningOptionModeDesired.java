@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.sql.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for AutomaticTuningOptionModeDesired. */
+/**
+ * Automatic tuning option desired state.
+ */
 public enum AutomaticTuningOptionModeDesired {
-    /** Enum value Off. */
+    /**
+     * Enum value Off.
+     */
     OFF("Off"),
 
-    /** Enum value On. */
+    /**
+     * Enum value On.
+     */
     ON("On"),
 
-    /** Enum value Default. */
+    /**
+     * Enum value Default.
+     */
     DEFAULT("Default");
 
-    /** The actual serialized value for a AutomaticTuningOptionModeDesired instance. */
+    /**
+     * The actual serialized value for a AutomaticTuningOptionModeDesired instance.
+     */
     private final String value;
 
     AutomaticTuningOptionModeDesired(String value) {
@@ -27,12 +34,14 @@ public enum AutomaticTuningOptionModeDesired {
 
     /**
      * Parses a serialized value to a AutomaticTuningOptionModeDesired instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutomaticTuningOptionModeDesired object, or null if unable to parse.
      */
-    @JsonCreator
     public static AutomaticTuningOptionModeDesired fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AutomaticTuningOptionModeDesired[] items = AutomaticTuningOptionModeDesired.values();
         for (AutomaticTuningOptionModeDesired item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum AutomaticTuningOptionModeDesired {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

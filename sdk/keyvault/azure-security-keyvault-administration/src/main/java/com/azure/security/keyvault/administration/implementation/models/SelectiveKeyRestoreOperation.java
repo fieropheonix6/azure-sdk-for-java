@@ -5,53 +5,59 @@
 package com.azure.security.keyvault.administration.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
-/** Selective Key Restore operation. */
+/**
+ * Selective Key Restore operation.
+ */
 @Fluent
-public final class SelectiveKeyRestoreOperation {
+public final class SelectiveKeyRestoreOperation implements JsonSerializable<SelectiveKeyRestoreOperation> {
     /*
      * Status of the restore operation.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The status details of restore operation.
      */
-    @JsonProperty(value = "statusDetails")
     private String statusDetails;
 
     /*
      * Error encountered, if any, during the selective key restore operation.
      */
-    @JsonProperty(value = "error")
     private Error error;
 
     /*
      * Identifier for the selective key restore operation.
      */
-    @JsonProperty(value = "jobId")
     private String jobId;
 
     /*
      * The start time of the restore operation
      */
-    @JsonProperty(value = "startTime")
     private Long startTime;
 
     /*
      * The end time of the restore operation
      */
-    @JsonProperty(value = "endTime")
     private Long endTime;
 
-    /** Creates an instance of SelectiveKeyRestoreOperation class. */
-    public SelectiveKeyRestoreOperation() {}
+    /**
+     * Creates an instance of SelectiveKeyRestoreOperation class.
+     */
+    public SelectiveKeyRestoreOperation() {
+    }
 
     /**
      * Get the status property: Status of the restore operation.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -60,7 +66,7 @@ public final class SelectiveKeyRestoreOperation {
 
     /**
      * Set the status property: Status of the restore operation.
-     *
+     * 
      * @param status the status value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -71,7 +77,7 @@ public final class SelectiveKeyRestoreOperation {
 
     /**
      * Get the statusDetails property: The status details of restore operation.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String getStatusDetails() {
@@ -80,7 +86,7 @@ public final class SelectiveKeyRestoreOperation {
 
     /**
      * Set the statusDetails property: The status details of restore operation.
-     *
+     * 
      * @param statusDetails the statusDetails value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -91,7 +97,7 @@ public final class SelectiveKeyRestoreOperation {
 
     /**
      * Get the error property: Error encountered, if any, during the selective key restore operation.
-     *
+     * 
      * @return the error value.
      */
     public Error getError() {
@@ -100,7 +106,7 @@ public final class SelectiveKeyRestoreOperation {
 
     /**
      * Set the error property: Error encountered, if any, during the selective key restore operation.
-     *
+     * 
      * @param error the error value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -111,7 +117,7 @@ public final class SelectiveKeyRestoreOperation {
 
     /**
      * Get the jobId property: Identifier for the selective key restore operation.
-     *
+     * 
      * @return the jobId value.
      */
     public String getJobId() {
@@ -120,7 +126,7 @@ public final class SelectiveKeyRestoreOperation {
 
     /**
      * Set the jobId property: Identifier for the selective key restore operation.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
@@ -131,41 +137,106 @@ public final class SelectiveKeyRestoreOperation {
 
     /**
      * Get the startTime property: The start time of the restore operation.
-     *
+     * 
      * @return the startTime value.
      */
-    public Long getStartTime() {
-        return this.startTime;
+    public OffsetDateTime getStartTime() {
+        if (this.startTime == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.startTime), ZoneOffset.UTC);
     }
 
     /**
      * Set the startTime property: The start time of the restore operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
-    public SelectiveKeyRestoreOperation setStartTime(Long startTime) {
-        this.startTime = startTime;
+    public SelectiveKeyRestoreOperation setStartTime(OffsetDateTime startTime) {
+        if (startTime == null) {
+            this.startTime = null;
+        } else {
+            this.startTime = startTime.toEpochSecond();
+        }
         return this;
     }
 
     /**
      * Get the endTime property: The end time of the restore operation.
-     *
+     * 
      * @return the endTime value.
      */
-    public Long getEndTime() {
-        return this.endTime;
+    public OffsetDateTime getEndTime() {
+        if (this.endTime == null) {
+            return null;
+        }
+        return OffsetDateTime.ofInstant(Instant.ofEpochSecond(this.endTime), ZoneOffset.UTC);
     }
 
     /**
      * Set the endTime property: The end time of the restore operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the SelectiveKeyRestoreOperation object itself.
      */
-    public SelectiveKeyRestoreOperation setEndTime(Long endTime) {
-        this.endTime = endTime;
+    public SelectiveKeyRestoreOperation setEndTime(OffsetDateTime endTime) {
+        if (endTime == null) {
+            this.endTime = null;
+        } else {
+            this.endTime = endTime.toEpochSecond();
+        }
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("statusDetails", this.statusDetails);
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("jobId", this.jobId);
+        jsonWriter.writeNumberField("startTime", this.startTime);
+        jsonWriter.writeNumberField("endTime", this.endTime);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelectiveKeyRestoreOperation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelectiveKeyRestoreOperation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SelectiveKeyRestoreOperation.
+     */
+    public static SelectiveKeyRestoreOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SelectiveKeyRestoreOperation deserializedSelectiveKeyRestoreOperation = new SelectiveKeyRestoreOperation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedSelectiveKeyRestoreOperation.status = reader.getString();
+                } else if ("statusDetails".equals(fieldName)) {
+                    deserializedSelectiveKeyRestoreOperation.statusDetails = reader.getString();
+                } else if ("error".equals(fieldName)) {
+                    deserializedSelectiveKeyRestoreOperation.error = Error.fromJson(reader);
+                } else if ("jobId".equals(fieldName)) {
+                    deserializedSelectiveKeyRestoreOperation.jobId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedSelectiveKeyRestoreOperation.startTime = reader.getNullable(JsonReader::getLong);
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedSelectiveKeyRestoreOperation.endTime = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSelectiveKeyRestoreOperation;
+        });
     }
 }

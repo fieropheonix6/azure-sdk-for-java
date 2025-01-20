@@ -14,32 +14,43 @@ import com.azure.resourcemanager.logic.fluent.models.WorkflowRunActionInner;
 import com.azure.resourcemanager.logic.models.ExpressionRoot;
 import com.azure.resourcemanager.logic.models.WorkflowRunAction;
 import com.azure.resourcemanager.logic.models.WorkflowRunActions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowRunActionsImpl implements WorkflowRunActions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunActionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunActionsImpl.class);
 
     private final WorkflowRunActionsClient innerClient;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowRunActionsImpl(
-        WorkflowRunActionsClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public WorkflowRunActionsImpl(WorkflowRunActionsClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<WorkflowRunAction> list(String resourceGroupName, String workflowName, String runName) {
-        PagedIterable<WorkflowRunActionInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, runName);
-        return Utils.mapPage(inner, inner1 -> new WorkflowRunActionImpl(inner1, this.manager()));
+        PagedIterable<WorkflowRunActionInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, runName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowRunActionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkflowRunAction> list(
-        String resourceGroupName, String workflowName, String runName, Integer top, String filter, Context context) {
-        PagedIterable<WorkflowRunActionInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, runName, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new WorkflowRunActionImpl(inner1, this.manager()));
+    public PagedIterable<WorkflowRunAction> list(String resourceGroupName, String workflowName, String runName,
+        Integer top, String filter, Context context) {
+        PagedIterable<WorkflowRunActionInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, runName, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowRunActionImpl(inner1, this.manager()));
+    }
+
+    public Response<WorkflowRunAction> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String actionName, Context context) {
+        Response<WorkflowRunActionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workflowName, runName, actionName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkflowRunActionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public WorkflowRunAction get(String resourceGroupName, String workflowName, String runName, String actionName) {
@@ -51,28 +62,13 @@ public final class WorkflowRunActionsImpl implements WorkflowRunActions {
         }
     }
 
-    public Response<WorkflowRunAction> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
-        Response<WorkflowRunActionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workflowName, runName, actionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WorkflowRunActionImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public PagedIterable<ExpressionRoot> listExpressionTraces(
-        String resourceGroupName, String workflowName, String runName, String actionName) {
+    public PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String workflowName,
+        String runName, String actionName) {
         return this.serviceClient().listExpressionTraces(resourceGroupName, workflowName, runName, actionName);
     }
 
-    public PagedIterable<ExpressionRoot> listExpressionTraces(
-        String resourceGroupName, String workflowName, String runName, String actionName, Context context) {
+    public PagedIterable<ExpressionRoot> listExpressionTraces(String resourceGroupName, String workflowName,
+        String runName, String actionName, Context context) {
         return this.serviceClient().listExpressionTraces(resourceGroupName, workflowName, runName, actionName, context);
     }
 

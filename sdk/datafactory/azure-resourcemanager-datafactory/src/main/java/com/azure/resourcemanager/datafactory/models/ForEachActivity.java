@@ -6,58 +6,103 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.ForEachActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** This activity is used for iterating over a collection and execute given activities. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ForEach")
+/**
+ * This activity is used for iterating over a collection and execute given activities.
+ */
 @Fluent
 public final class ForEachActivity extends ControlActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "ForEach";
+
+    /*
      * ForEach activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private ForEachActivityTypeProperties innerTypeProperties = new ForEachActivityTypeProperties();
 
-    /** Creates an instance of ForEachActivity class. */
+    /**
+     * Creates an instance of ForEachActivity class.
+     */
     public ForEachActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: ForEach activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private ForEachActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ForEachActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ForEachActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ForEachActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -66,7 +111,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Get the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @return the isSequential value.
      */
     public Boolean isSequential() {
@@ -75,7 +120,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Set the isSequential property: Should the loop be executed in sequence or in parallel (max 50).
-     *
+     * 
      * @param isSequential the isSequential value to set.
      * @return the ForEachActivity object itself.
      */
@@ -90,7 +135,7 @@ public final class ForEachActivity extends ControlActivity {
     /**
      * Get the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @return the batchCount value.
      */
     public Integer batchCount() {
@@ -100,7 +145,7 @@ public final class ForEachActivity extends ControlActivity {
     /**
      * Set the batchCount property: Batch count to be used for controlling the number of parallel execution (when
      * isSequential is set to false).
-     *
+     * 
      * @param batchCount the batchCount value to set.
      * @return the ForEachActivity object itself.
      */
@@ -114,7 +159,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Get the items property: Collection to iterate.
-     *
+     * 
      * @return the items value.
      */
     public Expression items() {
@@ -123,7 +168,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Set the items property: Collection to iterate.
-     *
+     * 
      * @param items the items value to set.
      * @return the ForEachActivity object itself.
      */
@@ -137,7 +182,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Get the activities property: List of activities to execute .
-     *
+     * 
      * @return the activities value.
      */
     public List<Activity> activities() {
@@ -146,7 +191,7 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Set the activities property: List of activities to execute .
-     *
+     * 
      * @param activities the activities value to set.
      * @return the ForEachActivity object itself.
      */
@@ -160,21 +205,103 @@ public final class ForEachActivity extends ControlActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ForEachActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ForEachActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ForEachActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ForEachActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ForEachActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ForEachActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ForEachActivity.
+     */
+    public static ForEachActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ForEachActivity deserializedForEachActivity = new ForEachActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedForEachActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedForEachActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedForEachActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedForEachActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedForEachActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedForEachActivity.withUserProperties(userProperties);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedForEachActivity.innerTypeProperties = ForEachActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedForEachActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedForEachActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedForEachActivity;
+        });
+    }
 }

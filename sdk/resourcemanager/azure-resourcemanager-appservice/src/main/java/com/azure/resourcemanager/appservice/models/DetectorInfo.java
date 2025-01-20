@@ -5,69 +5,72 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Definition of Detector. */
+/**
+ * Definition of Detector.
+ */
 @Immutable
-public final class DetectorInfo {
+public final class DetectorInfo implements JsonSerializable<DetectorInfo> {
     /*
      * Id of detector
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Name of detector
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Short description of the detector and its purpose.
      */
-    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
 
     /*
      * Author of the detector.
      */
-    @JsonProperty(value = "author", access = JsonProperty.Access.WRITE_ONLY)
     private String author;
 
     /*
      * Problem category. This serves for organizing group for detectors.
      */
-    @JsonProperty(value = "category", access = JsonProperty.Access.WRITE_ONLY)
     private String category;
 
     /*
      * List of Support Topics for which this detector is enabled.
      */
-    @JsonProperty(value = "supportTopicList", access = JsonProperty.Access.WRITE_ONLY)
     private List<SupportTopic> supportTopicList;
 
     /*
      * Analysis Types for which this detector should apply to.
      */
-    @JsonProperty(value = "analysisType", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> analysisType;
 
     /*
      * Whether this detector is an Analysis Detector or not.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private DetectorType type;
 
     /*
      * Defines score of a detector to power ML based matching.
      */
-    @JsonProperty(value = "score", access = JsonProperty.Access.WRITE_ONLY)
     private Float score;
 
     /**
+     * Creates an instance of DetectorInfo class.
+     */
+    public DetectorInfo() {
+    }
+
+    /**
      * Get the id property: Id of detector.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +79,7 @@ public final class DetectorInfo {
 
     /**
      * Get the name property: Name of detector.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -85,7 +88,7 @@ public final class DetectorInfo {
 
     /**
      * Get the description property: Short description of the detector and its purpose.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -94,7 +97,7 @@ public final class DetectorInfo {
 
     /**
      * Get the author property: Author of the detector.
-     *
+     * 
      * @return the author value.
      */
     public String author() {
@@ -103,7 +106,7 @@ public final class DetectorInfo {
 
     /**
      * Get the category property: Problem category. This serves for organizing group for detectors.
-     *
+     * 
      * @return the category value.
      */
     public String category() {
@@ -112,7 +115,7 @@ public final class DetectorInfo {
 
     /**
      * Get the supportTopicList property: List of Support Topics for which this detector is enabled.
-     *
+     * 
      * @return the supportTopicList value.
      */
     public List<SupportTopic> supportTopicList() {
@@ -121,7 +124,7 @@ public final class DetectorInfo {
 
     /**
      * Get the analysisType property: Analysis Types for which this detector should apply to.
-     *
+     * 
      * @return the analysisType value.
      */
     public List<String> analysisType() {
@@ -130,7 +133,7 @@ public final class DetectorInfo {
 
     /**
      * Get the type property: Whether this detector is an Analysis Detector or not.
-     *
+     * 
      * @return the type value.
      */
     public DetectorType type() {
@@ -139,7 +142,7 @@ public final class DetectorInfo {
 
     /**
      * Get the score property: Defines score of a detector to power ML based matching.
-     *
+     * 
      * @return the score value.
      */
     public Float score() {
@@ -148,12 +151,65 @@ public final class DetectorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (supportTopicList() != null) {
             supportTopicList().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectorInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectorInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DetectorInfo.
+     */
+    public static DetectorInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetectorInfo deserializedDetectorInfo = new DetectorInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDetectorInfo.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDetectorInfo.name = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedDetectorInfo.description = reader.getString();
+                } else if ("author".equals(fieldName)) {
+                    deserializedDetectorInfo.author = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedDetectorInfo.category = reader.getString();
+                } else if ("supportTopicList".equals(fieldName)) {
+                    List<SupportTopic> supportTopicList = reader.readArray(reader1 -> SupportTopic.fromJson(reader1));
+                    deserializedDetectorInfo.supportTopicList = supportTopicList;
+                } else if ("analysisType".equals(fieldName)) {
+                    List<String> analysisType = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDetectorInfo.analysisType = analysisType;
+                } else if ("type".equals(fieldName)) {
+                    deserializedDetectorInfo.type = DetectorType.fromString(reader.getString());
+                } else if ("score".equals(fieldName)) {
+                    deserializedDetectorInfo.score = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetectorInfo;
+        });
     }
 }

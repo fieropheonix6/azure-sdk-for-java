@@ -5,81 +5,81 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes the properties of a Virtual Machine software patch. */
+/**
+ * Describes the properties of a Virtual Machine software patch.
+ */
 @Immutable
-public final class VirtualMachineSoftwarePatchProperties {
+public final class VirtualMachineSoftwarePatchProperties
+    implements JsonSerializable<VirtualMachineSoftwarePatchProperties> {
     /*
      * A unique identifier for the patch.
      */
-    @JsonProperty(value = "patchId", access = JsonProperty.Access.WRITE_ONLY)
     private String patchId;
 
     /*
      * The friendly name of the patch.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The version number of the patch. This property applies only to Linux patches.
      */
-    @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
 
     /*
      * The KBID of the patch. Only applies to Windows patches.
      */
-    @JsonProperty(value = "kbId", access = JsonProperty.Access.WRITE_ONLY)
     private String kbId;
 
     /*
      * The classification(s) of the patch as provided by the patch publisher.
      */
-    @JsonProperty(value = "classifications", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> classifications;
 
     /*
      * Describes the reboot requirements of the patch.
      */
-    @JsonProperty(value = "rebootBehavior", access = JsonProperty.Access.WRITE_ONLY)
     private VMGuestPatchRebootBehavior rebootBehavior;
 
     /*
      * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
      * logs.
      */
-    @JsonProperty(value = "activityId", access = JsonProperty.Access.WRITE_ONLY)
     private String activityId;
 
     /*
      * The UTC timestamp when the repository published this patch.
      */
-    @JsonProperty(value = "publishedDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime publishedDate;
 
     /*
      * The UTC timestamp of the last update to this patch record.
      */
-    @JsonProperty(value = "lastModifiedDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModifiedDateTime;
 
     /*
      * Describes the availability of a given patch.
      */
-    @JsonProperty(value = "assessmentState", access = JsonProperty.Access.WRITE_ONLY)
     private PatchAssessmentState assessmentState;
 
-    /** Creates an instance of VirtualMachineSoftwarePatchProperties class. */
+    /**
+     * Creates an instance of VirtualMachineSoftwarePatchProperties class.
+     */
     public VirtualMachineSoftwarePatchProperties() {
     }
 
     /**
      * Get the patchId property: A unique identifier for the patch.
-     *
+     * 
      * @return the patchId value.
      */
     public String patchId() {
@@ -88,7 +88,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the name property: The friendly name of the patch.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -97,7 +97,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the version property: The version number of the patch. This property applies only to Linux patches.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -106,7 +106,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the kbId property: The KBID of the patch. Only applies to Windows patches.
-     *
+     * 
      * @return the kbId value.
      */
     public String kbId() {
@@ -115,7 +115,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the classifications property: The classification(s) of the patch as provided by the patch publisher.
-     *
+     * 
      * @return the classifications value.
      */
     public List<String> classifications() {
@@ -124,7 +124,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the rebootBehavior property: Describes the reboot requirements of the patch.
-     *
+     * 
      * @return the rebootBehavior value.
      */
     public VMGuestPatchRebootBehavior rebootBehavior() {
@@ -134,7 +134,7 @@ public final class VirtualMachineSoftwarePatchProperties {
     /**
      * Get the activityId property: The activity ID of the operation that produced this result. It is used to correlate
      * across CRP and extension logs.
-     *
+     * 
      * @return the activityId value.
      */
     public String activityId() {
@@ -143,7 +143,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the publishedDate property: The UTC timestamp when the repository published this patch.
-     *
+     * 
      * @return the publishedDate value.
      */
     public OffsetDateTime publishedDate() {
@@ -152,7 +152,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the lastModifiedDateTime property: The UTC timestamp of the last update to this patch record.
-     *
+     * 
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -161,7 +161,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the assessmentState property: Describes the availability of a given patch.
-     *
+     * 
      * @return the assessmentState value.
      */
     public PatchAssessmentState assessmentState() {
@@ -170,9 +170,68 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineSoftwarePatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineSoftwarePatchProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineSoftwarePatchProperties.
+     */
+    public static VirtualMachineSoftwarePatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineSoftwarePatchProperties deserializedVirtualMachineSoftwarePatchProperties
+                = new VirtualMachineSoftwarePatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("patchId".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.patchId = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.name = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.version = reader.getString();
+                } else if ("kbId".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.kbId = reader.getString();
+                } else if ("classifications".equals(fieldName)) {
+                    List<String> classifications = reader.readArray(reader1 -> reader1.getString());
+                    deserializedVirtualMachineSoftwarePatchProperties.classifications = classifications;
+                } else if ("rebootBehavior".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.rebootBehavior
+                        = VMGuestPatchRebootBehavior.fromString(reader.getString());
+                } else if ("activityId".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.activityId = reader.getString();
+                } else if ("publishedDate".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.publishedDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModifiedDateTime".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.lastModifiedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("assessmentState".equals(fieldName)) {
+                    deserializedVirtualMachineSoftwarePatchProperties.assessmentState
+                        = PatchAssessmentState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineSoftwarePatchProperties;
+        });
     }
 }

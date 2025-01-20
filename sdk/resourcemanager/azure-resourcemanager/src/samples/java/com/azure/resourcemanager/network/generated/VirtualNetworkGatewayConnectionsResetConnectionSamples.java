@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkGatewayConnections ResetConnection. */
+/**
+ * Samples for VirtualNetworkGatewayConnections ResetConnection.
+ */
 public final class VirtualNetworkGatewayConnectionsResetConnectionSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayConnectionReset.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualNetworkGatewayConnectionReset.json
      */
     /**
      * Sample code: ResetVirtualNetworkGatewayConnection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetVirtualNetworkGatewayConnection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayConnections()
-            .resetConnection("rg1", "conn1", Context.NONE);
+            .resetConnection("rg1", "conn1", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,53 +5,32 @@
 package com.azure.resourcemanager.dynatrace.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The updatable properties of the MonitorResource. */
+/**
+ * The updatable properties of the MonitorResource.
+ */
 @Fluent
-public final class MonitorResourceUpdate {
+public final class MonitorResourceUpdate implements JsonSerializable<MonitorResourceUpdate> {
     /*
      * Resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * Status of the monitor.
+    /**
+     * Creates an instance of MonitorResourceUpdate class.
      */
-    @JsonProperty(value = "monitoringStatus")
-    private MonitoringStatus monitoringStatus;
-
-    /*
-     * Marketplace subscription status.
-     */
-    @JsonProperty(value = "marketplaceSubscriptionStatus")
-    private MarketplaceSubscriptionStatus marketplaceSubscriptionStatus;
-
-    /*
-     * Properties of the Dynatrace environment.
-     */
-    @JsonProperty(value = "dynatraceEnvironmentProperties")
-    private DynatraceEnvironmentProperties dynatraceEnvironmentProperties;
-
-    /*
-     * User info.
-     */
-    @JsonProperty(value = "userInfo")
-    private UserInfo userInfo;
-
-    /*
-     * Billing plan information.
-     */
-    @JsonProperty(value = "planData")
-    private PlanData planData;
+    public MonitorResourceUpdate() {
+    }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -60,7 +39,7 @@ public final class MonitorResourceUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MonitorResourceUpdate object itself.
      */
@@ -70,121 +49,47 @@ public final class MonitorResourceUpdate {
     }
 
     /**
-     * Get the monitoringStatus property: Status of the monitor.
-     *
-     * @return the monitoringStatus value.
-     */
-    public MonitoringStatus monitoringStatus() {
-        return this.monitoringStatus;
-    }
-
-    /**
-     * Set the monitoringStatus property: Status of the monitor.
-     *
-     * @param monitoringStatus the monitoringStatus value to set.
-     * @return the MonitorResourceUpdate object itself.
-     */
-    public MonitorResourceUpdate withMonitoringStatus(MonitoringStatus monitoringStatus) {
-        this.monitoringStatus = monitoringStatus;
-        return this;
-    }
-
-    /**
-     * Get the marketplaceSubscriptionStatus property: Marketplace subscription status.
-     *
-     * @return the marketplaceSubscriptionStatus value.
-     */
-    public MarketplaceSubscriptionStatus marketplaceSubscriptionStatus() {
-        return this.marketplaceSubscriptionStatus;
-    }
-
-    /**
-     * Set the marketplaceSubscriptionStatus property: Marketplace subscription status.
-     *
-     * @param marketplaceSubscriptionStatus the marketplaceSubscriptionStatus value to set.
-     * @return the MonitorResourceUpdate object itself.
-     */
-    public MonitorResourceUpdate withMarketplaceSubscriptionStatus(
-        MarketplaceSubscriptionStatus marketplaceSubscriptionStatus) {
-        this.marketplaceSubscriptionStatus = marketplaceSubscriptionStatus;
-        return this;
-    }
-
-    /**
-     * Get the dynatraceEnvironmentProperties property: Properties of the Dynatrace environment.
-     *
-     * @return the dynatraceEnvironmentProperties value.
-     */
-    public DynatraceEnvironmentProperties dynatraceEnvironmentProperties() {
-        return this.dynatraceEnvironmentProperties;
-    }
-
-    /**
-     * Set the dynatraceEnvironmentProperties property: Properties of the Dynatrace environment.
-     *
-     * @param dynatraceEnvironmentProperties the dynatraceEnvironmentProperties value to set.
-     * @return the MonitorResourceUpdate object itself.
-     */
-    public MonitorResourceUpdate withDynatraceEnvironmentProperties(
-        DynatraceEnvironmentProperties dynatraceEnvironmentProperties) {
-        this.dynatraceEnvironmentProperties = dynatraceEnvironmentProperties;
-        return this;
-    }
-
-    /**
-     * Get the userInfo property: User info.
-     *
-     * @return the userInfo value.
-     */
-    public UserInfo userInfo() {
-        return this.userInfo;
-    }
-
-    /**
-     * Set the userInfo property: User info.
-     *
-     * @param userInfo the userInfo value to set.
-     * @return the MonitorResourceUpdate object itself.
-     */
-    public MonitorResourceUpdate withUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-        return this;
-    }
-
-    /**
-     * Get the planData property: Billing plan information.
-     *
-     * @return the planData value.
-     */
-    public PlanData planData() {
-        return this.planData;
-    }
-
-    /**
-     * Set the planData property: Billing plan information.
-     *
-     * @param planData the planData value to set.
-     * @return the MonitorResourceUpdate object itself.
-     */
-    public MonitorResourceUpdate withPlanData(PlanData planData) {
-        this.planData = planData;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (dynatraceEnvironmentProperties() != null) {
-            dynatraceEnvironmentProperties().validate();
-        }
-        if (userInfo() != null) {
-            userInfo().validate();
-        }
-        if (planData() != null) {
-            planData().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MonitorResourceUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MonitorResourceUpdate if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MonitorResourceUpdate.
+     */
+    public static MonitorResourceUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MonitorResourceUpdate deserializedMonitorResourceUpdate = new MonitorResourceUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMonitorResourceUpdate.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMonitorResourceUpdate;
+        });
     }
 }

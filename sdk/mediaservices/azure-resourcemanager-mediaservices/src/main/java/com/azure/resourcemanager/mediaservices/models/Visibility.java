@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,26 +13,38 @@ import java.util.Collection;
  * The default value is "Visible".
  */
 public final class Visibility extends ExpandableStringEnum<Visibility> {
-    /** Static value Hidden for Visibility. */
+    /**
+     * Static value Hidden for Visibility.
+     */
     public static final Visibility HIDDEN = fromString("Hidden");
 
-    /** Static value Visible for Visibility. */
+    /**
+     * Static value Visible for Visibility.
+     */
     public static final Visibility VISIBLE = fromString("Visible");
 
     /**
+     * Creates a new instance of Visibility value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Visibility() {
+    }
+
+    /**
      * Creates or finds a Visibility from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Visibility.
      */
-    @JsonCreator
     public static Visibility fromString(String name) {
         return fromString(name, Visibility.class);
     }
 
     /**
      * Gets known Visibility values.
-     *
+     * 
      * @return known Visibility values.
      */
     public static Collection<Visibility> values() {

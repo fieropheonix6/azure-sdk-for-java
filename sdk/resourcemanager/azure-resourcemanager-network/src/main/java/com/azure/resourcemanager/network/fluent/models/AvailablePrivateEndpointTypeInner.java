@@ -5,48 +5,51 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The information of an AvailablePrivateEndpointType. */
+/**
+ * The information of an AvailablePrivateEndpointType.
+ */
 @Fluent
-public final class AvailablePrivateEndpointTypeInner {
+public final class AvailablePrivateEndpointTypeInner implements JsonSerializable<AvailablePrivateEndpointTypeInner> {
     /*
      * The name of the service and resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique identifier of the AvailablePrivateEndpoint Type resource.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The name of the service and resource.
      */
-    @JsonProperty(value = "resourceName")
     private String resourceName;
 
     /*
      * Display name of the resource.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of AvailablePrivateEndpointTypeInner class. */
+    /**
+     * Creates an instance of AvailablePrivateEndpointTypeInner class.
+     */
     public AvailablePrivateEndpointTypeInner() {
     }
 
     /**
      * Get the name property: The name of the service and resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +58,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the name property: The name of the service and resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -66,7 +69,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Get the id property: A unique identifier of the AvailablePrivateEndpoint Type resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -75,7 +78,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the id property: A unique identifier of the AvailablePrivateEndpoint Type resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -86,7 +89,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -95,7 +98,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the type property: Resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -106,7 +109,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Get the resourceName property: The name of the service and resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -115,7 +118,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the resourceName property: The name of the service and resource.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -126,7 +129,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Get the displayName property: Display name of the resource.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -135,7 +138,7 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Set the displayName property: Display name of the resource.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the AvailablePrivateEndpointTypeInner object itself.
      */
@@ -146,9 +149,58 @@ public final class AvailablePrivateEndpointTypeInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeStringField("resourceName", this.resourceName);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailablePrivateEndpointTypeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailablePrivateEndpointTypeInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailablePrivateEndpointTypeInner.
+     */
+    public static AvailablePrivateEndpointTypeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailablePrivateEndpointTypeInner deserializedAvailablePrivateEndpointTypeInner
+                = new AvailablePrivateEndpointTypeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedAvailablePrivateEndpointTypeInner.name = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedAvailablePrivateEndpointTypeInner.id = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvailablePrivateEndpointTypeInner.type = reader.getString();
+                } else if ("resourceName".equals(fieldName)) {
+                    deserializedAvailablePrivateEndpointTypeInner.resourceName = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedAvailablePrivateEndpointTypeInner.displayName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailablePrivateEndpointTypeInner;
+        });
     }
 }

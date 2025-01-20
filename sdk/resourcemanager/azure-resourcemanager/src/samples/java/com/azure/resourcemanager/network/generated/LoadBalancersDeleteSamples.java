@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for LoadBalancers Delete. */
+/**
+ * Samples for LoadBalancers Delete.
+ */
 public final class LoadBalancersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/LoadBalancerDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/LoadBalancerDelete.json
      */
     /**
      * Sample code: Delete load balancer.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteLoadBalancer(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getLoadBalancers().delete("rg1", "lb", Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getLoadBalancers()
+            .delete("rg1", "lb", com.azure.core.util.Context.NONE);
     }
 }

@@ -7,51 +7,55 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroupMember;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of VirtualNetworkGatewayPolicyGroup. */
+/**
+ * Properties of VirtualNetworkGatewayPolicyGroup.
+ */
 @Fluent
-public final class VirtualNetworkGatewayPolicyGroupProperties {
+public final class VirtualNetworkGatewayPolicyGroupProperties
+    implements JsonSerializable<VirtualNetworkGatewayPolicyGroupProperties> {
     /*
      * Shows if this is a Default VirtualNetworkGatewayPolicyGroup or not.
      */
-    @JsonProperty(value = "isDefault", required = true)
     private boolean isDefault;
 
     /*
      * Priority for VirtualNetworkGatewayPolicyGroup.
      */
-    @JsonProperty(value = "priority", required = true)
     private int priority;
 
     /*
      * Multiple PolicyMembers for VirtualNetworkGatewayPolicyGroup.
      */
-    @JsonProperty(value = "policyMembers", required = true)
     private List<VirtualNetworkGatewayPolicyGroupMember> policyMembers;
 
     /*
      * List of references to vngClientConnectionConfigurations.
      */
-    @JsonProperty(value = "vngClientConnectionConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> vngClientConnectionConfigurations;
 
     /*
      * The provisioning state of the VirtualNetworkGatewayPolicyGroup resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VirtualNetworkGatewayPolicyGroupProperties class. */
+    /**
+     * Creates an instance of VirtualNetworkGatewayPolicyGroupProperties class.
+     */
     public VirtualNetworkGatewayPolicyGroupProperties() {
     }
 
     /**
      * Get the isDefault property: Shows if this is a Default VirtualNetworkGatewayPolicyGroup or not.
-     *
+     * 
      * @return the isDefault value.
      */
     public boolean isDefault() {
@@ -60,7 +64,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Set the isDefault property: Shows if this is a Default VirtualNetworkGatewayPolicyGroup or not.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the VirtualNetworkGatewayPolicyGroupProperties object itself.
      */
@@ -71,7 +75,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Get the priority property: Priority for VirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -80,7 +84,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Set the priority property: Priority for VirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the VirtualNetworkGatewayPolicyGroupProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Get the policyMembers property: Multiple PolicyMembers for VirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @return the policyMembers value.
      */
     public List<VirtualNetworkGatewayPolicyGroupMember> policyMembers() {
@@ -100,19 +104,19 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Set the policyMembers property: Multiple PolicyMembers for VirtualNetworkGatewayPolicyGroup.
-     *
+     * 
      * @param policyMembers the policyMembers value to set.
      * @return the VirtualNetworkGatewayPolicyGroupProperties object itself.
      */
-    public VirtualNetworkGatewayPolicyGroupProperties withPolicyMembers(
-        List<VirtualNetworkGatewayPolicyGroupMember> policyMembers) {
+    public VirtualNetworkGatewayPolicyGroupProperties
+        withPolicyMembers(List<VirtualNetworkGatewayPolicyGroupMember> policyMembers) {
         this.policyMembers = policyMembers;
         return this;
     }
 
     /**
      * Get the vngClientConnectionConfigurations property: List of references to vngClientConnectionConfigurations.
-     *
+     * 
      * @return the vngClientConnectionConfigurations value.
      */
     public List<SubResource> vngClientConnectionConfigurations() {
@@ -121,7 +125,7 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VirtualNetworkGatewayPolicyGroup resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -130,19 +134,72 @@ public final class VirtualNetworkGatewayPolicyGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policyMembers() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property policyMembers in model VirtualNetworkGatewayPolicyGroupProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property policyMembers in model VirtualNetworkGatewayPolicyGroupProperties"));
         } else {
             policyMembers().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayPolicyGroupProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeIntField("priority", this.priority);
+        jsonWriter.writeArrayField("policyMembers", this.policyMembers, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkGatewayPolicyGroupProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkGatewayPolicyGroupProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkGatewayPolicyGroupProperties.
+     */
+    public static VirtualNetworkGatewayPolicyGroupProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkGatewayPolicyGroupProperties deserializedVirtualNetworkGatewayPolicyGroupProperties
+                = new VirtualNetworkGatewayPolicyGroupProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isDefault".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayPolicyGroupProperties.isDefault = reader.getBoolean();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayPolicyGroupProperties.priority = reader.getInt();
+                } else if ("policyMembers".equals(fieldName)) {
+                    List<VirtualNetworkGatewayPolicyGroupMember> policyMembers
+                        = reader.readArray(reader1 -> VirtualNetworkGatewayPolicyGroupMember.fromJson(reader1));
+                    deserializedVirtualNetworkGatewayPolicyGroupProperties.policyMembers = policyMembers;
+                } else if ("vngClientConnectionConfigurations".equals(fieldName)) {
+                    List<SubResource> vngClientConnectionConfigurations
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualNetworkGatewayPolicyGroupProperties.vngClientConnectionConfigurations
+                        = vngClientConnectionConfigurations;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualNetworkGatewayPolicyGroupProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkGatewayPolicyGroupProperties;
+        });
+    }
 }

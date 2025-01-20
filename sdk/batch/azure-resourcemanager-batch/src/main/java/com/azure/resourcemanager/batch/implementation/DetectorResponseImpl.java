@@ -6,14 +6,16 @@ package com.azure.resourcemanager.batch.implementation;
 
 import com.azure.resourcemanager.batch.fluent.models.DetectorResponseInner;
 import com.azure.resourcemanager.batch.models.DetectorResponse;
+import java.util.Collections;
+import java.util.Map;
 
 public final class DetectorResponseImpl implements DetectorResponse {
     private DetectorResponseInner innerObject;
 
     private final com.azure.resourcemanager.batch.BatchManager serviceManager;
 
-    DetectorResponseImpl(
-        DetectorResponseInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
+    DetectorResponseImpl(DetectorResponseInner innerObject,
+        com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,6 +34,15 @@ public final class DetectorResponseImpl implements DetectorResponse {
 
     public String etag() {
         return this.innerModel().etag();
+    }
+
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public String value() {

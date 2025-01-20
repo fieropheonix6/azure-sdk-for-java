@@ -17,35 +17,77 @@ import java.util.List;
 
 /** Type representing BlobServiceProperties. */
 @Fluent
-public interface BlobServiceProperties
-    extends HasInnerModel<BlobServicePropertiesInner>,
-        Indexable,
-        Refreshable<BlobServiceProperties>,
-        Updatable<BlobServiceProperties.Update>,
-        HasManager<StorageManager> {
-    /** @return the cors value. */
+public interface BlobServiceProperties extends HasInnerModel<BlobServicePropertiesInner>, Indexable,
+    Refreshable<BlobServiceProperties>, Updatable<BlobServiceProperties.Update>, HasManager<StorageManager> {
+    /**
+     * Gets cors rules.
+     *
+     * @return the cors value.
+     */
     CorsRules cors();
 
-    /** @return the defaultServiceVersion value. */
+    /**
+     * Gets the default service version.
+     *
+     * @return the defaultServiceVersion value.
+     */
     String defaultServiceVersion();
 
-    /** @return blob soft delete policy used to restore a blob, snapshot, or version that has been deleted. */
+    /**
+     * Gets blob soft delete policy.
+     *
+     * @return blob soft delete policy used to restore a blob, snapshot, or version that has been deleted.
+     */
     DeleteRetentionPolicy deleteRetentionPolicy();
 
-    /** @return container soft delete policy used to restore a container that has been deleted. */
+    /**
+     * Gets container soft delete policy.
+     *
+     * @return container soft delete policy used to restore a container that has been deleted.
+     */
     DeleteRetentionPolicy containerDeleteRetentionPolicy();
 
-    /** @return the id value. */
+    /**
+     * Gets the resource ID.
+     *
+     * @return the id value.
+     */
     String id();
 
-    /** @return the name value. */
+    /**
+     * Gets the name.
+     *
+     * @return the name value.
+     */
     String name();
 
-    /** @return the type value. */
+    /**
+     * Gets the type.
+     *
+     * @return the type value.
+     */
     String type();
 
-    /** @return whether blob versioning is enabled */
+    /**
+     * Checks whether blob versioning is enabled.
+     *
+     * @return whether blob versioning is enabled
+     */
     Boolean isBlobVersioningEnabled();
+
+    /**
+     * Checks whether last access time tracking policy is enabled.
+     *
+     * @return whether last access time tracking policy is enabled
+     */
+    boolean isLastAccessTimeTrackingPolicyEnabled();
+
+    /**
+     * Gets the last access time tracking policy.
+     *
+     * @return the last access time tracking policy
+     */
+    LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy();
 
     /** The entirety of the BlobServiceProperties definition. */
     interface Definition
@@ -195,27 +237,47 @@ public interface BlobServiceProperties
             WithCreate withBlobVersioningEnabled();
         }
 
+        /** The stage of the blobserviceproperties definition allowing to specify last access time tracking policy. */
+        interface WithLastAccessTimeTrackingPolicy {
+            /**
+             * Enables last access time tracking policy with default settings.
+             * Last access time tracking integrates with lifecycle management to allow the automatic tiering and deletion
+             * of data based on when individual blobs are last accessed.
+             * It can also be used without lifecycle management by any solution that needs to understand
+             * when individual blobs are last read and then take action.
+             *
+             * @return the next definition stage
+             */
+            WithCreate withLastAccessTimeTrackingPolicyEnabled();
+
+            /**
+             * Specify last access time tracking policy.
+             * Last access time tracking integrates with lifecycle management to allow the automatic tiering and deletion
+             * of data based on when individual blobs are last accessed.
+             * It can also be used without lifecycle management by any solution that needs to understand
+             * when individual blobs are last read and then take action.
+             *
+             * @param policy the last access time tracking policy
+             * @return the next definition stage
+             */
+            WithCreate withLastAccessTimeTrackingPolicy(LastAccessTimeTrackingPolicy policy);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created
          * (via {@link WithCreate#create()}), but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<BlobServiceProperties>,
-                DefinitionStages.WithCors,
-                DefinitionStages.WithDefaultServiceVersion,
-                DefinitionStages.WithDeleteRetentionPolicy,
-                DefinitionStages.WithBlobVersioning,
-                DefinitionStages.WithContainerDeleteRetentionPolicy {
+        interface WithCreate extends Creatable<BlobServiceProperties>, DefinitionStages.WithCors,
+            DefinitionStages.WithDefaultServiceVersion, DefinitionStages.WithDeleteRetentionPolicy,
+            DefinitionStages.WithBlobVersioning, DefinitionStages.WithContainerDeleteRetentionPolicy,
+            DefinitionStages.WithLastAccessTimeTrackingPolicy {
         }
     }
+
     /** The template for a BlobServiceProperties update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<BlobServiceProperties>,
-            UpdateStages.WithCors,
-            UpdateStages.WithDefaultServiceVersion,
-            UpdateStages.WithDeleteRetentionPolicy,
-            UpdateStages.WithBlobVersioning,
-            UpdateStages.WithContainerDeleteRetentionPolicy {
+    interface Update extends Appliable<BlobServiceProperties>, UpdateStages.WithCors,
+        UpdateStages.WithDefaultServiceVersion, UpdateStages.WithDeleteRetentionPolicy, UpdateStages.WithBlobVersioning,
+        UpdateStages.WithContainerDeleteRetentionPolicy, UpdateStages.WithLastAccessTimeTrackingPolicy {
     }
 
     /** Grouping of BlobServiceProperties update stages. */
@@ -371,6 +433,39 @@ public interface BlobServiceProperties
              * @return the next update stage
              */
             Update withBlobVersioningDisabled();
+        }
+
+        /** The stage of the blobserviceproperties update allowing to specify last access time tracking policy. */
+        interface WithLastAccessTimeTrackingPolicy {
+            /**
+             * Enables last access time tracking policy with default settings.
+             * Last access time tracking integrates with lifecycle management to allow the automatic tiering and deletion
+             * of data based on when individual blobs are last accessed.
+             * It can also be used without lifecycle management by any solution that needs to understand
+             * when individual blobs are last read and then take action.
+             *
+             * @return the next update stage
+             */
+            Update withLastAccessTimeTrackingPolicyEnabled();
+
+            /**
+             * Specify last access time tracking policy.
+             * Last access time tracking integrates with lifecycle management to allow the automatic tiering and deletion
+             * of data based on when individual blobs are last accessed.
+             * It can also be used without lifecycle management by any solution that needs to understand
+             * when individual blobs are last read and then take action.
+             *
+             * @param policy the last access time tracking policy
+             * @return the next update stage
+             */
+            Update withLastAccessTimeTrackingPolicy(LastAccessTimeTrackingPolicy policy);
+
+            /**
+             * Disables last access time tracking policy.
+             *
+             * @return the next update stage
+             */
+            Update withLastAccessTimeTrackingPolicyDisabled();
         }
     }
 }

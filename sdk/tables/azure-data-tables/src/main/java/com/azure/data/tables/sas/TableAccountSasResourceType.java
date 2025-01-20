@@ -20,6 +20,14 @@ public final class TableAccountSasResourceType {
     private boolean container;
     private boolean object;
 
+    // empty constructor necessary due to Javadoc warnings
+    /**
+     * Creates a {@link TableAccountSasResourceType} with all fields set to false.
+     */
+    public TableAccountSasResourceType() {
+
+    }
+
     /**
      * Creates an {@link TableAccountSasResourceType} from the specified resource types string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid resource type.
@@ -41,12 +49,15 @@ public final class TableAccountSasResourceType {
                 case 's':
                     resourceType.service = true;
                     break;
+
                 case 'c':
                     resourceType.container = true;
                     break;
+
                 case 'o':
                     resourceType.object = true;
                     break;
+
                 default:
                     throw new IllegalArgumentException(
                         String.format(Locale.ROOT, StorageConstants.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE,

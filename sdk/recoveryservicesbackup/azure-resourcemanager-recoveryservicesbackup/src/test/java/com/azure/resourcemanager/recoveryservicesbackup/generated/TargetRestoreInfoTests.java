@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OverwriteOptions;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TargetRestoreInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class TargetRestoreInfoTests {
-    @Test
-    public void testDeserialize() {
-        TargetRestoreInfo model =
-            BinaryData
-                .fromString(
-                    "{\"overwriteOption\":\"Invalid\",\"containerId\":\"dxgketwzhhzjhfj\",\"databaseName\":\"vvmu\",\"targetDirectoryForFileRestore\":\"pmuneqsx\"}")
-                .toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.INVALID, model.overwriteOption());
-        Assertions.assertEquals("dxgketwzhhzjhfj", model.containerId());
-        Assertions.assertEquals("vvmu", model.databaseName());
-        Assertions.assertEquals("pmuneqsx", model.targetDirectoryForFileRestore());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        TargetRestoreInfo model = BinaryData.fromString(
+            "{\"overwriteOption\":\"Overwrite\",\"containerId\":\"kzyb\",\"databaseName\":\"jid\",\"targetDirectoryForFileRestore\":\"syxkyxvxevblb\"}")
+            .toObject(TargetRestoreInfo.class);
+        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
+        Assertions.assertEquals("kzyb", model.containerId());
+        Assertions.assertEquals("jid", model.databaseName());
+        Assertions.assertEquals("syxkyxvxevblb", model.targetDirectoryForFileRestore());
     }
 
-    @Test
-    public void testSerialize() {
-        TargetRestoreInfo model =
-            new TargetRestoreInfo()
-                .withOverwriteOption(OverwriteOptions.INVALID)
-                .withContainerId("dxgketwzhhzjhfj")
-                .withDatabaseName("vvmu")
-                .withTargetDirectoryForFileRestore("pmuneqsx");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        TargetRestoreInfo model = new TargetRestoreInfo().withOverwriteOption(OverwriteOptions.OVERWRITE)
+            .withContainerId("kzyb")
+            .withDatabaseName("jid")
+            .withTargetDirectoryForFileRestore("syxkyxvxevblb");
         model = BinaryData.fromObject(model).toObject(TargetRestoreInfo.class);
-        Assertions.assertEquals(OverwriteOptions.INVALID, model.overwriteOption());
-        Assertions.assertEquals("dxgketwzhhzjhfj", model.containerId());
-        Assertions.assertEquals("vvmu", model.databaseName());
-        Assertions.assertEquals("pmuneqsx", model.targetDirectoryForFileRestore());
+        Assertions.assertEquals(OverwriteOptions.OVERWRITE, model.overwriteOption());
+        Assertions.assertEquals("kzyb", model.containerId());
+        Assertions.assertEquals("jid", model.databaseName());
+        Assertions.assertEquals("syxkyxvxevblb", model.targetDirectoryForFileRestore());
     }
 }

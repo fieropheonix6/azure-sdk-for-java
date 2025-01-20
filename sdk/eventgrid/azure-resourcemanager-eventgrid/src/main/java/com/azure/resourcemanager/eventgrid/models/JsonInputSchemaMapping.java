@@ -5,28 +5,47 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.JsonInputSchemaMappingProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
 /**
  * This enables publishing to Event Grid using a custom input schema. This can be used to map properties from a custom
  * input JSON schema to the Event Grid event schema.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "inputSchemaMappingType")
-@JsonTypeName("Json")
 @Fluent
 public final class JsonInputSchemaMapping extends InputSchemaMapping {
     /*
+     * Type of the custom mapping
+     */
+    private InputSchemaMappingType inputSchemaMappingType = InputSchemaMappingType.JSON;
+
+    /*
      * JSON Properties of the input schema mapping
      */
-    @JsonProperty(value = "properties")
     private JsonInputSchemaMappingProperties innerProperties;
 
     /**
+     * Creates an instance of JsonInputSchemaMapping class.
+     */
+    public JsonInputSchemaMapping() {
+    }
+
+    /**
+     * Get the inputSchemaMappingType property: Type of the custom mapping.
+     * 
+     * @return the inputSchemaMappingType value.
+     */
+    @Override
+    public InputSchemaMappingType inputSchemaMappingType() {
+        return this.inputSchemaMappingType;
+    }
+
+    /**
      * Get the innerProperties property: JSON Properties of the input schema mapping.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JsonInputSchemaMappingProperties innerProperties() {
@@ -35,7 +54,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Get the id property: The mapping information for the Id property of the Event Grid Event.
-     *
+     * 
      * @return the id value.
      */
     public JsonField id() {
@@ -44,7 +63,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Set the id property: The mapping information for the Id property of the Event Grid Event.
-     *
+     * 
      * @param id the id value to set.
      * @return the JsonInputSchemaMapping object itself.
      */
@@ -58,7 +77,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Get the topic property: The mapping information for the Topic property of the Event Grid Event.
-     *
+     * 
      * @return the topic value.
      */
     public JsonField topic() {
@@ -67,7 +86,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Set the topic property: The mapping information for the Topic property of the Event Grid Event.
-     *
+     * 
      * @param topic the topic value to set.
      * @return the JsonInputSchemaMapping object itself.
      */
@@ -81,7 +100,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Get the eventTime property: The mapping information for the EventTime property of the Event Grid Event.
-     *
+     * 
      * @return the eventTime value.
      */
     public JsonField eventTime() {
@@ -90,7 +109,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Set the eventTime property: The mapping information for the EventTime property of the Event Grid Event.
-     *
+     * 
      * @param eventTime the eventTime value to set.
      * @return the JsonInputSchemaMapping object itself.
      */
@@ -104,7 +123,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Get the eventType property: The mapping information for the EventType property of the Event Grid Event.
-     *
+     * 
      * @return the eventType value.
      */
     public JsonFieldWithDefault eventType() {
@@ -113,7 +132,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Set the eventType property: The mapping information for the EventType property of the Event Grid Event.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the JsonInputSchemaMapping object itself.
      */
@@ -127,7 +146,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Get the subject property: The mapping information for the Subject property of the Event Grid Event.
-     *
+     * 
      * @return the subject value.
      */
     public JsonFieldWithDefault subject() {
@@ -136,7 +155,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Set the subject property: The mapping information for the Subject property of the Event Grid Event.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the JsonInputSchemaMapping object itself.
      */
@@ -150,7 +169,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Get the dataVersion property: The mapping information for the DataVersion property of the Event Grid Event.
-     *
+     * 
      * @return the dataVersion value.
      */
     public JsonFieldWithDefault dataVersion() {
@@ -159,7 +178,7 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Set the dataVersion property: The mapping information for the DataVersion property of the Event Grid Event.
-     *
+     * 
      * @param dataVersion the dataVersion value to set.
      * @return the JsonInputSchemaMapping object itself.
      */
@@ -173,14 +192,55 @@ public final class JsonInputSchemaMapping extends InputSchemaMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("inputSchemaMappingType",
+            this.inputSchemaMappingType == null ? null : this.inputSchemaMappingType.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JsonInputSchemaMapping from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JsonInputSchemaMapping if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the JsonInputSchemaMapping.
+     */
+    public static JsonInputSchemaMapping fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonInputSchemaMapping deserializedJsonInputSchemaMapping = new JsonInputSchemaMapping();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("inputSchemaMappingType".equals(fieldName)) {
+                    deserializedJsonInputSchemaMapping.inputSchemaMappingType
+                        = InputSchemaMappingType.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJsonInputSchemaMapping.innerProperties
+                        = JsonInputSchemaMappingProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJsonInputSchemaMapping;
+        });
     }
 }

@@ -13,52 +13,48 @@ import com.azure.resourcemanager.logic.fluent.WorkflowVersionsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowVersionInner;
 import com.azure.resourcemanager.logic.models.WorkflowVersion;
 import com.azure.resourcemanager.logic.models.WorkflowVersions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowVersionsImpl implements WorkflowVersions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowVersionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowVersionsImpl.class);
 
     private final WorkflowVersionsClient innerClient;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowVersionsImpl(
-        WorkflowVersionsClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public WorkflowVersionsImpl(WorkflowVersionsClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<WorkflowVersion> list(String resourceGroupName, String workflowName) {
         PagedIterable<WorkflowVersionInner> inner = this.serviceClient().list(resourceGroupName, workflowName);
-        return Utils.mapPage(inner, inner1 -> new WorkflowVersionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowVersionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<WorkflowVersion> list(
-        String resourceGroupName, String workflowName, Integer top, Context context) {
-        PagedIterable<WorkflowVersionInner> inner =
-            this.serviceClient().list(resourceGroupName, workflowName, top, context);
-        return Utils.mapPage(inner, inner1 -> new WorkflowVersionImpl(inner1, this.manager()));
+    public PagedIterable<WorkflowVersion> list(String resourceGroupName, String workflowName, Integer top,
+        Context context) {
+        PagedIterable<WorkflowVersionInner> inner
+            = this.serviceClient().list(resourceGroupName, workflowName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowVersionImpl(inner1, this.manager()));
+    }
+
+    public Response<WorkflowVersion> getWithResponse(String resourceGroupName, String workflowName, String versionId,
+        Context context) {
+        Response<WorkflowVersionInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workflowName, versionId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkflowVersionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public WorkflowVersion get(String resourceGroupName, String workflowName, String versionId) {
         WorkflowVersionInner inner = this.serviceClient().get(resourceGroupName, workflowName, versionId);
         if (inner != null) {
             return new WorkflowVersionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<WorkflowVersion> getWithResponse(
-        String resourceGroupName, String workflowName, String versionId, Context context) {
-        Response<WorkflowVersionInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workflowName, versionId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WorkflowVersionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

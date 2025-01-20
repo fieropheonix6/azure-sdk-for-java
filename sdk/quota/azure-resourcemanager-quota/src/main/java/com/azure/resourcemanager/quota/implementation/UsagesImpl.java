@@ -14,10 +14,9 @@ import com.azure.resourcemanager.quota.fluent.models.CurrentUsagesBaseInner;
 import com.azure.resourcemanager.quota.models.CurrentUsagesBase;
 import com.azure.resourcemanager.quota.models.Usages;
 import com.azure.resourcemanager.quota.models.UsagesGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UsagesImpl implements Usages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UsagesImpl.class);
 
     private final UsagesClient innerClient;
 
@@ -26,6 +25,16 @@ public final class UsagesImpl implements Usages {
     public UsagesImpl(UsagesClient innerClient, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<CurrentUsagesBase> getWithResponse(String resourceName, String scope, Context context) {
+        UsagesGetResponse inner = this.serviceClient().getWithResponse(resourceName, scope, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CurrentUsagesBaseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CurrentUsagesBase get(String resourceName, String scope) {
@@ -37,27 +46,14 @@ public final class UsagesImpl implements Usages {
         }
     }
 
-    public Response<CurrentUsagesBase> getWithResponse(String resourceName, String scope, Context context) {
-        UsagesGetResponse inner = this.serviceClient().getWithResponse(resourceName, scope, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CurrentUsagesBaseImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<CurrentUsagesBase> list(String scope) {
         PagedIterable<CurrentUsagesBaseInner> inner = this.serviceClient().list(scope);
-        return Utils.mapPage(inner, inner1 -> new CurrentUsagesBaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CurrentUsagesBaseImpl(inner1, this.manager()));
     }
 
     public PagedIterable<CurrentUsagesBase> list(String scope, Context context) {
         PagedIterable<CurrentUsagesBaseInner> inner = this.serviceClient().list(scope, context);
-        return Utils.mapPage(inner, inner1 -> new CurrentUsagesBaseImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new CurrentUsagesBaseImpl(inner1, this.manager()));
     }
 
     private UsagesClient serviceClient() {

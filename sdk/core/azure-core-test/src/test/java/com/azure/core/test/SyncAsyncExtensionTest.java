@@ -8,6 +8,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 // We're indirectly testing JUnit extension
 // Therefore we use ordering to sequence state mutations.
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Isolated
 public class SyncAsyncExtensionTest {
     private static final AtomicInteger SYNC_INVOCATIONS = new AtomicInteger();
     private static final AtomicInteger ASYNC_INVOCATIONS = new AtomicInteger();
@@ -25,10 +27,8 @@ public class SyncAsyncExtensionTest {
     @Order(1)
     @SyncAsyncTest
     public void sampleSyncAsyncWithReturnTest() {
-        Integer value = SyncAsyncExtension.execute(
-            SYNC_INVOCATIONS::incrementAndGet,
-            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet)
-        );
+        Integer value = SyncAsyncExtension.execute(SYNC_INVOCATIONS::incrementAndGet,
+            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet));
 
         assertEquals(1, value);
     }
@@ -36,10 +36,8 @@ public class SyncAsyncExtensionTest {
     @Order(2)
     @SyncAsyncTest
     public void sampleSyncAsyncWithoutReturnTest() {
-        SyncAsyncExtension.execute(
-            SYNC_INVOCATIONS::incrementAndGet,
-            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet).then()
-        );
+        SyncAsyncExtension.execute(SYNC_INVOCATIONS::incrementAndGet,
+            () -> Mono.fromCallable(ASYNC_INVOCATIONS::incrementAndGet).then());
     }
 
     @Order(3)
@@ -51,10 +49,6 @@ public class SyncAsyncExtensionTest {
 
     @Test
     public void throwsIfExtensionUsedWithoutAnnotation() {
-        assertThrows(IllegalStateException.class,
-            () -> SyncAsyncExtension.execute(
-                () -> 1L,
-                () -> Mono.just(1L)
-            ));
+        assertThrows(IllegalStateException.class, () -> SyncAsyncExtension.execute(() -> 1L, () -> Mono.just(1L)));
     }
 }

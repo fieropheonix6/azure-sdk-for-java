@@ -9,46 +9,48 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.datadog.fluent.models.DatadogAgreementResourceInner;
 
-/** Resource collection API of MarketplaceAgreements. */
+/**
+ * Resource collection API of MarketplaceAgreements.
+ */
 public interface MarketplaceAgreements {
     /**
      * List Datadog marketplace agreements in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatadogAgreementResource> list();
 
     /**
      * List Datadog marketplace agreements in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatadogAgreementResource> list(Context context);
 
     /**
      * Create Datadog marketplace agreement in the subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    DatadogAgreementResource createOrUpdate();
-
-    /**
-     * Create Datadog marketplace agreement in the subscription.
-     *
+     * 
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<DatadogAgreementResource> createOrUpdateWithResponse(DatadogAgreementResourceInner body, Context context);
+
+    /**
+     * Create Datadog marketplace agreement in the subscription.
+     * 
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    DatadogAgreementResource createOrUpdate();
 }

@@ -5,55 +5,62 @@
 package com.azure.resourcemanager.monitor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.util.List;
 
-/** The response to a metrics query. */
+/**
+ * The response to a metrics query.
+ */
 @Fluent
-public final class ResponseInner {
+public final class ResponseInner implements JsonSerializable<ResponseInner> {
     /*
      * The integer value representing the relative cost of the query.
      */
-    @JsonProperty(value = "cost")
     private Integer cost;
 
     /*
      * The timespan for which the data was retrieved. Its value consists of two datetimes concatenated, separated by
-     * '/'.  This may be adjusted in the future and returned back from what was originally requested.
+     * '/'. This may be adjusted in the future and returned back from what was originally requested.
      */
-    @JsonProperty(value = "timespan", required = true)
     private String timespan;
 
     /*
-     * The interval (window size) for which the metric data was returned in.  This may be adjusted in the future and
-     * returned back from what was originally requested.  This is not present if a metadata request was made.
+     * The interval (window size) for which the metric data was returned in. This may be adjusted in the future and
+     * returned back from what was originally requested. This is not present if a metadata request was made.
      */
-    @JsonProperty(value = "interval")
     private Duration interval;
 
     /*
      * The namespace of the metrics being queried
      */
-    @JsonProperty(value = "namespace")
     private String namespace;
 
     /*
      * The region of the resource being queried for metrics.
      */
-    @JsonProperty(value = "resourceregion")
     private String resourceRegion;
 
     /*
      * the value of the collection.
      */
-    @JsonProperty(value = "value", required = true)
     private List<MetricInner> value;
 
     /**
+     * Creates an instance of ResponseInner class.
+     */
+    public ResponseInner() {
+    }
+
+    /**
      * Get the cost property: The integer value representing the relative cost of the query.
-     *
+     * 
      * @return the cost value.
      */
     public Integer cost() {
@@ -62,7 +69,7 @@ public final class ResponseInner {
 
     /**
      * Set the cost property: The integer value representing the relative cost of the query.
-     *
+     * 
      * @param cost the cost value to set.
      * @return the ResponseInner object itself.
      */
@@ -75,7 +82,7 @@ public final class ResponseInner {
      * Get the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
      * requested.
-     *
+     * 
      * @return the timespan value.
      */
     public String timespan() {
@@ -86,7 +93,7 @@ public final class ResponseInner {
      * Set the timespan property: The timespan for which the data was retrieved. Its value consists of two datetimes
      * concatenated, separated by '/'. This may be adjusted in the future and returned back from what was originally
      * requested.
-     *
+     * 
      * @param timespan the timespan value to set.
      * @return the ResponseInner object itself.
      */
@@ -99,7 +106,7 @@ public final class ResponseInner {
      * Get the interval property: The interval (window size) for which the metric data was returned in. This may be
      * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
      * request was made.
-     *
+     * 
      * @return the interval value.
      */
     public Duration interval() {
@@ -110,7 +117,7 @@ public final class ResponseInner {
      * Set the interval property: The interval (window size) for which the metric data was returned in. This may be
      * adjusted in the future and returned back from what was originally requested. This is not present if a metadata
      * request was made.
-     *
+     * 
      * @param interval the interval value to set.
      * @return the ResponseInner object itself.
      */
@@ -121,7 +128,7 @@ public final class ResponseInner {
 
     /**
      * Get the namespace property: The namespace of the metrics being queried.
-     *
+     * 
      * @return the namespace value.
      */
     public String namespace() {
@@ -130,7 +137,7 @@ public final class ResponseInner {
 
     /**
      * Set the namespace property: The namespace of the metrics being queried.
-     *
+     * 
      * @param namespace the namespace value to set.
      * @return the ResponseInner object itself.
      */
@@ -141,7 +148,7 @@ public final class ResponseInner {
 
     /**
      * Get the resourceRegion property: The region of the resource being queried for metrics.
-     *
+     * 
      * @return the resourceRegion value.
      */
     public String resourceRegion() {
@@ -150,7 +157,7 @@ public final class ResponseInner {
 
     /**
      * Set the resourceRegion property: The region of the resource being queried for metrics.
-     *
+     * 
      * @param resourceRegion the resourceRegion value to set.
      * @return the ResponseInner object itself.
      */
@@ -161,7 +168,7 @@ public final class ResponseInner {
 
     /**
      * Get the value property: the value of the collection.
-     *
+     * 
      * @return the value value.
      */
     public List<MetricInner> value() {
@@ -170,7 +177,7 @@ public final class ResponseInner {
 
     /**
      * Set the value property: the value of the collection.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResponseInner object itself.
      */
@@ -181,23 +188,75 @@ public final class ResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (timespan() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property timespan in model ResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property timespan in model ResponseInner"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ResponseInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ResponseInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ResponseInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timespan", this.timespan);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("cost", this.cost);
+        jsonWriter.writeStringField("interval", CoreUtils.durationToStringWithDays(this.interval));
+        jsonWriter.writeStringField("namespace", this.namespace);
+        jsonWriter.writeStringField("resourceregion", this.resourceRegion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResponseInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ResponseInner.
+     */
+    public static ResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResponseInner deserializedResponseInner = new ResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timespan".equals(fieldName)) {
+                    deserializedResponseInner.timespan = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<MetricInner> value = reader.readArray(reader1 -> MetricInner.fromJson(reader1));
+                    deserializedResponseInner.value = value;
+                } else if ("cost".equals(fieldName)) {
+                    deserializedResponseInner.cost = reader.getNullable(JsonReader::getInt);
+                } else if ("interval".equals(fieldName)) {
+                    deserializedResponseInner.interval
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("namespace".equals(fieldName)) {
+                    deserializedResponseInner.namespace = reader.getString();
+                } else if ("resourceregion".equals(fieldName)) {
+                    deserializedResponseInner.resourceRegion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResponseInner;
+        });
+    }
 }

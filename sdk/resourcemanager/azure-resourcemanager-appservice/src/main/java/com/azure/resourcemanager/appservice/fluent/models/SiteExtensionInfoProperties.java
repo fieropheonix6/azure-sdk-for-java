@@ -5,138 +5,131 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.SiteExtensionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** SiteExtensionInfo resource specific properties. */
+/**
+ * SiteExtensionInfo resource specific properties.
+ */
 @Fluent
-public final class SiteExtensionInfoProperties {
+public final class SiteExtensionInfoProperties implements JsonSerializable<SiteExtensionInfoProperties> {
     /*
      * Site extension ID.
      */
-    @JsonProperty(value = "extension_id")
     private String extensionId;
 
     /*
      * The title property.
      */
-    @JsonProperty(value = "title")
     private String title;
 
     /*
      * Site extension type.
      */
-    @JsonProperty(value = "extension_type")
     private SiteExtensionType extensionType;
 
     /*
      * Summary description.
      */
-    @JsonProperty(value = "summary")
     private String summary;
 
     /*
      * Detailed description.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Version information.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Extension URL.
      */
-    @JsonProperty(value = "extension_url")
     private String extensionUrl;
 
     /*
      * Project URL.
      */
-    @JsonProperty(value = "project_url")
     private String projectUrl;
 
     /*
      * Icon URL.
      */
-    @JsonProperty(value = "icon_url")
     private String iconUrl;
 
     /*
      * License URL.
      */
-    @JsonProperty(value = "license_url")
     private String licenseUrl;
 
     /*
      * Feed URL.
      */
-    @JsonProperty(value = "feed_url")
     private String feedUrl;
 
     /*
      * List of authors.
      */
-    @JsonProperty(value = "authors")
     private List<String> authors;
 
     /*
      * Installer command line parameters.
      */
-    @JsonProperty(value = "installer_command_line_params")
     private String installerCommandLineParams;
 
     /*
      * Published timestamp.
      */
-    @JsonProperty(value = "published_date_time")
     private OffsetDateTime publishedDateTime;
 
     /*
      * Count of downloads.
      */
-    @JsonProperty(value = "download_count")
     private Integer downloadCount;
 
     /*
-     * <code>true</code> if the local version is the latest version;
-     * <code>false</code> otherwise.
+     * <code>true</code> if the local version is the latest version; <code>false</code> otherwise.
      */
-    @JsonProperty(value = "local_is_latest_version")
     private Boolean localIsLatestVersion;
 
     /*
      * Local path.
      */
-    @JsonProperty(value = "local_path")
     private String localPath;
 
     /*
      * Installed timestamp.
      */
-    @JsonProperty(value = "installed_date_time")
     private OffsetDateTime installedDateTime;
 
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState")
     private String provisioningState;
 
     /*
      * Site Extension comment.
      */
-    @JsonProperty(value = "comment")
     private String comment;
 
     /**
+     * Creates an instance of SiteExtensionInfoProperties class.
+     */
+    public SiteExtensionInfoProperties() {
+    }
+
+    /**
      * Get the extensionId property: Site extension ID.
-     *
+     * 
      * @return the extensionId value.
      */
     public String extensionId() {
@@ -145,7 +138,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the extensionId property: Site extension ID.
-     *
+     * 
      * @param extensionId the extensionId value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -156,7 +149,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the title property: The title property.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -165,7 +158,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the title property: The title property.
-     *
+     * 
      * @param title the title value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -176,7 +169,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the extensionType property: Site extension type.
-     *
+     * 
      * @return the extensionType value.
      */
     public SiteExtensionType extensionType() {
@@ -185,7 +178,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the extensionType property: Site extension type.
-     *
+     * 
      * @param extensionType the extensionType value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -196,7 +189,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the summary property: Summary description.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -205,7 +198,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the summary property: Summary description.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -216,7 +209,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the description property: Detailed description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -225,7 +218,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the description property: Detailed description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -236,7 +229,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the version property: Version information.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -245,7 +238,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the version property: Version information.
-     *
+     * 
      * @param version the version value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -256,7 +249,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the extensionUrl property: Extension URL.
-     *
+     * 
      * @return the extensionUrl value.
      */
     public String extensionUrl() {
@@ -265,7 +258,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the extensionUrl property: Extension URL.
-     *
+     * 
      * @param extensionUrl the extensionUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -276,7 +269,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the projectUrl property: Project URL.
-     *
+     * 
      * @return the projectUrl value.
      */
     public String projectUrl() {
@@ -285,7 +278,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the projectUrl property: Project URL.
-     *
+     * 
      * @param projectUrl the projectUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -296,7 +289,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the iconUrl property: Icon URL.
-     *
+     * 
      * @return the iconUrl value.
      */
     public String iconUrl() {
@@ -305,7 +298,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the iconUrl property: Icon URL.
-     *
+     * 
      * @param iconUrl the iconUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -316,7 +309,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the licenseUrl property: License URL.
-     *
+     * 
      * @return the licenseUrl value.
      */
     public String licenseUrl() {
@@ -325,7 +318,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the licenseUrl property: License URL.
-     *
+     * 
      * @param licenseUrl the licenseUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -336,7 +329,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the feedUrl property: Feed URL.
-     *
+     * 
      * @return the feedUrl value.
      */
     public String feedUrl() {
@@ -345,7 +338,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the feedUrl property: Feed URL.
-     *
+     * 
      * @param feedUrl the feedUrl value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -356,7 +349,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the authors property: List of authors.
-     *
+     * 
      * @return the authors value.
      */
     public List<String> authors() {
@@ -365,7 +358,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the authors property: List of authors.
-     *
+     * 
      * @param authors the authors value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -376,7 +369,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the installerCommandLineParams property: Installer command line parameters.
-     *
+     * 
      * @return the installerCommandLineParams value.
      */
     public String installerCommandLineParams() {
@@ -385,7 +378,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the installerCommandLineParams property: Installer command line parameters.
-     *
+     * 
      * @param installerCommandLineParams the installerCommandLineParams value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -396,7 +389,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the publishedDateTime property: Published timestamp.
-     *
+     * 
      * @return the publishedDateTime value.
      */
     public OffsetDateTime publishedDateTime() {
@@ -405,7 +398,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the publishedDateTime property: Published timestamp.
-     *
+     * 
      * @param publishedDateTime the publishedDateTime value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -416,7 +409,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the downloadCount property: Count of downloads.
-     *
+     * 
      * @return the downloadCount value.
      */
     public Integer downloadCount() {
@@ -425,7 +418,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the downloadCount property: Count of downloads.
-     *
+     * 
      * @param downloadCount the downloadCount value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -437,7 +430,7 @@ public final class SiteExtensionInfoProperties {
     /**
      * Get the localIsLatestVersion property: &lt;code&gt;true&lt;/code&gt; if the local version is the latest version;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @return the localIsLatestVersion value.
      */
     public Boolean localIsLatestVersion() {
@@ -447,7 +440,7 @@ public final class SiteExtensionInfoProperties {
     /**
      * Set the localIsLatestVersion property: &lt;code&gt;true&lt;/code&gt; if the local version is the latest version;
      * &lt;code&gt;false&lt;/code&gt; otherwise.
-     *
+     * 
      * @param localIsLatestVersion the localIsLatestVersion value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -458,7 +451,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the localPath property: Local path.
-     *
+     * 
      * @return the localPath value.
      */
     public String localPath() {
@@ -467,7 +460,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the localPath property: Local path.
-     *
+     * 
      * @param localPath the localPath value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -478,7 +471,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the installedDateTime property: Installed timestamp.
-     *
+     * 
      * @return the installedDateTime value.
      */
     public OffsetDateTime installedDateTime() {
@@ -487,7 +480,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the installedDateTime property: Installed timestamp.
-     *
+     * 
      * @param installedDateTime the installedDateTime value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -498,7 +491,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -507,7 +500,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the provisioningState property: Provisioning state.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -518,7 +511,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Get the comment property: Site Extension comment.
-     *
+     * 
      * @return the comment value.
      */
     public String comment() {
@@ -527,7 +520,7 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Set the comment property: Site Extension comment.
-     *
+     * 
      * @param comment the comment value to set.
      * @return the SiteExtensionInfoProperties object itself.
      */
@@ -538,9 +531,114 @@ public final class SiteExtensionInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("extension_id", this.extensionId);
+        jsonWriter.writeStringField("title", this.title);
+        jsonWriter.writeStringField("extension_type",
+            this.extensionType == null ? null : this.extensionType.toString());
+        jsonWriter.writeStringField("summary", this.summary);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeStringField("extension_url", this.extensionUrl);
+        jsonWriter.writeStringField("project_url", this.projectUrl);
+        jsonWriter.writeStringField("icon_url", this.iconUrl);
+        jsonWriter.writeStringField("license_url", this.licenseUrl);
+        jsonWriter.writeStringField("feed_url", this.feedUrl);
+        jsonWriter.writeArrayField("authors", this.authors, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("installer_command_line_params", this.installerCommandLineParams);
+        jsonWriter.writeStringField("published_date_time",
+            this.publishedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.publishedDateTime));
+        jsonWriter.writeNumberField("download_count", this.downloadCount);
+        jsonWriter.writeBooleanField("local_is_latest_version", this.localIsLatestVersion);
+        jsonWriter.writeStringField("local_path", this.localPath);
+        jsonWriter.writeStringField("installed_date_time",
+            this.installedDateTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.installedDateTime));
+        jsonWriter.writeStringField("provisioningState", this.provisioningState);
+        jsonWriter.writeStringField("comment", this.comment);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteExtensionInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteExtensionInfoProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteExtensionInfoProperties.
+     */
+    public static SiteExtensionInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteExtensionInfoProperties deserializedSiteExtensionInfoProperties = new SiteExtensionInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("extension_id".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.extensionId = reader.getString();
+                } else if ("title".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.title = reader.getString();
+                } else if ("extension_type".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.extensionType
+                        = SiteExtensionType.fromString(reader.getString());
+                } else if ("summary".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.summary = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.description = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.version = reader.getString();
+                } else if ("extension_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.extensionUrl = reader.getString();
+                } else if ("project_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.projectUrl = reader.getString();
+                } else if ("icon_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.iconUrl = reader.getString();
+                } else if ("license_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.licenseUrl = reader.getString();
+                } else if ("feed_url".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.feedUrl = reader.getString();
+                } else if ("authors".equals(fieldName)) {
+                    List<String> authors = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSiteExtensionInfoProperties.authors = authors;
+                } else if ("installer_command_line_params".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.installerCommandLineParams = reader.getString();
+                } else if ("published_date_time".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.publishedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("download_count".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.downloadCount = reader.getNullable(JsonReader::getInt);
+                } else if ("local_is_latest_version".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.localIsLatestVersion
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("local_path".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.localPath = reader.getString();
+                } else if ("installed_date_time".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.installedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.provisioningState = reader.getString();
+                } else if ("comment".equals(fieldName)) {
+                    deserializedSiteExtensionInfoProperties.comment = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteExtensionInfoProperties;
+        });
     }
 }

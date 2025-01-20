@@ -23,8 +23,7 @@ public final class ClassifyDocumentResultCollection extends IterableStream<Class
         ClassifyDocumentResultCollectionPropertiesHelper.setAccessor(
             new ClassifyDocumentResultCollectionPropertiesHelper.ClassifyDocumentResultCollectionAccessor() {
                 @Override
-                public void setProjectName(ClassifyDocumentResultCollection resultCollection,
-                    String projectName) {
+                public void setProjectName(ClassifyDocumentResultCollection resultCollection, String projectName) {
                     resultCollection.setProjectName(projectName);
                 }
 
@@ -43,7 +42,7 @@ public final class ClassifyDocumentResultCollection extends IterableStream<Class
     }
 
     /**
-     * Create a {@link ClassifyDocumentResultCollection} model that maintains a list of
+     * Create a {@code ClassifyDocumentResultCollection} model that maintains a list of
      * {@link ClassifyDocumentResult} along with model version and batch's statistics.
      *
      * @param documentResults A list of {@link ClassifyDocumentResult}.

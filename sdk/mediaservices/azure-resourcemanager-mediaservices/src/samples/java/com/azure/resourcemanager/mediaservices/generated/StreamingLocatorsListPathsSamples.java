@@ -4,37 +4,41 @@
 
 package com.azure.resourcemanager.mediaservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for StreamingLocators ListPaths. */
+/**
+ * Samples for StreamingLocators ListPaths.
+ */
 public final class StreamingLocatorsListPathsSamples {
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-list-paths-streaming-only.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-
+     * locators-list-paths-streaming-only.json
      */
     /**
      * Sample code: List Paths which has streaming paths only.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
-    public static void listPathsWhichHasStreamingPathsOnly(
-        com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager
-            .streamingLocators()
-            .listPathsWithResponse("contoso", "contosomedia", "secureStreamingLocator", Context.NONE);
+    public static void
+        listPathsWhichHasStreamingPathsOnly(com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
+        manager.streamingLocators()
+            .listPathsWithResponse("contosorg", "contosomedia", "secureStreamingLocator",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/mediaservices/resource-manager/Microsoft.Media/stable/2022-08-01/examples/streaming-locators-list-paths-streaming-and-download.json
+     * x-ms-original-file:
+     * specification/mediaservices/resource-manager/Microsoft.Media/Metadata/stable/2022-08-01/examples/streaming-
+     * locators-list-paths-streaming-and-download.json
      */
     /**
      * Sample code: List Paths which has streaming paths and download paths.
-     *
+     * 
      * @param manager Entry point to MediaServicesManager.
      */
     public static void listPathsWhichHasStreamingPathsAndDownloadPaths(
         com.azure.resourcemanager.mediaservices.MediaServicesManager manager) {
-        manager
-            .streamingLocators()
-            .listPathsWithResponse("contoso", "contosomedia", "clearStreamingLocator", Context.NONE);
+        manager.streamingLocators()
+            .listPathsWithResponse("contosorg", "contosomedia", "clearStreamingLocator",
+                com.azure.core.util.Context.NONE);
     }
 }

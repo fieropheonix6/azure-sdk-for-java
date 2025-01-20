@@ -1,6 +1,6 @@
 # Release History
 
-## 11.6.0-beta.4 (Unreleased)
+## 11.8.0-beta.5 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,507 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+
+## 11.7.4 (2024-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.53.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.5` to version `1.15.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.2` to version `1.5.4`.
+
+
+## 11.8.0-beta.4 (2024-11-22)
+
+### Bugs Fixed
+
+ - Fixed bug in the serialization of `SearchDocumentsResult` `debuginfo` property.
+ - Fixed missing properties bug in `SemanticSearchResults`.
+   - Added missing properties `debugInfo` and `semanticQueryRewritesResultType`.
+
+## 11.8.0-beta.3 (2024-11-20)
+
+### Bugs Fixed
+
+- Fixed a bug where `SearchOptions` was missing setters for `QueryDebugMode`, `QueryLanguage`, and `QuerySpellerType`.
+
+## 11.8.0-beta.2 (2024-11-18)
+
+### Features Added 
+
+- `FacetResults` is now a recursive data structure to support hierarchical aggregation and facet filtering.
+- `QueryAnswer` now supports a `maxCharLength` option to limit the character length of the answer.
+- `QueryCaption` now supports a `maxCharLength` option to limit the character length of the caption.
+- `VectorizableTextQuery` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
+- `SemanticSearchOptions` now supports a `queryRewrites` option to specify the number query rewrites the service will generate.
+- `VectorSearchCompression` now supports configuring the `rescoringOptoins`.
+- `IndexingParametersConfiguration` now supports two additional options for `MarkdownParsingSubmode` and `MarkdownHeaderDepth`.
+- Added a new skill: `DocumentIntelligenceLayoutSkill` that extracts content and layout information (as markdown), via Azure AI Services, from files within the enrichment pipeline.
+- Added 2 subtypes of `CognitiveServiceAccounts`: `AzureCognitiveServiceAccount` and `AzureCognitiveServiceAccountKey`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.52.0` to version `1.54.1`.
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.4`.
+
+## 11.7.3 (2024-10-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.4` to version `1.15.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.1` to version `1.5.2`.
+- Upgraded `azure-core` from `1.52.0` to version `1.53.0`.
+
+
+## 11.7.2 (2024-09-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.0` to version `1.5.1`.
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+
+
+## 11.8.0-beta.1 (2024-09-23)
+
+### Features Added
+
+- `VectorSearchCompression` now supports `truncationDimension` which allows for specifying the number of dimensions to 
+  truncate vectors to.
+- `SplitSkill` now supports tokenization.
+- `VectorQuery` now supports `filterOverride` which allow for vector queries to override the broader SearchRequest.filter to allow for vector queries to have more specific configurations
+- `DocumentDebugInfo` is extended with vector scores for the result.
+
+### Other Changes
+
+- Migrate Search test from local auth to Microsoft Entra authentication.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.0` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.5.` to version `1.5.1`.
+- Upgraded `azure-json` from `1.2.0` to version `1.3.0`.
+
+
+## 11.7.1 (2024-08-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.14` to version `1.5.0`.
+- Upgraded `azure-core` from `1.50.0` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` from `1.15.2` to version `1.15.3`.
+- Upgraded `azure-json` from `1.1.0` to version `1.2.0`.
+
+## 11.7.0 (2024-07-17)
+
+### Features Added
+
+- Added support for `2024-07-01` service version.
+- `SemanticSearchOptions` now supports `semanticQuery`, which allows for specifying a semantic query that is only used
+  for semantic reranking.
+- `VectorQuery` now supports `oversampling` and `weight`, which allows for specifying richer configurations on how
+  vector queries affect search results.
+- Added support for `VectorizableTextQuery`, which allows for passing a text-based query that is vectorized service-side
+  by `VectorSearchVectorizer`s configured on the index so that vectorization doesn't need to happen before querying.
+- Added support for "bring your own endpoint" with `VectorSearchVectorizer`, with implementations `AzureOpenAIVectorizer`
+  and `WebApiVectorizer`. This enables the service to use a user-provided configuration for vectorizing text, rather 
+  than requiring all client-side calls to vectorize before querying, allowing for easier standardization of vectorization.
+- Added support for compression with `VectorSearchCompression`, with implementations `BinaryQuantizationCompression`
+  and `ScalarQuantizationCompression`. This allows for reducing the size of vectors in the index, which can reduce
+  storage costs and improve querying performance.
+- Added support for `VectorEncodingFormat`, which allows for specifying the encoding format of the vector data.
+- Added support for `AzureOpenAIEmbeddingSkill`, which is a skill that uses the Azure OpenAI service to create text 
+  embeddings during indexing.
+- Added support for index projections with `SearchIndexerIndexProjection`, which allows for specifying how indexed 
+  documents are projected in the index (or indexes).
+- Added support for "narrow" types in `SearchFieldDataType`. This allows for specifying smaller types for vector fields
+  to reduce storage costs and improve querying performance.
+- Added support for `SearchIndexerDataIdentity`, which allows for specifying the identity for the data source for the 
+  indexer.
+- `SearchField` and `SearchableField` now support `stored` and `vectorEncodingFormat` configurations. `stored` allows
+  for specifying behaviors on how the index will retain vector data (enabling the ability to reduce storage costs), and
+  `vectorEncodingFormat` allows for specifying the encoding format of the vector data.
+- `OcrSkill` now supports `OcrLineEnding`, which allows for specifying the line ending character used by the OCR skill.
+- `SplitSkill` now supports `maximumPagesToTake` and `pageOverlapLength`, which allows for specifying how the split
+  skill behaves when splitting documents into pages.
+- `SearchServiceLimits` now supports `maxStoragePerIndexInBytes`, which shows the maximum storage allowed per index.
+
+### Breaking Changes
+
+- All service concepts that have been in preview but not included in the `2024-07-01` GA have been removed. This
+  includes concepts such as index aliases, normalizers, Azure Machine Learning skills, hybrid search, and more.
+
+### Other Changes
+
+- All polymorphic models now expose their discriminator value through a getter, where the getter is named after the
+  discriminator property such as `getOdataType()`. Super most polymorphic classes are no longer `abstract` to allow for
+  direct instantiation of the class.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.13` to version `1.4.14`.
+
+## 11.6.6 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.12` to version `1.4.13`.
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+
+## 11.6.5 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.11` to version `1.4.12`.
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+## 11.7.0-beta.3 (2024-05-07)
+
+### Features Added
+
+- Added support for `Byte[]` and `List<Byte>` in `FieldBuilder`
+- Added support for `HybridSearch`
+- Index models added: `AIServicesVisionParameters`, `AIServicesVisionVectorizer`, `AIStudioModelCatalogName`,
+  `AzureMachineLearningParameters`, `AzureMachineLearningVectorizer`, `AzureOpenAIModelName`, `VectorEncodingFormat`,
+ `VisionVectorizeSkill`
+- Search models added: `HybridCountAndFacetMode`, `HybridSearch`, `SearchScoreThreshold`, `VectorSimilarityThreshold`, 
+ `VectorThreshold`, `VectorThresholdKind`, `VectorizableImageBinaryQuery`, `VectorizableImageUrlQuery`
+
+### Other Changes
+
+- Sample added for creating a vector fields index with reduced dimensions.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.11` to version `1.4.12`.
+
+## 11.6.4 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.10` to version `1.4.11`.
+
+## 11.6.3 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.9` to version `1.4.10`.
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+## 11.7.0-beta.2 (2024-03-11)
+
+### Features Added
+
+- Added support for the java types `Byte` and `Short` to FieldBuilder.
+- Added support for "isStored" annotation to FieldBuilder.
+- Added `VectorSearchCompressionConfiguration` to `VectorSearch`
+
+### Breaking Changes
+
+- Replaced `SearchErrorException` with `ErrorResponseException`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` to version `1.4.10`.
+- Upgraded `azure-core-http-netty` to version `1.14.1`.
+- Upgraded `azure-core` to version `1.47.0`.
+
+## 11.6.2 (2024-02-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+
+## 11.7.0-beta.1 (2024-02-09)
+
+### Features Added
+
+- Exposing HttpPipeline within clients.
+
+### Other Changes
+
+- Rebranding Azure Cognitive Search to Azure AI Search within the SDK.
+- Updated JavaDoc to assist with developer experience.
+- Sample added to show how to maintain a consistent sessionId across multiple requests.
+
+## 11.6.1 (2023-12-06)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.7` to version `1.4.8`.
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
+## 11.6.0 (2023-11-13)
+
+### Features Added
+
+- Support for `VectorQuery` and configuring a `SearchIndex` for vector query and vector `SearchField`.
+- Support for semantic search and configuring a `SearchIndex` semantic searching.
+- Added `EntityLinkingSkill`, `PiiDetectionSkill`, a new version of `EntityRecognitionSkill` and support for setting 
+  which version to use, and a new version of `SentimentSkill` and support for setting which version to use.
+
+### Breaking Changes
+
+- Deprecated `V1` version of `EntityRecognitionSkill` and `SentimentSkill` as these are deprecated on the service.
+- Replaced Jackson Databind annotations with `azure-json` functionality for Search service models.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.6` to version `1.4.7`.
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+
+## 11.5.12 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.4` to version `1.4.6`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+
+## 11.6.0-beta.10 (2023-10-12)
+
+### Features Added
+
+- `SemanticQuery` has been added to `SearchOptions`, allowing the setting of a separate search query that will be solely 
+  used for semantic reranking, semantic captions and semantic answers.
+
+### Breaking Changes
+
+- `SearchQueryVector` model has been replaced by `VectorQuery`.
+- `SearchOptions` instance method `SearchOptions setVectors(List<SearchQueryVector>)` has been replaced by `SearchOptions setVectorQueries(List<VectorQuery>)`.
+- `SearchOptions` instance method `SearchOptions setVectors(SearchQueryVector...)` has been replaced by `SearchOptions setVectorQueries(VectorQuery...)`.
+- `SearchOptions` instance method `List<SearchQueryVector> getVectors()` has been replaced by `List<VectorQuery> getVectorQueries()`.
+- `VectorSearch` instance property `List<VectorSearchAlgorithmConfiguration> algorithmConfigurations` has been replaced by properties `List<VectorSearchProfile> profiles`, 
+  `List<VectorSearchAlgorithmConfiguration> algorithms`, and `List<VectorSearchVectorizer> vectorizers`.
+
+### Other Changes
+
+- Added additional models to support vector search.
+- Updated vector search samples to use `VectorQuery`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.4` to version `1.4.5`.
+- Upgraded `azure-core` from `1.43.0` to version `1.44.0`.
+
+## 11.5.11 (2023-09-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 11.6.0-beta.9 (2023-09-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.3` to version `1.4.4`.
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+
+## 11.5.10 (2023-08-18)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.2` to version `1.4.3`.
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 11.6.0-beta.8 (2023-08-11)
+
+### Features Added
+
+- Added FieldBuilder support for float data types.
+- Added support for multi-vector searches.
+- Adjusted method for setting `fields` in `SearchQueryVector` from `SearchQueryVector setFields(String)` to `SearchQueryVector setFields(String...)` for convenience.
+
+### Breaking Changes
+
+- `SearchOptions` method `SearchOptions setVector(SearchQueryVector)` has been replaced with `SearchOptions setVectors(SearchQueryVector...)` and `SearchOptions setVectors(List<SearchQueryVector>)`
+- `SearchOptions` method `SearchQueryVector getVector()` has been replaced with `List<SearchQueryVector> getVectors()`
+
+### Other Changes
+
+- Added sample for multi-vector search.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.5` to version `1.13.6`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.2` to version `1.4.3`.
+- Upgraded `azure-core` from `1.41.0` to version `1.42.0`.
+
+## 11.5.9 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.1` to version `1.4.2`.
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+
+
+## 11.6.0-beta.7 (2023-07-11)
+
+### Features Added
+
+- Added support for [Vector Search](https://learn.microsoft.com/azure/search/vector-search-overview) ([Examples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/java/com/azure/search/documents/VectorSearchExample.java)).
+
+### Breaking Changes
+
+- Deprecated `EntityRecognitionSkillVersion.V1` and `SentimentSkillVersion.V1`, and corresponding constructors in
+  `EntityRecognitionSkill` and `SentimentSkill`, use `EntityRecognitionSkillVersion.V3` and `SentimentSkillVersion.V3`
+  instead. See [Cognitive Search skill deprecated](https://learn.microsoft.com/azure/search/cognitive-search-skill-deprecated) 
+  for more details.
+
+### Other Changes
+
+- Migrate test recordings to assets repo.
+
+## 11.5.8 (2023-06-09)
+
+### Other Changes
+
+- Properly set Index and Search Analyzer names in FieldBuilder
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.4.0` to version `1.4.1`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 11.5.7 (2023-05-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.3.1` to version `1.4.0`.
+
+## 11.6.0-beta.6 (2023-05-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.3.1` to version `1.4.0`.
+- Upgraded `azure-json` from `1.0.0` to version `1.0.1`.
+
+## 11.5.6 (2023-04-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.3.0` to version `1.3.1`.
+
+## 11.5.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.25` to version `1.3.0`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 11.6.0-beta.5 (2023-02-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.24` to version `1.2.25`.
+
+## 11.5.4 (2023-02-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.35.0` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` from `1.12.8` to version `1.13.0`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.24` to version `1.2.25`.
+
+## 11.6.0-beta.4 (2023-01-13)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.23` to version `1.2.24`.
+
+## 11.5.3 (2023-01-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.34.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.23` to version `1.2.24`.
 
 ## 11.6.0-beta.3 (2022-11-11)
 
@@ -19,7 +520,17 @@
 - Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
 - Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.22` to version `1.2.23`.
-- 
+
+## 11.5.2 (2022-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.33.0` to version `1.34.0`.
+- Upgraded `azure-core-http-netty` from `1.12.6` to version `1.12.7`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.22` to version `1.2.23`.
+
 ## 11.6.0-beta.2 (2022-10-12)
 
 ### Bugs Fixed
@@ -33,7 +544,7 @@
 - Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
 - Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
-- 
+
 ## 11.5.1 (2022-10-12)
 
 ### Other Changes
@@ -43,7 +554,6 @@
 - Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
 - Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 - Upgraded `azure-core-serializer-json-jackson` from `1.2.21` to version `1.2.22`.
-
 
 ## 11.6.0-beta.1 (2022-09-06)
 
@@ -602,7 +1112,7 @@
 
 - Added `buildSearchFields` API to `SearchIndexClient` and `SearchIndexAsyncClient` to aid in creating `SearchField`s from the passed `Class`.
 - Added `SearchableFieldProperty`, `SimpleFieldProperty`, and `FieldBuilderIgnore` to annotate `Class`es passed into `buildSearchFields`.
-- Added `getDefaultLogOptions` to `SearchClientBuilder`, `SearchIndexCleintBuilder`, and `SearchIndexerClientBuilder`. Updated client construction to use default log options by default.
+- Added `getDefaultLogOptions` to `SearchClientBuilder`, `SearchIndexClientBuilder`, and `SearchIndexerClientBuilder`. Updated client construction to use default log options by default.
 - Added the ability for clients to accept a `JsonSerializer` to specify a custom JSON serialization layer when dealing with Search documents.
 
 ## 11.0.0 (2020-07-13)

@@ -5,57 +5,62 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Class Representing Solution for problems detected. */
+/**
+ * Class Representing Solution for problems detected.
+ */
 @Fluent
-public final class Solution {
+public final class Solution implements JsonSerializable<Solution> {
     /*
      * Solution Id.
      */
-    @JsonProperty(value = "id")
     private Double id;
 
     /*
      * Display Name of the solution
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
      * Order of the solution.
      */
-    @JsonProperty(value = "order")
     private Double order;
 
     /*
      * Description of the solution
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Type of Solution
      */
-    @JsonProperty(value = "type")
     private SolutionType type;
 
     /*
      * Solution Data.
      */
-    @JsonProperty(value = "data")
     private List<List<NameValuePair>> data;
 
     /*
      * Solution Metadata.
      */
-    @JsonProperty(value = "metadata")
     private List<List<NameValuePair>> metadata;
 
     /**
+     * Creates an instance of Solution class.
+     */
+    public Solution() {
+    }
+
+    /**
      * Get the id property: Solution Id.
-     *
+     * 
      * @return the id value.
      */
     public Double id() {
@@ -64,7 +69,7 @@ public final class Solution {
 
     /**
      * Set the id property: Solution Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the Solution object itself.
      */
@@ -75,7 +80,7 @@ public final class Solution {
 
     /**
      * Get the displayName property: Display Name of the solution.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -84,7 +89,7 @@ public final class Solution {
 
     /**
      * Set the displayName property: Display Name of the solution.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Solution object itself.
      */
@@ -95,7 +100,7 @@ public final class Solution {
 
     /**
      * Get the order property: Order of the solution.
-     *
+     * 
      * @return the order value.
      */
     public Double order() {
@@ -104,7 +109,7 @@ public final class Solution {
 
     /**
      * Set the order property: Order of the solution.
-     *
+     * 
      * @param order the order value to set.
      * @return the Solution object itself.
      */
@@ -115,7 +120,7 @@ public final class Solution {
 
     /**
      * Get the description property: Description of the solution.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -124,7 +129,7 @@ public final class Solution {
 
     /**
      * Set the description property: Description of the solution.
-     *
+     * 
      * @param description the description value to set.
      * @return the Solution object itself.
      */
@@ -135,7 +140,7 @@ public final class Solution {
 
     /**
      * Get the type property: Type of Solution.
-     *
+     * 
      * @return the type value.
      */
     public SolutionType type() {
@@ -144,7 +149,7 @@ public final class Solution {
 
     /**
      * Set the type property: Type of Solution.
-     *
+     * 
      * @param type the type value to set.
      * @return the Solution object itself.
      */
@@ -155,7 +160,7 @@ public final class Solution {
 
     /**
      * Get the data property: Solution Data.
-     *
+     * 
      * @return the data value.
      */
     public List<List<NameValuePair>> data() {
@@ -164,7 +169,7 @@ public final class Solution {
 
     /**
      * Set the data property: Solution Data.
-     *
+     * 
      * @param data the data value to set.
      * @return the Solution object itself.
      */
@@ -175,7 +180,7 @@ public final class Solution {
 
     /**
      * Get the metadata property: Solution Metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public List<List<NameValuePair>> metadata() {
@@ -184,7 +189,7 @@ public final class Solution {
 
     /**
      * Set the metadata property: Solution Metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the Solution object itself.
      */
@@ -195,7 +200,7 @@ public final class Solution {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -205,5 +210,65 @@ public final class Solution {
         if (metadata() != null) {
             metadata().forEach(e -> e.forEach(e1 -> e1.validate()));
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("id", this.id);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeNumberField("order", this.order);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("data", this.data,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeArrayField("metadata", this.metadata,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Solution from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Solution if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Solution.
+     */
+    public static Solution fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Solution deserializedSolution = new Solution();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSolution.id = reader.getNullable(JsonReader::getDouble);
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSolution.displayName = reader.getString();
+                } else if ("order".equals(fieldName)) {
+                    deserializedSolution.order = reader.getNullable(JsonReader::getDouble);
+                } else if ("description".equals(fieldName)) {
+                    deserializedSolution.description = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSolution.type = SolutionType.fromString(reader.getString());
+                } else if ("data".equals(fieldName)) {
+                    List<List<NameValuePair>> data
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> NameValuePair.fromJson(reader2)));
+                    deserializedSolution.data = data;
+                } else if ("metadata".equals(fieldName)) {
+                    List<List<NameValuePair>> metadata
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> NameValuePair.fromJson(reader2)));
+                    deserializedSolution.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSolution;
+        });
     }
 }

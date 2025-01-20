@@ -5,38 +5,61 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HighAvailabilityState. */
+/**
+ * The state of server high availability.
+ */
 public final class HighAvailabilityState extends ExpandableStringEnum<HighAvailabilityState> {
-    /** Static value NotEnabled for HighAvailabilityState. */
+    /**
+     * Static value NotEnabled for HighAvailabilityState.
+     */
     public static final HighAvailabilityState NOT_ENABLED = fromString("NotEnabled");
 
-    /** Static value CreatingStandby for HighAvailabilityState. */
+    /**
+     * Static value CreatingStandby for HighAvailabilityState.
+     */
     public static final HighAvailabilityState CREATING_STANDBY = fromString("CreatingStandby");
 
-    /** Static value Healthy for HighAvailabilityState. */
+    /**
+     * Static value Healthy for HighAvailabilityState.
+     */
     public static final HighAvailabilityState HEALTHY = fromString("Healthy");
 
-    /** Static value FailingOver for HighAvailabilityState. */
+    /**
+     * Static value FailingOver for HighAvailabilityState.
+     */
     public static final HighAvailabilityState FAILING_OVER = fromString("FailingOver");
 
-    /** Static value RemovingStandby for HighAvailabilityState. */
+    /**
+     * Static value RemovingStandby for HighAvailabilityState.
+     */
     public static final HighAvailabilityState REMOVING_STANDBY = fromString("RemovingStandby");
 
     /**
+     * Creates a new instance of HighAvailabilityState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public HighAvailabilityState() {
+    }
+
+    /**
      * Creates or finds a HighAvailabilityState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HighAvailabilityState.
      */
-    @JsonCreator
     public static HighAvailabilityState fromString(String name) {
         return fromString(name, HighAvailabilityState.class);
     }
 
-    /** @return known HighAvailabilityState values. */
+    /**
+     * Gets known HighAvailabilityState values.
+     * 
+     * @return known HighAvailabilityState values.
+     */
     public static Collection<HighAvailabilityState> values() {
         return values(HighAvailabilityState.class);
     }

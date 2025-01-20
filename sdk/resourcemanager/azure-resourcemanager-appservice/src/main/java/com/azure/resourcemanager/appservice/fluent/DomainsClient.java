@@ -27,30 +27,36 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DomainsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DomainsClient.
+ */
 public interface DomainsClient
     extends InnerSupportsGet<DomainInner>, InnerSupportsListing<DomainInner>, InnerSupportsDelete<Void> {
     /**
+     * Check if a domain is available for registration.
+     * 
      * Description for Check if a domain is available for registration.
-     *
+     * 
      * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DomainAvailabilityCheckResultInner>> checkAvailabilityWithResponseAsync(
-        NameIdentifierInner identifier);
+    Mono<Response<DomainAvailabilityCheckResultInner>>
+        checkAvailabilityWithResponseAsync(NameIdentifierInner identifier);
 
     /**
+     * Check if a domain is available for registration.
+     * 
      * Description for Check if a domain is available for registration.
-     *
+     * 
      * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result on successful completion of {@link Mono}.
      */
@@ -58,12 +64,31 @@ public interface DomainsClient
     Mono<DomainAvailabilityCheckResultInner> checkAvailabilityAsync(NameIdentifierInner identifier);
 
     /**
+     * Check if a domain is available for registration.
+     * 
      * Description for Check if a domain is available for registration.
-     *
+     * 
+     * @param identifier Name of the domain.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain availability check result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DomainAvailabilityCheckResultInner> checkAvailabilityWithResponse(NameIdentifierInner identifier,
+        Context context);
+
+    /**
+     * Check if a domain is available for registration.
+     * 
+     * Description for Check if a domain is available for registration.
+     * 
      * @param identifier Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain availability check result.
      */
@@ -71,25 +96,12 @@ public interface DomainsClient
     DomainAvailabilityCheckResultInner checkAvailability(NameIdentifierInner identifier);
 
     /**
-     * Description for Check if a domain is available for registration.
-     *
-     * @param identifier Name of the domain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain availability check result along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainAvailabilityCheckResultInner> checkAvailabilityWithResponse(
-        NameIdentifierInner identifier, Context context);
-
-    /**
+     * Get all domains in a subscription.
+     * 
      * Description for Get all domains in a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains as paginated response with {@link PagedFlux}.
      */
@@ -97,10 +109,12 @@ public interface DomainsClient
     PagedFlux<DomainInner> listAsync();
 
     /**
+     * Get all domains in a subscription.
+     * 
      * Description for Get all domains in a subscription.
-     *
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains as paginated response with {@link PagedIterable}.
      */
@@ -108,12 +122,14 @@ public interface DomainsClient
     PagedIterable<DomainInner> list();
 
     /**
+     * Get all domains in a subscription.
+     * 
      * Description for Get all domains in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains as paginated response with {@link PagedIterable}.
      */
@@ -121,22 +137,26 @@ public interface DomainsClient
     PagedIterable<DomainInner> list(Context context);
 
     /**
+     * Generate a single sign-on request for the domain management portal.
+     * 
      * Description for Generate a single sign-on request for the domain management portal.
-     *
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single sign-on request information for domain management along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DomainControlCenterSsoRequestInner>> getControlCenterSsoRequestWithResponseAsync();
 
     /**
+     * Generate a single sign-on request for the domain management portal.
+     * 
      * Description for Generate a single sign-on request for the domain management portal.
-     *
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single sign-on request information for domain management on successful completion of {@link Mono}.
      */
@@ -144,23 +164,14 @@ public interface DomainsClient
     Mono<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestAsync();
 
     /**
+     * Generate a single sign-on request for the domain management portal.
+     * 
      * Description for Generate a single sign-on request for the domain management portal.
-     *
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single sign-on request information for domain management.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainControlCenterSsoRequestInner getControlCenterSsoRequest();
-
-    /**
-     * Description for Generate a single sign-on request for the domain management portal.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return single sign-on request information for domain management along with {@link Response}.
      */
@@ -168,12 +179,27 @@ public interface DomainsClient
     Response<DomainControlCenterSsoRequestInner> getControlCenterSsoRequestWithResponse(Context context);
 
     /**
+     * Generate a single sign-on request for the domain management portal.
+     * 
+     * Description for Generate a single sign-on request for the domain management portal.
+     * 
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return single sign-on request information for domain management.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DomainControlCenterSsoRequestInner getControlCenterSsoRequest();
+
+    /**
+     * Get domain name recommendations based on keywords.
+     * 
      * Description for Get domain name recommendations based on keywords.
-     *
+     * 
      * @param parameters Search parameters for domain name recommendations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain name identifiers as paginated response with {@link PagedFlux}.
      */
@@ -181,12 +207,14 @@ public interface DomainsClient
     PagedFlux<NameIdentifierInner> listRecommendationsAsync(DomainRecommendationSearchParameters parameters);
 
     /**
+     * Get domain name recommendations based on keywords.
+     * 
      * Description for Get domain name recommendations based on keywords.
-     *
+     * 
      * @param parameters Search parameters for domain name recommendations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain name identifiers as paginated response with {@link PagedIterable}.
      */
@@ -194,27 +222,31 @@ public interface DomainsClient
     PagedIterable<NameIdentifierInner> listRecommendations(DomainRecommendationSearchParameters parameters);
 
     /**
+     * Get domain name recommendations based on keywords.
+     * 
      * Description for Get domain name recommendations based on keywords.
-     *
+     * 
      * @param parameters Search parameters for domain name recommendations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain name identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NameIdentifierInner> listRecommendations(
-        DomainRecommendationSearchParameters parameters, Context context);
+    PagedIterable<NameIdentifierInner> listRecommendations(DomainRecommendationSearchParameters parameters,
+        Context context);
 
     /**
+     * Get all domains in a resource group.
+     * 
      * Description for Get all domains in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains as paginated response with {@link PagedFlux}.
      */
@@ -222,12 +254,14 @@ public interface DomainsClient
     PagedFlux<DomainInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
+     * Get all domains in a resource group.
+     * 
      * Description for Get all domains in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains as paginated response with {@link PagedIterable}.
      */
@@ -235,13 +269,15 @@ public interface DomainsClient
     PagedIterable<DomainInner> listByResourceGroup(String resourceGroupName);
 
     /**
+     * Get all domains in a resource group.
+     * 
      * Description for Get all domains in a resource group.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domains as paginated response with {@link PagedIterable}.
      */
@@ -249,13 +285,15 @@ public interface DomainsClient
     PagedIterable<DomainInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
+     * Get a domain.
+     * 
      * Description for Get a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -263,13 +301,15 @@ public interface DomainsClient
     Mono<Response<DomainInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String domainName);
 
     /**
+     * Get a domain.
+     * 
      * Description for Get a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain on successful completion of {@link Mono}.
      */
@@ -277,28 +317,16 @@ public interface DomainsClient
     Mono<DomainInner> getByResourceGroupAsync(String resourceGroupName, String domainName);
 
     /**
+     * Get a domain.
+     * 
      * Description for Get a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainInner getByResourceGroup(String resourceGroupName, String domainName);
-
-    /**
-     * Description for Get a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response}.
      */
@@ -306,79 +334,105 @@ public interface DomainsClient
     Response<DomainInner> getByResourceGroupWithResponse(String resourceGroupName, String domainName, Context context);
 
     /**
+     * Get a domain.
+     * 
+     * Description for Get a domain.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DomainInner getByResourceGroup(String resourceGroupName, String domainName);
+
+    /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String domainName, DomainInner domain);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String domainName,
+        DomainInner domain);
 
     /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of information about a domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String domainName, DomainInner domain);
+    PollerFlux<PollResult<DomainInner>, DomainInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String domainName, DomainInner domain);
 
     /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of information about a domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
-        String resourceGroupName, String domainName, DomainInner domain);
+    SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(String resourceGroupName, String domainName,
+        DomainInner domain);
 
     /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of information about a domain.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(
-        String resourceGroupName, String domainName, DomainInner domain, Context context);
+    SyncPoller<PollResult<DomainInner>, DomainInner> beginCreateOrUpdate(String resourceGroupName, String domainName,
+        DomainInner domain, Context context);
 
     /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain on successful completion of {@link Mono}.
      */
@@ -386,14 +440,16 @@ public interface DomainsClient
     Mono<DomainInner> createOrUpdateAsync(String resourceGroupName, String domainName, DomainInner domain);
 
     /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -401,15 +457,17 @@ public interface DomainsClient
     DomainInner createOrUpdate(String resourceGroupName, String domainName, DomainInner domain);
 
     /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -417,46 +475,34 @@ public interface DomainsClient
     DomainInner createOrUpdate(String resourceGroupName, String domainName, DomainInner domain, Context context);
 
     /**
+     * Delete a domain.
+     * 
      * Description for Delete a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
-     *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String domainName, Boolean forceHardDeleteDomain);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String domainName,
+        Boolean forceHardDeleteDomain);
 
     /**
+     * Delete a domain.
+     * 
      * Description for Delete a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
-     *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain);
-
-    /**
-     * Description for Delete a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -464,61 +510,69 @@ public interface DomainsClient
     Mono<Void> deleteAsync(String resourceGroupName, String domainName);
 
     /**
+     * Delete a domain.
+     * 
      * Description for Delete a domain.
-     *
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
+     * is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String domainName, Boolean forceHardDeleteDomain,
+        Context context);
+
+    /**
+     * Delete a domain.
+     * 
+     * Description for Delete a domain.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String domainName);
 
     /**
-     * Description for Delete a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param forceHardDeleteDomain Specify &lt;code&gt;true&lt;/code&gt; to delete the domain immediately. The default
-     *     is &lt;code&gt;false&lt;/code&gt; which deletes the domain after 24 hours.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String domainName, Boolean forceHardDeleteDomain, Context context);
-
-    /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DomainInner>> updateWithResponseAsync(
-        String resourceGroupName, String domainName, DomainPatchResource domain);
+    Mono<Response<DomainInner>> updateWithResponseAsync(String resourceGroupName, String domainName,
+        DomainPatchResource domain);
 
     /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain on successful completion of {@link Mono}.
      */
@@ -526,14 +580,35 @@ public interface DomainsClient
     Mono<DomainInner> updateAsync(String resourceGroupName, String domainName, DomainPatchResource domain);
 
     /**
+     * Creates or updates a domain.
+     * 
      * Description for Creates or updates a domain.
-     *
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @param domain Domain registration information.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DomainInner> updateWithResponse(String resourceGroupName, String domainName, DomainPatchResource domain,
+        Context context);
+
+    /**
+     * Creates or updates a domain.
+     * 
+     * Description for Creates or updates a domain.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param domain Domain registration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain.
      */
@@ -541,45 +616,32 @@ public interface DomainsClient
     DomainInner update(String resourceGroupName, String domainName, DomainPatchResource domain);
 
     /**
-     * Description for Creates or updates a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @param domain Domain registration information.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainInner> updateWithResponse(
-        String resourceGroupName, String domainName, DomainPatchResource domain, Context context);
-
-    /**
+     * Lists domain ownership identifiers.
+     * 
      * Description for Lists domain ownership identifiers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain ownership identifiers as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<DomainOwnershipIdentifierInner> listOwnershipIdentifiersAsync(
-        String resourceGroupName, String domainName);
+    PagedFlux<DomainOwnershipIdentifierInner> listOwnershipIdentifiersAsync(String resourceGroupName,
+        String domainName);
 
     /**
+     * Lists domain ownership identifiers.
+     * 
      * Description for Lists domain ownership identifiers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain ownership identifiers as paginated response with {@link PagedIterable}.
      */
@@ -587,62 +649,89 @@ public interface DomainsClient
     PagedIterable<DomainOwnershipIdentifierInner> listOwnershipIdentifiers(String resourceGroupName, String domainName);
 
     /**
+     * Lists domain ownership identifiers.
+     * 
      * Description for Lists domain ownership identifiers.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of domain ownership identifiers as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DomainOwnershipIdentifierInner> listOwnershipIdentifiers(
-        String resourceGroupName, String domainName, Context context);
+    PagedIterable<DomainOwnershipIdentifierInner> listOwnershipIdentifiers(String resourceGroupName, String domainName,
+        Context context);
 
     /**
+     * Get ownership identifier for domain
+     * 
      * Description for Get ownership identifier for domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithResponseAsync(
-        String resourceGroupName, String domainName, String name);
+    Mono<Response<DomainOwnershipIdentifierInner>> getOwnershipIdentifierWithResponseAsync(String resourceGroupName,
+        String domainName, String name);
 
     /**
+     * Get ownership identifier for domain
+     * 
      * Description for Get ownership identifier for domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(
-        String resourceGroupName, String domainName, String name);
+    Mono<DomainOwnershipIdentifierInner> getOwnershipIdentifierAsync(String resourceGroupName, String domainName,
+        String name);
 
     /**
+     * Get ownership identifier for domain
+     * 
      * Description for Get ownership identifier for domain.
-     *
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DomainOwnershipIdentifierInner> getOwnershipIdentifierWithResponse(String resourceGroupName,
+        String domainName, String name, Context context);
+
+    /**
+     * Get ownership identifier for domain
+     * 
+     * Description for Get ownership identifier for domain.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier.
      */
@@ -650,89 +739,52 @@ public interface DomainsClient
     DomainOwnershipIdentifierInner getOwnershipIdentifier(String resourceGroupName, String domainName, String name);
 
     /**
-     * Description for Get ownership identifier for domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of domain.
-     * @param name Name of identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain ownership Identifier along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainOwnershipIdentifierInner> getOwnershipIdentifierWithResponse(
-        String resourceGroupName, String domainName, String name, Context context);
-
-    /**
+     * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
+     * 
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<DomainOwnershipIdentifierInner>> createOrUpdateOwnershipIdentifierWithResponseAsync(
-        String resourceGroupName,
-        String domainName,
-        String name,
+        String resourceGroupName, String domainName, String name,
         DomainOwnershipIdentifierInner domainOwnershipIdentifier);
 
     /**
+     * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
+     * 
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(
-        String resourceGroupName,
-        String domainName,
-        String name,
-        DomainOwnershipIdentifierInner domainOwnershipIdentifier);
+    Mono<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierAsync(String resourceGroupName,
+        String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier);
 
     /**
+     * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
+     * 
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of domain.
-     * @param name Name of identifier.
-     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain ownership Identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainOwnershipIdentifierInner createOrUpdateOwnershipIdentifier(
-        String resourceGroupName,
-        String domainName,
-        String name,
-        DomainOwnershipIdentifierInner domainOwnershipIdentifier);
-
-    /**
-     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
@@ -740,43 +792,63 @@ public interface DomainsClient
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierWithResponse(
-        String resourceGroupName,
-        String domainName,
-        String name,
-        DomainOwnershipIdentifierInner domainOwnershipIdentifier,
-        Context context);
+    Response<DomainOwnershipIdentifierInner> createOrUpdateOwnershipIdentifierWithResponse(String resourceGroupName,
+        String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, Context context);
 
     /**
+     * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
+     * 
+     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
+     * identifier.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DomainOwnershipIdentifierInner createOrUpdateOwnershipIdentifier(String resourceGroupName, String domainName,
+        String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier);
+
+    /**
+     * Delete ownership identifier for domain
+     * 
      * Description for Delete ownership identifier for domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteOwnershipIdentifierWithResponseAsync(
-        String resourceGroupName, String domainName, String name);
+    Mono<Response<Void>> deleteOwnershipIdentifierWithResponseAsync(String resourceGroupName, String domainName,
+        String name);
 
     /**
+     * Delete ownership identifier for domain
+     * 
      * Description for Delete ownership identifier for domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -784,103 +856,86 @@ public interface DomainsClient
     Mono<Void> deleteOwnershipIdentifierAsync(String resourceGroupName, String domainName, String name);
 
     /**
+     * Delete ownership identifier for domain
+     * 
      * Description for Delete ownership identifier for domain.
-     *
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteOwnershipIdentifierWithResponse(String resourceGroupName, String domainName, String name,
+        Context context);
+
+    /**
+     * Delete ownership identifier for domain
+     * 
+     * Description for Delete ownership identifier for domain.
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void deleteOwnershipIdentifier(String resourceGroupName, String domainName, String name);
 
     /**
-     * Description for Delete ownership identifier for domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of domain.
-     * @param name Name of identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteOwnershipIdentifierWithResponse(
-        String resourceGroupName, String domainName, String name, Context context);
-
-    /**
+     * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
+     * 
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DomainOwnershipIdentifierInner>> updateOwnershipIdentifierWithResponseAsync(
-        String resourceGroupName,
-        String domainName,
-        String name,
-        DomainOwnershipIdentifierInner domainOwnershipIdentifier);
+    Mono<Response<DomainOwnershipIdentifierInner>> updateOwnershipIdentifierWithResponseAsync(String resourceGroupName,
+        String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier);
 
     /**
+     * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
+     * 
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
      * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(
-        String resourceGroupName,
-        String domainName,
-        String name,
-        DomainOwnershipIdentifierInner domainOwnershipIdentifier);
+    Mono<DomainOwnershipIdentifierInner> updateOwnershipIdentifierAsync(String resourceGroupName, String domainName,
+        String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier);
 
     /**
+     * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
+     * 
      * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
      * identifier.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of domain.
-     * @param name Name of identifier.
-     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return domain ownership Identifier.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainOwnershipIdentifierInner updateOwnershipIdentifier(
-        String resourceGroupName,
-        String domainName,
-        String name,
-        DomainOwnershipIdentifierInner domainOwnershipIdentifier);
-
-    /**
-     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
-     * identifier.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param name Name of identifier.
@@ -888,26 +943,44 @@ public interface DomainsClient
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return domain ownership Identifier along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainOwnershipIdentifierInner> updateOwnershipIdentifierWithResponse(
-        String resourceGroupName,
-        String domainName,
-        String name,
-        DomainOwnershipIdentifierInner domainOwnershipIdentifier,
-        Context context);
+    Response<DomainOwnershipIdentifierInner> updateOwnershipIdentifierWithResponse(String resourceGroupName,
+        String domainName, String name, DomainOwnershipIdentifierInner domainOwnershipIdentifier, Context context);
 
     /**
+     * Creates an ownership identifier for a domain or updates identifier details for an existing identifier
+     * 
+     * Description for Creates an ownership identifier for a domain or updates identifier details for an existing
+     * identifier.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @param name Name of identifier.
+     * @param domainOwnershipIdentifier A JSON representation of the domain ownership properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return domain ownership Identifier.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DomainOwnershipIdentifierInner updateOwnershipIdentifier(String resourceGroupName, String domainName, String name,
+        DomainOwnershipIdentifierInner domainOwnershipIdentifier);
+
+    /**
+     * Renew a domain.
+     * 
      * Description for Renew a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
@@ -915,13 +988,15 @@ public interface DomainsClient
     Mono<Response<Void>> renewWithResponseAsync(String resourceGroupName, String domainName);
 
     /**
+     * Renew a domain.
+     * 
      * Description for Renew a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
@@ -929,27 +1004,16 @@ public interface DomainsClient
     Mono<Void> renewAsync(String resourceGroupName, String domainName);
 
     /**
+     * Renew a domain.
+     * 
      * Description for Renew a domain.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of the domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void renew(String resourceGroupName, String domainName);
-
-    /**
-     * Description for Renew a domain.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of the domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
@@ -957,12 +1021,30 @@ public interface DomainsClient
     Response<Void> renewWithResponse(String resourceGroupName, String domainName, Context context);
 
     /**
+     * Renew a domain.
+     * 
+     * Description for Renew a domain.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of the domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void renew(String resourceGroupName, String domainName);
+
+    /**
      * Transfer out domain to another registrar.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response} on successful completion of {@link Mono}.
      */
@@ -971,11 +1053,14 @@ public interface DomainsClient
 
     /**
      * Transfer out domain to another registrar.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain on successful completion of {@link Mono}.
      */
@@ -984,28 +1069,34 @@ public interface DomainsClient
 
     /**
      * Transfer out domain to another registrar.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param domainName Name of domain.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a domain.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainInner transferOut(String resourceGroupName, String domainName);
-
-    /**
-     * Transfer out domain to another registrar.
-     *
+     * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param domainName Name of domain.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 400.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a domain along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<DomainInner> transferOutWithResponse(String resourceGroupName, String domainName, Context context);
+
+    /**
+     * Transfer out domain to another registrar.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param domainName Name of domain.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server on
+     * status code 400.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about a domain.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DomainInner transferOut(String resourceGroupName, String domainName);
 }

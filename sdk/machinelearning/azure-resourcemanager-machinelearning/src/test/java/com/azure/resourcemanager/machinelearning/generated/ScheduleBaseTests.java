@@ -9,30 +9,26 @@ import com.azure.resourcemanager.machinelearning.models.ScheduleBase;
 import com.azure.resourcemanager.machinelearning.models.ScheduleProvisioningState;
 import com.azure.resourcemanager.machinelearning.models.ScheduleStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ScheduleBaseTests {
-    @Test
-    public void testDeserialize() {
-        ScheduleBase model =
-            BinaryData
-                .fromString("{\"id\":\"piudeugfsxzecpa\",\"provisioningStatus\":\"Completed\",\"status\":\"Disabled\"}")
-                .toObject(ScheduleBase.class);
-        Assertions.assertEquals("piudeugfsxzecpa", model.id());
-        Assertions.assertEquals(ScheduleProvisioningState.COMPLETED, model.provisioningStatus());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ScheduleBase model = BinaryData
+            .fromString("{\"id\":\"qirvtk\",\"provisioningStatus\":\"Provisioning\",\"status\":\"Disabled\"}")
+            .toObject(ScheduleBase.class);
+        Assertions.assertEquals("qirvtk", model.id());
+        Assertions.assertEquals(ScheduleProvisioningState.PROVISIONING, model.provisioningStatus());
         Assertions.assertEquals(ScheduleStatus.DISABLED, model.status());
     }
 
-    @Test
-    public void testSerialize() {
-        ScheduleBase model =
-            new ScheduleBase()
-                .withId("piudeugfsxzecpa")
-                .withProvisioningStatus(ScheduleProvisioningState.COMPLETED)
-                .withStatus(ScheduleStatus.DISABLED);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ScheduleBase model = new ScheduleBase().withId("qirvtk")
+            .withProvisioningStatus(ScheduleProvisioningState.PROVISIONING)
+            .withStatus(ScheduleStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleBase.class);
-        Assertions.assertEquals("piudeugfsxzecpa", model.id());
-        Assertions.assertEquals(ScheduleProvisioningState.COMPLETED, model.provisioningStatus());
+        Assertions.assertEquals("qirvtk", model.id());
+        Assertions.assertEquals(ScheduleProvisioningState.PROVISIONING, model.provisioningStatus());
         Assertions.assertEquals(ScheduleStatus.DISABLED, model.status());
     }
 }

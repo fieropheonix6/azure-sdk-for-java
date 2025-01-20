@@ -5,128 +5,112 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Subscription details. */
+/**
+ * Subscription details.
+ */
 @Fluent
-public final class SubscriptionContractProperties {
+public final class SubscriptionContractProperties implements JsonSerializable<SubscriptionContractProperties> {
     /*
-     * The user resource identifier of the subscription owner. The value is a
-     * valid relative URL in the format of /users/{userId} where {userId} is a
-     * user identifier.
+     * The user resource identifier of the subscription owner. The value is a valid relative URL in the format of
+     * /users/{userId} where {userId} is a user identifier.
      */
-    @JsonProperty(value = "ownerId")
     private String ownerId;
 
     /*
      * Scope like /products/{productId} or /apis or /apis/{apiId}.
      */
-    @JsonProperty(value = "scope", required = true)
     private String scope;
 
     /*
      * The name of the subscription, or null if the subscription has no name.
      */
-    @JsonProperty(value = "displayName")
     private String displayName;
 
     /*
-     * Subscription state. Possible states are * active – the subscription is
-     * active, * suspended – the subscription is blocked, and the subscriber
-     * cannot call any APIs of the product, * submitted – the subscription
-     * request has been made by the developer, but has not yet been approved or
-     * rejected, * rejected – the subscription request has been denied by an
-     * administrator, * cancelled – the subscription has been cancelled by the
-     * developer or administrator, * expired – the subscription reached its
-     * expiration date and was deactivated.
+     * Subscription state. Possible states are * active – the subscription is active, * suspended – the subscription is
+     * blocked, and the subscriber cannot call any APIs of the product, * submitted – the subscription request has been
+     * made by the developer, but has not yet been approved or rejected, * rejected – the subscription request has been
+     * denied by an administrator, * cancelled – the subscription has been cancelled by the developer or administrator,
+     * * expired – the subscription reached its expiration date and was deactivated.
      */
-    @JsonProperty(value = "state", required = true)
     private SubscriptionState state;
 
     /*
-     * Subscription creation date. The date conforms to the following format:
-     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * Subscription creation date. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the
+     * ISO 8601 standard.
      */
-    @JsonProperty(value = "createdDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDate;
 
     /*
-     * Subscription activation date. The setting is for audit purposes only and
-     * the subscription is not automatically activated. The subscription
-     * lifecycle can be managed by using the `state` property. The date
-     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
-     * the ISO 8601 standard.
-     *
+     * Subscription activation date. The setting is for audit purposes only and the subscription is not automatically
+     * activated. The subscription lifecycle can be managed by using the `state` property. The date conforms to the
+     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "startDate")
     private OffsetDateTime startDate;
 
     /*
-     * Subscription expiration date. The setting is for audit purposes only and
-     * the subscription is not automatically expired. The subscription
-     * lifecycle can be managed by using the `state` property. The date
-     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by
-     * the ISO 8601 standard.
-     *
+     * Subscription expiration date. The setting is for audit purposes only and the subscription is not automatically
+     * expired. The subscription lifecycle can be managed by using the `state` property. The date conforms to the
+     * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "expirationDate")
     private OffsetDateTime expirationDate;
 
     /*
-     * Date when subscription was cancelled or expired. The setting is for
-     * audit purposes only and the subscription is not automatically cancelled.
-     * The subscription lifecycle can be managed by using the `state` property.
-     * The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as
-     * specified by the ISO 8601 standard.
-     *
+     * Date when subscription was cancelled or expired. The setting is for audit purposes only and the subscription is
+     * not automatically cancelled. The subscription lifecycle can be managed by using the `state` property. The date
+     * conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "endDate")
     private OffsetDateTime endDate;
 
     /*
-     * Upcoming subscription expiration notification date. The date conforms to
-     * the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO
-     * 8601 standard.
-     *
+     * Upcoming subscription expiration notification date. The date conforms to the following format:
+     * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
      */
-    @JsonProperty(value = "notificationDate")
     private OffsetDateTime notificationDate;
 
     /*
-     * Subscription primary key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+     * Subscription primary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request
+     * to get the value.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
-     * Subscription secondary key. This property will not be filled on 'GET'
-     * operations! Use '/listSecrets' POST request to get the value.
+     * Subscription secondary key. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request
+     * to get the value.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
-     * Optional subscription comment added by an administrator when the state
-     * is changed to the 'rejected'.
+     * Optional subscription comment added by an administrator when the state is changed to the 'rejected'.
      */
-    @JsonProperty(value = "stateComment")
     private String stateComment;
 
     /*
      * Determines whether tracing is enabled
      */
-    @JsonProperty(value = "allowTracing")
     private Boolean allowTracing;
+
+    /**
+     * Creates an instance of SubscriptionContractProperties class.
+     */
+    public SubscriptionContractProperties() {
+    }
 
     /**
      * Get the ownerId property: The user resource identifier of the subscription owner. The value is a valid relative
      * URL in the format of /users/{userId} where {userId} is a user identifier.
-     *
+     * 
      * @return the ownerId value.
      */
     public String ownerId() {
@@ -136,7 +120,7 @@ public final class SubscriptionContractProperties {
     /**
      * Set the ownerId property: The user resource identifier of the subscription owner. The value is a valid relative
      * URL in the format of /users/{userId} where {userId} is a user identifier.
-     *
+     * 
      * @param ownerId the ownerId value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -147,7 +131,7 @@ public final class SubscriptionContractProperties {
 
     /**
      * Get the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -156,7 +140,7 @@ public final class SubscriptionContractProperties {
 
     /**
      * Set the scope property: Scope like /products/{productId} or /apis or /apis/{apiId}.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -167,7 +151,7 @@ public final class SubscriptionContractProperties {
 
     /**
      * Get the displayName property: The name of the subscription, or null if the subscription has no name.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -176,7 +160,7 @@ public final class SubscriptionContractProperties {
 
     /**
      * Set the displayName property: The name of the subscription, or null if the subscription has no name.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -191,7 +175,7 @@ public final class SubscriptionContractProperties {
      * the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected –
      * the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled
      * by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @return the state value.
      */
     public SubscriptionState state() {
@@ -204,7 +188,7 @@ public final class SubscriptionContractProperties {
      * the subscription request has been made by the developer, but has not yet been approved or rejected, * rejected –
      * the subscription request has been denied by an administrator, * cancelled – the subscription has been cancelled
      * by the developer or administrator, * expired – the subscription reached its expiration date and was deactivated.
-     *
+     * 
      * @param state the state value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -216,7 +200,7 @@ public final class SubscriptionContractProperties {
     /**
      * Get the createdDate property: Subscription creation date. The date conforms to the following format:
      * `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
@@ -228,7 +212,7 @@ public final class SubscriptionContractProperties {
      * subscription is not automatically activated. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
@@ -240,7 +224,7 @@ public final class SubscriptionContractProperties {
      * subscription is not automatically activated. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @param startDate the startDate value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -254,7 +238,7 @@ public final class SubscriptionContractProperties {
      * subscription is not automatically expired. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the expirationDate value.
      */
     public OffsetDateTime expirationDate() {
@@ -266,7 +250,7 @@ public final class SubscriptionContractProperties {
      * subscription is not automatically expired. The subscription lifecycle can be managed by using the `state`
      * property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @param expirationDate the expirationDate value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -280,7 +264,7 @@ public final class SubscriptionContractProperties {
      * and the subscription is not automatically cancelled. The subscription lifecycle can be managed by using the
      * `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
@@ -292,7 +276,7 @@ public final class SubscriptionContractProperties {
      * and the subscription is not automatically cancelled. The subscription lifecycle can be managed by using the
      * `state` property. The date conforms to the following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601
      * standard.
-     *
+     * 
      * @param endDate the endDate value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -304,7 +288,7 @@ public final class SubscriptionContractProperties {
     /**
      * Get the notificationDate property: Upcoming subscription expiration notification date. The date conforms to the
      * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @return the notificationDate value.
      */
     public OffsetDateTime notificationDate() {
@@ -314,7 +298,7 @@ public final class SubscriptionContractProperties {
     /**
      * Set the notificationDate property: Upcoming subscription expiration notification date. The date conforms to the
      * following format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
-     *
+     * 
      * @param notificationDate the notificationDate value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -326,7 +310,7 @@ public final class SubscriptionContractProperties {
     /**
      * Get the primaryKey property: Subscription primary key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -336,7 +320,7 @@ public final class SubscriptionContractProperties {
     /**
      * Set the primaryKey property: Subscription primary key. This property will not be filled on 'GET' operations! Use
      * '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -348,7 +332,7 @@ public final class SubscriptionContractProperties {
     /**
      * Get the secondaryKey property: Subscription secondary key. This property will not be filled on 'GET' operations!
      * Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -358,7 +342,7 @@ public final class SubscriptionContractProperties {
     /**
      * Set the secondaryKey property: Subscription secondary key. This property will not be filled on 'GET' operations!
      * Use '/listSecrets' POST request to get the value.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -370,7 +354,7 @@ public final class SubscriptionContractProperties {
     /**
      * Get the stateComment property: Optional subscription comment added by an administrator when the state is changed
      * to the 'rejected'.
-     *
+     * 
      * @return the stateComment value.
      */
     public String stateComment() {
@@ -380,7 +364,7 @@ public final class SubscriptionContractProperties {
     /**
      * Set the stateComment property: Optional subscription comment added by an administrator when the state is changed
      * to the 'rejected'.
-     *
+     * 
      * @param stateComment the stateComment value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -391,7 +375,7 @@ public final class SubscriptionContractProperties {
 
     /**
      * Get the allowTracing property: Determines whether tracing is enabled.
-     *
+     * 
      * @return the allowTracing value.
      */
     public Boolean allowTracing() {
@@ -400,7 +384,7 @@ public final class SubscriptionContractProperties {
 
     /**
      * Set the allowTracing property: Determines whether tracing is enabled.
-     *
+     * 
      * @param allowTracing the allowTracing value to set.
      * @return the SubscriptionContractProperties object itself.
      */
@@ -411,23 +395,106 @@ public final class SubscriptionContractProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scope() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scope in model SubscriptionContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scope in model SubscriptionContractProperties"));
         }
         if (state() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property state in model SubscriptionContractProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property state in model SubscriptionContractProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SubscriptionContractProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("state", this.state == null ? null : this.state.toString());
+        jsonWriter.writeStringField("ownerId", this.ownerId);
+        jsonWriter.writeStringField("displayName", this.displayName);
+        jsonWriter.writeStringField("startDate",
+            this.startDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startDate));
+        jsonWriter.writeStringField("expirationDate",
+            this.expirationDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expirationDate));
+        jsonWriter.writeStringField("endDate",
+            this.endDate == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endDate));
+        jsonWriter.writeStringField("notificationDate",
+            this.notificationDate == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.notificationDate));
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeStringField("stateComment", this.stateComment);
+        jsonWriter.writeBooleanField("allowTracing", this.allowTracing);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionContractProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionContractProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SubscriptionContractProperties.
+     */
+    public static SubscriptionContractProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionContractProperties deserializedSubscriptionContractProperties
+                = new SubscriptionContractProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("scope".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.scope = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.state = SubscriptionState.fromString(reader.getString());
+                } else if ("ownerId".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.ownerId = reader.getString();
+                } else if ("displayName".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.displayName = reader.getString();
+                } else if ("createdDate".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.createdDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("startDate".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.startDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expirationDate".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.expirationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endDate".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.endDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("notificationDate".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.notificationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.secondaryKey = reader.getString();
+                } else if ("stateComment".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.stateComment = reader.getString();
+                } else if ("allowTracing".equals(fieldName)) {
+                    deserializedSubscriptionContractProperties.allowTracing
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionContractProperties;
+        });
+    }
 }

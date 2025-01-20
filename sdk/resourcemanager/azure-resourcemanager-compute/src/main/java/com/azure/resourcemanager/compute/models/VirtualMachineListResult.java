@@ -6,32 +6,38 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List Virtual Machine operation response. */
+/**
+ * The List Virtual Machine operation response.
+ */
 @Fluent
-public final class VirtualMachineListResult {
+public final class VirtualMachineListResult implements JsonSerializable<VirtualMachineListResult> {
     /*
      * The list of virtual machines.
      */
-    @JsonProperty(value = "value", required = true)
     private List<VirtualMachineInner> value;
 
     /*
      * The URI to fetch the next page of VMs. Call ListNext() with this URI to fetch the next page of Virtual Machines.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualMachineListResult class. */
+    /**
+     * Creates an instance of VirtualMachineListResult class.
+     */
     public VirtualMachineListResult() {
     }
 
     /**
      * Get the value property: The list of virtual machines.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineInner> value() {
@@ -40,7 +46,7 @@ public final class VirtualMachineListResult {
 
     /**
      * Set the value property: The list of virtual machines.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineListResult object itself.
      */
@@ -52,7 +58,7 @@ public final class VirtualMachineListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of VMs. Call ListNext() with this URI to fetch the next
      * page of Virtual Machines.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +68,7 @@ public final class VirtualMachineListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of VMs. Call ListNext() with this URI to fetch the next
      * page of Virtual Machines.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineListResult object itself.
      */
@@ -73,18 +79,59 @@ public final class VirtualMachineListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model VirtualMachineListResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model VirtualMachineListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineListResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineListResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineListResult.
+     */
+    public static VirtualMachineListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineListResult deserializedVirtualMachineListResult = new VirtualMachineListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualMachineInner> value
+                        = reader.readArray(reader1 -> VirtualMachineInner.fromJson(reader1));
+                    deserializedVirtualMachineListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedVirtualMachineListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineListResult;
+        });
+    }
 }

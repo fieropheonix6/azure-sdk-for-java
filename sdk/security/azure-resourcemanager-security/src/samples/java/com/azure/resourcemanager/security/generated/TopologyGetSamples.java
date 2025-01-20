@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Topology Get. */
+/**
+ * Samples for Topology Get.
+ */
 public final class TopologyGetSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/GetTopology_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/
+     * GetTopology_example.json
      */
     /**
      * Sample code: Get topology.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getTopology(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.topologies().getWithResponse("myservers", "centralus", "vnets", Context.NONE);
+        manager.topologies().getWithResponse("myservers", "centralus", "vnets", com.azure.core.util.Context.NONE);
     }
 }

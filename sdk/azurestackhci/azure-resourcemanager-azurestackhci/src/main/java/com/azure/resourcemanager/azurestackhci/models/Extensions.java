@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Extensions. */
+/**
+ * Resource collection API of Extensions.
+ */
 public interface Extensions {
     /**
      * List all Extensions under ArcSetting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -25,7 +27,7 @@ public interface Extensions {
 
     /**
      * List all Extensions under ArcSetting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -35,12 +37,28 @@ public interface Extensions {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Extensions in HCI cluster as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Extension> listByArcSetting(
-        String resourceGroupName, String clusterName, String arcSettingName, Context context);
+    PagedIterable<Extension> listByArcSetting(String resourceGroupName, String clusterName, String arcSettingName,
+        Context context);
 
     /**
      * Get particular Arc Extension of HCI Cluster.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return particular Arc Extension of HCI Cluster along with {@link Response}.
+     */
+    Response<Extension> getWithResponse(String resourceGroupName, String clusterName, String arcSettingName,
+        String extensionName, Context context);
+
+    /**
+     * Get particular Arc Extension of HCI Cluster.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -53,24 +71,8 @@ public interface Extensions {
     Extension get(String resourceGroupName, String clusterName, String arcSettingName, String extensionName);
 
     /**
-     * Get particular Arc Extension of HCI Cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the cluster.
-     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
-     * @param extensionName The name of the machine extension.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return particular Arc Extension of HCI Cluster along with {@link Response}.
-     */
-    Response<Extension> getWithResponse(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context);
-
-    /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -83,7 +85,7 @@ public interface Extensions {
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param clusterName The name of the cluster.
      * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
@@ -93,12 +95,43 @@ public interface Extensions {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName, String clusterName, String arcSettingName, String extensionName, Context context);
+    void delete(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
+        Context context);
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
+        ExtensionUpgradeParameters extensionUpgradeParameters);
+
+    /**
+     * Upgrade a particular Arc Extension of HCI Cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the cluster.
+     * @param arcSettingName The name of the proxy resource holding details of HCI ArcSetting information.
+     * @param extensionName The name of the machine extension.
+     * @param extensionUpgradeParameters Parameters supplied to the Upgrade Extensions operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void upgrade(String resourceGroupName, String clusterName, String arcSettingName, String extensionName,
+        ExtensionUpgradeParameters extensionUpgradeParameters, Context context);
 
     /**
      * Get particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -109,7 +142,7 @@ public interface Extensions {
 
     /**
      * Get particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,7 +154,7 @@ public interface Extensions {
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -131,7 +164,7 @@ public interface Extensions {
 
     /**
      * Delete particular Arc Extension of HCI Cluster.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +175,7 @@ public interface Extensions {
 
     /**
      * Begins definition for a new Extension resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Extension definition.
      */

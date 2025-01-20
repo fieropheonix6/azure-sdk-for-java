@@ -5,80 +5,113 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureSqlMITableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure SQL Managed Instance dataset. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureSqlMITable")
+/**
+ * The Azure SQL Managed Instance dataset.
+ */
 @Fluent
 public final class AzureSqlMITableDataset extends Dataset {
     /*
+     * Type of dataset.
+     */
+    private String type = "AzureSqlMITable";
+
+    /*
      * Azure SQL Managed Instance dataset properties.
      */
-    @JsonProperty(value = "typeProperties")
     private AzureSqlMITableDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of AzureSqlMITableDataset class. */
+    /**
+     * Creates an instance of AzureSqlMITableDataset class.
+     */
     public AzureSqlMITableDataset() {
     }
 
     /**
+     * Get the type property: Type of dataset.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Azure SQL Managed Instance dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureSqlMITableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureSqlMITableDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -88,7 +121,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -98,7 +131,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureSqlMITableDataset object itself.
      */
@@ -113,7 +146,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Get the schema property: The schema name of the Azure SQL Managed Instance. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schemaTypePropertiesSchema() {
@@ -123,7 +156,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Set the schema property: The schema name of the Azure SQL Managed Instance. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the AzureSqlMITableDataset object itself.
      */
@@ -138,7 +171,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Get the table property: The table name of the Azure SQL Managed Instance dataset. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -148,7 +181,7 @@ public final class AzureSqlMITableDataset extends Dataset {
     /**
      * Set the table property: The table name of the Azure SQL Managed Instance dataset. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureSqlMITableDataset object itself.
      */
@@ -162,14 +195,108 @@ public final class AzureSqlMITableDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() != null) {
             innerTypeProperties().validate();
         }
+        if (linkedServiceName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property linkedServiceName in model AzureSqlMITableDataset"));
+        } else {
+            linkedServiceName().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
+        }
+        if (folder() != null) {
+            folder().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSqlMITableDataset.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeUntypedField("structure", structure());
+        jsonWriter.writeUntypedField("schema", schema());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("folder", folder());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureSqlMITableDataset from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureSqlMITableDataset if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureSqlMITableDataset.
+     */
+    public static AzureSqlMITableDataset fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureSqlMITableDataset deserializedAzureSqlMITableDataset = new AzureSqlMITableDataset();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("linkedServiceName".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.withDescription(reader.getString());
+                } else if ("structure".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.withStructure(reader.readUntyped());
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.withSchema(reader.readUntyped());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzureSqlMITableDataset.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzureSqlMITableDataset.withAnnotations(annotations);
+                } else if ("folder".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.withFolder(DatasetFolder.fromJson(reader));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedAzureSqlMITableDataset.innerTypeProperties
+                        = AzureSqlMITableDatasetTypeProperties.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureSqlMITableDataset.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureSqlMITableDataset;
+        });
     }
 }

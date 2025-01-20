@@ -16,17 +16,15 @@ import com.azure.resourcemanager.mixedreality.models.AccountKeyRegenerateRequest
 import com.azure.resourcemanager.mixedreality.models.AccountKeys;
 import com.azure.resourcemanager.mixedreality.models.RemoteRenderingAccount;
 import com.azure.resourcemanager.mixedreality.models.RemoteRenderingAccounts;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemoteRenderingAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RemoteRenderingAccountsImpl.class);
 
     private final RemoteRenderingAccountsClient innerClient;
 
     private final com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager;
 
-    public RemoteRenderingAccountsImpl(
-        RemoteRenderingAccountsClient innerClient,
+    public RemoteRenderingAccountsImpl(RemoteRenderingAccountsClient innerClient,
         com.azure.resourcemanager.mixedreality.MixedRealityManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -34,31 +32,44 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
 
     public PagedIterable<RemoteRenderingAccount> list() {
         PagedIterable<RemoteRenderingAccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RemoteRenderingAccount> list(Context context) {
         PagedIterable<RemoteRenderingAccountInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RemoteRenderingAccount> listByResourceGroup(String resourceGroupName) {
         PagedIterable<RemoteRenderingAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RemoteRenderingAccount> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<RemoteRenderingAccountInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
+        PagedIterable<RemoteRenderingAccountInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RemoteRenderingAccountImpl(inner1, this.manager()));
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String accountName) {
         this.serviceClient().delete(resourceGroupName, accountName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, context);
+    public Response<RemoteRenderingAccount> getByResourceGroupWithResponse(String resourceGroupName, String accountName,
+        Context context) {
+        Response<RemoteRenderingAccountInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RemoteRenderingAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RemoteRenderingAccount getByResourceGroup(String resourceGroupName, String accountName) {
@@ -70,16 +81,12 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
     }
 
-    public Response<RemoteRenderingAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String accountName, Context context) {
-        Response<RemoteRenderingAccountInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, accountName, context);
+    public Response<AccountKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
+        Response<AccountKeysInner> inner
+            = this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new RemoteRenderingAccountImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AccountKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -94,22 +101,20 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
     }
 
-    public Response<AccountKeys> listKeysWithResponse(String resourceGroupName, String accountName, Context context) {
-        Response<AccountKeysInner> inner =
-            this.serviceClient().listKeysWithResponse(resourceGroupName, accountName, context);
+    public Response<AccountKeys> regenerateKeysWithResponse(String resourceGroupName, String accountName,
+        AccountKeyRegenerateRequest regenerate, Context context) {
+        Response<AccountKeysInner> inner
+            = this.serviceClient().regenerateKeysWithResponse(resourceGroupName, accountName, regenerate, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AccountKeysImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AccountKeys regenerateKeys(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate) {
+    public AccountKeys regenerateKeys(String resourceGroupName, String accountName,
+        AccountKeyRegenerateRequest regenerate) {
         AccountKeysInner inner = this.serviceClient().regenerateKeys(resourceGroupName, accountName, regenerate);
         if (inner != null) {
             return new AccountKeysImpl(inner, this.manager());
@@ -118,107 +123,60 @@ public final class RemoteRenderingAccountsImpl implements RemoteRenderingAccount
         }
     }
 
-    public Response<AccountKeys> regenerateKeysWithResponse(
-        String resourceGroupName, String accountName, AccountKeyRegenerateRequest regenerate, Context context) {
-        Response<AccountKeysInner> inner =
-            this.serviceClient().regenerateKeysWithResponse(resourceGroupName, accountName, regenerate, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AccountKeysImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public RemoteRenderingAccount getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "remoteRenderingAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "remoteRenderingAccounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
     }
 
     public Response<RemoteRenderingAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "remoteRenderingAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "remoteRenderingAccounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "remoteRenderingAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "remoteRenderingAccounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "remoteRenderingAccounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "remoteRenderingAccounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'remoteRenderingAccounts'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, accountName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, accountName, context);
     }
 
     private RemoteRenderingAccountsClient serviceClient() {

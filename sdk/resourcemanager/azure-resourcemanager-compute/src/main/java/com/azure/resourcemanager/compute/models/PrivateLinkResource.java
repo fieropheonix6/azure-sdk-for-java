@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.PrivateLinkResourceProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A private link resource. */
+/**
+ * A private link resource.
+ */
 @Fluent
-public final class PrivateLinkResource {
+public final class PrivateLinkResource implements JsonSerializable<PrivateLinkResource> {
     /*
      * Resource properties.
      */
-    @JsonProperty(value = "properties")
     private PrivateLinkResourceProperties innerProperties;
 
     /*
      * private link resource Id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * private link resource name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * private link resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of PrivateLinkResource class. */
+    /**
+     * Creates an instance of PrivateLinkResource class.
+     */
     public PrivateLinkResource() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateLinkResourceProperties innerProperties() {
@@ -51,7 +55,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the id property: private link resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -60,7 +64,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the name property: private link resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -69,7 +73,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the type property: private link resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -78,7 +82,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the groupId property: The private link resource group id.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -87,7 +91,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the requiredMembers property: The private link resource required member names.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -96,7 +100,7 @@ public final class PrivateLinkResource {
 
     /**
      * Get the requiredZoneNames property: The private link resource DNS zone name.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -105,7 +109,7 @@ public final class PrivateLinkResource {
 
     /**
      * Set the requiredZoneNames property: The private link resource DNS zone name.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the PrivateLinkResource object itself.
      */
@@ -119,12 +123,54 @@ public final class PrivateLinkResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivateLinkResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivateLinkResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivateLinkResource.
+     */
+    public static PrivateLinkResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivateLinkResource deserializedPrivateLinkResource = new PrivateLinkResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedPrivateLinkResource.innerProperties = PrivateLinkResourceProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedPrivateLinkResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPrivateLinkResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPrivateLinkResource.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivateLinkResource;
+        });
     }
 }

@@ -13,39 +13,34 @@ import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtend
 import com.azure.resourcemanager.dataprotection.models.OperationJobExtendedInfo;
 import com.azure.resourcemanager.dataprotection.models.OperationResults;
 import com.azure.resourcemanager.dataprotection.models.OperationResultsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationResultsImpl implements OperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationResultsImpl.class);
 
     private final OperationResultsClient innerClient;
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public OperationResultsImpl(
-        OperationResultsClient innerClient,
+    public OperationResultsImpl(OperationResultsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationJobExtendedInfo> getWithResponse(String operationId, String location, Context context) {
+        OperationResultsGetResponse inner = this.serviceClient().getWithResponse(operationId, location, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationJobExtendedInfoImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationJobExtendedInfo get(String operationId, String location) {
         OperationJobExtendedInfoInner inner = this.serviceClient().get(operationId, location);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationJobExtendedInfo> getWithResponse(String operationId, String location, Context context) {
-        OperationResultsGetResponse inner = this.serviceClient().getWithResponse(operationId, location, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationJobExtendedInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

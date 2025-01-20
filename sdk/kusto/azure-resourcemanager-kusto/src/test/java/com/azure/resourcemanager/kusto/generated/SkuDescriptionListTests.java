@@ -6,20 +6,17 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.SkuDescriptionList;
-import org.junit.jupiter.api.Test;
 
 public final class SkuDescriptionListTests {
-    @Test
-    public void testDeserialize() {
-        SkuDescriptionList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"resourceType\":\"xujwbhqwalmuzyo\",\"name\":\"epdkzja\",\"tier\":\"ux\",\"locations\":[\"wbavxbniwdj\"],\"locationInfo\":[],\"restrictions\":[]}]}")
-                .toObject(SkuDescriptionList.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SkuDescriptionList model = BinaryData.fromString(
+            "{\"value\":[{\"resourceType\":\"j\",\"name\":\"idokgjlj\",\"tier\":\"xgvcl\",\"locations\":[\"sncghkjeszz\",\"bijhtxfvgxbf\",\"mxnehmp\"],\"locationInfo\":[{\"location\":\"xgodebfqkkrbmp\",\"zones\":[\"riwflzlfb\"],\"zoneDetails\":[{}]},{\"location\":\"uzycispnqza\",\"zones\":[\"kbrpyydhibnuq\",\"kpikadrgvt\"],\"zoneDetails\":[{},{}]}],\"restrictions\":[\"datauynhijg\",\"datamebf\",\"dataiarbutrcvpna\"]},{\"resourceType\":\"mhjrunmpxttdbhr\",\"name\":\"l\",\"tier\":\"kx\",\"locations\":[\"k\",\"bhenbtkcxywnyt\",\"rsyn\",\"qidybyx\"],\"locationInfo\":[{\"location\":\"clha\",\"zones\":[\"babphlwrqlfk\",\"sthsu\"],\"zoneDetails\":[{},{},{}]},{\"location\":\"mnyyazt\",\"zones\":[\"wwrq\",\"uedck\"],\"zoneDetails\":[{},{},{}]},{\"location\":\"biexzfeyu\",\"zones\":[\"ibx\",\"jwbhqwalmuz\",\"oxaepd\",\"zjancuxr\"],\"zoneDetails\":[{},{},{}]},{\"location\":\"bavxbniwdjswzt\",\"zones\":[\"pgn\"],\"zoneDetails\":[{}]}],\"restrictions\":[\"datapzxbz\",\"datafzab\",\"datalcuhxwtctyqiklb\"]},{\"resourceType\":\"vplwzbhv\",\"name\":\"u\",\"tier\":\"osvmk\",\"locations\":[\"xquk\"],\"locationInfo\":[{\"location\":\"l\",\"zones\":[\"sxnkjzkdeslpvlo\",\"wiyighxpkdw\",\"baiuebbaumny\",\"upedeojnabckhs\"],\"zoneDetails\":[{},{},{},{}]},{\"location\":\"psiebtfhvpes\",\"zones\":[\"krdqmh\",\"jdhtldwkyzxu\",\"tkncwsc\"],\"zoneDetails\":[{},{},{},{}]},{\"location\":\"lxotogtwrupq\",\"zones\":[\"nmic\"],\"zoneDetails\":[{}]}],\"restrictions\":[\"datao\",\"dataeil\",\"datavnotyfjfcnj\",\"datak\"]},{\"resourceType\":\"x\",\"name\":\"bttk\",\"tier\":\"ywpnvjt\",\"locations\":[\"ermclfplphoxuscr\",\"abgy\"],\"locationInfo\":[{\"location\":\"bjtazqugxywpmu\",\"zones\":[\"jzwf\"],\"zoneDetails\":[{}]}],\"restrictions\":[\"dataids\",\"datayonobgl\",\"dataocqxtccmg\",\"dataudxytlmoyrx\"]}]}")
+            .toObject(SkuDescriptionList.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuDescriptionList model = new SkuDescriptionList();
         model = BinaryData.fromObject(model).toObject(SkuDescriptionList.class);
     }

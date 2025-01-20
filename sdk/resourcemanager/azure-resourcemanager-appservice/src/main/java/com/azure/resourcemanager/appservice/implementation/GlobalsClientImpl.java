@@ -27,17 +27,23 @@ import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorExce
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in GlobalsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalsClient.
+ */
 public final class GlobalsClientImpl implements GlobalsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final GlobalsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final WebSiteManagementClientImpl client;
 
     /**
      * Initializes an instance of GlobalsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     GlobalsClientImpl(WebSiteManagementClientImpl client) {
@@ -51,48 +57,38 @@ public final class GlobalsClientImpl implements GlobalsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "WebSiteManagementCli")
-    private interface GlobalsService {
-        @Headers({"Content-Type: application/json"})
+    public interface GlobalsService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<DeletedSiteInner>> getDeletedWebApp(
-            @HostParam("$host") String endpoint,
-            @PathParam("deletedSiteId") String deletedSiteId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedSiteInner>> getDeletedWebApp(@HostParam("$host") String endpoint,
+            @PathParam("deletedSiteId") String deletedSiteId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/deletedSites/{deletedSiteId}/snapshots")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<List<SnapshotInner>>> getDeletedWebAppSnapshots(
-            @HostParam("$host") String endpoint,
-            @PathParam("deletedSiteId") String deletedSiteId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<List<SnapshotInner>>> getDeletedWebAppSnapshots(@HostParam("$host") String endpoint,
+            @PathParam("deletedSiteId") String deletedSiteId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/operations/{operationId}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
-        Mono<Response<Void>> getSubscriptionOperationWithAsyncResponse(
-            @HostParam("$host") String endpoint,
-            @PathParam("location") String location,
-            @PathParam("operationId") String operationId,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> getSubscriptionOperationWithAsyncResponse(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @PathParam("operationId") String operationId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
+     * Get deleted app for a subscription.
+     * 
      * Description for Get deleted app for a subscription.
-     *
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -102,38 +98,28 @@ public final class GlobalsClientImpl implements GlobalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSiteInner>> getDeletedWebAppWithResponseAsync(String deletedSiteId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deletedSiteId == null) {
             return Mono.error(new IllegalArgumentException("Parameter deletedSiteId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeletedWebApp(
-                            this.client.getEndpoint(),
-                            deletedSiteId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getDeletedWebApp(this.client.getEndpoint(), deletedSiteId,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get deleted app for a subscription.
+     * 
      * Description for Get deleted app for a subscription.
-     *
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,35 +130,27 @@ public final class GlobalsClientImpl implements GlobalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeletedSiteInner>> getDeletedWebAppWithResponseAsync(String deletedSiteId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deletedSiteId == null) {
             return Mono.error(new IllegalArgumentException("Parameter deletedSiteId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDeletedWebApp(
-                this.client.getEndpoint(),
-                deletedSiteId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getDeletedWebApp(this.client.getEndpoint(), deletedSiteId, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
+     * Get deleted app for a subscription.
+     * 
      * Description for Get deleted app for a subscription.
-     *
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -181,34 +159,14 @@ public final class GlobalsClientImpl implements GlobalsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSiteInner> getDeletedWebAppAsync(String deletedSiteId) {
-        return getDeletedWebAppWithResponseAsync(deletedSiteId)
-            .flatMap(
-                (Response<DeletedSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getDeletedWebAppWithResponseAsync(deletedSiteId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get deleted app for a subscription.
+     * 
      * Description for Get deleted app for a subscription.
-     *
-     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedSiteInner getDeletedWebApp(String deletedSiteId) {
-        return getDeletedWebAppAsync(deletedSiteId).block();
-    }
-
-    /**
-     * Description for Get deleted app for a subscription.
-     *
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -222,8 +180,26 @@ public final class GlobalsClientImpl implements GlobalsClient {
     }
 
     /**
+     * Get deleted app for a subscription.
+     * 
+     * Description for Get deleted app for a subscription.
+     * 
+     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted app.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedSiteInner getDeletedWebApp(String deletedSiteId) {
+        return getDeletedWebAppWithResponse(deletedSiteId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get all deleted apps for a subscription.
+     * 
      * Description for Get all deleted apps for a subscription.
-     *
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -233,38 +209,28 @@ public final class GlobalsClientImpl implements GlobalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<SnapshotInner>>> getDeletedWebAppSnapshotsWithResponseAsync(String deletedSiteId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deletedSiteId == null) {
             return Mono.error(new IllegalArgumentException("Parameter deletedSiteId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeletedWebAppSnapshots(
-                            this.client.getEndpoint(),
-                            deletedSiteId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getDeletedWebAppSnapshots(this.client.getEndpoint(), deletedSiteId,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Get all deleted apps for a subscription.
+     * 
      * Description for Get all deleted apps for a subscription.
-     *
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,38 +239,30 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @return array of Snapshot along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<SnapshotInner>>> getDeletedWebAppSnapshotsWithResponseAsync(
-        String deletedSiteId, Context context) {
+    private Mono<Response<List<SnapshotInner>>> getDeletedWebAppSnapshotsWithResponseAsync(String deletedSiteId,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (deletedSiteId == null) {
             return Mono.error(new IllegalArgumentException("Parameter deletedSiteId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDeletedWebAppSnapshots(
-                this.client.getEndpoint(),
-                deletedSiteId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getDeletedWebAppSnapshots(this.client.getEndpoint(), deletedSiteId,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
+     * Get all deleted apps for a subscription.
+     * 
      * Description for Get all deleted apps for a subscription.
-     *
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -314,33 +272,14 @@ public final class GlobalsClientImpl implements GlobalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<SnapshotInner>> getDeletedWebAppSnapshotsAsync(String deletedSiteId) {
         return getDeletedWebAppSnapshotsWithResponseAsync(deletedSiteId)
-            .flatMap(
-                (Response<List<SnapshotInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
+     * Get all deleted apps for a subscription.
+     * 
      * Description for Get all deleted apps for a subscription.
-     *
-     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Snapshot.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<SnapshotInner> getDeletedWebAppSnapshots(String deletedSiteId) {
-        return getDeletedWebAppSnapshotsAsync(deletedSiteId).block();
-    }
-
-    /**
-     * Description for Get all deleted apps for a subscription.
-     *
+     * 
      * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -354,8 +293,26 @@ public final class GlobalsClientImpl implements GlobalsClient {
     }
 
     /**
+     * Get all deleted apps for a subscription.
+     * 
+     * Description for Get all deleted apps for a subscription.
+     * 
+     * @param deletedSiteId The numeric ID of the deleted app, e.g. 12345.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return array of Snapshot.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public List<SnapshotInner> getDeletedWebAppSnapshots(String deletedSiteId) {
+        return getDeletedWebAppSnapshotsWithResponse(deletedSiteId, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets an operation in a subscription and given region
+     * 
      * Description for Gets an operation in a subscription and given region.
-     *
+     * 
      * @param location Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,13 +321,11 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(
-        String location, String operationId) {
+    public Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(String location,
+        String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -379,30 +334,21 @@ public final class GlobalsClientImpl implements GlobalsClient {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getSubscriptionOperationWithAsyncResponse(
-                            this.client.getEndpoint(),
-                            location,
-                            operationId,
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.getSubscriptionOperationWithAsyncResponse(this.client.getEndpoint(),
+                location, operationId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Gets an operation in a subscription and given region
+     * 
      * Description for Gets an operation in a subscription and given region.
-     *
+     * 
      * @param location Location name.
      * @param operationId Operation Id.
      * @param context The context to associate with this operation.
@@ -412,13 +358,11 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(
-        String location, String operationId, Context context) {
+    private Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(String location,
+        String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -427,27 +371,20 @@ public final class GlobalsClientImpl implements GlobalsClient {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getSubscriptionOperationWithAsyncResponse(
-                this.client.getEndpoint(),
-                location,
-                operationId,
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getSubscriptionOperationWithAsyncResponse(this.client.getEndpoint(), location, operationId,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
+     * Gets an operation in a subscription and given region
+     * 
      * Description for Gets an operation in a subscription and given region.
-     *
+     * 
      * @param location Location name.
      * @param operationId Operation Id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -458,26 +395,14 @@ public final class GlobalsClientImpl implements GlobalsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getSubscriptionOperationWithAsyncResponseAsync(String location, String operationId) {
         return getSubscriptionOperationWithAsyncResponseWithResponseAsync(location, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
+     * Gets an operation in a subscription and given region
+     * 
      * Description for Gets an operation in a subscription and given region.
-     *
-     * @param location Location name.
-     * @param operationId Operation Id.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void getSubscriptionOperationWithAsyncResponse(String location, String operationId) {
-        getSubscriptionOperationWithAsyncResponseAsync(location, operationId).block();
-    }
-
-    /**
-     * Description for Gets an operation in a subscription and given region.
-     *
+     * 
      * @param location Location name.
      * @param operationId Operation Id.
      * @param context The context to associate with this operation.
@@ -487,8 +412,24 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getSubscriptionOperationWithAsyncResponseWithResponse(
-        String location, String operationId, Context context) {
+    public Response<Void> getSubscriptionOperationWithAsyncResponseWithResponse(String location, String operationId,
+        Context context) {
         return getSubscriptionOperationWithAsyncResponseWithResponseAsync(location, operationId, context).block();
+    }
+
+    /**
+     * Gets an operation in a subscription and given region
+     * 
+     * Description for Gets an operation in a subscription and given region.
+     * 
+     * @param location Location name.
+     * @param operationId Operation Id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void getSubscriptionOperationWithAsyncResponse(String location, String operationId) {
+        getSubscriptionOperationWithAsyncResponseWithResponse(location, operationId, Context.NONE);
     }
 }

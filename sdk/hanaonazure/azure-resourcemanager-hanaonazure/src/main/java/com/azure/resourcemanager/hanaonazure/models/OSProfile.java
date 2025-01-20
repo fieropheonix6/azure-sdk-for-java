@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the operating system settings for the HANA instance. */
+/**
+ * Specifies the operating system settings for the HANA instance.
+ */
 @Fluent
-public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
-
+public final class OSProfile implements JsonSerializable<OSProfile> {
     /*
      * Specifies the host OS name of the HANA instance.
      */
-    @JsonProperty(value = "computerName")
     private String computerName;
 
     /*
      * This property allows you to specify the type of the OS.
      */
-    @JsonProperty(value = "osType")
     private String osType;
 
     /*
      * Specifies version of operating system.
      */
-    @JsonProperty(value = "version")
     private String version;
 
     /*
      * Specifies the SSH public key used to access the operating system.
      */
-    @JsonProperty(value = "sshPublicKey")
     private String sshPublicKey;
 
     /**
+     * Creates an instance of OSProfile class.
+     */
+    public OSProfile() {
+    }
+
+    /**
      * Get the computerName property: Specifies the host OS name of the HANA instance.
-     *
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -49,7 +53,7 @@ public final class OSProfile {
 
     /**
      * Set the computerName property: Specifies the host OS name of the HANA instance.
-     *
+     * 
      * @param computerName the computerName value to set.
      * @return the OSProfile object itself.
      */
@@ -60,7 +64,7 @@ public final class OSProfile {
 
     /**
      * Get the osType property: This property allows you to specify the type of the OS.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -68,19 +72,8 @@ public final class OSProfile {
     }
 
     /**
-     * Set the osType property: This property allows you to specify the type of the OS.
-     *
-     * @param osType the osType value to set.
-     * @return the OSProfile object itself.
-     */
-    public OSProfile withOsType(String osType) {
-        this.osType = osType;
-        return this;
-    }
-
-    /**
      * Get the version property: Specifies version of operating system.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -88,19 +81,8 @@ public final class OSProfile {
     }
 
     /**
-     * Set the version property: Specifies version of operating system.
-     *
-     * @param version the version value to set.
-     * @return the OSProfile object itself.
-     */
-    public OSProfile withVersion(String version) {
-        this.version = version;
-        return this;
-    }
-
-    /**
      * Get the sshPublicKey property: Specifies the SSH public key used to access the operating system.
-     *
+     * 
      * @return the sshPublicKey value.
      */
     public String sshPublicKey() {
@@ -109,7 +91,7 @@ public final class OSProfile {
 
     /**
      * Set the sshPublicKey property: Specifies the SSH public key used to access the operating system.
-     *
+     * 
      * @param sshPublicKey the sshPublicKey value to set.
      * @return the OSProfile object itself.
      */
@@ -120,9 +102,52 @@ public final class OSProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("computerName", this.computerName);
+        jsonWriter.writeStringField("sshPublicKey", this.sshPublicKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSProfile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the OSProfile.
+     */
+    public static OSProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSProfile deserializedOSProfile = new OSProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computerName".equals(fieldName)) {
+                    deserializedOSProfile.computerName = reader.getString();
+                } else if ("osType".equals(fieldName)) {
+                    deserializedOSProfile.osType = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedOSProfile.version = reader.getString();
+                } else if ("sshPublicKey".equals(fieldName)) {
+                    deserializedOSProfile.sshPublicKey = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSProfile;
+        });
     }
 }

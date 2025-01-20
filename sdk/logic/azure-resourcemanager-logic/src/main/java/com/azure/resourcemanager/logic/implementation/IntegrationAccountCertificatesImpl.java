@@ -13,38 +13,51 @@ import com.azure.resourcemanager.logic.fluent.IntegrationAccountCertificatesClie
 import com.azure.resourcemanager.logic.fluent.models.IntegrationAccountCertificateInner;
 import com.azure.resourcemanager.logic.models.IntegrationAccountCertificate;
 import com.azure.resourcemanager.logic.models.IntegrationAccountCertificates;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountCertificatesImpl implements IntegrationAccountCertificates {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountCertificatesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountCertificatesImpl.class);
 
     private final IntegrationAccountCertificatesClient innerClient;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public IntegrationAccountCertificatesImpl(
-        IntegrationAccountCertificatesClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public IntegrationAccountCertificatesImpl(IntegrationAccountCertificatesClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<IntegrationAccountCertificate> list(String resourceGroupName, String integrationAccountName) {
-        PagedIterable<IntegrationAccountCertificateInner> inner =
-            this.serviceClient().list(resourceGroupName, integrationAccountName);
-        return Utils.mapPage(inner, inner1 -> new IntegrationAccountCertificateImpl(inner1, this.manager()));
+        PagedIterable<IntegrationAccountCertificateInner> inner
+            = this.serviceClient().list(resourceGroupName, integrationAccountName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationAccountCertificateImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IntegrationAccountCertificate> list(
-        String resourceGroupName, String integrationAccountName, Integer top, Context context) {
-        PagedIterable<IntegrationAccountCertificateInner> inner =
-            this.serviceClient().list(resourceGroupName, integrationAccountName, top, context);
-        return Utils.mapPage(inner, inner1 -> new IntegrationAccountCertificateImpl(inner1, this.manager()));
+    public PagedIterable<IntegrationAccountCertificate> list(String resourceGroupName, String integrationAccountName,
+        Integer top, Context context) {
+        PagedIterable<IntegrationAccountCertificateInner> inner
+            = this.serviceClient().list(resourceGroupName, integrationAccountName, top, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new IntegrationAccountCertificateImpl(inner1, this.manager()));
     }
 
-    public IntegrationAccountCertificate get(
-        String resourceGroupName, String integrationAccountName, String certificateName) {
-        IntegrationAccountCertificateInner inner =
-            this.serviceClient().get(resourceGroupName, integrationAccountName, certificateName);
+    public Response<IntegrationAccountCertificate> getWithResponse(String resourceGroupName,
+        String integrationAccountName, String certificateName, Context context) {
+        Response<IntegrationAccountCertificateInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, integrationAccountName, certificateName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IntegrationAccountCertificateImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationAccountCertificate get(String resourceGroupName, String integrationAccountName,
+        String certificateName) {
+        IntegrationAccountCertificateInner inner
+            = this.serviceClient().get(resourceGroupName, integrationAccountName, certificateName);
         if (inner != null) {
             return new IntegrationAccountCertificateImpl(inner, this.manager());
         } else {
@@ -52,142 +65,89 @@ public final class IntegrationAccountCertificatesImpl implements IntegrationAcco
         }
     }
 
-    public Response<IntegrationAccountCertificate> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String certificateName, Context context) {
-        Response<IntegrationAccountCertificateInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, integrationAccountName, certificateName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new IntegrationAccountCertificateImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String certificateName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, integrationAccountName, certificateName, context);
     }
 
     public void delete(String resourceGroupName, String integrationAccountName, String certificateName) {
         this.serviceClient().delete(resourceGroupName, integrationAccountName, certificateName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String certificateName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, integrationAccountName, certificateName, context);
-    }
-
     public IntegrationAccountCertificate getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE)
             .getValue();
     }
 
     public Response<IntegrationAccountCertificate> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         return this.getWithResponse(resourceGroupName, integrationAccountName, certificateName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, certificateName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String certificateName = Utils.getValueFromIdByName(id, "certificates");
+        String certificateName = ResourceManagerUtils.getValueFromIdByName(id, "certificates");
         if (certificateName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'certificates'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, integrationAccountName, certificateName, context);
     }

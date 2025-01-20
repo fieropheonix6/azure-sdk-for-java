@@ -20,30 +20,26 @@ public final class LiveTokensImpl implements LiveTokens {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public LiveTokensImpl(
-        LiveTokensClient innerClient,
+    public LiveTokensImpl(LiveTokensClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<LiveTokenResponse> getWithResponse(String resourceUri, Context context) {
+        Response<LiveTokenResponseInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new LiveTokenResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public LiveTokenResponse get(String resourceUri) {
         LiveTokenResponseInner inner = this.serviceClient().get(resourceUri);
         if (inner != null) {
             return new LiveTokenResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<LiveTokenResponse> getWithResponse(String resourceUri, Context context) {
-        Response<LiveTokenResponseInner> inner = this.serviceClient().getWithResponse(resourceUri, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new LiveTokenResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

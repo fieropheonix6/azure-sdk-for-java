@@ -6,59 +6,95 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.datafactory.fluent.models.AzureStorageLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datafactory.fluent.models.AzureTableStorageLinkedServiceTypeProperties;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The azure table storage linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureTableStorage")
+/**
+ * The azure table storage linked service.
+ */
 @Fluent
 public final class AzureTableStorageLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "AzureTableStorage";
+
+    /*
      * Azure Table Storage linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
-    private AzureStorageLinkedServiceTypeProperties innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+    private AzureTableStorageLinkedServiceTypeProperties innerTypeProperties
+        = new AzureTableStorageLinkedServiceTypeProperties();
 
-    /** Creates an instance of AzureTableStorageLinkedService class. */
+    /**
+     * Creates an instance of AzureTableStorageLinkedService class.
+     */
     public AzureTableStorageLinkedService() {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Azure Table Storage linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
-    private AzureStorageLinkedServiceTypeProperties innerTypeProperties() {
+    private AzureTableStorageLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableStorageLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableStorageLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableStorageLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableStorageLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableStorageLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -66,9 +102,57 @@ public final class AzureTableStorageLinkedService extends LinkedService {
     }
 
     /**
+     * Get the serviceEndpoint property: Table service endpoint of the Azure Table Storage resource. It is mutually
+     * exclusive with connectionString, sasUri property.
+     * 
+     * @return the serviceEndpoint value.
+     */
+    public Object serviceEndpoint() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().serviceEndpoint();
+    }
+
+    /**
+     * Set the serviceEndpoint property: Table service endpoint of the Azure Table Storage resource. It is mutually
+     * exclusive with connectionString, sasUri property.
+     * 
+     * @param serviceEndpoint the serviceEndpoint value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withServiceEndpoint(Object serviceEndpoint) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureTableStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withServiceEndpoint(serviceEndpoint);
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference credential() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().credential();
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the AzureTableStorageLinkedService object itself.
+     */
+    public AzureTableStorageLinkedService withCredential(CredentialReference credential) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new AzureTableStorageLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCredential(credential);
+        return this;
+    }
+
+    /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -78,13 +162,13 @@ public final class AzureTableStorageLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
     public AzureTableStorageLinkedService withConnectionString(Object connectionString) {
         if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+            this.innerTypeProperties = new AzureTableStorageLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withConnectionString(connectionString);
         return this;
@@ -92,7 +176,7 @@ public final class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Get the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
+     * 
      * @return the accountKey value.
      */
     public AzureKeyVaultSecretReference accountKey() {
@@ -101,13 +185,13 @@ public final class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Set the accountKey property: The Azure key vault secret reference of accountKey in connection string.
-     *
+     * 
      * @param accountKey the accountKey value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
     public AzureTableStorageLinkedService withAccountKey(AzureKeyVaultSecretReference accountKey) {
         if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+            this.innerTypeProperties = new AzureTableStorageLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withAccountKey(accountKey);
         return this;
@@ -116,7 +200,7 @@ public final class AzureTableStorageLinkedService extends LinkedService {
     /**
      * Get the sasUri property: SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the sasUri value.
      */
     public Object sasUri() {
@@ -126,13 +210,13 @@ public final class AzureTableStorageLinkedService extends LinkedService {
     /**
      * Set the sasUri property: SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString
      * property. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param sasUri the sasUri value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
     public AzureTableStorageLinkedService withSasUri(Object sasUri) {
         if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+            this.innerTypeProperties = new AzureTableStorageLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withSasUri(sasUri);
         return this;
@@ -140,7 +224,7 @@ public final class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Get the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @return the sasToken value.
      */
     public AzureKeyVaultSecretReference sasToken() {
@@ -149,13 +233,13 @@ public final class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Set the sasToken property: The Azure key vault secret reference of sasToken in sas uri.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
     public AzureTableStorageLinkedService withSasToken(AzureKeyVaultSecretReference sasToken) {
         if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+            this.innerTypeProperties = new AzureTableStorageLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withSasToken(sasToken);
         return this;
@@ -163,8 +247,8 @@ public final class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
     public String encryptedCredential() {
@@ -173,14 +257,14 @@ public final class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureTableStorageLinkedService object itself.
      */
     public AzureTableStorageLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
-            this.innerTypeProperties = new AzureStorageLinkedServiceTypeProperties();
+            this.innerTypeProperties = new AzureTableStorageLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
         return this;
@@ -188,21 +272,101 @@ public final class AzureTableStorageLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzureTableStorageLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model AzureTableStorageLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AzureTableStorageLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureTableStorageLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureTableStorageLinkedService if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureTableStorageLinkedService.
+     */
+    public static AzureTableStorageLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureTableStorageLinkedService deserializedAzureTableStorageLinkedService
+                = new AzureTableStorageLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedAzureTableStorageLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedAzureTableStorageLinkedService
+                        .withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedAzureTableStorageLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedAzureTableStorageLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedAzureTableStorageLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedAzureTableStorageLinkedService.innerTypeProperties
+                        = AzureTableStorageLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureTableStorageLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureTableStorageLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureTableStorageLinkedService;
+        });
+    }
 }

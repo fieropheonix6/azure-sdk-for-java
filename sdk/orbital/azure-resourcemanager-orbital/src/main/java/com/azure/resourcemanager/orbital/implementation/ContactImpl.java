@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.orbital.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.orbital.fluent.models.ContactInner;
 import com.azure.resourcemanager.orbital.models.Contact;
@@ -35,8 +36,8 @@ public final class ContactImpl implements Contact, Contact.Definition {
         return this.innerModel().type();
     }
 
-    public String etag() {
-        return this.innerModel().etag();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ContactsPropertiesProvisioningState provisioningState() {
@@ -128,20 +129,16 @@ public final class ContactImpl implements Contact, Contact.Definition {
     }
 
     public Contact create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContacts()
-                .create(resourceGroupName, spacecraftName, contactName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getContacts()
+            .create(resourceGroupName, spacecraftName, contactName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Contact create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContacts()
-                .create(resourceGroupName, spacecraftName, contactName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getContacts()
+            .create(resourceGroupName, spacecraftName, contactName, this.innerModel(), context);
         return this;
     }
 
@@ -152,27 +149,18 @@ public final class ContactImpl implements Contact, Contact.Definition {
     }
 
     public Contact refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContacts()
-                .getWithResponse(resourceGroupName, spacecraftName, contactName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getContacts()
+            .getWithResponse(resourceGroupName, spacecraftName, contactName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Contact refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getContacts()
-                .getWithResponse(resourceGroupName, spacecraftName, contactName, context)
-                .getValue();
-        return this;
-    }
-
-    public ContactImpl withProvisioningState(ContactsPropertiesProvisioningState provisioningState) {
-        this.innerModel().withProvisioningState(provisioningState);
+        this.innerObject = serviceManager.serviceClient()
+            .getContacts()
+            .getWithResponse(resourceGroupName, spacecraftName, contactName, context)
+            .getValue();
         return this;
     }
 
@@ -193,6 +181,11 @@ public final class ContactImpl implements Contact, Contact.Definition {
 
     public ContactImpl withContactProfile(ContactsPropertiesContactProfile contactProfile) {
         this.innerModel().withContactProfile(contactProfile);
+        return this;
+    }
+
+    public ContactImpl withProvisioningState(ContactsPropertiesProvisioningState provisioningState) {
+        this.innerModel().withProvisioningState(provisioningState);
         return this;
     }
 }

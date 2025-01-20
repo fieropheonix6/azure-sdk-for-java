@@ -13,27 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.WorkloadGroupInner;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolWorkloadGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolWorkloadGroupsClient.
+ */
 public interface SqlPoolWorkloadGroupsClient {
     /**
+     * Sql pool's workload group
+     * 
      * Get a Sql pool's workload group.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param workloadGroupName The name of the workload group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Sql pool's workload group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadGroupInner get(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
-
-    /**
-     * Get a Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -45,12 +33,32 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return a Sql pool's workload group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkloadGroupInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    Response<WorkloadGroupInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
 
     /**
+     * Sql pool's workload group
+     * 
+     * Get a Sql pool's workload group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param workloadGroupName The name of the workload group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Sql pool's workload group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkloadGroupInner get(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName);
+
+    /**
+     * Create Or Update workload group
+     * 
      * Create Or Update a Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -62,16 +70,14 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
+     * Create Or Update workload group
+     * 
      * Create Or Update a Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -84,17 +90,15 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
+    SyncPoller<PollResult<WorkloadGroupInner>, WorkloadGroupInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, String workloadGroupName, WorkloadGroupInner parameters,
         Context context);
 
     /**
+     * Create Or Update workload group
+     * 
      * Create Or Update a Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -106,16 +110,14 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadGroupInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters);
+    WorkloadGroupInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, WorkloadGroupInner parameters);
 
     /**
+     * Create Or Update workload group
+     * 
      * Create Or Update a Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -128,17 +130,14 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return workload group operations for a sql pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkloadGroupInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        String workloadGroupName,
-        WorkloadGroupInner parameters,
-        Context context);
+    WorkloadGroupInner createOrUpdate(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, WorkloadGroupInner parameters, Context context);
 
     /**
+     * Remove workload group
+     * 
      * Remove Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -149,12 +148,14 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName);
 
     /**
+     * Remove workload group
+     * 
      * Remove Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -166,12 +167,14 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String workloadGroupName, Context context);
 
     /**
+     * Remove workload group
+     * 
      * Remove Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -184,8 +187,10 @@ public interface SqlPoolWorkloadGroupsClient {
     void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName);
 
     /**
+     * Remove workload group
+     * 
      * Remove Sql pool's workload group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -196,12 +201,14 @@ public interface SqlPoolWorkloadGroupsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName, Context context);
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String workloadGroupName,
+        Context context);
 
     /**
+     * Sql pool's workload groups
+     * 
      * Get list of Sql pool's workload groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -214,8 +221,10 @@ public interface SqlPoolWorkloadGroupsClient {
     PagedIterable<WorkloadGroupInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
+     * Sql pool's workload groups
+     * 
      * Get list of Sql pool's workload groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -226,6 +235,6 @@ public interface SqlPoolWorkloadGroupsClient {
      * @return list of Sql pool's workload groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<WorkloadGroupInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<WorkloadGroupInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 }

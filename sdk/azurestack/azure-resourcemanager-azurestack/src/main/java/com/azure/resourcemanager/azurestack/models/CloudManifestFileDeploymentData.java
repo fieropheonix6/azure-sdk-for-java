@@ -5,44 +5,42 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.azurestack.fluent.models.CloudManifestFileEnvironmentEndpoints;
+import java.io.IOException;
 
-/** Cloud specific manifest data for AzureStack deployment. */
-@JsonFlatten
+/**
+ * Cloud specific manifest data for AzureStack deployment.
+ */
 @Fluent
-public class CloudManifestFileDeploymentData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudManifestFileDeploymentData.class);
-
+public final class CloudManifestFileDeploymentData implements JsonSerializable<CloudManifestFileDeploymentData> {
     /*
      * Dsms external certificates.
      */
-    @JsonProperty(value = "externalDsmsCertificates")
     private String externalDsmsCertificates;
 
     /*
      * Signing verification public key.
      */
-    @JsonProperty(value = "customCloudVerificationKey")
     private String customCloudVerificationKey;
 
     /*
-     * ARM endpoint.
+     * Environment endpoints.
      */
-    @JsonProperty(value = "customEnvironmentEndpoints.customCloudArmEndpoint")
-    private String customCloudArmEndpoint;
+    private CloudManifestFileEnvironmentEndpoints innerCustomEnvironmentEndpoints;
 
-    /*
-     * Dsms endpoint.
+    /**
+     * Creates an instance of CloudManifestFileDeploymentData class.
      */
-    @JsonProperty(value = "customEnvironmentEndpoints.externalDsmsEndpoint")
-    private String externalDsmsEndpoint;
+    public CloudManifestFileDeploymentData() {
+    }
 
     /**
      * Get the externalDsmsCertificates property: Dsms external certificates.
-     *
+     * 
      * @return the externalDsmsCertificates value.
      */
     public String externalDsmsCertificates() {
@@ -51,7 +49,7 @@ public class CloudManifestFileDeploymentData {
 
     /**
      * Set the externalDsmsCertificates property: Dsms external certificates.
-     *
+     * 
      * @param externalDsmsCertificates the externalDsmsCertificates value to set.
      * @return the CloudManifestFileDeploymentData object itself.
      */
@@ -62,7 +60,7 @@ public class CloudManifestFileDeploymentData {
 
     /**
      * Get the customCloudVerificationKey property: Signing verification public key.
-     *
+     * 
      * @return the customCloudVerificationKey value.
      */
     public String customCloudVerificationKey() {
@@ -71,7 +69,7 @@ public class CloudManifestFileDeploymentData {
 
     /**
      * Set the customCloudVerificationKey property: Signing verification public key.
-     *
+     * 
      * @param customCloudVerificationKey the customCloudVerificationKey value to set.
      * @return the CloudManifestFileDeploymentData object itself.
      */
@@ -81,50 +79,116 @@ public class CloudManifestFileDeploymentData {
     }
 
     /**
+     * Get the innerCustomEnvironmentEndpoints property: Environment endpoints.
+     * 
+     * @return the innerCustomEnvironmentEndpoints value.
+     */
+    private CloudManifestFileEnvironmentEndpoints innerCustomEnvironmentEndpoints() {
+        return this.innerCustomEnvironmentEndpoints;
+    }
+
+    /**
      * Get the customCloudArmEndpoint property: ARM endpoint.
-     *
+     * 
      * @return the customCloudArmEndpoint value.
      */
     public String customCloudArmEndpoint() {
-        return this.customCloudArmEndpoint;
+        return this.innerCustomEnvironmentEndpoints() == null
+            ? null
+            : this.innerCustomEnvironmentEndpoints().customCloudArmEndpoint();
     }
 
     /**
      * Set the customCloudArmEndpoint property: ARM endpoint.
-     *
+     * 
      * @param customCloudArmEndpoint the customCloudArmEndpoint value to set.
      * @return the CloudManifestFileDeploymentData object itself.
      */
     public CloudManifestFileDeploymentData withCustomCloudArmEndpoint(String customCloudArmEndpoint) {
-        this.customCloudArmEndpoint = customCloudArmEndpoint;
+        if (this.innerCustomEnvironmentEndpoints() == null) {
+            this.innerCustomEnvironmentEndpoints = new CloudManifestFileEnvironmentEndpoints();
+        }
+        this.innerCustomEnvironmentEndpoints().withCustomCloudArmEndpoint(customCloudArmEndpoint);
         return this;
     }
 
     /**
      * Get the externalDsmsEndpoint property: Dsms endpoint.
-     *
+     * 
      * @return the externalDsmsEndpoint value.
      */
     public String externalDsmsEndpoint() {
-        return this.externalDsmsEndpoint;
+        return this.innerCustomEnvironmentEndpoints() == null
+            ? null
+            : this.innerCustomEnvironmentEndpoints().externalDsmsEndpoint();
     }
 
     /**
      * Set the externalDsmsEndpoint property: Dsms endpoint.
-     *
+     * 
      * @param externalDsmsEndpoint the externalDsmsEndpoint value to set.
      * @return the CloudManifestFileDeploymentData object itself.
      */
     public CloudManifestFileDeploymentData withExternalDsmsEndpoint(String externalDsmsEndpoint) {
-        this.externalDsmsEndpoint = externalDsmsEndpoint;
+        if (this.innerCustomEnvironmentEndpoints() == null) {
+            this.innerCustomEnvironmentEndpoints = new CloudManifestFileEnvironmentEndpoints();
+        }
+        this.innerCustomEnvironmentEndpoints().withExternalDsmsEndpoint(externalDsmsEndpoint);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerCustomEnvironmentEndpoints() != null) {
+            innerCustomEnvironmentEndpoints().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("externalDsmsCertificates", this.externalDsmsCertificates);
+        jsonWriter.writeStringField("customCloudVerificationKey", this.customCloudVerificationKey);
+        jsonWriter.writeJsonField("customEnvironmentEndpoints", this.innerCustomEnvironmentEndpoints);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudManifestFileDeploymentData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudManifestFileDeploymentData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudManifestFileDeploymentData.
+     */
+    public static CloudManifestFileDeploymentData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudManifestFileDeploymentData deserializedCloudManifestFileDeploymentData
+                = new CloudManifestFileDeploymentData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("externalDsmsCertificates".equals(fieldName)) {
+                    deserializedCloudManifestFileDeploymentData.externalDsmsCertificates = reader.getString();
+                } else if ("customCloudVerificationKey".equals(fieldName)) {
+                    deserializedCloudManifestFileDeploymentData.customCloudVerificationKey = reader.getString();
+                } else if ("customEnvironmentEndpoints".equals(fieldName)) {
+                    deserializedCloudManifestFileDeploymentData.innerCustomEnvironmentEndpoints
+                        = CloudManifestFileEnvironmentEndpoints.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudManifestFileDeploymentData;
+        });
     }
 }

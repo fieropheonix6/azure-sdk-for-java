@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeType. */
+/**
+ * The type of integration runtime.
+ */
 public final class IntegrationRuntimeType extends ExpandableStringEnum<IntegrationRuntimeType> {
-    /** Static value Managed for IntegrationRuntimeType. */
+    /**
+     * Static value Managed for IntegrationRuntimeType.
+     */
     public static final IntegrationRuntimeType MANAGED = fromString("Managed");
 
-    /** Static value SelfHosted for IntegrationRuntimeType. */
+    /**
+     * Static value SelfHosted for IntegrationRuntimeType.
+     */
     public static final IntegrationRuntimeType SELF_HOSTED = fromString("SelfHosted");
 
     /**
+     * Creates a new instance of IntegrationRuntimeType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IntegrationRuntimeType() {
+    }
+
+    /**
      * Creates or finds a IntegrationRuntimeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeType.
      */
-    @JsonCreator
     public static IntegrationRuntimeType fromString(String name) {
         return fromString(name, IntegrationRuntimeType.class);
     }
 
-    /** @return known IntegrationRuntimeType values. */
+    /**
+     * Gets known IntegrationRuntimeType values.
+     * 
+     * @return known IntegrationRuntimeType values.
+     */
     public static Collection<IntegrationRuntimeType> values() {
         return values(IntegrationRuntimeType.class);
     }

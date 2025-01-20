@@ -9,49 +9,94 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.PolicyType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionDurationType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SchedulePolicy;
+import com.azure.resourcemanager.recoveryservicesbackup.models.SnapshotBackupAdditionalDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SubProtectionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringMode;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TieringPolicy;
+import com.azure.resourcemanager.recoveryservicesbackup.models.UserAssignedIdentityProperties;
+import com.azure.resourcemanager.recoveryservicesbackup.models.UserAssignedManagedIdentityDetails;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SubProtectionPolicyTests {
-    @Test
-    public void testDeserialize() {
-        SubProtectionPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"policyType\":\"Log\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"kdl\":{\"tieringMode\":\"DoNotTier\",\"duration\":693304246,\"durationType\":\"Months\"}}}")
-                .toObject(SubProtectionPolicy.class);
-        Assertions.assertEquals(PolicyType.LOG, model.policyType());
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringPolicy().get("kdl").tieringMode());
-        Assertions.assertEquals(693304246, model.tieringPolicy().get("kdl").duration());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.tieringPolicy().get("kdl").durationType());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SubProtectionPolicy model = BinaryData.fromString(
+            "{\"policyType\":\"Incremental\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"tieringPolicy\":{\"xu\":{\"tieringMode\":\"TierAfter\",\"duration\":250012247,\"durationType\":\"Months\"},\"htba\":{\"tieringMode\":\"TierAfter\",\"duration\":1576541562,\"durationType\":\"Invalid\"},\"ckpyklyhplu\":{\"tieringMode\":\"Invalid\",\"duration\":1532025762,\"durationType\":\"Invalid\"}},\"snapshotBackupAdditionalDetails\":{\"instantRpRetentionRangeInDays\":1007815098,\"instantRPDetails\":\"uudl\",\"userAssignedManagedIdentityDetails\":{\"identityArmId\":\"bth\",\"identityName\":\"tgk\",\"userAssignedIdentityProperties\":{\"clientId\":\"vdxec\",\"principalId\":\"edqbc\"}}}}")
+            .toObject(SubProtectionPolicy.class);
+        Assertions.assertEquals(PolicyType.INCREMENTAL, model.policyType());
+        Assertions.assertEquals(TieringMode.TIER_AFTER, model.tieringPolicy().get("xu").tieringMode());
+        Assertions.assertEquals(250012247, model.tieringPolicy().get("xu").duration());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.tieringPolicy().get("xu").durationType());
+        Assertions.assertEquals(1007815098, model.snapshotBackupAdditionalDetails().instantRpRetentionRangeInDays());
+        Assertions.assertEquals("uudl", model.snapshotBackupAdditionalDetails().instantRPDetails());
+        Assertions.assertEquals("bth",
+            model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("tgk",
+            model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("vdxec",
+            model.snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .userAssignedIdentityProperties()
+                .clientId());
+        Assertions.assertEquals("edqbc",
+            model.snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .userAssignedIdentityProperties()
+                .principalId());
     }
 
-    @Test
-    public void testSerialize() {
-        SubProtectionPolicy model =
-            new SubProtectionPolicy()
-                .withPolicyType(PolicyType.LOG)
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SubProtectionPolicy model
+            = new SubProtectionPolicy().withPolicyType(PolicyType.INCREMENTAL)
                 .withSchedulePolicy(new SchedulePolicy())
                 .withRetentionPolicy(new RetentionPolicy())
-                .withTieringPolicy(
-                    mapOf(
-                        "kdl",
-                        new TieringPolicy()
-                            .withTieringMode(TieringMode.DO_NOT_TIER)
-                            .withDuration(693304246)
-                            .withDurationType(RetentionDurationType.MONTHS)));
+                .withTieringPolicy(mapOf("xu",
+                    new TieringPolicy().withTieringMode(TieringMode.TIER_AFTER)
+                        .withDuration(250012247)
+                        .withDurationType(RetentionDurationType.MONTHS),
+                    "htba",
+                    new TieringPolicy().withTieringMode(TieringMode.TIER_AFTER)
+                        .withDuration(1576541562)
+                        .withDurationType(RetentionDurationType.INVALID),
+                    "ckpyklyhplu",
+                    new TieringPolicy().withTieringMode(TieringMode.INVALID)
+                        .withDuration(1532025762)
+                        .withDurationType(RetentionDurationType.INVALID)))
+                .withSnapshotBackupAdditionalDetails(
+                    new SnapshotBackupAdditionalDetails().withInstantRpRetentionRangeInDays(1007815098)
+                        .withInstantRPDetails("uudl")
+                        .withUserAssignedManagedIdentityDetails(new UserAssignedManagedIdentityDetails()
+                            .withIdentityArmId("bth")
+                            .withIdentityName("tgk")
+                            .withUserAssignedIdentityProperties(
+                                new UserAssignedIdentityProperties().withClientId("vdxec").withPrincipalId("edqbc"))));
         model = BinaryData.fromObject(model).toObject(SubProtectionPolicy.class);
-        Assertions.assertEquals(PolicyType.LOG, model.policyType());
-        Assertions.assertEquals(TieringMode.DO_NOT_TIER, model.tieringPolicy().get("kdl").tieringMode());
-        Assertions.assertEquals(693304246, model.tieringPolicy().get("kdl").duration());
-        Assertions.assertEquals(RetentionDurationType.MONTHS, model.tieringPolicy().get("kdl").durationType());
+        Assertions.assertEquals(PolicyType.INCREMENTAL, model.policyType());
+        Assertions.assertEquals(TieringMode.TIER_AFTER, model.tieringPolicy().get("xu").tieringMode());
+        Assertions.assertEquals(250012247, model.tieringPolicy().get("xu").duration());
+        Assertions.assertEquals(RetentionDurationType.MONTHS, model.tieringPolicy().get("xu").durationType());
+        Assertions.assertEquals(1007815098, model.snapshotBackupAdditionalDetails().instantRpRetentionRangeInDays());
+        Assertions.assertEquals("uudl", model.snapshotBackupAdditionalDetails().instantRPDetails());
+        Assertions.assertEquals("bth",
+            model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails().identityArmId());
+        Assertions.assertEquals("tgk",
+            model.snapshotBackupAdditionalDetails().userAssignedManagedIdentityDetails().identityName());
+        Assertions.assertEquals("vdxec",
+            model.snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .userAssignedIdentityProperties()
+                .clientId());
+        Assertions.assertEquals("edqbc",
+            model.snapshotBackupAdditionalDetails()
+                .userAssignedManagedIdentityDetails()
+                .userAssignedIdentityProperties()
+                .principalId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -50,13 +50,11 @@ class ImmutabilityPolicyImpl
     public Mono<ImmutabilityPolicy> createResourceAsync() {
         BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
-            .createOrUpdateImmutabilityPolicyAsync(
-                this.resourceGroupName,
-                this.accountName,
-                this.containerName,
-                null,
+            .createOrUpdateImmutabilityPolicyWithResponseAsync(this.resourceGroupName, this.accountName,
+                this.containerName, null,
                 new ImmutabilityPolicyInner()
                     .withImmutabilityPeriodSinceCreationInDays(this.cImmutabilityPeriodSinceCreationInDays))
+            .flatMap(r -> Mono.justOrEmpty(r.getValue()))
             .map(innerToFluentMap(this));
     }
 
@@ -64,25 +62,24 @@ class ImmutabilityPolicyImpl
     public Mono<ImmutabilityPolicy> updateResourceAsync() {
         BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
         return client
-            .createOrUpdateImmutabilityPolicyAsync(
-                this.resourceGroupName,
-                this.accountName,
-                this.containerName,
-                this.eTagState.ifMatchValueOnUpdate(this.innerModel().etag()),
+            .createOrUpdateImmutabilityPolicyWithResponseAsync(this.resourceGroupName, this.accountName,
+                this.containerName, this.eTagState.ifMatchValueOnUpdate(this.innerModel().etag()),
                 new ImmutabilityPolicyInner()
                     .withImmutabilityPeriodSinceCreationInDays(this.uImmutabilityPeriodSinceCreationInDays))
+            .flatMap(r -> Mono.justOrEmpty(r.getValue()))
             .map(innerToFluentMap(this))
-            .map(
-                self -> {
-                    eTagState.clear();
-                    return self;
-                });
+            .map(self -> {
+                eTagState.clear();
+                return self;
+            });
     }
 
     @Override
     protected Mono<ImmutabilityPolicyInner> getInnerAsync() {
         BlobContainersClient client = this.manager().serviceClient().getBlobContainers();
-        return client.getImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, null);
+        return client
+            .getImmutabilityPolicyWithResponseAsync(this.resourceGroupName, this.accountName, this.containerName, null)
+            .flatMap(r -> Mono.justOrEmpty(r.getValue()));
     }
 
     @Override
@@ -127,8 +124,8 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<Void> lockAsync() {
-        return manager().blobContainers().lockImmutabilityPolicyAsync(this.resourceGroupName, this.accountName,
-            this.containerName, this.etag())
+        return manager().blobContainers()
+            .lockImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName, this.etag())
             .map(p -> {
                 this.setInner(p.innerModel());
                 return p;
@@ -143,9 +140,9 @@ class ImmutabilityPolicyImpl
 
     @Override
     public Mono<Void> extendAsync(int immutabilityPeriodSinceCreationInDays) {
-        return manager().blobContainers().extendImmutabilityPolicyAsync(this.resourceGroupName, this.accountName,
-            this.containerName, immutabilityPeriodSinceCreationInDays, this.innerModel().allowProtectedAppendWrites(),
-            this.etag())
+        return manager().blobContainers()
+            .extendImmutabilityPolicyAsync(this.resourceGroupName, this.accountName, this.containerName,
+                immutabilityPeriodSinceCreationInDays, this.innerModel().allowProtectedAppendWrites(), this.etag())
             .map(p -> {
                 this.setInner(p.innerModel());
                 return p;
@@ -154,8 +151,8 @@ class ImmutabilityPolicyImpl
     }
 
     @Override
-    public ImmutabilityPolicyImpl withExistingContainer(
-        String resourceGroupName, String accountName, String containerName) {
+    public ImmutabilityPolicyImpl withExistingContainer(String resourceGroupName, String accountName,
+        String containerName) {
         this.resourceGroupName = resourceGroupName;
         this.accountName = accountName;
         this.containerName = containerName;

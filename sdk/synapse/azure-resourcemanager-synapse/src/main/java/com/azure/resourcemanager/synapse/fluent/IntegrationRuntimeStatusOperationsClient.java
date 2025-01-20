@@ -15,23 +15,10 @@ import com.azure.resourcemanager.synapse.fluent.models.IntegrationRuntimeStatusR
  */
 public interface IntegrationRuntimeStatusOperationsClient {
     /**
+     * Get integration runtime status
+     * 
      * Get the integration runtime status.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the integration runtime status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    IntegrationRuntimeStatusResponseInner get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
-
-    /**
-     * Get the integration runtime status.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -42,6 +29,23 @@ public interface IntegrationRuntimeStatusOperationsClient {
      * @return the integration runtime status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<IntegrationRuntimeStatusResponseInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    Response<IntegrationRuntimeStatusResponseInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
+
+    /**
+     * Get integration runtime status
+     * 
+     * Get the integration runtime status.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the integration runtime status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    IntegrationRuntimeStatusResponseInner get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 }

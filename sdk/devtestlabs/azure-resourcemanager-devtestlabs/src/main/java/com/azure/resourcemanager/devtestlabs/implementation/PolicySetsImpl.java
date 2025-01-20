@@ -13,48 +13,38 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.EvaluatePoliciesRespo
 import com.azure.resourcemanager.devtestlabs.models.EvaluatePoliciesRequest;
 import com.azure.resourcemanager.devtestlabs.models.EvaluatePoliciesResponse;
 import com.azure.resourcemanager.devtestlabs.models.PolicySets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PolicySetsImpl implements PolicySets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PolicySetsImpl.class);
 
     private final PolicySetsClient innerClient;
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public PolicySetsImpl(
-        PolicySetsClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public PolicySetsImpl(PolicySetsClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public EvaluatePoliciesResponse evaluatePolicies(
-        String resourceGroupName, String labName, String name, EvaluatePoliciesRequest evaluatePoliciesRequest) {
-        EvaluatePoliciesResponseInner inner =
-            this.serviceClient().evaluatePolicies(resourceGroupName, labName, name, evaluatePoliciesRequest);
+    public Response<EvaluatePoliciesResponse> evaluatePoliciesWithResponse(String resourceGroupName, String labName,
+        String name, EvaluatePoliciesRequest evaluatePoliciesRequest, Context context) {
+        Response<EvaluatePoliciesResponseInner> inner = this.serviceClient()
+            .evaluatePoliciesWithResponse(resourceGroupName, labName, name, evaluatePoliciesRequest, context);
         if (inner != null) {
-            return new EvaluatePoliciesResponseImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EvaluatePoliciesResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<EvaluatePoliciesResponse> evaluatePoliciesWithResponse(
-        String resourceGroupName,
-        String labName,
-        String name,
-        EvaluatePoliciesRequest evaluatePoliciesRequest,
-        Context context) {
-        Response<EvaluatePoliciesResponseInner> inner =
-            this
-                .serviceClient()
-                .evaluatePoliciesWithResponse(resourceGroupName, labName, name, evaluatePoliciesRequest, context);
+    public EvaluatePoliciesResponse evaluatePolicies(String resourceGroupName, String labName, String name,
+        EvaluatePoliciesRequest evaluatePoliciesRequest) {
+        EvaluatePoliciesResponseInner inner
+            = this.serviceClient().evaluatePolicies(resourceGroupName, labName, name, evaluatePoliciesRequest);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EvaluatePoliciesResponseImpl(inner.getValue(), this.manager()));
+            return new EvaluatePoliciesResponseImpl(inner, this.manager());
         } else {
             return null;
         }

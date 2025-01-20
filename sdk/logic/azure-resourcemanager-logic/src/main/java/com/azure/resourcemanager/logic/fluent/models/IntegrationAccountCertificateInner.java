@@ -5,137 +5,98 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.KeyVaultKeyReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The integration account certificate. */
-@JsonFlatten
+/**
+ * The integration account certificate.
+ */
 @Fluent
-public class IntegrationAccountCertificateInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountCertificateInner.class);
+public final class IntegrationAccountCertificateInner extends Resource {
+    /*
+     * The integration account certificate properties.
+     */
+    private IntegrationAccountCertificateProperties innerProperties = new IntegrationAccountCertificateProperties();
 
     /*
-     * The created time.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
+    private String type;
 
     /*
-     * The changed time.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
+    private String name;
 
     /*
-     * The metadata.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
-
-    /*
-     * The key details in the key vault.
-     */
-    @JsonProperty(value = "properties.key")
-    private KeyVaultKeyReference key;
-
-    /*
-     * The public certificate.
-     */
-    @JsonProperty(value = "properties.publicCertificate")
-    private String publicCertificate;
+    private String id;
 
     /**
-     * Get the createdTime property: The created time.
-     *
-     * @return the createdTime value.
+     * Creates an instance of IntegrationAccountCertificateInner class.
      */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
+    public IntegrationAccountCertificateInner() {
     }
 
     /**
-     * Get the changedTime property: The changed time.
-     *
-     * @return the changedTime value.
+     * Get the innerProperties property: The integration account certificate properties.
+     * 
+     * @return the innerProperties value.
      */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
+    private IntegrationAccountCertificateProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the metadata property: The metadata.
-     *
-     * @return the metadata value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public Object metadata() {
-        return this.metadata;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the metadata property: The metadata.
-     *
-     * @param metadata the metadata value to set.
-     * @return the IntegrationAccountCertificateInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public IntegrationAccountCertificateInner withMetadata(Object metadata) {
-        this.metadata = metadata;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the key property: The key details in the key vault.
-     *
-     * @return the key value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public KeyVaultKeyReference key() {
-        return this.key;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the key property: The key details in the key vault.
-     *
-     * @param key the key value to set.
-     * @return the IntegrationAccountCertificateInner object itself.
+     * {@inheritDoc}
      */
-    public IntegrationAccountCertificateInner withKey(KeyVaultKeyReference key) {
-        this.key = key;
-        return this;
-    }
-
-    /**
-     * Get the publicCertificate property: The public certificate.
-     *
-     * @return the publicCertificate value.
-     */
-    public String publicCertificate() {
-        return this.publicCertificate;
-    }
-
-    /**
-     * Set the publicCertificate property: The public certificate.
-     *
-     * @param publicCertificate the publicCertificate value to set.
-     * @return the IntegrationAccountCertificateInner object itself.
-     */
-    public IntegrationAccountCertificateInner withPublicCertificate(String publicCertificate) {
-        this.publicCertificate = publicCertificate;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public IntegrationAccountCertificateInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountCertificateInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -143,13 +104,158 @@ public class IntegrationAccountCertificateInner extends Resource {
     }
 
     /**
+     * Get the createdTime property: The created time.
+     * 
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: The changed time.
+     * 
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the metadata property: The metadata.
+     * 
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: The metadata.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the IntegrationAccountCertificateInner object itself.
+     */
+    public IntegrationAccountCertificateInner withMetadata(Object metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountCertificateProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
+     * Get the key property: The key details in the key vault.
+     * 
+     * @return the key value.
+     */
+    public KeyVaultKeyReference key() {
+        return this.innerProperties() == null ? null : this.innerProperties().key();
+    }
+
+    /**
+     * Set the key property: The key details in the key vault.
+     * 
+     * @param key the key value to set.
+     * @return the IntegrationAccountCertificateInner object itself.
+     */
+    public IntegrationAccountCertificateInner withKey(KeyVaultKeyReference key) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountCertificateProperties();
+        }
+        this.innerProperties().withKey(key);
+        return this;
+    }
+
+    /**
+     * Get the publicCertificate property: The public certificate.
+     * 
+     * @return the publicCertificate value.
+     */
+    public String publicCertificate() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicCertificate();
+    }
+
+    /**
+     * Set the publicCertificate property: The public certificate.
+     * 
+     * @param publicCertificate the publicCertificate value to set.
+     * @return the IntegrationAccountCertificateInner object itself.
+     */
+    public IntegrationAccountCertificateInner withPublicCertificate(String publicCertificate) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountCertificateProperties();
+        }
+        this.innerProperties().withPublicCertificate(publicCertificate);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (key() != null) {
-            key().validate();
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IntegrationAccountCertificateInner"));
+        } else {
+            innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountCertificateInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountCertificateInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountCertificateInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountCertificateInner.
+     */
+    public static IntegrationAccountCertificateInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountCertificateInner deserializedIntegrationAccountCertificateInner
+                = new IntegrationAccountCertificateInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIntegrationAccountCertificateInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationAccountCertificateInner.innerProperties
+                        = IntegrationAccountCertificateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountCertificateInner;
+        });
     }
 }

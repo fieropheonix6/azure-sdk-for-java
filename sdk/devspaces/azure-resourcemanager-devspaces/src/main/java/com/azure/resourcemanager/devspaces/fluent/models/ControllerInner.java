@@ -5,67 +5,64 @@
 package com.azure.resourcemanager.devspaces.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devspaces.models.ProvisioningState;
 import com.azure.resourcemanager.devspaces.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The Controller model. */
-@JsonFlatten
+/**
+ * The Controller model.
+ */
 @Fluent
-public class ControllerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ControllerInner.class);
+public final class ControllerInner extends Resource {
+    /*
+     * The properties property.
+     */
+    private ControllerProperties innerProperties = new ControllerProperties();
 
     /*
      * Model representing SKU for Azure Dev Spaces Controller.
      */
-    @JsonProperty(value = "sku", required = true)
     private Sku sku;
 
     /*
-     * Provisioning state of the Azure Dev Spaces Controller.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private String type;
 
     /*
-     * DNS suffix for public endpoints running in the Azure Dev Spaces
-     * Controller.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.hostSuffix", access = JsonProperty.Access.WRITE_ONLY)
-    private String hostSuffix;
+    private String name;
 
     /*
-     * DNS name for accessing DataPlane services
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.dataPlaneFqdn", access = JsonProperty.Access.WRITE_ONLY)
-    private String dataPlaneFqdn;
+    private String id;
 
-    /*
-     * DNS of the target container host's API server
+    /**
+     * Creates an instance of ControllerInner class.
      */
-    @JsonProperty(value = "properties.targetContainerHostApiServerFqdn", access = JsonProperty.Access.WRITE_ONLY)
-    private String targetContainerHostApiServerFqdn;
+    public ControllerInner() {
+    }
 
-    /*
-     * Resource ID of the target container host
+    /**
+     * Get the innerProperties property: The properties property.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.targetContainerHostResourceId", required = true)
-    private String targetContainerHostResourceId;
-
-    /*
-     * Credentials of the target container host (base64).
-     */
-    @JsonProperty(value = "properties.targetContainerHostCredentialsBase64", required = true)
-    private String targetContainerHostCredentialsBase64;
+    private ControllerProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: Model representing SKU for Azure Dev Spaces Controller.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -74,7 +71,7 @@ public class ControllerInner extends Resource {
 
     /**
      * Set the sku property: Model representing SKU for Azure Dev Spaces Controller.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ControllerInner object itself.
      */
@@ -84,89 +81,47 @@ public class ControllerInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the Azure Dev Spaces Controller.
-     *
-     * @return the provisioningState value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the hostSuffix property: DNS suffix for public endpoints running in the Azure Dev Spaces Controller.
-     *
-     * @return the hostSuffix value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String hostSuffix() {
-        return this.hostSuffix;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the dataPlaneFqdn property: DNS name for accessing DataPlane services.
-     *
-     * @return the dataPlaneFqdn value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String dataPlaneFqdn() {
-        return this.dataPlaneFqdn;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the targetContainerHostApiServerFqdn property: DNS of the target container host's API server.
-     *
-     * @return the targetContainerHostApiServerFqdn value.
+     * {@inheritDoc}
      */
-    public String targetContainerHostApiServerFqdn() {
-        return this.targetContainerHostApiServerFqdn;
-    }
-
-    /**
-     * Get the targetContainerHostResourceId property: Resource ID of the target container host.
-     *
-     * @return the targetContainerHostResourceId value.
-     */
-    public String targetContainerHostResourceId() {
-        return this.targetContainerHostResourceId;
-    }
-
-    /**
-     * Set the targetContainerHostResourceId property: Resource ID of the target container host.
-     *
-     * @param targetContainerHostResourceId the targetContainerHostResourceId value to set.
-     * @return the ControllerInner object itself.
-     */
-    public ControllerInner withTargetContainerHostResourceId(String targetContainerHostResourceId) {
-        this.targetContainerHostResourceId = targetContainerHostResourceId;
-        return this;
-    }
-
-    /**
-     * Get the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
-     * @return the targetContainerHostCredentialsBase64 value.
-     */
-    public String targetContainerHostCredentialsBase64() {
-        return this.targetContainerHostCredentialsBase64;
-    }
-
-    /**
-     * Set the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
-     *
-     * @param targetContainerHostCredentialsBase64 the targetContainerHostCredentialsBase64 value to set.
-     * @return the ControllerInner object itself.
-     */
-    public ControllerInner withTargetContainerHostCredentialsBase64(String targetContainerHostCredentialsBase64) {
-        this.targetContainerHostCredentialsBase64 = targetContainerHostCredentialsBase64;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public ControllerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ControllerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -174,29 +129,160 @@ public class ControllerInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state of the Azure Dev Spaces Controller.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the hostSuffix property: DNS suffix for public endpoints running in the Azure Dev Spaces Controller.
+     * 
+     * @return the hostSuffix value.
+     */
+    public String hostSuffix() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostSuffix();
+    }
+
+    /**
+     * Get the dataPlaneFqdn property: DNS name for accessing DataPlane services.
+     * 
+     * @return the dataPlaneFqdn value.
+     */
+    public String dataPlaneFqdn() {
+        return this.innerProperties() == null ? null : this.innerProperties().dataPlaneFqdn();
+    }
+
+    /**
+     * Get the targetContainerHostApiServerFqdn property: DNS of the target container host's API server.
+     * 
+     * @return the targetContainerHostApiServerFqdn value.
+     */
+    public String targetContainerHostApiServerFqdn() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetContainerHostApiServerFqdn();
+    }
+
+    /**
+     * Get the targetContainerHostResourceId property: Resource ID of the target container host.
+     * 
+     * @return the targetContainerHostResourceId value.
+     */
+    public String targetContainerHostResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetContainerHostResourceId();
+    }
+
+    /**
+     * Set the targetContainerHostResourceId property: Resource ID of the target container host.
+     * 
+     * @param targetContainerHostResourceId the targetContainerHostResourceId value to set.
+     * @return the ControllerInner object itself.
+     */
+    public ControllerInner withTargetContainerHostResourceId(String targetContainerHostResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ControllerProperties();
+        }
+        this.innerProperties().withTargetContainerHostResourceId(targetContainerHostResourceId);
+        return this;
+    }
+
+    /**
+     * Get the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
+     * 
+     * @return the targetContainerHostCredentialsBase64 value.
+     */
+    public String targetContainerHostCredentialsBase64() {
+        return this.innerProperties() == null ? null : this.innerProperties().targetContainerHostCredentialsBase64();
+    }
+
+    /**
+     * Set the targetContainerHostCredentialsBase64 property: Credentials of the target container host (base64).
+     * 
+     * @param targetContainerHostCredentialsBase64 the targetContainerHostCredentialsBase64 value to set.
+     * @return the ControllerInner object itself.
+     */
+    public ControllerInner withTargetContainerHostCredentialsBase64(String targetContainerHostCredentialsBase64) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ControllerProperties();
+        }
+        this.innerProperties().withTargetContainerHostCredentialsBase64(targetContainerHostCredentialsBase64);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(
+                    new IllegalArgumentException("Missing required property innerProperties in model ControllerInner"));
+        } else {
+            innerProperties().validate();
+        }
         if (sku() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sku in model ControllerInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property sku in model ControllerInner"));
         } else {
             sku().validate();
         }
-        if (targetContainerHostResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetContainerHostResourceId in model ControllerInner"));
-        }
-        if (targetContainerHostCredentialsBase64() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetContainerHostCredentialsBase64 in model ControllerInner"));
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ControllerInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ControllerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ControllerInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ControllerInner.
+     */
+    public static ControllerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ControllerInner deserializedControllerInner = new ControllerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedControllerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedControllerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedControllerInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedControllerInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedControllerInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedControllerInner.innerProperties = ControllerProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedControllerInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedControllerInner;
+        });
     }
 }

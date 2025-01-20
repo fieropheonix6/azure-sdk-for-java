@@ -6,63 +6,44 @@ package com.azure.resourcemanager.webpubsub.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.webpubsub.WebPubSubManager;
+import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubHub;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class WebPubSubHubsListMockTests {
     @Test
     public void testList() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"eventHandlers\":[{\"urlTemplate\":\"u\",\"userEventPattern\":\"nchrszizoyu\",\"systemEvents\":[\"etndnbfqyggagf\",\"nlgmtrwahzjmu\"],\"auth\":{\"type\":\"ManagedIdentity\",\"managedIdentity\":{}}},{\"urlTemplate\":\"r\",\"userEventPattern\":\"rohkpigqfusu\",\"systemEvents\":[\"mkwkl\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}},{\"urlTemplate\":\"xmqeqalh\",\"userEventPattern\":\"nhg\",\"systemEvents\":[\"yynfsvkhgbv\",\"ta\",\"arfdlpukhpyrnei\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{}}}],\"eventListeners\":[{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}},{\"filter\":{\"type\":\"EventListenerFilter\"},\"endpoint\":{\"type\":\"EventListenerEndpoint\"}}],\"anonymousConnectPolicy\":\"hnmgbroux\",\"webSocketKeepAliveIntervalInSeconds\":1093469503},\"id\":\"fhp\",\"name\":\"paz\",\"type\":\"zoyw\"}]}";
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"eventHandlers\":[],\"eventListeners\":[],\"anonymousConnectPolicy\":\"zrnw\"},\"id\":\"iin\",\"name\":\"fpwpjylwbt\",\"type\":\"h\"}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        WebPubSubManager manager = WebPubSubManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        PagedIterable<WebPubSubHub> response
+            = manager.webPubSubHubs().list("sserxhtvsoxhlwn", "sjgqrsxyp", com.azure.core.util.Context.NONE);
 
-        WebPubSubManager manager =
-            WebPubSubManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        PagedIterable<WebPubSubHub> response = manager.webPubSubHubs().list("rjqc", "rgz", Context.NONE);
-
-        Assertions.assertEquals("zrnw", response.iterator().next().properties().anonymousConnectPolicy());
+        Assertions.assertEquals("u", response.iterator().next().properties().eventHandlers().get(0).urlTemplate());
+        Assertions.assertEquals("nchrszizoyu",
+            response.iterator().next().properties().eventHandlers().get(0).userEventPattern());
+        Assertions.assertEquals("etndnbfqyggagf",
+            response.iterator().next().properties().eventHandlers().get(0).systemEvents().get(0));
+        Assertions.assertEquals(UpstreamAuthType.MANAGED_IDENTITY,
+            response.iterator().next().properties().eventHandlers().get(0).auth().type());
+        Assertions.assertEquals("hnmgbroux", response.iterator().next().properties().anonymousConnectPolicy());
+        Assertions.assertEquals(1093469503,
+            response.iterator().next().properties().webSocketKeepAliveIntervalInSeconds());
     }
 }

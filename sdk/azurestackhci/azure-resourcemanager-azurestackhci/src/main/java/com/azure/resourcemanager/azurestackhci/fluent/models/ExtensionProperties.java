@@ -5,42 +5,56 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestackhci.models.ExtensionAggregateState;
+import com.azure.resourcemanager.azurestackhci.models.ExtensionManagedBy;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeExtensionState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Status of Arc Extension for a particular node in HCI Cluster. */
+/**
+ * Status of Arc Extension for a particular node in HCI Cluster.
+ */
 @Fluent
-public final class ExtensionProperties {
+public final class ExtensionProperties implements JsonSerializable<ExtensionProperties> {
     /*
      * Provisioning state of the Extension proxy resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Parameters specific to this extension type.
      */
-    @JsonProperty(value = "extensionParameters")
     private ExtensionParameters innerExtensionParameters;
 
     /*
      * Aggregate state of Arc Extensions across the nodes in this HCI cluster.
      */
-    @JsonProperty(value = "aggregateState", access = JsonProperty.Access.WRITE_ONLY)
     private ExtensionAggregateState aggregateState;
 
     /*
      * State of Arc Extension in each of the nodes.
      */
-    @JsonProperty(value = "perNodeExtensionDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<PerNodeExtensionState> perNodeExtensionDetails;
+
+    /*
+     * Indicates if the extension is managed by azure or the user.
+     */
+    private ExtensionManagedBy managedBy;
+
+    /**
+     * Creates an instance of ExtensionProperties class.
+     */
+    public ExtensionProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the Extension proxy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -49,7 +63,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the innerExtensionParameters property: Parameters specific to this extension type.
-     *
+     * 
      * @return the innerExtensionParameters value.
      */
     private ExtensionParameters innerExtensionParameters() {
@@ -58,7 +72,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the aggregateState property: Aggregate state of Arc Extensions across the nodes in this HCI cluster.
-     *
+     * 
      * @return the aggregateState value.
      */
     public ExtensionAggregateState aggregateState() {
@@ -67,7 +81,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the perNodeExtensionDetails property: State of Arc Extension in each of the nodes.
-     *
+     * 
      * @return the perNodeExtensionDetails value.
      */
     public List<PerNodeExtensionState> perNodeExtensionDetails() {
@@ -75,9 +89,18 @@ public final class ExtensionProperties {
     }
 
     /**
+     * Get the managedBy property: Indicates if the extension is managed by azure or the user.
+     * 
+     * @return the managedBy value.
+     */
+    public ExtensionManagedBy managedBy() {
+        return this.managedBy;
+    }
+
+    /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -87,7 +110,7 @@ public final class ExtensionProperties {
     /**
      * Set the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -101,7 +124,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -110,7 +133,7 @@ public final class ExtensionProperties {
 
     /**
      * Set the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -124,7 +147,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -133,7 +156,7 @@ public final class ExtensionProperties {
 
     /**
      * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @param type the type value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -146,8 +169,9 @@ public final class ExtensionProperties {
     }
 
     /**
-     * Get the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * Get the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used if
+     * not specified.
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -155,8 +179,9 @@ public final class ExtensionProperties {
     }
 
     /**
-     * Set the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * Set the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used if
+     * not specified.
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -172,7 +197,7 @@ public final class ExtensionProperties {
      * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -185,7 +210,7 @@ public final class ExtensionProperties {
      * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -199,7 +224,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -208,7 +233,7 @@ public final class ExtensionProperties {
 
     /**
      * Set the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -222,7 +247,7 @@ public final class ExtensionProperties {
 
     /**
      * Get the protectedSettings property: Protected settings (may contain secrets).
-     *
+     * 
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
@@ -231,7 +256,7 @@ public final class ExtensionProperties {
 
     /**
      * Set the protectedSettings property: Protected settings (may contain secrets).
-     *
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the ExtensionProperties object itself.
      */
@@ -244,8 +269,35 @@ public final class ExtensionProperties {
     }
 
     /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     * 
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.innerExtensionParameters() == null
+            ? null
+            : this.innerExtensionParameters().enableAutomaticUpgrade();
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     * 
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the ExtensionProperties object itself.
+     */
+    public ExtensionProperties withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        if (this.innerExtensionParameters() == null) {
+            this.innerExtensionParameters = new ExtensionParameters();
+        }
+        this.innerExtensionParameters().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -255,5 +307,53 @@ public final class ExtensionProperties {
         if (perNodeExtensionDetails() != null) {
             perNodeExtensionDetails().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("extensionParameters", this.innerExtensionParameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExtensionProperties.
+     */
+    public static ExtensionProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionProperties deserializedExtensionProperties = new ExtensionProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedExtensionProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("extensionParameters".equals(fieldName)) {
+                    deserializedExtensionProperties.innerExtensionParameters = ExtensionParameters.fromJson(reader);
+                } else if ("aggregateState".equals(fieldName)) {
+                    deserializedExtensionProperties.aggregateState
+                        = ExtensionAggregateState.fromString(reader.getString());
+                } else if ("perNodeExtensionDetails".equals(fieldName)) {
+                    List<PerNodeExtensionState> perNodeExtensionDetails
+                        = reader.readArray(reader1 -> PerNodeExtensionState.fromJson(reader1));
+                    deserializedExtensionProperties.perNodeExtensionDetails = perNodeExtensionDetails;
+                } else if ("managedBy".equals(fieldName)) {
+                    deserializedExtensionProperties.managedBy = ExtensionManagedBy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionProperties;
+        });
     }
 }

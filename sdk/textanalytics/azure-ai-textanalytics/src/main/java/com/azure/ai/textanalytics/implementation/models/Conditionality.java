@@ -4,18 +4,23 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for Conditionality. */
+/**
+ * Describes any conditionality on the entity.
+ */
 public enum Conditionality {
-    /** Enum value hypothetical. */
+    /**
+     * Enum value hypothetical.
+     */
     HYPOTHETICAL("hypothetical"),
 
-    /** Enum value conditional. */
+    /**
+     * Enum value conditional.
+     */
     CONDITIONAL("conditional");
 
-    /** The actual serialized value for a Conditionality instance. */
+    /**
+     * The actual serialized value for a Conditionality instance.
+     */
     private final String value;
 
     Conditionality(String value) {
@@ -24,11 +29,10 @@ public enum Conditionality {
 
     /**
      * Parses a serialized value to a Conditionality instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Conditionality object, or null if unable to parse.
      */
-    @JsonCreator
     public static Conditionality fromString(String value) {
         if (value == null) {
             return null;
@@ -42,7 +46,9 @@ public enum Conditionality {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

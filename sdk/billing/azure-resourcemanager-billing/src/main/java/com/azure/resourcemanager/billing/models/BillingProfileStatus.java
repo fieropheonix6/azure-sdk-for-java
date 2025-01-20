@@ -5,32 +5,66 @@
 package com.azure.resourcemanager.billing.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BillingProfileStatus. */
+/**
+ * The status of the billing profile.
+ */
 public final class BillingProfileStatus extends ExpandableStringEnum<BillingProfileStatus> {
-    /** Static value Active for BillingProfileStatus. */
+    /**
+     * Static value Other for BillingProfileStatus.
+     */
+    public static final BillingProfileStatus OTHER = fromString("Other");
+
+    /**
+     * Static value Active for BillingProfileStatus.
+     */
     public static final BillingProfileStatus ACTIVE = fromString("Active");
 
-    /** Static value Disabled for BillingProfileStatus. */
+    /**
+     * Static value Disabled for BillingProfileStatus.
+     */
     public static final BillingProfileStatus DISABLED = fromString("Disabled");
 
-    /** Static value Warned for BillingProfileStatus. */
+    /**
+     * Static value Warned for BillingProfileStatus.
+     */
     public static final BillingProfileStatus WARNED = fromString("Warned");
 
     /**
+     * Static value Deleted for BillingProfileStatus.
+     */
+    public static final BillingProfileStatus DELETED = fromString("Deleted");
+
+    /**
+     * Static value UnderReview for BillingProfileStatus.
+     */
+    public static final BillingProfileStatus UNDER_REVIEW = fromString("UnderReview");
+
+    /**
+     * Creates a new instance of BillingProfileStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BillingProfileStatus() {
+    }
+
+    /**
      * Creates or finds a BillingProfileStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BillingProfileStatus.
      */
-    @JsonCreator
     public static BillingProfileStatus fromString(String name) {
         return fromString(name, BillingProfileStatus.class);
     }
 
-    /** @return known BillingProfileStatus values. */
+    /**
+     * Gets known BillingProfileStatus values.
+     * 
+     * @return known BillingProfileStatus values.
+     */
     public static Collection<BillingProfileStatus> values() {
         return values(BillingProfileStatus.class);
     }

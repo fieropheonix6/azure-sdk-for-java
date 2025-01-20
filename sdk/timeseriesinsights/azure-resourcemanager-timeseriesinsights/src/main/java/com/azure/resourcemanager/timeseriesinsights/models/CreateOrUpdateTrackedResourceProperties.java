@@ -6,30 +6,38 @@ package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Properties required to create any resource tracked by Azure Resource Manager. */
+/**
+ * Properties required to create any resource tracked by Azure Resource Manager.
+ */
 @Fluent
-public class CreateOrUpdateTrackedResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateOrUpdateTrackedResourceProperties.class);
-
+public class CreateOrUpdateTrackedResourceProperties
+    implements JsonSerializable<CreateOrUpdateTrackedResourceProperties> {
     /*
      * The location of the resource.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
      * Key-value pairs of additional properties for the resource.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of CreateOrUpdateTrackedResourceProperties class.
+     */
+    public CreateOrUpdateTrackedResourceProperties() {
+    }
+
+    /**
      * Get the location property: The location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -38,7 +46,7 @@ public class CreateOrUpdateTrackedResourceProperties {
 
     /**
      * Set the location property: The location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the CreateOrUpdateTrackedResourceProperties object itself.
      */
@@ -49,7 +57,7 @@ public class CreateOrUpdateTrackedResourceProperties {
 
     /**
      * Get the tags property: Key-value pairs of additional properties for the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -58,7 +66,7 @@ public class CreateOrUpdateTrackedResourceProperties {
 
     /**
      * Set the tags property: Key-value pairs of additional properties for the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the CreateOrUpdateTrackedResourceProperties object itself.
      */
@@ -69,15 +77,58 @@ public class CreateOrUpdateTrackedResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model CreateOrUpdateTrackedResourceProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model CreateOrUpdateTrackedResourceProperties"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateTrackedResourceProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateOrUpdateTrackedResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateOrUpdateTrackedResourceProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateOrUpdateTrackedResourceProperties.
+     */
+    public static CreateOrUpdateTrackedResourceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateOrUpdateTrackedResourceProperties deserializedCreateOrUpdateTrackedResourceProperties
+                = new CreateOrUpdateTrackedResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedCreateOrUpdateTrackedResourceProperties.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCreateOrUpdateTrackedResourceProperties.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateOrUpdateTrackedResourceProperties;
+        });
     }
 }

@@ -6,56 +6,59 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of routing rule of the application gateway. */
+/**
+ * Properties of routing rule of the application gateway.
+ */
 @Fluent
-public final class ApplicationGatewayRoutingRulePropertiesFormat {
+public final class ApplicationGatewayRoutingRulePropertiesFormat
+    implements JsonSerializable<ApplicationGatewayRoutingRulePropertiesFormat> {
     /*
      * Rule type.
      */
-    @JsonProperty(value = "ruleType")
     private ApplicationGatewayRequestRoutingRuleType ruleType;
 
     /*
      * Priority of the routing rule.
      */
-    @JsonProperty(value = "priority", required = true)
     private int priority;
 
     /*
      * Backend address pool resource of the application gateway.
      */
-    @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
     /*
      * Backend settings resource of the application gateway.
      */
-    @JsonProperty(value = "backendSettings")
     private SubResource backendSettings;
 
     /*
      * Listener resource of the application gateway.
      */
-    @JsonProperty(value = "listener")
     private SubResource listener;
 
     /*
      * The provisioning state of the request routing rule resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayRoutingRulePropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayRoutingRulePropertiesFormat class.
+     */
     public ApplicationGatewayRoutingRulePropertiesFormat() {
     }
 
     /**
      * Get the ruleType property: Rule type.
-     *
+     * 
      * @return the ruleType value.
      */
     public ApplicationGatewayRequestRoutingRuleType ruleType() {
@@ -64,19 +67,19 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the ruleType property: Rule type.
-     *
+     * 
      * @param ruleType the ruleType value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
-    public ApplicationGatewayRoutingRulePropertiesFormat withRuleType(
-        ApplicationGatewayRequestRoutingRuleType ruleType) {
+    public ApplicationGatewayRoutingRulePropertiesFormat
+        withRuleType(ApplicationGatewayRequestRoutingRuleType ruleType) {
         this.ruleType = ruleType;
         return this;
     }
 
     /**
      * Get the priority property: Priority of the routing rule.
-     *
+     * 
      * @return the priority value.
      */
     public int priority() {
@@ -85,7 +88,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the priority property: Priority of the routing rule.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
@@ -96,7 +99,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Get the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -105,7 +108,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the backendAddressPool property: Backend address pool resource of the application gateway.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
@@ -116,7 +119,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Get the backendSettings property: Backend settings resource of the application gateway.
-     *
+     * 
      * @return the backendSettings value.
      */
     public SubResource backendSettings() {
@@ -125,7 +128,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the backendSettings property: Backend settings resource of the application gateway.
-     *
+     * 
      * @param backendSettings the backendSettings value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
@@ -136,7 +139,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Get the listener property: Listener resource of the application gateway.
-     *
+     * 
      * @return the listener value.
      */
     public SubResource listener() {
@@ -145,7 +148,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Set the listener property: Listener resource of the application gateway.
-     *
+     * 
      * @param listener the listener value to set.
      * @return the ApplicationGatewayRoutingRulePropertiesFormat object itself.
      */
@@ -156,7 +159,7 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the request routing rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -165,9 +168,65 @@ public final class ApplicationGatewayRoutingRulePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("priority", this.priority);
+        jsonWriter.writeStringField("ruleType", this.ruleType == null ? null : this.ruleType.toString());
+        jsonWriter.writeJsonField("backendAddressPool", this.backendAddressPool);
+        jsonWriter.writeJsonField("backendSettings", this.backendSettings);
+        jsonWriter.writeJsonField("listener", this.listener);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayRoutingRulePropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayRoutingRulePropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayRoutingRulePropertiesFormat.
+     */
+    public static ApplicationGatewayRoutingRulePropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayRoutingRulePropertiesFormat deserializedApplicationGatewayRoutingRulePropertiesFormat
+                = new ApplicationGatewayRoutingRulePropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("priority".equals(fieldName)) {
+                    deserializedApplicationGatewayRoutingRulePropertiesFormat.priority = reader.getInt();
+                } else if ("ruleType".equals(fieldName)) {
+                    deserializedApplicationGatewayRoutingRulePropertiesFormat.ruleType
+                        = ApplicationGatewayRequestRoutingRuleType.fromString(reader.getString());
+                } else if ("backendAddressPool".equals(fieldName)) {
+                    deserializedApplicationGatewayRoutingRulePropertiesFormat.backendAddressPool
+                        = SubResource.fromJson(reader);
+                } else if ("backendSettings".equals(fieldName)) {
+                    deserializedApplicationGatewayRoutingRulePropertiesFormat.backendSettings
+                        = SubResource.fromJson(reader);
+                } else if ("listener".equals(fieldName)) {
+                    deserializedApplicationGatewayRoutingRulePropertiesFormat.listener = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayRoutingRulePropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayRoutingRulePropertiesFormat;
+        });
     }
 }

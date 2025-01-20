@@ -5,51 +5,57 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Container App container definition. */
+/**
+ * Container App container definition.
+ */
 @Fluent
-public final class Container {
+public final class Container implements JsonSerializable<Container> {
     /*
      * Container image tag.
      */
-    @JsonProperty(value = "image")
     private String image;
 
     /*
      * Custom container name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Container start command.
      */
-    @JsonProperty(value = "command")
     private List<String> command;
 
     /*
      * Container start command arguments.
      */
-    @JsonProperty(value = "args")
     private List<String> args;
 
     /*
      * Container environment variables.
      */
-    @JsonProperty(value = "env")
     private List<EnvironmentVar> env;
 
     /*
      * Container resource requirements.
      */
-    @JsonProperty(value = "resources")
     private ContainerResources resources;
 
     /**
+     * Creates an instance of Container class.
+     */
+    public Container() {
+    }
+
+    /**
      * Get the image property: Container image tag.
-     *
+     * 
      * @return the image value.
      */
     public String image() {
@@ -58,7 +64,7 @@ public final class Container {
 
     /**
      * Set the image property: Container image tag.
-     *
+     * 
      * @param image the image value to set.
      * @return the Container object itself.
      */
@@ -69,7 +75,7 @@ public final class Container {
 
     /**
      * Get the name property: Custom container name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -78,7 +84,7 @@ public final class Container {
 
     /**
      * Set the name property: Custom container name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Container object itself.
      */
@@ -89,7 +95,7 @@ public final class Container {
 
     /**
      * Get the command property: Container start command.
-     *
+     * 
      * @return the command value.
      */
     public List<String> command() {
@@ -98,7 +104,7 @@ public final class Container {
 
     /**
      * Set the command property: Container start command.
-     *
+     * 
      * @param command the command value to set.
      * @return the Container object itself.
      */
@@ -109,7 +115,7 @@ public final class Container {
 
     /**
      * Get the args property: Container start command arguments.
-     *
+     * 
      * @return the args value.
      */
     public List<String> args() {
@@ -118,7 +124,7 @@ public final class Container {
 
     /**
      * Set the args property: Container start command arguments.
-     *
+     * 
      * @param args the args value to set.
      * @return the Container object itself.
      */
@@ -129,7 +135,7 @@ public final class Container {
 
     /**
      * Get the env property: Container environment variables.
-     *
+     * 
      * @return the env value.
      */
     public List<EnvironmentVar> env() {
@@ -138,7 +144,7 @@ public final class Container {
 
     /**
      * Set the env property: Container environment variables.
-     *
+     * 
      * @param env the env value to set.
      * @return the Container object itself.
      */
@@ -149,7 +155,7 @@ public final class Container {
 
     /**
      * Get the resources property: Container resource requirements.
-     *
+     * 
      * @return the resources value.
      */
     public ContainerResources resources() {
@@ -158,7 +164,7 @@ public final class Container {
 
     /**
      * Set the resources property: Container resource requirements.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the Container object itself.
      */
@@ -169,7 +175,7 @@ public final class Container {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -179,5 +185,59 @@ public final class Container {
         if (resources() != null) {
             resources().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("image", this.image);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("command", this.command, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("args", this.args, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("env", this.env, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("resources", this.resources);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Container from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Container if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Container.
+     */
+    public static Container fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Container deserializedContainer = new Container();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("image".equals(fieldName)) {
+                    deserializedContainer.image = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedContainer.name = reader.getString();
+                } else if ("command".equals(fieldName)) {
+                    List<String> command = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContainer.command = command;
+                } else if ("args".equals(fieldName)) {
+                    List<String> args = reader.readArray(reader1 -> reader1.getString());
+                    deserializedContainer.args = args;
+                } else if ("env".equals(fieldName)) {
+                    List<EnvironmentVar> env = reader.readArray(reader1 -> EnvironmentVar.fromJson(reader1));
+                    deserializedContainer.env = env;
+                } else if ("resources".equals(fieldName)) {
+                    deserializedContainer.resources = ContainerResources.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainer;
+        });
     }
 }

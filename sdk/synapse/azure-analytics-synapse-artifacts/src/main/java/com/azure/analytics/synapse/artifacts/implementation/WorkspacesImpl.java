@@ -22,22 +22,28 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Workspaces. */
+/**
+ * An instance of this class provides access to all the operations defined in Workspaces.
+ */
 public final class WorkspacesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ArtifactsClientImpl client;
 
     /**
      * Initializes an instance of WorkspacesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspacesImpl(ArtifactsClientImpl client) {
-        this.service =
-                RestProxy.create(WorkspacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(WorkspacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -49,32 +55,27 @@ public final class WorkspacesImpl {
     @ServiceInterface(name = "ArtifactsClientWorks")
     public interface WorkspacesService {
         @Get("/workspace")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorContractException.class)
-        Mono<Response<Workspace>> get(
-                @HostParam("endpoint") String endpoint,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Workspace>> get(@HostParam("endpoint") String endpoint,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get Workspace.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Workspace>> getWithResponseAsync() {
-        final String apiVersion = "2020-12-01";
-        final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), apiVersion, accept, context));
+        return FluxUtil.withContext(context -> getWithResponseAsync(context));
     }
 
     /**
      * Get Workspace.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -90,7 +91,7 @@ public final class WorkspacesImpl {
 
     /**
      * Get Workspace.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return workspace on successful completion of {@link Mono}.
@@ -102,7 +103,7 @@ public final class WorkspacesImpl {
 
     /**
      * Get Workspace.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -116,19 +117,7 @@ public final class WorkspacesImpl {
 
     /**
      * Get Workspace.
-     *
-     * @throws ErrorContractException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Workspace get() {
-        return getAsync().block();
-    }
-
-    /**
-     * Get Workspace.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -138,5 +127,17 @@ public final class WorkspacesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Workspace> getWithResponse(Context context) {
         return getWithResponseAsync(context).block();
+    }
+
+    /**
+     * Get Workspace.
+     * 
+     * @throws ErrorContractException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Workspace get() {
+        return getWithResponse(Context.NONE).getValue();
     }
 }

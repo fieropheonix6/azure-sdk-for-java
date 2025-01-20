@@ -6,40 +6,46 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** CosmosDB (MongoDB API) linked service properties. */
+/**
+ * CosmosDB (MongoDB API) linked service properties.
+ */
 @Fluent
-public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
+public final class CosmosDbMongoDbApiLinkedServiceTypeProperties
+    implements JsonSerializable<CosmosDbMongoDbApiLinkedServiceTypeProperties> {
     /*
      * Whether the CosmosDB (MongoDB API) server version is higher than 3.2. The default value is false. Type: boolean
      * (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "isServerVersionAbove32")
     private Object isServerVersionAbove32;
 
     /*
      * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
      * string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
      * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "database", required = true)
     private Object database;
 
-    /** Creates an instance of CosmosDbMongoDbApiLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of CosmosDbMongoDbApiLinkedServiceTypeProperties class.
+     */
     public CosmosDbMongoDbApiLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the isServerVersionAbove32 property: Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
      * The default value is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the isServerVersionAbove32 value.
      */
     public Object isServerVersionAbove32() {
@@ -49,7 +55,7 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     /**
      * Set the isServerVersionAbove32 property: Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
      * The default value is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param isServerVersionAbove32 the isServerVersionAbove32 value to set.
      * @return the CosmosDbMongoDbApiLinkedServiceTypeProperties object itself.
      */
@@ -61,7 +67,7 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     /**
      * Get the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -71,7 +77,7 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: The CosmosDB (MongoDB API) connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the CosmosDbMongoDbApiLinkedServiceTypeProperties object itself.
      */
@@ -83,7 +89,7 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     /**
      * Get the database property: The name of the CosmosDB (MongoDB API) database that you want to access. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object database() {
@@ -93,7 +99,7 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
     /**
      * Set the database property: The name of the CosmosDB (MongoDB API) database that you want to access. Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the CosmosDbMongoDbApiLinkedServiceTypeProperties object itself.
      */
@@ -104,24 +110,66 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model"
-                            + " CosmosDbMongoDbApiLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property database in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property database in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeUntypedField("database", this.database);
+        jsonWriter.writeUntypedField("isServerVersionAbove32", this.isServerVersionAbove32);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CosmosDbMongoDbApiLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CosmosDbMongoDbApiLinkedServiceTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CosmosDbMongoDbApiLinkedServiceTypeProperties.
+     */
+    public static CosmosDbMongoDbApiLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CosmosDbMongoDbApiLinkedServiceTypeProperties deserializedCosmosDbMongoDbApiLinkedServiceTypeProperties
+                = new CosmosDbMongoDbApiLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("database".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiLinkedServiceTypeProperties.database = reader.readUntyped();
+                } else if ("isServerVersionAbove32".equals(fieldName)) {
+                    deserializedCosmosDbMongoDbApiLinkedServiceTypeProperties.isServerVersionAbove32
+                        = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCosmosDbMongoDbApiLinkedServiceTypeProperties;
+        });
+    }
 }

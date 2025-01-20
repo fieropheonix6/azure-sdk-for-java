@@ -13,51 +13,47 @@ import com.azure.resourcemanager.dataprotection.fluent.JobsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupJobResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupJobResource;
 import com.azure.resourcemanager.dataprotection.models.Jobs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobsImpl implements Jobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobsImpl.class);
 
     private final JobsClient innerClient;
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public JobsImpl(
-        JobsClient innerClient, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    public JobsImpl(JobsClient innerClient,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<AzureBackupJobResource> list(String resourceGroupName, String vaultName) {
         PagedIterable<AzureBackupJobResourceInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
-        return Utils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AzureBackupJobResource> list(String resourceGroupName, String vaultName, Context context) {
-        PagedIterable<AzureBackupJobResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, context);
-        return Utils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
+        PagedIterable<AzureBackupJobResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<AzureBackupJobResource> getWithResponse(String resourceGroupName, String vaultName, String jobId,
+        Context context) {
+        Response<AzureBackupJobResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, jobId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AzureBackupJobResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public AzureBackupJobResource get(String resourceGroupName, String vaultName, String jobId) {
         AzureBackupJobResourceInner inner = this.serviceClient().get(resourceGroupName, vaultName, jobId);
         if (inner != null) {
             return new AzureBackupJobResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<AzureBackupJobResource> getWithResponse(
-        String resourceGroupName, String vaultName, String jobId, Context context) {
-        Response<AzureBackupJobResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, jobId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AzureBackupJobResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

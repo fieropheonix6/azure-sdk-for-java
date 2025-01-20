@@ -6,20 +6,17 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.fluent.models.UsageInner;
-import org.junit.jupiter.api.Test;
 
 public final class UsageInnerTests {
-    @Test
-    public void testDeserialize() {
-        UsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"id\":\"al\",\"amlWorkspaceLocation\":\"wsubisnja\",\"type\":\"mngnzscxaqw\",\"unit\":\"Count\",\"currentValue\":8284849522775064668,\"limit\":4293534997392812714,\"name\":{\"value\":\"kvlrxnj\",\"localizedValue\":\"seiphe\"}}")
-                .toObject(UsageInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UsageInner model = BinaryData.fromString(
+            "{\"id\":\"nkoukn\",\"amlWorkspaceLocation\":\"dwtiukbldngkp\",\"type\":\"ipazyxoegukgjnpi\",\"unit\":\"Count\",\"currentValue\":9071113490700391496,\"limit\":7306786683100499941,\"name\":{\"value\":\"yp\",\"localizedValue\":\"bpizcdrqjsdpydn\"}}")
+            .toObject(UsageInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UsageInner model = new UsageInner();
         model = BinaryData.fromObject(model).toObject(UsageInner.class);
     }

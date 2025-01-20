@@ -1,7 +1,13 @@
 trigger: none
 
-stages:
-  - template: /sdk/communication/communication-tests-template.yml
-    parameters:
-      PackageName: azure-communication-sms
-      SafeName: azurecommunicationsms
+extends:
+  template: /sdk/communication/communication-tests-template.yml
+  parameters:
+    PackageName: azure-communication-sms
+    SafeName: azurecommunicationsms
+    CloudConfig:
+      Public:
+        SubscriptionConfigurations:
+          - $(sub-config-communication-services-cloud-test-resources-common)
+          - $(sub-config-communication-services-cloud-test-resources-java)
+          - $(sub-config-communication-services-sms-cloud-test-resources)

@@ -6,30 +6,56 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.Configuration;
 import com.azure.resourcemanager.appservice.models.ContainerAppProvisioningState;
 import com.azure.resourcemanager.appservice.models.Template;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Container App. */
+/**
+ * Container App.
+ */
 @Fluent
 public final class ContainerAppInner extends Resource {
     /*
      * ContainerApp resource specific properties
      */
-    @JsonProperty(value = "properties")
     private ContainerAppProperties innerProperties;
 
     /*
-     * Kind of resource.
+     * Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-
+     * resource-kind-reference for details supported values for kind.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ContainerAppInner class.
+     */
+    public ContainerAppInner() {
+    }
 
     /**
      * Get the innerProperties property: ContainerApp resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ContainerAppProperties innerProperties() {
@@ -37,8 +63,10 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Get the kind property: Kind of resource.
-     *
+     * Get the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -46,8 +74,10 @@ public final class ContainerAppInner extends Resource {
     }
 
     /**
-     * Set the kind property: Kind of resource.
-     *
+     * Set the kind property: Kind of resource. If the resource is an app, you can refer to
+     * https://github.com/Azure/app-service-linux-docs/blob/master/Things_You_Should_Know/kind_property.md#app-service-resource-kind-reference
+     * for details supported values for kind.
+     * 
      * @param kind the kind value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -56,14 +86,48 @@ public final class ContainerAppInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerAppInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerAppInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -72,7 +136,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the Container App.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ContainerAppProvisioningState provisioningState() {
@@ -81,7 +145,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the kubeEnvironmentId property: Resource ID of the Container App's KubeEnvironment.
-     *
+     * 
      * @return the kubeEnvironmentId value.
      */
     public String kubeEnvironmentId() {
@@ -90,7 +154,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the kubeEnvironmentId property: Resource ID of the Container App's KubeEnvironment.
-     *
+     * 
      * @param kubeEnvironmentId the kubeEnvironmentId value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -104,7 +168,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the latestRevisionName property: Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionName value.
      */
     public String latestRevisionName() {
@@ -113,7 +177,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the latestRevisionFqdn property: Fully Qualified Domain Name of the latest revision of the Container App.
-     *
+     * 
      * @return the latestRevisionFqdn value.
      */
     public String latestRevisionFqdn() {
@@ -122,7 +186,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public Configuration configuration() {
@@ -131,7 +195,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the configuration property: Non versioned Container App configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -145,7 +209,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Get the template property: Container App versioned application definition.
-     *
+     * 
      * @return the template value.
      */
     public Template template() {
@@ -154,7 +218,7 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Set the template property: Container App versioned application definition.
-     *
+     * 
      * @param template the template value to set.
      * @return the ContainerAppInner object itself.
      */
@@ -168,12 +232,65 @@ public final class ContainerAppInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerAppInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerAppInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ContainerAppInner.
+     */
+    public static ContainerAppInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerAppInner deserializedContainerAppInner = new ContainerAppInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedContainerAppInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedContainerAppInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedContainerAppInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedContainerAppInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedContainerAppInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedContainerAppInner.innerProperties = ContainerAppProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedContainerAppInner.kind = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerAppInner;
+        });
     }
 }

@@ -3,181 +3,186 @@
 
 package com.azure.search.documents;
 
-import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.rest.Response;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
+import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
+import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests passing {@code x-ms-client-request-id} using {@link Context}.
  */
-public class ContextRequestIdTests extends SearchTestBase {
-    private static final String REQUEST_ID_HEADER = "x-ms-client-request-id";
-    private static final Supplier<RetryPolicy> RETRY_POLICY_SUPPLIER = () ->
-        new RetryPolicy(new FixedDelay(1, Duration.ofMillis(100)));
+@Execution(ExecutionMode.CONCURRENT)
+public class ContextRequestIdTests {
+    private static final HttpHeaderName REQUEST_ID_HEADER = HttpHeaderName.fromString("x-ms-client-request-id");
+    private static final RetryPolicy RETRY_POLICY = new RetryPolicy(new FixedDelay(0, Duration.ofMillis(1)));
 
     @Test
     public void searchClient() {
-        SearchClient client = getSearchClientBuilder("index")
-            .retryPolicy(RETRY_POLICY_SUPPLIER.get())
+        String expectedRequestId = CoreUtils.randomUuid().toString();
+
+        SearchClient client = new SearchClientBuilder().indexName("index")
+            .endpoint("https://test.search.windows.net")
+            .credential(new MockTokenCredential())
+            .retryPolicy(RETRY_POLICY)
+            .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
             .buildClient();
 
-        String expectedRequestId = testResourceNamer.randomUuid();
-        HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
-
-        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+            createRequestIdHeaders(expectedRequestId));
 
         verifySync(() -> client.getDocumentCountWithResponse(context), expectedRequestId);
     }
 
     @Test
     public void searchAsyncClient() {
-        SearchAsyncClient client = getSearchClientBuilder("index")
-            .retryPolicy(RETRY_POLICY_SUPPLIER.get())
+        String expectedRequestId = CoreUtils.randomUuid().toString();
+
+        SearchAsyncClient client = new SearchClientBuilder().indexName("index")
+            .endpoint("https://test.search.windows.net")
+            .credential(new MockTokenCredential())
+            .retryPolicy(RETRY_POLICY)
+            .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
             .buildAsyncClient();
 
-        String expectedRequestId = testResourceNamer.randomUuid();
-        HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
-
         reactor.util.context.Context subscriberContext = reactor.util.context.Context
-            .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, createRequestIdHeaders(expectedRequestId));
 
-        Mono<String> request = client.getDocumentCountWithResponse()
-            .contextWrite(subscriberContext)
-            .map(ContextRequestIdTests::extractFromResponse)
-            .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
-            .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);
-
-        verifyAsync(request, expectedRequestId);
+        verifyAsync(client.getDocumentCountWithResponse().contextWrite(subscriberContext), expectedRequestId);
     }
 
     @Test
     public void searchIndexClient() {
-        SearchIndexClient client = getSearchIndexClientBuilder()
-            .retryPolicy(RETRY_POLICY_SUPPLIER.get())
+        String expectedRequestId = CoreUtils.randomUuid().toString();
+
+        SearchIndexClient client = new SearchIndexClientBuilder().endpoint("https://test.search.windows.net")
+            .credential(new MockTokenCredential())
+            .retryPolicy(RETRY_POLICY)
+            .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
             .buildClient();
 
-        String expectedRequestId = testResourceNamer.randomUuid();
-        HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
-
-        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+            createRequestIdHeaders(expectedRequestId));
 
         verifySync(() -> client.getIndexWithResponse("index", context), expectedRequestId);
     }
 
     @Test
     public void searchIndexAsyncClient() {
-        SearchIndexAsyncClient client = getSearchIndexClientBuilder()
-            .retryPolicy(RETRY_POLICY_SUPPLIER.get())
+        String expectedRequestId = CoreUtils.randomUuid().toString();
+
+        SearchIndexAsyncClient client = new SearchIndexClientBuilder().endpoint("https://test.search.windows.net")
+            .credential(new MockTokenCredential())
+            .retryPolicy(RETRY_POLICY)
+            .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
             .buildAsyncClient();
 
-        String expectedRequestId = testResourceNamer.randomUuid();
-        HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
-
         reactor.util.context.Context subscriberContext = reactor.util.context.Context
-            .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, createRequestIdHeaders(expectedRequestId));
 
-        Mono<String> request = client.getIndexStatisticsWithResponse("index")
-            .contextWrite(subscriberContext)
-            .map(ContextRequestIdTests::extractFromResponse)
-            .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
-            .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);
-
-        verifyAsync(request, expectedRequestId);
+        verifyAsync(client.getIndexStatisticsWithResponse("index").contextWrite(subscriberContext), expectedRequestId);
     }
 
     @Test
     public void searchIndexerClient() {
-        SearchIndexerClient client = getSearchIndexerClientBuilder()
-            .retryPolicy(RETRY_POLICY_SUPPLIER.get())
+        String expectedRequestId = CoreUtils.randomUuid().toString();
+
+        SearchIndexerClient client = new SearchIndexerClientBuilder().endpoint("https://test.search.windows.net")
+            .credential(new MockTokenCredential())
+            .retryPolicy(RETRY_POLICY)
+            .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
             .buildClient();
 
-        String expectedRequestId = testResourceNamer.randomUuid();
-        HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
-
-        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+        Context context = new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY,
+            createRequestIdHeaders(expectedRequestId));
 
         verifySync(() -> client.getIndexerWithResponse("indexer", context), expectedRequestId);
     }
 
     @Test
     public void searchIndexerAsyncClient() {
-        SearchIndexerAsyncClient client = getSearchIndexerClientBuilder()
-            .retryPolicy(RETRY_POLICY_SUPPLIER.get())
+        String expectedRequestId = CoreUtils.randomUuid().toString();
+
+        SearchIndexerAsyncClient client = new SearchIndexerClientBuilder().endpoint("https://test.search.windows.net")
+            .credential(new MockTokenCredential())
+            .retryPolicy(RETRY_POLICY)
+            .httpClient(new RequestIdVerifyingHttpClient(expectedRequestId))
             .buildAsyncClient();
 
-        String expectedRequestId = testResourceNamer.randomUuid();
-        HttpHeaders headers = createRequestIdHeaders(expectedRequestId);
-
         reactor.util.context.Context subscriberContext = reactor.util.context.Context
-            .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers);
+            .of(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, createRequestIdHeaders(expectedRequestId));
 
-        Mono<String> request = client.getIndexerWithResponse("indexer")
-            .contextWrite(subscriberContext)
-            .map(ContextRequestIdTests::extractFromResponse)
-            .onErrorResume(HttpResponseException.class, ContextRequestIdTests::extractFromHttpRequestException)
-            .onErrorResume(RuntimeException.class, ContextRequestIdTests::extractFromRuntimeException);
-
-        verifyAsync(request, expectedRequestId);
+        verifyAsync(client.getIndexerWithResponse("indexer").contextWrite(subscriberContext), expectedRequestId);
     }
 
     private static HttpHeaders createRequestIdHeaders(String requestId) {
         return new HttpHeaders().set(REQUEST_ID_HEADER, requestId);
     }
 
-    private static void verifySync(Supplier<Response<?>> requestRunner, String expectedRequestId) {
-        // Doesn't matter if the request was successful or not, it will always return response headers.
-        try {
-            Response<?> response = requestRunner.get();
-            assertEquals(expectedRequestId, response.getHeaders().getValue(REQUEST_ID_HEADER));
-        } catch (HttpResponseException ex) {
-            assertEquals(expectedRequestId, ex.getResponse().getHeaderValue(REQUEST_ID_HEADER));
-        } catch (RuntimeException ex) {
-            Throwable cause = ex.getCause();
-            assertTrue(cause instanceof HttpResponseException);
+    private static void verifySync(Runnable requestRunner, String expectedRequestId) {
+        RuntimeException ex = assertThrows(RuntimeException.class, requestRunner::run);
+        assertEquals(expectedRequestId, ex.getMessage());
+    }
 
-            assertEquals(expectedRequestId, ((HttpResponseException) cause)
-                .getResponse().getHeaderValue(REQUEST_ID_HEADER));
-        } catch (Throwable throwable) {
-            fail("Unexpected exception type.");
+    private static void verifyAsync(Mono<?> requestMono, String expectedRequestId) {
+        StepVerifier.create(requestMono).verifyErrorSatisfies(throwable -> {
+            RuntimeException ex = assertInstanceOf(RuntimeException.class, throwable);
+            assertEquals(expectedRequestId, ex.getMessage());
+        });
+    }
+
+    private static final class RequestIdVerifyingHttpClient implements HttpClient {
+        private final String expectedRequestId;
+
+        private RequestIdVerifyingHttpClient(String expectedRequestId) {
+            this.expectedRequestId = expectedRequestId;
         }
-    }
 
-    private static String extractFromResponse(Response<?> response) {
-        return response.getHeaders().getValue(REQUEST_ID_HEADER);
-    }
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request) {
+            String requestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+            assertEquals(expectedRequestId, requestId);
 
-    private static Mono<String> extractFromHttpRequestException(HttpResponseException exception) {
-        return Mono.just(exception.getResponse().getHeaderValue(REQUEST_ID_HEADER));
-    }
+            return Mono.error(new RuntimeException(requestId));
+        }
 
-    private static Mono<String> extractFromRuntimeException(RuntimeException exception) {
-        Throwable cause = exception.getCause();
-        assertTrue(cause instanceof HttpResponseException);
+        @Override
+        public Mono<HttpResponse> send(HttpRequest request, Context context) {
+            String requestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+            assertEquals(expectedRequestId, requestId);
 
-        return extractFromHttpRequestException((HttpResponseException) cause);
-    }
+            return Mono.error(new RuntimeException(requestId));
+        }
 
-    private static void verifyAsync(Mono<String> requestIdMono, String expectedRequestId) {
-        StepVerifier.create(requestIdMono)
-            .assertNext(actual -> assertEquals(expectedRequestId, actual))
-            .verifyComplete();
+        @Override
+        public HttpResponse sendSync(HttpRequest request, Context context) {
+            String requestId = request.getHeaders().getValue(REQUEST_ID_HEADER);
+            assertEquals(expectedRequestId, requestId);
+
+            throw new RuntimeException(requestId);
+        }
     }
 }

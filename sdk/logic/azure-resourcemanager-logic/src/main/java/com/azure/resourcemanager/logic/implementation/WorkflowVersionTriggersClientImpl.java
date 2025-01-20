@@ -22,31 +22,33 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.logic.fluent.WorkflowVersionTriggersClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowTriggerCallbackUrlInner;
 import com.azure.resourcemanager.logic.models.GetCallbackUrlParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkflowVersionTriggersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkflowVersionTriggersClient.
+ */
 public final class WorkflowVersionTriggersClientImpl implements WorkflowVersionTriggersClient {
-    private final ClientLogger logger = new ClientLogger(WorkflowVersionTriggersClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkflowVersionTriggersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final LogicManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkflowVersionTriggersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkflowVersionTriggersClientImpl(LogicManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(WorkflowVersionTriggersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkflowVersionTriggersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,29 +58,23 @@ public final class WorkflowVersionTriggersClientImpl implements WorkflowVersionT
      */
     @Host("{$host}")
     @ServiceInterface(name = "LogicManagementClien")
-    private interface WorkflowVersionTriggersService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows"
-                + "/{workflowName}/versions/{versionId}/triggers/{triggerName}/listCallbackUrl")
-        @ExpectedResponses({200})
+    public interface WorkflowVersionTriggersService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logic/workflows/{workflowName}/versions/{versionId}/triggers/{triggerName}/listCallbackUrl")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrl(
-            @HostParam("$host") String endpoint,
+        Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrl(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workflowName") String workflowName,
-            @PathParam("versionId") String versionId,
-            @PathParam("triggerName") String triggerName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workflowName") String workflowName,
+            @PathParam("versionId") String versionId, @PathParam("triggerName") String triggerName,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") GetCallbackUrlParameters parameters,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") GetCallbackUrlParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Get the callback url for a trigger of a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -87,26 +83,19 @@ public final class WorkflowVersionTriggersClientImpl implements WorkflowVersionT
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback url for a trigger of a workflow version.
+     * @return the callback url for a trigger of a workflow version along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
-        String resourceGroupName,
-        String workflowName,
-        String versionId,
-        String triggerName,
-        GetCallbackUrlParameters parameters) {
+    private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(String resourceGroupName,
+        String workflowName, String versionId, String triggerName, GetCallbackUrlParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -126,26 +115,15 @@ public final class WorkflowVersionTriggersClientImpl implements WorkflowVersionT
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listCallbackUrl(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workflowName,
-                            versionId,
-                            triggerName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.listCallbackUrl(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, workflowName, versionId, triggerName, this.client.getApiVersion(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the callback url for a trigger of a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -155,27 +133,20 @@ public final class WorkflowVersionTriggersClientImpl implements WorkflowVersionT
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback url for a trigger of a workflow version.
+     * @return the callback url for a trigger of a workflow version along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(
-        String resourceGroupName,
-        String workflowName,
-        String versionId,
-        String triggerName,
-        GetCallbackUrlParameters parameters,
+    private Mono<Response<WorkflowTriggerCallbackUrlInner>> listCallbackUrlWithResponseAsync(String resourceGroupName,
+        String workflowName, String versionId, String triggerName, GetCallbackUrlParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -195,54 +166,13 @@ public final class WorkflowVersionTriggersClientImpl implements WorkflowVersionT
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listCallbackUrl(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workflowName,
-                versionId,
-                triggerName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.listCallbackUrl(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            workflowName, versionId, triggerName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Get the callback url for a trigger of a workflow version.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param versionId The workflow versionId.
-     * @param triggerName The workflow trigger name.
-     * @param parameters The callback URL parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback url for a trigger of a workflow version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(
-        String resourceGroupName,
-        String workflowName,
-        String versionId,
-        String triggerName,
-        GetCallbackUrlParameters parameters) {
-        return listCallbackUrlWithResponseAsync(resourceGroupName, workflowName, versionId, triggerName, parameters)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get the callback url for a trigger of a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -250,45 +180,19 @@ public final class WorkflowVersionTriggersClientImpl implements WorkflowVersionT
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback url for a trigger of a workflow version.
+     * @return the callback url for a trigger of a workflow version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(
-        String resourceGroupName, String workflowName, String versionId, String triggerName) {
+    private Mono<WorkflowTriggerCallbackUrlInner> listCallbackUrlAsync(String resourceGroupName, String workflowName,
+        String versionId, String triggerName) {
         final GetCallbackUrlParameters parameters = null;
         return listCallbackUrlWithResponseAsync(resourceGroupName, workflowName, versionId, triggerName, parameters)
-            .flatMap(
-                (Response<WorkflowTriggerCallbackUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get the callback url for a trigger of a workflow version.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param versionId The workflow versionId.
-     * @param triggerName The workflow trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the callback url for a trigger of a workflow version.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public WorkflowTriggerCallbackUrlInner listCallbackUrl(
-        String resourceGroupName, String workflowName, String versionId, String triggerName) {
-        final GetCallbackUrlParameters parameters = null;
-        return listCallbackUrlAsync(resourceGroupName, workflowName, versionId, triggerName, parameters).block();
-    }
-
-    /**
-     * Get the callback url for a trigger of a workflow version.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param workflowName The workflow name.
      * @param versionId The workflow versionId.
@@ -298,18 +202,33 @@ public final class WorkflowVersionTriggersClientImpl implements WorkflowVersionT
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the callback url for a trigger of a workflow version along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(String resourceGroupName,
+        String workflowName, String versionId, String triggerName, GetCallbackUrlParameters parameters,
+        Context context) {
+        return listCallbackUrlWithResponseAsync(resourceGroupName, workflowName, versionId, triggerName, parameters,
+            context).block();
+    }
+
+    /**
+     * Get the callback url for a trigger of a workflow version.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param versionId The workflow versionId.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the callback url for a trigger of a workflow version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<WorkflowTriggerCallbackUrlInner> listCallbackUrlWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        String versionId,
-        String triggerName,
-        GetCallbackUrlParameters parameters,
-        Context context) {
-        return listCallbackUrlWithResponseAsync(
-                resourceGroupName, workflowName, versionId, triggerName, parameters, context)
-            .block();
+    public WorkflowTriggerCallbackUrlInner listCallbackUrl(String resourceGroupName, String workflowName,
+        String versionId, String triggerName) {
+        final GetCallbackUrlParameters parameters = null;
+        return listCallbackUrlWithResponse(resourceGroupName, workflowName, versionId, triggerName, parameters,
+            Context.NONE).getValue();
     }
 }

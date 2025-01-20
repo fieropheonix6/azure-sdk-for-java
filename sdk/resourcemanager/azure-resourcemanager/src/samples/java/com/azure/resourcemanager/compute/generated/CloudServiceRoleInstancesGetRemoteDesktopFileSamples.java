@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CloudServiceRoleInstances GetRemoteDesktopFile. */
+/**
+ * Samples for CloudServiceRoleInstances GetRemoteDesktopFile.
+ */
 public final class CloudServiceRoleInstancesGetRemoteDesktopFileSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceRoleInstance_Get_RemoteDesktopFile.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
+     * CloudServiceRoleInstance_Get_RemoteDesktopFile.json
      */
     /**
      * Sample code: Get Cloud Service Role.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceRole(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getCloudServiceRoleInstances()
-            .getRemoteDesktopFileWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "rgcloudService", "aaaa", Context.NONE);
+            .getRemoteDesktopFileWithResponse("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "rgcloudService", "aaaa",
+                com.azure.core.util.Context.NONE);
     }
 }

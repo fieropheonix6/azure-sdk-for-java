@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagementGroupNetworkManagerConnections Get. */
+/**
+ * Samples for ManagementGroupNetworkManagerConnections Get.
+ */
 public final class ManagementGroupNetworkManagerConnectionsGetSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkManagerConnectionManagementGroupGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * NetworkManagerConnectionManagementGroupGet.json
      */
     /**
      * Sample code: Get Management Group Network Manager Connection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void getManagementGroupNetworkManagerConnection(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+    public static void
+        getManagementGroupNetworkManagerConnection(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.networks()
             .manager()
             .serviceClient()
             .getManagementGroupNetworkManagerConnections()
-            .getWithResponse("managementGroupA", "TestNMConnection", Context.NONE);
+            .getWithResponse("managementGroupA", "TestNMConnection", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,44 +5,52 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** PushSettings resource specific properties. */
+/**
+ * PushSettings resource specific properties.
+ */
 @Fluent
-public final class PushSettingsProperties {
+public final class PushSettingsProperties implements JsonSerializable<PushSettingsProperties> {
     /*
      * Gets or sets a flag indicating whether the Push endpoint is enabled.
      */
-    @JsonProperty(value = "isPushEnabled", required = true)
     private boolean isPushEnabled;
 
     /*
-     * Gets or sets a JSON string containing a list of tags that are
-     * whitelisted for use by the push registration endpoint.
+     * Gets or sets a JSON string containing a list of tags that are whitelisted for use by the push registration
+     * endpoint.
      */
-    @JsonProperty(value = "tagWhitelistJson")
     private String tagWhitelistJson;
 
     /*
-     * Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint.
+     * Gets or sets a JSON string containing a list of tags that require user authentication to be used in the push
+     * registration endpoint.
      * Tags can consist of alphanumeric characters and the following:
      * '_', '@', '#', '.', ':', '-'.
      * Validation should be performed at the PushRequestHandler.
      */
-    @JsonProperty(value = "tagsRequiringAuth")
     private String tagsRequiringAuth;
 
     /*
-     * Gets or sets a JSON string containing a list of dynamic tags that will
-     * be evaluated from user claims in the push registration endpoint.
+     * Gets or sets a JSON string containing a list of dynamic tags that will be evaluated from user claims in the push
+     * registration endpoint.
      */
-    @JsonProperty(value = "dynamicTagsJson")
     private String dynamicTagsJson;
 
     /**
+     * Creates an instance of PushSettingsProperties class.
+     */
+    public PushSettingsProperties() {
+    }
+
+    /**
      * Get the isPushEnabled property: Gets or sets a flag indicating whether the Push endpoint is enabled.
-     *
+     * 
      * @return the isPushEnabled value.
      */
     public boolean isPushEnabled() {
@@ -51,7 +59,7 @@ public final class PushSettingsProperties {
 
     /**
      * Set the isPushEnabled property: Gets or sets a flag indicating whether the Push endpoint is enabled.
-     *
+     * 
      * @param isPushEnabled the isPushEnabled value to set.
      * @return the PushSettingsProperties object itself.
      */
@@ -63,7 +71,7 @@ public final class PushSettingsProperties {
     /**
      * Get the tagWhitelistJson property: Gets or sets a JSON string containing a list of tags that are whitelisted for
      * use by the push registration endpoint.
-     *
+     * 
      * @return the tagWhitelistJson value.
      */
     public String tagWhitelistJson() {
@@ -73,7 +81,7 @@ public final class PushSettingsProperties {
     /**
      * Set the tagWhitelistJson property: Gets or sets a JSON string containing a list of tags that are whitelisted for
      * use by the push registration endpoint.
-     *
+     * 
      * @param tagWhitelistJson the tagWhitelistJson value to set.
      * @return the PushSettingsProperties object itself.
      */
@@ -84,9 +92,11 @@ public final class PushSettingsProperties {
 
     /**
      * Get the tagsRequiringAuth property: Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint. Tags can consist of alphanumeric characters and the
-     * following: '_', '@', '#', '.', ':', '-'. Validation should be performed at the PushRequestHandler.
-     *
+     * authentication to be used in the push registration endpoint.
+     * Tags can consist of alphanumeric characters and the following:
+     * '_', '&#064;', '#', '.', ':', '-'.
+     * Validation should be performed at the PushRequestHandler.
+     * 
      * @return the tagsRequiringAuth value.
      */
     public String tagsRequiringAuth() {
@@ -95,9 +105,11 @@ public final class PushSettingsProperties {
 
     /**
      * Set the tagsRequiringAuth property: Gets or sets a JSON string containing a list of tags that require user
-     * authentication to be used in the push registration endpoint. Tags can consist of alphanumeric characters and the
-     * following: '_', '@', '#', '.', ':', '-'. Validation should be performed at the PushRequestHandler.
-     *
+     * authentication to be used in the push registration endpoint.
+     * Tags can consist of alphanumeric characters and the following:
+     * '_', '&#064;', '#', '.', ':', '-'.
+     * Validation should be performed at the PushRequestHandler.
+     * 
      * @param tagsRequiringAuth the tagsRequiringAuth value to set.
      * @return the PushSettingsProperties object itself.
      */
@@ -109,7 +121,7 @@ public final class PushSettingsProperties {
     /**
      * Get the dynamicTagsJson property: Gets or sets a JSON string containing a list of dynamic tags that will be
      * evaluated from user claims in the push registration endpoint.
-     *
+     * 
      * @return the dynamicTagsJson value.
      */
     public String dynamicTagsJson() {
@@ -119,7 +131,7 @@ public final class PushSettingsProperties {
     /**
      * Set the dynamicTagsJson property: Gets or sets a JSON string containing a list of dynamic tags that will be
      * evaluated from user claims in the push registration endpoint.
-     *
+     * 
      * @param dynamicTagsJson the dynamicTagsJson value to set.
      * @return the PushSettingsProperties object itself.
      */
@@ -130,9 +142,55 @@ public final class PushSettingsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isPushEnabled", this.isPushEnabled);
+        jsonWriter.writeStringField("tagWhitelistJson", this.tagWhitelistJson);
+        jsonWriter.writeStringField("tagsRequiringAuth", this.tagsRequiringAuth);
+        jsonWriter.writeStringField("dynamicTagsJson", this.dynamicTagsJson);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PushSettingsProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PushSettingsProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PushSettingsProperties.
+     */
+    public static PushSettingsProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PushSettingsProperties deserializedPushSettingsProperties = new PushSettingsProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isPushEnabled".equals(fieldName)) {
+                    deserializedPushSettingsProperties.isPushEnabled = reader.getBoolean();
+                } else if ("tagWhitelistJson".equals(fieldName)) {
+                    deserializedPushSettingsProperties.tagWhitelistJson = reader.getString();
+                } else if ("tagsRequiringAuth".equals(fieldName)) {
+                    deserializedPushSettingsProperties.tagsRequiringAuth = reader.getString();
+                } else if ("dynamicTagsJson".equals(fieldName)) {
+                    deserializedPushSettingsProperties.dynamicTagsJson = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPushSettingsProperties;
+        });
     }
 }

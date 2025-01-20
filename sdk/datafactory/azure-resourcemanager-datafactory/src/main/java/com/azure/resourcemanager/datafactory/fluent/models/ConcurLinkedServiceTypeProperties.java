@@ -6,71 +6,71 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Concur Service linked service properties. */
+/**
+ * Concur Service linked service properties.
+ */
 @Fluent
-public final class ConcurLinkedServiceTypeProperties {
+public final class ConcurLinkedServiceTypeProperties implements JsonSerializable<ConcurLinkedServiceTypeProperties> {
     /*
      * Properties used to connect to Concur. It is mutually exclusive with any other properties in the linked service.
      * Type: object.
      */
-    @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
 
     /*
      * Application client_id supplied by Concur App Management.
      */
-    @JsonProperty(value = "clientId", required = true)
     private Object clientId;
 
     /*
      * The user name that you use to access Concur Service.
      */
-    @JsonProperty(value = "username", required = true)
     private Object username;
 
     /*
      * The password corresponding to the user name that you provided in the username field.
      */
-    @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of ConcurLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of ConcurLinkedServiceTypeProperties class.
+     */
     public ConcurLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionProperties property: Properties used to connect to Concur. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object connectionProperties() {
@@ -80,7 +80,7 @@ public final class ConcurLinkedServiceTypeProperties {
     /**
      * Set the connectionProperties property: Properties used to connect to Concur. It is mutually exclusive with any
      * other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the ConcurLinkedServiceTypeProperties object itself.
      */
@@ -91,7 +91,7 @@ public final class ConcurLinkedServiceTypeProperties {
 
     /**
      * Get the clientId property: Application client_id supplied by Concur App Management.
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -100,7 +100,7 @@ public final class ConcurLinkedServiceTypeProperties {
 
     /**
      * Set the clientId property: Application client_id supplied by Concur App Management.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the ConcurLinkedServiceTypeProperties object itself.
      */
@@ -111,7 +111,7 @@ public final class ConcurLinkedServiceTypeProperties {
 
     /**
      * Get the username property: The user name that you use to access Concur Service.
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -120,7 +120,7 @@ public final class ConcurLinkedServiceTypeProperties {
 
     /**
      * Set the username property: The user name that you use to access Concur Service.
-     *
+     * 
      * @param username the username value to set.
      * @return the ConcurLinkedServiceTypeProperties object itself.
      */
@@ -131,7 +131,7 @@ public final class ConcurLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password corresponding to the user name that you provided in the username field.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -140,7 +140,7 @@ public final class ConcurLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password corresponding to the user name that you provided in the username field.
-     *
+     * 
      * @param password the password value to set.
      * @return the ConcurLinkedServiceTypeProperties object itself.
      */
@@ -152,7 +152,7 @@ public final class ConcurLinkedServiceTypeProperties {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -162,7 +162,7 @@ public final class ConcurLinkedServiceTypeProperties {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the ConcurLinkedServiceTypeProperties object itself.
      */
@@ -174,7 +174,7 @@ public final class ConcurLinkedServiceTypeProperties {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -184,7 +184,7 @@ public final class ConcurLinkedServiceTypeProperties {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the ConcurLinkedServiceTypeProperties object itself.
      */
@@ -196,7 +196,7 @@ public final class ConcurLinkedServiceTypeProperties {
     /**
      * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -206,7 +206,7 @@ public final class ConcurLinkedServiceTypeProperties {
     /**
      * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the ConcurLinkedServiceTypeProperties object itself.
      */
@@ -217,43 +217,41 @@ public final class ConcurLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the ConcurLinkedServiceTypeProperties object itself.
      */
-    public ConcurLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public ConcurLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model ConcurLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model ConcurLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model ConcurLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model ConcurLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
@@ -261,4 +259,63 @@ public final class ConcurLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ConcurLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeUntypedField("username", this.username);
+        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConcurLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConcurLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConcurLinkedServiceTypeProperties.
+     */
+    public static ConcurLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConcurLinkedServiceTypeProperties deserializedConcurLinkedServiceTypeProperties
+                = new ConcurLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("clientId".equals(fieldName)) {
+                    deserializedConcurLinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("username".equals(fieldName)) {
+                    deserializedConcurLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("connectionProperties".equals(fieldName)) {
+                    deserializedConcurLinkedServiceTypeProperties.connectionProperties = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedConcurLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedConcurLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("useHostVerification".equals(fieldName)) {
+                    deserializedConcurLinkedServiceTypeProperties.useHostVerification = reader.readUntyped();
+                } else if ("usePeerVerification".equals(fieldName)) {
+                    deserializedConcurLinkedServiceTypeProperties.usePeerVerification = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedConcurLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConcurLinkedServiceTypeProperties;
+        });
+    }
 }

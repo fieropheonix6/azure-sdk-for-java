@@ -5,64 +5,70 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Class representing Abnormal Time Period detected. */
+/**
+ * Class representing Abnormal Time Period detected.
+ */
 @Fluent
-public final class DetectorAbnormalTimePeriod {
+public final class DetectorAbnormalTimePeriod implements JsonSerializable<DetectorAbnormalTimePeriod> {
     /*
      * Start time of the correlated event
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the correlated event
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Message describing the event
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /*
      * Represents the name of the Detector
      */
-    @JsonProperty(value = "source")
     private String source;
 
     /*
      * Represents the rank of the Detector
      */
-    @JsonProperty(value = "priority")
     private Double priority;
 
     /*
      * Downtime metadata
      */
-    @JsonProperty(value = "metaData")
     private List<List<NameValuePair>> metadata;
 
     /*
      * Represents the type of the Detector
      */
-    @JsonProperty(value = "type")
     private IssueType type;
 
     /*
      * List of proposed solutions
      */
-    @JsonProperty(value = "solutions")
     private List<Solution> solutions;
 
     /**
+     * Creates an instance of DetectorAbnormalTimePeriod class.
+     */
+    public DetectorAbnormalTimePeriod() {
+    }
+
+    /**
      * Get the startTime property: Start time of the correlated event.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -71,7 +77,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the startTime property: Start time of the correlated event.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -82,7 +88,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the endTime property: End time of the correlated event.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -91,7 +97,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the endTime property: End time of the correlated event.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -102,7 +108,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the message property: Message describing the event.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -111,7 +117,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the message property: Message describing the event.
-     *
+     * 
      * @param message the message value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -122,7 +128,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the source property: Represents the name of the Detector.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -131,7 +137,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the source property: Represents the name of the Detector.
-     *
+     * 
      * @param source the source value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -142,7 +148,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the priority property: Represents the rank of the Detector.
-     *
+     * 
      * @return the priority value.
      */
     public Double priority() {
@@ -151,7 +157,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the priority property: Represents the rank of the Detector.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -162,7 +168,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the metadata property: Downtime metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public List<List<NameValuePair>> metadata() {
@@ -171,7 +177,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the metadata property: Downtime metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -182,7 +188,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the type property: Represents the type of the Detector.
-     *
+     * 
      * @return the type value.
      */
     public IssueType type() {
@@ -191,7 +197,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the type property: Represents the type of the Detector.
-     *
+     * 
      * @param type the type value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -202,7 +208,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Get the solutions property: List of proposed solutions.
-     *
+     * 
      * @return the solutions value.
      */
     public List<Solution> solutions() {
@@ -211,7 +217,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Set the solutions property: List of proposed solutions.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the DetectorAbnormalTimePeriod object itself.
      */
@@ -222,7 +228,7 @@ public final class DetectorAbnormalTimePeriod {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -232,5 +238,70 @@ public final class DetectorAbnormalTimePeriod {
         if (solutions() != null) {
             solutions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("message", this.message);
+        jsonWriter.writeStringField("source", this.source);
+        jsonWriter.writeNumberField("priority", this.priority);
+        jsonWriter.writeArrayField("metaData", this.metadata,
+            (writer, element) -> writer.writeArray(element, (writer1, element1) -> writer1.writeJson(element1)));
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeArrayField("solutions", this.solutions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectorAbnormalTimePeriod from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectorAbnormalTimePeriod if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DetectorAbnormalTimePeriod.
+     */
+    public static DetectorAbnormalTimePeriod fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetectorAbnormalTimePeriod deserializedDetectorAbnormalTimePeriod = new DetectorAbnormalTimePeriod();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("message".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.message = reader.getString();
+                } else if ("source".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.source = reader.getString();
+                } else if ("priority".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.priority = reader.getNullable(JsonReader::getDouble);
+                } else if ("metaData".equals(fieldName)) {
+                    List<List<NameValuePair>> metadata
+                        = reader.readArray(reader1 -> reader1.readArray(reader2 -> NameValuePair.fromJson(reader2)));
+                    deserializedDetectorAbnormalTimePeriod.metadata = metadata;
+                } else if ("type".equals(fieldName)) {
+                    deserializedDetectorAbnormalTimePeriod.type = IssueType.fromString(reader.getString());
+                } else if ("solutions".equals(fieldName)) {
+                    List<Solution> solutions = reader.readArray(reader1 -> Solution.fromJson(reader1));
+                    deserializedDetectorAbnormalTimePeriod.solutions = solutions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetectorAbnormalTimePeriod;
+        });
     }
 }

@@ -20,29 +20,26 @@ public final class OperationsResultsImpl implements OperationsResults {
 
     private final com.azure.resourcemanager.kusto.KustoManager serviceManager;
 
-    public OperationsResultsImpl(
-        OperationsResultsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
+    public OperationsResultsImpl(OperationsResultsClient innerClient,
+        com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationResult> getWithResponse(String location, String operationId, Context context) {
+        Response<OperationResultInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationResult get(String location, String operationId) {
         OperationResultInner inner = this.serviceClient().get(location, operationId);
         if (inner != null) {
             return new OperationResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationResult> getWithResponse(String location, String operationId, Context context) {
-        Response<OperationResultInner> inner = this.serviceClient().getWithResponse(location, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

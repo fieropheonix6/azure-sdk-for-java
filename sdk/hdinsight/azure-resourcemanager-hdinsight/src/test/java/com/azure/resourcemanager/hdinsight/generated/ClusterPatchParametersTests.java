@@ -5,29 +5,39 @@
 package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.hdinsight.models.ClusterIdentity;
 import com.azure.resourcemanager.hdinsight.models.ClusterPatchParameters;
+import com.azure.resourcemanager.hdinsight.models.ResourceIdentityType;
+import com.azure.resourcemanager.hdinsight.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterPatchParametersTests {
-    @Test
-    public void testDeserialize() {
-        ClusterPatchParameters model =
-            BinaryData
-                .fromString("{\"tags\":{\"hajdeyeamdpha\":\"ifsjttgzfbishcb\"}}")
-                .toObject(ClusterPatchParameters.class);
-        Assertions.assertEquals("ifsjttgzfbishcb", model.tags().get("hajdeyeamdpha"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClusterPatchParameters model = BinaryData.fromString(
+            "{\"tags\":{\"iplbpodxunkbebxm\":\"bogqxndlkzgxhu\",\"oievseotgqrlltm\":\"byyntwlrbqt\",\"jefuzmuvpbttdumo\":\"wlauwzizxbmpg\",\"xe\":\"p\"},\"identity\":{\"principalId\":\"zbtbhj\",\"tenantId\":\"lkfg\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"zfikd\":{\"principalId\":\"el\",\"clientId\":\"hsd\",\"tenantId\":\"t\"}}}}")
+            .toObject(ClusterPatchParameters.class);
+        Assertions.assertEquals("bogqxndlkzgxhu", model.tags().get("iplbpodxunkbebxm"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("t", model.identity().userAssignedIdentities().get("zfikd").tenantId());
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterPatchParameters model = new ClusterPatchParameters().withTags(mapOf("hajdeyeamdpha", "ifsjttgzfbishcb"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterPatchParameters model = new ClusterPatchParameters()
+            .withTags(mapOf("iplbpodxunkbebxm", "bogqxndlkzgxhu", "oievseotgqrlltm", "byyntwlrbqt", "jefuzmuvpbttdumo",
+                "wlauwzizxbmpg", "xe", "p"))
+            .withIdentity(new ClusterIdentity().withType(ResourceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(mapOf("zfikd", new UserAssignedIdentity().withTenantId("t"))));
         model = BinaryData.fromObject(model).toObject(ClusterPatchParameters.class);
-        Assertions.assertEquals("ifsjttgzfbishcb", model.tags().get("hajdeyeamdpha"));
+        Assertions.assertEquals("bogqxndlkzgxhu", model.tags().get("iplbpodxunkbebxm"));
+        Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
+        Assertions.assertEquals("t", model.identity().userAssignedIdentities().get("zfikd").tenantId());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

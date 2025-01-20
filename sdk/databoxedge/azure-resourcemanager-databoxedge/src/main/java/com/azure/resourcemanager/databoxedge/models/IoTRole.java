@@ -5,169 +5,269 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.databoxedge.fluent.models.IoTRoleProperties;
 import com.azure.resourcemanager.databoxedge.fluent.models.RoleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.util.List;
 
-/** Compute role. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("IOT")
-@JsonFlatten
+/**
+ * Compute role.
+ */
 @Fluent
-public class IoTRole extends RoleInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTRole.class);
+public final class IoTRole extends RoleInner {
+    /*
+     * Role type.
+     */
+    private RoleTypes kind = RoleTypes.IOT;
 
     /*
-     * Host OS supported by the IoT role.
+     * Properties specific to IoT role.
      */
-    @JsonProperty(value = "properties.hostPlatform")
-    private PlatformType hostPlatform;
+    private IoTRoleProperties innerProperties;
 
     /*
-     * IoT device metadata to which data box edge device needs to be connected.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.ioTDeviceDetails")
-    private IoTDeviceInfo ioTDeviceDetails;
+    private String type;
 
     /*
-     * IoT edge device to which the IoT role needs to be configured.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.ioTEdgeDeviceDetails")
-    private IoTDeviceInfo ioTEdgeDeviceDetails;
+    private String name;
 
     /*
-     * Mount points of shares in role(s).
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.shareMappings")
-    private List<MountPointMap> shareMappings;
+    private String id;
 
-    /*
-     * Role status.
+    /**
+     * Creates an instance of IoTRole class.
      */
-    @JsonProperty(value = "properties.roleStatus")
-    private RoleStatus roleStatus;
+    public IoTRole() {
+    }
+
+    /**
+     * Get the kind property: Role type.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public RoleTypes kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the innerProperties property: Properties specific to IoT role.
+     * 
+     * @return the innerProperties value.
+     */
+    private IoTRoleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the hostPlatform property: Host OS supported by the IoT role.
-     *
+     * 
      * @return the hostPlatform value.
      */
     public PlatformType hostPlatform() {
-        return this.hostPlatform;
+        return this.innerProperties() == null ? null : this.innerProperties().hostPlatform();
     }
 
     /**
      * Set the hostPlatform property: Host OS supported by the IoT role.
-     *
+     * 
      * @param hostPlatform the hostPlatform value to set.
      * @return the IoTRole object itself.
      */
     public IoTRole withHostPlatform(PlatformType hostPlatform) {
-        this.hostPlatform = hostPlatform;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withHostPlatform(hostPlatform);
         return this;
     }
 
     /**
      * Get the ioTDeviceDetails property: IoT device metadata to which data box edge device needs to be connected.
-     *
+     * 
      * @return the ioTDeviceDetails value.
      */
     public IoTDeviceInfo ioTDeviceDetails() {
-        return this.ioTDeviceDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().ioTDeviceDetails();
     }
 
     /**
      * Set the ioTDeviceDetails property: IoT device metadata to which data box edge device needs to be connected.
-     *
+     * 
      * @param ioTDeviceDetails the ioTDeviceDetails value to set.
      * @return the IoTRole object itself.
      */
     public IoTRole withIoTDeviceDetails(IoTDeviceInfo ioTDeviceDetails) {
-        this.ioTDeviceDetails = ioTDeviceDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withIoTDeviceDetails(ioTDeviceDetails);
         return this;
     }
 
     /**
      * Get the ioTEdgeDeviceDetails property: IoT edge device to which the IoT role needs to be configured.
-     *
+     * 
      * @return the ioTEdgeDeviceDetails value.
      */
     public IoTDeviceInfo ioTEdgeDeviceDetails() {
-        return this.ioTEdgeDeviceDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().ioTEdgeDeviceDetails();
     }
 
     /**
      * Set the ioTEdgeDeviceDetails property: IoT edge device to which the IoT role needs to be configured.
-     *
+     * 
      * @param ioTEdgeDeviceDetails the ioTEdgeDeviceDetails value to set.
      * @return the IoTRole object itself.
      */
     public IoTRole withIoTEdgeDeviceDetails(IoTDeviceInfo ioTEdgeDeviceDetails) {
-        this.ioTEdgeDeviceDetails = ioTEdgeDeviceDetails;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withIoTEdgeDeviceDetails(ioTEdgeDeviceDetails);
         return this;
     }
 
     /**
      * Get the shareMappings property: Mount points of shares in role(s).
-     *
+     * 
      * @return the shareMappings value.
      */
     public List<MountPointMap> shareMappings() {
-        return this.shareMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().shareMappings();
     }
 
     /**
      * Set the shareMappings property: Mount points of shares in role(s).
-     *
+     * 
      * @param shareMappings the shareMappings value to set.
      * @return the IoTRole object itself.
      */
     public IoTRole withShareMappings(List<MountPointMap> shareMappings) {
-        this.shareMappings = shareMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withShareMappings(shareMappings);
         return this;
     }
 
     /**
      * Get the roleStatus property: Role status.
-     *
+     * 
      * @return the roleStatus value.
      */
     public RoleStatus roleStatus() {
-        return this.roleStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().roleStatus();
     }
 
     /**
      * Set the roleStatus property: Role status.
-     *
+     * 
      * @param roleStatus the roleStatus value to set.
      * @return the IoTRole object itself.
      */
     public IoTRole withRoleStatus(RoleStatus roleStatus) {
-        this.roleStatus = roleStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTRoleProperties();
+        }
+        this.innerProperties().withRoleStatus(roleStatus);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (ioTDeviceDetails() != null) {
-            ioTDeviceDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (ioTEdgeDeviceDetails() != null) {
-            ioTEdgeDeviceDetails().validate();
-        }
-        if (shareMappings() != null) {
-            shareMappings().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTRole from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTRole if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IoTRole.
+     */
+    public static IoTRole fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTRole deserializedIoTRole = new IoTRole();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIoTRole.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIoTRole.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIoTRole.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIoTRole.kind = RoleTypes.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTRole.innerProperties = IoTRoleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTRole;
+        });
     }
 }

@@ -13,17 +13,15 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.DedicatedCloudServices
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.DedicatedCloudServiceInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudService;
 import com.azure.resourcemanager.vmwarecloudsimple.models.DedicatedCloudServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DedicatedCloudServicesImpl implements DedicatedCloudServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCloudServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DedicatedCloudServicesImpl.class);
 
     private final DedicatedCloudServicesClient innerClient;
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public DedicatedCloudServicesImpl(
-        DedicatedCloudServicesClient innerClient,
+    public DedicatedCloudServicesImpl(DedicatedCloudServicesClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,46 +29,43 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
 
     public PagedIterable<DedicatedCloudService> list() {
         PagedIterable<DedicatedCloudServiceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedCloudService> list(String filter, Integer top, String skipToken, Context context) {
         PagedIterable<DedicatedCloudServiceInner> inner = this.serviceClient().list(filter, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedCloudService> listByResourceGroup(String resourceGroupName) {
         PagedIterable<DedicatedCloudServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DedicatedCloudService> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, String skipToken, Context context) {
-        PagedIterable<DedicatedCloudServiceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, skipToken, context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
+    public PagedIterable<DedicatedCloudService> listByResourceGroup(String resourceGroupName, String filter,
+        Integer top, String skipToken, Context context) {
+        PagedIterable<DedicatedCloudServiceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, filter, top, skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedCloudServiceImpl(inner1, this.manager()));
     }
 
-    public DedicatedCloudService getByResourceGroup(String resourceGroupName, String dedicatedCloudServiceName) {
-        DedicatedCloudServiceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCloudServiceName);
+    public Response<DedicatedCloudService> getByResourceGroupWithResponse(String resourceGroupName,
+        String dedicatedCloudServiceName, Context context) {
+        Response<DedicatedCloudServiceInner> inner = this.serviceClient()
+            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, context);
         if (inner != null) {
-            return new DedicatedCloudServiceImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DedicatedCloudServiceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<DedicatedCloudService> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCloudServiceName, Context context) {
-        Response<DedicatedCloudServiceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, context);
+    public DedicatedCloudService getByResourceGroup(String resourceGroupName, String dedicatedCloudServiceName) {
+        DedicatedCloudServiceInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, dedicatedCloudServiceName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DedicatedCloudServiceImpl(inner.getValue(), this.manager()));
+            return new DedicatedCloudServiceImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -85,91 +80,58 @@ public final class DedicatedCloudServicesImpl implements DedicatedCloudServices 
     }
 
     public DedicatedCloudService getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCloudServiceName = Utils.getValueFromIdByName(id, "dedicatedCloudServices");
+        String dedicatedCloudServiceName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedCloudServices");
         if (dedicatedCloudServiceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudServices'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudServices'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, Context.NONE)
             .getValue();
     }
 
     public Response<DedicatedCloudService> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCloudServiceName = Utils.getValueFromIdByName(id, "dedicatedCloudServices");
+        String dedicatedCloudServiceName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedCloudServices");
         if (dedicatedCloudServiceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudServices'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, dedicatedCloudServiceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCloudServiceName = Utils.getValueFromIdByName(id, "dedicatedCloudServices");
+        String dedicatedCloudServiceName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedCloudServices");
         if (dedicatedCloudServiceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudServices'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudServices'.", id)));
         }
         this.delete(resourceGroupName, dedicatedCloudServiceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String dedicatedCloudServiceName = Utils.getValueFromIdByName(id, "dedicatedCloudServices");
+        String dedicatedCloudServiceName = ResourceManagerUtils.getValueFromIdByName(id, "dedicatedCloudServices");
         if (dedicatedCloudServiceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudServices'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'dedicatedCloudServices'.", id)));
         }
         this.delete(resourceGroupName, dedicatedCloudServiceName, context);
     }

@@ -6,20 +6,17 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.OperationListResult;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"kaet\",\"isDataAction\":true,\"display\":{\"provider\":\"civfsnkymuctq\",\"resource\":\"fbebrjcxer\",\"operation\":\"wutttxfvjrbi\",\"description\":\"hxepcyvahfnlj\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"uujqgidokgjljyo\",\"isDataAction\":true,\"display\":{\"provider\":\"tbgsncghkj\",\"resource\":\"zz\",\"operation\":\"ijhtxf\",\"description\":\"xbf\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"mpvecxgodebfqk\",\"isDataAction\":true,\"display\":{\"provider\":\"ukgri\",\"resource\":\"lzlfbxzpuz\",\"operation\":\"ispnqzahmgkbrp\",\"description\":\"dhibnuq\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"drgvtqagn\"}")
-                .toObject(OperationListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"lfktsths\",\"isDataAction\":true,\"display\":{\"provider\":\"nyyazttbtwwrqpue\",\"resource\":\"kzywbiex\",\"operation\":\"eyueaxibxujwb\",\"description\":\"walm\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"epdkzja\",\"isDataAction\":false,\"display\":{\"provider\":\"hdwbavxbniwdjs\",\"resource\":\"tsdbpgn\",\"operation\":\"txhp\",\"description\":\"bzpfzab\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"wtctyqi\",\"isDataAction\":true,\"display\":{\"provider\":\"vplwzbhv\",\"resource\":\"u\",\"operation\":\"osvmk\",\"description\":\"sxqu\"},\"origin\":\"system\",\"actionType\":\"Internal\"},{\"name\":\"mg\",\"isDataAction\":true,\"display\":{\"provider\":\"zkd\",\"resource\":\"lpvlopw\",\"operation\":\"ighxpk\",\"description\":\"zb\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"}],\"nextLink\":\"a\"}")
+            .toObject(OperationListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult();
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
     }

@@ -10,46 +10,36 @@ import com.azure.resourcemanager.appcontainers.models.ContainerAppProbeHttpGetHt
 import com.azure.resourcemanager.appcontainers.models.Scheme;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ContainerAppProbeHttpGetTests {
-    @Test
-    public void testDeserialize() {
-        ContainerAppProbeHttpGet model =
-            BinaryData
-                .fromString(
-                    "{\"host\":\"jawneaiv\",\"httpHeaders\":[{\"name\":\"zel\",\"value\":\"c\"},{\"name\":\"r\",\"value\":\"lsfeaenwabfatkld\"},{\"name\":\"xbjhwuaanozjosph\",\"value\":\"oulpjrv\"}],\"path\":\"glrvimjwosytxi\",\"port\":1413257471,\"scheme\":\"HTTP\"}")
-                .toObject(ContainerAppProbeHttpGet.class);
-        Assertions.assertEquals("jawneaiv", model.host());
-        Assertions.assertEquals("zel", model.httpHeaders().get(0).name());
-        Assertions.assertEquals("c", model.httpHeaders().get(0).value());
-        Assertions.assertEquals("glrvimjwosytxi", model.path());
-        Assertions.assertEquals(1413257471, model.port());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ContainerAppProbeHttpGet model = BinaryData.fromString(
+            "{\"host\":\"qkagfhsxt\",\"httpHeaders\":[{\"name\":\"gzxnfaazpxdtnk\",\"value\":\"mkqjj\"},{\"name\":\"wuenvr\",\"value\":\"pyouaibrebqaays\"}],\"path\":\"ixqtn\",\"port\":1555595528,\"scheme\":\"HTTP\"}")
+            .toObject(ContainerAppProbeHttpGet.class);
+        Assertions.assertEquals("qkagfhsxt", model.host());
+        Assertions.assertEquals("gzxnfaazpxdtnk", model.httpHeaders().get(0).name());
+        Assertions.assertEquals("mkqjj", model.httpHeaders().get(0).value());
+        Assertions.assertEquals("ixqtn", model.path());
+        Assertions.assertEquals(1555595528, model.port());
         Assertions.assertEquals(Scheme.HTTP, model.scheme());
     }
 
-    @Test
-    public void testSerialize() {
-        ContainerAppProbeHttpGet model =
-            new ContainerAppProbeHttpGet()
-                .withHost("jawneaiv")
-                .withHttpHeaders(
-                    Arrays
-                        .asList(
-                            new ContainerAppProbeHttpGetHttpHeadersItem().withName("zel").withValue("c"),
-                            new ContainerAppProbeHttpGetHttpHeadersItem().withName("r").withValue("lsfeaenwabfatkld"),
-                            new ContainerAppProbeHttpGetHttpHeadersItem()
-                                .withName("xbjhwuaanozjosph")
-                                .withValue("oulpjrv")))
-                .withPath("glrvimjwosytxi")
-                .withPort(1413257471)
-                .withScheme(Scheme.HTTP);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ContainerAppProbeHttpGet model = new ContainerAppProbeHttpGet().withHost("qkagfhsxt")
+            .withHttpHeaders(Arrays.asList(
+                new ContainerAppProbeHttpGetHttpHeadersItem().withName("gzxnfaazpxdtnk").withValue("mkqjj"),
+                new ContainerAppProbeHttpGetHttpHeadersItem().withName("wuenvr").withValue("pyouaibrebqaays")))
+            .withPath("ixqtn")
+            .withPort(1555595528)
+            .withScheme(Scheme.HTTP);
         model = BinaryData.fromObject(model).toObject(ContainerAppProbeHttpGet.class);
-        Assertions.assertEquals("jawneaiv", model.host());
-        Assertions.assertEquals("zel", model.httpHeaders().get(0).name());
-        Assertions.assertEquals("c", model.httpHeaders().get(0).value());
-        Assertions.assertEquals("glrvimjwosytxi", model.path());
-        Assertions.assertEquals(1413257471, model.port());
+        Assertions.assertEquals("qkagfhsxt", model.host());
+        Assertions.assertEquals("gzxnfaazpxdtnk", model.httpHeaders().get(0).name());
+        Assertions.assertEquals("mkqjj", model.httpHeaders().get(0).value());
+        Assertions.assertEquals("ixqtn", model.path());
+        Assertions.assertEquals(1555595528, model.port());
         Assertions.assertEquals(Scheme.HTTP, model.scheme());
     }
 }

@@ -5,33 +5,101 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.kusto.fluent.models.DataConnectionInner;
 import com.azure.resourcemanager.kusto.fluent.models.EventGridConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Class representing an Event Grid data connection. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("EventGrid")
+/**
+ * Class representing an Event Grid data connection.
+ */
 @Fluent
 public final class EventGridDataConnection extends DataConnectionInner {
     /*
+     * Kind of the endpoint for the data connection
+     */
+    private DataConnectionKind kind = DataConnectionKind.EVENT_GRID;
+
+    /*
      * The properties of the Event Grid data connection.
      */
-    @JsonProperty(value = "properties")
     private EventGridConnectionProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EventGridDataConnection class.
+     */
+    public EventGridDataConnection() {
+    }
+
+    /**
+     * Get the kind property: Kind of the endpoint for the data connection.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public DataConnectionKind kind() {
+        return this.kind;
+    }
 
     /**
      * Get the innerProperties property: The properties of the Event Grid data connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EventGridConnectionProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventGridDataConnection withLocation(String location) {
         super.withLocation(location);
@@ -40,7 +108,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Get the storageAccountResourceId property: The resource ID of the storage account where the data resides.
-     *
+     * 
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -49,7 +117,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Set the storageAccountResourceId property: The resource ID of the storage account where the data resides.
-     *
+     * 
      * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -64,7 +132,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Get the eventGridResourceId property: The resource ID of the event grid that is subscribed to the storage account
      * events.
-     *
+     * 
      * @return the eventGridResourceId value.
      */
     public String eventGridResourceId() {
@@ -74,7 +142,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Set the eventGridResourceId property: The resource ID of the event grid that is subscribed to the storage account
      * events.
-     *
+     * 
      * @param eventGridResourceId the eventGridResourceId value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -88,7 +156,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Get the eventHubResourceId property: The resource ID where the event grid is configured to send events.
-     *
+     * 
      * @return the eventHubResourceId value.
      */
     public String eventHubResourceId() {
@@ -97,7 +165,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Set the eventHubResourceId property: The resource ID where the event grid is configured to send events.
-     *
+     * 
      * @param eventHubResourceId the eventHubResourceId value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -111,7 +179,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Get the consumerGroup property: The event hub consumer group.
-     *
+     * 
      * @return the consumerGroup value.
      */
     public String consumerGroup() {
@@ -120,7 +188,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Set the consumerGroup property: The event hub consumer group.
-     *
+     * 
      * @param consumerGroup the consumerGroup value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -135,7 +203,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Get the tableName property: The table where the data should be ingested. Optionally the table information can be
      * added to each message.
-     *
+     * 
      * @return the tableName value.
      */
     public String tableName() {
@@ -145,7 +213,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Set the tableName property: The table where the data should be ingested. Optionally the table information can be
      * added to each message.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -160,7 +228,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Get the mappingRuleName property: The mapping rule to be used to ingest the data. Optionally the mapping
      * information can be added to each message.
-     *
+     * 
      * @return the mappingRuleName value.
      */
     public String mappingRuleName() {
@@ -170,7 +238,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Set the mappingRuleName property: The mapping rule to be used to ingest the data. Optionally the mapping
      * information can be added to each message.
-     *
+     * 
      * @param mappingRuleName the mappingRuleName value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -185,7 +253,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Get the dataFormat property: The data format of the message. Optionally the data format can be added to each
      * message.
-     *
+     * 
      * @return the dataFormat value.
      */
     public EventGridDataFormat dataFormat() {
@@ -195,7 +263,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Set the dataFormat property: The data format of the message. Optionally the data format can be added to each
      * message.
-     *
+     * 
      * @param dataFormat the dataFormat value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -210,7 +278,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Get the ignoreFirstRecord property: A Boolean value that, if set to true, indicates that ingestion should ignore
      * the first record of every file.
-     *
+     * 
      * @return the ignoreFirstRecord value.
      */
     public Boolean ignoreFirstRecord() {
@@ -220,7 +288,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Set the ignoreFirstRecord property: A Boolean value that, if set to true, indicates that ingestion should ignore
      * the first record of every file.
-     *
+     * 
      * @param ignoreFirstRecord the ignoreFirstRecord value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -234,7 +302,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Get the blobStorageEventType property: The name of blob storage event type to process.
-     *
+     * 
      * @return the blobStorageEventType value.
      */
     public BlobStorageEventType blobStorageEventType() {
@@ -243,7 +311,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Set the blobStorageEventType property: The name of blob storage event type to process.
-     *
+     * 
      * @param blobStorageEventType the blobStorageEventType value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -258,7 +326,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Get the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
      * used to authenticate with event hub and storage account.
-     *
+     * 
      * @return the managedIdentityResourceId value.
      */
     public String managedIdentityResourceId() {
@@ -268,7 +336,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Set the managedIdentityResourceId property: The resource ID of a managed identity (system or user assigned) to be
      * used to authenticate with event hub and storage account.
-     *
+     * 
      * @param managedIdentityResourceId the managedIdentityResourceId value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -282,7 +350,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Get the managedIdentityObjectId property: The object ID of managedIdentityResourceId.
-     *
+     * 
      * @return the managedIdentityObjectId value.
      */
     public String managedIdentityObjectId() {
@@ -292,7 +360,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Get the databaseRouting property: Indication for database routing information from the data connection, by
      * default only database routing information is allowed.
-     *
+     * 
      * @return the databaseRouting value.
      */
     public DatabaseRouting databaseRouting() {
@@ -302,7 +370,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
     /**
      * Set the databaseRouting property: Indication for database routing information from the data connection, by
      * default only database routing information is allowed.
-     *
+     * 
      * @param databaseRouting the databaseRouting value to set.
      * @return the EventGridDataConnection object itself.
      */
@@ -316,7 +384,7 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -325,14 +393,63 @@ public final class EventGridDataConnection extends DataConnectionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventGridDataConnection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventGridDataConnection if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventGridDataConnection.
+     */
+    public static EventGridDataConnection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventGridDataConnection deserializedEventGridDataConnection = new EventGridDataConnection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEventGridDataConnection.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEventGridDataConnection.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEventGridDataConnection.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEventGridDataConnection.withLocation(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEventGridDataConnection.kind = DataConnectionKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEventGridDataConnection.innerProperties
+                        = EventGridConnectionProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventGridDataConnection;
+        });
     }
 }

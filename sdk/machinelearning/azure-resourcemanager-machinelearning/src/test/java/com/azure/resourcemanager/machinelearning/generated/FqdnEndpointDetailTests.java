@@ -7,19 +7,18 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.FqdnEndpointDetail;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class FqdnEndpointDetailTests {
-    @Test
-    public void testDeserialize() {
-        FqdnEndpointDetail model = BinaryData.fromString("{\"port\":1808760283}").toObject(FqdnEndpointDetail.class);
-        Assertions.assertEquals(1808760283, model.port());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        FqdnEndpointDetail model = BinaryData.fromString("{\"port\":1449386799}").toObject(FqdnEndpointDetail.class);
+        Assertions.assertEquals(1449386799, model.port());
     }
 
-    @Test
-    public void testSerialize() {
-        FqdnEndpointDetail model = new FqdnEndpointDetail().withPort(1808760283);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        FqdnEndpointDetail model = new FqdnEndpointDetail().withPort(1449386799);
         model = BinaryData.fromObject(model).toObject(FqdnEndpointDetail.class);
-        Assertions.assertEquals(1808760283, model.port());
+        Assertions.assertEquals(1449386799, model.port());
     }
 }

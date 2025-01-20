@@ -21,40 +21,82 @@ import reactor.core.publisher.Mono;
 /** An immutable client-side representation of an Azure managed disk. */
 @Fluent
 public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refreshable<Disk>, Updatable<Disk.Update> {
-    /** @return the disk SKU */
+    /**
+     * Gets the disk SKU.
+     *
+     * @return the disk SKU
+     */
     DiskSkuTypes sku();
 
-    /** @return the disk creation method */
+    /**
+     * Gets the disk creation method.
+     *
+     * @return the disk creation method
+     */
     DiskCreateOption creationMethod();
 
-    /** @return true if the disk is attached to a virtual machine, otherwise false */
+    /**
+     * Checks whether the disk is attached to a virtual machine.
+     *
+     * @return true if the disk is attached to a virtual machine, otherwise false
+     */
     boolean isAttachedToVirtualMachine();
 
     /**
+     * Gets the resource ID of the virtual machine this disk is attached to.
+     *
      * @return the resource ID of the virtual machine this disk is attached to, or null if the disk is in a detached
      *     state
      */
     String virtualMachineId();
 
-    /** @return disk size in GB */
+    /**
+     * Gets disk size in GB.
+     *
+     * @return disk size in GB
+     */
     int sizeInGB();
 
-    /** @return disk size in byte */
+    /**
+     * Gets disk size in byte.
+     *
+     * @return disk size in byte
+     */
     long sizeInByte();
 
-    /** @return the type of the operating system on the disk */
+    /**
+     * Gets the type of the operating system on the disk.
+     *
+     * @return the type of the operating system on the disk
+     */
     OperatingSystemTypes osType();
 
-    /** @return the details of the source from which the disk is created */
+    /**
+     * Gets the details of the source from which the disk is created.
+     *
+     * @return the details of the source from which the disk is created
+     */
     CreationSource source();
 
-    /** @return the availability zones assigned to the disk */
+    /**
+     * Gets the availability zones assigned to the disk.
+     *
+     * @return the availability zones assigned to the disk
+     */
     Set<AvailabilityZoneId> availabilityZones();
 
-    /** @return the disk encryption settings */
+    /**
+     * Gets the disk encryption settings.
+     *
+     * @return the disk encryption settings
+     */
     EncryptionSettingsCollection encryptionSettings();
 
-    /** @return the disk encryption */
+    /**
+     * Gets the disk encryption.
+     *
+     * @return the disk encryption
+     */
     Encryption encryption();
 
     /**
@@ -83,22 +125,41 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
      */
     Mono<Void> revokeAccessAsync();
 
+    /**
+     * Checks whether the OS on a disk supports hibernation.
+     *
+     * @return whether the OS on a disk supports hibernation.
+     */
+    boolean isHibernationSupported();
+
+    /**
+     * Gets logical sector size in bytes for Premium SSD v2 and Ultra disks.
+     *
+     * @return logical sector size in bytes for Premium SSD v2 and Ultra disks.
+     */
+    Integer logicalSectorSizeInBytes();
+
+    /**
+     * Gets the hypervisor generation.
+     *
+     * @return the hypervisor generation.
+     */
+    HyperVGeneration hyperVGeneration();
+
+    /**
+     * Whether the disk can be accessed from public network.
+     *
+     * @return whether the disk can be accessed from public network.
+     */
+    PublicNetworkAccess publicNetworkAccess();
+
     /** The entirety of the managed disk definition. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithDiskSource,
-            DefinitionStages.WithWindowsDiskSource,
-            DefinitionStages.WithLinuxDiskSource,
-            DefinitionStages.WithData,
-            DefinitionStages.WithDataDiskSource,
-            DefinitionStages.WithDataDiskFromVhd,
-            DefinitionStages.WithDataDiskFromUpload,
-            DefinitionStages.WithDataDiskFromDisk,
-            DefinitionStages.WithDataDiskFromSnapshot,
-            DefinitionStages.WithStorageAccount,
-            DefinitionStages.WithCreateAndSize,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithDiskSource,
+        DefinitionStages.WithWindowsDiskSource, DefinitionStages.WithLinuxDiskSource, DefinitionStages.WithData,
+        DefinitionStages.WithDataDiskSource, DefinitionStages.WithDataDiskFromVhd,
+        DefinitionStages.WithDataDiskFromUpload, DefinitionStages.WithDataDiskFromDisk,
+        DefinitionStages.WithDataDiskFromSnapshot, DefinitionStages.WithStorageAccount,
+        DefinitionStages.WithCreateAndSize, DefinitionStages.WithCreate {
     }
 
     /** Grouping of managed disk definition stages. */
@@ -311,6 +372,7 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              */
             WithCreateAndSize fromImage(VirtualMachineCustomImage image);
         }
+
         /** The stage of the managed disk definition allowing to choose source data disk image. */
         interface WithDataDiskFromImage {
             /**
@@ -416,16 +478,56 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
             WithCreate withDiskEncryptionSet(String diskEncryptionSetId);
         }
 
+        /** The stage of the managed disk definition allowing to configure hibernation support for the OS on the disk. */
+        interface WithHibernationSupport {
+            /**
+             * Specifies hibernation support for the OS on the disk.
+             * Hibernation support is required if you want to create a virtual machine with hibernation capability that use this disk as its OS disk.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withHibernationSupport();
+        }
+
+        /** The stage of the managed disk definition allowing to configure logical sector size for Premium SSD v2 and Ultra Disks. */
+        interface WithLogicalSectorSize {
+            /**
+             * Specifies the logical sector size in bytes for Premium SSD v2 and Ultra Disks.
+             * Supported values are 512 and 4096. 4096 is the default.
+             *
+             * @param logicalSectorSizeInBytes logical sector size in bytes
+             * @return the next stage of the definition
+             */
+            WithCreate withLogicalSectorSizeInBytes(int logicalSectorSizeInBytes);
+        }
+
+        /** The stage of the managed disk definition allowing to specify hypervisor generation. */
+        interface WithHyperVGeneration {
+            /**
+             * Specifies the hypervisor generation.
+             * @param hyperVGeneration the hypervisor generation
+             * @return the next stage of the definition
+             */
+            WithCreate withHyperVGeneration(HyperVGeneration hyperVGeneration);
+        }
+
+        /** The stage of disk definition allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the disk.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<Disk>,
-                Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
-                WithSku,
-                WithAvailabilityZone,
-                WithDiskEncryption {
+        interface WithCreate extends Creatable<Disk>, Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
+            WithSku, WithAvailabilityZone, WithDiskEncryption, WithHibernationSupport, WithLogicalSectorSize,
+            WithHyperVGeneration, WithPublicNetworkAccess {
 
             /**
              * Begins creating the disk resource.
@@ -482,15 +584,55 @@ public interface Disk extends GroupableResource<ComputeManager, DiskInner>, Refr
              */
             Update withDiskEncryptionSet(String diskEncryptionSetId, EncryptionType encryptionType);
         }
+
+        /** The stage of the managed disk definition allowing to configure hibernation support. */
+        interface WithHibernationSupport {
+            /**
+             * Specifies hibernation support for the OS on the disk.
+             *
+             * @return the next stage of the definition
+             */
+            Update withHibernationSupport();
+
+            /**
+             * Specifies hibernation support disabled for the OS on the disk.
+             *
+             * @return the next stage of the definition
+             */
+            Update withoutHibernationSupport();
+        }
+
+        /** The stage of the managed disk update allowing to specify hypervisor generation. */
+        interface WithHyperVGeneration {
+            /**
+             * Specifies the hypervisor generation.
+             * @param hyperVGeneration the hypervisor generation
+             * @return the next stage of the update
+             */
+            Update withHyperVGeneration(HyperVGeneration hyperVGeneration);
+        }
+
+        /** The stage of disk update allowing to configure network access settings. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the disk.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the disk.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Appliable<Disk>,
-            Resource.UpdateWithTags<Disk.Update>,
-            UpdateStages.WithSku,
-            UpdateStages.WithSize,
-            UpdateStages.WithOSSettings,
-            UpdateStages.WithDiskEncryption {
+    interface Update extends Appliable<Disk>, Resource.UpdateWithTags<Disk.Update>, UpdateStages.WithSku,
+        UpdateStages.WithSize, UpdateStages.WithOSSettings, UpdateStages.WithDiskEncryption,
+        UpdateStages.WithHibernationSupport, UpdateStages.WithHyperVGeneration, UpdateStages.WithPublicNetworkAccess {
     }
 }

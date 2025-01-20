@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for LogLevel. */
+/**
+ * Log level.
+ */
 public enum LogLevel {
-    /** Enum value Off. */
+    /**
+     * Enum value Off.
+     */
     OFF("Off"),
 
-    /** Enum value Verbose. */
+    /**
+     * Enum value Verbose.
+     */
     VERBOSE("Verbose"),
 
-    /** Enum value Information. */
+    /**
+     * Enum value Information.
+     */
     INFORMATION("Information"),
 
-    /** Enum value Warning. */
+    /**
+     * Enum value Warning.
+     */
     WARNING("Warning"),
 
-    /** Enum value Error. */
+    /**
+     * Enum value Error.
+     */
     ERROR("Error");
 
-    /** The actual serialized value for a LogLevel instance. */
+    /**
+     * The actual serialized value for a LogLevel instance.
+     */
     private final String value;
 
     LogLevel(String value) {
@@ -33,12 +44,14 @@ public enum LogLevel {
 
     /**
      * Parses a serialized value to a LogLevel instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed LogLevel object, or null if unable to parse.
      */
-    @JsonCreator
     public static LogLevel fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LogLevel[] items = LogLevel.values();
         for (LogLevel item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,7 +61,9 @@ public enum LogLevel {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

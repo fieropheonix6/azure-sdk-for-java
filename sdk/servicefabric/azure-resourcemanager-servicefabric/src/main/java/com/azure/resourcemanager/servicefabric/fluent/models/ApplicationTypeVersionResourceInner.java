@@ -7,52 +7,66 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** An application type version resource for the specified application type name resource. */
+/**
+ * An application type version resource for the specified application type name resource.
+ */
 @Fluent
 public final class ApplicationTypeVersionResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationTypeVersionResourceInner.class);
-
     /*
      * The properties of the application type version resource.
      */
-    @JsonProperty(value = "properties")
     private ApplicationTypeVersionResourceProperties innerProperties;
 
     /*
-     * It will be deprecated in New API, resource location depends on the
-     * parent resource.
+     * It will be deprecated in New API, resource location depends on the parent resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Azure resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Azure resource etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ApplicationTypeVersionResourceInner class.
+     */
+    public ApplicationTypeVersionResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the application type version resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationTypeVersionResourceProperties innerProperties() {
@@ -61,7 +75,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -70,7 +84,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ApplicationTypeVersionResourceInner object itself.
      */
@@ -81,7 +95,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the tags property: Azure resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -90,7 +104,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Set the tags property: Azure resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ApplicationTypeVersionResourceInner object itself.
      */
@@ -101,7 +115,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: Azure resource etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -110,7 +124,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -118,9 +132,39 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -129,7 +173,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Get the appPackageUrl property: The URL to the application package.
-     *
+     * 
      * @return the appPackageUrl value.
      */
     public String appPackageUrl() {
@@ -138,7 +182,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Set the appPackageUrl property: The URL to the application package.
-     *
+     * 
      * @param appPackageUrl the appPackageUrl value to set.
      * @return the ApplicationTypeVersionResourceInner object itself.
      */
@@ -153,7 +197,7 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
     /**
      * Get the defaultParameterList property: List of application type parameters that can be overridden when creating
      * or updating the application.
-     *
+     * 
      * @return the defaultParameterList value.
      */
     public Map<String, String> defaultParameterList() {
@@ -162,12 +206,68 @@ public final class ApplicationTypeVersionResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationTypeVersionResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationTypeVersionResourceInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationTypeVersionResourceInner.
+     */
+    public static ApplicationTypeVersionResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationTypeVersionResourceInner deserializedApplicationTypeVersionResourceInner
+                = new ApplicationTypeVersionResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.innerProperties
+                        = ApplicationTypeVersionResourceProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedApplicationTypeVersionResourceInner.tags = tags;
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedApplicationTypeVersionResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationTypeVersionResourceInner;
+        });
     }
 }

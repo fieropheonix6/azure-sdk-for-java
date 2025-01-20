@@ -19,27 +19,76 @@ import reactor.core.publisher.Mono;
  */
 public interface ExtendedDatabaseBlobAuditingPoliciesClient {
     /**
-     * Gets an extended database's blob auditing policy.
-     *
+     * Lists extended auditing settings of a database.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of database extended auditing settings as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<ExtendedDatabaseBlobAuditingPolicyInner> listByDatabaseAsync(String resourceGroupName, String serverName,
+        String databaseName);
+
+    /**
+     * Lists extended auditing settings of a database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of database extended auditing settings as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ExtendedDatabaseBlobAuditingPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName);
+
+    /**
+     * Lists extended auditing settings of a database.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of database extended auditing settings as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ExtendedDatabaseBlobAuditingPolicyInner> listByDatabase(String resourceGroupName, String serverName,
+        String databaseName, Context context);
+
+    /**
+     * Gets an extended database's blob auditing policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an extended database's blob auditing policy along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExtendedDatabaseBlobAuditingPolicyInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<Response<ExtendedDatabaseBlobAuditingPolicyInner>> getWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName);
 
     /**
      * Gets an extended database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,14 +97,31 @@ public interface ExtendedDatabaseBlobAuditingPoliciesClient {
      * @return an extended database's blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExtendedDatabaseBlobAuditingPolicyInner> getAsync(
-        String resourceGroupName, String serverName, String databaseName);
+    Mono<ExtendedDatabaseBlobAuditingPolicyInner> getAsync(String resourceGroupName, String serverName,
+        String databaseName);
 
     /**
      * Gets an extended database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an extended database's blob auditing policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExtendedDatabaseBlobAuditingPolicyInner> getWithResponse(String resourceGroupName, String serverName,
+        String databaseName, Context context);
+
+    /**
+     * Gets an extended database's blob auditing policy.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -67,48 +133,28 @@ public interface ExtendedDatabaseBlobAuditingPoliciesClient {
     ExtendedDatabaseBlobAuditingPolicyInner get(String resourceGroupName, String serverName, String databaseName);
 
     /**
-     * Gets an extended database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended database's blob auditing policy along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtendedDatabaseBlobAuditingPolicyInner> getWithResponse(
-        String resourceGroupName, String serverName, String databaseName, Context context);
-
-    /**
      * Creates or updates an extended database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The extended database blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended database blob auditing policy along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return an extended database blob auditing policy along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExtendedDatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtendedDatabaseBlobAuditingPolicyInner parameters);
+    Mono<Response<ExtendedDatabaseBlobAuditingPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String databaseName, ExtendedDatabaseBlobAuditingPolicyInner parameters);
 
     /**
      * Creates or updates an extended database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The extended database blob auditing policy.
@@ -118,37 +164,14 @@ public interface ExtendedDatabaseBlobAuditingPoliciesClient {
      * @return an extended database blob auditing policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExtendedDatabaseBlobAuditingPolicyInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtendedDatabaseBlobAuditingPolicyInner parameters);
+    Mono<ExtendedDatabaseBlobAuditingPolicyInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String databaseName, ExtendedDatabaseBlobAuditingPolicyInner parameters);
 
     /**
      * Creates or updates an extended database's blob auditing policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param parameters The extended database blob auditing policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an extended database blob auditing policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ExtendedDatabaseBlobAuditingPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtendedDatabaseBlobAuditingPolicyInner parameters);
-
-    /**
-     * Creates or updates an extended database's blob auditing policy.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param parameters The extended database blob auditing policy.
@@ -159,59 +182,23 @@ public interface ExtendedDatabaseBlobAuditingPoliciesClient {
      * @return an extended database blob auditing policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExtendedDatabaseBlobAuditingPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String databaseName,
-        ExtendedDatabaseBlobAuditingPolicyInner parameters,
-        Context context);
+    Response<ExtendedDatabaseBlobAuditingPolicyInner> createOrUpdateWithResponse(String resourceGroupName,
+        String serverName, String databaseName, ExtendedDatabaseBlobAuditingPolicyInner parameters, Context context);
 
     /**
-     * Lists extended auditing settings of a database.
-     *
+     * Creates or updates an extended database's blob auditing policy.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
+     * @param parameters The extended database blob auditing policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database extended auditing settings as paginated response with {@link PagedFlux}.
+     * @return an extended database blob auditing policy.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ExtendedDatabaseBlobAuditingPolicyInner> listByDatabaseAsync(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Lists extended auditing settings of a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database extended auditing settings as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtendedDatabaseBlobAuditingPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName);
-
-    /**
-     * Lists extended auditing settings of a database.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database extended auditing settings as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ExtendedDatabaseBlobAuditingPolicyInner> listByDatabase(
-        String resourceGroupName, String serverName, String databaseName, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ExtendedDatabaseBlobAuditingPolicyInner createOrUpdate(String resourceGroupName, String serverName,
+        String databaseName, ExtendedDatabaseBlobAuditingPolicyInner parameters);
 }

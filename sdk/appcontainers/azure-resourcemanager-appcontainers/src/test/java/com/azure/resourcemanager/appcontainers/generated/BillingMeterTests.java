@@ -7,38 +7,30 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.BillingMeter;
 import com.azure.resourcemanager.appcontainers.models.BillingMeterProperties;
-import com.azure.resourcemanager.appcontainers.models.Category;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BillingMeterTests {
-    @Test
-    public void testDeserialize() {
-        BillingMeter model =
-            BinaryData
-                .fromString(
-                    "{\"location\":\"lm\",\"properties\":{\"category\":\"PremiumSkuComputeOptimized\",\"meterType\":\"cvhd\",\"displayName\":\"v\"},\"id\":\"qxeysko\",\"name\":\"qzinkfkbg\",\"type\":\"z\"}")
-                .toObject(BillingMeter.class);
-        Assertions.assertEquals("lm", model.location());
-        Assertions.assertEquals(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED, model.properties().category());
-        Assertions.assertEquals("cvhd", model.properties().meterType());
-        Assertions.assertEquals("v", model.properties().displayName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        BillingMeter model = BinaryData.fromString(
+            "{\"id\":\"yhxdeoejzicwi\",\"name\":\"jttgzf\",\"type\":\"shcbkhajdeyeamdp\",\"location\":\"alpbuxwgipwhon\",\"properties\":{\"category\":\"gshwankixz\",\"meterType\":\"njeputtmrywn\",\"displayName\":\"oqftiyqzrnkcq\"}}")
+            .toObject(BillingMeter.class);
+        Assertions.assertEquals("alpbuxwgipwhon", model.location());
+        Assertions.assertEquals("gshwankixz", model.properties().category());
+        Assertions.assertEquals("njeputtmrywn", model.properties().meterType());
+        Assertions.assertEquals("oqftiyqzrnkcq", model.properties().displayName());
     }
 
-    @Test
-    public void testSerialize() {
-        BillingMeter model =
-            new BillingMeter()
-                .withLocation("lm")
-                .withProperties(
-                    new BillingMeterProperties()
-                        .withCategory(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED)
-                        .withMeterType("cvhd")
-                        .withDisplayName("v"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        BillingMeter model = new BillingMeter().withLocation("alpbuxwgipwhon")
+            .withProperties(new BillingMeterProperties().withCategory("gshwankixz")
+                .withMeterType("njeputtmrywn")
+                .withDisplayName("oqftiyqzrnkcq"));
         model = BinaryData.fromObject(model).toObject(BillingMeter.class);
-        Assertions.assertEquals("lm", model.location());
-        Assertions.assertEquals(Category.PREMIUM_SKU_COMPUTE_OPTIMIZED, model.properties().category());
-        Assertions.assertEquals("cvhd", model.properties().meterType());
-        Assertions.assertEquals("v", model.properties().displayName());
+        Assertions.assertEquals("alpbuxwgipwhon", model.location());
+        Assertions.assertEquals("gshwankixz", model.properties().category());
+        Assertions.assertEquals("njeputtmrywn", model.properties().meterType());
+        Assertions.assertEquals("oqftiyqzrnkcq", model.properties().displayName());
     }
 }

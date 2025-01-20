@@ -48,14 +48,14 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
      */
     public static SemanticVersion parse(String version) {
         Objects.requireNonNull(version, "'version' cannot be null.");
-        String[] parts = version.split("\\.");
-        if (parts.length < 3) {
+
+        int majorDotIdx = version.indexOf('.');
+        if (majorDotIdx < 0) {
             return createInvalid(version);
         }
 
-        int majorDotIdx = version.indexOf('.');
         int minorDotIdx = version.indexOf('.', majorDotIdx + 1);
-        if (majorDotIdx < 0 || minorDotIdx < 0) {
+        if (minorDotIdx < 0) {
             return createInvalid(version);
         }
 
@@ -83,7 +83,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
 
             String prerelease = (patchEndIdx == extEndIdx) ? "" : version.substring(patchEndIdx + 1, extEndIdx);
             return new SemanticVersion(major, minor, patch, prerelease, version);
-        } catch (NumberFormatException | NullPointerException ignored) {
+        } catch (NumberFormatException ignored) {
             return createInvalid(version);
         }
     }

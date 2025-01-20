@@ -5,47 +5,50 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** DNS settings of a network interface. */
+/**
+ * DNS settings of a network interface.
+ */
 @Fluent
-public final class NetworkInterfaceDnsSettings {
+public final class NetworkInterfaceDnsSettings implements JsonSerializable<NetworkInterfaceDnsSettings> {
     /*
      * List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided DNS resolution.
      * 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in dnsServers collection.
      */
-    @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
 
     /*
      * If the VM that uses this NIC is part of an Availability Set, then this list will have the union of all DNS
-     * servers from all NICs that are part of the Availability Set. This property is what is configured on each of
-     * those VMs.
+     * servers from all NICs that are part of the Availability Set. This property is what is configured on each of those
+     * VMs.
      */
-    @JsonProperty(value = "appliedDnsServers", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> appliedDnsServers;
 
     /*
      * Relative DNS name for this NIC used for internal communications between VMs in the same virtual network.
      */
-    @JsonProperty(value = "internalDnsNameLabel")
     private String internalDnsNameLabel;
 
     /*
      * Fully qualified DNS name supporting internal communications between VMs in the same virtual network.
      */
-    @JsonProperty(value = "internalFqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String internalFqdn;
 
     /*
      * Even if internalDnsNameLabel is not specified, a DNS entry is created for the primary NIC of the VM. This DNS
      * name can be constructed by concatenating the VM name with the value of internalDomainNameSuffix.
      */
-    @JsonProperty(value = "internalDomainNameSuffix", access = JsonProperty.Access.WRITE_ONLY)
     private String internalDomainNameSuffix;
 
-    /** Creates an instance of NetworkInterfaceDnsSettings class. */
+    /**
+     * Creates an instance of NetworkInterfaceDnsSettings class.
+     */
     public NetworkInterfaceDnsSettings() {
     }
 
@@ -53,7 +56,7 @@ public final class NetworkInterfaceDnsSettings {
      * Get the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided
      * DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in
      * dnsServers collection.
-     *
+     * 
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -64,7 +67,7 @@ public final class NetworkInterfaceDnsSettings {
      * Set the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided
      * DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in
      * dnsServers collection.
-     *
+     * 
      * @param dnsServers the dnsServers value to set.
      * @return the NetworkInterfaceDnsSettings object itself.
      */
@@ -77,7 +80,7 @@ public final class NetworkInterfaceDnsSettings {
      * Get the appliedDnsServers property: If the VM that uses this NIC is part of an Availability Set, then this list
      * will have the union of all DNS servers from all NICs that are part of the Availability Set. This property is what
      * is configured on each of those VMs.
-     *
+     * 
      * @return the appliedDnsServers value.
      */
     public List<String> appliedDnsServers() {
@@ -87,7 +90,7 @@ public final class NetworkInterfaceDnsSettings {
     /**
      * Get the internalDnsNameLabel property: Relative DNS name for this NIC used for internal communications between
      * VMs in the same virtual network.
-     *
+     * 
      * @return the internalDnsNameLabel value.
      */
     public String internalDnsNameLabel() {
@@ -97,7 +100,7 @@ public final class NetworkInterfaceDnsSettings {
     /**
      * Set the internalDnsNameLabel property: Relative DNS name for this NIC used for internal communications between
      * VMs in the same virtual network.
-     *
+     * 
      * @param internalDnsNameLabel the internalDnsNameLabel value to set.
      * @return the NetworkInterfaceDnsSettings object itself.
      */
@@ -109,7 +112,7 @@ public final class NetworkInterfaceDnsSettings {
     /**
      * Get the internalFqdn property: Fully qualified DNS name supporting internal communications between VMs in the
      * same virtual network.
-     *
+     * 
      * @return the internalFqdn value.
      */
     public String internalFqdn() {
@@ -120,7 +123,7 @@ public final class NetworkInterfaceDnsSettings {
      * Get the internalDomainNameSuffix property: Even if internalDnsNameLabel is not specified, a DNS entry is created
      * for the primary NIC of the VM. This DNS name can be constructed by concatenating the VM name with the value of
      * internalDomainNameSuffix.
-     *
+     * 
      * @return the internalDomainNameSuffix value.
      */
     public String internalDomainNameSuffix() {
@@ -129,9 +132,56 @@ public final class NetworkInterfaceDnsSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dnsServers", this.dnsServers, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("internalDnsNameLabel", this.internalDnsNameLabel);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkInterfaceDnsSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkInterfaceDnsSettings if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NetworkInterfaceDnsSettings.
+     */
+    public static NetworkInterfaceDnsSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkInterfaceDnsSettings deserializedNetworkInterfaceDnsSettings = new NetworkInterfaceDnsSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dnsServers".equals(fieldName)) {
+                    List<String> dnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkInterfaceDnsSettings.dnsServers = dnsServers;
+                } else if ("appliedDnsServers".equals(fieldName)) {
+                    List<String> appliedDnsServers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedNetworkInterfaceDnsSettings.appliedDnsServers = appliedDnsServers;
+                } else if ("internalDnsNameLabel".equals(fieldName)) {
+                    deserializedNetworkInterfaceDnsSettings.internalDnsNameLabel = reader.getString();
+                } else if ("internalFqdn".equals(fieldName)) {
+                    deserializedNetworkInterfaceDnsSettings.internalFqdn = reader.getString();
+                } else if ("internalDomainNameSuffix".equals(fieldName)) {
+                    deserializedNetworkInterfaceDnsSettings.internalDomainNameSuffix = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkInterfaceDnsSettings;
+        });
     }
 }

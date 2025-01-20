@@ -6,20 +6,17 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.SkuDescriptionInner;
-import org.junit.jupiter.api.Test;
 
 public final class SkuDescriptionInnerTests {
-    @Test
-    public void testDeserialize() {
-        SkuDescriptionInner model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"bpg\",\"name\":\"ytxhp\",\"tier\":\"bzpfzab\",\"locations\":[\"uhxwtctyqiklbbov\"],\"locationInfo\":[{\"location\":\"zbhvgyuguosv\",\"zones\":[\"ss\",\"qukkfp\",\"gmgsxnkjzkde\"]},{\"location\":\"lpvlopw\",\"zones\":[\"ghxpkdw\",\"baiuebbaumny\"]},{\"location\":\"upedeojnabckhs\",\"zones\":[\"psiebtfhvpes\",\"pskrdqmh\",\"jdhtldwkyzxu\",\"tkncwsc\"]}],\"restrictions\":[]}")
-                .toObject(SkuDescriptionInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SkuDescriptionInner model = BinaryData.fromString(
+            "{\"resourceType\":\"fudwpznt\",\"name\":\"dzhlrq\",\"tier\":\"hckfrlhrx\",\"locations\":[\"yvpycanuzbpzk\"],\"locationInfo\":[{\"location\":\"uwbc\",\"zones\":[\"bmehh\"],\"zoneDetails\":[{\"name\":[\"us\",\"tslhspkdeem\",\"ofmxagkvtmelmqkr\"],\"capabilities\":[{},{},{}]},{\"name\":[\"juahaquhcdhmdual\",\"exq\",\"vfadmws\"],\"capabilities\":[{}]},{\"name\":[\"xpvgo\",\"zlfmisgwbnbbeld\"],\"capabilities\":[{}]}]},{\"location\":\"zbaliourqha\",\"zones\":[\"hashsfwxosow\",\"xcug\",\"cjooxdjebwpucwwf\"],\"zoneDetails\":[{\"name\":[\"meue\",\"ivyhzceuojgjrwju\"],\"capabilities\":[{},{}]},{\"name\":[\"mcdytdxwitxnrj\",\"wgqwgxhn\",\"skxfbk\"],\"capabilities\":[{}]}]},{\"location\":\"gklwn\",\"zones\":[\"jdauwhvy\",\"wzbtdhxu\",\"znbmpowuwprzq\"],\"zoneDetails\":[{\"name\":[\"lupj\",\"khfxobbcswsrt\"],\"capabilities\":[{},{},{},{}]},{\"name\":[\"rbpbewtghfgblcg\",\"xzvlvqhjkbegib\",\"nmxiebwwaloayqc\",\"wrtz\"],\"capabilities\":[{}]},{\"name\":[\"yzm\",\"txon\",\"mtsavjcbpwxqp\"],\"capabilities\":[{},{},{}]}]}],\"restrictions\":[\"datatguvriuhp\",\"datawmdyvxqtay\"]}")
+            .toObject(SkuDescriptionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         SkuDescriptionInner model = new SkuDescriptionInner();
         model = BinaryData.fromObject(model).toObject(SkuDescriptionInner.class);
     }

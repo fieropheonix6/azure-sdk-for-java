@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkInterfaces GetCloudServiceNetworkInterface. */
+/**
+ * Samples for NetworkInterfaces GetCloudServiceNetworkInterface.
+ */
 public final class NetworkInterfacesGetCloudServiceNetworkInterfaceSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/CloudServiceNetworkInterfaceGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * CloudServiceNetworkInterfaceGet.json
      */
     /**
      * Sample code: Get cloud service network interface.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceNetworkInterface(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getNetworkInterfaces()
-            .getCloudServiceNetworkInterfaceWithResponse("rg1", "cs1", "TestVMRole_IN_0", "nic1", null, Context.NONE);
+            .getCloudServiceNetworkInterfaceWithResponse("rg1", "cs1", "TestVMRole_IN_0", "nic1", null,
+                com.azure.core.util.Context.NONE);
     }
 }

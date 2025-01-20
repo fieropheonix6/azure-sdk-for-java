@@ -11,13 +11,34 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.connectedvmware.fluent.models.InventoryItemInner;
 
-/** An instance of this class provides access to all the operations defined in InventoryItemsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InventoryItemsClient.
+ */
 public interface InventoryItemsClient {
     /**
      * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * 
+     * Create Or Update InventoryItem.
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param vcenterName Name of the vCenter.
+     * @param inventoryItemName Name of the inventoryItem.
+     * @param body Request payload.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines the inventory item along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<InventoryItemInner> createWithResponse(String resourceGroupName, String vcenterName,
+        String inventoryItemName, InventoryItemInner body, Context context);
+
+    /**
+     * Implements InventoryItem PUT method.
+     * 
+     * Create Or Update InventoryItem.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -30,14 +51,13 @@ public interface InventoryItemsClient {
     InventoryItemInner create(String resourceGroupName, String vcenterName, String inventoryItemName);
 
     /**
-     * Implements InventoryItem PUT method.
-     *
-     * <p>Create Or Update InventoryItem.
-     *
+     * Gets InventoryItem.
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
-     * @param body Request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -45,18 +65,14 @@ public interface InventoryItemsClient {
      * @return defines the inventory item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InventoryItemInner> createWithResponse(
-        String resourceGroupName,
-        String vcenterName,
-        String inventoryItemName,
-        InventoryItemInner body,
+    Response<InventoryItemInner> getWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
         Context context);
 
     /**
      * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * 
+     * Implements InventoryItem GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -69,10 +85,10 @@ public interface InventoryItemsClient {
     InventoryItemInner get(String resourceGroupName, String vcenterName, String inventoryItemName);
 
     /**
-     * Gets InventoryItem.
-     *
-     * <p>Implements InventoryItem GET method.
-     *
+     * Deletes an inventoryItem.
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -80,17 +96,17 @@ public interface InventoryItemsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the inventory item along with {@link Response}.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InventoryItemInner> getWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String vcenterName, String inventoryItemName,
+        Context context);
 
     /**
      * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
+     * 
+     * Implements inventoryItem DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param inventoryItemName Name of the inventoryItem.
@@ -102,28 +118,10 @@ public interface InventoryItemsClient {
     void delete(String resourceGroupName, String vcenterName, String inventoryItemName);
 
     /**
-     * Deletes an inventoryItem.
-     *
-     * <p>Implements inventoryItem DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param vcenterName Name of the vCenter.
-     * @param inventoryItemName Name of the inventoryItem.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String vcenterName, String inventoryItemName, Context context);
-
-    /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,9 +134,9 @@ public interface InventoryItemsClient {
 
     /**
      * Implements GET inventoryItems in a vCenter.
-     *
-     * <p>Returns the list of inventoryItems of the given vCenter.
-     *
+     * 
+     * Returns the list of inventoryItems of the given vCenter.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param vcenterName Name of the vCenter.
      * @param context The context to associate with this operation.

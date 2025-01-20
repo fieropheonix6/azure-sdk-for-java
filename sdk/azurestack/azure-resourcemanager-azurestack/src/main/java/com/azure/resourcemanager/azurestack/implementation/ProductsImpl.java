@@ -21,29 +21,40 @@ import com.azure.resourcemanager.azurestack.models.Product;
 import com.azure.resourcemanager.azurestack.models.ProductList;
 import com.azure.resourcemanager.azurestack.models.ProductLog;
 import com.azure.resourcemanager.azurestack.models.Products;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductsImpl implements Products {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductsImpl.class);
 
     private final ProductsClient innerClient;
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    public ProductsImpl(
-        ProductsClient innerClient, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    public ProductsImpl(ProductsClient innerClient,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Product> list(String resourceGroup, String registrationName) {
         PagedIterable<ProductInner> inner = this.serviceClient().list(resourceGroup, registrationName);
-        return Utils.mapPage(inner, inner1 -> new ProductImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProductImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Product> list(String resourceGroup, String registrationName, Context context) {
         PagedIterable<ProductInner> inner = this.serviceClient().list(resourceGroup, registrationName, context);
-        return Utils.mapPage(inner, inner1 -> new ProductImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ProductImpl(inner1, this.manager()));
+    }
+
+    public Response<Product> getWithResponse(String resourceGroup, String registrationName, String productName,
+        Context context) {
+        Response<ProductInner> inner
+            = this.serviceClient().getWithResponse(resourceGroup, registrationName, productName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProductImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Product get(String resourceGroup, String registrationName, String productName) {
@@ -55,16 +66,13 @@ public final class ProductsImpl implements Products {
         }
     }
 
-    public Response<Product> getWithResponse(
-        String resourceGroup, String registrationName, String productName, Context context) {
-        Response<ProductInner> inner =
-            this.serviceClient().getWithResponse(resourceGroup, registrationName, productName, context);
+    public Response<ExtendedProduct> listDetailsWithResponse(String resourceGroup, String registrationName,
+        String productName, Context context) {
+        Response<ExtendedProductInner> inner
+            = this.serviceClient().listDetailsWithResponse(resourceGroup, registrationName, productName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ProductImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ExtendedProductImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -79,16 +87,34 @@ public final class ProductsImpl implements Products {
         }
     }
 
-    public Response<ExtendedProduct> listDetailsWithResponse(
-        String resourceGroup, String registrationName, String productName, Context context) {
-        Response<ExtendedProductInner> inner =
-            this.serviceClient().listDetailsWithResponse(resourceGroup, registrationName, productName, context);
+    public Response<ProductList> listProductsWithResponse(String resourceGroup, String registrationName,
+        String productName, DeviceConfiguration deviceConfiguration, Context context) {
+        Response<ProductListInner> inner = this.serviceClient()
+            .listProductsWithResponse(resourceGroup, registrationName, productName, deviceConfiguration, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ExtendedProductImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProductListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ProductList listProducts(String resourceGroup, String registrationName, String productName) {
+        ProductListInner inner = this.serviceClient().listProducts(resourceGroup, registrationName, productName);
+        if (inner != null) {
+            return new ProductListImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<ProductList> getProductsWithResponse(String resourceGroup, String registrationName,
+        String productName, DeviceConfiguration deviceConfiguration, Context context) {
+        Response<ProductListInner> inner = this.serviceClient()
+            .getProductsWithResponse(resourceGroup, registrationName, productName, deviceConfiguration, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProductListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -103,22 +129,13 @@ public final class ProductsImpl implements Products {
         }
     }
 
-    public Response<ProductList> getProductsWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        DeviceConfiguration deviceConfiguration,
-        Context context) {
-        Response<ProductListInner> inner =
-            this
-                .serviceClient()
-                .getProductsWithResponse(resourceGroup, registrationName, productName, deviceConfiguration, context);
+    public Response<Product> getProductWithResponse(String resourceGroup, String registrationName, String productName,
+        DeviceConfiguration deviceConfiguration, Context context) {
+        Response<ProductInner> inner = this.serviceClient()
+            .getProductWithResponse(resourceGroup, registrationName, productName, deviceConfiguration, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ProductListImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProductImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -133,22 +150,13 @@ public final class ProductsImpl implements Products {
         }
     }
 
-    public Response<Product> getProductWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        DeviceConfiguration deviceConfiguration,
-        Context context) {
-        Response<ProductInner> inner =
-            this
-                .serviceClient()
-                .getProductWithResponse(resourceGroup, registrationName, productName, deviceConfiguration, context);
+    public Response<ProductLog> uploadLogWithResponse(String resourceGroup, String registrationName, String productName,
+        MarketplaceProductLogUpdate marketplaceProductLogUpdate, Context context) {
+        Response<ProductLogInner> inner = this.serviceClient()
+            .uploadLogWithResponse(resourceGroup, registrationName, productName, marketplaceProductLogUpdate, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ProductImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ProductLogImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -158,28 +166,6 @@ public final class ProductsImpl implements Products {
         ProductLogInner inner = this.serviceClient().uploadLog(resourceGroup, registrationName, productName);
         if (inner != null) {
             return new ProductLogImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ProductLog> uploadLogWithResponse(
-        String resourceGroup,
-        String registrationName,
-        String productName,
-        MarketplaceProductLogUpdate marketplaceProductLogUpdate,
-        Context context) {
-        Response<ProductLogInner> inner =
-            this
-                .serviceClient()
-                .uploadLogWithResponse(
-                    resourceGroup, registrationName, productName, marketplaceProductLogUpdate, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ProductLogImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -5,37 +5,41 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Specifies the Spot-Try-Restore properties for the virtual machine scale set. &lt;br&gt;&lt;br&gt; With this property
- * customer can enable or disable automatic restore of the evicted Spot VMSS VM instances opportunistically based on
- * capacity availability and pricing constraint.
+ * Specifies the Spot-Try-Restore properties for the virtual machine scale set. With this property customer can enable
+ * or disable automatic restore of the evicted Spot VMSS VM instances opportunistically based on capacity availability
+ * and pricing constraint.
  */
 @Fluent
-public final class SpotRestorePolicy {
+public final class SpotRestorePolicy implements JsonSerializable<SpotRestorePolicy> {
     /*
      * Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to be restored
      * opportunistically based on capacity availability and pricing constraints
      */
-    @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
      * Timeout value expressed as an ISO 8601 time duration after which the platform will not try to restore the VMSS
      * SPOT instances
      */
-    @JsonProperty(value = "restoreTimeout")
     private String restoreTimeout;
 
-    /** Creates an instance of SpotRestorePolicy class. */
+    /**
+     * Creates an instance of SpotRestorePolicy class.
+     */
     public SpotRestorePolicy() {
     }
 
     /**
      * Get the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to
      * be restored opportunistically based on capacity availability and pricing constraints.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -45,7 +49,7 @@ public final class SpotRestorePolicy {
     /**
      * Set the enabled property: Enables the Spot-Try-Restore feature where evicted VMSS SPOT instances will be tried to
      * be restored opportunistically based on capacity availability and pricing constraints.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the SpotRestorePolicy object itself.
      */
@@ -57,7 +61,7 @@ public final class SpotRestorePolicy {
     /**
      * Get the restoreTimeout property: Timeout value expressed as an ISO 8601 time duration after which the platform
      * will not try to restore the VMSS SPOT instances.
-     *
+     * 
      * @return the restoreTimeout value.
      */
     public String restoreTimeout() {
@@ -67,7 +71,7 @@ public final class SpotRestorePolicy {
     /**
      * Set the restoreTimeout property: Timeout value expressed as an ISO 8601 time duration after which the platform
      * will not try to restore the VMSS SPOT instances.
-     *
+     * 
      * @param restoreTimeout the restoreTimeout value to set.
      * @return the SpotRestorePolicy object itself.
      */
@@ -78,9 +82,48 @@ public final class SpotRestorePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeStringField("restoreTimeout", this.restoreTimeout);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SpotRestorePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SpotRestorePolicy if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SpotRestorePolicy.
+     */
+    public static SpotRestorePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SpotRestorePolicy deserializedSpotRestorePolicy = new SpotRestorePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("enabled".equals(fieldName)) {
+                    deserializedSpotRestorePolicy.enabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("restoreTimeout".equals(fieldName)) {
+                    deserializedSpotRestorePolicy.restoreTimeout = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSpotRestorePolicy;
+        });
     }
 }

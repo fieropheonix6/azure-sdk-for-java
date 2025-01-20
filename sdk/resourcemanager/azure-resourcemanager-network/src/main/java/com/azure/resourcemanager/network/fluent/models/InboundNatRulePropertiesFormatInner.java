@@ -6,50 +6,51 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of the inbound NAT rule. */
+/**
+ * Properties of the inbound NAT rule.
+ */
 @Fluent
-public final class InboundNatRulePropertiesFormatInner {
+public final class InboundNatRulePropertiesFormatInner
+    implements JsonSerializable<InboundNatRulePropertiesFormatInner> {
     /*
      * A reference to frontend IP addresses.
      */
-    @JsonProperty(value = "frontendIPConfiguration")
     private SubResource frontendIpConfiguration;
 
     /*
      * A reference to a private IP address defined on a network interface of a VM. Traffic sent to the frontend port of
      * each of the frontend IP configurations is forwarded to the backend IP.
      */
-    @JsonProperty(value = "backendIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkInterfaceIpConfigurationInner backendIpConfiguration;
 
     /*
      * The reference to the transport protocol used by the load balancing rule.
      */
-    @JsonProperty(value = "protocol")
     private TransportProtocol protocol;
 
     /*
      * The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer.
      * Acceptable values range from 1 to 65534.
      */
-    @JsonProperty(value = "frontendPort")
     private Integer frontendPort;
 
     /*
      * The port used for the internal endpoint. Acceptable values range from 1 to 65535.
      */
-    @JsonProperty(value = "backendPort")
     private Integer backendPort;
 
     /*
      * The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4
      * minutes. This element is only used when the protocol is set to TCP.
      */
-    @JsonProperty(value = "idleTimeoutInMinutes")
     private Integer idleTimeoutInMinutes;
 
     /*
@@ -57,14 +58,12 @@ public final class InboundNatRulePropertiesFormatInner {
      * Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This
      * setting can't be changed after you create the endpoint.
      */
-    @JsonProperty(value = "enableFloatingIP")
     private Boolean enableFloatingIp;
 
     /*
      * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is
      * only used when the protocol is set to TCP.
      */
-    @JsonProperty(value = "enableTcpReset")
     private Boolean enableTcpReset;
 
     /*
@@ -72,7 +71,6 @@ public final class InboundNatRulePropertiesFormatInner {
      * FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be created for each backend address from
      * BackendAddressPool. Acceptable values range from 1 to 65534.
      */
-    @JsonProperty(value = "frontendPortRangeStart")
     private Integer frontendPortRangeStart;
 
     /*
@@ -80,28 +78,27 @@ public final class InboundNatRulePropertiesFormatInner {
      * FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from
      * BackendAddressPool. Acceptable values range from 1 to 65534.
      */
-    @JsonProperty(value = "frontendPortRangeEnd")
     private Integer frontendPortRangeEnd;
 
     /*
      * A reference to backendAddressPool resource.
      */
-    @JsonProperty(value = "backendAddressPool")
     private SubResource backendAddressPool;
 
     /*
      * The provisioning state of the inbound NAT rule resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of InboundNatRulePropertiesFormatInner class. */
+    /**
+     * Creates an instance of InboundNatRulePropertiesFormatInner class.
+     */
     public InboundNatRulePropertiesFormatInner() {
     }
 
     /**
      * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
-     *
+     * 
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -110,7 +107,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
-     *
+     * 
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -122,7 +119,7 @@ public final class InboundNatRulePropertiesFormatInner {
     /**
      * Get the backendIpConfiguration property: A reference to a private IP address defined on a network interface of a
      * VM. Traffic sent to the frontend port of each of the frontend IP configurations is forwarded to the backend IP.
-     *
+     * 
      * @return the backendIpConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner backendIpConfiguration() {
@@ -131,7 +128,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Get the protocol property: The reference to the transport protocol used by the load balancing rule.
-     *
+     * 
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -140,7 +137,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Set the protocol property: The reference to the transport protocol used by the load balancing rule.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -152,7 +149,7 @@ public final class InboundNatRulePropertiesFormatInner {
     /**
      * Get the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
      * within the Load Balancer. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
@@ -162,7 +159,7 @@ public final class InboundNatRulePropertiesFormatInner {
     /**
      * Set the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
      * within the Load Balancer. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @param frontendPort the frontendPort value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -173,7 +170,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Get the backendPort property: The port used for the internal endpoint. Acceptable values range from 1 to 65535.
-     *
+     * 
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -182,7 +179,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Set the backendPort property: The port used for the internal endpoint. Acceptable values range from 1 to 65535.
-     *
+     * 
      * @param backendPort the backendPort value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -194,7 +191,7 @@ public final class InboundNatRulePropertiesFormatInner {
     /**
      * Get the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
      * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -204,7 +201,7 @@ public final class InboundNatRulePropertiesFormatInner {
     /**
      * Set the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
      * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -217,7 +214,7 @@ public final class InboundNatRulePropertiesFormatInner {
      * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
-     *
+     * 
      * @return the enableFloatingIp value.
      */
     public Boolean enableFloatingIp() {
@@ -228,7 +225,7 @@ public final class InboundNatRulePropertiesFormatInner {
      * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
      * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
      * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
-     *
+     * 
      * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -240,7 +237,7 @@ public final class InboundNatRulePropertiesFormatInner {
     /**
      * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
      * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
@@ -250,7 +247,7 @@ public final class InboundNatRulePropertiesFormatInner {
     /**
      * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
      * connection termination. This element is only used when the protocol is set to TCP.
-     *
+     * 
      * @param enableTcpReset the enableTcpReset value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -263,7 +260,7 @@ public final class InboundNatRulePropertiesFormatInner {
      * Get the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
      * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
      * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @return the frontendPortRangeStart value.
      */
     public Integer frontendPortRangeStart() {
@@ -274,7 +271,7 @@ public final class InboundNatRulePropertiesFormatInner {
      * Set the frontendPortRangeStart property: The port range start for the external endpoint. This property is used
      * together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be
      * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @param frontendPortRangeStart the frontendPortRangeStart value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -287,7 +284,7 @@ public final class InboundNatRulePropertiesFormatInner {
      * Get the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
      * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
      * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @return the frontendPortRangeEnd value.
      */
     public Integer frontendPortRangeEnd() {
@@ -298,7 +295,7 @@ public final class InboundNatRulePropertiesFormatInner {
      * Set the frontendPortRangeEnd property: The port range end for the external endpoint. This property is used
      * together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be
      * created for each backend address from BackendAddressPool. Acceptable values range from 1 to 65534.
-     *
+     * 
      * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -309,7 +306,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Get the backendAddressPool property: A reference to backendAddressPool resource.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -318,7 +315,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Set the backendAddressPool property: A reference to backendAddressPool resource.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -329,7 +326,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Get the provisioningState property: The provisioning state of the inbound NAT rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -338,12 +335,91 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (backendIpConfiguration() != null) {
             backendIpConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("frontendIPConfiguration", this.frontendIpConfiguration);
+        jsonWriter.writeStringField("protocol", this.protocol == null ? null : this.protocol.toString());
+        jsonWriter.writeNumberField("frontendPort", this.frontendPort);
+        jsonWriter.writeNumberField("backendPort", this.backendPort);
+        jsonWriter.writeNumberField("idleTimeoutInMinutes", this.idleTimeoutInMinutes);
+        jsonWriter.writeBooleanField("enableFloatingIP", this.enableFloatingIp);
+        jsonWriter.writeBooleanField("enableTcpReset", this.enableTcpReset);
+        jsonWriter.writeNumberField("frontendPortRangeStart", this.frontendPortRangeStart);
+        jsonWriter.writeNumberField("frontendPortRangeEnd", this.frontendPortRangeEnd);
+        jsonWriter.writeJsonField("backendAddressPool", this.backendAddressPool);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of InboundNatRulePropertiesFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of InboundNatRulePropertiesFormatInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the InboundNatRulePropertiesFormatInner.
+     */
+    public static InboundNatRulePropertiesFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            InboundNatRulePropertiesFormatInner deserializedInboundNatRulePropertiesFormatInner
+                = new InboundNatRulePropertiesFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("frontendIPConfiguration".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.frontendIpConfiguration
+                        = SubResource.fromJson(reader);
+                } else if ("backendIPConfiguration".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.backendIpConfiguration
+                        = NetworkInterfaceIpConfigurationInner.fromJson(reader);
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.protocol
+                        = TransportProtocol.fromString(reader.getString());
+                } else if ("frontendPort".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.frontendPort
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("backendPort".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.backendPort
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("idleTimeoutInMinutes".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.idleTimeoutInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("enableFloatingIP".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.enableFloatingIp
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableTcpReset".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.enableTcpReset
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("frontendPortRangeStart".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.frontendPortRangeStart
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("frontendPortRangeEnd".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.frontendPortRangeEnd
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("backendAddressPool".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.backendAddressPool = SubResource.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedInboundNatRulePropertiesFormatInner.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedInboundNatRulePropertiesFormatInner;
+        });
     }
 }

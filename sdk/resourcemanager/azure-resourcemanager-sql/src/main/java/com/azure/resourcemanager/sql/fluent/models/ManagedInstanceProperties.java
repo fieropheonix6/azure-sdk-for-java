@@ -5,162 +5,215 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import com.azure.resourcemanager.sql.models.ManagedInstanceExternalAdministrator;
 import com.azure.resourcemanager.sql.models.ManagedInstanceLicenseType;
+import com.azure.resourcemanager.sql.models.ManagedInstancePecProperty;
+import com.azure.resourcemanager.sql.models.ManagedInstancePropertiesProvisioningState;
 import com.azure.resourcemanager.sql.models.ManagedInstanceProxyOverride;
 import com.azure.resourcemanager.sql.models.ManagedServerCreateMode;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.sql.models.ServicePrincipal;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-/** The properties of a managed instance. */
+/**
+ * The properties of a managed instance.
+ */
 @Fluent
-public final class ManagedInstanceProperties {
+public final class ManagedInstanceProperties implements JsonSerializable<ManagedInstanceProperties> {
+    /*
+     * The provisioningState property.
+     */
+    private ManagedInstancePropertiesProvisioningState provisioningState;
+
     /*
      * Specifies the mode of database creation.
-     *
+     * 
      * Default: Regular instance creation.
-     *
-     * Restore: Creates an instance by restoring a set of backups to specific
-     * point in time. RestorePointInTime and SourceManagedInstanceId must be
-     * specified.
+     * 
+     * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+     * SourceManagedInstanceId must be specified.
      */
-    @JsonProperty(value = "managedInstanceCreateMode")
     private ManagedServerCreateMode managedInstanceCreateMode;
 
     /*
      * The fully qualified domain name of the managed instance.
      */
-    @JsonProperty(value = "fullyQualifiedDomainName", access = JsonProperty.Access.WRITE_ONLY)
     private String fullyQualifiedDomainName;
 
     /*
-     * Administrator username for the managed instance. Can only be specified
-     * when the managed instance is being created (and is required for
-     * creation).
+     * Administrator username for the managed instance. Can only be specified when the managed instance is being created
+     * (and is required for creation).
      */
-    @JsonProperty(value = "administratorLogin")
     private String administratorLogin;
 
     /*
-     * The administrator login password (required for managed instance
-     * creation).
+     * The administrator login password (required for managed instance creation).
      */
-    @JsonProperty(value = "administratorLoginPassword")
     private String administratorLoginPassword;
 
     /*
      * Subnet resource ID for the managed instance.
      */
-    @JsonProperty(value = "subnetId")
     private String subnetId;
 
     /*
      * The state of the managed instance.
      */
-    @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
 
     /*
-     * The license type. Possible values are 'LicenseIncluded' (regular price
-     * inclusive of a new SQL license) and 'BasePrice' (discounted AHB price
-     * for bringing your own SQL licenses).
+     * The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and
+     * 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
      */
-    @JsonProperty(value = "licenseType")
     private ManagedInstanceLicenseType licenseType;
 
     /*
      * The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
      */
-    @JsonProperty(value = "vCores")
     private Integer vCores;
 
     /*
-     * Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments
-     * of 32 GB allowed only.
+     * Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32 GB allowed only. Maximum value
+     * depends on the selected hardware family and number of vCores.
      */
-    @JsonProperty(value = "storageSizeInGB")
     private Integer storageSizeInGB;
 
     /*
      * Collation of the managed instance.
      */
-    @JsonProperty(value = "collation")
     private String collation;
 
     /*
      * The Dns Zone that the managed instance is in.
      */
-    @JsonProperty(value = "dnsZone", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsZone;
 
     /*
-     * The resource id of another managed instance whose DNS zone this managed
-     * instance will share after creation.
+     * The resource id of another managed instance whose DNS zone this managed instance will share after creation.
      */
-    @JsonProperty(value = "dnsZonePartner")
     private String dnsZonePartner;
 
     /*
      * Whether or not the public data endpoint is enabled.
      */
-    @JsonProperty(value = "publicDataEndpointEnabled")
     private Boolean publicDataEndpointEnabled;
 
     /*
-     * The resource identifier of the source managed instance associated with
-     * create operation of this instance.
+     * The resource identifier of the source managed instance associated with create operation of this instance.
      */
-    @JsonProperty(value = "sourceManagedInstanceId")
     private String sourceManagedInstanceId;
 
     /*
-     * Specifies the point in time (ISO8601 format) of the source database that
-     * will be restored to create the new database.
+     * Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new
+     * database.
      */
-    @JsonProperty(value = "restorePointInTime")
     private OffsetDateTime restorePointInTime;
 
     /*
      * Connection type used for connecting to the instance.
      */
-    @JsonProperty(value = "proxyOverride")
     private ManagedInstanceProxyOverride proxyOverride;
 
     /*
      * Id of the timezone. Allowed values are timezones supported by Windows.
-     * Windows keeps details on supported timezones, including the id, in
-     * registry under
-     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time
-     * Zones.
-     * You can get those registry values via SQL Server by querying SELECT name
-     * AS timezone_id FROM sys.time_zone_info.
-     * List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
-     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe
-     * Standard Time".
+     * Windows keeps details on supported timezones, including the id, in registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     * You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
      */
-    @JsonProperty(value = "timezoneId")
     private String timezoneId;
 
     /*
      * The Id of the instance pool this managed server belongs to.
      */
-    @JsonProperty(value = "instancePoolId")
     private String instancePoolId;
+
+    /*
+     * Specifies maintenance configuration id to apply to this managed instance.
+     */
+    private String maintenanceConfigurationId;
+
+    /*
+     * List of private endpoint connections on a managed instance.
+     */
+    private List<ManagedInstancePecProperty> privateEndpointConnections;
 
     /*
      * Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'
      */
-    @JsonProperty(value = "minimalTlsVersion")
     private String minimalTlsVersion;
+
+    /*
+     * The storage account type used to store backups for this instance. The options are Local
+     * (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
+     * GeoZone(GeoZoneRedundantStorage)
+     */
+    private BackupStorageRedundancy currentBackupStorageRedundancy;
+
+    /*
+     * The storage account type to be used to store backups for this instance. The options are Local
+     * (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage) and
+     * GeoZone(GeoZoneRedundantStorage)
+     */
+    private BackupStorageRedundancy requestedBackupStorageRedundancy;
+
+    /*
+     * Whether or not the multi-az is enabled.
+     */
+    private Boolean zoneRedundant;
+
+    /*
+     * The resource id of a user assigned identity to be used by default.
+     */
+    private String primaryUserAssignedIdentityId;
+
+    /*
+     * A CMK URI of the key to use for encryption.
+     */
+    private String keyId;
+
+    /*
+     * The Azure Active Directory administrator of the server.
+     */
+    private ManagedInstanceExternalAdministrator administrators;
+
+    /*
+     * The managed instance's service principal.
+     */
+    private ServicePrincipal servicePrincipal;
+
+    /**
+     * Creates an instance of ManagedInstanceProperties class.
+     */
+    public ManagedInstanceProperties() {
+    }
+
+    /**
+     * Get the provisioningState property: The provisioningState property.
+     * 
+     * @return the provisioningState value.
+     */
+    public ManagedInstancePropertiesProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
 
     /**
      * Get the managedInstanceCreateMode property: Specifies the mode of database creation.
-     *
-     * <p>Default: Regular instance creation.
-     *
-     * <p>Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+     * 
+     * Default: Regular instance creation.
+     * 
+     * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
      * SourceManagedInstanceId must be specified.
-     *
+     * 
      * @return the managedInstanceCreateMode value.
      */
     public ManagedServerCreateMode managedInstanceCreateMode() {
@@ -169,12 +222,12 @@ public final class ManagedInstanceProperties {
 
     /**
      * Set the managedInstanceCreateMode property: Specifies the mode of database creation.
-     *
-     * <p>Default: Regular instance creation.
-     *
-     * <p>Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
+     * 
+     * Default: Regular instance creation.
+     * 
+     * Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and
      * SourceManagedInstanceId must be specified.
-     *
+     * 
      * @param managedInstanceCreateMode the managedInstanceCreateMode value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -185,7 +238,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the fullyQualifiedDomainName property: The fully qualified domain name of the managed instance.
-     *
+     * 
      * @return the fullyQualifiedDomainName value.
      */
     public String fullyQualifiedDomainName() {
@@ -195,7 +248,7 @@ public final class ManagedInstanceProperties {
     /**
      * Get the administratorLogin property: Administrator username for the managed instance. Can only be specified when
      * the managed instance is being created (and is required for creation).
-     *
+     * 
      * @return the administratorLogin value.
      */
     public String administratorLogin() {
@@ -205,7 +258,7 @@ public final class ManagedInstanceProperties {
     /**
      * Set the administratorLogin property: Administrator username for the managed instance. Can only be specified when
      * the managed instance is being created (and is required for creation).
-     *
+     * 
      * @param administratorLogin the administratorLogin value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -217,7 +270,7 @@ public final class ManagedInstanceProperties {
     /**
      * Get the administratorLoginPassword property: The administrator login password (required for managed instance
      * creation).
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
@@ -227,7 +280,7 @@ public final class ManagedInstanceProperties {
     /**
      * Set the administratorLoginPassword property: The administrator login password (required for managed instance
      * creation).
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -238,7 +291,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the subnetId property: Subnet resource ID for the managed instance.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -247,7 +300,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Set the subnetId property: Subnet resource ID for the managed instance.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -258,7 +311,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the state property: The state of the managed instance.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -268,7 +321,7 @@ public final class ManagedInstanceProperties {
     /**
      * Get the licenseType property: The license type. Possible values are 'LicenseIncluded' (regular price inclusive of
      * a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
-     *
+     * 
      * @return the licenseType value.
      */
     public ManagedInstanceLicenseType licenseType() {
@@ -278,7 +331,7 @@ public final class ManagedInstanceProperties {
     /**
      * Set the licenseType property: The license type. Possible values are 'LicenseIncluded' (regular price inclusive of
      * a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses).
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -289,7 +342,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
-     *
+     * 
      * @return the vCores value.
      */
     public Integer vCores() {
@@ -298,7 +351,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Set the vCores property: The number of vCores. Allowed values: 8, 16, 24, 32, 40, 64, 80.
-     *
+     * 
      * @param vCores the vCores value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -308,9 +361,9 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB
-     * allowed only.
-     *
+     * Get the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
+     * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     * 
      * @return the storageSizeInGB value.
      */
     public Integer storageSizeInGB() {
@@ -318,9 +371,9 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB
-     * allowed only.
-     *
+     * Set the storageSizeInGB property: Storage size in GB. Minimum value: 32. Maximum value: 16384. Increments of 32
+     * GB allowed only. Maximum value depends on the selected hardware family and number of vCores.
+     * 
      * @param storageSizeInGB the storageSizeInGB value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -331,7 +384,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the collation property: Collation of the managed instance.
-     *
+     * 
      * @return the collation value.
      */
     public String collation() {
@@ -340,7 +393,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Set the collation property: Collation of the managed instance.
-     *
+     * 
      * @param collation the collation value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -351,7 +404,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the dnsZone property: The Dns Zone that the managed instance is in.
-     *
+     * 
      * @return the dnsZone value.
      */
     public String dnsZone() {
@@ -361,7 +414,7 @@ public final class ManagedInstanceProperties {
     /**
      * Get the dnsZonePartner property: The resource id of another managed instance whose DNS zone this managed instance
      * will share after creation.
-     *
+     * 
      * @return the dnsZonePartner value.
      */
     public String dnsZonePartner() {
@@ -371,7 +424,7 @@ public final class ManagedInstanceProperties {
     /**
      * Set the dnsZonePartner property: The resource id of another managed instance whose DNS zone this managed instance
      * will share after creation.
-     *
+     * 
      * @param dnsZonePartner the dnsZonePartner value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -382,7 +435,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the publicDataEndpointEnabled property: Whether or not the public data endpoint is enabled.
-     *
+     * 
      * @return the publicDataEndpointEnabled value.
      */
     public Boolean publicDataEndpointEnabled() {
@@ -391,7 +444,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Set the publicDataEndpointEnabled property: Whether or not the public data endpoint is enabled.
-     *
+     * 
      * @param publicDataEndpointEnabled the publicDataEndpointEnabled value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -403,7 +456,7 @@ public final class ManagedInstanceProperties {
     /**
      * Get the sourceManagedInstanceId property: The resource identifier of the source managed instance associated with
      * create operation of this instance.
-     *
+     * 
      * @return the sourceManagedInstanceId value.
      */
     public String sourceManagedInstanceId() {
@@ -413,7 +466,7 @@ public final class ManagedInstanceProperties {
     /**
      * Set the sourceManagedInstanceId property: The resource identifier of the source managed instance associated with
      * create operation of this instance.
-     *
+     * 
      * @param sourceManagedInstanceId the sourceManagedInstanceId value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -425,7 +478,7 @@ public final class ManagedInstanceProperties {
     /**
      * Get the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
      * will be restored to create the new database.
-     *
+     * 
      * @return the restorePointInTime value.
      */
     public OffsetDateTime restorePointInTime() {
@@ -435,7 +488,7 @@ public final class ManagedInstanceProperties {
     /**
      * Set the restorePointInTime property: Specifies the point in time (ISO8601 format) of the source database that
      * will be restored to create the new database.
-     *
+     * 
      * @param restorePointInTime the restorePointInTime value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -446,7 +499,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the proxyOverride property: Connection type used for connecting to the instance.
-     *
+     * 
      * @return the proxyOverride value.
      */
     public ManagedInstanceProxyOverride proxyOverride() {
@@ -455,7 +508,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Set the proxyOverride property: Connection type used for connecting to the instance.
-     *
+     * 
      * @param proxyOverride the proxyOverride value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -465,13 +518,13 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Get the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows. Windows keeps
-     * details on supported timezones, including the id, in registry under KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-     * NT\CurrentVersion\Time Zones. You can get those registry values via SQL Server by querying SELECT name AS
-     * timezone_id FROM sys.time_zone_info. List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. An example of valid timezone id is "Pacific Standard
-     * Time" or "W. Europe Standard Time".
-     *
+     * Get the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows.
+     * Windows keeps details on supported timezones, including the id, in registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     * You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+     * 
      * @return the timezoneId value.
      */
     public String timezoneId() {
@@ -479,13 +532,13 @@ public final class ManagedInstanceProperties {
     }
 
     /**
-     * Set the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows. Windows keeps
-     * details on supported timezones, including the id, in registry under KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows
-     * NT\CurrentVersion\Time Zones. You can get those registry values via SQL Server by querying SELECT name AS
-     * timezone_id FROM sys.time_zone_info. List of Ids can also be obtained by executing
-     * [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell. An example of valid timezone id is "Pacific Standard
-     * Time" or "W. Europe Standard Time".
-     *
+     * Set the timezoneId property: Id of the timezone. Allowed values are timezones supported by Windows.
+     * Windows keeps details on supported timezones, including the id, in registry under
+     * KEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Time Zones.
+     * You can get those registry values via SQL Server by querying SELECT name AS timezone_id FROM sys.time_zone_info.
+     * List of Ids can also be obtained by executing [System.TimeZoneInfo]::GetSystemTimeZones() in PowerShell.
+     * An example of valid timezone id is "Pacific Standard Time" or "W. Europe Standard Time".
+     * 
      * @param timezoneId the timezoneId value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -496,7 +549,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Get the instancePoolId property: The Id of the instance pool this managed server belongs to.
-     *
+     * 
      * @return the instancePoolId value.
      */
     public String instancePoolId() {
@@ -505,7 +558,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Set the instancePoolId property: The Id of the instance pool this managed server belongs to.
-     *
+     * 
      * @param instancePoolId the instancePoolId value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -515,8 +568,39 @@ public final class ManagedInstanceProperties {
     }
 
     /**
+     * Get the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.maintenanceConfigurationId;
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: Specifies maintenance configuration id to apply to this managed
+     * instance.
+     * 
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        this.maintenanceConfigurationId = maintenanceConfigurationId;
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections on a managed instance.
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<ManagedInstancePecProperty> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
      * Get the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public String minimalTlsVersion() {
@@ -525,7 +609,7 @@ public final class ManagedInstanceProperties {
 
     /**
      * Set the minimalTlsVersion property: Minimal TLS version. Allowed values: 'None', '1.0', '1.1', '1.2'.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ManagedInstanceProperties object itself.
      */
@@ -535,10 +619,287 @@ public final class ManagedInstanceProperties {
     }
 
     /**
+     * Get the currentBackupStorageRedundancy property: The storage account type used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     * 
+     * @return the currentBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy currentBackupStorageRedundancy() {
+        return this.currentBackupStorageRedundancy;
+    }
+
+    /**
+     * Get the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     * 
+     * @return the requestedBackupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy requestedBackupStorageRedundancy() {
+        return this.requestedBackupStorageRedundancy;
+    }
+
+    /**
+     * Set the requestedBackupStorageRedundancy property: The storage account type to be used to store backups for this
+     * instance. The options are Local (LocallyRedundantStorage), Zone (ZoneRedundantStorage), Geo (GeoRedundantStorage)
+     * and GeoZone(GeoZoneRedundantStorage).
+     * 
+     * @param requestedBackupStorageRedundancy the requestedBackupStorageRedundancy value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties
+        withRequestedBackupStorageRedundancy(BackupStorageRedundancy requestedBackupStorageRedundancy) {
+        this.requestedBackupStorageRedundancy = requestedBackupStorageRedundancy;
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: Whether or not the multi-az is enabled.
+     * 
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.zoneRedundant;
+    }
+
+    /**
+     * Set the zoneRedundant property: Whether or not the multi-az is enabled.
+     * 
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withZoneRedundant(Boolean zoneRedundant) {
+        this.zoneRedundant = zoneRedundant;
+        return this;
+    }
+
+    /**
+     * Get the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     * 
+     * @return the primaryUserAssignedIdentityId value.
+     */
+    public String primaryUserAssignedIdentityId() {
+        return this.primaryUserAssignedIdentityId;
+    }
+
+    /**
+     * Set the primaryUserAssignedIdentityId property: The resource id of a user assigned identity to be used by
+     * default.
+     * 
+     * @param primaryUserAssignedIdentityId the primaryUserAssignedIdentityId value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withPrimaryUserAssignedIdentityId(String primaryUserAssignedIdentityId) {
+        this.primaryUserAssignedIdentityId = primaryUserAssignedIdentityId;
+        return this;
+    }
+
+    /**
+     * Get the keyId property: A CMK URI of the key to use for encryption.
+     * 
+     * @return the keyId value.
+     */
+    public String keyId() {
+        return this.keyId;
+    }
+
+    /**
+     * Set the keyId property: A CMK URI of the key to use for encryption.
+     * 
+     * @param keyId the keyId value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withKeyId(String keyId) {
+        this.keyId = keyId;
+        return this;
+    }
+
+    /**
+     * Get the administrators property: The Azure Active Directory administrator of the server.
+     * 
+     * @return the administrators value.
+     */
+    public ManagedInstanceExternalAdministrator administrators() {
+        return this.administrators;
+    }
+
+    /**
+     * Set the administrators property: The Azure Active Directory administrator of the server.
+     * 
+     * @param administrators the administrators value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withAdministrators(ManagedInstanceExternalAdministrator administrators) {
+        this.administrators = administrators;
+        return this;
+    }
+
+    /**
+     * Get the servicePrincipal property: The managed instance's service principal.
+     * 
+     * @return the servicePrincipal value.
+     */
+    public ServicePrincipal servicePrincipal() {
+        return this.servicePrincipal;
+    }
+
+    /**
+     * Set the servicePrincipal property: The managed instance's service principal.
+     * 
+     * @param servicePrincipal the servicePrincipal value to set.
+     * @return the ManagedInstanceProperties object itself.
+     */
+    public ManagedInstanceProperties withServicePrincipal(ServicePrincipal servicePrincipal) {
+        this.servicePrincipal = servicePrincipal;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (administrators() != null) {
+            administrators().validate();
+        }
+        if (servicePrincipal() != null) {
+            servicePrincipal().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("managedInstanceCreateMode",
+            this.managedInstanceCreateMode == null ? null : this.managedInstanceCreateMode.toString());
+        jsonWriter.writeStringField("administratorLogin", this.administratorLogin);
+        jsonWriter.writeStringField("administratorLoginPassword", this.administratorLoginPassword);
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
+        jsonWriter.writeNumberField("vCores", this.vCores);
+        jsonWriter.writeNumberField("storageSizeInGB", this.storageSizeInGB);
+        jsonWriter.writeStringField("collation", this.collation);
+        jsonWriter.writeStringField("dnsZonePartner", this.dnsZonePartner);
+        jsonWriter.writeBooleanField("publicDataEndpointEnabled", this.publicDataEndpointEnabled);
+        jsonWriter.writeStringField("sourceManagedInstanceId", this.sourceManagedInstanceId);
+        jsonWriter.writeStringField("restorePointInTime",
+            this.restorePointInTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.restorePointInTime));
+        jsonWriter.writeStringField("proxyOverride", this.proxyOverride == null ? null : this.proxyOverride.toString());
+        jsonWriter.writeStringField("timezoneId", this.timezoneId);
+        jsonWriter.writeStringField("instancePoolId", this.instancePoolId);
+        jsonWriter.writeStringField("maintenanceConfigurationId", this.maintenanceConfigurationId);
+        jsonWriter.writeStringField("minimalTlsVersion", this.minimalTlsVersion);
+        jsonWriter.writeStringField("requestedBackupStorageRedundancy",
+            this.requestedBackupStorageRedundancy == null ? null : this.requestedBackupStorageRedundancy.toString());
+        jsonWriter.writeBooleanField("zoneRedundant", this.zoneRedundant);
+        jsonWriter.writeStringField("primaryUserAssignedIdentityId", this.primaryUserAssignedIdentityId);
+        jsonWriter.writeStringField("keyId", this.keyId);
+        jsonWriter.writeJsonField("administrators", this.administrators);
+        jsonWriter.writeJsonField("servicePrincipal", this.servicePrincipal);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedInstanceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedInstanceProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ManagedInstanceProperties.
+     */
+    public static ManagedInstanceProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedInstanceProperties deserializedManagedInstanceProperties = new ManagedInstanceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.provisioningState
+                        = ManagedInstancePropertiesProvisioningState.fromString(reader.getString());
+                } else if ("managedInstanceCreateMode".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.managedInstanceCreateMode
+                        = ManagedServerCreateMode.fromString(reader.getString());
+                } else if ("fullyQualifiedDomainName".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.fullyQualifiedDomainName = reader.getString();
+                } else if ("administratorLogin".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.administratorLogin = reader.getString();
+                } else if ("administratorLoginPassword".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.administratorLoginPassword = reader.getString();
+                } else if ("subnetId".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.subnetId = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.state = reader.getString();
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.licenseType
+                        = ManagedInstanceLicenseType.fromString(reader.getString());
+                } else if ("vCores".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.vCores = reader.getNullable(JsonReader::getInt);
+                } else if ("storageSizeInGB".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.storageSizeInGB = reader.getNullable(JsonReader::getInt);
+                } else if ("collation".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.collation = reader.getString();
+                } else if ("dnsZone".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.dnsZone = reader.getString();
+                } else if ("dnsZonePartner".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.dnsZonePartner = reader.getString();
+                } else if ("publicDataEndpointEnabled".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.publicDataEndpointEnabled
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("sourceManagedInstanceId".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.sourceManagedInstanceId = reader.getString();
+                } else if ("restorePointInTime".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.restorePointInTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("proxyOverride".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.proxyOverride
+                        = ManagedInstanceProxyOverride.fromString(reader.getString());
+                } else if ("timezoneId".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.timezoneId = reader.getString();
+                } else if ("instancePoolId".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.instancePoolId = reader.getString();
+                } else if ("maintenanceConfigurationId".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.maintenanceConfigurationId = reader.getString();
+                } else if ("privateEndpointConnections".equals(fieldName)) {
+                    List<ManagedInstancePecProperty> privateEndpointConnections
+                        = reader.readArray(reader1 -> ManagedInstancePecProperty.fromJson(reader1));
+                    deserializedManagedInstanceProperties.privateEndpointConnections = privateEndpointConnections;
+                } else if ("minimalTlsVersion".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.minimalTlsVersion = reader.getString();
+                } else if ("currentBackupStorageRedundancy".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.currentBackupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else if ("requestedBackupStorageRedundancy".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.requestedBackupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else if ("zoneRedundant".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.zoneRedundant = reader.getNullable(JsonReader::getBoolean);
+                } else if ("primaryUserAssignedIdentityId".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.primaryUserAssignedIdentityId = reader.getString();
+                } else if ("keyId".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.keyId = reader.getString();
+                } else if ("administrators".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.administrators
+                        = ManagedInstanceExternalAdministrator.fromJson(reader);
+                } else if ("servicePrincipal".equals(fieldName)) {
+                    deserializedManagedInstanceProperties.servicePrincipal = ServicePrincipal.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedInstanceProperties;
+        });
     }
 }

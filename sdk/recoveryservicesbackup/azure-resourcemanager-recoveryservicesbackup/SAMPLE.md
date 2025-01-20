@@ -87,6 +87,14 @@
 
 - [Validate](#featuresupport_validate)
 
+## FetchTieringCost
+
+- [Post](#fetchtieringcost_post)
+
+## GetTieringCostOperationResult
+
+- [Get](#gettieringcostoperationresult_get)
+
 ## ItemLevelRecoveryConnections
 
 - [Provision](#itemlevelrecoveryconnections_provision)
@@ -216,6 +224,10 @@
 
 - [Get](#securitypins_get)
 
+## TieringCostOperationStatus
+
+- [Get](#tieringcostoperationstatus_get)
+
 ## ValidateOperation
 
 - [Trigger](#validateoperation_trigger)
@@ -230,21 +242,24 @@
 ### BackupEngines_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupEngines Get. */
+/**
+ * Samples for BackupEngines Get.
+ */
 public final class BackupEnginesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Dpm/BackupEngines_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Dpm/
+     * BackupEngines_Get.json
      */
     /**
      * Sample code: Get Dpm/AzureBackupServer/Lajolla Backup Engine Details.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getDpmAzureBackupServerLajollaBackupEngineDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupEngines().getWithResponse("testVault", "testRG", "testServer", null, null, Context.NONE);
+        manager.backupEngines()
+            .getWithResponse("testVault", "testRG", "testServer", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -252,21 +267,23 @@ public final class BackupEnginesGetSamples {
 ### BackupEngines_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupEngines List. */
+/**
+ * Samples for BackupEngines List.
+ */
 public final class BackupEnginesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Dpm/BackupEngines_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/Dpm/
+     * BackupEngines_List.json
      */
     /**
      * Sample code: List Dpm/AzureBackupServer/Lajolla Backup Engines.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listDpmAzureBackupServerLajollaBackupEngines(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupEngines().list("testVault", "testRG", null, null, Context.NONE);
+        manager.backupEngines().list("testVault", "testRG", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -274,62 +291,59 @@ public final class BackupEnginesListSamples {
 ### BackupJobs_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupJobs List. */
+/**
+ * Samples for BackupJobs List.
+ */
 public final class BackupJobsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobs.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/ListJobs.json
      */
     /**
      * Sample code: List All Jobs.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void listAllJobs(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupJobs().list("NetSDKTestRsVault", "SwaggerTestRg", null, null, Context.NONE);
+    public static void
+        listAllJobs(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.backupJobs().list("NetSDKTestRsVault", "SwaggerTestRg", null, null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobsWithAllSupportedFilters.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/ListJobsWithAllSupportedFilters.json
      */
     /**
      * Sample code: List Jobs With Filters.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void listJobsWithFilters(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupJobs()
-            .list(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "startTime eq '2016-01-01 00:00:00 AM' and endTime eq '2017-11-29 00:00:00 AM' and operation eq"
-                    + " 'Backup' and backupManagementType eq 'AzureIaasVM' and status eq 'InProgress'",
-                null,
-                Context.NONE);
+    public static void
+        listJobsWithFilters(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.backupJobs()
+            .list("NetSDKTestRsVault", "SwaggerTestRg",
+                "startTime eq '2016-01-01 00:00:00 AM' and endTime eq '2017-11-29 00:00:00 AM' and operation eq 'Backup' and backupManagementType eq 'AzureIaasVM' and status eq 'InProgress'",
+                null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ListJobsWithStartTimeAndEndTimeFilters.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/ListJobsWithStartTimeAndEndTimeFilters.json
      */
     /**
      * Sample code: List Jobs With Time Filter.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void listJobsWithTimeFilter(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupJobs()
-            .list(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "startTime eq '2016-01-01 00:00:00 AM' and endTime eq '2017-11-29 00:00:00 AM'",
-                null,
-                Context.NONE);
+    public static void
+        listJobsWithTimeFilter(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.backupJobs()
+            .list("NetSDKTestRsVault", "SwaggerTestRg",
+                "startTime eq '2016-01-01 00:00:00 AM' and endTime eq '2017-11-29 00:00:00 AM'", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -337,27 +351,25 @@ public final class BackupJobsListSamples {
 ### BackupOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupOperationResults Get. */
+/**
+ * Samples for BackupOperationResults Get.
+ */
 public final class BackupOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ProtectedItem_Delete_OperationResult.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/ProtectedItem_Delete_OperationResult.json
      */
     /**
      * Sample code: Get Result for Protected Item Delete Operation.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getResultForProtectedItemDeleteOperation(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupOperationResults()
-            .getWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
-                "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+        manager.backupOperationResults()
+            .getWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -365,27 +377,25 @@ public final class BackupOperationResultsGetSamples {
 ### BackupOperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupOperationStatuses Get. */
+/**
+ * Samples for BackupOperationStatuses Get.
+ */
 public final class BackupOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ProtectedItem_Delete_OperationStatus.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/ProtectedItem_Delete_OperationStatus.json
      */
     /**
      * Sample code: Get Protected Item Delete Operation Status.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectedItemDeleteOperationStatus(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupOperationStatuses()
-            .getWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
-                "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+        manager.backupOperationStatuses()
+            .getWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -393,54 +403,60 @@ public final class BackupOperationStatusesGetSamples {
 ### BackupPolicies_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupPolicies List. */
+/**
+ * Samples for BackupPolicies List.
+ */
 public final class BackupPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupPolicies_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureWorkload/BackupPolicies_List.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureWorkload.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listProtectionPoliciesWithBackupManagementTypeFilterAsAzureWorkload(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupPolicies()
-            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureWorkload'", Context.NONE);
+        manager.backupPolicies()
+            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureWorkload'",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/V2Policy/v2-List-Policies.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/V2Policy/v2-List-Policies.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureIaasVm with both V1 and V2
      * policies.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listProtectionPoliciesWithBackupManagementTypeFilterAsAzureIaasVmWithBothV1AndV2Policies(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupPolicies()
-            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'", Context.NONE);
+        manager.backupPolicies()
+            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'",
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupPolicies_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/BackupPolicies_List.json
      */
     /**
      * Sample code: List protection policies with backupManagementType filter as AzureIaasVm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listProtectionPoliciesWithBackupManagementTypeFilterAsAzureIaasVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupPolicies()
-            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'", Context.NONE);
+        manager.backupPolicies()
+            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -448,23 +464,25 @@ public final class BackupPoliciesListSamples {
 ### BackupProtectableItems_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupProtectableItems List. */
+/**
+ * Samples for BackupProtectableItems List.
+ */
 public final class BackupProtectableItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupProtectableItems_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/BackupProtectableItems_List.json
      */
     /**
      * Sample code: List protectable items with backupManagementType filter as AzureIaasVm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listProtectableItemsWithBackupManagementTypeFilterAsAzureIaasVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupProtectableItems()
-            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'", null, Context.NONE);
+        manager.backupProtectableItems()
+            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM'", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -472,28 +490,25 @@ public final class BackupProtectableItemsListSamples {
 ### BackupProtectedItems_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupProtectedItems List. */
+/**
+ * Samples for BackupProtectedItems List.
+ */
 public final class BackupProtectedItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupProtectedItems_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/BackupProtectedItems_List.json
      */
     /**
      * Sample code: List protected items with backupManagementType filter as AzureIaasVm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listProtectedItemsWithBackupManagementTypeFilterAsAzureIaasVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupProtectedItems()
-            .list(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'",
-                null,
-                Context.NONE);
+        manager.backupProtectedItems()
+            .list("NetSDKTestRsVault", "SwaggerTestRg", "backupManagementType eq 'AzureIaasVM' and itemType eq 'VM'",
+                null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -501,23 +516,24 @@ public final class BackupProtectedItemsListSamples {
 ### BackupProtectionContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupProtectionContainers List. */
+/**
+ * Samples for BackupProtectionContainers List.
+ */
 public final class BackupProtectionContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionContainers_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/ProtectionContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listBackupProtectionContainers(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupProtectionContainers()
-            .list("testVault", "testRg", "backupManagementType eq 'AzureWorkload'", Context.NONE);
+        manager.backupProtectionContainers()
+            .list("testVault", "testRg", "backupManagementType eq 'AzureWorkload'", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -525,21 +541,23 @@ public final class BackupProtectionContainersListSamples {
 ### BackupProtectionIntent_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupProtectionIntent List. */
+/**
+ * Samples for BackupProtectionIntent List.
+ */
 public final class BackupProtectionIntentListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupProtectionIntent_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureWorkload/BackupProtectionIntent_List.json
      */
     /**
      * Sample code: List protection intent with backupManagementType filter.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listProtectionIntentWithBackupManagementTypeFilter(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupProtectionIntents().list("myVault", "myRG", null, null, Context.NONE);
+        manager.backupProtectionIntents().list("myVault", "myRG", null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -547,21 +565,24 @@ public final class BackupProtectionIntentListSamples {
 ### BackupResourceEncryptionConfigs_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupResourceEncryptionConfigs Get. */
+/**
+ * Samples for BackupResourceEncryptionConfigs Get.
+ */
 public final class BackupResourceEncryptionConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupResourceEncryptionConfig_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * BackupResourceEncryptionConfig_Get.json
      */
     /**
      * Sample code: Get Vault Encryption Configuration.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getVaultEncryptionConfiguration(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupResourceEncryptionConfigs().getWithResponse("rishTestVault", "rishgrp", Context.NONE);
+        manager.backupResourceEncryptionConfigs()
+            .getWithResponse("rishTestVault", "rishgrp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -569,37 +590,35 @@ public final class BackupResourceEncryptionConfigsGetSamples {
 ### BackupResourceEncryptionConfigs_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEncryptionConfigResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionAtRestType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.InfrastructureEncryptionState;
 
-/** Samples for BackupResourceEncryptionConfigs Update. */
+/**
+ * Samples for BackupResourceEncryptionConfigs Update.
+ */
 public final class BackupResourceEncryptionConfigsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupResourceEncryptionConfig_Put.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * BackupResourceEncryptionConfig_Put.json
      */
     /**
      * Sample code: Update Vault Encryption Configuration.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void updateVaultEncryptionConfiguration(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupResourceEncryptionConfigs()
-            .updateWithResponse(
-                "source-rsv",
-                "test-rg",
-                new BackupResourceEncryptionConfigResource()
-                    .withProperties(
-                        new BackupResourceEncryptionConfig()
-                            .withEncryptionAtRestType(EncryptionAtRestType.CUSTOMER_MANAGED)
-                            .withKeyUri("https://gktestkv1.vault.azure.net/keys/Test1/ed2e8cdc7f86477ebf0c6462b504a9ed")
-                            .withSubscriptionId("1a2311d9-66f5-47d3-a9fb-7a37da63934b")
-                            .withInfrastructureEncryptionState(InfrastructureEncryptionState.fromString("true"))),
-                Context.NONE);
+        manager.backupResourceEncryptionConfigs()
+            .updateWithResponse("source-rsv", "test-rg",
+                new BackupResourceEncryptionConfigResource().withProperties(
+                    new BackupResourceEncryptionConfig().withEncryptionAtRestType(EncryptionAtRestType.CUSTOMER_MANAGED)
+                        .withKeyUri("fakeTokenPlaceholder")
+                        .withSubscriptionId("1a2311d9-66f5-47d3-a9fb-7a37da63934b")
+                        .withInfrastructureEncryptionState(InfrastructureEncryptionState.fromString("true"))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -607,23 +626,24 @@ public final class BackupResourceEncryptionConfigsUpdateSamples {
 ### BackupResourceStorageConfigsNonCrr_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupResourceStorageConfigsNonCrr Get. */
+/**
+ * Samples for BackupResourceStorageConfigsNonCrr Get.
+ */
 public final class BackupResourceStorageConfigsNonCrrGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupStorageConfig_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupStorageConfig_Get.json
      */
     /**
      * Sample code: Get Vault Storage Configuration.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getVaultStorageConfiguration(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupResourceStorageConfigsNonCrrs()
-            .getWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", Context.NONE);
+        manager.backupResourceStorageConfigsNonCrrs()
+            .getWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -631,35 +651,33 @@ public final class BackupResourceStorageConfigsNonCrrGetSamples {
 ### BackupResourceStorageConfigsNonCrr_Patch
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 
-/** Samples for BackupResourceStorageConfigsNonCrr Patch. */
+/**
+ * Samples for BackupResourceStorageConfigsNonCrr Patch.
+ */
 public final class BackupResourceStorageConfigsNonCrrPatchSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupStorageConfig_Patch.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupStorageConfig_Patch.json
      */
     /**
      * Sample code: Update Vault Storage Configuration.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void updateVaultStorageConfiguration(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupResourceStorageConfigsNonCrrs()
-            .patchWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
+        manager.backupResourceStorageConfigsNonCrrs()
+            .patchWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg",
                 new BackupResourceConfigResourceInner()
-                    .withProperties(
-                        new BackupResourceConfig()
-                            .withStorageType(StorageType.LOCALLY_REDUNDANT)
-                            .withStorageTypeState(StorageTypeState.UNLOCKED)),
-                Context.NONE);
+                    .withProperties(new BackupResourceConfig().withStorageType(StorageType.LOCALLY_REDUNDANT)
+                        .withStorageTypeState(StorageTypeState.UNLOCKED)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -667,35 +685,33 @@ public final class BackupResourceStorageConfigsNonCrrPatchSamples {
 ### BackupResourceStorageConfigsNonCrr_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.StorageTypeState;
 
-/** Samples for BackupResourceStorageConfigsNonCrr Update. */
+/**
+ * Samples for BackupResourceStorageConfigsNonCrr Update.
+ */
 public final class BackupResourceStorageConfigsNonCrrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupStorageConfig_Put.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupStorageConfig_Put.json
      */
     /**
      * Sample code: Update Vault Storage Configuration.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void updateVaultStorageConfiguration(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupResourceStorageConfigsNonCrrs()
-            .updateWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
+        manager.backupResourceStorageConfigsNonCrrs()
+            .updateWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg",
                 new BackupResourceConfigResourceInner()
-                    .withProperties(
-                        new BackupResourceConfig()
-                            .withStorageType(StorageType.LOCALLY_REDUNDANT)
-                            .withStorageTypeState(StorageTypeState.UNLOCKED)),
-                Context.NONE);
+                    .withProperties(new BackupResourceConfig().withStorageType(StorageType.LOCALLY_REDUNDANT)
+                        .withStorageTypeState(StorageTypeState.UNLOCKED)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -703,21 +719,24 @@ public final class BackupResourceStorageConfigsNonCrrUpdateSamples {
 ### BackupResourceVaultConfigs_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupResourceVaultConfigs Get. */
+/**
+ * Samples for BackupResourceVaultConfigs Get.
+ */
 public final class BackupResourceVaultConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupResourceVaultConfigs_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupResourceVaultConfigs_Get.json
      */
     /**
      * Sample code: Get Vault Security Config.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void getVaultSecurityConfig(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.backupResourceVaultConfigs().getWithResponse("SwaggerTest", "SwaggerTestRg", Context.NONE);
+    public static void
+        getVaultSecurityConfig(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.backupResourceVaultConfigs()
+            .getWithResponse("SwaggerTest", "SwaggerTestRg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -725,35 +744,33 @@ public final class BackupResourceVaultConfigsGetSamples {
 ### BackupResourceVaultConfigs_Put
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityState;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SoftDeleteFeatureState;
 
-/** Samples for BackupResourceVaultConfigs Put. */
+/**
+ * Samples for BackupResourceVaultConfigs Put.
+ */
 public final class BackupResourceVaultConfigsPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupResourceVaultConfigs_Put.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupResourceVaultConfigs_Put.json
      */
     /**
      * Sample code: Update Vault Security Config.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void updateVaultSecurityConfig(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupResourceVaultConfigs()
-            .putWithResponse(
-                "SwaggerTest",
-                "SwaggerTestRg",
-                new BackupResourceVaultConfigResourceInner()
-                    .withProperties(
-                        new BackupResourceVaultConfig()
-                            .withEnhancedSecurityState(EnhancedSecurityState.ENABLED)
-                            .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)),
-                Context.NONE);
+        manager.backupResourceVaultConfigs()
+            .putWithResponse("SwaggerTest", "SwaggerTestRg",
+                new BackupResourceVaultConfigResourceInner().withProperties(
+                    new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)
+                        .withSoftDeleteFeatureState(SoftDeleteFeatureState.ENABLED)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -761,32 +778,31 @@ public final class BackupResourceVaultConfigsPutSamples {
 ### BackupResourceVaultConfigs_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfig;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EnhancedSecurityState;
 
-/** Samples for BackupResourceVaultConfigs Update. */
+/**
+ * Samples for BackupResourceVaultConfigs Update.
+ */
 public final class BackupResourceVaultConfigsUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupResourceVaultConfigs_Patch.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupResourceVaultConfigs_Patch.json
      */
     /**
      * Sample code: Update Vault Security Config.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void updateVaultSecurityConfig(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupResourceVaultConfigs()
-            .updateWithResponse(
-                "SwaggerTest",
-                "SwaggerTestRg",
-                new BackupResourceVaultConfigResourceInner()
-                    .withProperties(
-                        new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)),
-                Context.NONE);
+        manager.backupResourceVaultConfigs()
+            .updateWithResponse("SwaggerTest", "SwaggerTestRg",
+                new BackupResourceVaultConfigResourceInner().withProperties(
+                    new BackupResourceVaultConfig().withEnhancedSecurityState(EnhancedSecurityState.ENABLED)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -794,31 +810,30 @@ public final class BackupResourceVaultConfigsUpdateSamples {
 ### BackupStatus_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupStatusRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 
-/** Samples for BackupStatus Get. */
+/**
+ * Samples for BackupStatus Get.
+ */
 public final class BackupStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/GetBackupStatus.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/GetBackupStatus.json
      */
     /**
      * Sample code: Get Azure Virtual Machine Backup Status.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getAzureVirtualMachineBackupStatus(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupStatus()
-            .getWithResponse(
-                "southeastasia",
-                new BackupStatusRequest()
-                    .withResourceType(DataSourceType.VM)
-                    .withResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Compute/VirtualMachines/testVm"),
-                Context.NONE);
+        manager.backupStatus()
+            .getWithResponse("southeastasia", new BackupStatusRequest().withResourceType(DataSourceType.VM)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Compute/VirtualMachines/testVm"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -826,38 +841,42 @@ public final class BackupStatusGetSamples {
 ### BackupUsageSummaries_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupUsageSummaries List. */
+/**
+ * Samples for BackupUsageSummaries List.
+ */
 public final class BackupUsageSummariesListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupProtectedItem_UsageSummary_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupProtectedItem_UsageSummary_Get.json
      */
     /**
      * Sample code: Get Protected Items Usages Summary.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectedItemsUsagesSummary(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupUsageSummaries()
-            .list("testVault", "testRG", "type eq 'BackupProtectedItemCountSummary'", null, Context.NONE);
+        manager.backupUsageSummaries()
+            .list("testVault", "testRG", "type eq 'BackupProtectedItemCountSummary'", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupProtectionContainers_UsageSummary_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupProtectionContainers_UsageSummary_Get.json
      */
     /**
      * Sample code: Get Protected Containers Usages Summary.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectedContainersUsagesSummary(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupUsageSummaries()
-            .list("testVault", "testRG", "type eq 'BackupProtectionContainerCountSummary'", null, Context.NONE);
+        manager.backupUsageSummaries()
+            .list("testVault", "testRG", "type eq 'BackupProtectionContainerCountSummary'", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -865,30 +884,25 @@ public final class BackupUsageSummariesListSamples {
 ### BackupWorkloadItems_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BackupWorkloadItems List. */
+/**
+ * Samples for BackupWorkloadItems List.
+ */
 public final class BackupWorkloadItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupWorkloadItems_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureWorkload/BackupWorkloadItems_List.json
      */
     /**
      * Sample code: List Workload Items in Container.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listWorkloadItemsInContainer(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backupWorkloadItems()
-            .list(
-                "suchandr-seacan-rsv",
-                "testRg",
-                "Azure",
-                "VMAppContainer;Compute;bvtdtestag;sqlserver-1",
-                "backupManagementType eq 'AzureWorkload'",
-                null,
-                Context.NONE);
+        manager.backupWorkloadItems()
+            .list("suchandr-seacan-rsv", "testRg", "Azure", "VMAppContainer;Compute;bvtdtestag;sqlserver-1",
+                "backupManagementType eq 'AzureWorkload'", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -896,32 +910,30 @@ public final class BackupWorkloadItemsListSamples {
 ### Backups_Trigger
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMBackupRequest;
 
-/** Samples for Backups Trigger. */
+/**
+ * Samples for Backups Trigger.
+ */
 public final class BackupsTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerBackup_Post.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/TriggerBackup_Post.json
      */
     /**
      * Sample code: Trigger Backup.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void triggerBackup(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .backups()
-            .triggerWithResponse(
-                "linuxRsVault",
-                "linuxRsVaultRG",
-                "Azure",
-                "IaasVMContainer;iaasvmcontainerv2;testrg;v1win2012r",
-                "VM;iaasvmcontainerv2;testrg;v1win2012r",
+    public static void
+        triggerBackup(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.backups()
+            .triggerWithResponse("linuxRsVault", "linuxRsVaultRG", "Azure",
+                "IaasVMContainer;iaasvmcontainerv2;testrg;v1win2012r", "VM;iaasvmcontainerv2;testrg;v1win2012r",
                 new BackupRequestResource().withProperties(new IaasVMBackupRequest()),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -929,23 +941,25 @@ public final class BackupsTriggerSamples {
 ### BmsPrepareDataMoveOperationResult_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for BmsPrepareDataMoveOperationResult Get. */
+/**
+ * Samples for BmsPrepareDataMoveOperationResult Get.
+ */
 public final class BmsPrepareDataMoveOperationResultGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/PrepareDataMoveOperationResult_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * BackupDataMove/PrepareDataMoveOperationResult_Get.json
      */
     /**
      * Sample code: Get operation result for PrepareDataMove.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getOperationResultForPrepareDataMove(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .bmsPrepareDataMoveOperationResults()
-            .getWithResponse("source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", Context.NONE);
+        manager.bmsPrepareDataMoveOperationResults()
+            .getWithResponse("source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -953,23 +967,24 @@ public final class BmsPrepareDataMoveOperationResultGetSamples {
 ### DeletedProtectionContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DeletedProtectionContainers List. */
+/**
+ * Samples for DeletedProtectionContainers List.
+ */
 public final class DeletedProtectionContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/SoftDeletedContainers_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/SoftDeletedContainers_List.json
      */
     /**
      * Sample code: List Backup Protection Containers.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listBackupProtectionContainers(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .deletedProtectionContainers()
-            .list("testRg", "testVault", "backupManagementType eq 'AzureWorkload'", Context.NONE);
+        manager.deletedProtectionContainers()
+            .list("testRg", "testVault", "backupManagementType eq 'AzureWorkload'", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -977,24 +992,25 @@ public final class DeletedProtectionContainersListSamples {
 ### ExportJobsOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ExportJobsOperationResults Get. */
+/**
+ * Samples for ExportJobsOperationResults Get.
+ */
 public final class ExportJobsOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ExportJobsOperationResult.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/ExportJobsOperationResult.json
      */
     /**
      * Sample code: Export Jobs Operation Results.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void exportJobsOperationResults(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .exportJobsOperationResults()
-            .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+        manager.exportJobsOperationResults()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1002,27 +1018,154 @@ public final class ExportJobsOperationResultsGetSamples {
 ### FeatureSupport_Validate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureVMResourceFeatureSupportRequest;
 
-/** Samples for FeatureSupport Validate. */
+/**
+ * Samples for FeatureSupport Validate.
+ */
 public final class FeatureSupportValidateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupFeature_Validate.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/BackupFeature_Validate.json
      */
     /**
      * Sample code: Check Azure Vm Backup Feature Support.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void checkAzureVmBackupFeatureSupport(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .featureSupports()
-            .validateWithResponse(
-                "southeastasia",
+        manager.featureSupports()
+            .validateWithResponse("southeastasia",
                 new AzureVMResourceFeatureSupportRequest().withVmSize("Basic_A0").withVmSku("Premium"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FetchTieringCost_Post
+
+```java
+import com.azure.resourcemanager.recoveryservicesbackup.models.FetchTieringCostInfoForRehydrationRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.FetchTieringCostSavingsInfoForPolicyRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.FetchTieringCostSavingsInfoForProtectedItemRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.FetchTieringCostSavingsInfoForVaultRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierType;
+import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriority;
+
+/**
+ * Samples for FetchTieringCost Post.
+ */
+public final class FetchTieringCostPostSamples {
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * TieringCost/FetchTieringCostForRehydrate.json
+     */
+    /**
+     * Sample code: Get the rehydration cost for recovery point.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void getTheRehydrationCostForRecoveryPoint(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.fetchTieringCosts()
+            .post("netsdktestrg", "testVault",
+                new FetchTieringCostInfoForRehydrationRequest().withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
+                    .withTargetTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withContainerName("IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
+                    .withProtectedItemName("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
+                    .withRecoveryPointId("1222343434")
+                    .withRehydrationPriority(RehydrationPriority.HIGH),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * TieringCost/FetchTieringCostForProtectedItem.json
+     */
+    /**
+     * Sample code: Get the tiering savings cost info for protected item.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void getTheTieringSavingsCostInfoForProtectedItem(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.fetchTieringCosts()
+            .post("netsdktestrg", "testVault",
+                new FetchTieringCostSavingsInfoForProtectedItemRequest()
+                    .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP)
+                    .withContainerName("IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
+                    .withProtectedItemName("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * TieringCost/FetchTieringCostForPolicy.json
+     */
+    /**
+     * Sample code: Get the tiering savings cost info for policy.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void getTheTieringSavingsCostInfoForPolicy(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.fetchTieringCosts()
+            .post("netsdktestrg", "testVault",
+                new FetchTieringCostSavingsInfoForPolicyRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP)
+                    .withPolicyName("monthly"),
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * TieringCost/FetchTieringCostForVault.json
+     */
+    /**
+     * Sample code: Get the tiering savings cost info for vault.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void getTheTieringSavingsCostInfoForVault(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.fetchTieringCosts()
+            .post("netsdktestrg", "testVault",
+                new FetchTieringCostSavingsInfoForVaultRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
+                    .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### GetTieringCostOperationResult_Get
+
+```java
+/**
+ * Samples for GetTieringCostOperationResult Get.
+ */
+public final class GetTieringCostOperationResultGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * TieringCost/GetTieringCostOperationResult.json
+     */
+    /**
+     * Sample code: Fetch Tiering Cost Operation Result.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void fetchTieringCostOperationResult(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.getTieringCostOperationResults()
+            .getWithResponse("gaallaRG", "gaallavaultbvtd2msi", "0f48183b-0a44-4dca-aec1-bba5daab888a",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1030,40 +1173,36 @@ public final class FeatureSupportValidateSamples {
 ### ItemLevelRecoveryConnections_Provision
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVmilrRegistrationRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IlrRequestResource;
 
-/** Samples for ItemLevelRecoveryConnections Provision. */
+/**
+ * Samples for ItemLevelRecoveryConnections Provision.
+ */
 public final class ItemLevelRecoveryConnectionsProvisionSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Provision_Ilr.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/Provision_Ilr.json
      */
     /**
      * Sample code: Provision Instant Item Level Recovery for Azure Vm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void provisionInstantItemLevelRecoveryForAzureVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .itemLevelRecoveryConnections()
-            .provisionWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
-                "Azure",
+        manager.itemLevelRecoveryConnections()
+            .provisionWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure",
                 "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                "1",
-                new IlrRequestResource()
-                    .withProperties(
-                        new IaasVmilrRegistrationRequest()
-                            .withRecoveryPointId("38823086363464")
-                            .withVirtualMachineId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pysdktestrg/providers/Microsoft.Compute/virtualMachines/pysdktestv2vm1")
-                            .withInitiatorName("Hello World")
-                            .withRenewExistingRegistration(true)),
-                Context.NONE);
+                "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "1",
+                new IlrRequestResource().withProperties(new IaasVmilrRegistrationRequest()
+                    .withRecoveryPointId("38823086363464")
+                    .withVirtualMachineId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/pysdktestrg/providers/Microsoft.Compute/virtualMachines/pysdktestv2vm1")
+                    .withInitiatorName("Hello World")
+                    .withRenewExistingRegistration(true)),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1071,30 +1210,26 @@ public final class ItemLevelRecoveryConnectionsProvisionSamples {
 ### ItemLevelRecoveryConnections_Revoke
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ItemLevelRecoveryConnections Revoke. */
+/**
+ * Samples for ItemLevelRecoveryConnections Revoke.
+ */
 public final class ItemLevelRecoveryConnectionsRevokeSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Revoke_Ilr.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/Revoke_Ilr.json
      */
     /**
      * Sample code: Revoke Instant Item Level Recovery for Azure Vm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void revokeInstantItemLevelRecoveryForAzureVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .itemLevelRecoveryConnections()
-            .revokeWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
-                "Azure",
+        manager.itemLevelRecoveryConnections()
+            .revokeWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure",
                 "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                "1",
-                Context.NONE);
+                "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", "1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1102,24 +1237,25 @@ public final class ItemLevelRecoveryConnectionsRevokeSamples {
 ### JobCancellations_Trigger
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JobCancellations Trigger. */
+/**
+ * Samples for JobCancellations Trigger.
+ */
 public final class JobCancellationsTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerCancelJob.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/TriggerCancelJob.json
      */
     /**
      * Sample code: Cancel Job.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void cancelJob(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .jobCancellations()
-            .triggerWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+    public static void
+        cancelJob(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.jobCancellations()
+            .triggerWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1127,24 +1263,25 @@ public final class JobCancellationsTriggerSamples {
 ### JobDetails_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JobDetails Get. */
+/**
+ * Samples for JobDetails Get.
+ */
 public final class JobDetailsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/GetJobDetails.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/GetJobDetails.json
      */
     /**
      * Sample code: Get Job Details.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void getJobDetails(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .jobDetails()
-            .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+    public static void
+        getJobDetails(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.jobDetails()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1152,28 +1289,25 @@ public final class JobDetailsGetSamples {
 ### JobOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for JobOperationResults Get. */
+/**
+ * Samples for JobOperationResults Get.
+ */
 public final class JobOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/CancelJobOperationResult.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/CancelJobOperationResult.json
      */
     /**
      * Sample code: Cancel Job Operation Result.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void cancelJobOperationResult(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .jobOperationResults()
-            .getWithResponse(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "00000000-0000-0000-0000-000000000000",
-                "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+        manager.jobOperationResults()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000",
+                "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1181,21 +1315,23 @@ public final class JobOperationResultsGetSamples {
 ### Jobs_Export
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Jobs Export. */
+/**
+ * Samples for Jobs Export.
+ */
 public final class JobsExportSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerExportJobs.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/TriggerExportJobs.json
      */
     /**
      * Sample code: Export Jobs.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void exportJobs(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.jobs().exportWithResponse("NetSDKTestRsVault", "SwaggerTestRg", null, Context.NONE);
+    public static void
+        exportJobs(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.jobs().exportWithResponse("NetSDKTestRsVault", "SwaggerTestRg", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1203,88 +1339,80 @@ public final class JobsExportSamples {
 ### OperationOperation_Validate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityBasedRestoreDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateIaasVMRestoreOperationRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequestResource;
 
-/** Samples for OperationOperation Validate. */
+/**
+ * Samples for OperationOperation Validate.
+ */
 public final class OperationOperationValidateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperation_RestoreDisk.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ValidateOperation_RestoreDisk.json
      */
     /**
      * Sample code: Validate Operation.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void validateOperation(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .operationOperations()
-            .validateWithResponse(
-                "testVault",
-                "testRG",
-                new ValidateIaasVMRestoreOperationRequest()
-                    .withRestoreRequest(
-                        new IaasVMRestoreRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.RESTORE_DISKS)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withStorageAccountId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(true)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withIdentityInfo(
-                                new IdentityInfo()
-                                    .withIsSystemAssignedIdentity(false)
-                                    .withManagedIdentityResourceId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))),
-                Context.NONE);
+    public static void
+        validateOperation(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.operationOperations()
+            .validateWithResponse("testVault", "testRG", new ValidateOperationRequestResource().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testVault/providers/Microsoft.RecoveryServices/vaults/testVault/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;testRG;testvmName/protectedItems/VM;iaasvmcontainerv2;testRG;testvmName/recoveryPoints/348916168024334")
+                .withProperties(new ValidateIaasVMRestoreOperationRequest()
+                    .withRestoreRequest(new IaasVMRestoreRequest().withRecoveryPointId("348916168024334")
+                        .withRecoveryType(RecoveryType.RESTORE_DISKS)
+                        .withSourceResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                        .withStorageAccountId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")
+                        .withRegion("southeastasia")
+                        .withCreateNewCloudService(true)
+                        .withOriginalStorageAccountOption(false)
+                        .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                        .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                            .withManagedIdentityResourceId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi")))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ValidateOperation_RestoreDisk_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Validate Operation with identityBasedRestoreDetails.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void validateOperationWithIdentityBasedRestoreDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .operationOperations()
-            .validateWithResponse(
-                "testVault",
-                "testRG",
-                new ValidateIaasVMRestoreOperationRequest()
-                    .withRestoreRequest(
-                        new IaasVMRestoreRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.RESTORE_DISKS)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(true)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withIdentityInfo(
-                                new IdentityInfo()
-                                    .withIsSystemAssignedIdentity(false)
-                                    .withManagedIdentityResourceId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))
-                            .withIdentityBasedRestoreDetails(
-                                new IdentityBasedRestoreDetails()
-                                    .withTargetStorageAccountId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"))),
-                Context.NONE);
+        manager.operationOperations()
+            .validateWithResponse("testVault", "testRG", new ValidateOperationRequestResource().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testVault/providers/Microsoft.RecoveryServices/vaults/testVault/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;testRG;testvmName/protectedItems/VM;iaasvmcontainerv2;testRG;testvmName/recoveryPoints/348916168024334")
+                .withProperties(new ValidateIaasVMRestoreOperationRequest()
+                    .withRestoreRequest(new IaasVMRestoreRequest().withRecoveryPointId("348916168024334")
+                        .withRecoveryType(RecoveryType.RESTORE_DISKS)
+                        .withSourceResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                        .withRegion("southeastasia")
+                        .withCreateNewCloudService(true)
+                        .withOriginalStorageAccountOption(false)
+                        .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                        .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                            .withManagedIdentityResourceId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))
+                        .withIdentityBasedRestoreDetails(new IdentityBasedRestoreDetails().withTargetStorageAccountId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1292,21 +1420,23 @@ public final class OperationOperationValidateSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ListOperations.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ListOperations.json
      */
     /**
      * Sample code: ListOperations.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void listOperations(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.operations().list(Context.NONE);
+    public static void
+        listOperations(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1314,28 +1444,26 @@ public final class OperationsListSamples {
 ### PrivateEndpoint_GetOperationStatus
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpoint GetOperationStatus. */
+/**
+ * Samples for PrivateEndpoint GetOperationStatus.
+ */
 public final class PrivateEndpointGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * PrivateEndpointConnection/GetPrivateEndpointConnectionOperationStatus.json
      */
     /**
      * Sample code: Get OperationStatus.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void getOperationStatus(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .privateEndpoints()
-            .getOperationStatusWithResponse(
-                "gaallavaultbvtd2msi",
-                "gaallaRG",
-                "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
-                "0f48183b-0a44-4dca-aec1-bba5daab888a",
-                Context.NONE);
+    public static void
+        getOperationStatus(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.privateEndpoints()
+            .getOperationStatusWithResponse("gaallavaultbvtd2msi", "gaallaRG",
+                "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", "0f48183b-0a44-4dca-aec1-bba5daab888a",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1343,24 +1471,25 @@ public final class PrivateEndpointGetOperationStatusSamples {
 ### PrivateEndpointConnection_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnection Delete. */
+/**
+ * Samples for PrivateEndpointConnection Delete.
+ */
 public final class PrivateEndpointConnectionDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/DeletePrivateEndpointConnection.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * PrivateEndpointConnection/DeletePrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete PrivateEndpointConnection.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void deletePrivateEndpointConnection(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .privateEndpointConnections()
-            .delete(
-                "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", Context.NONE);
+        manager.privateEndpointConnections()
+            .delete("gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1368,24 +1497,25 @@ public final class PrivateEndpointConnectionDeleteSamples {
 ### PrivateEndpointConnection_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnection Get. */
+/**
+ * Samples for PrivateEndpointConnection Get.
+ */
 public final class PrivateEndpointConnectionGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/GetPrivateEndpointConnection.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * PrivateEndpointConnection/GetPrivateEndpointConnection.json
      */
     /**
      * Sample code: Get PrivateEndpointConnection.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getPrivateEndpointConnection(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .privateEndpointConnections()
-            .getWithResponse(
-                "gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b", Context.NONE);
+        manager.privateEndpointConnections()
+            .getWithResponse("gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1393,48 +1523,43 @@ public final class PrivateEndpointConnectionGetSamples {
 ### PrivateEndpointConnection_Put
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpoint;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnectionResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateEndpointConnectionStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProvisioningState;
+import com.azure.resourcemanager.recoveryservicesbackup.models.VaultSubResourceType;
+import java.util.Arrays;
 
-/** Samples for PrivateEndpointConnection Put. */
+/**
+ * Samples for PrivateEndpointConnection Put.
+ */
 public final class PrivateEndpointConnectionPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/PrivateEndpointConnection/PutPrivateEndpointConnection.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * PrivateEndpointConnection/PutPrivateEndpointConnection.json
      */
     /**
      * Sample code: Update PrivateEndpointConnection.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void updatePrivateEndpointConnection(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        PrivateEndpointConnectionResource resource =
-            manager
-                .privateEndpointConnections()
-                .getWithResponse(
-                    "gaallavaultbvtd2msi",
-                    "gaallaRG",
-                    "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
-                    Context.NONE)
-                .getValue();
-        resource
-            .update()
-            .withProperties(
-                new PrivateEndpointConnection()
-                    .withProvisioningState(ProvisioningState.SUCCEEDED)
-                    .withPrivateEndpoint(
-                        new PrivateEndpoint()
-                            .withId(
-                                "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.Network/privateEndpoints/gaallatestpe3"))
-                    .withPrivateLinkServiceConnectionState(
-                        new PrivateLinkServiceConnectionState()
-                            .withStatus(PrivateEndpointConnectionStatus.APPROVED)
-                            .withDescription("Approved by johndoe@company.com")))
+        PrivateEndpointConnectionResource resource = manager.privateEndpointConnections()
+            .getWithResponse("gaallavaultbvtd2msi", "gaallaRG", "gaallatestpe2.5704c932-249a-490b-a142-1396838cd3b",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new PrivateEndpointConnection().withProvisioningState(ProvisioningState.SUCCEEDED)
+                .withPrivateEndpoint(new PrivateEndpoint().withId(
+                    "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/gaallaRG/providers/Microsoft.Network/privateEndpoints/gaallatestpe3"))
+                .withGroupIds(Arrays.asList(VaultSubResourceType.AZURE_BACKUP_SECONDARY))
+                .withPrivateLinkServiceConnectionState(
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointConnectionStatus.APPROVED)
+                        .withDescription("Approved by johndoe@company.com")))
             .apply();
     }
 }
@@ -1443,28 +1568,26 @@ public final class PrivateEndpointConnectionPutSamples {
 ### ProtectableContainers_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectableContainers List. */
+/**
+ * Samples for ProtectableContainers List.
+ */
 public final class ProtectableContainersListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectableContainers_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/ProtectableContainers_List.json
      */
     /**
      * Sample code: List protectable items with backupManagementType filter as AzureStorage.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void listProtectableItemsWithBackupManagementTypeFilterAsAzureStorage(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectableContainers()
-            .list(
-                "testvault",
-                "testRg",
-                "Azure",
+        manager.protectableContainers()
+            .list("testvault", "testRg", "Azure",
                 "backupManagementType eq 'AzureStorage' and workloadType eq 'AzureFileShare'",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1472,30 +1595,27 @@ public final class ProtectableContainersListSamples {
 ### ProtectedItemOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectedItemOperationResults Get. */
+/**
+ * Samples for ProtectedItemOperationResults Get.
+ */
 public final class ProtectedItemOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectedItemOperationResults.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectedItemOperationResults.json
      */
     /**
      * Sample code: Get Operation Results of Protected Vm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getOperationResultsOfProtectedVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectedItemOperationResults()
-            .getWithResponse(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "Azure",
+        manager.protectedItemOperationResults()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1503,30 +1623,27 @@ public final class ProtectedItemOperationResultsGetSamples {
 ### ProtectedItemOperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectedItemOperationStatuses Get. */
+/**
+ * Samples for ProtectedItemOperationStatuses Get.
+ */
 public final class ProtectedItemOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectedItemOperationStatus.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectedItemOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status of Protected Vm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getOperationStatusOfProtectedVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectedItemOperationStatuses()
-            .getWithResponse(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "Azure",
+        manager.protectedItemOperationStatuses()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1537,60 +1654,54 @@ public final class ProtectedItemOperationStatusesGetSamples {
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureIaaSComputeVMProtectedItem;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionState;
 
-/** Samples for ProtectedItems CreateOrUpdate. */
+/**
+ * Samples for ProtectedItems CreateOrUpdate.
+ */
 public final class ProtectedItemsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/StopProtection.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/StopProtection.json
      */
     /**
      * Sample code: Stop Protection with retain data on Azure IaasVm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void stopProtectionWithRetainDataOnAzureIaasVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectedItems()
+        manager.protectedItems()
             .define("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
             .withRegion((String) null)
-            .withExistingProtectionContainer(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "Azure",
+            .withExistingProtectionContainer("NetSDKTestRsVault", "SwaggerTestRg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
-            .withProperties(
-                new AzureIaaSComputeVMProtectedItem()
-                    .withSourceResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                    .withProtectionState(ProtectionState.PROTECTION_STOPPED))
+            .withProperties(new AzureIaaSComputeVMProtectedItem().withSourceResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                .withProtectionState(ProtectionState.PROTECTION_STOPPED))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ConfigureProtection.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ConfigureProtection.json
      */
     /**
      * Sample code: Enable Protection on Azure IaasVm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void enableProtectionOnAzureIaasVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectedItems()
+        manager.protectedItems()
             .define("VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
             .withRegion((String) null)
-            .withExistingProtectionContainer(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "Azure",
+            .withExistingProtectionContainer("NetSDKTestRsVault", "SwaggerTestRg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1")
-            .withProperties(
-                new AzureIaaSComputeVMProtectedItem()
-                    .withSourceResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                    .withPolicyId(
-                        "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/DefaultPolicy"))
+            .withProperties(new AzureIaaSComputeVMProtectedItem().withSourceResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                .withPolicyId(
+                    "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/SwaggerTestRg/providers/Microsoft.RecoveryServices/vaults/NetSDKTestRsVault/backupPolicies/DefaultPolicy"))
             .create();
     }
 }
@@ -1599,29 +1710,26 @@ public final class ProtectedItemsCreateOrUpdateSamples {
 ### ProtectedItems_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectedItems Delete. */
+/**
+ * Samples for ProtectedItems Delete.
+ */
 public final class ProtectedItemsDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/ProtectedItem_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/ProtectedItem_Delete.json
      */
     /**
      * Sample code: Delete Protection from Azure Virtual Machine.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void deleteProtectionFromAzureVirtualMachine(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectedItems()
-            .deleteWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
-                "Azure",
+        manager.protectedItems()
+            .deleteWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure",
                 "iaasvmcontainer;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1",
-                Context.NONE);
+                "vm;iaasvmcontainerv2;pysdktestrg;pysdktestv2vm1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1629,52 +1737,44 @@ public final class ProtectedItemsDeleteSamples {
 ### ProtectedItems_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectedItems Get. */
+/**
+ * Samples for ProtectedItems Get.
+ */
 public final class ProtectedItemsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ClassicCompute_ProtectedItem_Get.json
      */
     /**
      * Sample code: Get Protected Classic Virtual Machine Details.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectedClassicVirtualMachineDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectedItems()
-            .getWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
-                "Azure",
-                "iaasvmcontainer;iaasvmcontainer;iaasvm-rg;iaasvm-1",
-                "vm;iaasvmcontainer;iaasvm-rg;iaasvm-1",
-                null,
-                Context.NONE);
+        manager.protectedItems()
+            .getWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure",
+                "iaasvmcontainer;iaasvmcontainer;iaasvm-rg;iaasvm-1", "vm;iaasvmcontainer;iaasvm-rg;iaasvm-1", null,
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/Compute_ProtectedItem_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/Compute_ProtectedItem_Get.json
      */
     /**
      * Sample code: Get Protected Virtual Machine Details.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectedVirtualMachineDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectedItems()
-            .getWithResponse(
-                "PySDKBackupTestRsVault",
-                "PythonSDKBackupTestRg",
-                "Azure",
-                "iaasvmcontainer;iaasvmcontainerv2;iaasvm-rg;iaasvm-1",
-                "vm;iaasvmcontainerv2;iaasvm-rg;iaasvm-1",
-                null,
-                Context.NONE);
+        manager.protectedItems()
+            .getWithResponse("PySDKBackupTestRsVault", "PythonSDKBackupTestRg", "Azure",
+                "iaasvmcontainer;iaasvmcontainerv2;iaasvm-rg;iaasvm-1", "vm;iaasvmcontainerv2;iaasvm-rg;iaasvm-1", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1682,29 +1782,25 @@ public final class ProtectedItemsGetSamples {
 ### ProtectionContainerOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionContainerOperationResults Get. */
+/**
+ * Samples for ProtectionContainerOperationResults Get.
+ */
 public final class ProtectionContainerOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionContainers_Inquire_Result.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/ProtectionContainers_Inquire_Result.json
      */
     /**
      * Sample code: Get Azure Storage Protection Container Operation Result.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getAzureStorageProtectionContainerOperationResult(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionContainerOperationResults()
-            .getWithResponse(
-                "testvault",
-                "test-rg",
-                "Azure",
-                "VMAppContainer;Compute;testRG;testSQL",
-                "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+        manager.protectionContainerOperationResults()
+            .getWithResponse("testvault", "test-rg", "Azure", "VMAppContainer;Compute;testRG;testSQL",
+                "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1712,24 +1808,25 @@ public final class ProtectionContainerOperationResultsGetSamples {
 ### ProtectionContainerRefreshOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionContainerRefreshOperationResults Get. */
+/**
+ * Samples for ProtectionContainerRefreshOperationResults Get.
+ */
 public final class ProtectionContainerRefreshOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/RefreshContainers_OperationResults.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/RefreshContainers_OperationResults.json
      */
     /**
      * Sample code: Azure Vm Discovery Operation Result.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void azureVmDiscoveryOperationResult(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionContainerRefreshOperationResults()
-            .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "Azure", "00000000-0000-0000-0000-000000000000", Context.NONE);
+        manager.protectionContainerRefreshOperationResults()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "Azure", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1737,23 +1834,25 @@ public final class ProtectionContainerRefreshOperationResultsGetSamples {
 ### ProtectionContainers_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionContainers Get. */
+/**
+ * Samples for ProtectionContainers Get.
+ */
 public final class ProtectionContainersGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionContainers_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureWorkload/ProtectionContainers_Get.json
      */
     /**
      * Sample code: Get Protection Container Details.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectionContainerDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionContainers()
-            .getWithResponse("testVault", "testRg", "Azure", "VMAppContainer;Compute;testRG;testSQL", Context.NONE);
+        manager.protectionContainers()
+            .getWithResponse("testVault", "testRg", "Azure", "VMAppContainer;Compute;testRG;testSQL",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1761,24 +1860,25 @@ public final class ProtectionContainersGetSamples {
 ### ProtectionContainers_Inquire
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionContainers Inquire. */
+/**
+ * Samples for ProtectionContainers Inquire.
+ */
 public final class ProtectionContainersInquireSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionContainers_Inquire.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/ProtectionContainers_Inquire.json
      */
     /**
      * Sample code: Inquire Azure Storage Protection Containers.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void inquireAzureStorageProtectionContainers(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionContainers()
-            .inquireWithResponse(
-                "testvault", "test-rg", "Azure", "storagecontainer;Storage;test-rg;teststorage", null, Context.NONE);
+        manager.protectionContainers()
+            .inquireWithResponse("testvault", "test-rg", "Azure", "storagecontainer;Storage;test-rg;teststorage", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1786,23 +1886,24 @@ public final class ProtectionContainersInquireSamples {
 ### ProtectionContainers_Refresh
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionContainers Refresh. */
+/**
+ * Samples for ProtectionContainers Refresh.
+ */
 public final class ProtectionContainersRefreshSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/RefreshContainers.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/RefreshContainers.json
      */
     /**
      * Sample code: Trigger Azure Vm Discovery.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void triggerAzureVmDiscovery(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionContainers()
-            .refreshWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "Azure", null, Context.NONE);
+        manager.protectionContainers()
+            .refreshWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "Azure", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1814,30 +1915,31 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.AcquireStorageAcc
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureStorageContainer;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 
-/** Samples for ProtectionContainers Register. */
+/**
+ * Samples for ProtectionContainers Register.
+ */
 public final class ProtectionContainersRegisterSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionContainers_Register.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/ProtectionContainers_Register.json
      */
     /**
      * Sample code: RegisterAzure Storage ProtectionContainers.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void registerAzureStorageProtectionContainers(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionContainers()
+        manager.protectionContainers()
             .define("StorageContainer;Storage;SwaggerTestRg;swaggertestsa")
             .withRegion((String) null)
             .withExistingBackupFabric("swaggertestvault", "SwaggerTestRg", "Azure")
-            .withProperties(
-                new AzureStorageContainer()
-                    .withFriendlyName("swaggertestsa")
-                    .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
-                    .withSourceResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
-                    .withAcquireStorageAccountLock(AcquireStorageAccountLock.ACQUIRE))
+            .withProperties(new AzureStorageContainer().withFriendlyName("swaggertestsa")
+                .withBackupManagementType(BackupManagementType.AZURE_STORAGE)
+                .withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/SwaggerTestRg/providers/Microsoft.Storage/storageAccounts/swaggertestsa")
+                .withAcquireStorageAccountLock(AcquireStorageAccountLock.ACQUIRE))
             .create();
     }
 }
@@ -1846,24 +1948,25 @@ public final class ProtectionContainersRegisterSamples {
 ### ProtectionContainers_Unregister
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionContainers Unregister. */
+/**
+ * Samples for ProtectionContainers Unregister.
+ */
 public final class ProtectionContainersUnregisterSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionContainers_Unregister.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureWorkload/ProtectionContainers_Unregister.json
      */
     /**
      * Sample code: Unregister Protection Container.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void unregisterProtectionContainer(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionContainers()
-            .unregisterWithResponse(
-                "testVault", "testRg", "Azure", "storagecontainer;Storage;test-rg;teststorage", Context.NONE);
+        manager.protectionContainers()
+            .unregisterWithResponse("testVault", "testRg", "Azure", "storagecontainer;Storage;test-rg;teststorage",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1873,29 +1976,30 @@ public final class ProtectionContainersUnregisterSamples {
 ```java
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureResourceProtectionIntent;
 
-/** Samples for ProtectionIntent CreateOrUpdate. */
+/**
+ * Samples for ProtectionIntent CreateOrUpdate.
+ */
 public final class ProtectionIntentCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectionIntent_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Azure Vm Protection Intent.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createOrUpdateAzureVmProtectionIntent(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionIntents()
+        manager.protectionIntents()
             .define("vm;iaasvmcontainerv2;chamsrgtest;chamscandel")
             .withRegion((String) null)
             .withExistingBackupFabric("myVault", "myRG", "Azure")
-            .withProperties(
-                new AzureResourceProtectionIntent()
-                    .withSourceResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/chamsrgtest/providers/Microsoft.Compute/virtualMachines/chamscandel")
-                    .withPolicyId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/vaults/myVault/backupPolicies/myPolicy"))
+            .withProperties(new AzureResourceProtectionIntent().withSourceResourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/chamsrgtest/providers/Microsoft.Compute/virtualMachines/chamscandel")
+                .withPolicyId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/vaults/myVault/backupPolicies/myPolicy"))
             .create();
     }
 }
@@ -1904,23 +2008,25 @@ public final class ProtectionIntentCreateOrUpdateSamples {
 ### ProtectionIntent_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionIntent Delete. */
+/**
+ * Samples for ProtectionIntent Delete.
+ */
 public final class ProtectionIntentDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupProtectionIntent_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureWorkload/BackupProtectionIntent_Delete.json
      */
     /**
      * Sample code: Delete Protection intent from item.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void deleteProtectionIntentFromItem(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionIntents()
-            .deleteWithResponse("myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", Context.NONE);
+        manager.protectionIntents()
+            .deleteWithResponse("myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1928,23 +2034,25 @@ public final class ProtectionIntentDeleteSamples {
 ### ProtectionIntent_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionIntent Get. */
+/**
+ * Samples for ProtectionIntent Get.
+ */
 public final class ProtectionIntentGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/BackupProtectionIntent_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureWorkload/BackupProtectionIntent_Get.json
      */
     /**
      * Sample code: Get ProtectionIntent for an item.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectionIntentForAnItem(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionIntents()
-            .getWithResponse("myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E", Context.NONE);
+        manager.protectionIntents()
+            .getWithResponse("myVault", "myRG", "Azure", "249D9B07-D2EF-4202-AA64-65F35418564E",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1952,34 +2060,33 @@ public final class ProtectionIntentGetSamples {
 ### ProtectionIntent_Validate
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnableBackupRequest;
 
-/** Samples for ProtectionIntent Validate. */
+/**
+ * Samples for ProtectionIntent Validate.
+ */
 public final class ProtectionIntentValidateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionIntent_Validate.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectionIntent_Validate.json
      */
     /**
      * Sample code: Validate Enable Protection on Azure Vm.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void validateEnableProtectionOnAzureVm(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionIntents()
-            .validateWithResponse(
-                "southeastasia",
-                new PreValidateEnableBackupRequest()
-                    .withResourceType(DataSourceType.VM)
-                    .withResourceId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/arunaupgrade/providers/Microsoft.Compute/VirtualMachines/upgrade1")
-                    .withVaultId(
-                        "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/Vaults/myVault")
-                    .withProperties(""),
-                Context.NONE);
+        manager.protectionIntents()
+            .validateWithResponse("southeastasia", new PreValidateEnableBackupRequest()
+                .withResourceType(DataSourceType.VM)
+                .withResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/arunaupgrade/providers/Microsoft.Compute/VirtualMachines/upgrade1")
+                .withVaultId(
+                    "/Subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.RecoveryServices/Vaults/myVault")
+                .withProperties(""), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1994,6 +2101,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DailyRetentionSch
 import com.azure.resourcemanager.recoveryservicesbackup.models.DailySchedule;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DayOfWeek;
 import com.azure.resourcemanager.recoveryservicesbackup.models.HourlySchedule;
+import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMSnapshotConsistencyType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasvmPolicyType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.LogSchedulePolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.LongTermRetentionPolicy;
@@ -2009,6 +2117,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.SimpleRetentionPo
 import com.azure.resourcemanager.recoveryservicesbackup.models.SimpleSchedulePolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SimpleSchedulePolicyV2;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SubProtectionPolicy;
+import com.azure.resourcemanager.recoveryservicesbackup.models.VaultRetentionPolicy;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeekOfMonth;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionFormat;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WeeklyRetentionSchedule;
@@ -2017,301 +2126,283 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.YearlyRetentionSc
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 
-/** Samples for ProtectionPolicies CreateOrUpdate. */
+/**
+ * Samples for ProtectionPolicies CreateOrUpdate.
+ */
 public final class ProtectionPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureWorkload/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Workload Protection Policy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createOrUpdateFullAzureWorkloadProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
+        manager.protectionPolicies()
             .define("testPolicy1")
             .withRegion((String) null)
             .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
             .withProperties(
-                new AzureVmWorkloadProtectionPolicy()
-                    .withWorkLoadType(WorkloadType.SQLDATA_BASE)
+                new AzureVmWorkloadProtectionPolicy().withWorkLoadType(WorkloadType.SQLDATA_BASE)
                     .withSettings(new Settings().withTimeZone("Pacific Standard Time").withIssqlcompression(false))
                     .withSubProtectionPolicy(
-                        Arrays
-                            .asList(
-                                new SubProtectionPolicy()
-                                    .withPolicyType(PolicyType.FULL)
-                                    .withSchedulePolicy(
-                                        new SimpleSchedulePolicy()
-                                            .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
-                                            .withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
-                                            .withScheduleRunTimes(
-                                                Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
-                                    .withRetentionPolicy(
-                                        new LongTermRetentionPolicy()
-                                            .withWeeklySchedule(
-                                                new WeeklyRetentionSchedule()
-                                                    .withDaysOfTheWeek(
-                                                        Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
-                                                    .withRetentionTimes(
-                                                        Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                                    .withRetentionDuration(
-                                                        new RetentionDuration()
-                                                            .withCount(2)
-                                                            .withDurationType(RetentionDurationType.WEEKS)))
-                                            .withMonthlySchedule(
-                                                new MonthlyRetentionSchedule()
-                                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                                    .withRetentionScheduleWeekly(
-                                                        new WeeklyRetentionFormat()
-                                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.SECOND)))
-                                                    .withRetentionTimes(
-                                                        Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                                    .withRetentionDuration(
-                                                        new RetentionDuration()
-                                                            .withCount(1)
-                                                            .withDurationType(RetentionDurationType.MONTHS)))
-                                            .withYearlySchedule(
-                                                new YearlyRetentionSchedule()
-                                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                                    .withMonthsOfYear(
-                                                        Arrays
-                                                            .asList(
-                                                                MonthOfYear.JANUARY,
-                                                                MonthOfYear.JUNE,
-                                                                MonthOfYear.DECEMBER))
-                                                    .withRetentionScheduleWeekly(
-                                                        new WeeklyRetentionFormat()
-                                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST)))
-                                                    .withRetentionTimes(
-                                                        Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                                    .withRetentionDuration(
-                                                        new RetentionDuration()
-                                                            .withCount(1)
-                                                            .withDurationType(RetentionDurationType.YEARS)))),
-                                new SubProtectionPolicy()
-                                    .withPolicyType(PolicyType.DIFFERENTIAL)
-                                    .withSchedulePolicy(
-                                        new SimpleSchedulePolicy()
-                                            .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
-                                            .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY))
-                                            .withScheduleRunTimes(
-                                                Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
-                                    .withRetentionPolicy(
-                                        new SimpleRetentionPolicy()
-                                            .withRetentionDuration(
-                                                new RetentionDuration()
-                                                    .withCount(8)
-                                                    .withDurationType(RetentionDurationType.DAYS))),
-                                new SubProtectionPolicy()
-                                    .withPolicyType(PolicyType.LOG)
-                                    .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
-                                    .withRetentionPolicy(
-                                        new SimpleRetentionPolicy()
-                                            .withRetentionDuration(
-                                                new RetentionDuration()
-                                                    .withCount(7)
-                                                    .withDurationType(RetentionDurationType.DAYS))))))
+                        Arrays.asList(
+                            new SubProtectionPolicy().withPolicyType(PolicyType.FULL)
+                                .withSchedulePolicy(new SimpleSchedulePolicy()
+                                    .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                                    .withScheduleRunDays(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                                    .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
+                                .withRetentionPolicy(new LongTermRetentionPolicy()
+                                    .withWeeklySchedule(new WeeklyRetentionSchedule()
+                                        .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY, DayOfWeek.TUESDAY))
+                                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                        .withRetentionDuration(new RetentionDuration().withCount(2)
+                                            .withDurationType(RetentionDurationType.WEEKS)))
+                                    .withMonthlySchedule(new MonthlyRetentionSchedule()
+                                        .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                        .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.SECOND)))
+                                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                        .withRetentionDuration(new RetentionDuration()
+                                            .withCount(1)
+                                            .withDurationType(RetentionDurationType.MONTHS)))
+                                    .withYearlySchedule(new YearlyRetentionSchedule()
+                                        .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                        .withMonthsOfYear(
+                                            Arrays.asList(MonthOfYear.JANUARY, MonthOfYear.JUNE, MonthOfYear.DECEMBER))
+                                        .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.LAST)))
+                                        .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
+                                        .withRetentionDuration(new RetentionDuration().withCount(1)
+                                            .withDurationType(RetentionDurationType.YEARS)))),
+                            new SubProtectionPolicy().withPolicyType(PolicyType.DIFFERENTIAL)
+                                .withSchedulePolicy(new SimpleSchedulePolicy()
+                                    .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                                    .withScheduleRunDays(Arrays.asList(DayOfWeek.FRIDAY))
+                                    .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
+                                .withRetentionPolicy(new SimpleRetentionPolicy().withRetentionDuration(
+                                    new RetentionDuration().withCount(8).withDurationType(RetentionDurationType.DAYS))),
+                            new SubProtectionPolicy().withPolicyType(PolicyType.LOG)
+                                .withSchedulePolicy(new LogSchedulePolicy().withScheduleFrequencyInMins(60))
+                                .withRetentionPolicy(new SimpleRetentionPolicy()
+                                    .withRetentionDuration(new RetentionDuration().withCount(7)
+                                        .withDurationType(RetentionDurationType.DAYS))))))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Simple.json
      */
     /**
      * Sample code: Create or Update Simple Azure Vm Protection Policy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createOrUpdateSimpleAzureVmProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
+        manager.protectionPolicies()
             .define("testPolicy1")
             .withRegion((String) null)
             .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
-            .withProperties(
-                new AzureIaaSvmProtectionPolicy()
-                    .withSchedulePolicy(
-                        new SimpleSchedulePolicy()
-                            .withScheduleRunFrequency(ScheduleRunType.DAILY)
-                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T02:00:00Z"))))
-                    .withRetentionPolicy(
-                        new LongTermRetentionPolicy()
-                            .withDailySchedule(
-                                new DailyRetentionSchedule()
-                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T02:00:00Z")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(1)
-                                            .withDurationType(RetentionDurationType.DAYS))))
-                    .withTimeZone("Pacific Standard Time"))
+            .withProperties(new AzureIaaSvmProtectionPolicy()
+                .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.DAILY)
+                    .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T02:00:00Z"))))
+                .withRetentionPolicy(new LongTermRetentionPolicy().withDailySchedule(new DailyRetentionSchedule()
+                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T02:00:00Z")))
+                    .withRetentionDuration(
+                        new RetentionDuration().withCount(1).withDurationType(RetentionDurationType.DAYS))))
+                .withTimeZone("Pacific Standard Time"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/ProtectionPolicies_CreateOrUpdate_Daily.json
      */
     /**
      * Sample code: Create or Update Daily Azure Storage Protection Policy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createOrUpdateDailyAzureStorageProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
+        manager.protectionPolicies()
             .define("dailyPolicy2")
             .withRegion((String) null)
             .withExistingVault("swaggertestvault", "SwaggerTestRg")
             .withProperties(
-                new AzureFileShareProtectionPolicy()
-                    .withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
-                    .withSchedulePolicy(
-                        new SimpleSchedulePolicy()
-                            .withScheduleRunFrequency(ScheduleRunType.DAILY)
-                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z"))))
+                new AzureFileShareProtectionPolicy().withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
+                    .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.DAILY)
+                        .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z"))))
                     .withRetentionPolicy(
                         new LongTermRetentionPolicy()
                             .withDailySchedule(
                                 new DailyRetentionSchedule()
                                     .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(5)
-                                            .withDurationType(RetentionDurationType.DAYS)))
+                                    .withRetentionDuration(new RetentionDuration().withCount(5)
+                                        .withDurationType(RetentionDurationType.DAYS)))
                             .withWeeklySchedule(
-                                new WeeklyRetentionSchedule()
-                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                new WeeklyRetentionSchedule().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
                                     .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(12)
-                                            .withDurationType(RetentionDurationType.WEEKS)))
-                            .withMonthlySchedule(
-                                new MonthlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(60)
-                                            .withDurationType(RetentionDurationType.MONTHS)))
-                            .withYearlySchedule(
-                                new YearlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(10)
-                                            .withDurationType(RetentionDurationType.YEARS))))
+                                    .withRetentionDuration(new RetentionDuration().withCount(12)
+                                        .withDurationType(RetentionDurationType.WEEKS)))
+                            .withMonthlySchedule(new MonthlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
+                                .withRetentionDuration(new RetentionDuration().withCount(60)
+                                    .withDurationType(RetentionDurationType.MONTHS)))
+                            .withYearlySchedule(new YearlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-09-29T08:00:00.000Z")))
+                                .withRetentionDuration(new RetentionDuration().withCount(10)
+                                    .withDurationType(RetentionDurationType.YEARS))))
                     .withTimeZone("UTC"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/ProtectionPolicies_CreateOrUpdate_Hardened.json
+     */
+    /**
+     * Sample code: Create or Update Azure Storage Vault Standard Protection Policy.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void createOrUpdateAzureStorageVaultStandardProtectionPolicy(
+        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.protectionPolicies()
+            .define("newPolicyV2")
+            .withRegion((String) null)
+            .withExistingVault("swaggertestvault", "SwaggerTestRg")
+            .withProperties(
+                new AzureFileShareProtectionPolicy().withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
+                    .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.DAILY)
+                        .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2023-07-18T09:30:00.000Z"))))
+                    .withVaultRetentionPolicy(
+                        new VaultRetentionPolicy()
+                            .withVaultRetention(new LongTermRetentionPolicy()
+                                .withDailySchedule(new DailyRetentionSchedule()
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2023-07-18T09:30:00.000Z")))
+                                    .withRetentionDuration(new RetentionDuration().withCount(30)
+                                        .withDurationType(RetentionDurationType.DAYS)))
+                                .withWeeklySchedule(new WeeklyRetentionSchedule()
+                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                    .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2023-07-18T09:30:00.000Z")))
+                                    .withRetentionDuration(new RetentionDuration().withCount(12)
+                                        .withDurationType(RetentionDurationType.WEEKS)))
+                                .withMonthlySchedule(
+                                    new MonthlyRetentionSchedule()
+                                        .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                        .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                        .withRetentionTimes(
+                                            Arrays.asList(OffsetDateTime.parse("2023-07-18T09:30:00.000Z")))
+                                        .withRetentionDuration(new RetentionDuration().withCount(60)
+                                            .withDurationType(RetentionDurationType.MONTHS)))
+                                .withYearlySchedule(
+                                    new YearlyRetentionSchedule()
+                                        .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                        .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
+                                        .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                        .withRetentionTimes(
+                                            Arrays.asList(OffsetDateTime.parse("2023-07-18T09:30:00.000Z")))
+                                        .withRetentionDuration(new RetentionDuration().withCount(10)
+                                            .withDurationType(RetentionDurationType.YEARS))))
+                            .withSnapshotRetentionInDays(5))
+                    .withTimeZone("UTC"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureStorage/ProtectionPolicies_CreateOrUpdate_Hourly.json
      */
     /**
      * Sample code: Create or Update Hourly Azure Storage Protection Policy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createOrUpdateHourlyAzureStorageProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
+        manager.protectionPolicies()
             .define("newPolicy2")
             .withRegion((String) null)
             .withExistingVault("swaggertestvault", "SwaggerTestRg")
             .withProperties(
-                new AzureFileShareProtectionPolicy()
-                    .withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
-                    .withSchedulePolicy(
-                        new SimpleSchedulePolicy()
-                            .withScheduleRunFrequency(ScheduleRunType.HOURLY)
-                            .withHourlySchedule(
-                                new HourlySchedule()
-                                    .withInterval(4)
-                                    .withScheduleWindowStartTime(OffsetDateTime.parse("2021-09-29T08:00:00.000Z"))
-                                    .withScheduleWindowDuration(12)))
-                    .withRetentionPolicy(
-                        new LongTermRetentionPolicy()
-                            .withDailySchedule(
-                                new DailyRetentionSchedule()
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(5)
-                                            .withDurationType(RetentionDurationType.DAYS)))
-                            .withWeeklySchedule(
-                                new WeeklyRetentionSchedule()
-                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(12)
-                                            .withDurationType(RetentionDurationType.WEEKS)))
-                            .withMonthlySchedule(
-                                new MonthlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(60)
-                                            .withDurationType(RetentionDurationType.MONTHS)))
-                            .withYearlySchedule(
-                                new YearlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(10)
-                                            .withDurationType(RetentionDurationType.YEARS))))
+                new AzureFileShareProtectionPolicy().withWorkLoadType(WorkloadType.AZURE_FILE_SHARE)
+                    .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.HOURLY)
+                        .withHourlySchedule(new HourlySchedule().withInterval(4)
+                            .withScheduleWindowStartTime(OffsetDateTime.parse("2021-09-29T08:00:00.000Z"))
+                            .withScheduleWindowDuration(12)))
+                    .withRetentionPolicy(new LongTermRetentionPolicy()
+                        .withDailySchedule(new DailyRetentionSchedule().withRetentionDuration(
+                            new RetentionDuration().withCount(5).withDurationType(RetentionDurationType.DAYS)))
+                        .withWeeklySchedule(
+                            new WeeklyRetentionSchedule().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                .withRetentionDuration(new RetentionDuration().withCount(12)
+                                    .withDurationType(RetentionDurationType.WEEKS)))
+                        .withMonthlySchedule(new MonthlyRetentionSchedule()
+                            .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                            .withRetentionScheduleWeekly(
+                                new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                            .withRetentionDuration(
+                                new RetentionDuration().withCount(60).withDurationType(RetentionDurationType.MONTHS)))
+                        .withYearlySchedule(new YearlyRetentionSchedule()
+                            .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                            .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
+                            .withRetentionScheduleWeekly(
+                                new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                    .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                            .withRetentionDuration(
+                                new RetentionDuration().withCount(10).withDurationType(RetentionDurationType.YEARS))))
                     .withTimeZone("UTC"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectionPolicies_CreateOrUpdate_Complex.json
      */
     /**
      * Sample code: Create or Update Full Azure Vm Protection Policy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createOrUpdateFullAzureVmProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
+        manager.protectionPolicies()
             .define("testPolicy1")
             .withRegion((String) null)
             .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
             .withProperties(
                 new AzureIaaSvmProtectionPolicy()
-                    .withSchedulePolicy(
-                        new SimpleSchedulePolicy()
-                            .withScheduleRunFrequency(ScheduleRunType.WEEKLY)
-                            .withScheduleRunDays(
-                                Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
-                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
+                    .withSchedulePolicy(new SimpleSchedulePolicy().withScheduleRunFrequency(ScheduleRunType.WEEKLY)
+                        .withScheduleRunDays(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
+                        .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z"))))
                     .withRetentionPolicy(
                         new LongTermRetentionPolicy()
                             .withWeeklySchedule(
@@ -2319,188 +2410,141 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
                                     .withDaysOfTheWeek(
                                         Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
                                     .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(1)
-                                            .withDurationType(RetentionDurationType.WEEKS)))
+                                    .withRetentionDuration(new RetentionDuration().withCount(1)
+                                        .withDurationType(RetentionDurationType.WEEKS)))
                             .withMonthlySchedule(
                                 new MonthlyRetentionSchedule()
                                     .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST, WeekOfMonth.THIRD)))
+                                    .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                                        .withDaysOfTheWeek(Arrays.asList(DayOfWeek.WEDNESDAY, DayOfWeek.THURSDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST, WeekOfMonth.THIRD)))
                                     .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(2)
-                                            .withDurationType(RetentionDurationType.MONTHS)))
+                                    .withRetentionDuration(new RetentionDuration().withCount(2)
+                                        .withDurationType(RetentionDurationType.MONTHS)))
                             .withYearlySchedule(
                                 new YearlyRetentionSchedule()
                                     .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
                                     .withMonthsOfYear(Arrays.asList(MonthOfYear.FEBRUARY, MonthOfYear.NOVEMBER))
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FOURTH)))
+                                    .withRetentionScheduleWeekly(new WeeklyRetentionFormat()
+                                        .withDaysOfTheWeek(Arrays.asList(DayOfWeek.MONDAY, DayOfWeek.THURSDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FOURTH)))
                                     .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(4)
-                                            .withDurationType(RetentionDurationType.YEARS))))
+                                    .withRetentionDuration(new RetentionDuration().withCount(4)
+                                        .withDurationType(RetentionDurationType.YEARS))))
                     .withTimeZone("Pacific Standard Time"))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/V2Policy/IaaS_v2_hourly.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/V2Policy/IaaS_v2_hourly.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with Hourly backup.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createOrUpdateEnhancedAzureVmProtectionPolicyWithHourlyBackup(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
+        manager.protectionPolicies()
             .define("v2-daily-sample")
             .withRegion((String) null)
             .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
             .withProperties(
                 new AzureIaaSvmProtectionPolicy()
-                    .withSchedulePolicy(
-                        new SimpleSchedulePolicyV2()
-                            .withScheduleRunFrequency(ScheduleRunType.HOURLY)
-                            .withHourlySchedule(
-                                new HourlySchedule()
-                                    .withInterval(4)
-                                    .withScheduleWindowStartTime(OffsetDateTime.parse("2021-12-17T08:00:00Z"))
-                                    .withScheduleWindowDuration(16)))
+                    .withSchedulePolicy(new SimpleSchedulePolicyV2().withScheduleRunFrequency(ScheduleRunType.HOURLY)
+                        .withHourlySchedule(new HourlySchedule().withInterval(4)
+                            .withScheduleWindowStartTime(OffsetDateTime.parse("2021-12-17T08:00:00Z"))
+                            .withScheduleWindowDuration(16)))
                     .withRetentionPolicy(
                         new LongTermRetentionPolicy()
-                            .withDailySchedule(
-                                new DailyRetentionSchedule()
-                                    .withRetentionTimes(
-                                        Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(180)
-                                            .withDurationType(RetentionDurationType.DAYS)))
-                            .withWeeklySchedule(
-                                new WeeklyRetentionSchedule()
-                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withRetentionTimes(
-                                        Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(12)
-                                            .withDurationType(RetentionDurationType.WEEKS)))
-                            .withMonthlySchedule(
-                                new MonthlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                                    .withRetentionTimes(
-                                        Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(60)
-                                            .withDurationType(RetentionDurationType.MONTHS)))
-                            .withYearlySchedule(
-                                new YearlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                                    .withRetentionTimes(
-                                        Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(10)
-                                            .withDurationType(RetentionDurationType.YEARS))))
+                            .withDailySchedule(new DailyRetentionSchedule()
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(180)
+                                    .withDurationType(RetentionDurationType.DAYS)))
+                            .withWeeklySchedule(new WeeklyRetentionSchedule()
+                                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(12)
+                                    .withDurationType(RetentionDurationType.WEEKS)))
+                            .withMonthlySchedule(new MonthlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(60)
+                                    .withDurationType(RetentionDurationType.MONTHS)))
+                            .withYearlySchedule(new YearlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(10)
+                                    .withDurationType(RetentionDurationType.YEARS))))
                     .withInstantRpRetentionRangeInDays(30)
                     .withTimeZone("India Standard Time")
-                    .withPolicyType(IaasvmPolicyType.V2))
+                    .withPolicyType(IaasvmPolicyType.V2)
+                    .withSnapshotConsistencyType(IaasVMSnapshotConsistencyType.ONLY_CRASH_CONSISTENT))
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/V2Policy/IaaS_v2_daily.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/V2Policy/IaaS_v2_daily.json
      */
     /**
      * Sample code: Create or Update Enhanced Azure Vm Protection Policy with daily backup.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createOrUpdateEnhancedAzureVmProtectionPolicyWithDailyBackup(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
+        manager.protectionPolicies()
             .define("v2-daily-sample")
             .withRegion((String) null)
             .withExistingVault("NetSDKTestRsVault", "SwaggerTestRg")
             .withProperties(
                 new AzureIaaSvmProtectionPolicy()
-                    .withSchedulePolicy(
-                        new SimpleSchedulePolicyV2()
-                            .withScheduleRunFrequency(ScheduleRunType.DAILY)
-                            .withDailySchedule(
-                                new DailySchedule()
-                                    .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))))
+                    .withSchedulePolicy(new SimpleSchedulePolicyV2().withScheduleRunFrequency(ScheduleRunType.DAILY)
+                        .withDailySchedule(new DailySchedule()
+                            .withScheduleRunTimes(Arrays.asList(OffsetDateTime.parse("2018-01-24T10:00:00Z")))))
                     .withRetentionPolicy(
                         new LongTermRetentionPolicy()
-                            .withDailySchedule(
-                                new DailyRetentionSchedule()
-                                    .withRetentionTimes(
-                                        Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(180)
-                                            .withDurationType(RetentionDurationType.DAYS)))
-                            .withWeeklySchedule(
-                                new WeeklyRetentionSchedule()
-                                    .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                    .withRetentionTimes(
-                                        Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(12)
-                                            .withDurationType(RetentionDurationType.WEEKS)))
-                            .withMonthlySchedule(
-                                new MonthlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                                    .withRetentionTimes(
-                                        Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(60)
-                                            .withDurationType(RetentionDurationType.MONTHS)))
-                            .withYearlySchedule(
-                                new YearlyRetentionSchedule()
-                                    .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
-                                    .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
-                                    .withRetentionScheduleWeekly(
-                                        new WeeklyRetentionFormat()
-                                            .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
-                                            .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
-                                    .withRetentionTimes(
-                                        Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
-                                    .withRetentionDuration(
-                                        new RetentionDuration()
-                                            .withCount(10)
-                                            .withDurationType(RetentionDurationType.YEARS))))
+                            .withDailySchedule(new DailyRetentionSchedule()
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(180)
+                                    .withDurationType(RetentionDurationType.DAYS)))
+                            .withWeeklySchedule(new WeeklyRetentionSchedule()
+                                .withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(12)
+                                    .withDurationType(RetentionDurationType.WEEKS)))
+                            .withMonthlySchedule(new MonthlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(60)
+                                    .withDurationType(RetentionDurationType.MONTHS)))
+                            .withYearlySchedule(new YearlyRetentionSchedule()
+                                .withRetentionScheduleFormatType(RetentionScheduleFormat.WEEKLY)
+                                .withMonthsOfYear(Arrays.asList(MonthOfYear.JANUARY))
+                                .withRetentionScheduleWeekly(
+                                    new WeeklyRetentionFormat().withDaysOfTheWeek(Arrays.asList(DayOfWeek.SUNDAY))
+                                        .withWeeksOfTheMonth(Arrays.asList(WeekOfMonth.FIRST)))
+                                .withRetentionTimes(Arrays.asList(OffsetDateTime.parse("2021-12-17T08:00:00+00:00")))
+                                .withRetentionDuration(new RetentionDuration().withCount(10)
+                                    .withDurationType(RetentionDurationType.YEARS))))
                     .withInstantRpRetentionRangeInDays(30)
                     .withTimeZone("India Standard Time")
-                    .withPolicyType(IaasvmPolicyType.V2))
+                    .withPolicyType(IaasvmPolicyType.V2)
+                    .withSnapshotConsistencyType(IaasVMSnapshotConsistencyType.ONLY_CRASH_CONSISTENT))
             .create();
     }
 }
@@ -2509,21 +2553,24 @@ public final class ProtectionPoliciesCreateOrUpdateSamples {
 ### ProtectionPolicies_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionPolicies Delete. */
+/**
+ * Samples for ProtectionPolicies Delete.
+ */
 public final class ProtectionPoliciesDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicies_Delete.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectionPolicies_Delete.json
      */
     /**
      * Sample code: Delete Azure Vm Protection Policy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void deleteAzureVmProtectionPolicy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().delete("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", Context.NONE);
+        manager.protectionPolicies()
+            .delete("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2531,36 +2578,40 @@ public final class ProtectionPoliciesDeleteSamples {
 ### ProtectionPolicies_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionPolicies Get. */
+/**
+ * Samples for ProtectionPolicies Get.
+ */
 public final class ProtectionPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicies_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectionPolicies_Get.json
      */
     /**
      * Sample code: Get Azure IaasVm Protection Policy Details.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getAzureIaasVmProtectionPolicyDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.protectionPolicies().getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", Context.NONE);
+        manager.protectionPolicies()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/V2Policy/v2-Get-Policy.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/V2Policy/v2-Get-Policy.json
      */
     /**
      * Sample code: Get Azure IaasVm Enhanced Protection Policy Details.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getAzureIaasVmEnhancedProtectionPolicyDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicies()
-            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", Context.NONE);
+        manager.protectionPolicies()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "v2-daily-sample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2568,28 +2619,25 @@ public final class ProtectionPoliciesGetSamples {
 ### ProtectionPolicyOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionPolicyOperationResults Get. */
+/**
+ * Samples for ProtectionPolicyOperationResults Get.
+ */
 public final class ProtectionPolicyOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicyOperationResults_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectionPolicyOperationResults_Get.json
      */
     /**
      * Sample code: Get Protection Policy Operation Results.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectionPolicyOperationResults(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicyOperationResults()
-            .getWithResponse(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "testPolicy1",
-                "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+        manager.protectionPolicyOperationResults()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1",
+                "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2597,28 +2645,25 @@ public final class ProtectionPolicyOperationResultsGetSamples {
 ### ProtectionPolicyOperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ProtectionPolicyOperationStatuses Get. */
+/**
+ * Samples for ProtectionPolicyOperationStatuses Get.
+ */
 public final class ProtectionPolicyOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ProtectionPolicyOperationStatuses_Get.json
      */
     /**
      * Sample code: Get Protection Policy Operation Status.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectionPolicyOperationStatus(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .protectionPolicyOperationStatuses()
-            .getWithResponse(
-                "NetSDKTestRsVault",
-                "SwaggerTestRg",
-                "testPolicy1",
-                "00000000-0000-0000-0000-000000000000",
-                Context.NONE);
+        manager.protectionPolicyOperationStatuses()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "testPolicy1",
+                "00000000-0000-0000-0000-000000000000", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2626,30 +2671,26 @@ public final class ProtectionPolicyOperationStatusesGetSamples {
 ### RecoveryPoints_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for RecoveryPoints Get. */
+/**
+ * Samples for RecoveryPoints Get.
+ */
 public final class RecoveryPointsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/RecoveryPoints_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/RecoveryPoints_Get.json
      */
     /**
      * Sample code: Get Azure Vm Recovery Point Details.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getAzureVmRecoveryPointDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .recoveryPoints()
-            .getWithResponse(
-                "rshvault",
-                "rshhtestmdvmrg",
-                "Azure",
+        manager.recoveryPoints()
+            .getWithResponse("rshvault", "rshhtestmdvmrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
-                "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
-                "26083826328862",
-                Context.NONE);
+                "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall", "26083826328862", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2657,30 +2698,26 @@ public final class RecoveryPointsGetSamples {
 ### RecoveryPoints_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for RecoveryPoints List. */
+/**
+ * Samples for RecoveryPoints List.
+ */
 public final class RecoveryPointsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/RecoveryPoints_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/RecoveryPoints_List.json
      */
     /**
      * Sample code: Get Protected Azure Vm Recovery Points.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectedAzureVmRecoveryPoints(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .recoveryPoints()
-            .list(
-                "rshvault",
-                "rshhtestmdvmrg",
-                "Azure",
+        manager.recoveryPoints()
+            .list("rshvault", "rshhtestmdvmrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
-                "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
-                null,
-                Context.NONE);
+                "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2688,34 +2725,33 @@ public final class RecoveryPointsListSamples {
 ### RecoveryPointsRecommendedForMove_List
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPointsRecommendedForMoveRequest;
 import java.util.Arrays;
 
-/** Samples for RecoveryPointsRecommendedForMove List. */
+/**
+ * Samples for RecoveryPointsRecommendedForMove List.
+ */
 public final class RecoveryPointsRecommendedForMoveListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/RecoveryPointsRecommendedForMove_List.json
      */
     /**
      * Sample code: Get Protected Azure Vm Recovery Points Recommended for Move.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getProtectedAzureVmRecoveryPointsRecommendedForMove(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .recoveryPointsRecommendedForMoves()
-            .list(
-                "rshvault",
-                "rshhtestmdvmrg",
-                "Azure",
+        manager.recoveryPointsRecommendedForMoves()
+            .list("rshvault", "rshhtestmdvmrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
                 "VM;iaasvmcontainerv2;rshhtestmdvmrg;rshmdvmsmall",
                 new ListRecoveryPointsRecommendedForMoveRequest()
                     .withObjectType("ListRecoveryPointsRecommendedForMoveRequest")
                     .withExcludedRPList(Arrays.asList("348916168024334", "348916168024335")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2723,21 +2759,23 @@ public final class RecoveryPointsRecommendedForMoveListSamples {
 ### ResourceGuardProxies_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ResourceGuardProxies Get. */
+/**
+ * Samples for ResourceGuardProxies Get.
+ */
 public final class ResourceGuardProxiesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ResourceGuardProxyCRUD/ListResourceGuardProxy.json
      */
     /**
      * Sample code: Get VaultGuardProxies.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void getVaultGuardProxies(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.resourceGuardProxies().get("sampleVault", "SampleResourceGroup", Context.NONE);
+    public static void
+        getVaultGuardProxies(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.resourceGuardProxies().get("sampleVault", "SampleResourceGroup", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2745,23 +2783,25 @@ public final class ResourceGuardProxiesGetSamples {
 ### ResourceGuardProxyOperation_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ResourceGuardProxyOperation Delete. */
+/**
+ * Samples for ResourceGuardProxyOperation Delete.
+ */
 public final class ResourceGuardProxyOperationDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ResourceGuardProxyCRUD/DeleteResourceGuardProxy.json
      */
     /**
      * Sample code: Delete ResourceGuardProxy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void deleteResourceGuardProxy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .resourceGuardProxyOperations()
-            .deleteWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample", Context.NONE);
+        manager.resourceGuardProxyOperations()
+            .deleteWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2769,23 +2809,24 @@ public final class ResourceGuardProxyOperationDeleteSamples {
 ### ResourceGuardProxyOperation_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ResourceGuardProxyOperation Get. */
+/**
+ * Samples for ResourceGuardProxyOperation Get.
+ */
 public final class ResourceGuardProxyOperationGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/GetResourceGuardProxy.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ResourceGuardProxyCRUD/GetResourceGuardProxy.json
      */
     /**
      * Sample code: Get ResourceGuardProxy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void getResourceGuardProxy(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .resourceGuardProxyOperations()
-            .getWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample", Context.NONE);
+    public static void
+        getResourceGuardProxy(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.resourceGuardProxyOperations()
+            .getWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2795,27 +2836,28 @@ public final class ResourceGuardProxyOperationGetSamples {
 ```java
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBase;
 
-/** Samples for ResourceGuardProxyOperation Put. */
+/**
+ * Samples for ResourceGuardProxyOperation Put.
+ */
 public final class ResourceGuardProxyOperationPutSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/PutResourceGuardProxy.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ResourceGuardProxyCRUD/PutResourceGuardProxy.json
      */
     /**
      * Sample code: Create ResourceGuardProxy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void createResourceGuardProxy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .resourceGuardProxyOperations()
+        manager.resourceGuardProxyOperations()
             .define("swaggerExample")
             .withRegion((String) null)
             .withExistingVault("sampleVault", "SampleResourceGroup")
-            .withProperties(
-                new ResourceGuardProxyBase()
-                    .withResourceGuardResourceId(
-                        "/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew"))
+            .withProperties(new ResourceGuardProxyBase().withResourceGuardResourceId(
+                "/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew"))
             .create();
     }
 }
@@ -2824,36 +2866,32 @@ public final class ResourceGuardProxyOperationPutSamples {
 ### ResourceGuardProxyOperation_UnlockDelete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.UnlockDeleteRequest;
 import java.util.Arrays;
 
-/** Samples for ResourceGuardProxyOperation UnlockDelete. */
+/**
+ * Samples for ResourceGuardProxyOperation UnlockDelete.
+ */
 public final class ResourceGuardProxyOperationUnlockDeleteSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * ResourceGuardProxyCRUD/UnlockDeleteResourceGuardProxy.json
      */
     /**
      * Sample code: UnlockDelete ResourceGuardProxy.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void unlockDeleteResourceGuardProxy(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .resourceGuardProxyOperations()
-            .unlockDeleteWithResponse(
-                "sampleVault",
-                "SampleResourceGroup",
-                "swaggerExample",
-                new UnlockDeleteRequest()
-                    .withResourceGuardOperationRequests(
-                        Arrays
-                            .asList(
-                                "/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew/deleteProtectedItemRequests/default"))
-                    .withResourceToBeDeleted(
-                        "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/gaallarg/providers/Microsoft.RecoveryServices/vaults/MercuryCrrVault/backupFabrics/Azure/protectionContainers/VMAppContainer;compute;crrtestrg;crrtestvm/protectedItems/SQLDataBase;mssqlserver;testdb"),
-                Context.NONE);
+        manager.resourceGuardProxyOperations()
+            .unlockDeleteWithResponse("sampleVault", "SampleResourceGroup", "swaggerExample", new UnlockDeleteRequest()
+                .withResourceGuardOperationRequests(Arrays.asList(
+                    "/subscriptions/c999d45b-944f-418c-a0d8-c3fcfd1802c8/resourceGroups/vaultguardRGNew/providers/Microsoft.DataProtection/resourceGuards/VaultGuardTestNew/deleteProtectedItemRequests/default"))
+                .withResourceToBeDeleted(
+                    "/subscriptions/62b829ee-7936-40c9-a1c9-47a93f9f3965/resourceGroups/gaallarg/providers/Microsoft.RecoveryServices/vaults/MercuryCrrVault/backupFabrics/Azure/protectionContainers/VMAppContainer;compute;crrtestrg;crrtestvm/protectedItems/SQLDataBase;mssqlserver;testdb"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2861,33 +2899,30 @@ public final class ResourceGuardProxyOperationUnlockDeleteSamples {
 ### ResourceProvider_BmsPrepareDataMove
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRequest;
 
-/** Samples for ResourceProvider BmsPrepareDataMove. */
+/**
+ * Samples for ResourceProvider BmsPrepareDataMove.
+ */
 public final class ResourceProviderBmsPrepareDataMoveSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/PrepareDataMove_Post.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * BackupDataMove/PrepareDataMove_Post.json
      */
     /**
      * Sample code: Prepare Data Move.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void prepareDataMove(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .resourceProviders()
-            .bmsPrepareDataMove(
-                "source-rsv",
-                "sourceRG",
-                new PrepareDataMoveRequest()
-                    .withTargetResourceId(
-                        "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/targetRG/providers/Microsoft.RecoveryServices/vaults/target-rsv")
-                    .withTargetRegion("USGov Virginia")
-                    .withDataMoveLevel(DataMoveLevel.VAULT),
-                Context.NONE);
+    public static void
+        prepareDataMove(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.resourceProviders()
+            .bmsPrepareDataMove("source-rsv", "sourceRG", new PrepareDataMoveRequest().withTargetResourceId(
+                "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/targetRG/providers/Microsoft.RecoveryServices/vaults/target-rsv")
+                .withTargetRegion("USGov Virginia")
+                .withDataMoveLevel(DataMoveLevel.VAULT), com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2895,34 +2930,32 @@ public final class ResourceProviderBmsPrepareDataMoveSamples {
 ### ResourceProvider_BmsTriggerDataMove
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRequest;
 
-/** Samples for ResourceProvider BmsTriggerDataMove. */
+/**
+ * Samples for ResourceProvider BmsTriggerDataMove.
+ */
 public final class ResourceProviderBmsTriggerDataMoveSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/TriggerDataMove_Post.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * BackupDataMove/TriggerDataMove_Post.json
      */
     /**
      * Sample code: Trigger Data Move.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void triggerDataMove(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .resourceProviders()
-            .bmsTriggerDataMove(
-                "target-rsv",
-                "targetRG",
-                new TriggerDataMoveRequest()
-                    .withSourceResourceId(
-                        "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/sourceRG/providers/Microsoft.RecoveryServices/vaults/source-rsv")
-                    .withSourceRegion("USGov Iowa")
-                    .withDataMoveLevel(DataMoveLevel.VAULT)
-                    .withCorrelationId("MTg2OTcyMzM4NzYyMjc1NDY3Nzs1YmUzYmVmNi04YjJiLTRhOTItOTllYi01NTM0MDllYjk2NjE="),
-                Context.NONE);
+    public static void
+        triggerDataMove(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.resourceProviders()
+            .bmsTriggerDataMove("target-rsv", "targetRG", new TriggerDataMoveRequest().withSourceResourceId(
+                "/subscriptions/04cf684a-d41f-4550-9f70-7708a3a2283b/resourceGroups/sourceRG/providers/Microsoft.RecoveryServices/vaults/source-rsv")
+                .withSourceRegion("USGov Iowa")
+                .withDataMoveLevel(DataMoveLevel.VAULT)
+                .withCorrelationId("MTg2OTcyMzM4NzYyMjc1NDY3Nzs1YmUzYmVmNi04YjJiLTRhOTItOTllYi01NTM0MDllYjk2NjE="),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2930,24 +2963,25 @@ public final class ResourceProviderBmsTriggerDataMoveSamples {
 ### ResourceProvider_GetOperationStatus
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ResourceProvider GetOperationStatus. */
+/**
+ * Samples for ResourceProvider GetOperationStatus.
+ */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * BackupDataMove/BackupDataMoveOperationStatus_Get.json
      */
     /**
      * Sample code: Get OperationStatus.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void getOperationStatus(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .resourceProviders()
-            .getOperationStatusWithResponse(
-                "source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000", Context.NONE);
+    public static void
+        getOperationStatus(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.resourceProviders()
+            .getOperationStatusWithResponse("source-rsv", "sourceRG", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2955,36 +2989,33 @@ public final class ResourceProviderGetOperationStatusSamples {
 ### ResourceProvider_MoveRecoveryPoint
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.MoveRPAcrossTiersRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointTierType;
 
-/** Samples for ResourceProvider MoveRecoveryPoint. */
+/**
+ * Samples for ResourceProvider MoveRecoveryPoint.
+ */
 public final class ResourceProviderMoveRecoveryPointSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/TriggerRecoveryPointMove_Post.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * TriggerRecoveryPointMove_Post.json
      */
     /**
      * Sample code: Trigger RP Move Operation.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void triggerRPMoveOperation(
-        com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .resourceProviders()
-            .moveRecoveryPoint(
-                "testVault",
-                "netsdktestrg",
-                "Azure",
+    public static void
+        triggerRPMoveOperation(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.resourceProviders()
+            .moveRecoveryPoint("testVault", "netsdktestrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "348916168024334",
-                new MoveRPAcrossTiersRequest()
-                    .withObjectType("MoveRPAcrossTiersRequest")
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new MoveRPAcrossTiersRequest().withObjectType("MoveRPAcrossTiersRequest")
                     .withSourceTierType(RecoveryPointTierType.HARDENED_RP)
                     .withTargetTierType(RecoveryPointTierType.ARCHIVED_RP),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2992,7 +3023,6 @@ public final class ResourceProviderMoveRecoveryPointSamples {
 ### Restores_Trigger
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreWithRehydrationRequest;
@@ -3002,265 +3032,234 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointRehy
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RehydrationPriority;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreRequestResource;
+import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetworkAccessOption;
+import com.azure.resourcemanager.recoveryservicesbackup.models.TargetDiskNetworkAccessSettings;
 
-/** Samples for Restores Trigger. */
+/**
+ * Samples for Restores Trigger.
+ */
 public final class RestoresTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreWithRehydrationRequest.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void restoreToNewAzureIaasVmWithIaasVMRestoreWithRehydrationRequest(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .restores()
-            .trigger(
-                "testVault",
-                "netsdktestrg",
-                "Azure",
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "348916168024334",
-                new RestoreRequestResource()
-                    .withProperties(
-                        new IaasVMRestoreWithRehydrationRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withTargetVirtualMachineId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435")
-                            .withTargetResourceGroupId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2")
-                            .withStorageAccountId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount")
-                            .withVirtualNetworkId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet")
-                            .withSubnetId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(false)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withRecoveryPointRehydrationInfo(
-                                new RecoveryPointRehydrationInfo()
-                                    .withRehydrationRetentionDuration("P7D")
-                                    .withRehydrationPriority(RehydrationPriority.HIGH))),
-                Context.NONE);
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreWithRehydrationRequest()
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withTargetVirtualMachineId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435")
+                    .withTargetResourceGroupId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2")
+                    .withStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount")
+                    .withVirtualNetworkId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet")
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(false)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withRecoveryPointRehydrationInfo(
+                        new RecoveryPointRehydrationInfo().withRehydrationRetentionDuration("P7D")
+                            .withRehydrationPriority(RehydrationPriority.HIGH))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void restoreToNewAzureIaasVmWithIaasVMRestoreRequest(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .restores()
-            .trigger(
-                "testVault",
-                "netsdktestrg",
-                "Azure",
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "348916168024334",
-                new RestoreRequestResource()
-                    .withProperties(
-                        new IaasVMRestoreRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withTargetVirtualMachineId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435")
-                            .withTargetResourceGroupId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2")
-                            .withStorageAccountId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount")
-                            .withVirtualNetworkId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet")
-                            .withSubnetId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(false)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))),
-                Context.NONE);
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreRequest()
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withTargetVirtualMachineId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435")
+                    .withTargetResourceGroupId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2")
+                    .withStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount")
+                    .withVirtualNetworkId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet")
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(false)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreWithRehydrationRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreWithRehydrationRequest.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void restoreDisksWithIaasVMRestoreWithRehydrationRequest(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .restores()
-            .trigger(
-                "testVault",
-                "netsdktestrg",
-                "Azure",
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "348916168024334",
-                new RestoreRequestResource()
-                    .withProperties(
-                        new IaasVMRestoreWithRehydrationRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.RESTORE_DISKS)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withStorageAccountId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(true)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withRecoveryPointRehydrationInfo(
-                                new RecoveryPointRehydrationInfo()
-                                    .withRehydrationRetentionDuration("P7D")
-                                    .withRehydrationPriority(RehydrationPriority.STANDARD))),
-                Context.NONE);
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreWithRehydrationRequest()
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.RESTORE_DISKS)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(true)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withRecoveryPointRehydrationInfo(
+                        new RecoveryPointRehydrationInfo().withRehydrationRetentionDuration("P7D")
+                            .withRehydrationPriority(RehydrationPriority.STANDARD))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/TriggerRestore_ALR_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore to New Azure IaasVm with IaasVMRestoreRequest with identityBasedRestoreDetails.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void restoreToNewAzureIaasVmWithIaasVMRestoreRequestWithIdentityBasedRestoreDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .restores()
-            .trigger(
-                "testVault",
-                "netsdktestrg",
-                "Azure",
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "348916168024334",
-                new RestoreRequestResource()
-                    .withProperties(
-                        new IaasVMRestoreRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withTargetVirtualMachineId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435")
-                            .withTargetResourceGroupId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2")
-                            .withVirtualNetworkId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet")
-                            .withSubnetId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(false)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))
-                            .withIdentityBasedRestoreDetails(
-                                new IdentityBasedRestoreDetails()
-                                    .withTargetStorageAccountId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount"))),
-                Context.NONE);
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreRequest()
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.ALTERNATE_LOCATION)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withTargetVirtualMachineId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2/providers/Microsoft.Compute/virtualmachines/RSMDALRVM981435")
+                    .withTargetResourceGroupId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg2")
+                    .withVirtualNetworkId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet")
+                    .withSubnetId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Network/virtualNetworks/testNet/subnets/default")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(false)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(true))
+                    .withIdentityBasedRestoreDetails(new IdentityBasedRestoreDetails().withTargetStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testRg/providers/Microsoft.Storage/storageAccounts/testingAccount"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void restoreDisksWithIaasVMRestoreRequest(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .restores()
-            .trigger(
-                "testVault",
-                "netsdktestrg",
-                "Azure",
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "348916168024334",
-                new RestoreRequestResource()
-                    .withProperties(
-                        new IaasVMRestoreRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.RESTORE_DISKS)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withStorageAccountId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(true)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withIdentityInfo(
-                                new IdentityInfo()
-                                    .withIsSystemAssignedIdentity(false)
-                                    .withManagedIdentityResourceId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))),
-                Context.NONE);
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreRequest()
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.RESTORE_DISKS)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(true)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                        .withManagedIdentityResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))
+                    .withTargetDiskNetworkAccessSettings(new TargetDiskNetworkAccessSettings()
+                        .withTargetDiskNetworkAccessOption(
+                            TargetDiskNetworkAccessOption.ENABLE_PRIVATE_ACCESS_FOR_ALL_DISKS)
+                        .withTargetDiskAccessId(
+                            "/subscriptions/e7a191f5-713c-4bdb-b5e4-cf3dd90230ef/resourceGroups/arpja/providers/Microsoft.Compute/diskAccesses/arpja-diskaccess-ccy"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/TriggerRestore_RestoreDisks_IaasVMRestoreRequest_IdentityBasedRestoreDetails.json
      */
     /**
      * Sample code: Restore Disks with IaasVMRestoreRequest with IdentityBasedRestoreDetails.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void restoreDisksWithIaasVMRestoreRequestWithIdentityBasedRestoreDetails(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .restores()
-            .trigger(
-                "testVault",
-                "netsdktestrg",
-                "Azure",
+        manager.restores()
+            .trigger("testVault", "netsdktestrg", "Azure",
                 "IaasVMContainer;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1",
-                "348916168024334",
-                new RestoreRequestResource()
-                    .withProperties(
-                        new IaasVMRestoreRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.RESTORE_DISKS)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(true)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withIdentityInfo(
-                                new IdentityInfo()
-                                    .withIsSystemAssignedIdentity(false)
-                                    .withManagedIdentityResourceId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))
-                            .withIdentityBasedRestoreDetails(
-                                new IdentityBasedRestoreDetails()
-                                    .withTargetStorageAccountId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"))),
-                Context.NONE);
+                "VM;iaasvmcontainerv2;netsdktestrg;netvmtestv2vm1", "348916168024334",
+                new RestoreRequestResource().withProperties(new IaasVMRestoreRequest()
+                    .withRecoveryPointId("348916168024334")
+                    .withRecoveryType(RecoveryType.RESTORE_DISKS)
+                    .withSourceResourceId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                    .withRegion("southeastasia")
+                    .withCreateNewCloudService(true)
+                    .withOriginalStorageAccountOption(false)
+                    .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                    .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                        .withManagedIdentityResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))
+                    .withIdentityBasedRestoreDetails(new IdentityBasedRestoreDetails().withTargetStorageAccountId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount"))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3268,21 +3267,50 @@ public final class RestoresTriggerSamples {
 ### SecurityPINs_Get
 
 ```java
-import com.azure.core.util.Context;
 
-/** Samples for SecurityPINs Get. */
+/**
+ * Samples for SecurityPINs Get.
+ */
 public final class SecurityPINsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/BackupSecurityPin_Get.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * Common/BackupSecurityPin_Get.json
      */
     /**
      * Sample code: Get Vault Security Pin.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
-    public static void getVaultSecurityPin(
+    public static void
+        getVaultSecurityPin(com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
+        manager.securityPINs().getWithResponse("SwaggerTest", "SwaggerTestRg", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TieringCostOperationStatus_Get
+
+```java
+/**
+ * Samples for TieringCostOperationStatus Get.
+ */
+public final class TieringCostOperationStatusGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * TieringCost/GetTieringCostOperationStatus.json
+     */
+    /**
+     * Sample code: Fetch Tiering Cost Operation Status.
+     * 
+     * @param manager Entry point to RecoveryServicesBackupManager.
+     */
+    public static void fetchTieringCostOperationStatus(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager.securityPINs().getWithResponse("SwaggerTest", "SwaggerTestRg", null, Context.NONE);
+        manager.tieringCostOperationStatus()
+            .getWithResponse("gaallaRG", "gaallavaultbvtd2msi", "0f48183b-0a44-4dca-aec1-bba5daab888a",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3290,49 +3318,47 @@ public final class SecurityPINsGetSamples {
 ### ValidateOperation_Trigger
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.recoveryservicesbackup.models.EncryptionDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IaasVMRestoreRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.IdentityInfo;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateIaasVMRestoreOperationRequest;
+import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationRequestResource;
 
-/** Samples for ValidateOperation Trigger. */
+/**
+ * Samples for ValidateOperation Trigger.
+ */
 public final class ValidateOperationTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/TriggerValidateOperation_RestoreDisk.json
      */
     /**
      * Sample code: Trigger Validate Operation.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void triggerValidateOperation(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .validateOperations()
-            .trigger(
-                "testVault",
-                "testRG",
-                new ValidateIaasVMRestoreOperationRequest()
-                    .withRestoreRequest(
-                        new IaasVMRestoreRequest()
-                            .withRecoveryPointId("348916168024334")
-                            .withRecoveryType(RecoveryType.RESTORE_DISKS)
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
-                            .withStorageAccountId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")
-                            .withRegion("southeastasia")
-                            .withCreateNewCloudService(true)
-                            .withOriginalStorageAccountOption(false)
-                            .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
-                            .withIdentityInfo(
-                                new IdentityInfo()
-                                    .withIsSystemAssignedIdentity(false)
-                                    .withManagedIdentityResourceId(
-                                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi"))),
-                Context.NONE);
+        manager.validateOperations()
+            .trigger("testVault", "testRG", new ValidateOperationRequestResource().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testVault/providers/Microsoft.RecoveryServices/vaults/testVault/backupFabrics/Azure/protectionContainers/IaasVMContainer;iaasvmcontainerv2;testRG;testvmName/protectedItems/VM;iaasvmcontainerv2;testRG;testvmName/recoveryPoints/348916168024334")
+                .withProperties(new ValidateIaasVMRestoreOperationRequest()
+                    .withRestoreRequest(new IaasVMRestoreRequest().withRecoveryPointId("348916168024334")
+                        .withRecoveryType(RecoveryType.RESTORE_DISKS)
+                        .withSourceResourceId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/netsdktestrg/providers/Microsoft.Compute/virtualMachines/netvmtestv2vm1")
+                        .withStorageAccountId(
+                            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/testingRg/providers/Microsoft.Storage/storageAccounts/testAccount")
+                        .withRegion("southeastasia")
+                        .withCreateNewCloudService(true)
+                        .withOriginalStorageAccountOption(false)
+                        .withEncryptionDetails(new EncryptionDetails().withEncryptionEnabled(false))
+                        .withIdentityInfo(new IdentityInfo().withIsSystemAssignedIdentity(false)
+                            .withManagedIdentityResourceId(
+                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/asmaskarRG1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/asmaskartestmsi")))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3340,24 +3366,25 @@ public final class ValidateOperationTriggerSamples {
 ### ValidateOperationResults_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ValidateOperationResults Get. */
+/**
+ * Samples for ValidateOperationResults Get.
+ */
 public final class ValidateOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperationResults.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ValidateOperationResults.json
      */
     /**
      * Sample code: Get Operation Results of Validate Operation.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getOperationResultsOfValidateOperation(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .validateOperationResults()
-            .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+        manager.validateOperationResults()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -3365,24 +3392,25 @@ public final class ValidateOperationResultsGetSamples {
 ### ValidateOperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ValidateOperationStatuses Get. */
+/**
+ * Samples for ValidateOperationStatuses Get.
+ */
 public final class ValidateOperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ValidateOperationStatus.json
+     * x-ms-original-file:
+     * specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2024-04-01/examples/
+     * AzureIaasVm/ValidateOperationStatus.json
      */
     /**
      * Sample code: Get Operation Status of Validate Operation.
-     *
+     * 
      * @param manager Entry point to RecoveryServicesBackupManager.
      */
     public static void getOperationStatusOfValidateOperation(
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager manager) {
-        manager
-            .validateOperationStatuses()
-            .getWithResponse(
-                "NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000", Context.NONE);
+        manager.validateOperationStatuses()
+            .getWithResponse("NetSDKTestRsVault", "SwaggerTestRg", "00000000-0000-0000-0000-000000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```

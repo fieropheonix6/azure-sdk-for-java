@@ -5,27 +5,36 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The PiiEntitiesDocumentResult model. */
+/**
+ * The PiiEntitiesDocumentResult model.
+ */
 @Fluent
 public class PiiEntitiesDocumentResult extends DocumentResult {
     /*
      * Returns redacted text.
      */
-    @JsonProperty(value = "redactedText", required = true)
     private String redactedText;
 
     /*
      * Recognized entities in the document.
      */
-    @JsonProperty(value = "entities", required = true)
     private List<Entity> entities;
 
     /**
+     * Creates an instance of PiiEntitiesDocumentResult class.
+     */
+    public PiiEntitiesDocumentResult() {
+    }
+
+    /**
      * Get the redactedText property: Returns redacted text.
-     *
+     * 
      * @return the redactedText value.
      */
     public String getRedactedText() {
@@ -34,7 +43,7 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Set the redactedText property: Returns redacted text.
-     *
+     * 
      * @param redactedText the redactedText value to set.
      * @return the PiiEntitiesDocumentResult object itself.
      */
@@ -45,7 +54,7 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Get the entities property: Recognized entities in the document.
-     *
+     * 
      * @return the entities value.
      */
     public List<Entity> getEntities() {
@@ -54,7 +63,7 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Set the entities property: Recognized entities in the document.
-     *
+     * 
      * @param entities the entities value to set.
      * @return the PiiEntitiesDocumentResult object itself.
      */
@@ -63,24 +72,81 @@ public class PiiEntitiesDocumentResult extends DocumentResult {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiEntitiesDocumentResult setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PiiEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("warnings", getWarnings(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("statistics", getStatistics());
+        jsonWriter.writeStringField("redactedText", this.redactedText);
+        jsonWriter.writeArrayField("entities", this.entities, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PiiEntitiesDocumentResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PiiEntitiesDocumentResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PiiEntitiesDocumentResult.
+     */
+    public static PiiEntitiesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PiiEntitiesDocumentResult deserializedPiiEntitiesDocumentResult = new PiiEntitiesDocumentResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPiiEntitiesDocumentResult.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedPiiEntitiesDocumentResult.setWarnings(warnings);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedPiiEntitiesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
+                } else if ("redactedText".equals(fieldName)) {
+                    deserializedPiiEntitiesDocumentResult.redactedText = reader.getString();
+                } else if ("entities".equals(fieldName)) {
+                    List<Entity> entities = reader.readArray(reader1 -> Entity.fromJson(reader1));
+                    deserializedPiiEntitiesDocumentResult.entities = entities;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPiiEntitiesDocumentResult;
+        });
     }
 }

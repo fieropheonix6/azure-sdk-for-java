@@ -5,37 +5,51 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** storage edition capability. */
+/**
+ * Storage edition capability.
+ */
 @Immutable
-public final class StorageEditionCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageEditionCapability.class);
-
+public final class StorageEditionCapability extends CapabilityBase {
     /*
-     * storage edition name
+     * Storage edition name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * The supportedStorageMB property.
+     * Default storage size in MB for storage edition
      */
-    @JsonProperty(value = "supportedStorageMB", access = JsonProperty.Access.WRITE_ONLY)
-    private List<StorageMBCapability> supportedStorageMB;
+    private Long defaultStorageSizeMb;
 
     /*
-     * The status
+     * Flexible server supported storage range in MB
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
-    private String status;
+    private List<StorageMbCapability> supportedStorageMb;
+
+    /*
+     * The reason for the capability not being available.
+     */
+    private String reason;
+
+    /*
+     * The status of the capability.
+     */
+    private CapabilityStatus status;
 
     /**
-     * Get the name property: storage edition name.
-     *
+     * Creates an instance of StorageEditionCapability class.
+     */
+    public StorageEditionCapability() {
+    }
+
+    /**
+     * Get the name property: Storage edition name.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,31 +57,97 @@ public final class StorageEditionCapability {
     }
 
     /**
-     * Get the supportedStorageMB property: The supportedStorageMB property.
-     *
-     * @return the supportedStorageMB value.
+     * Get the defaultStorageSizeMb property: Default storage size in MB for storage edition.
+     * 
+     * @return the defaultStorageSizeMb value.
      */
-    public List<StorageMBCapability> supportedStorageMB() {
-        return this.supportedStorageMB;
+    public Long defaultStorageSizeMb() {
+        return this.defaultStorageSizeMb;
     }
 
     /**
-     * Get the status property: The status.
-     *
+     * Get the supportedStorageMb property: Flexible server supported storage range in MB.
+     * 
+     * @return the supportedStorageMb value.
+     */
+    public List<StorageMbCapability> supportedStorageMb() {
+        return this.supportedStorageMb;
+    }
+
+    /**
+     * Get the reason property: The reason for the capability not being available.
+     * 
+     * @return the reason value.
+     */
+    @Override
+    public String reason() {
+        return this.reason;
+    }
+
+    /**
+     * Get the status property: The status of the capability.
+     * 
      * @return the status value.
      */
-    public String status() {
+    @Override
+    public CapabilityStatus status() {
         return this.status;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
-        if (supportedStorageMB() != null) {
-            supportedStorageMB().forEach(e -> e.validate());
+        if (supportedStorageMb() != null) {
+            supportedStorageMb().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageEditionCapability from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageEditionCapability if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageEditionCapability.
+     */
+    public static StorageEditionCapability fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageEditionCapability deserializedStorageEditionCapability = new StorageEditionCapability();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("status".equals(fieldName)) {
+                    deserializedStorageEditionCapability.status = CapabilityStatus.fromString(reader.getString());
+                } else if ("reason".equals(fieldName)) {
+                    deserializedStorageEditionCapability.reason = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedStorageEditionCapability.name = reader.getString();
+                } else if ("defaultStorageSizeMb".equals(fieldName)) {
+                    deserializedStorageEditionCapability.defaultStorageSizeMb = reader.getNullable(JsonReader::getLong);
+                } else if ("supportedStorageMb".equals(fieldName)) {
+                    List<StorageMbCapability> supportedStorageMb
+                        = reader.readArray(reader1 -> StorageMbCapability.fromJson(reader1));
+                    deserializedStorageEditionCapability.supportedStorageMb = supportedStorageMb;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageEditionCapability;
+        });
     }
 }

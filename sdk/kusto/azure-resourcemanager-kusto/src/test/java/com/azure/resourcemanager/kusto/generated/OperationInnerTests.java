@@ -8,42 +8,36 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.OperationInner;
 import com.azure.resourcemanager.kusto.models.OperationDisplay;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationInnerTests {
-    @Test
-    public void testDeserialize() {
-        OperationInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"toego\",\"display\":{\"provider\":\"bwh\",\"operation\":\"z\",\"resource\":\"mrv\",\"description\":\"ztvbtqgsfr\"},\"origin\":\"yzkoowtlmngu\"}")
-                .toObject(OperationInner.class);
-        Assertions.assertEquals("toego", model.name());
-        Assertions.assertEquals("bwh", model.display().provider());
-        Assertions.assertEquals("z", model.display().operation());
-        Assertions.assertEquals("mrv", model.display().resource());
-        Assertions.assertEquals("ztvbtqgsfr", model.display().description());
-        Assertions.assertEquals("yzkoowtlmngu", model.origin());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationInner model = BinaryData.fromString(
+            "{\"name\":\"vcyy\",\"display\":{\"provider\":\"gdotcubiipuipwo\",\"operation\":\"nmacj\",\"resource\":\"nizshqvcim\",\"description\":\"vfgmblrrilby\"},\"origin\":\"xsmiccwrwfscjf\",\"properties\":\"datanszqujiz\"}")
+            .toObject(OperationInner.class);
+        Assertions.assertEquals("vcyy", model.name());
+        Assertions.assertEquals("gdotcubiipuipwo", model.display().provider());
+        Assertions.assertEquals("nmacj", model.display().operation());
+        Assertions.assertEquals("nizshqvcim", model.display().resource());
+        Assertions.assertEquals("vfgmblrrilby", model.display().description());
+        Assertions.assertEquals("xsmiccwrwfscjf", model.origin());
     }
 
-    @Test
-    public void testSerialize() {
-        OperationInner model =
-            new OperationInner()
-                .withName("toego")
-                .withDisplay(
-                    new OperationDisplay()
-                        .withProvider("bwh")
-                        .withOperation("z")
-                        .withResource("mrv")
-                        .withDescription("ztvbtqgsfr"))
-                .withOrigin("yzkoowtlmngu");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationInner model = new OperationInner().withName("vcyy")
+            .withDisplay(new OperationDisplay().withProvider("gdotcubiipuipwo")
+                .withOperation("nmacj")
+                .withResource("nizshqvcim")
+                .withDescription("vfgmblrrilby"))
+            .withOrigin("xsmiccwrwfscjf")
+            .withProperties("datanszqujiz");
         model = BinaryData.fromObject(model).toObject(OperationInner.class);
-        Assertions.assertEquals("toego", model.name());
-        Assertions.assertEquals("bwh", model.display().provider());
-        Assertions.assertEquals("z", model.display().operation());
-        Assertions.assertEquals("mrv", model.display().resource());
-        Assertions.assertEquals("ztvbtqgsfr", model.display().description());
-        Assertions.assertEquals("yzkoowtlmngu", model.origin());
+        Assertions.assertEquals("vcyy", model.name());
+        Assertions.assertEquals("gdotcubiipuipwo", model.display().provider());
+        Assertions.assertEquals("nmacj", model.display().operation());
+        Assertions.assertEquals("nizshqvcim", model.display().resource());
+        Assertions.assertEquals("vfgmblrrilby", model.display().description());
+        Assertions.assertEquals("xsmiccwrwfscjf", model.origin());
     }
 }

@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The vault id is an Azure Resource Manager Resource id in the form
  * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.KeyVault/vaults/{vaultName}.
  */
 @Fluent
-public final class SourceVault {
+public final class SourceVault implements JsonSerializable<SourceVault> {
     /*
      * Resource Id
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of SourceVault class. */
+    /**
+     * Creates an instance of SourceVault class.
+     */
     public SourceVault() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -34,7 +39,7 @@ public final class SourceVault {
 
     /**
      * Set the id property: Resource Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SourceVault object itself.
      */
@@ -45,9 +50,45 @@ public final class SourceVault {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SourceVault from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SourceVault if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SourceVault.
+     */
+    public static SourceVault fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SourceVault deserializedSourceVault = new SourceVault();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSourceVault.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSourceVault;
+        });
     }
 }

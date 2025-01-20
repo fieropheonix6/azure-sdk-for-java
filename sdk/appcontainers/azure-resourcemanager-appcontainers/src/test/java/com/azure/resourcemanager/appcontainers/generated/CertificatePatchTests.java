@@ -9,37 +9,25 @@ import com.azure.resourcemanager.appcontainers.models.CertificatePatch;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CertificatePatchTests {
-    @Test
-    public void testDeserialize() {
-        CertificatePatch model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"jc\":\"gkbugrjqct\",\"cuplcplcwkhih\":\"isofieypefojyqd\",\"cjhfgmvecactxmw\":\"hlhzdsqtzbsrgno\",\"ovekqvgqouwi\":\"teyowclu\"}}")
-                .toObject(CertificatePatch.class);
-        Assertions.assertEquals("gkbugrjqct", model.tags().get("jc"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CertificatePatch model = BinaryData
+            .fromString("{\"tags\":{\"hykojoxafnndlpic\":\"btkuwhh\",\"h\":\"koymkcd\",\"reqnovvqfov\":\"pkkpw\"}}")
+            .toObject(CertificatePatch.class);
+        Assertions.assertEquals("btkuwhh", model.tags().get("hykojoxafnndlpic"));
     }
 
-    @Test
-    public void testSerialize() {
-        CertificatePatch model =
-            new CertificatePatch()
-                .withTags(
-                    mapOf(
-                        "jc",
-                        "gkbugrjqct",
-                        "cuplcplcwkhih",
-                        "isofieypefojyqd",
-                        "cjhfgmvecactxmw",
-                        "hlhzdsqtzbsrgno",
-                        "ovekqvgqouwi",
-                        "teyowclu"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CertificatePatch model = new CertificatePatch()
+            .withTags(mapOf("hykojoxafnndlpic", "btkuwhh", "h", "koymkcd", "reqnovvqfov", "pkkpw"));
         model = BinaryData.fromObject(model).toObject(CertificatePatch.class);
-        Assertions.assertEquals("gkbugrjqct", model.tags().get("jc"));
+        Assertions.assertEquals("btkuwhh", model.tags().get("hykojoxafnndlpic"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

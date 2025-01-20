@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for AksIdentityType. */
+/**
+ * The identity type.
+ */
 public enum AksIdentityType {
-    /** Enum value SystemAssigned. */
+    /**
+     * Enum value SystemAssigned.
+     */
     SYSTEM_ASSIGNED("SystemAssigned"),
 
-    /** Enum value UserAssigned. */
+    /**
+     * Enum value UserAssigned.
+     */
     USER_ASSIGNED("UserAssigned");
 
-    /** The actual serialized value for a AksIdentityType instance. */
+    /**
+     * The actual serialized value for a AksIdentityType instance.
+     */
     private final String value;
 
     AksIdentityType(String value) {
@@ -24,12 +29,14 @@ public enum AksIdentityType {
 
     /**
      * Parses a serialized value to a AksIdentityType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AksIdentityType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AksIdentityType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AksIdentityType[] items = AksIdentityType.values();
         for (AksIdentityType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum AksIdentityType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

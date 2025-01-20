@@ -5,31 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The parameters specifying the connection resource whose outbound routes are being requested. */
+/**
+ * The parameters specifying the connection resource whose outbound routes are being requested.
+ */
 @Fluent
-public final class GetOutboundRoutesParameters {
+public final class GetOutboundRoutesParameters implements JsonSerializable<GetOutboundRoutesParameters> {
     /*
      * The connection resource whose outbound routes are being requested.
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
     /*
      * The type of the specified connection resource like ExpressRouteConnection, HubVirtualNetworkConnection,
      * VpnConnection and P2SConnection.
      */
-    @JsonProperty(value = "connectionType")
     private String connectionType;
 
-    /** Creates an instance of GetOutboundRoutesParameters class. */
+    /**
+     * Creates an instance of GetOutboundRoutesParameters class.
+     */
     public GetOutboundRoutesParameters() {
     }
 
     /**
      * Get the resourceUri property: The connection resource whose outbound routes are being requested.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -38,7 +44,7 @@ public final class GetOutboundRoutesParameters {
 
     /**
      * Set the resourceUri property: The connection resource whose outbound routes are being requested.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the GetOutboundRoutesParameters object itself.
      */
@@ -50,7 +56,7 @@ public final class GetOutboundRoutesParameters {
     /**
      * Get the connectionType property: The type of the specified connection resource like ExpressRouteConnection,
      * HubVirtualNetworkConnection, VpnConnection and P2SConnection.
-     *
+     * 
      * @return the connectionType value.
      */
     public String connectionType() {
@@ -60,7 +66,7 @@ public final class GetOutboundRoutesParameters {
     /**
      * Set the connectionType property: The type of the specified connection resource like ExpressRouteConnection,
      * HubVirtualNetworkConnection, VpnConnection and P2SConnection.
-     *
+     * 
      * @param connectionType the connectionType value to set.
      * @return the GetOutboundRoutesParameters object itself.
      */
@@ -71,9 +77,48 @@ public final class GetOutboundRoutesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        jsonWriter.writeStringField("connectionType", this.connectionType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GetOutboundRoutesParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GetOutboundRoutesParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the GetOutboundRoutesParameters.
+     */
+    public static GetOutboundRoutesParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GetOutboundRoutesParameters deserializedGetOutboundRoutesParameters = new GetOutboundRoutesParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceUri".equals(fieldName)) {
+                    deserializedGetOutboundRoutesParameters.resourceUri = reader.getString();
+                } else if ("connectionType".equals(fieldName)) {
+                    deserializedGetOutboundRoutesParameters.connectionType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGetOutboundRoutesParameters;
+        });
     }
 }

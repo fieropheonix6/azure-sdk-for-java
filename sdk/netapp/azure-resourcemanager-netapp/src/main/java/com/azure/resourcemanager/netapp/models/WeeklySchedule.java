@@ -5,44 +5,51 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Weekly Schedule properties, make a snapshot every week at a specific day or days. */
+/**
+ * Weekly Schedule properties, make a snapshot every week at a specific day or days.
+ */
 @Fluent
-public final class WeeklySchedule {
+public final class WeeklySchedule implements JsonSerializable<WeeklySchedule> {
     /*
      * Weekly snapshot count to keep
      */
-    @JsonProperty(value = "snapshotsToKeep")
     private Integer snapshotsToKeep;
 
     /*
      * Indicates which weekdays snapshot should be taken, accepts a comma separated list of week day names in english
      */
-    @JsonProperty(value = "day")
     private String day;
 
     /*
      * Indicates which hour in UTC timezone a snapshot should be taken
      */
-    @JsonProperty(value = "hour")
     private Integer hour;
 
     /*
      * Indicates which minute snapshot should be taken
      */
-    @JsonProperty(value = "minute")
     private Integer minute;
 
     /*
      * Resource size in bytes, current storage usage for the volume in bytes
      */
-    @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
     /**
+     * Creates an instance of WeeklySchedule class.
+     */
+    public WeeklySchedule() {
+    }
+
+    /**
      * Get the snapshotsToKeep property: Weekly snapshot count to keep.
-     *
+     * 
      * @return the snapshotsToKeep value.
      */
     public Integer snapshotsToKeep() {
@@ -51,7 +58,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the snapshotsToKeep property: Weekly snapshot count to keep.
-     *
+     * 
      * @param snapshotsToKeep the snapshotsToKeep value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -63,7 +70,7 @@ public final class WeeklySchedule {
     /**
      * Get the day property: Indicates which weekdays snapshot should be taken, accepts a comma separated list of week
      * day names in english.
-     *
+     * 
      * @return the day value.
      */
     public String day() {
@@ -73,7 +80,7 @@ public final class WeeklySchedule {
     /**
      * Set the day property: Indicates which weekdays snapshot should be taken, accepts a comma separated list of week
      * day names in english.
-     *
+     * 
      * @param day the day value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -84,7 +91,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the hour property: Indicates which hour in UTC timezone a snapshot should be taken.
-     *
+     * 
      * @return the hour value.
      */
     public Integer hour() {
@@ -93,7 +100,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the hour property: Indicates which hour in UTC timezone a snapshot should be taken.
-     *
+     * 
      * @param hour the hour value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -104,7 +111,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the minute property: Indicates which minute snapshot should be taken.
-     *
+     * 
      * @return the minute value.
      */
     public Integer minute() {
@@ -113,7 +120,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the minute property: Indicates which minute snapshot should be taken.
-     *
+     * 
      * @param minute the minute value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -124,7 +131,7 @@ public final class WeeklySchedule {
 
     /**
      * Get the usedBytes property: Resource size in bytes, current storage usage for the volume in bytes.
-     *
+     * 
      * @return the usedBytes value.
      */
     public Long usedBytes() {
@@ -133,7 +140,7 @@ public final class WeeklySchedule {
 
     /**
      * Set the usedBytes property: Resource size in bytes, current storage usage for the volume in bytes.
-     *
+     * 
      * @param usedBytes the usedBytes value to set.
      * @return the WeeklySchedule object itself.
      */
@@ -144,9 +151,57 @@ public final class WeeklySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("snapshotsToKeep", this.snapshotsToKeep);
+        jsonWriter.writeStringField("day", this.day);
+        jsonWriter.writeNumberField("hour", this.hour);
+        jsonWriter.writeNumberField("minute", this.minute);
+        jsonWriter.writeNumberField("usedBytes", this.usedBytes);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WeeklySchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WeeklySchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WeeklySchedule.
+     */
+    public static WeeklySchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WeeklySchedule deserializedWeeklySchedule = new WeeklySchedule();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("snapshotsToKeep".equals(fieldName)) {
+                    deserializedWeeklySchedule.snapshotsToKeep = reader.getNullable(JsonReader::getInt);
+                } else if ("day".equals(fieldName)) {
+                    deserializedWeeklySchedule.day = reader.getString();
+                } else if ("hour".equals(fieldName)) {
+                    deserializedWeeklySchedule.hour = reader.getNullable(JsonReader::getInt);
+                } else if ("minute".equals(fieldName)) {
+                    deserializedWeeklySchedule.minute = reader.getNullable(JsonReader::getInt);
+                } else if ("usedBytes".equals(fieldName)) {
+                    deserializedWeeklySchedule.usedBytes = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWeeklySchedule;
+        });
     }
 }

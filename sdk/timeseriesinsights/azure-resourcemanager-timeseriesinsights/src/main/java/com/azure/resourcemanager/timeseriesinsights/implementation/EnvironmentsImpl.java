@@ -16,26 +16,24 @@ import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentListRespon
 import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentResource;
 import com.azure.resourcemanager.timeseriesinsights.models.EnvironmentUpdateParameters;
 import com.azure.resourcemanager.timeseriesinsights.models.Environments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EnvironmentsImpl implements Environments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnvironmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EnvironmentsImpl.class);
 
     private final EnvironmentsClient innerClient;
 
     private final com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager;
 
-    public EnvironmentsImpl(
-        EnvironmentsClient innerClient,
+    public EnvironmentsImpl(EnvironmentsClient innerClient,
         com.azure.resourcemanager.timeseriesinsights.TimeSeriesInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public EnvironmentResource createOrUpdate(
-        String resourceGroupName, String environmentName, EnvironmentCreateOrUpdateParameters parameters) {
-        EnvironmentResourceInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, environmentName, parameters);
+    public EnvironmentResource createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters) {
+        EnvironmentResourceInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, environmentName, parameters);
         if (inner != null) {
             return new EnvironmentResourceImpl(inner, this.manager());
         } else {
@@ -43,15 +41,24 @@ public final class EnvironmentsImpl implements Environments {
         }
     }
 
-    public EnvironmentResource createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentCreateOrUpdateParameters parameters,
-        Context context) {
-        EnvironmentResourceInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, environmentName, parameters, context);
+    public EnvironmentResource createOrUpdate(String resourceGroupName, String environmentName,
+        EnvironmentCreateOrUpdateParameters parameters, Context context) {
+        EnvironmentResourceInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, environmentName, parameters, context);
         if (inner != null) {
             return new EnvironmentResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<EnvironmentResource> getByResourceGroupWithResponse(String resourceGroupName,
+        String environmentName, String expand, Context context) {
+        Response<EnvironmentResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, environmentName, expand, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnvironmentResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -66,25 +73,10 @@ public final class EnvironmentsImpl implements Environments {
         }
     }
 
-    public Response<EnvironmentResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String environmentName, String expand, Context context) {
-        Response<EnvironmentResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, environmentName, expand, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EnvironmentResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public EnvironmentResource update(
-        String resourceGroupName, String environmentName, EnvironmentUpdateParameters environmentUpdateParameters) {
-        EnvironmentResourceInner inner =
-            this.serviceClient().update(resourceGroupName, environmentName, environmentUpdateParameters);
+    public EnvironmentResource update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters) {
+        EnvironmentResourceInner inner
+            = this.serviceClient().update(resourceGroupName, environmentName, environmentUpdateParameters);
         if (inner != null) {
             return new EnvironmentResourceImpl(inner, this.manager());
         } else {
@@ -92,26 +84,36 @@ public final class EnvironmentsImpl implements Environments {
         }
     }
 
-    public EnvironmentResource update(
-        String resourceGroupName,
-        String environmentName,
-        EnvironmentUpdateParameters environmentUpdateParameters,
+    public EnvironmentResource update(String resourceGroupName, String environmentName,
+        EnvironmentUpdateParameters environmentUpdateParameters, Context context) {
+        EnvironmentResourceInner inner
+            = this.serviceClient().update(resourceGroupName, environmentName, environmentUpdateParameters, context);
+        if (inner != null) {
+            return new EnvironmentResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String environmentName,
         Context context) {
-        EnvironmentResourceInner inner =
-            this.serviceClient().update(resourceGroupName, environmentName, environmentUpdateParameters, context);
-        if (inner != null) {
-            return new EnvironmentResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String environmentName) {
         this.serviceClient().delete(resourceGroupName, environmentName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, context);
+    public Response<EnvironmentListResponse> listByResourceGroupWithResponse(String resourceGroupName,
+        Context context) {
+        Response<EnvironmentListResponseInner> inner
+            = this.serviceClient().listByResourceGroupWithResponse(resourceGroupName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnvironmentListResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public EnvironmentListResponse listByResourceGroup(String resourceGroupName) {
@@ -123,15 +125,10 @@ public final class EnvironmentsImpl implements Environments {
         }
     }
 
-    public Response<EnvironmentListResponse> listByResourceGroupWithResponse(
-        String resourceGroupName, Context context) {
-        Response<EnvironmentListResponseInner> inner =
-            this.serviceClient().listByResourceGroupWithResponse(resourceGroupName, context);
+    public Response<EnvironmentListResponse> listBySubscriptionWithResponse(Context context) {
+        Response<EnvironmentListResponseInner> inner = this.serviceClient().listBySubscriptionWithResponse(context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new EnvironmentListResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -142,19 +139,6 @@ public final class EnvironmentsImpl implements Environments {
         EnvironmentListResponseInner inner = this.serviceClient().listBySubscription();
         if (inner != null) {
             return new EnvironmentListResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<EnvironmentListResponse> listBySubscriptionWithResponse(Context context) {
-        Response<EnvironmentListResponseInner> inner = this.serviceClient().listBySubscriptionWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EnvironmentListResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

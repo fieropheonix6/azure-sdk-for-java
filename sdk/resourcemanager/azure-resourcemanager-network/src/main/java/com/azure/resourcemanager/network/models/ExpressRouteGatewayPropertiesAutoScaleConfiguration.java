@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Configuration for auto scaling. */
+/**
+ * Configuration for auto scaling.
+ */
 @Fluent
-public final class ExpressRouteGatewayPropertiesAutoScaleConfiguration {
+public final class ExpressRouteGatewayPropertiesAutoScaleConfiguration
+    implements JsonSerializable<ExpressRouteGatewayPropertiesAutoScaleConfiguration> {
     /*
      * Minimum and maximum number of scale units to deploy.
      */
-    @JsonProperty(value = "bounds")
     private ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds bounds;
 
-    /** Creates an instance of ExpressRouteGatewayPropertiesAutoScaleConfiguration class. */
+    /**
+     * Creates an instance of ExpressRouteGatewayPropertiesAutoScaleConfiguration class.
+     */
     public ExpressRouteGatewayPropertiesAutoScaleConfiguration() {
     }
 
     /**
      * Get the bounds property: Minimum and maximum number of scale units to deploy.
-     *
+     * 
      * @return the bounds value.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds bounds() {
@@ -31,24 +39,63 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfiguration {
 
     /**
      * Set the bounds property: Minimum and maximum number of scale units to deploy.
-     *
+     * 
      * @param bounds the bounds value to set.
      * @return the ExpressRouteGatewayPropertiesAutoScaleConfiguration object itself.
      */
-    public ExpressRouteGatewayPropertiesAutoScaleConfiguration withBounds(
-        ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds bounds) {
+    public ExpressRouteGatewayPropertiesAutoScaleConfiguration
+        withBounds(ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds bounds) {
         this.bounds = bounds;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (bounds() != null) {
             bounds().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("bounds", this.bounds);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteGatewayPropertiesAutoScaleConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteGatewayPropertiesAutoScaleConfiguration if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteGatewayPropertiesAutoScaleConfiguration.
+     */
+    public static ExpressRouteGatewayPropertiesAutoScaleConfiguration fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteGatewayPropertiesAutoScaleConfiguration deserializedExpressRouteGatewayPropertiesAutoScaleConfiguration
+                = new ExpressRouteGatewayPropertiesAutoScaleConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("bounds".equals(fieldName)) {
+                    deserializedExpressRouteGatewayPropertiesAutoScaleConfiguration.bounds
+                        = ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteGatewayPropertiesAutoScaleConfiguration;
+        });
     }
 }

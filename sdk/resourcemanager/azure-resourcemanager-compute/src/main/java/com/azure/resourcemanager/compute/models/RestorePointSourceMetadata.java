@@ -5,7 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes the properties of the Virtual Machine for which the restore point was created. The properties provided are
@@ -13,62 +17,66 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * creation.
  */
 @Fluent
-public final class RestorePointSourceMetadata {
+public final class RestorePointSourceMetadata implements JsonSerializable<RestorePointSourceMetadata> {
     /*
      * Gets the hardware profile.
      */
-    @JsonProperty(value = "hardwareProfile")
     private HardwareProfile hardwareProfile;
 
     /*
      * Gets the storage profile.
      */
-    @JsonProperty(value = "storageProfile")
     private RestorePointSourceVMStorageProfile storageProfile;
 
     /*
      * Gets the OS profile.
      */
-    @JsonProperty(value = "osProfile")
     private OSProfile osProfile;
 
     /*
      * Gets the diagnostics profile.
      */
-    @JsonProperty(value = "diagnosticsProfile")
     private DiagnosticsProfile diagnosticsProfile;
 
     /*
      * Gets the license type, which is for bring your own license scenario.
      */
-    @JsonProperty(value = "licenseType")
     private String licenseType;
 
     /*
      * Gets the virtual machine unique id.
      */
-    @JsonProperty(value = "vmId")
     private String vmId;
 
     /*
      * Gets the security profile.
      */
-    @JsonProperty(value = "securityProfile")
     private SecurityProfile securityProfile;
 
     /*
      * Location of the VM from which the restore point was created.
      */
-    @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of RestorePointSourceMetadata class. */
+    /*
+     * UserData associated with the source VM for which restore point is captured, which is a base-64 encoded value.
+     */
+    private String userData;
+
+    /*
+     * HyperVGeneration of the source VM for which restore point is captured.
+     */
+    private HyperVGenerationTypes hyperVGeneration;
+
+    /**
+     * Creates an instance of RestorePointSourceMetadata class.
+     */
     public RestorePointSourceMetadata() {
     }
 
     /**
      * Get the hardwareProfile property: Gets the hardware profile.
-     *
+     * 
      * @return the hardwareProfile value.
      */
     public HardwareProfile hardwareProfile() {
@@ -76,19 +84,8 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the hardwareProfile property: Gets the hardware profile.
-     *
-     * @param hardwareProfile the hardwareProfile value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withHardwareProfile(HardwareProfile hardwareProfile) {
-        this.hardwareProfile = hardwareProfile;
-        return this;
-    }
-
-    /**
      * Get the storageProfile property: Gets the storage profile.
-     *
+     * 
      * @return the storageProfile value.
      */
     public RestorePointSourceVMStorageProfile storageProfile() {
@@ -97,7 +94,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Set the storageProfile property: Gets the storage profile.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the RestorePointSourceMetadata object itself.
      */
@@ -108,7 +105,7 @@ public final class RestorePointSourceMetadata {
 
     /**
      * Get the osProfile property: Gets the OS profile.
-     *
+     * 
      * @return the osProfile value.
      */
     public OSProfile osProfile() {
@@ -116,19 +113,8 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the osProfile property: Gets the OS profile.
-     *
-     * @param osProfile the osProfile value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withOsProfile(OSProfile osProfile) {
-        this.osProfile = osProfile;
-        return this;
-    }
-
-    /**
      * Get the diagnosticsProfile property: Gets the diagnostics profile.
-     *
+     * 
      * @return the diagnosticsProfile value.
      */
     public DiagnosticsProfile diagnosticsProfile() {
@@ -136,19 +122,8 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the diagnosticsProfile property: Gets the diagnostics profile.
-     *
-     * @param diagnosticsProfile the diagnosticsProfile value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile) {
-        this.diagnosticsProfile = diagnosticsProfile;
-        return this;
-    }
-
-    /**
      * Get the licenseType property: Gets the license type, which is for bring your own license scenario.
-     *
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -156,19 +131,8 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the licenseType property: Gets the license type, which is for bring your own license scenario.
-     *
-     * @param licenseType the licenseType value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withLicenseType(String licenseType) {
-        this.licenseType = licenseType;
-        return this;
-    }
-
-    /**
      * Get the vmId property: Gets the virtual machine unique id.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -176,19 +140,8 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the vmId property: Gets the virtual machine unique id.
-     *
-     * @param vmId the vmId value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withVmId(String vmId) {
-        this.vmId = vmId;
-        return this;
-    }
-
-    /**
      * Get the securityProfile property: Gets the security profile.
-     *
+     * 
      * @return the securityProfile value.
      */
     public SecurityProfile securityProfile() {
@@ -196,19 +149,8 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the securityProfile property: Gets the security profile.
-     *
-     * @param securityProfile the securityProfile value to set.
-     * @return the RestorePointSourceMetadata object itself.
-     */
-    public RestorePointSourceMetadata withSecurityProfile(SecurityProfile securityProfile) {
-        this.securityProfile = securityProfile;
-        return this;
-    }
-
-    /**
      * Get the location property: Location of the VM from which the restore point was created.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -216,19 +158,27 @@ public final class RestorePointSourceMetadata {
     }
 
     /**
-     * Set the location property: Location of the VM from which the restore point was created.
-     *
-     * @param location the location value to set.
-     * @return the RestorePointSourceMetadata object itself.
+     * Get the userData property: UserData associated with the source VM for which restore point is captured, which is a
+     * base-64 encoded value.
+     * 
+     * @return the userData value.
      */
-    public RestorePointSourceMetadata withLocation(String location) {
-        this.location = location;
-        return this;
+    public String userData() {
+        return this.userData;
+    }
+
+    /**
+     * Get the hyperVGeneration property: HyperVGeneration of the source VM for which restore point is captured.
+     * 
+     * @return the hyperVGeneration value.
+     */
+    public HyperVGenerationTypes hyperVGeneration() {
+        return this.hyperVGeneration;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -247,5 +197,61 @@ public final class RestorePointSourceMetadata {
         if (securityProfile() != null) {
             securityProfile().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("storageProfile", this.storageProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointSourceMetadata from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointSourceMetadata if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointSourceMetadata.
+     */
+    public static RestorePointSourceMetadata fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointSourceMetadata deserializedRestorePointSourceMetadata = new RestorePointSourceMetadata();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hardwareProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.hardwareProfile = HardwareProfile.fromJson(reader);
+                } else if ("storageProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.storageProfile
+                        = RestorePointSourceVMStorageProfile.fromJson(reader);
+                } else if ("osProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.osProfile = OSProfile.fromJson(reader);
+                } else if ("diagnosticsProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.diagnosticsProfile = DiagnosticsProfile.fromJson(reader);
+                } else if ("licenseType".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.licenseType = reader.getString();
+                } else if ("vmId".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.vmId = reader.getString();
+                } else if ("securityProfile".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.securityProfile = SecurityProfile.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.location = reader.getString();
+                } else if ("userData".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.userData = reader.getString();
+                } else if ("hyperVGeneration".equals(fieldName)) {
+                    deserializedRestorePointSourceMetadata.hyperVGeneration
+                        = HyperVGenerationTypes.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointSourceMetadata;
+        });
     }
 }

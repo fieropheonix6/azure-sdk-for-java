@@ -5,34 +5,42 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineRunCommandProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a Virtual Machine run command. */
+/**
+ * Describes a Virtual Machine run command.
+ */
 @Fluent
 public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     /*
      * Describes the properties of a Virtual Machine run command.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineRunCommandProperties innerProperties;
 
-    /** Creates an instance of VirtualMachineRunCommandUpdate class. */
+    /**
+     * Creates an instance of VirtualMachineRunCommandUpdate class.
+     */
     public VirtualMachineRunCommandUpdate() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine run command.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineRunCommandProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineRunCommandUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,7 +49,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Get the source property: The source of the run command script.
-     *
+     * 
      * @return the source value.
      */
     public VirtualMachineRunCommandScriptSource source() {
@@ -50,7 +58,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Set the source property: The source of the run command script.
-     *
+     * 
      * @param source the source value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -64,7 +72,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Get the parameters property: The parameters used by the script.
-     *
+     * 
      * @return the parameters value.
      */
     public List<RunCommandInputParameter> parameters() {
@@ -73,7 +81,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Set the parameters property: The parameters used by the script.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -87,7 +95,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Get the protectedParameters property: The parameters used by the script.
-     *
+     * 
      * @return the protectedParameters value.
      */
     public List<RunCommandInputParameter> protectedParameters() {
@@ -96,7 +104,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Set the protectedParameters property: The parameters used by the script.
-     *
+     * 
      * @param protectedParameters the protectedParameters value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -111,7 +119,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     /**
      * Get the asyncExecution property: Optional. If set to true, provisioning will complete as soon as the script
      * starts and will not wait for script to complete.
-     *
+     * 
      * @return the asyncExecution value.
      */
     public Boolean asyncExecution() {
@@ -121,7 +129,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     /**
      * Set the asyncExecution property: Optional. If set to true, provisioning will complete as soon as the script
      * starts and will not wait for script to complete.
-     *
+     * 
      * @param asyncExecution the asyncExecution value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -135,7 +143,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Get the runAsUser property: Specifies the user account on the VM when executing the run command.
-     *
+     * 
      * @return the runAsUser value.
      */
     public String runAsUser() {
@@ -144,7 +152,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Set the runAsUser property: Specifies the user account on the VM when executing the run command.
-     *
+     * 
      * @param runAsUser the runAsUser value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -158,7 +166,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Get the runAsPassword property: Specifies the user account password on the VM when executing the run command.
-     *
+     * 
      * @return the runAsPassword value.
      */
     public String runAsPassword() {
@@ -167,7 +175,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Set the runAsPassword property: Specifies the user account password on the VM when executing the run command.
-     *
+     * 
      * @param runAsPassword the runAsPassword value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -181,7 +189,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Get the timeoutInSeconds property: The timeout in seconds to execute the run command.
-     *
+     * 
      * @return the timeoutInSeconds value.
      */
     public Integer timeoutInSeconds() {
@@ -190,7 +198,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Set the timeoutInSeconds property: The timeout in seconds to execute the run command.
-     *
+     * 
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -203,8 +211,10 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
-     *
+     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded. Use
+     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer outputBlobManagedIdentity parameter.
+     * 
      * @return the outputBlobUri value.
      */
     public String outputBlobUri() {
@@ -212,8 +222,10 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
-     *
+     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded. Use
+     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer outputBlobManagedIdentity parameter.
+     * 
      * @param outputBlobUri the outputBlobUri value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -226,8 +238,10 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded.
-     *
+     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use a
+     * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer errorBlobManagedIdentity parameter.
+     * 
      * @return the errorBlobUri value.
      */
     public String errorBlobUri() {
@@ -235,8 +249,10 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded.
-     *
+     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use a
+     * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer errorBlobManagedIdentity parameter.
+     * 
      * @param errorBlobUri the errorBlobUri value to set.
      * @return the VirtualMachineRunCommandUpdate object itself.
      */
@@ -249,8 +265,77 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * Get the outputBlobManagedIdentity property: User-assigned managed identity that has access to outputBlobUri
+     * storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
+     * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
+     * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     * 
+     * @return the outputBlobManagedIdentity value.
+     */
+    public RunCommandManagedIdentity outputBlobManagedIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().outputBlobManagedIdentity();
+    }
+
+    /**
+     * Set the outputBlobManagedIdentity property: User-assigned managed identity that has access to outputBlobUri
+     * storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
+     * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
+     * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     * 
+     * @param outputBlobManagedIdentity the outputBlobManagedIdentity value to set.
+     * @return the VirtualMachineRunCommandUpdate object itself.
+     */
+    public VirtualMachineRunCommandUpdate
+        withOutputBlobManagedIdentity(RunCommandManagedIdentity outputBlobManagedIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
+        }
+        this.innerProperties().withOutputBlobManagedIdentity(outputBlobManagedIdentity);
+        return this;
+    }
+
+    /**
+     * Get the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri storage
+     * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access
+     * to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make
+     * sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     * 
+     * @return the errorBlobManagedIdentity value.
+     */
+    public RunCommandManagedIdentity errorBlobManagedIdentity() {
+        return this.innerProperties() == null ? null : this.innerProperties().errorBlobManagedIdentity();
+    }
+
+    /**
+     * Set the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri storage
+     * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access
+     * to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make
+     * sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     * 
+     * @param errorBlobManagedIdentity the errorBlobManagedIdentity value to set.
+     * @return the VirtualMachineRunCommandUpdate object itself.
+     */
+    public VirtualMachineRunCommandUpdate
+        withErrorBlobManagedIdentity(RunCommandManagedIdentity errorBlobManagedIdentity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
+        }
+        this.innerProperties().withErrorBlobManagedIdentity(errorBlobManagedIdentity);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state, which only appears in the response. If
+     * treatFailureAsDeploymentFailure set to true, any failure in the script will fail the deployment and
+     * ProvisioningState will be marked as Failed. If treatFailureAsDeploymentFailure set to false, ProvisioningState
+     * would only reflect whether the run command was run or not by the extensions platform, it would not indicate
+     * whether script failed in case of script failures. See instance view of run command in case of script failures to
+     * see executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -259,7 +344,7 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
 
     /**
      * Get the instanceView property: The virtual machine run command instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public VirtualMachineRunCommandInstanceView instanceView() {
@@ -267,15 +352,87 @@ public final class VirtualMachineRunCommandUpdate extends UpdateResource {
     }
 
     /**
+     * Get the treatFailureAsDeploymentFailure property: Optional. If set to true, any failure in the script will fail
+     * the deployment and ProvisioningState will be marked as Failed. If set to false, ProvisioningState would only
+     * reflect whether the run command was run or not by the extensions platform, it would not indicate whether script
+     * failed in case of script failures. See instance view of run command in case of script failures to see
+     * executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
+     * 
+     * @return the treatFailureAsDeploymentFailure value.
+     */
+    public Boolean treatFailureAsDeploymentFailure() {
+        return this.innerProperties() == null ? null : this.innerProperties().treatFailureAsDeploymentFailure();
+    }
+
+    /**
+     * Set the treatFailureAsDeploymentFailure property: Optional. If set to true, any failure in the script will fail
+     * the deployment and ProvisioningState will be marked as Failed. If set to false, ProvisioningState would only
+     * reflect whether the run command was run or not by the extensions platform, it would not indicate whether script
+     * failed in case of script failures. See instance view of run command in case of script failures to see
+     * executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
+     * 
+     * @param treatFailureAsDeploymentFailure the treatFailureAsDeploymentFailure value to set.
+     * @return the VirtualMachineRunCommandUpdate object itself.
+     */
+    public VirtualMachineRunCommandUpdate withTreatFailureAsDeploymentFailure(Boolean treatFailureAsDeploymentFailure) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineRunCommandProperties();
+        }
+        this.innerProperties().withTreatFailureAsDeploymentFailure(treatFailureAsDeploymentFailure);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineRunCommandUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineRunCommandUpdate if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineRunCommandUpdate.
+     */
+    public static VirtualMachineRunCommandUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineRunCommandUpdate deserializedVirtualMachineRunCommandUpdate
+                = new VirtualMachineRunCommandUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineRunCommandUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandUpdate.innerProperties
+                        = VirtualMachineRunCommandProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineRunCommandUpdate;
+        });
     }
 }

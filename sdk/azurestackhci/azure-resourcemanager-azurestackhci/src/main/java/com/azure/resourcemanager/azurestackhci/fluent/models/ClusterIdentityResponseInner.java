@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cluster Identity details. */
+/**
+ * Cluster Identity details.
+ */
 @Immutable
-public final class ClusterIdentityResponseInner {
+public final class ClusterIdentityResponseInner implements JsonSerializable<ClusterIdentityResponseInner> {
     /*
      * Cluster identity properties.
      */
-    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterIdentityResponseProperties innerProperties;
 
     /**
+     * Creates an instance of ClusterIdentityResponseInner class.
+     */
+    public ClusterIdentityResponseInner() {
+    }
+
+    /**
      * Get the innerProperties property: Cluster identity properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterIdentityResponseProperties innerProperties() {
@@ -27,7 +38,7 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Get the aadClientId property: The aadClientId property.
-     *
+     * 
      * @return the aadClientId value.
      */
     public String aadClientId() {
@@ -36,7 +47,7 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Set the aadClientId property: The aadClientId property.
-     *
+     * 
      * @param aadClientId the aadClientId value to set.
      * @return the ClusterIdentityResponseInner object itself.
      */
@@ -50,7 +61,7 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Get the aadTenantId property: The aadTenantId property.
-     *
+     * 
      * @return the aadTenantId value.
      */
     public String aadTenantId() {
@@ -59,7 +70,7 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Set the aadTenantId property: The aadTenantId property.
-     *
+     * 
      * @param aadTenantId the aadTenantId value to set.
      * @return the ClusterIdentityResponseInner object itself.
      */
@@ -73,7 +84,7 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Get the aadServicePrincipalObjectId property: The aadServicePrincipalObjectId property.
-     *
+     * 
      * @return the aadServicePrincipalObjectId value.
      */
     public String aadServicePrincipalObjectId() {
@@ -82,7 +93,7 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Set the aadServicePrincipalObjectId property: The aadServicePrincipalObjectId property.
-     *
+     * 
      * @param aadServicePrincipalObjectId the aadServicePrincipalObjectId value to set.
      * @return the ClusterIdentityResponseInner object itself.
      */
@@ -96,7 +107,7 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Get the aadApplicationObjectId property: The aadApplicationObjectId property.
-     *
+     * 
      * @return the aadApplicationObjectId value.
      */
     public String aadApplicationObjectId() {
@@ -105,7 +116,7 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Set the aadApplicationObjectId property: The aadApplicationObjectId property.
-     *
+     * 
      * @param aadApplicationObjectId the aadApplicationObjectId value to set.
      * @return the ClusterIdentityResponseInner object itself.
      */
@@ -119,12 +130,48 @@ public final class ClusterIdentityResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterIdentityResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterIdentityResponseInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterIdentityResponseInner.
+     */
+    public static ClusterIdentityResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterIdentityResponseInner deserializedClusterIdentityResponseInner = new ClusterIdentityResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedClusterIdentityResponseInner.innerProperties
+                        = ClusterIdentityResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterIdentityResponseInner;
+        });
     }
 }

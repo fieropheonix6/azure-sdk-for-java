@@ -11,29 +11,28 @@ import com.azure.resourcemanager.peering.fluent.PeeringServiceLocationsClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceLocationInner;
 import com.azure.resourcemanager.peering.models.PeeringServiceLocation;
 import com.azure.resourcemanager.peering.models.PeeringServiceLocations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringServiceLocationsImpl implements PeeringServiceLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceLocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringServiceLocationsImpl.class);
 
     private final PeeringServiceLocationsClient innerClient;
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public PeeringServiceLocationsImpl(
-        PeeringServiceLocationsClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public PeeringServiceLocationsImpl(PeeringServiceLocationsClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PeeringServiceLocation> list() {
         PagedIterable<PeeringServiceLocationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceLocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceLocationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeeringServiceLocation> list(String country, Context context) {
         PagedIterable<PeeringServiceLocationInner> inner = this.serviceClient().list(country, context);
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceLocationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceLocationImpl(inner1, this.manager()));
     }
 
     private PeeringServiceLocationsClient serviceClient() {

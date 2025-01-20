@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.iothub.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for IotHubResource ListEventHubConsumerGroups. */
+/**
+ * Samples for IotHubResource ListEventHubConsumerGroups.
+ */
 public final class IotHubResourceListEventHubConsumerGroupsSamples {
     /*
-     * x-ms-original-file: specification/iothub/resource-manager/Microsoft.Devices/preview/2022-04-30-preview/examples/iothub_listehgroups.json
+     * x-ms-original-file:
+     * specification/iothub/resource-manager/Microsoft.Devices/stable/2023-06-30/examples/iothub_listehgroups.json
      */
     /**
      * Sample code: IotHubResource_ListEventHubConsumerGroups.
-     *
+     * 
      * @param manager Entry point to IotHubManager.
      */
-    public static void iotHubResourceListEventHubConsumerGroups(
-        com.azure.resourcemanager.iothub.IotHubManager manager) {
-        manager.iotHubResources().listEventHubConsumerGroups("myResourceGroup", "testHub", "events", Context.NONE);
+    public static void
+        iotHubResourceListEventHubConsumerGroups(com.azure.resourcemanager.iothub.IotHubManager manager) {
+        manager.iotHubResources()
+            .listEventHubConsumerGroups("myResourceGroup", "testHub", "events", com.azure.core.util.Context.NONE);
     }
 }

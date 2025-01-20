@@ -11,6 +11,13 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class OperationResult {
+
+    /**
+     * Creates a OperationResult object.
+     */
+    public OperationResult() {
+    }
+
     /**
      * Identifier which contains the result of the build model/analyze operation.
      */
@@ -31,13 +38,11 @@ public final class OperationResult {
     }
 
     static {
-        OperationResultHelper.setAccessor(
-            new OperationResultHelper.OperationResultAccessor() {
-                @Override
-                public void setOperationId(
-                    OperationResult operationResult, String operationId) {
-                    operationResult.setOperationId(operationId);
-                }
-            });
+        OperationResultHelper.setAccessor(new OperationResultHelper.OperationResultAccessor() {
+            @Override
+            public void setOperationId(OperationResult operationResult, String operationId) {
+                operationResult.setOperationId(operationId);
+            }
+        });
     }
 }

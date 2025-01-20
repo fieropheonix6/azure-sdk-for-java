@@ -6,28 +6,48 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** AzureBackupRecoveryTimeBasedRestoreRequest AzureBackup RecoveryPointTime Based Restore Request. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
-@JsonTypeName("AzureBackupRecoveryTimeBasedRestoreRequest")
+/**
+ * AzureBackupRecoveryTimeBasedRestoreRequest
+ * 
+ * AzureBackup RecoveryPointTime Based Restore Request.
+ */
 @Fluent
 public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBackupRestoreRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBackupRecoveryTimeBasedRestoreRequest.class);
+    /*
+     * The objectType property.
+     */
+    private String objectType = "AzureBackupRecoveryTimeBasedRestoreRequest";
 
     /*
-     * The recovery time in ISO 8601 format example -
-     * 2020-08-14T17:30:00.0000000Z.
+     * The recovery time in ISO 8601 format example - 2020-08-14T17:30:00.0000000Z.
      */
-    @JsonProperty(value = "recoveryPointTime", required = true)
     private String recoveryPointTime;
 
     /**
+     * Creates an instance of AzureBackupRecoveryTimeBasedRestoreRequest class.
+     */
+    public AzureBackupRecoveryTimeBasedRestoreRequest() {
+    }
+
+    /**
+     * Get the objectType property: The objectType property.
+     * 
+     * @return the objectType value.
+     */
+    @Override
+    public String objectType() {
+        return this.objectType;
+    }
+
+    /**
      * Get the recoveryPointTime property: The recovery time in ISO 8601 format example - 2020-08-14T17:30:00.0000000Z.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public String recoveryPointTime() {
@@ -36,7 +56,7 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
 
     /**
      * Set the recoveryPointTime property: The recovery time in ISO 8601 format example - 2020-08-14T17:30:00.0000000Z.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the AzureBackupRecoveryTimeBasedRestoreRequest object itself.
      */
@@ -45,14 +65,18 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupRecoveryTimeBasedRestoreRequest withRestoreTargetInfo(RestoreTargetInfoBase restoreTargetInfo) {
         super.withRestoreTargetInfo(restoreTargetInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBackupRecoveryTimeBasedRestoreRequest withSourceDataStoreType(SourceDataStoreType sourceDataStoreType) {
         super.withSourceDataStoreType(sourceDataStoreType);
@@ -60,19 +84,110 @@ public final class AzureBackupRecoveryTimeBasedRestoreRequest extends AzureBacku
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureBackupRecoveryTimeBasedRestoreRequest withSourceResourceId(String sourceResourceId) {
+        super.withSourceResourceId(sourceResourceId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureBackupRecoveryTimeBasedRestoreRequest
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureBackupRecoveryTimeBasedRestoreRequest withIdentityDetails(IdentityDetails identityDetails) {
+        super.withIdentityDetails(identityDetails);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointTime() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointTime in model"
-                            + " AzureBackupRecoveryTimeBasedRestoreRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property recoveryPointTime in model AzureBackupRecoveryTimeBasedRestoreRequest"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureBackupRecoveryTimeBasedRestoreRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("restoreTargetInfo", restoreTargetInfo());
+        jsonWriter.writeStringField("sourceDataStoreType",
+            sourceDataStoreType() == null ? null : sourceDataStoreType().toString());
+        jsonWriter.writeStringField("sourceResourceId", sourceResourceId());
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", resourceGuardOperationRequests(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identityDetails", identityDetails());
+        jsonWriter.writeStringField("recoveryPointTime", this.recoveryPointTime);
+        jsonWriter.writeStringField("objectType", this.objectType);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureBackupRecoveryTimeBasedRestoreRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureBackupRecoveryTimeBasedRestoreRequest if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureBackupRecoveryTimeBasedRestoreRequest.
+     */
+    public static AzureBackupRecoveryTimeBasedRestoreRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureBackupRecoveryTimeBasedRestoreRequest deserializedAzureBackupRecoveryTimeBasedRestoreRequest
+                = new AzureBackupRecoveryTimeBasedRestoreRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("restoreTargetInfo".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryTimeBasedRestoreRequest
+                        .withRestoreTargetInfo(RestoreTargetInfoBase.fromJson(reader));
+                } else if ("sourceDataStoreType".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryTimeBasedRestoreRequest
+                        .withSourceDataStoreType(SourceDataStoreType.fromString(reader.getString()));
+                } else if ("sourceResourceId".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryTimeBasedRestoreRequest.withSourceResourceId(reader.getString());
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureBackupRecoveryTimeBasedRestoreRequest
+                        .withResourceGuardOperationRequests(resourceGuardOperationRequests);
+                } else if ("identityDetails".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryTimeBasedRestoreRequest
+                        .withIdentityDetails(IdentityDetails.fromJson(reader));
+                } else if ("recoveryPointTime".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryTimeBasedRestoreRequest.recoveryPointTime = reader.getString();
+                } else if ("objectType".equals(fieldName)) {
+                    deserializedAzureBackupRecoveryTimeBasedRestoreRequest.objectType = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureBackupRecoveryTimeBasedRestoreRequest;
+        });
     }
 }

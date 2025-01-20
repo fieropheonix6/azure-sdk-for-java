@@ -4,18 +4,25 @@
 
 package com.azure.messaging.eventgrid.systemevents;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for MediaJobRetry. */
+/**
+ * Indicates that it may be possible to retry the Job. If retry is unsuccessful, please contact Azure support via Azure
+ * Portal.
+ */
 public enum MediaJobRetry {
-    /** Enum value DoNotRetry. */
+    /**
+     * Issue needs to be investigated and then the job resubmitted with corrections or retried once the underlying issue
+     * has been corrected.
+     */
     DO_NOT_RETRY("DoNotRetry"),
 
-    /** Enum value MayRetry. */
+    /**
+     * Issue may be resolved after waiting for a period of time and resubmitting the same Job.
+     */
     MAY_RETRY("MayRetry");
 
-    /** The actual serialized value for a MediaJobRetry instance. */
+    /**
+     * The actual serialized value for a MediaJobRetry instance.
+     */
     private final String value;
 
     MediaJobRetry(String value) {
@@ -24,12 +31,14 @@ public enum MediaJobRetry {
 
     /**
      * Parses a serialized value to a MediaJobRetry instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MediaJobRetry object, or null if unable to parse.
      */
-    @JsonCreator
     public static MediaJobRetry fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         MediaJobRetry[] items = MediaJobRetry.values();
         for (MediaJobRetry item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +48,9 @@ public enum MediaJobRetry {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

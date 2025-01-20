@@ -5,52 +5,78 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetCreationProperties;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The ReferenceDataSetCreateOrUpdateParameters model. */
-@JsonFlatten
+/**
+ * The ReferenceDataSetCreateOrUpdateParameters model.
+ */
 @Fluent
-public class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferenceDataSetCreateOrUpdateParameters.class);
-
+public final class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpdateTrackedResourceProperties {
     /*
-     * The list of key properties for the reference data set.
+     * Properties used to create a reference data set.
      */
-    @JsonProperty(value = "properties.keyProperties", required = true)
-    private List<ReferenceDataSetKeyProperty> keyProperties;
+    private ReferenceDataSetCreationProperties innerProperties = new ReferenceDataSetCreationProperties();
 
-    /*
-     * The reference data set key comparison behavior can be set using this
-     * property. By default, the value is 'Ordinal' - which means case
-     * sensitive key comparison will be performed while joining reference data
-     * with events or while adding new reference data. When 'OrdinalIgnoreCase'
-     * is set, case insensitive comparison will be used.
+    /**
+     * Creates an instance of ReferenceDataSetCreateOrUpdateParameters class.
      */
-    @JsonProperty(value = "properties.dataStringComparisonBehavior")
-    private DataStringComparisonBehavior dataStringComparisonBehavior;
+    public ReferenceDataSetCreateOrUpdateParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: Properties used to create a reference data set.
+     * 
+     * @return the innerProperties value.
+     */
+    private ReferenceDataSetCreationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ReferenceDataSetCreateOrUpdateParameters withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ReferenceDataSetCreateOrUpdateParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the keyProperties property: The list of key properties for the reference data set.
-     *
+     * 
      * @return the keyProperties value.
      */
     public List<ReferenceDataSetKeyProperty> keyProperties() {
-        return this.keyProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().keyProperties();
     }
 
     /**
      * Set the keyProperties property: The list of key properties for the reference data set.
-     *
+     * 
      * @param keyProperties the keyProperties value to set.
      * @return the ReferenceDataSetCreateOrUpdateParameters object itself.
      */
     public ReferenceDataSetCreateOrUpdateParameters withKeyProperties(List<ReferenceDataSetKeyProperty> keyProperties) {
-        this.keyProperties = keyProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReferenceDataSetCreationProperties();
+        }
+        this.innerProperties().withKeyProperties(keyProperties);
         return this;
     }
 
@@ -59,11 +85,11 @@ public class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpdateTrac
      * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
      * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
      * case insensitive comparison will be used.
-     *
+     * 
      * @return the dataStringComparisonBehavior value.
      */
     public DataStringComparisonBehavior dataStringComparisonBehavior() {
-        return this.dataStringComparisonBehavior;
+        return this.innerProperties() == null ? null : this.innerProperties().dataStringComparisonBehavior();
     }
 
     /**
@@ -71,45 +97,85 @@ public class ReferenceDataSetCreateOrUpdateParameters extends CreateOrUpdateTrac
      * this property. By default, the value is 'Ordinal' - which means case sensitive key comparison will be performed
      * while joining reference data with events or while adding new reference data. When 'OrdinalIgnoreCase' is set,
      * case insensitive comparison will be used.
-     *
+     * 
      * @param dataStringComparisonBehavior the dataStringComparisonBehavior value to set.
      * @return the ReferenceDataSetCreateOrUpdateParameters object itself.
      */
-    public ReferenceDataSetCreateOrUpdateParameters withDataStringComparisonBehavior(
-        DataStringComparisonBehavior dataStringComparisonBehavior) {
-        this.dataStringComparisonBehavior = dataStringComparisonBehavior;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ReferenceDataSetCreateOrUpdateParameters withLocation(String location) {
-        super.withLocation(location);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ReferenceDataSetCreateOrUpdateParameters withTags(Map<String, String> tags) {
-        super.withTags(tags);
+    public ReferenceDataSetCreateOrUpdateParameters
+        withDataStringComparisonBehavior(DataStringComparisonBehavior dataStringComparisonBehavior) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ReferenceDataSetCreationProperties();
+        }
+        this.innerProperties().withDataStringComparisonBehavior(dataStringComparisonBehavior);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (keyProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyProperties in model ReferenceDataSetCreateOrUpdateParameters"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model ReferenceDataSetCreateOrUpdateParameters"));
         } else {
-            keyProperties().forEach(e -> e.validate());
+            innerProperties().validate();
         }
+        if (location() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model ReferenceDataSetCreateOrUpdateParameters"));
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ReferenceDataSetCreateOrUpdateParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReferenceDataSetCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReferenceDataSetCreateOrUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ReferenceDataSetCreateOrUpdateParameters.
+     */
+    public static ReferenceDataSetCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReferenceDataSetCreateOrUpdateParameters deserializedReferenceDataSetCreateOrUpdateParameters
+                = new ReferenceDataSetCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedReferenceDataSetCreateOrUpdateParameters.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedReferenceDataSetCreateOrUpdateParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedReferenceDataSetCreateOrUpdateParameters.innerProperties
+                        = ReferenceDataSetCreationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReferenceDataSetCreateOrUpdateParameters;
+        });
     }
 }

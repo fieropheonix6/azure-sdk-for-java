@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkConnections Delete. */
+/**
+ * Samples for NetworkConnections Delete.
+ */
 public final class NetworkConnectionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/NetworkConnections_Delete.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/NetworkConnections_Delete
+     * .json
      */
     /**
      * Sample code: NetworkConnections_Delete.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void networkConnectionsDelete(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.networkConnections().delete("rg1", "eastusnetwork", Context.NONE);
+        manager.networkConnections().delete("rg1", "eastusnetwork", com.azure.core.util.Context.NONE);
     }
 }

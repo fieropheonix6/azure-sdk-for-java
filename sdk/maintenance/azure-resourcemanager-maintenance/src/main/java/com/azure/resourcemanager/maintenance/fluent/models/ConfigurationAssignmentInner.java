@@ -5,47 +5,58 @@
 package com.azure.resourcemanager.maintenance.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.maintenance.models.ConfigurationAssignmentFilterProperties;
+import java.io.IOException;
 
-/** Configuration Assignment. */
-@JsonFlatten
+/**
+ * Configuration Assignment.
+ */
 @Fluent
-public class ConfigurationAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationAssignmentInner.class);
-
+public final class ConfigurationAssignmentInner extends ProxyResource {
     /*
      * Location of the resource
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
-     * The maintenance configuration Id
+     * Properties of the configuration assignment
      */
-    @JsonProperty(value = "properties.maintenanceConfigurationId")
-    private String maintenanceConfigurationId;
+    private ConfigurationAssignmentProperties innerProperties;
 
     /*
-     * The unique resourceId
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
-    @JsonProperty(value = "properties.resourceId")
-    private String resourceId;
-
-    /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
-     */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ConfigurationAssignmentInner class.
+     */
+    public ConfigurationAssignmentInner() {
+    }
 
     /**
      * Get the location property: Location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -54,7 +65,7 @@ public class ConfigurationAssignmentInner extends ProxyResource {
 
     /**
      * Set the location property: Location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ConfigurationAssignmentInner object itself.
      */
@@ -64,48 +75,17 @@ public class ConfigurationAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the maintenanceConfigurationId property: The maintenance configuration Id.
-     *
-     * @return the maintenanceConfigurationId value.
+     * Get the innerProperties property: Properties of the configuration assignment.
+     * 
+     * @return the innerProperties value.
      */
-    public String maintenanceConfigurationId() {
-        return this.maintenanceConfigurationId;
-    }
-
-    /**
-     * Set the maintenanceConfigurationId property: The maintenance configuration Id.
-     *
-     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
-     * @return the ConfigurationAssignmentInner object itself.
-     */
-    public ConfigurationAssignmentInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
-        this.maintenanceConfigurationId = maintenanceConfigurationId;
-        return this;
-    }
-
-    /**
-     * Get the resourceId property: The unique resourceId.
-     *
-     * @return the resourceId value.
-     */
-    public String resourceId() {
-        return this.resourceId;
-    }
-
-    /**
-     * Set the resourceId property: The unique resourceId.
-     *
-     * @param resourceId the resourceId value to set.
-     * @return the ConfigurationAssignmentInner object itself.
-     */
-    public ConfigurationAssignmentInner withResourceId(String resourceId) {
-        this.resourceId = resourceId;
-        return this;
+    private ConfigurationAssignmentProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -113,10 +93,161 @@ public class ConfigurationAssignmentInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the maintenanceConfigurationId property: The maintenance configuration Id.
+     * 
+     * @return the maintenanceConfigurationId value.
+     */
+    public String maintenanceConfigurationId() {
+        return this.innerProperties() == null ? null : this.innerProperties().maintenanceConfigurationId();
+    }
+
+    /**
+     * Set the maintenanceConfigurationId property: The maintenance configuration Id.
+     * 
+     * @param maintenanceConfigurationId the maintenanceConfigurationId value to set.
+     * @return the ConfigurationAssignmentInner object itself.
+     */
+    public ConfigurationAssignmentInner withMaintenanceConfigurationId(String maintenanceConfigurationId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationAssignmentProperties();
+        }
+        this.innerProperties().withMaintenanceConfigurationId(maintenanceConfigurationId);
+        return this;
+    }
+
+    /**
+     * Get the resourceId property: The unique resourceId.
+     * 
+     * @return the resourceId value.
+     */
+    public String resourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceId();
+    }
+
+    /**
+     * Set the resourceId property: The unique resourceId.
+     * 
+     * @param resourceId the resourceId value to set.
+     * @return the ConfigurationAssignmentInner object itself.
+     */
+    public ConfigurationAssignmentInner withResourceId(String resourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationAssignmentProperties();
+        }
+        this.innerProperties().withResourceId(resourceId);
+        return this;
+    }
+
+    /**
+     * Get the filter property: Properties of the configuration assignment.
+     * 
+     * @return the filter value.
+     */
+    public ConfigurationAssignmentFilterProperties filter() {
+        return this.innerProperties() == null ? null : this.innerProperties().filter();
+    }
+
+    /**
+     * Set the filter property: Properties of the configuration assignment.
+     * 
+     * @param filter the filter value to set.
+     * @return the ConfigurationAssignmentInner object itself.
+     */
+    public ConfigurationAssignmentInner withFilter(ConfigurationAssignmentFilterProperties filter) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationAssignmentProperties();
+        }
+        this.innerProperties().withFilter(filter);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationAssignmentInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationAssignmentInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfigurationAssignmentInner.
+     */
+    public static ConfigurationAssignmentInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationAssignmentInner deserializedConfigurationAssignmentInner = new ConfigurationAssignmentInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConfigurationAssignmentInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConfigurationAssignmentInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConfigurationAssignmentInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedConfigurationAssignmentInner.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConfigurationAssignmentInner.innerProperties
+                        = ConfigurationAssignmentProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedConfigurationAssignmentInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationAssignmentInner;
+        });
     }
 }

@@ -13,19 +13,30 @@ import com.azure.resourcemanager.peering.fluent.PeeringServicesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringServiceInner;
 import com.azure.resourcemanager.peering.models.PeeringService;
 import com.azure.resourcemanager.peering.models.PeeringServices;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PeeringServicesImpl implements PeeringServices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringServicesImpl.class);
 
     private final PeeringServicesClient innerClient;
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public PeeringServicesImpl(
-        PeeringServicesClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public PeeringServicesImpl(PeeringServicesClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<PeeringService> getByResourceGroupWithResponse(String resourceGroupName, String peeringServiceName,
+        Context context) {
+        Response<PeeringServiceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, peeringServiceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PeeringServiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PeeringService getByResourceGroup(String resourceGroupName, String peeringServiceName) {
@@ -37,127 +48,89 @@ public final class PeeringServicesImpl implements PeeringServices {
         }
     }
 
-    public Response<PeeringService> getByResourceGroupWithResponse(
-        String resourceGroupName, String peeringServiceName, Context context) {
-        Response<PeeringServiceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, peeringServiceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PeeringServiceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String peeringServiceName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, peeringServiceName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String peeringServiceName) {
         this.serviceClient().delete(resourceGroupName, peeringServiceName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String peeringServiceName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, peeringServiceName, context);
-    }
-
     public PagedIterable<PeeringService> listByResourceGroup(String resourceGroupName) {
         PagedIterable<PeeringServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeeringService> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<PeeringServiceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeeringService> list() {
         PagedIterable<PeeringServiceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PeeringService> list(Context context) {
         PagedIterable<PeeringServiceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringServiceImpl(inner1, this.manager()));
     }
 
     public PeeringService getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
+        String peeringServiceName = ResourceManagerUtils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, peeringServiceName, Context.NONE).getValue();
     }
 
     public Response<PeeringService> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
+        String peeringServiceName = ResourceManagerUtils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, peeringServiceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
+        String peeringServiceName = ResourceManagerUtils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, peeringServiceName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, peeringServiceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String peeringServiceName = Utils.getValueFromIdByName(id, "peeringServices");
+        String peeringServiceName = ResourceManagerUtils.getValueFromIdByName(id, "peeringServices");
         if (peeringServiceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'peeringServices'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, peeringServiceName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, peeringServiceName, context);
     }
 
     private PeeringServicesClient serviceClient() {

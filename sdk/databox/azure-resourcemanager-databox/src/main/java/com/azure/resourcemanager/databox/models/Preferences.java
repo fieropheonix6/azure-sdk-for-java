@@ -5,37 +5,52 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Preferences related to the order. */
+/**
+ * Preferences related to the order.
+ */
 @Fluent
-public final class Preferences {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Preferences.class);
-
+public final class Preferences implements JsonSerializable<Preferences> {
     /*
      * Preferred data center region.
      */
-    @JsonProperty(value = "preferredDataCenterRegion")
     private List<String> preferredDataCenterRegion;
 
     /*
      * Preferences related to the shipment logistics of the sku.
      */
-    @JsonProperty(value = "transportPreferences")
     private TransportPreferences transportPreferences;
+
+    /*
+     * Optional Preferences related to the reverse shipment logistics of the sku.
+     */
+    private TransportPreferences reverseTransportPreferences;
 
     /*
      * Preferences related to the Encryption.
      */
-    @JsonProperty(value = "encryptionPreferences")
     private EncryptionPreferences encryptionPreferences;
+
+    /*
+     * Preferences related to the Access Tier of storage accounts.
+     */
+    private List<String> storageAccountAccessTierPreferences;
+
+    /**
+     * Creates an instance of Preferences class.
+     */
+    public Preferences() {
+    }
 
     /**
      * Get the preferredDataCenterRegion property: Preferred data center region.
-     *
+     * 
      * @return the preferredDataCenterRegion value.
      */
     public List<String> preferredDataCenterRegion() {
@@ -44,7 +59,7 @@ public final class Preferences {
 
     /**
      * Set the preferredDataCenterRegion property: Preferred data center region.
-     *
+     * 
      * @param preferredDataCenterRegion the preferredDataCenterRegion value to set.
      * @return the Preferences object itself.
      */
@@ -55,7 +70,7 @@ public final class Preferences {
 
     /**
      * Get the transportPreferences property: Preferences related to the shipment logistics of the sku.
-     *
+     * 
      * @return the transportPreferences value.
      */
     public TransportPreferences transportPreferences() {
@@ -64,7 +79,7 @@ public final class Preferences {
 
     /**
      * Set the transportPreferences property: Preferences related to the shipment logistics of the sku.
-     *
+     * 
      * @param transportPreferences the transportPreferences value to set.
      * @return the Preferences object itself.
      */
@@ -74,8 +89,30 @@ public final class Preferences {
     }
 
     /**
+     * Get the reverseTransportPreferences property: Optional Preferences related to the reverse shipment logistics of
+     * the sku.
+     * 
+     * @return the reverseTransportPreferences value.
+     */
+    public TransportPreferences reverseTransportPreferences() {
+        return this.reverseTransportPreferences;
+    }
+
+    /**
+     * Set the reverseTransportPreferences property: Optional Preferences related to the reverse shipment logistics of
+     * the sku.
+     * 
+     * @param reverseTransportPreferences the reverseTransportPreferences value to set.
+     * @return the Preferences object itself.
+     */
+    public Preferences withReverseTransportPreferences(TransportPreferences reverseTransportPreferences) {
+        this.reverseTransportPreferences = reverseTransportPreferences;
+        return this;
+    }
+
+    /**
      * Get the encryptionPreferences property: Preferences related to the Encryption.
-     *
+     * 
      * @return the encryptionPreferences value.
      */
     public EncryptionPreferences encryptionPreferences() {
@@ -84,7 +121,7 @@ public final class Preferences {
 
     /**
      * Set the encryptionPreferences property: Preferences related to the Encryption.
-     *
+     * 
      * @param encryptionPreferences the encryptionPreferences value to set.
      * @return the Preferences object itself.
      */
@@ -94,16 +131,91 @@ public final class Preferences {
     }
 
     /**
+     * Get the storageAccountAccessTierPreferences property: Preferences related to the Access Tier of storage accounts.
+     * 
+     * @return the storageAccountAccessTierPreferences value.
+     */
+    public List<String> storageAccountAccessTierPreferences() {
+        return this.storageAccountAccessTierPreferences;
+    }
+
+    /**
+     * Set the storageAccountAccessTierPreferences property: Preferences related to the Access Tier of storage accounts.
+     * 
+     * @param storageAccountAccessTierPreferences the storageAccountAccessTierPreferences value to set.
+     * @return the Preferences object itself.
+     */
+    public Preferences withStorageAccountAccessTierPreferences(List<String> storageAccountAccessTierPreferences) {
+        this.storageAccountAccessTierPreferences = storageAccountAccessTierPreferences;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (transportPreferences() != null) {
             transportPreferences().validate();
         }
+        if (reverseTransportPreferences() != null) {
+            reverseTransportPreferences().validate();
+        }
         if (encryptionPreferences() != null) {
             encryptionPreferences().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("preferredDataCenterRegion", this.preferredDataCenterRegion,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("transportPreferences", this.transportPreferences);
+        jsonWriter.writeJsonField("reverseTransportPreferences", this.reverseTransportPreferences);
+        jsonWriter.writeJsonField("encryptionPreferences", this.encryptionPreferences);
+        jsonWriter.writeArrayField("storageAccountAccessTierPreferences", this.storageAccountAccessTierPreferences,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Preferences from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Preferences if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the Preferences.
+     */
+    public static Preferences fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Preferences deserializedPreferences = new Preferences();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("preferredDataCenterRegion".equals(fieldName)) {
+                    List<String> preferredDataCenterRegion = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPreferences.preferredDataCenterRegion = preferredDataCenterRegion;
+                } else if ("transportPreferences".equals(fieldName)) {
+                    deserializedPreferences.transportPreferences = TransportPreferences.fromJson(reader);
+                } else if ("reverseTransportPreferences".equals(fieldName)) {
+                    deserializedPreferences.reverseTransportPreferences = TransportPreferences.fromJson(reader);
+                } else if ("encryptionPreferences".equals(fieldName)) {
+                    deserializedPreferences.encryptionPreferences = EncryptionPreferences.fromJson(reader);
+                } else if ("storageAccountAccessTierPreferences".equals(fieldName)) {
+                    List<String> storageAccountAccessTierPreferences = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPreferences.storageAccountAccessTierPreferences = storageAccountAccessTierPreferences;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPreferences;
+        });
     }
 }

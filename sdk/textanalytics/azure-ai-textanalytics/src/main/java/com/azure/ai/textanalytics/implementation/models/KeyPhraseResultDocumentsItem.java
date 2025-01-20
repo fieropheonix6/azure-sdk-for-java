@@ -5,66 +5,104 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The KeyPhraseResultDocumentsItem model. */
+/**
+ * The KeyPhraseResultDocumentsItem model.
+ */
 @Fluent
 public final class KeyPhraseResultDocumentsItem extends KeyPhrasesDocumentResult {
-    /*
-     * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
-     * representation of the language detected for this document.
-     */
-    @JsonProperty(value = "detectedLanguage")
-    private DetectedLanguage detectedLanguage;
-
     /**
-     * Get the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
-     *
-     * @return the detectedLanguage value.
+     * Creates an instance of KeyPhraseResultDocumentsItem class.
      */
-    public DetectedLanguage getDetectedLanguage() {
-        return this.detectedLanguage;
+    public KeyPhraseResultDocumentsItem() {
     }
 
     /**
-     * Set the detectedLanguage property: If 'language' is set to 'auto' for the document in the request this field will
-     * contain a 2 letter ISO 639-1 representation of the language detected for this document.
-     *
-     * @param detectedLanguage the detectedLanguage value to set.
-     * @return the KeyPhraseResultDocumentsItem object itself.
+     * {@inheritDoc}
      */
-    public KeyPhraseResultDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
-        this.detectedLanguage = detectedLanguage;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public KeyPhraseResultDocumentsItem setKeyPhrases(List<String> keyPhrases) {
         super.setKeyPhrases(keyPhrases);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhraseResultDocumentsItem setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhraseResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public KeyPhraseResultDocumentsItem setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("warnings", getWarnings(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("keyPhrases", getKeyPhrases(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("statistics", getStatistics());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyPhraseResultDocumentsItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyPhraseResultDocumentsItem if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyPhraseResultDocumentsItem.
+     */
+    public static KeyPhraseResultDocumentsItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyPhraseResultDocumentsItem deserializedKeyPhraseResultDocumentsItem = new KeyPhraseResultDocumentsItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedKeyPhraseResultDocumentsItem.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedKeyPhraseResultDocumentsItem.setWarnings(warnings);
+                } else if ("keyPhrases".equals(fieldName)) {
+                    List<String> keyPhrases = reader.readArray(reader1 -> reader1.getString());
+                    deserializedKeyPhraseResultDocumentsItem.setKeyPhrases(keyPhrases);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedKeyPhraseResultDocumentsItem.setStatistics(DocumentStatistics.fromJson(reader));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyPhraseResultDocumentsItem;
+        });
     }
 }

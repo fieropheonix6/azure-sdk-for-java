@@ -5,11 +5,12 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.util.TestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.test.StepVerifier;
 
@@ -25,168 +26,191 @@ import static org.mockito.Mockito.when;
 public class ManagedIdentityCredentialTest {
 
     private static final String CLIENT_ID = UUID.randomUUID().toString();
+    private static final String OBJECT_ID = UUID.randomUUID().toString();
 
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId("foo").build();
-        Assert.assertEquals("foo", credential.getClientId());
+        Assertions.assertEquals("foo", credential.getClientId());
     }
 
     @Test
-    public void testMSIEndpoint() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration();
+    public void testMSIEndpoint() {
+        // setup
+        String endpoint = "http://localhost";
+        String secret = "secret";
+        String token1 = "token1";
+        TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        Configuration configuration
+            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint) // This must stay to signal we are in an app service context
+                .put("MSI_SECRET", secret)
+                .put("IDENTITY_ENDPOINT", endpoint)
+                .put("IDENTITY_HEADER", secret));
 
-        try {
-            // setup
-            String endpoint = "http://localhost";
-            String secret = "secret";
-            String token1 = "token1";
-            TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
-            OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
-            configuration.put("MSI_ENDPOINT", endpoint); // This must stay to signal we are in an app service context
-            configuration.put("MSI_SECRET", secret);
-            configuration.put("IDENTITY_ENDPOINT", endpoint);
-            configuration.put("IDENTITY_HEADER", secret);
-
-            // mock
-            try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-                when(identityClient.authenticateWithManagedIdentityConfidentialClient(request1)).thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithManagedIdentityMsalClient(request1))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresAt));
             })) {
-                // test
-                ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
-                StepVerifier.create(credential.getToken(request1))
-                    .expectNextMatches(token -> token1.equals(token.getToken())
-                        && expiresAt.getSecond() == token.getExpiresAt().getSecond())
-                    .verifyComplete();
-                Assert.assertNotNull(identityClientMock);
-            }
-        } finally {
-            // clean up
-            configuration.remove("MSI_ENDPOINT");
-            configuration.remove("MSI_SECRET");
-            configuration.remove("IDENTITY_ENDPOINT");
-            configuration.remove("IDENTITY_HEADER");
+            // test
+            ManagedIdentityCredential credential
+                = new ManagedIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(token -> token1.equals(token.getToken())
+                    && expiresAt.getSecond() == token.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
     @Test
-    public void testIMDS() throws Exception {
+    public void testIMDS() {
         // setup
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithManagedIdentityConfidentialClient(request)).thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithManagedIdentityMsalClient(request))
+                    .thenReturn(TestUtils.getMockAccessToken(token1, expiresOn));
 
-        })) {
+            })) {
             // test
             ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).build();
             StepVerifier.create(credential.getToken(request))
                 .expectNextMatches(token -> token1.equals(token.getToken())
                     && expiresOn.getSecond() == token.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
     @Test
-    public void testArcUserAssigned() throws Exception {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-
+    public void testArcUserAssigned() {
         // setup
-        String token1 = "token1";
         String endpoint = "http://localhost";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
-        configuration.put("IDENTITY_ENDPOINT", endpoint);
-        configuration.put("IMDS_ENDPOINT", endpoint);
-
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("IDENTITY_ENDPOINT", endpoint).put("IMDS_ENDPOINT", endpoint));
 
         // test
-        ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder()
-            .configuration(configuration).clientId(CLIENT_ID).build();
+        ManagedIdentityCredential credential
+            = new ManagedIdentityCredentialBuilder().configuration(configuration).clientId(CLIENT_ID).build();
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
             .verify();
     }
 
-    @Test (expected = IllegalStateException.class)
-    public void testInvalidIdCombination()  {
+    @Test
+    public void testCloudshellUserAssigned() {
         // setup
-        String resourceId = "/subscriptions/" + UUID.randomUUID() + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+        String endpoint = "http://localhost";
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
+        Configuration configuration
+            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint));
 
         // test
-        new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build();
+        ManagedIdentityCredential credential
+            = new ManagedIdentityCredentialBuilder().configuration(configuration).objectId(OBJECT_ID).build();
+        StepVerifier.create(credential.getToken(request))
+            .expectErrorMatches(t -> t instanceof CredentialUnavailableException)
+            .verify();
+    }
+
+    @Test
+    public void testInvalidIdCombination() {
+        // setup
+        String resourceId = "/subscriptions/" + UUID.randomUUID()
+            + "/resourcegroups/aresourcegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/ident";
+        String objectId = "2323-sd2323s-32323-32334-34343";
+
+        // test
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID)
+                .resourceId(resourceId)
+                .objectId(objectId)
+                .build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).objectId(objectId).build());
+
+        Assertions.assertThrows(IllegalStateException.class,
+            () -> new ManagedIdentityCredentialBuilder().resourceId(resourceId).objectId(objectId).build());
     }
 
     @Test
     public void testArcIdentityCredentialCreated() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-
-        configuration.put("IDENTITY_ENDPOINT", "http://localhost");
-        configuration.put("IMDS_ENDPOINT", "http://localhost");
+        Configuration configuration
+            = TestUtils
+                .createTestConfiguration(new TestConfigurationSource().put("IDENTITY_ENDPOINT", "http://localhost")
+                    .put("IMDS_ENDPOINT", "http://localhost"))
+                .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(ArcIdentityCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
     public void testServiceFabricMsiCredentialCreated() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-
-        configuration.put("IDENTITY_ENDPOINT", "http://localhost");
-        configuration.put("IDENTITY_SERVER_THUMBPRINT", "thumbprint");
-        configuration.put("IDENTITY_HEADER", "header");
+        Configuration configuration = TestUtils
+            .createTestConfiguration(new TestConfigurationSource().put("IDENTITY_ENDPOINT", "http://localhost")
+                .put("IDENTITY_SERVER_THUMBPRINT", "thumbprint")
+                .put("IDENTITY_HEADER", "header"))
+            .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(ServiceFabricMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
     public void testAppServiceMsi2019CredentialCreated() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-
-        configuration.put("IDENTITY_ENDPOINT", "http://localhost");
-        configuration.put("IDENTITY_HEADER", "header");
+        Configuration configuration = TestUtils.createTestConfiguration(
+            new TestConfigurationSource().put("IDENTITY_ENDPOINT", "http://localhost").put("IDENTITY_HEADER", "header"))
+            .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
     public void testAppServiceMsi2017CredentialCreated() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-
-        configuration.put("MSI_ENDPOINT", "http://localhost");
-        configuration.put("MSI_SECRET", "secret");
+        Configuration configuration = TestUtils
+            .createTestConfiguration(
+                new TestConfigurationSource().put("MSI_ENDPOINT", "http://localhost").put("MSI_SECRET", "secret"))
+            .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
     public void testCloudShellCredentialCreated() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-
-        configuration.put("MSI_ENDPOINT", "http://localhost");
+        Configuration configuration
+            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", "http://localhost"))
+                .put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential, instanceOf(AppServiceMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 
     @Test
     public void testAksExchangeTokenCredentialCreated() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
-
-        configuration.put("AZURE_TENANT_ID", "tenantId");
-        configuration.put("AZURE_CLIENT_ID", "clientId");
-        configuration.put("AZURE_FEDERATED_TOKEN_FILE", "tokenFile");
+        Configuration configuration
+            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("AZURE_TENANT_ID", "tenantId")
+                .put("AZURE_CLIENT_ID", "clientId")
+                .put("AZURE_FEDERATED_TOKEN_FILE", "tokenFile"));
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
@@ -195,11 +219,11 @@ public class ManagedIdentityCredentialTest {
 
     @Test
     public void testIMDSPodIdentityV1Credential() {
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        Configuration configuration = TestUtils.createTestConfiguration(new TestConfigurationSource());
+        configuration.put("USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI", "true");
 
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
-            cred.managedIdentityServiceCredential,  instanceOf(VirtualMachineMsiCredential.class));
+            cred.managedIdentityServiceCredential, instanceOf(ManagedIdentityMsalCredential.class));
     }
 }
-

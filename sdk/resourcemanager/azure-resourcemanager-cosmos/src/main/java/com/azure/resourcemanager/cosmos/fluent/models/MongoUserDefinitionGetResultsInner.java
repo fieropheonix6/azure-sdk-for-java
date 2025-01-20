@@ -5,23 +5,48 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.Role;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** An Azure Cosmos DB User Definition. */
+/**
+ * An Azure Cosmos DB User Definition.
+ */
 @Fluent
 public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
     /*
      * Properties related to the User Definition.
      */
-    @JsonProperty(value = "properties")
     private MongoUserDefinitionResource innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of MongoUserDefinitionGetResultsInner class.
+     */
+    public MongoUserDefinitionGetResultsInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties related to the User Definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoUserDefinitionResource innerProperties() {
@@ -29,8 +54,38 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the username property: The user name for User Definition.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -39,7 +94,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the username property: The user name for User Definition.
-     *
+     * 
      * @param username the username value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -53,7 +108,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the password property: The password for User Definition. Response does not contain user password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -62,7 +117,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the password property: The password for User Definition. Response does not contain user password.
-     *
+     * 
      * @param password the password value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -76,7 +131,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the databaseName property: The database name for which access is being granted for this User Definition.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -85,7 +140,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the databaseName property: The database name for which access is being granted for this User Definition.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -99,7 +154,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the customData property: A custom definition for the USer Definition.
-     *
+     * 
      * @return the customData value.
      */
     public String customData() {
@@ -108,7 +163,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the customData property: A custom definition for the USer Definition.
-     *
+     * 
      * @param customData the customData value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -122,7 +177,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the roles property: The set of roles inherited by the User Definition.
-     *
+     * 
      * @return the roles value.
      */
     public List<Role> roles() {
@@ -131,7 +186,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the roles property: The set of roles inherited by the User Definition.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -145,7 +200,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the mechanisms property: The Mongo Auth mechanism. For now, we only support auth mechanism SCRAM-SHA-256.
-     *
+     * 
      * @return the mechanisms value.
      */
     public String mechanisms() {
@@ -154,7 +209,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the mechanisms property: The Mongo Auth mechanism. For now, we only support auth mechanism SCRAM-SHA-256.
-     *
+     * 
      * @param mechanisms the mechanisms value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -168,14 +223,58 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoUserDefinitionGetResultsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoUserDefinitionGetResultsInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MongoUserDefinitionGetResultsInner.
+     */
+    public static MongoUserDefinitionGetResultsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoUserDefinitionGetResultsInner deserializedMongoUserDefinitionGetResultsInner
+                = new MongoUserDefinitionGetResultsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedMongoUserDefinitionGetResultsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedMongoUserDefinitionGetResultsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedMongoUserDefinitionGetResultsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedMongoUserDefinitionGetResultsInner.innerProperties
+                        = MongoUserDefinitionResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMongoUserDefinitionGetResultsInner;
+        });
     }
 }

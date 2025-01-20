@@ -18,35 +18,51 @@ import com.azure.resourcemanager.logic.fluent.models.BatchConfigurationInner;
 public interface IntegrationAccountBatchConfigurationsClient {
     /**
      * List the batch configurations for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BatchConfigurationInner> list(String resourceGroupName, String integrationAccountName);
 
     /**
      * List the batch configurations for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of batch configurations.
+     * @return a collection of batch configurations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BatchConfigurationInner> list(
-        String resourceGroupName, String integrationAccountName, Context context);
+    PagedIterable<BatchConfigurationInner> list(String resourceGroupName, String integrationAccountName,
+        Context context);
 
     /**
      * Get a batch configuration for an integration account.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param batchConfigurationName The batch configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a batch configuration for an integration account along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BatchConfigurationInner> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, Context context);
+
+    /**
+     * Get a batch configuration for an integration account.
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -59,43 +75,8 @@ public interface IntegrationAccountBatchConfigurationsClient {
     BatchConfigurationInner get(String resourceGroupName, String integrationAccountName, String batchConfigurationName);
 
     /**
-     * Get a batch configuration for an integration account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param batchConfigurationName The batch configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a batch configuration for an integration account.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BatchConfigurationInner> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context);
-
-    /**
      * Create or update a batch configuration for an integration account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param batchConfigurationName The batch configuration name.
-     * @param batchConfiguration The batch configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the batch configuration resource definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    BatchConfigurationInner createOrUpdate(
-        String resourceGroupName,
-        String integrationAccountName,
-        String batchConfigurationName,
-        BatchConfigurationInner batchConfiguration);
-
-    /**
-     * Create or update a batch configuration for an integration account.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -104,19 +85,48 @@ public interface IntegrationAccountBatchConfigurationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the batch configuration resource definition.
+     * @return the batch configuration resource definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BatchConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        String batchConfigurationName,
-        BatchConfigurationInner batchConfiguration,
+    Response<BatchConfigurationInner> createOrUpdateWithResponse(String resourceGroupName,
+        String integrationAccountName, String batchConfigurationName, BatchConfigurationInner batchConfiguration,
         Context context);
 
     /**
+     * Create or update a batch configuration for an integration account.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param batchConfigurationName The batch configuration name.
+     * @param batchConfiguration The batch configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the batch configuration resource definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    BatchConfigurationInner createOrUpdate(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, BatchConfigurationInner batchConfiguration);
+
+    /**
      * Delete a batch configuration for an integration account.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param batchConfigurationName The batch configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, Context context);
+
+    /**
+     * Delete a batch configuration for an integration account.
+     * 
      * @param resourceGroupName The resource group name.
      * @param integrationAccountName The integration account name.
      * @param batchConfigurationName The batch configuration name.
@@ -126,20 +136,4 @@ public interface IntegrationAccountBatchConfigurationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String integrationAccountName, String batchConfigurationName);
-
-    /**
-     * Delete a batch configuration for an integration account.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param batchConfigurationName The batch configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context);
 }

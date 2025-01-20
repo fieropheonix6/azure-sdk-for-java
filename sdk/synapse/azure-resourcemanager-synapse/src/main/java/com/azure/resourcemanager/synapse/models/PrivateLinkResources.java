@@ -8,11 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of PrivateLinkResources. */
+/**
+ * Resource collection API of PrivateLinkResources.
+ */
 public interface PrivateLinkResources {
     /**
+     * Private Link Resources
+     * 
      * Get all private link resources for a workspaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,8 +27,10 @@ public interface PrivateLinkResources {
     PagedIterable<PrivateLinkResource> list(String resourceGroupName, String workspaceName);
 
     /**
+     * Private Link Resources
+     * 
      * Get all private link resources for a workspaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -36,21 +42,10 @@ public interface PrivateLinkResources {
     PagedIterable<PrivateLinkResource> list(String resourceGroupName, String workspaceName, Context context);
 
     /**
+     * Get Private Link Resource
+     * 
      * Get private link resource in workspace.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param privateLinkResourceName The name of the private link resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private link resource in workspace.
-     */
-    PrivateLinkResource get(String resourceGroupName, String workspaceName, String privateLinkResourceName);
-
-    /**
-     * Get private link resource in workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param privateLinkResourceName The name of the private link resource.
@@ -60,6 +55,21 @@ public interface PrivateLinkResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private link resource in workspace along with {@link Response}.
      */
-    Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateLinkResourceName, Context context);
+    Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String workspaceName,
+        String privateLinkResourceName, Context context);
+
+    /**
+     * Get Private Link Resource
+     * 
+     * Get private link resource in workspace.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param privateLinkResourceName The name of the private link resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private link resource in workspace.
+     */
+    PrivateLinkResource get(String resourceGroupName, String workspaceName, String privateLinkResourceName);
 }

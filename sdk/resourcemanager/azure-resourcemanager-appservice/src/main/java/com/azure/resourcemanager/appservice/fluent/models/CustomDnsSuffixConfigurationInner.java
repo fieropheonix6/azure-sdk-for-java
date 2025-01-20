@@ -5,29 +5,86 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.CustomDnsSuffixProvisioningState;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Full view of the custom domain suffix configuration for ASEv3. */
+/**
+ * Full view of the custom domain suffix configuration for ASEv3.
+ */
 @Fluent
 public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /*
      * CustomDnsSuffixConfiguration resource specific properties
      */
-    @JsonProperty(value = "properties")
     private CustomDnsSuffixConfigurationProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CustomDnsSuffixConfigurationInner class.
+     */
+    public CustomDnsSuffixConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: CustomDnsSuffixConfiguration resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CustomDnsSuffixConfigurationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDnsSuffixConfigurationInner withKind(String kind) {
         super.withKind(kind);
@@ -36,7 +93,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CustomDnsSuffixProvisioningState provisioningState() {
@@ -45,7 +102,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Get the provisioningDetails property: The provisioningDetails property.
-     *
+     * 
      * @return the provisioningDetails value.
      */
     public String provisioningDetails() {
@@ -54,7 +111,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Get the dnsSuffix property: The default custom domain suffix to use for all sites deployed on the ASE.
-     *
+     * 
      * @return the dnsSuffix value.
      */
     public String dnsSuffix() {
@@ -63,7 +120,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Set the dnsSuffix property: The default custom domain suffix to use for all sites deployed on the ASE.
-     *
+     * 
      * @param dnsSuffix the dnsSuffix value to set.
      * @return the CustomDnsSuffixConfigurationInner object itself.
      */
@@ -78,7 +135,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /**
      * Get the certificateUrl property: The URL referencing the Azure Key Vault certificate secret that should be used
      * as the default SSL/TLS certificate for sites with the custom domain suffix.
-     *
+     * 
      * @return the certificateUrl value.
      */
     public String certificateUrl() {
@@ -88,7 +145,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /**
      * Set the certificateUrl property: The URL referencing the Azure Key Vault certificate secret that should be used
      * as the default SSL/TLS certificate for sites with the custom domain suffix.
-     *
+     * 
      * @param certificateUrl the certificateUrl value to set.
      * @return the CustomDnsSuffixConfigurationInner object itself.
      */
@@ -103,7 +160,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /**
      * Get the keyVaultReferenceIdentity property: The user-assigned identity to use for resolving the key vault
      * certificate reference. If not specified, the system-assigned ASE identity will be used if available.
-     *
+     * 
      * @return the keyVaultReferenceIdentity value.
      */
     public String keyVaultReferenceIdentity() {
@@ -113,7 +170,7 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
     /**
      * Set the keyVaultReferenceIdentity property: The user-assigned identity to use for resolving the key vault
      * certificate reference. If not specified, the system-assigned ASE identity will be used if available.
-     *
+     * 
      * @param keyVaultReferenceIdentity the keyVaultReferenceIdentity value to set.
      * @return the CustomDnsSuffixConfigurationInner object itself.
      */
@@ -127,14 +184,61 @@ public final class CustomDnsSuffixConfigurationInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomDnsSuffixConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomDnsSuffixConfigurationInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomDnsSuffixConfigurationInner.
+     */
+    public static CustomDnsSuffixConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomDnsSuffixConfigurationInner deserializedCustomDnsSuffixConfigurationInner
+                = new CustomDnsSuffixConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCustomDnsSuffixConfigurationInner.innerProperties
+                        = CustomDnsSuffixConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomDnsSuffixConfigurationInner;
+        });
     }
 }

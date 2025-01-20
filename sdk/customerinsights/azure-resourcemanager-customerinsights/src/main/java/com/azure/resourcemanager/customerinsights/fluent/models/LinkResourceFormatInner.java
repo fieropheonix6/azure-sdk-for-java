@@ -5,351 +5,404 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.EntityType;
 import com.azure.resourcemanager.customerinsights.models.InstanceOperationType;
 import com.azure.resourcemanager.customerinsights.models.ParticipantPropertyReference;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.TypePropertiesMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The link resource format. */
-@JsonFlatten
+/**
+ * The link resource format.
+ */
 @Fluent
-public class LinkResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkResourceFormatInner.class);
+public final class LinkResourceFormatInner extends ProxyResource {
+    /*
+     * The definition of Link.
+     */
+    private LinkDefinition innerProperties;
 
     /*
-     * The hub name.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    private String type;
 
     /*
-     * The link name.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.linkName", access = JsonProperty.Access.WRITE_ONLY)
-    private String linkName;
+    private String name;
 
     /*
-     * Type of source entity.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.sourceEntityType")
-    private EntityType sourceEntityType;
+    private String id;
 
-    /*
-     * Type of target entity.
+    /**
+     * Creates an instance of LinkResourceFormatInner class.
      */
-    @JsonProperty(value = "properties.targetEntityType")
-    private EntityType targetEntityType;
+    public LinkResourceFormatInner() {
+    }
 
-    /*
-     * Name of the source Entity Type.
+    /**
+     * Get the innerProperties property: The definition of Link.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sourceEntityTypeName")
-    private String sourceEntityTypeName;
+    private LinkDefinition innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Name of the target Entity Type.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.targetEntityTypeName")
-    private String targetEntityTypeName;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Localized display name for the Link.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Localized descriptions for the Link.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
-
-    /*
-     * The set of properties mappings between the source and target Types.
-     */
-    @JsonProperty(value = "properties.mappings")
-    private List<TypePropertiesMapping> mappings;
-
-    /*
-     * The properties that represent the participating profile.
-     */
-    @JsonProperty(value = "properties.participantPropertyReferences")
-    private List<ParticipantPropertyReference> participantPropertyReferences;
-
-    /*
-     * Provisioning state.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * Indicating whether the link is reference only link. This flag is ignored
-     * if the Mappings are defined. If the mappings are not defined and it is
-     * set to true, links processing will not create or update profiles.
-     */
-    @JsonProperty(value = "properties.referenceOnly")
-    private Boolean referenceOnly;
-
-    /*
-     * Determines whether this link is supposed to create or delete instances
-     * if Link is NOT Reference Only.
-     */
-    @JsonProperty(value = "properties.operationType")
-    private InstanceOperationType operationType;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
      * Get the linkName property: The link name.
-     *
+     * 
      * @return the linkName value.
      */
     public String linkName() {
-        return this.linkName;
+        return this.innerProperties() == null ? null : this.innerProperties().linkName();
     }
 
     /**
      * Get the sourceEntityType property: Type of source entity.
-     *
+     * 
      * @return the sourceEntityType value.
      */
     public EntityType sourceEntityType() {
-        return this.sourceEntityType;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceEntityType();
     }
 
     /**
      * Set the sourceEntityType property: Type of source entity.
-     *
+     * 
      * @param sourceEntityType the sourceEntityType value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withSourceEntityType(EntityType sourceEntityType) {
-        this.sourceEntityType = sourceEntityType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withSourceEntityType(sourceEntityType);
         return this;
     }
 
     /**
      * Get the targetEntityType property: Type of target entity.
-     *
+     * 
      * @return the targetEntityType value.
      */
     public EntityType targetEntityType() {
-        return this.targetEntityType;
+        return this.innerProperties() == null ? null : this.innerProperties().targetEntityType();
     }
 
     /**
      * Set the targetEntityType property: Type of target entity.
-     *
+     * 
      * @param targetEntityType the targetEntityType value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withTargetEntityType(EntityType targetEntityType) {
-        this.targetEntityType = targetEntityType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withTargetEntityType(targetEntityType);
         return this;
     }
 
     /**
      * Get the sourceEntityTypeName property: Name of the source Entity Type.
-     *
+     * 
      * @return the sourceEntityTypeName value.
      */
     public String sourceEntityTypeName() {
-        return this.sourceEntityTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceEntityTypeName();
     }
 
     /**
      * Set the sourceEntityTypeName property: Name of the source Entity Type.
-     *
+     * 
      * @param sourceEntityTypeName the sourceEntityTypeName value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withSourceEntityTypeName(String sourceEntityTypeName) {
-        this.sourceEntityTypeName = sourceEntityTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withSourceEntityTypeName(sourceEntityTypeName);
         return this;
     }
 
     /**
      * Get the targetEntityTypeName property: Name of the target Entity Type.
-     *
+     * 
      * @return the targetEntityTypeName value.
      */
     public String targetEntityTypeName() {
-        return this.targetEntityTypeName;
+        return this.innerProperties() == null ? null : this.innerProperties().targetEntityTypeName();
     }
 
     /**
      * Set the targetEntityTypeName property: Name of the target Entity Type.
-     *
+     * 
      * @param targetEntityTypeName the targetEntityTypeName value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withTargetEntityTypeName(String targetEntityTypeName) {
-        this.targetEntityTypeName = targetEntityTypeName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withTargetEntityTypeName(targetEntityTypeName);
         return this;
     }
 
     /**
      * Get the displayName property: Localized display name for the Link.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
      * Set the displayName property: Localized display name for the Link.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
     /**
      * Get the description property: Localized descriptions for the Link.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: Localized descriptions for the Link.
-     *
+     * 
      * @param description the description value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the mappings property: The set of properties mappings between the source and target Types.
-     *
+     * 
      * @return the mappings value.
      */
     public List<TypePropertiesMapping> mappings() {
-        return this.mappings;
+        return this.innerProperties() == null ? null : this.innerProperties().mappings();
     }
 
     /**
      * Set the mappings property: The set of properties mappings between the source and target Types.
-     *
+     * 
      * @param mappings the mappings value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withMappings(List<TypePropertiesMapping> mappings) {
-        this.mappings = mappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withMappings(mappings);
         return this;
     }
 
     /**
      * Get the participantPropertyReferences property: The properties that represent the participating profile.
-     *
+     * 
      * @return the participantPropertyReferences value.
      */
     public List<ParticipantPropertyReference> participantPropertyReferences() {
-        return this.participantPropertyReferences;
+        return this.innerProperties() == null ? null : this.innerProperties().participantPropertyReferences();
     }
 
     /**
      * Set the participantPropertyReferences property: The properties that represent the participating profile.
-     *
+     * 
      * @param participantPropertyReferences the participantPropertyReferences value to set.
      * @return the LinkResourceFormatInner object itself.
      */
-    public LinkResourceFormatInner withParticipantPropertyReferences(
-        List<ParticipantPropertyReference> participantPropertyReferences) {
-        this.participantPropertyReferences = participantPropertyReferences;
+    public LinkResourceFormatInner
+        withParticipantPropertyReferences(List<ParticipantPropertyReference> participantPropertyReferences) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withParticipantPropertyReferences(participantPropertyReferences);
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Get the referenceOnly property: Indicating whether the link is reference only link. This flag is ignored if the
      * Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or
      * update profiles.
-     *
+     * 
      * @return the referenceOnly value.
      */
     public Boolean referenceOnly() {
-        return this.referenceOnly;
+        return this.innerProperties() == null ? null : this.innerProperties().referenceOnly();
     }
 
     /**
      * Set the referenceOnly property: Indicating whether the link is reference only link. This flag is ignored if the
      * Mappings are defined. If the mappings are not defined and it is set to true, links processing will not create or
      * update profiles.
-     *
+     * 
      * @param referenceOnly the referenceOnly value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withReferenceOnly(Boolean referenceOnly) {
-        this.referenceOnly = referenceOnly;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withReferenceOnly(referenceOnly);
         return this;
     }
 
     /**
      * Get the operationType property: Determines whether this link is supposed to create or delete instances if Link is
      * NOT Reference Only.
-     *
+     * 
      * @return the operationType value.
      */
     public InstanceOperationType operationType() {
-        return this.operationType;
+        return this.innerProperties() == null ? null : this.innerProperties().operationType();
     }
 
     /**
      * Set the operationType property: Determines whether this link is supposed to create or delete instances if Link is
      * NOT Reference Only.
-     *
+     * 
      * @param operationType the operationType value to set.
      * @return the LinkResourceFormatInner object itself.
      */
     public LinkResourceFormatInner withOperationType(InstanceOperationType operationType) {
-        this.operationType = operationType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkDefinition();
+        }
+        this.innerProperties().withOperationType(operationType);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mappings() != null) {
-            mappings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (participantPropertyReferences() != null) {
-            participantPropertyReferences().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinkResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinkResourceFormatInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LinkResourceFormatInner.
+     */
+    public static LinkResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinkResourceFormatInner deserializedLinkResourceFormatInner = new LinkResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLinkResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLinkResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLinkResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLinkResourceFormatInner.innerProperties = LinkDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinkResourceFormatInner;
+        });
     }
 }

@@ -5,122 +5,169 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
+import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The database usages. */
+/**
+ * Usage metric of a database.
+ */
 @Immutable
-public final class DatabaseUsageInner {
+public final class DatabaseUsageInner extends ProxyResource {
     /*
-     * The name of the usage metric.
+     * Resource properties.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
+    private DatabaseUsageProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /*
      * The name of the resource.
      */
-    @JsonProperty(value = "resourceName", access = JsonProperty.Access.WRITE_ONLY)
-    private String resourceName;
+    private String name;
 
     /*
-     * The usage metric display name.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String displayName;
-
-    /*
-     * The current value of the usage metric.
-     */
-    @JsonProperty(value = "currentValue", access = JsonProperty.Access.WRITE_ONLY)
-    private Double currentValue;
-
-    /*
-     * The current limit of the usage metric.
-     */
-    @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
-    private Double limit;
-
-    /*
-     * The units of the usage metric.
-     */
-    @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
-    private String unit;
-
-    /*
-     * The next reset time for the usage metric (ISO8601 format).
-     */
-    @JsonProperty(value = "nextResetTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime nextResetTime;
+    private String id;
 
     /**
-     * Get the name property: The name of the usage metric.
-     *
+     * Creates an instance of DatabaseUsageInner class.
+     */
+    public DatabaseUsageInner() {
+    }
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private DatabaseUsageProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
      * @return the name value.
      */
+    @Override
     public String name() {
         return this.name;
     }
 
     /**
-     * Get the resourceName property: The name of the resource.
-     *
-     * @return the resourceName value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String resourceName() {
-        return this.resourceName;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the displayName property: The usage metric display name.
-     *
+     * Get the displayName property: User-readable name of the metric.
+     * 
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
-     * Get the currentValue property: The current value of the usage metric.
-     *
+     * Get the currentValue property: Current value of the metric.
+     * 
      * @return the currentValue value.
      */
     public Double currentValue() {
-        return this.currentValue;
+        return this.innerProperties() == null ? null : this.innerProperties().currentValue();
     }
 
     /**
-     * Get the limit property: The current limit of the usage metric.
-     *
+     * Get the limit property: Boundary value of the metric.
+     * 
      * @return the limit value.
      */
     public Double limit() {
-        return this.limit;
+        return this.innerProperties() == null ? null : this.innerProperties().limit();
     }
 
     /**
-     * Get the unit property: The units of the usage metric.
-     *
+     * Get the unit property: Unit of the metric.
+     * 
      * @return the unit value.
      */
     public String unit() {
-        return this.unit;
-    }
-
-    /**
-     * Get the nextResetTime property: The next reset time for the usage metric (ISO8601 format).
-     *
-     * @return the nextResetTime value.
-     */
-    public OffsetDateTime nextResetTime() {
-        return this.nextResetTime;
+        return this.innerProperties() == null ? null : this.innerProperties().unit();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseUsageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseUsageInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseUsageInner.
+     */
+    public static DatabaseUsageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseUsageInner deserializedDatabaseUsageInner = new DatabaseUsageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDatabaseUsageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDatabaseUsageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDatabaseUsageInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDatabaseUsageInner.innerProperties = DatabaseUsageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseUsageInner;
+        });
     }
 }

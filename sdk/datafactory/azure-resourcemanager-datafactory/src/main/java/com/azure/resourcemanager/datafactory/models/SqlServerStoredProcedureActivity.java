@@ -6,73 +6,122 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.SqlServerStoredProcedureActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** SQL stored procedure activity type. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SqlServerStoredProcedure")
+/**
+ * SQL stored procedure activity type.
+ */
 @Fluent
 public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "SqlServerStoredProcedure";
+
+    /*
      * SQL stored procedure activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
-    private SqlServerStoredProcedureActivityTypeProperties innerTypeProperties =
-        new SqlServerStoredProcedureActivityTypeProperties();
+    private SqlServerStoredProcedureActivityTypeProperties innerTypeProperties
+        = new SqlServerStoredProcedureActivityTypeProperties();
 
-    /** Creates an instance of SqlServerStoredProcedureActivity class. */
+    /**
+     * Creates an instance of SqlServerStoredProcedureActivity class.
+     */
     public SqlServerStoredProcedureActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: SQL stored procedure activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SqlServerStoredProcedureActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerStoredProcedureActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlServerStoredProcedureActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlServerStoredProcedureActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -81,7 +130,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
 
     /**
      * Get the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the storedProcedureName value.
      */
     public Object storedProcedureName() {
@@ -90,7 +139,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
 
     /**
      * Set the storedProcedureName property: Stored procedure name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param storedProcedureName the storedProcedureName value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
      */
@@ -105,7 +154,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * Get the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @return the storedProcedureParameters value.
      */
     public Object storedProcedureParameters() {
@@ -115,7 +164,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
     /**
      * Set the storedProcedureParameters property: Value and type setting for stored procedure parameters. Example:
      * "{Parameter1: {value: "1", type: "int"}}".
-     *
+     * 
      * @param storedProcedureParameters the storedProcedureParameters value to set.
      * @return the SqlServerStoredProcedureActivity object itself.
      */
@@ -129,21 +178,120 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SqlServerStoredProcedureActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model SqlServerStoredProcedureActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model SqlServerStoredProcedureActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
+        if (linkedServiceName() != null) {
+            linkedServiceName().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlServerStoredProcedureActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeJsonField("policy", policy());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlServerStoredProcedureActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlServerStoredProcedureActivity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlServerStoredProcedureActivity.
+     */
+    public static SqlServerStoredProcedureActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlServerStoredProcedureActivity deserializedSqlServerStoredProcedureActivity
+                = new SqlServerStoredProcedureActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity
+                        .withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedSqlServerStoredProcedureActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedSqlServerStoredProcedureActivity.withUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity
+                        .withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.withPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.innerTypeProperties
+                        = SqlServerStoredProcedureActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlServerStoredProcedureActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlServerStoredProcedureActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedSqlServerStoredProcedureActivity;
+        });
+    }
 }

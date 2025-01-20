@@ -15,21 +15,23 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.RetargetScheduleProperties;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 
-/** An instance of this class provides access to all the operations defined in GlobalSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in GlobalSchedulesClient.
+ */
 public interface GlobalSchedulesClient {
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScheduleInner> list();
 
     /**
      * List schedules in a subscription.
-     *
+     * 
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
      * @param top The maximum number of resources to return from the operation. Example: '$top=10'.
@@ -38,26 +40,26 @@ public interface GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScheduleInner> list(String expand, String filter, Integer top, String orderby, Context context);
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ScheduleInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List schedules in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expand Specify the $expand query. Example: 'properties($select=status)'.
      * @param filter The filter to apply to the operation. Example: '$filter=contains(name,'myName').
@@ -67,15 +69,31 @@ public interface GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> listByResourceGroup(
-        String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context);
+    PagedIterable<ScheduleInner> listByResourceGroup(String resourceGroupName, String expand, String filter,
+        Integer top, String orderby, Context context);
 
     /**
      * Get schedule.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the schedule.
+     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schedule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ScheduleInner> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
+        Context context);
+
+    /**
+     * Get schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,24 +105,24 @@ public interface GlobalSchedulesClient {
     ScheduleInner getByResourceGroup(String resourceGroupName, String name);
 
     /**
-     * Get schedule.
-     *
+     * Create or replace an existing schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
+     * @param schedule A schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context);
+    Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String name, ScheduleInner schedule,
+        Context context);
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -117,24 +135,22 @@ public interface GlobalSchedulesClient {
     ScheduleInner createOrUpdate(String resourceGroupName, String name, ScheduleInner schedule);
 
     /**
-     * Create or replace an existing schedule.
-     *
+     * Delete schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
-     * @param schedule A schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName, String name, ScheduleInner schedule, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context);
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,22 +161,24 @@ public interface GlobalSchedulesClient {
     void delete(String resourceGroupName, String name);
 
     /**
-     * Delete schedule.
-     *
+     * Allows modifying tags of schedules. All other properties will be ignored.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
+     * @param schedule A schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context);
+    Response<ScheduleInner> updateWithResponse(String resourceGroupName, String name, ScheduleFragment schedule,
+        Context context);
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param schedule A schedule.
@@ -173,51 +191,35 @@ public interface GlobalSchedulesClient {
     ScheduleInner update(String resourceGroupName, String name, ScheduleFragment schedule);
 
     /**
-     * Allows modifying tags of schedules. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName, String name, ScheduleFragment schedule, Context context);
-
-    /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String name, Context context);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,7 +231,7 @@ public interface GlobalSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param context The context to associate with this operation.
@@ -242,22 +244,22 @@ public interface GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginRetarget(
-        String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRetarget(String resourceGroupName, String name,
+        RetargetScheduleProperties retargetScheduleProperties);
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -265,15 +267,15 @@ public interface GlobalSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginRetarget(
-        String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginRetarget(String resourceGroupName, String name,
+        RetargetScheduleProperties retargetScheduleProperties, Context context);
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -286,7 +288,7 @@ public interface GlobalSchedulesClient {
 
     /**
      * Updates a schedule's target resource Id. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param name The name of the schedule.
      * @param retargetScheduleProperties Properties for retargeting a virtual machine schedule.
@@ -296,6 +298,6 @@ public interface GlobalSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void retarget(
-        String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context);
+    void retarget(String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties,
+        Context context);
 }

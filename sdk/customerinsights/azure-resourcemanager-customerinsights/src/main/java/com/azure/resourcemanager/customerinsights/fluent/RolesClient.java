@@ -10,31 +10,33 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.customerinsights.fluent.models.RoleResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in RolesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RolesClient.
+ */
 public interface RolesClient {
     /**
      * Gets all the roles for the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleResourceFormatInner> listByHub(String resourceGroupName, String hubName);
 
     /**
      * Gets all the roles for the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the roles for the hub.
+     * @return all the roles for the hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoleResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context);

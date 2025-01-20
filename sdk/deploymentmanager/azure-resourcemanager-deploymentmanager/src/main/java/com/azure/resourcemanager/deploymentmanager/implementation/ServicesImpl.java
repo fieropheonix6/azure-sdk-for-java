@@ -12,22 +12,33 @@ import com.azure.resourcemanager.deploymentmanager.fluent.ServicesClient;
 import com.azure.resourcemanager.deploymentmanager.fluent.models.ServiceResourceInner;
 import com.azure.resourcemanager.deploymentmanager.models.ServiceResource;
 import com.azure.resourcemanager.deploymentmanager.models.Services;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class ServicesImpl implements Services {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServicesImpl.class);
 
     private final ServicesClient innerClient;
 
     private final com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager;
 
-    public ServicesImpl(
-        ServicesClient innerClient, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    public ServicesImpl(ServicesClient innerClient,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ServiceResource> getWithResponse(String resourceGroupName, String serviceTopologyName,
+        String serviceName, Context context) {
+        Response<ServiceResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceTopologyName, serviceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ServiceResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ServiceResource get(String resourceGroupName, String serviceTopologyName, String serviceName) {
@@ -39,55 +50,22 @@ public final class ServicesImpl implements Services {
         }
     }
 
-    public Response<ServiceResource> getWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context) {
-        Response<ServiceResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceTopologyName, serviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ServiceResourceImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceTopologyName, String serviceName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, context);
     }
 
     public void delete(String resourceGroupName, String serviceTopologyName, String serviceName) {
         this.serviceClient().delete(resourceGroupName, serviceTopologyName, serviceName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceTopologyName, String serviceName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, context);
-    }
-
-    public List<ServiceResource> list(String resourceGroupName, String serviceTopologyName) {
-        List<ServiceResourceInner> inner = this.serviceClient().list(resourceGroupName, serviceTopologyName);
+    public Response<List<ServiceResource>> listWithResponse(String resourceGroupName, String serviceTopologyName,
+        Context context) {
+        Response<List<ServiceResourceInner>> inner
+            = this.serviceClient().listWithResponse(resourceGroupName, serviceTopologyName, context);
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ServiceResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public Response<List<ServiceResource>> listWithResponse(
-        String resourceGroupName, String serviceTopologyName, Context context) {
-        Response<List<ServiceResourceInner>> inner =
-            this.serviceClient().listWithResponse(resourceGroupName, serviceTopologyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                inner
-                    .getValue()
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                inner.getValue()
                     .stream()
                     .map(inner1 -> new ServiceResourceImpl(inner1, this.manager()))
                     .collect(Collectors.toList()));
@@ -96,30 +74,32 @@ public final class ServicesImpl implements Services {
         }
     }
 
+    public List<ServiceResource> list(String resourceGroupName, String serviceTopologyName) {
+        List<ServiceResourceInner> inner = this.serviceClient().list(resourceGroupName, serviceTopologyName);
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ServiceResourceImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public ServiceResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceTopologyName, serviceName, Context.NONE).getValue();
     }
@@ -127,27 +107,18 @@ public final class ServicesImpl implements Services {
     public Response<ServiceResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceTopologyName, serviceName, context);
     }
@@ -155,55 +126,37 @@ public final class ServicesImpl implements Services {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String serviceTopologyName = Utils.getValueFromIdByName(id, "serviceTopologies");
         if (serviceTopologyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'serviceTopologies'.", id)));
         }
         String serviceName = Utils.getValueFromIdByName(id, "services");
         if (serviceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'services'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceTopologyName, serviceName, context);
     }

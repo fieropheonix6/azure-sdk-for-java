@@ -6,37 +6,44 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** AppFigures linked service type properties. */
+/**
+ * AppFigures linked service type properties.
+ */
 @Fluent
-public final class AppFiguresLinkedServiceTypeProperties {
+public final class AppFiguresLinkedServiceTypeProperties
+    implements JsonSerializable<AppFiguresLinkedServiceTypeProperties> {
     /*
-     * The username of the Appfigures source.
+     * The username of the Appfigures source. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "userName", required = true)
     private Object username;
 
     /*
      * The password of the AppFigures source.
      */
-    @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
     /*
      * The client key for the AppFigures source.
      */
-    @JsonProperty(value = "clientKey", required = true)
     private SecretBase clientKey;
 
-    /** Creates an instance of AppFiguresLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AppFiguresLinkedServiceTypeProperties class.
+     */
     public AppFiguresLinkedServiceTypeProperties() {
     }
 
     /**
-     * Get the username property: The username of the Appfigures source.
-     *
+     * Get the username property: The username of the Appfigures source. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -44,8 +51,9 @@ public final class AppFiguresLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the username property: The username of the Appfigures source.
-     *
+     * Set the username property: The username of the Appfigures source. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param username the username value to set.
      * @return the AppFiguresLinkedServiceTypeProperties object itself.
      */
@@ -56,7 +64,7 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The password of the AppFigures source.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -65,7 +73,7 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The password of the AppFigures source.
-     *
+     * 
      * @param password the password value to set.
      * @return the AppFiguresLinkedServiceTypeProperties object itself.
      */
@@ -76,7 +84,7 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Get the clientKey property: The client key for the AppFigures source.
-     *
+     * 
      * @return the clientKey value.
      */
     public SecretBase clientKey() {
@@ -85,7 +93,7 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Set the clientKey property: The client key for the AppFigures source.
-     *
+     * 
      * @param clientKey the clientKey value to set.
      * @return the AppFiguresLinkedServiceTypeProperties object itself.
      */
@@ -96,33 +104,74 @@ public final class AppFiguresLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property username in model AppFiguresLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property password in model AppFiguresLinkedServiceTypeProperties"));
         } else {
             password().validate();
         }
         if (clientKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientKey in model AppFiguresLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientKey in model AppFiguresLinkedServiceTypeProperties"));
         } else {
             clientKey().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AppFiguresLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("userName", this.username);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeJsonField("clientKey", this.clientKey);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AppFiguresLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AppFiguresLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AppFiguresLinkedServiceTypeProperties.
+     */
+    public static AppFiguresLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AppFiguresLinkedServiceTypeProperties deserializedAppFiguresLinkedServiceTypeProperties
+                = new AppFiguresLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("userName".equals(fieldName)) {
+                    deserializedAppFiguresLinkedServiceTypeProperties.username = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedAppFiguresLinkedServiceTypeProperties.password = SecretBase.fromJson(reader);
+                } else if ("clientKey".equals(fieldName)) {
+                    deserializedAppFiguresLinkedServiceTypeProperties.clientKey = SecretBase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAppFiguresLinkedServiceTypeProperties;
+        });
+    }
 }

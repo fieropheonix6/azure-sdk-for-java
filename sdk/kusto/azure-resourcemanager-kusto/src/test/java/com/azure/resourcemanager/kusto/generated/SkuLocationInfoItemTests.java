@@ -5,28 +5,29 @@
 package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.kusto.models.ResourceSkuZoneDetails;
 import com.azure.resourcemanager.kusto.models.SkuLocationInfoItem;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SkuLocationInfoItemTests {
-    @Test
-    public void testDeserialize() {
-        SkuLocationInfoItem model =
-            BinaryData
-                .fromString("{\"location\":\"lxotogtwrupq\",\"zones\":[\"nmic\"]}")
-                .toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("lxotogtwrupq", model.location());
-        Assertions.assertEquals("nmic", model.zones().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SkuLocationInfoItem model = BinaryData.fromString(
+            "{\"location\":\"iwwroyqbexrmc\",\"zones\":[\"ycnojvknmefqsg\",\"vah\",\"pjyzhpv\"],\"zoneDetails\":[{\"name\":[\"rvxdjzlmw\"],\"capabilities\":[{\"name\":\"ug\",\"value\":\"zovawjvz\"},{\"name\":\"luthn\",\"value\":\"rnxipei\"},{\"name\":\"jzuaejxdultskzbb\",\"value\":\"zumveekgpwo\"},{\"name\":\"hkfpbs\",\"value\":\"ofd\"}]},{\"name\":[\"us\",\"ttouwaboekqvkel\",\"smv\"],\"capabilities\":[{\"name\":\"jsflhhcaalnjix\",\"value\":\"xyawj\"},{\"name\":\"aq\",\"value\":\"lyjpk\"},{\"name\":\"dzyexznelixh\",\"value\":\"ztfolhbnxk\"},{\"name\":\"laulppg\",\"value\":\"tpnapnyiropuhpig\"}]},{\"name\":[\"ylgqgitxmedjvcsl\",\"n\",\"wwncwzzhxgk\",\"rmgucnap\"],\"capabilities\":[{\"name\":\"ellwptfdy\",\"value\":\"fqbuaceopzf\"},{\"name\":\"hhuao\",\"value\":\"pcqeqx\"},{\"name\":\"z\",\"value\":\"hzxct\"},{\"name\":\"gbkdmoizpos\",\"value\":\"grcfb\"}]},{\"name\":[\"mfqjhhkxbp\",\"jy\",\"jhxxjyn\",\"u\"],\"capabilities\":[{\"name\":\"r\",\"value\":\"wbxqzvszjfau\"}]}]}")
+            .toObject(SkuLocationInfoItem.class);
+        Assertions.assertEquals("iwwroyqbexrmc", model.location());
+        Assertions.assertEquals("ycnojvknmefqsg", model.zones().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        SkuLocationInfoItem model =
-            new SkuLocationInfoItem().withLocation("lxotogtwrupq").withZones(Arrays.asList("nmic"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SkuLocationInfoItem model = new SkuLocationInfoItem().withLocation("iwwroyqbexrmc")
+            .withZones(Arrays.asList("ycnojvknmefqsg", "vah", "pjyzhpv"))
+            .withZoneDetails(Arrays.asList(new ResourceSkuZoneDetails(), new ResourceSkuZoneDetails(),
+                new ResourceSkuZoneDetails(), new ResourceSkuZoneDetails()));
         model = BinaryData.fromObject(model).toObject(SkuLocationInfoItem.class);
-        Assertions.assertEquals("lxotogtwrupq", model.location());
-        Assertions.assertEquals("nmic", model.zones().get(0));
+        Assertions.assertEquals("iwwroyqbexrmc", model.location());
+        Assertions.assertEquals("ycnojvknmefqsg", model.zones().get(0));
     }
 }

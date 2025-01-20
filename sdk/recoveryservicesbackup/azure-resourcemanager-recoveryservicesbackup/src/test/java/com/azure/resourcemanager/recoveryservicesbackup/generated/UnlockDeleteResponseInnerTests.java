@@ -7,20 +7,19 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.UnlockDeleteResponseInner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UnlockDeleteResponseInnerTests {
-    @Test
-    public void testDeserialize() {
-        UnlockDeleteResponseInner model =
-            BinaryData.fromString("{\"unlockDeleteExpiryTime\":\"kr\"}").toObject(UnlockDeleteResponseInner.class);
-        Assertions.assertEquals("kr", model.unlockDeleteExpiryTime());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UnlockDeleteResponseInner model = BinaryData.fromString("{\"unlockDeleteExpiryTime\":\"ipmdscwx\"}")
+            .toObject(UnlockDeleteResponseInner.class);
+        Assertions.assertEquals("ipmdscwx", model.unlockDeleteExpiryTime());
     }
 
-    @Test
-    public void testSerialize() {
-        UnlockDeleteResponseInner model = new UnlockDeleteResponseInner().withUnlockDeleteExpiryTime("kr");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UnlockDeleteResponseInner model = new UnlockDeleteResponseInner().withUnlockDeleteExpiryTime("ipmdscwx");
         model = BinaryData.fromObject(model).toObject(UnlockDeleteResponseInner.class);
-        Assertions.assertEquals("kr", model.unlockDeleteExpiryTime());
+        Assertions.assertEquals("ipmdscwx", model.unlockDeleteExpiryTime());
     }
 }

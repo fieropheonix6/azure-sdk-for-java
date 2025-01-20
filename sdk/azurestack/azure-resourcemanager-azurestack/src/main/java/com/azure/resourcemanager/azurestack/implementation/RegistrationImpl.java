@@ -6,7 +6,6 @@ package com.azure.resourcemanager.azurestack.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestack.fluent.models.RegistrationInner;
 import com.azure.resourcemanager.azurestack.models.ActivationKeyResult;
@@ -46,6 +45,10 @@ public final class RegistrationImpl implements Registration, Registration.Defini
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public String objectId() {
         return this.innerModel().objectId();
     }
@@ -58,24 +61,16 @@ public final class RegistrationImpl implements Registration, Registration.Defini
         return this.innerModel().billingModel();
     }
 
-    public String kind() {
-        return this.innerModel().kind();
-    }
-
-    public SystemData systemData() {
-        return this.innerModel().systemData();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroup;
     }
 
     public RegistrationInner innerModel() {
@@ -100,22 +95,18 @@ public final class RegistrationImpl implements Registration, Registration.Defini
     }
 
     public Registration create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .createOrUpdateWithResponse(resourceGroup, registrationName, createToken, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .createOrUpdateWithResponse(resourceGroup, registrationName, createToken, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Registration create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .createOrUpdateWithResponse(resourceGroup, registrationName, createToken, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .createOrUpdateWithResponse(resourceGroup, registrationName, createToken, context)
+            .getValue();
         return this;
     }
 
@@ -132,69 +123,60 @@ public final class RegistrationImpl implements Registration, Registration.Defini
     }
 
     public Registration apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .updateWithResponse(resourceGroup, registrationName, updateToken, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .updateWithResponse(resourceGroup, registrationName, updateToken, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Registration apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .updateWithResponse(resourceGroup, registrationName, updateToken, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .updateWithResponse(resourceGroup, registrationName, updateToken, context)
+            .getValue();
         return this;
     }
 
-    RegistrationImpl(
-        RegistrationInner innerObject, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    RegistrationImpl(RegistrationInner innerObject,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroup = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.registrationName = Utils.getValueFromIdByName(innerObject.id(), "registrations");
+        this.resourceGroup = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.registrationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "registrations");
     }
 
     public Registration refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .getByResourceGroupWithResponse(resourceGroup, registrationName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .getByResourceGroupWithResponse(resourceGroup, registrationName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Registration refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getRegistrations()
-                .getByResourceGroupWithResponse(resourceGroup, registrationName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getRegistrations()
+            .getByResourceGroupWithResponse(resourceGroup, registrationName, context)
+            .getValue();
         return this;
-    }
-
-    public ActivationKeyResult getActivationKey() {
-        return serviceManager.registrations().getActivationKey(resourceGroup, registrationName);
     }
 
     public Response<ActivationKeyResult> getActivationKeyWithResponse(Context context) {
         return serviceManager.registrations().getActivationKeyWithResponse(resourceGroup, registrationName, context);
     }
 
-    public void enableRemoteManagement() {
-        serviceManager.registrations().enableRemoteManagement(resourceGroup, registrationName);
+    public ActivationKeyResult getActivationKey() {
+        return serviceManager.registrations().getActivationKey(resourceGroup, registrationName);
     }
 
     public Response<Void> enableRemoteManagementWithResponse(Context context) {
-        return serviceManager
-            .registrations()
+        return serviceManager.registrations()
             .enableRemoteManagementWithResponse(resourceGroup, registrationName, context);
+    }
+
+    public void enableRemoteManagement() {
+        serviceManager.registrations().enableRemoteManagement(resourceGroup, registrationName);
     }
 
     public RegistrationImpl withLocation(Location location) {

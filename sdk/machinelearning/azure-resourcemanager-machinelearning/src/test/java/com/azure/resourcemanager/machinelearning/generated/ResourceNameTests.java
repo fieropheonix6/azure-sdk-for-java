@@ -6,19 +6,16 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ResourceName;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceNameTests {
-    @Test
-    public void testDeserialize() {
-        ResourceName model =
-            BinaryData
-                .fromString("{\"value\":\"yqzrnkcqvyxlw\",\"localizedValue\":\"lsicohoqqnwv\"}")
-                .toObject(ResourceName.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceName model
+            = BinaryData.fromString("{\"value\":\"fcnj\",\"localizedValue\":\"cn\"}").toObject(ResourceName.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ResourceName model = new ResourceName();
         model = BinaryData.fromObject(model).toObject(ResourceName.class);
     }

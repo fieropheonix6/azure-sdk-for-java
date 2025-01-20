@@ -3,11 +3,15 @@
 
 package com.azure.cosmos.implementation.routing;
 
-import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.Undefined;
 import com.azure.cosmos.implementation.RMResources;
+import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import com.azure.cosmos.models.PartitionKind;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -26,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Utils.as;
 
@@ -245,6 +250,25 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
         return PartitionKeyInternalHelper.getEffectivePartitionKeyString(internalPartitionKey, partitionKey);
     }
 
+    public Range<String> getEPKRangeForPrefixPartitionKey(PartitionKeyDefinition partitionKeyDefinition) {
+        return PartitionKeyInternalHelper.getEPKRangeForPrefixPartitionKey(this, partitionKeyDefinition);
+    }
+
+    public static boolean isPartialPartitionKeyQuery(DocumentCollection collection, PartitionKey partitionKey) {
+        PartitionKeyInternal partitionKeyInternal = BridgeInternal.getPartitionKeyInternal(partitionKey);
+        return collection.getPartitionKey() != null && partitionKeyInternal != null
+            && collection.getPartitionKey().getKind().equals(PartitionKind.MULTI_HASH)
+            && collection.getPartitionKey().getPaths().size() > partitionKeyInternal.getComponents().size();
+    }
+
+    public Object[] toObjectArray() {
+        if (this.components == null) {
+            return null;
+        }
+
+        return this.components.stream().map(component -> component.toObject()).toArray();
+    }
+
     @SuppressWarnings("serial")
     static final class PartitionKeyInternalJsonSerializer extends StdSerializer<PartitionKeyInternal> {
 
@@ -356,7 +380,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
             throw new IllegalStateException(String.format(
                     "Unable to deserialize PartitionKeyInternal '%s'",
-                    root.toString()));
+                    root));
         }
     }
 }

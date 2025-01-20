@@ -6,76 +6,54 @@ package com.azure.resourcemanager.hdinsight.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.hdinsight.HDInsightManager;
 import com.azure.resourcemanager.hdinsight.models.BillingResponseListResult;
 import com.azure.resourcemanager.hdinsight.models.FilterMode;
 import com.azure.resourcemanager.hdinsight.models.OSType;
-import java.nio.ByteBuffer;
+import com.azure.resourcemanager.hdinsight.models.Tier;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class LocationsListBillingSpecsWithResponseMockTests {
     @Test
     public void testListBillingSpecsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"vmSizes\":[\"gbrt\",\"uiaclkiexhajlfn\"],\"vmSizesWithEncryptionAtHost\":[\"qfyuttd\",\"ygbpvnwswmt\",\"k\"],\"vmSizeFilters\":[{\"filterMode\":\"Default\",\"regions\":[\"wxjlmec\",\"og\"],\"clusterFlavors\":[\"yvneeza\",\"fg\",\"tmoqqtlffhzb\",\"rkjjjavfqnvhnq\"],\"nodeTypes\":[\"dogiyetesyp\",\"idbz\",\"jhqt\"],\"clusterVersions\":[\"vnynkb\",\"etnjuhpsprkz\",\"aupia\",\"cxnafbwqrooh\"],\"osType\":[\"Linux\",\"Windows\",\"Linux\"],\"vmSizes\":[\"urjtumghi\"],\"espApplied\":\"ve\",\"computeIsolationSupported\":\"slclblyjxltbsju\"},{\"filterMode\":\"Default\",\"regions\":[\"xigc\"],\"clusterFlavors\":[\"xu\",\"pbezqccydrtceu\",\"d\",\"kkyihzt\"],\"nodeTypes\":[\"mgqzgwldoyc\"],\"clusterVersions\":[\"lcecfeh\",\"waoaguhi\",\"qllizstac\",\"jvhrweft\"],\"osType\":[\"Linux\",\"Windows\",\"Linux\",\"Windows\"],\"vmSizes\":[\"s\"],\"espApplied\":\"aepwamcxtcz\",\"computeIsolationSupported\":\"peuknijd\"}],\"vmSizeProperties\":[{\"name\":\"spyd\",\"cores\":170648646,\"dataDiskStorageTier\":\"c\",\"label\":\"hhulrtywikdm\",\"maxDataDiskCount\":8125875686859497328,\"memoryInMb\":8589946500530915839,\"supportedByVirtualMachines\":false,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":1422437735145461244,\"webWorkerResourceDiskSizeInMb\":4631933065455269635},{\"name\":\"mxu\",\"cores\":665007263,\"dataDiskStorageTier\":\"yjq\",\"label\":\"kfnozoeoqbvj\",\"maxDataDiskCount\":1136473991978940820,\"memoryInMb\":3118293287303219985,\"supportedByVirtualMachines\":false,\"supportedByWebWorkerRoles\":false,\"virtualMachineResourceDiskSizeInMb\":2962662676791309250,\"webWorkerResourceDiskSizeInMb\":2279733952870508149},{\"name\":\"ymxbulpzealb\",\"cores\":204967420,\"dataDiskStorageTier\":\"ojwyvf\",\"label\":\"btsuahxs\",\"maxDataDiskCount\":3253463579939415002,\"memoryInMb\":6128823487295073104,\"supportedByVirtualMachines\":false,\"supportedByWebWorkerRoles\":false,\"virtualMachineResourceDiskSizeInMb\":5228689904808376707,\"webWorkerResourceDiskSizeInMb\":1482066446768394569},{\"name\":\"npxqwodi\",\"cores\":1160303234,\"dataDiskStorageTier\":\"cjrmmua\",\"label\":\"ibvjogjonmcy\",\"maxDataDiskCount\":6735107623298340704,\"memoryInMb\":9033210529539978303,\"supportedByVirtualMachines\":false,\"supportedByWebWorkerRoles\":false,\"virtualMachineResourceDiskSizeInMb\":5845997176249673648,\"webWorkerResourceDiskSizeInMb\":4142402580801552647}],\"billingResources\":[{\"region\":\"oldtvevboclzhz\",\"billingMeters\":[{\"meterParameter\":\"uxgvttxpnr\",\"meter\":\"zaamrdixtrekid\",\"unit\":\"yskbruff\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"k\",\"sku\":\"tvlxhrpqh\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"couqehb\",\"sku\":\"cdsziryrand\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"blto\",\"sku\":\"mkfqlwxldy\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"ygaolnjpnnb\",\"sku\":\"ksibjgsjjxx\",\"tier\":\"Standard\"}]},{\"region\":\"nadzyq\",\"billingMeters\":[{\"meterParameter\":\"iv\",\"meter\":\"nbm\",\"unit\":\"bjijkgqxnh\"},{\"meterParameter\":\"keznjaujvaa\",\"meter\":\"ggiycwkdtaawxwf\",\"unit\":\"aumrrqmbzmqkrat\"},{\"meterParameter\":\"xwbjs\",\"meter\":\"birkfpksokdg\",\"unit\":\"ewijymrhbguz\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"ewnf\",\"sku\":\"hhhqosm\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"utycyarnroohguab\",\"sku\":\"ghktdpy\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"oeocnhzqrott\",\"sku\":\"cfyjzp\",\"tier\":\"Standard\"},{\"diskRpMeter\":\"ohapqinfsz\",\"sku\":\"glqdhm\",\"tier\":\"Premium\"}]},{\"region\":\"alcxpjbyy\",\"billingMeters\":[{\"meterParameter\":\"qcjenkyhf\",\"meter\":\"vsqxfxjelgcmpzqj\",\"unit\":\"hqxu\"},{\"meterParameter\":\"vcacoyv\",\"meter\":\"bsizus\",\"unit\":\"zlbscmnlziji\"},{\"meterParameter\":\"ehgmvflnwyv\",\"meter\":\"xrerlniylylyf\",\"unit\":\"zutgqztwhghmupg\"},{\"meterParameter\":\"jtcdxabbujftaben\",\"meter\":\"klqpx\",\"unit\":\"cafeddw\"}],\"diskBillingMeters\":[{\"diskRpMeter\":\"a\",\"sku\":\"xud\",\"tier\":\"Premium\"},{\"diskRpMeter\":\"ookrtalvnbw\",\"sku\":\"bemeluclvd\",\"tier\":\"Premium\"}]}]}";
 
-        String responseStr =
-            "{\"vmSizes\":[\"dmdqb\"],\"vmSizesWithEncryptionAtHost\":[\"pqtgsfjac\"],\"vmSizeFilters\":[{\"filterMode\":\"Recommend\",\"regions\":[\"db\",\"vodhtn\"],\"clusterFlavors\":[\"ud\",\"z\",\"mes\",\"kdlpa\"],\"nodeTypes\":[\"cxfailcfxwmdboxd\",\"gsftufqobrjlnacg\",\"ckknhxkizvy\",\"nrzvuljraaer\"],\"clusterVersions\":[\"kqg\",\"kkjqnvbroylaxxu\",\"cdisd\"],\"osType\":[\"Linux\"],\"vmSizes\":[\"svgjrwhryvy\"],\"espApplied\":\"t\",\"computeIsolationSupported\":\"lxgccknfnwmbtm\"},{\"filterMode\":\"Recommend\",\"regions\":[\"dhttzaefedxihchr\",\"hk\",\"crjdqnsdfzpbgtg\",\"ylkdghrje\"],\"clusterFlavors\":[\"lwxezwzhokvbwnh\"],\"nodeTypes\":[\"lgehg\",\"pipifh\"],\"clusterVersions\":[\"oajvgcxtxjcs\"],\"osType\":[\"Windows\",\"Linux\",\"Windows\"],\"vmSizes\":[\"ugsresmkssjhoi\",\"txfkfweg\",\"rhptilluc\",\"iqtgdqoh\"],\"espApplied\":\"wsldrizetpwbr\",\"computeIsolationSupported\":\"llibphbqzmizak\"},{\"filterMode\":\"Recommend\",\"regions\":[\"jpdn\",\"zhajoylhjlmuo\",\"xprimrsop\"],\"clusterFlavors\":[\"cjmeislstvasy\"],\"nodeTypes\":[\"dzaumweooh\"],\"clusterVersions\":[\"fuzboyjathwtzolb\",\"emwmdxmebwjs\"],\"osType\":[\"Linux\"],\"vmSizes\":[\"xveabf\",\"xnmwmqtibxyijddt\",\"qcttadijaeukmrsi\"],\"espApplied\":\"kpn\",\"computeIsolationSupported\":\"aapm\"},{\"filterMode\":\"Default\",\"regions\":[\"qwigpibudqwyxe\"],\"clusterFlavors\":[\"bpmzzn\",\"tffyaqit\",\"hheioqaqhvseuf\",\"qyrxp\"],\"nodeTypes\":[\"gql\"],\"clusterVersions\":[\"mjqfrddgamquhio\",\"rsjuivfcdisyir\",\"xzhczexrxz\"],\"osType\":[\"Linux\",\"Windows\",\"Linux\"],\"vmSizes\":[\"vwrevkhgnlnzon\",\"lrpiqywnc\"],\"espApplied\":\"tszcofizehtdhgb\",\"computeIsolationSupported\":\"vreljea\"}],\"vmSizeProperties\":[{\"name\":\"zmlovuanash\",\"cores\":1712193542,\"dataDiskStorageTier\":\"mjerbdk\",\"label\":\"vidizozsdb\",\"maxDataDiskCount\":6191416292355922762,\"memoryInMb\":1398684791655344997,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":1108415883260069498,\"webWorkerResourceDiskSizeInMb\":4527807456286813914},{\"name\":\"w\",\"cores\":1941131866,\"dataDiskStorageTier\":\"uqj\",\"label\":\"zenkeifzzhmkd\",\"maxDataDiskCount\":640466404560653051,\"memoryInMb\":3956942710936432469,\"supportedByVirtualMachines\":true,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":5039655555288828221,\"webWorkerResourceDiskSizeInMb\":5098089409961855245},{\"name\":\"boldforobwj\",\"cores\":998979559,\"dataDiskStorageTier\":\"bfhfovvacqp\",\"label\":\"uodxesza\",\"maxDataDiskCount\":7104035762189802588,\"memoryInMb\":741706840028604356,\"supportedByVirtualMachines\":false,\"supportedByWebWorkerRoles\":true,\"virtualMachineResourceDiskSizeInMb\":199833503819632386,\"webWorkerResourceDiskSizeInMb\":7026636829095827227}],\"billingResources\":[{\"region\":\"cqucwyhahnom\",\"billingMeters\":[],\"diskBillingMeters\":[]},{\"region\":\"hpsvfu\",\"billingMeters\":[],\"diskBillingMeters\":[]}]}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        HDInsightManager manager = HDInsightManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        BillingResponseListResult response
+            = manager.locations().listBillingSpecsWithResponse("qa", com.azure.core.util.Context.NONE).getValue();
 
-        HDInsightManager manager =
-            HDInsightManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        BillingResponseListResult response =
-            manager.locations().listBillingSpecsWithResponse("tvtzeexavoxtfg", Context.NONE).getValue();
-
-        Assertions.assertEquals("dmdqb", response.vmSizes().get(0));
-        Assertions.assertEquals("pqtgsfjac", response.vmSizesWithEncryptionAtHost().get(0));
-        Assertions.assertEquals(FilterMode.RECOMMEND, response.vmSizeFilters().get(0).filterMode());
-        Assertions.assertEquals("db", response.vmSizeFilters().get(0).regions().get(0));
-        Assertions.assertEquals("ud", response.vmSizeFilters().get(0).clusterFlavors().get(0));
-        Assertions.assertEquals("cxfailcfxwmdboxd", response.vmSizeFilters().get(0).nodeTypes().get(0));
-        Assertions.assertEquals("kqg", response.vmSizeFilters().get(0).clusterVersions().get(0));
+        Assertions.assertEquals("gbrt", response.vmSizes().get(0));
+        Assertions.assertEquals("qfyuttd", response.vmSizesWithEncryptionAtHost().get(0));
+        Assertions.assertEquals(FilterMode.DEFAULT, response.vmSizeFilters().get(0).filterMode());
+        Assertions.assertEquals("wxjlmec", response.vmSizeFilters().get(0).regions().get(0));
+        Assertions.assertEquals("yvneeza", response.vmSizeFilters().get(0).clusterFlavors().get(0));
+        Assertions.assertEquals("dogiyetesyp", response.vmSizeFilters().get(0).nodeTypes().get(0));
+        Assertions.assertEquals("vnynkb", response.vmSizeFilters().get(0).clusterVersions().get(0));
         Assertions.assertEquals(OSType.LINUX, response.vmSizeFilters().get(0).osType().get(0));
-        Assertions.assertEquals("svgjrwhryvy", response.vmSizeFilters().get(0).vmSizes().get(0));
-        Assertions.assertEquals("t", response.vmSizeFilters().get(0).espApplied());
-        Assertions.assertEquals("lxgccknfnwmbtm", response.vmSizeFilters().get(0).computeIsolationSupported());
-        Assertions.assertEquals("cqucwyhahnom", response.billingResources().get(0).region());
+        Assertions.assertEquals("urjtumghi", response.vmSizeFilters().get(0).vmSizes().get(0));
+        Assertions.assertEquals("ve", response.vmSizeFilters().get(0).espApplied());
+        Assertions.assertEquals("slclblyjxltbsju", response.vmSizeFilters().get(0).computeIsolationSupported());
+        Assertions.assertEquals("oldtvevboclzhz", response.billingResources().get(0).region());
+        Assertions.assertEquals("uxgvttxpnr",
+            response.billingResources().get(0).billingMeters().get(0).meterParameter());
+        Assertions.assertEquals("zaamrdixtrekid", response.billingResources().get(0).billingMeters().get(0).meter());
+        Assertions.assertEquals("yskbruff", response.billingResources().get(0).billingMeters().get(0).unit());
+        Assertions.assertEquals("k", response.billingResources().get(0).diskBillingMeters().get(0).diskRpMeter());
+        Assertions.assertEquals("tvlxhrpqh", response.billingResources().get(0).diskBillingMeters().get(0).sku());
+        Assertions.assertEquals(Tier.PREMIUM, response.billingResources().get(0).diskBillingMeters().get(0).tier());
     }
 }

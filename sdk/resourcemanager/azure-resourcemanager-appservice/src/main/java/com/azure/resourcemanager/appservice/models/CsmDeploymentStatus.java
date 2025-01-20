@@ -5,29 +5,86 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.CsmDeploymentStatusProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Deployment status response payload. */
+/**
+ * Deployment status response payload.
+ */
 @Fluent
 public final class CsmDeploymentStatus extends ProxyOnlyResource {
     /*
      * CsmDeploymentStatus resource specific properties
      */
-    @JsonProperty(value = "properties")
     private CsmDeploymentStatusProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CsmDeploymentStatus class.
+     */
+    public CsmDeploymentStatus() {
+    }
 
     /**
      * Get the innerProperties property: CsmDeploymentStatus resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CsmDeploymentStatusProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CsmDeploymentStatus withKind(String kind) {
         super.withKind(kind);
@@ -36,7 +93,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Get the deploymentId property: Deployment operation id.
-     *
+     * 
      * @return the deploymentId value.
      */
     public String deploymentId() {
@@ -45,7 +102,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Set the deploymentId property: Deployment operation id.
-     *
+     * 
      * @param deploymentId the deploymentId value to set.
      * @return the CsmDeploymentStatus object itself.
      */
@@ -59,7 +116,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Get the status property: Deployment build status.
-     *
+     * 
      * @return the status value.
      */
     public DeploymentBuildStatus status() {
@@ -68,7 +125,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Set the status property: Deployment build status.
-     *
+     * 
      * @param status the status value to set.
      * @return the CsmDeploymentStatus object itself.
      */
@@ -82,7 +139,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Get the numberOfInstancesInProgress property: Number of site instances currently being provisioned.
-     *
+     * 
      * @return the numberOfInstancesInProgress value.
      */
     public Integer numberOfInstancesInProgress() {
@@ -91,7 +148,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Set the numberOfInstancesInProgress property: Number of site instances currently being provisioned.
-     *
+     * 
      * @param numberOfInstancesInProgress the numberOfInstancesInProgress value to set.
      * @return the CsmDeploymentStatus object itself.
      */
@@ -105,7 +162,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Get the numberOfInstancesSuccessful property: Number of site instances provisioned successfully.
-     *
+     * 
      * @return the numberOfInstancesSuccessful value.
      */
     public Integer numberOfInstancesSuccessful() {
@@ -114,7 +171,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Set the numberOfInstancesSuccessful property: Number of site instances provisioned successfully.
-     *
+     * 
      * @param numberOfInstancesSuccessful the numberOfInstancesSuccessful value to set.
      * @return the CsmDeploymentStatus object itself.
      */
@@ -128,7 +185,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Get the numberOfInstancesFailed property: Number of site instances failed to provision.
-     *
+     * 
      * @return the numberOfInstancesFailed value.
      */
     public Integer numberOfInstancesFailed() {
@@ -137,7 +194,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Set the numberOfInstancesFailed property: Number of site instances failed to provision.
-     *
+     * 
      * @param numberOfInstancesFailed the numberOfInstancesFailed value to set.
      * @return the CsmDeploymentStatus object itself.
      */
@@ -151,7 +208,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Get the failedInstancesLogs property: List of URLs pointing to logs for instances which failed to provision.
-     *
+     * 
      * @return the failedInstancesLogs value.
      */
     public List<String> failedInstancesLogs() {
@@ -160,7 +217,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Set the failedInstancesLogs property: List of URLs pointing to logs for instances which failed to provision.
-     *
+     * 
      * @param failedInstancesLogs the failedInstancesLogs value to set.
      * @return the CsmDeploymentStatus object itself.
      */
@@ -174,7 +231,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Get the errors property: List of errors.
-     *
+     * 
      * @return the errors value.
      */
     public List<ErrorEntity> errors() {
@@ -183,7 +240,7 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Set the errors property: List of errors.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the CsmDeploymentStatus object itself.
      */
@@ -197,14 +254,59 @@ public final class CsmDeploymentStatus extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CsmDeploymentStatus from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CsmDeploymentStatus if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CsmDeploymentStatus.
+     */
+    public static CsmDeploymentStatus fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CsmDeploymentStatus deserializedCsmDeploymentStatus = new CsmDeploymentStatus();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCsmDeploymentStatus.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCsmDeploymentStatus.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCsmDeploymentStatus.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCsmDeploymentStatus.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCsmDeploymentStatus.innerProperties = CsmDeploymentStatusProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCsmDeploymentStatus;
+        });
     }
 }

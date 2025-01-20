@@ -7,28 +7,55 @@ package com.azure.resourcemanager.batch.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.batch.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.batch.models.ListPrivateEndpointConnectionsResult;
+import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.batch.models.PrivateLinkServiceConnectionStatus;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ListPrivateEndpointConnectionsResultTests {
-    @Test
-    public void testDeserialize() {
-        ListPrivateEndpointConnectionsResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Cancelled\",\"groupIds\":[]},\"etag\":\"ckzywbiexzfeyue\",\"id\":\"xibxujwbhqwalm\",\"name\":\"zyoxaepdkzjan\",\"type\":\"ux\"}],\"nextLink\":\"d\"}")
-                .toObject(ListPrivateEndpointConnectionsResult.class);
-        Assertions.assertEquals("d", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ListPrivateEndpointConnectionsResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"ttkphywpnvjtoqne\"},\"groupIds\":[\"lfplp\"],\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"scrpabgyepsbjt\",\"actionsRequired\":\"qugxywpmueefjzwf\"}},\"etag\":\"q\",\"tags\":{\"cq\":\"dsuyonobgla\"},\"id\":\"tcc\",\"name\":\"g\",\"type\":\"udxytlmoyrx\"}],\"nextLink\":\"fudwpznt\"}")
+            .toObject(ListPrivateEndpointConnectionsResult.class);
+        Assertions.assertEquals("dsuyonobgla", model.value().get(0).tags().get("cq"));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+            model.value().get(0).privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("scrpabgyepsbjt",
+            model.value().get(0).privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("fudwpznt", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        ListPrivateEndpointConnectionsResult model =
-            new ListPrivateEndpointConnectionsResult()
-                .withValue(Arrays.asList(new PrivateEndpointConnectionInner()))
-                .withNextLink("d");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ListPrivateEndpointConnectionsResult model
+            = new ListPrivateEndpointConnectionsResult()
+                .withValue(
+                    Arrays.asList(new PrivateEndpointConnectionInner().withTags(mapOf("cq", "dsuyonobgla"))
+                        .withPrivateLinkServiceConnectionState(new PrivateLinkServiceConnectionState()
+                            .withStatus(PrivateLinkServiceConnectionStatus.APPROVED)
+                            .withDescription("scrpabgyepsbjt"))))
+                .withNextLink("fudwpznt");
         model = BinaryData.fromObject(model).toObject(ListPrivateEndpointConnectionsResult.class);
-        Assertions.assertEquals("d", model.nextLink());
+        Assertions.assertEquals("dsuyonobgla", model.value().get(0).tags().get("cq"));
+        Assertions.assertEquals(PrivateLinkServiceConnectionStatus.APPROVED,
+            model.value().get(0).privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("scrpabgyepsbjt",
+            model.value().get(0).privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("fudwpznt", model.nextLink());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

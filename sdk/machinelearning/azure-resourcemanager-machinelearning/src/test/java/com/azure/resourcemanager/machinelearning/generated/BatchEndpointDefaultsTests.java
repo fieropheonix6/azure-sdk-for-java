@@ -7,20 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.BatchEndpointDefaults;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BatchEndpointDefaultsTests {
-    @Test
-    public void testDeserialize() {
-        BatchEndpointDefaults model =
-            BinaryData.fromString("{\"deploymentName\":\"wsbpfvm\"}").toObject(BatchEndpointDefaults.class);
-        Assertions.assertEquals("wsbpfvm", model.deploymentName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        BatchEndpointDefaults model
+            = BinaryData.fromString("{\"deploymentName\":\"winhehfqpo\"}").toObject(BatchEndpointDefaults.class);
+        Assertions.assertEquals("winhehfqpo", model.deploymentName());
     }
 
-    @Test
-    public void testSerialize() {
-        BatchEndpointDefaults model = new BatchEndpointDefaults().withDeploymentName("wsbpfvm");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        BatchEndpointDefaults model = new BatchEndpointDefaults().withDeploymentName("winhehfqpo");
         model = BinaryData.fromObject(model).toObject(BatchEndpointDefaults.class);
-        Assertions.assertEquals("wsbpfvm", model.deploymentName());
+        Assertions.assertEquals("winhehfqpo", model.deploymentName());
     }
 }

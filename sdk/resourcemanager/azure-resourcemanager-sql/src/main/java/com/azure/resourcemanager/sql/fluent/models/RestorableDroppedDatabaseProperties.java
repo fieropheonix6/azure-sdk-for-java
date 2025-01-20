@@ -5,63 +5,60 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.sql.models.BackupStorageRedundancy;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** The properties of a restorable dropped database. */
+/**
+ * The restorable dropped database's properties.
+ */
 @Immutable
-public final class RestorableDroppedDatabaseProperties {
+public final class RestorableDroppedDatabaseProperties
+    implements JsonSerializable<RestorableDroppedDatabaseProperties> {
     /*
-     * The name of the database
+     * The name of the database.
      */
-    @JsonProperty(value = "databaseName", access = JsonProperty.Access.WRITE_ONLY)
     private String databaseName;
 
     /*
-     * The edition of the database
+     * The max size of the database expressed in bytes.
      */
-    @JsonProperty(value = "edition", access = JsonProperty.Access.WRITE_ONLY)
-    private String edition;
+    private Long maxSizeBytes;
 
     /*
-     * The max size in bytes of the database
+     * The creation date of the database (ISO8601 format).
      */
-    @JsonProperty(value = "maxSizeBytes", access = JsonProperty.Access.WRITE_ONLY)
-    private String maxSizeBytes;
-
-    /*
-     * The service level objective name of the database
-     */
-    @JsonProperty(value = "serviceLevelObjective", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceLevelObjective;
-
-    /*
-     * The elastic pool name of the database
-     */
-    @JsonProperty(value = "elasticPoolName", access = JsonProperty.Access.WRITE_ONLY)
-    private String elasticPoolName;
-
-    /*
-     * The creation date of the database (ISO8601 format)
-     */
-    @JsonProperty(value = "creationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationDate;
 
     /*
-     * The deletion date of the database (ISO8601 format)
+     * The deletion date of the database (ISO8601 format).
      */
-    @JsonProperty(value = "deletionDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionDate;
 
     /*
-     * The earliest restore date of the database (ISO8601 format)
+     * The earliest restore date of the database (ISO8601 format).
      */
-    @JsonProperty(value = "earliestRestoreDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime earliestRestoreDate;
+
+    /*
+     * The storage account type used to store backups for this database.
+     */
+    private BackupStorageRedundancy backupStorageRedundancy;
+
+    /**
+     * Creates an instance of RestorableDroppedDatabaseProperties class.
+     */
+    public RestorableDroppedDatabaseProperties() {
+    }
 
     /**
      * Get the databaseName property: The name of the database.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -69,44 +66,17 @@ public final class RestorableDroppedDatabaseProperties {
     }
 
     /**
-     * Get the edition property: The edition of the database.
-     *
-     * @return the edition value.
-     */
-    public String edition() {
-        return this.edition;
-    }
-
-    /**
-     * Get the maxSizeBytes property: The max size in bytes of the database.
-     *
+     * Get the maxSizeBytes property: The max size of the database expressed in bytes.
+     * 
      * @return the maxSizeBytes value.
      */
-    public String maxSizeBytes() {
+    public Long maxSizeBytes() {
         return this.maxSizeBytes;
     }
 
     /**
-     * Get the serviceLevelObjective property: The service level objective name of the database.
-     *
-     * @return the serviceLevelObjective value.
-     */
-    public String serviceLevelObjective() {
-        return this.serviceLevelObjective;
-    }
-
-    /**
-     * Get the elasticPoolName property: The elastic pool name of the database.
-     *
-     * @return the elasticPoolName value.
-     */
-    public String elasticPoolName() {
-        return this.elasticPoolName;
-    }
-
-    /**
      * Get the creationDate property: The creation date of the database (ISO8601 format).
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -115,7 +85,7 @@ public final class RestorableDroppedDatabaseProperties {
 
     /**
      * Get the deletionDate property: The deletion date of the database (ISO8601 format).
-     *
+     * 
      * @return the deletionDate value.
      */
     public OffsetDateTime deletionDate() {
@@ -124,7 +94,7 @@ public final class RestorableDroppedDatabaseProperties {
 
     /**
      * Get the earliestRestoreDate property: The earliest restore date of the database (ISO8601 format).
-     *
+     * 
      * @return the earliestRestoreDate value.
      */
     public OffsetDateTime earliestRestoreDate() {
@@ -132,10 +102,70 @@ public final class RestorableDroppedDatabaseProperties {
     }
 
     /**
+     * Get the backupStorageRedundancy property: The storage account type used to store backups for this database.
+     * 
+     * @return the backupStorageRedundancy value.
+     */
+    public BackupStorageRedundancy backupStorageRedundancy() {
+        return this.backupStorageRedundancy;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableDroppedDatabaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableDroppedDatabaseProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableDroppedDatabaseProperties.
+     */
+    public static RestorableDroppedDatabaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableDroppedDatabaseProperties deserializedRestorableDroppedDatabaseProperties
+                = new RestorableDroppedDatabaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("databaseName".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseProperties.databaseName = reader.getString();
+                } else if ("maxSizeBytes".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseProperties.maxSizeBytes
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("creationDate".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseProperties.creationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deletionDate".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseProperties.deletionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("earliestRestoreDate".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseProperties.earliestRestoreDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("backupStorageRedundancy".equals(fieldName)) {
+                    deserializedRestorableDroppedDatabaseProperties.backupStorageRedundancy
+                        = BackupStorageRedundancy.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableDroppedDatabaseProperties;
+        });
     }
 }

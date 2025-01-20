@@ -5,64 +5,65 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** On-premises file system dataset properties. */
+/**
+ * On-premises file system dataset properties.
+ */
 @Fluent
-public final class FileShareDatasetTypeProperties {
+public final class FileShareDatasetTypeProperties implements JsonSerializable<FileShareDatasetTypeProperties> {
     /*
      * The path of the on-premises file system. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
      * The name of the on-premises file system. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "fileName")
     private Object fileName;
 
     /*
      * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
      * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
 
     /*
      * The format of the files.
      */
-    @JsonProperty(value = "format")
     private DatasetStorageFormat format;
 
     /*
-     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string
-     * (or Expression with resultType string).
+     * Specify a filter to be used to select a subset of files in the folderPath rather than all files. Type: string (or
+     * Expression with resultType string).
      */
-    @JsonProperty(value = "fileFilter")
     private Object fileFilter;
 
     /*
      * The data compression method used for the file system.
      */
-    @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of FileShareDatasetTypeProperties class. */
+    /**
+     * Creates an instance of FileShareDatasetTypeProperties class.
+     */
     public FileShareDatasetTypeProperties() {
     }
 
     /**
      * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the folderPath value.
      */
     public Object folderPath() {
@@ -72,7 +73,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -84,7 +85,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Get the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the fileName value.
      */
     public Object fileName() {
@@ -94,7 +95,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -106,7 +107,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Get the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeStart value.
      */
     public Object modifiedDatetimeStart() {
@@ -116,7 +117,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -128,7 +129,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Get the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeEnd value.
      */
     public Object modifiedDatetimeEnd() {
@@ -138,7 +139,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -149,7 +150,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Get the format property: The format of the files.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat format() {
@@ -158,7 +159,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Set the format property: The format of the files.
-     *
+     * 
      * @param format the format value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -170,7 +171,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Get the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
      * than all files. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileFilter value.
      */
     public Object fileFilter() {
@@ -180,7 +181,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
      * than all files. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileFilter the fileFilter value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -191,7 +192,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Get the compression property: The data compression method used for the file system.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -200,7 +201,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Set the compression property: The data compression method used for the file system.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -211,7 +212,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -221,5 +222,60 @@ public final class FileShareDatasetTypeProperties {
         if (compression() != null) {
             compression().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("folderPath", this.folderPath);
+        jsonWriter.writeUntypedField("fileName", this.fileName);
+        jsonWriter.writeUntypedField("modifiedDatetimeStart", this.modifiedDatetimeStart);
+        jsonWriter.writeUntypedField("modifiedDatetimeEnd", this.modifiedDatetimeEnd);
+        jsonWriter.writeJsonField("format", this.format);
+        jsonWriter.writeUntypedField("fileFilter", this.fileFilter);
+        jsonWriter.writeJsonField("compression", this.compression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FileShareDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FileShareDatasetTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FileShareDatasetTypeProperties.
+     */
+    public static FileShareDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FileShareDatasetTypeProperties deserializedFileShareDatasetTypeProperties
+                = new FileShareDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("folderPath".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.folderPath = reader.readUntyped();
+                } else if ("fileName".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.fileName = reader.readUntyped();
+                } else if ("modifiedDatetimeStart".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.modifiedDatetimeStart = reader.readUntyped();
+                } else if ("modifiedDatetimeEnd".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.modifiedDatetimeEnd = reader.readUntyped();
+                } else if ("format".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.format = DatasetStorageFormat.fromJson(reader);
+                } else if ("fileFilter".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.fileFilter = reader.readUntyped();
+                } else if ("compression".equals(fieldName)) {
+                    deserializedFileShareDatasetTypeProperties.compression = DatasetCompression.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFileShareDatasetTypeProperties;
+        });
     }
 }

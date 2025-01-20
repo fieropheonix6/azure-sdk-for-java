@@ -6,33 +6,39 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.DiskRestorePointInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List Disk Restore Points operation response. */
+/**
+ * The List Disk Restore Points operation response.
+ */
 @Fluent
-public final class DiskRestorePointList {
+public final class DiskRestorePointList implements JsonSerializable<DiskRestorePointList> {
     /*
      * A list of disk restore points.
      */
-    @JsonProperty(value = "value", required = true)
     private List<DiskRestorePointInner> value;
 
     /*
      * The uri to fetch the next page of disk restore points. Call ListNext() with this to fetch the next page of disk
      * restore points.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DiskRestorePointList class. */
+    /**
+     * Creates an instance of DiskRestorePointList class.
+     */
     public DiskRestorePointList() {
     }
 
     /**
      * Get the value property: A list of disk restore points.
-     *
+     * 
      * @return the value value.
      */
     public List<DiskRestorePointInner> value() {
@@ -41,7 +47,7 @@ public final class DiskRestorePointList {
 
     /**
      * Set the value property: A list of disk restore points.
-     *
+     * 
      * @param value the value value to set.
      * @return the DiskRestorePointList object itself.
      */
@@ -53,7 +59,7 @@ public final class DiskRestorePointList {
     /**
      * Get the nextLink property: The uri to fetch the next page of disk restore points. Call ListNext() with this to
      * fetch the next page of disk restore points.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +69,7 @@ public final class DiskRestorePointList {
     /**
      * Set the nextLink property: The uri to fetch the next page of disk restore points. Call ListNext() with this to
      * fetch the next page of disk restore points.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DiskRestorePointList object itself.
      */
@@ -74,18 +80,59 @@ public final class DiskRestorePointList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model DiskRestorePointList"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model DiskRestorePointList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DiskRestorePointList.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiskRestorePointList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiskRestorePointList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiskRestorePointList.
+     */
+    public static DiskRestorePointList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiskRestorePointList deserializedDiskRestorePointList = new DiskRestorePointList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<DiskRestorePointInner> value
+                        = reader.readArray(reader1 -> DiskRestorePointInner.fromJson(reader1));
+                    deserializedDiskRestorePointList.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDiskRestorePointList.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiskRestorePointList;
+        });
+    }
 }

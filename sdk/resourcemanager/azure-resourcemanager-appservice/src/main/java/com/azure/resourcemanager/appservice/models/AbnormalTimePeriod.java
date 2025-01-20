@@ -5,40 +5,50 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Class representing Abnormal Time Period identified in diagnosis. */
+/**
+ * Class representing Abnormal Time Period identified in diagnosis.
+ */
 @Fluent
-public final class AbnormalTimePeriod {
+public final class AbnormalTimePeriod implements JsonSerializable<AbnormalTimePeriod> {
     /*
      * Start time of the downtime
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the downtime
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * List of Possible Cause of downtime
      */
-    @JsonProperty(value = "events")
     private List<DetectorAbnormalTimePeriod> events;
 
     /*
      * List of proposed solutions
      */
-    @JsonProperty(value = "solutions")
     private List<Solution> solutions;
 
     /**
+     * Creates an instance of AbnormalTimePeriod class.
+     */
+    public AbnormalTimePeriod() {
+    }
+
+    /**
      * Get the startTime property: Start time of the downtime.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -47,7 +57,7 @@ public final class AbnormalTimePeriod {
 
     /**
      * Set the startTime property: Start time of the downtime.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the AbnormalTimePeriod object itself.
      */
@@ -58,7 +68,7 @@ public final class AbnormalTimePeriod {
 
     /**
      * Get the endTime property: End time of the downtime.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -67,7 +77,7 @@ public final class AbnormalTimePeriod {
 
     /**
      * Set the endTime property: End time of the downtime.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the AbnormalTimePeriod object itself.
      */
@@ -78,7 +88,7 @@ public final class AbnormalTimePeriod {
 
     /**
      * Get the events property: List of Possible Cause of downtime.
-     *
+     * 
      * @return the events value.
      */
     public List<DetectorAbnormalTimePeriod> events() {
@@ -87,7 +97,7 @@ public final class AbnormalTimePeriod {
 
     /**
      * Set the events property: List of Possible Cause of downtime.
-     *
+     * 
      * @param events the events value to set.
      * @return the AbnormalTimePeriod object itself.
      */
@@ -98,7 +108,7 @@ public final class AbnormalTimePeriod {
 
     /**
      * Get the solutions property: List of proposed solutions.
-     *
+     * 
      * @return the solutions value.
      */
     public List<Solution> solutions() {
@@ -107,7 +117,7 @@ public final class AbnormalTimePeriod {
 
     /**
      * Set the solutions property: List of proposed solutions.
-     *
+     * 
      * @param solutions the solutions value to set.
      * @return the AbnormalTimePeriod object itself.
      */
@@ -118,7 +128,7 @@ public final class AbnormalTimePeriod {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -128,5 +138,57 @@ public final class AbnormalTimePeriod {
         if (solutions() != null) {
             solutions().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("solutions", this.solutions, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AbnormalTimePeriod from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AbnormalTimePeriod if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AbnormalTimePeriod.
+     */
+    public static AbnormalTimePeriod fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AbnormalTimePeriod deserializedAbnormalTimePeriod = new AbnormalTimePeriod();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("startTime".equals(fieldName)) {
+                    deserializedAbnormalTimePeriod.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedAbnormalTimePeriod.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("events".equals(fieldName)) {
+                    List<DetectorAbnormalTimePeriod> events
+                        = reader.readArray(reader1 -> DetectorAbnormalTimePeriod.fromJson(reader1));
+                    deserializedAbnormalTimePeriod.events = events;
+                } else if ("solutions".equals(fieldName)) {
+                    List<Solution> solutions = reader.readArray(reader1 -> Solution.fromJson(reader1));
+                    deserializedAbnormalTimePeriod.solutions = solutions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAbnormalTimePeriod;
+        });
     }
 }

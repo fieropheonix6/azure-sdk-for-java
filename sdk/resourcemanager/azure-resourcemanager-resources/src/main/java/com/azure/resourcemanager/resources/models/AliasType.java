@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for AliasType. */
+/**
+ * The type of the alias.
+ */
 public enum AliasType {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value PlainText. */
+    /**
+     * Enum value PlainText.
+     */
     PLAIN_TEXT("PlainText"),
 
-    /** Enum value Mask. */
+    /**
+     * Enum value Mask.
+     */
     MASK("Mask");
 
-    /** The actual serialized value for a AliasType instance. */
+    /**
+     * The actual serialized value for a AliasType instance.
+     */
     private final String value;
 
     AliasType(String value) {
@@ -27,12 +34,14 @@ public enum AliasType {
 
     /**
      * Parses a serialized value to a AliasType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AliasType object, or null if unable to parse.
      */
-    @JsonCreator
     public static AliasType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AliasType[] items = AliasType.values();
         for (AliasType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum AliasType {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

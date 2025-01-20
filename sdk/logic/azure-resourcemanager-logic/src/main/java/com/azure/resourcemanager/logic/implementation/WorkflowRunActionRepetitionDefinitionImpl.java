@@ -21,8 +21,7 @@ public final class WorkflowRunActionRepetitionDefinitionImpl implements Workflow
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    WorkflowRunActionRepetitionDefinitionImpl(
-        WorkflowRunActionRepetitionDefinitionInner innerObject,
+    WorkflowRunActionRepetitionDefinitionImpl(WorkflowRunActionRepetitionDefinitionInner innerObject,
         com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -53,28 +52,13 @@ public final class WorkflowRunActionRepetitionDefinitionImpl implements Workflow
         }
     }
 
-    public OffsetDateTime startTime() {
-        return this.innerModel().startTime();
-    }
-
-    public OffsetDateTime endTime() {
-        return this.innerModel().endTime();
-    }
-
-    public RunActionCorrelation correlation() {
-        return this.innerModel().correlation();
-    }
-
-    public WorkflowStatus status() {
-        return this.innerModel().status();
-    }
-
-    public String code() {
-        return this.innerModel().code();
-    }
-
-    public Object error() {
-        return this.innerModel().error();
+    public List<RepetitionIndex> repetitionIndexes() {
+        List<RepetitionIndex> inner = this.innerModel().repetitionIndexes();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public String trackingId() {
@@ -114,13 +98,28 @@ public final class WorkflowRunActionRepetitionDefinitionImpl implements Workflow
         return this.innerModel().iterationCount();
     }
 
-    public List<RepetitionIndex> repetitionIndexes() {
-        List<RepetitionIndex> inner = this.innerModel().repetitionIndexes();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public OffsetDateTime startTime() {
+        return this.innerModel().startTime();
+    }
+
+    public OffsetDateTime endTime() {
+        return this.innerModel().endTime();
+    }
+
+    public RunActionCorrelation correlation() {
+        return this.innerModel().correlation();
+    }
+
+    public WorkflowStatus status() {
+        return this.innerModel().status();
+    }
+
+    public String code() {
+        return this.innerModel().code();
+    }
+
+    public Object error() {
+        return this.innerModel().error();
     }
 
     public WorkflowRunActionRepetitionDefinitionInner innerModel() {

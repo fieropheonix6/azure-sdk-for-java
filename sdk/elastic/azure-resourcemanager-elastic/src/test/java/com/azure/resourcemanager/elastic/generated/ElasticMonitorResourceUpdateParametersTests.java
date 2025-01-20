@@ -9,26 +9,24 @@ import com.azure.resourcemanager.elastic.models.ElasticMonitorResourceUpdatePara
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ElasticMonitorResourceUpdateParametersTests {
-    @Test
-    public void testDeserialize() {
-        ElasticMonitorResourceUpdateParameters model =
-            BinaryData
-                .fromString("{\"tags\":{\"ehzzvypyqrim\":\"t\",\"hc\":\"inpvswjdkirsoodq\"}}")
-                .toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("t", model.tags().get("ehzzvypyqrim"));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ElasticMonitorResourceUpdateParameters model = BinaryData.fromString("{\"tags\":{\"mjthjqkwp\":\"fcyddg\"}}")
+            .toObject(ElasticMonitorResourceUpdateParameters.class);
+        Assertions.assertEquals("fcyddg", model.tags().get("mjthjqkwp"));
     }
 
-    @Test
-    public void testSerialize() {
-        ElasticMonitorResourceUpdateParameters model =
-            new ElasticMonitorResourceUpdateParameters().withTags(mapOf("ehzzvypyqrim", "t", "hc", "inpvswjdkirsoodq"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ElasticMonitorResourceUpdateParameters model
+            = new ElasticMonitorResourceUpdateParameters().withTags(mapOf("mjthjqkwp", "fcyddg"));
         model = BinaryData.fromObject(model).toObject(ElasticMonitorResourceUpdateParameters.class);
-        Assertions.assertEquals("t", model.tags().get("ehzzvypyqrim"));
+        Assertions.assertEquals("fcyddg", model.tags().get("mjthjqkwp"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachineScaleSetVMRunCommands List. */
+/**
+ * Samples for VirtualMachineScaleSetVMRunCommands List.
+ */
 public final class VirtualMachineScaleSetVMRunCommandsListSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand_List.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/runCommandExamples/
+     * VirtualMachineScaleSetVMRunCommand_List.json
      */
     /**
      * Sample code: List run commands in Vmss instance.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listRunCommandsInVmssInstance(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMRunCommands()
-            .list("myResourceGroup", "myvmScaleSet", "0", null, Context.NONE);
+            .list("myResourceGroup", "myvmScaleSet", "0", null, com.azure.core.util.Context.NONE);
     }
 }

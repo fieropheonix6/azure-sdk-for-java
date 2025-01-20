@@ -18,15 +18,34 @@ import com.azure.resourcemanager.powerbidedicated.fluent.models.SkuEnumerationFo
 import com.azure.resourcemanager.powerbidedicated.models.CheckCapacityNameAvailabilityParameters;
 import com.azure.resourcemanager.powerbidedicated.models.DedicatedCapacityUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in CapacitiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CapacitiesClient.
+ */
 public interface CapacitiesClient {
     /**
      * Gets details about the specified dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified dedicated capacity along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DedicatedCapacityInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String dedicatedCapacityName, Context context);
+
+    /**
+     * Gets details about the specified dedicated capacity.
+     * 
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     * This name must be at least 1 character in length, and no more than 90.
+     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
+     * maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -36,67 +55,47 @@ public interface CapacitiesClient {
     DedicatedCapacityInner getByResourceGroup(String resourceGroupName, String dedicatedCapacityName);
 
     /**
-     * Gets details about the specified dedicated capacity.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param dedicatedCapacityName The name of the dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified dedicated capacity.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DedicatedCapacityInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
-
-    /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(
-        String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityInner capacityParameters);
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityInner capacityParameters,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginCreate(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityInner capacityParameters, Context context);
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,16 +103,16 @@ public interface CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedCapacityInner create(
-        String resourceGroupName, String dedicatedCapacityName, DedicatedCapacityInner capacityParameters);
+    DedicatedCapacityInner create(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityInner capacityParameters);
 
     /**
      * Provisions the specified Dedicated capacity based on the configuration specified in the request.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be a minimum of 3 characters, and a
-     *     maximum of 63.
+     * maximum of 63.
      * @param capacityParameters Contains the information used to provision the Dedicated capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,51 +121,48 @@ public interface CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedCapacityInner create(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityInner capacityParameters,
-        Context context);
+    DedicatedCapacityInner create(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityInner capacityParameters, Context context);
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dedicatedCapacityName,
+        Context context);
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,11 +172,11 @@ public interface CapacitiesClient {
 
     /**
      * Deletes the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -191,11 +187,46 @@ public interface CapacitiesClient {
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
+     * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityUpdateParameters capacityUpdateParameters);
+
+    /**
+     * Updates the current state of the specified Dedicated capacity.
+     * 
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     * This name must be at least 1 character in length, and no more than 90.
+     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
+     * no more than 63.
+     * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of represents an instance of a Dedicated Capacity resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(String resourceGroupName,
+        String dedicatedCapacityName, DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context);
+
+    /**
+     * Updates the current state of the specified Dedicated capacity.
+     * 
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     * This name must be at least 1 character in length, and no more than 90.
+     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -203,18 +234,16 @@ public interface CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(
-        String resourceGroupName,
-        String dedicatedCapacityName,
+    DedicatedCapacityInner update(String resourceGroupName, String dedicatedCapacityName,
         DedicatedCapacityUpdateParameters capacityUpdateParameters);
 
     /**
      * Updates the current state of the specified Dedicated capacity.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,91 +252,48 @@ public interface CapacitiesClient {
      * @return represents an instance of a Dedicated Capacity resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DedicatedCapacityInner>, DedicatedCapacityInner> beginUpdate(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters,
-        Context context);
-
-    /**
-     * Updates the current state of the specified Dedicated capacity.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
-     * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedCapacityInner update(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters);
-
-    /**
-     * Updates the current state of the specified Dedicated capacity.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
-     * @param capacityUpdateParameters Request object that contains the updated information for the capacity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a Dedicated Capacity resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedCapacityInner update(
-        String resourceGroupName,
-        String dedicatedCapacityName,
-        DedicatedCapacityUpdateParameters capacityUpdateParameters,
-        Context context);
+    DedicatedCapacityInner update(String resourceGroupName, String dedicatedCapacityName,
+        DedicatedCapacityUpdateParameters capacityUpdateParameters, Context context);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginSuspend(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginSuspend(String resourceGroupName, String dedicatedCapacityName,
+        Context context);
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -317,11 +303,11 @@ public interface CapacitiesClient {
 
     /**
      * Suspends operation of the specified dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -332,43 +318,43 @@ public interface CapacitiesClient {
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginResume(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginResume(String resourceGroupName, String dedicatedCapacityName,
+        Context context);
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -378,11 +364,11 @@ public interface CapacitiesClient {
 
     /**
      * Resumes operation of the specified Dedicated capacity instance.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -393,56 +379,70 @@ public interface CapacitiesClient {
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Gets all the Dedicated capacities for the given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Dedicated capacities for the given resource group.
+     * @return all the Dedicated capacities for the given resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedCapacityInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedCapacityInner> list();
 
     /**
      * Lists all the Dedicated capacities for the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an array of Dedicated capacities resources.
+     * @return an array of Dedicated capacities resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedCapacityInner> list(Context context);
 
     /**
      * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an object that represents enumerating SKUs for new resources along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SkuEnumerationForNewResourceResultInner> listSkusWithResponse(Context context);
+
+    /**
+     * Lists eligible SKUs for PowerBI Dedicated resource provider.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for new resources.
@@ -451,53 +451,56 @@ public interface CapacitiesClient {
     SkuEnumerationForNewResourceResultInner listSkus();
 
     /**
-     * Lists eligible SKUs for PowerBI Dedicated resource provider.
-     *
+     * Lists eligible SKUs for a PowerBI Dedicated resource.
+     * 
+     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
+     * This name must be at least 1 character in length, and no more than 90.
+     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
+     * no more than 63.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for new resources.
+     * @return an object that represents enumerating SKUs for existing resources along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuEnumerationForNewResourceResultInner> listSkusWithResponse(Context context);
+    Response<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityWithResponse(String resourceGroupName,
+        String dedicatedCapacityName, Context context);
 
     /**
      * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
+     * This name must be at least 1 character in length, and no more than 90.
      * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
+     * no more than 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents enumerating SKUs for existing resources.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SkuEnumerationForExistingResourceResultInner listSkusForCapacity(
-        String resourceGroupName, String dedicatedCapacityName);
-
-    /**
-     * Lists eligible SKUs for a PowerBI Dedicated resource.
-     *
-     * @param resourceGroupName The name of the Azure Resource group of which a given PowerBIDedicated capacity is part.
-     *     This name must be at least 1 character in length, and no more than 90.
-     * @param dedicatedCapacityName The name of the Dedicated capacity. It must be at least 3 characters in length, and
-     *     no more than 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents enumerating SKUs for existing resources.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SkuEnumerationForExistingResourceResultInner> listSkusForCapacityWithResponse(
-        String resourceGroupName, String dedicatedCapacityName, Context context);
+    SkuEnumerationForExistingResourceResultInner listSkusForCapacity(String resourceGroupName,
+        String dedicatedCapacityName);
 
     /**
      * Check the name availability in the target location.
-     *
+     * 
+     * @param location The region name which the operation will lookup into.
+     * @param capacityParameters The name of the capacity.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the checking result of capacity name availability along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters, Context context);
+
+    /**
+     * Check the name availability in the target location.
+     * 
      * @param location The region name which the operation will lookup into.
      * @param capacityParameters The name of the capacity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -506,21 +509,6 @@ public interface CapacitiesClient {
      * @return the checking result of capacity name availability.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckCapacityNameAvailabilityResultInner checkNameAvailability(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters);
-
-    /**
-     * Check the name availability in the target location.
-     *
-     * @param location The region name which the operation will lookup into.
-     * @param capacityParameters The name of the capacity.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the checking result of capacity name availability.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckCapacityNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String location, CheckCapacityNameAvailabilityParameters capacityParameters, Context context);
+    CheckCapacityNameAvailabilityResultInner checkNameAvailability(String location,
+        CheckCapacityNameAvailabilityParameters capacityParameters);
 }

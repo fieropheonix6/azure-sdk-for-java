@@ -14,41 +14,52 @@ import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.GlobalSchedules;
 import com.azure.resourcemanager.devtestlabs.models.RetargetScheduleProperties;
 import com.azure.resourcemanager.devtestlabs.models.Schedule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GlobalSchedulesImpl implements GlobalSchedules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GlobalSchedulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GlobalSchedulesImpl.class);
 
     private final GlobalSchedulesClient innerClient;
 
     private final com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager;
 
-    public GlobalSchedulesImpl(
-        GlobalSchedulesClient innerClient, com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
+    public GlobalSchedulesImpl(GlobalSchedulesClient innerClient,
+        com.azure.resourcemanager.devtestlabs.DevTestLabsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<Schedule> list() {
         PagedIterable<ScheduleInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Schedule> list(String expand, String filter, Integer top, String orderby, Context context) {
         PagedIterable<ScheduleInner> inner = this.serviceClient().list(expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Schedule> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ScheduleInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Schedule> listByResourceGroup(
-        String resourceGroupName, String expand, String filter, Integer top, String orderby, Context context) {
-        PagedIterable<ScheduleInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, expand, filter, top, orderby, context);
-        return Utils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+    public PagedIterable<Schedule> listByResourceGroup(String resourceGroupName, String expand, String filter,
+        Integer top, String orderby, Context context) {
+        PagedIterable<ScheduleInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, expand, filter, top, orderby, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ScheduleImpl(inner1, this.manager()));
+    }
+
+    public Response<Schedule> getByResourceGroupWithResponse(String resourceGroupName, String name, String expand,
+        Context context) {
+        Response<ScheduleInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, name, expand, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ScheduleImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Schedule getByResourceGroup(String resourceGroupName, String name) {
@@ -60,27 +71,12 @@ public final class GlobalSchedulesImpl implements GlobalSchedules {
         }
     }
 
-    public Response<Schedule> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, String expand, Context context) {
-        Response<ScheduleInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, name, expand, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ScheduleImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String name, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, name, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String name) {
         this.serviceClient().delete(resourceGroupName, name);
-    }
-
-    public Response<Void> deleteWithResponse(String resourceGroupName, String name, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, name, context);
     }
 
     public void execute(String resourceGroupName, String name) {
@@ -95,86 +91,66 @@ public final class GlobalSchedulesImpl implements GlobalSchedules {
         this.serviceClient().retarget(resourceGroupName, name, retargetScheduleProperties);
     }
 
-    public void retarget(
-        String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties, Context context) {
+    public void retarget(String resourceGroupName, String name, RetargetScheduleProperties retargetScheduleProperties,
+        Context context) {
         this.serviceClient().retarget(resourceGroupName, name, retargetScheduleProperties, context);
     }
 
     public Schedule getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "schedules");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "schedules");
         if (name == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
         }
         String localExpand = null;
         return this.getByResourceGroupWithResponse(resourceGroupName, name, localExpand, Context.NONE).getValue();
     }
 
     public Response<Schedule> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "schedules");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "schedules");
         if (name == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, name, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "schedules");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "schedules");
         if (name == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, name, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, name, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String name = Utils.getValueFromIdByName(id, "schedules");
+        String name = ResourceManagerUtils.getValueFromIdByName(id, "schedules");
         if (name == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'schedules'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, name, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, name, context);
     }
 
     private GlobalSchedulesClient serviceClient() {

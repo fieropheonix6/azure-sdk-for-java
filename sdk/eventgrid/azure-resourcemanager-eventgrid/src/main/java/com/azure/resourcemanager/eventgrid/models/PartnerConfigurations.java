@@ -9,22 +9,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.PartnerConfigurationInner;
 
-/** Resource collection API of PartnerConfigurations. */
+/**
+ * Resource collection API of PartnerConfigurations.
+ */
 public interface PartnerConfigurations {
     /**
+     * Get a partner configuration.
+     * 
      * Get properties of a partner configuration.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a partner configuration.
-     */
-    PartnerConfiguration getByResourceGroup(String resourceGroupName);
-
-    /**
-     * Get properties of a partner configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,8 +28,23 @@ public interface PartnerConfigurations {
     Response<PartnerConfiguration> getByResourceGroupWithResponse(String resourceGroupName, Context context);
 
     /**
+     * Get a partner configuration.
+     * 
+     * Get properties of a partner configuration.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a partner configuration.
+     */
+    PartnerConfiguration getByResourceGroup(String resourceGroupName);
+
+    /**
+     * Create or update a partner configuration.
+     * 
      * Synchronously creates or updates a partner configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,8 +55,10 @@ public interface PartnerConfigurations {
     PartnerConfiguration createOrUpdate(String resourceGroupName, PartnerConfigurationInner partnerConfigurationInfo);
 
     /**
+     * Create or update a partner configuration.
+     * 
      * Synchronously creates or updates a partner configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationInfo Partner configuration information.
      * @param context The context to associate with this operation.
@@ -57,12 +67,14 @@ public interface PartnerConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return partner configuration information.
      */
-    PartnerConfiguration createOrUpdate(
-        String resourceGroupName, PartnerConfigurationInner partnerConfigurationInfo, Context context);
+    PartnerConfiguration createOrUpdate(String resourceGroupName, PartnerConfigurationInner partnerConfigurationInfo,
+        Context context);
 
     /**
+     * Delete a partner configuration.
+     * 
      * Delete existing partner configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -71,8 +83,10 @@ public interface PartnerConfigurations {
     void delete(String resourceGroupName);
 
     /**
+     * Delete a partner configuration.
+     * 
      * Delete existing partner configuration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -82,8 +96,10 @@ public interface PartnerConfigurations {
     void delete(String resourceGroupName, Context context);
 
     /**
+     * Update a partner configuration.
+     * 
      * Synchronously updates a partner configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,12 +107,14 @@ public interface PartnerConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return partner configuration information.
      */
-    PartnerConfiguration update(
-        String resourceGroupName, PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters);
+    PartnerConfiguration update(String resourceGroupName,
+        PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters);
 
     /**
+     * Update a partner configuration.
+     * 
      * Synchronously updates a partner configuration with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerConfigurationUpdateParameters Partner configuration update information.
      * @param context The context to associate with this operation.
@@ -105,14 +123,14 @@ public interface PartnerConfigurations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return partner configuration information.
      */
-    PartnerConfiguration update(
-        String resourceGroupName,
-        PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters,
-        Context context);
+    PartnerConfiguration update(String resourceGroupName,
+        PartnerConfigurationUpdateParameters partnerConfigurationUpdateParameters, Context context);
 
     /**
+     * List partner configurations under a resource group.
+     * 
      * List all the partner configurations under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -122,8 +140,10 @@ public interface PartnerConfigurations {
     PagedIterable<PartnerConfiguration> listByResourceGroup(String resourceGroupName);
 
     /**
+     * List partner configurations under a resource group.
+     * 
      * List all the partner configurations under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,8 +154,10 @@ public interface PartnerConfigurations {
     PagedIterable<PartnerConfiguration> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
+     * List partner configurations under an Azure subscription.
+     * 
      * List all the partner configurations under an Azure subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List partner configurations operation as paginated response with {@link PagedIterable}.
@@ -143,16 +165,17 @@ public interface PartnerConfigurations {
     PagedIterable<PartnerConfiguration> list();
 
     /**
+     * List partner configurations under an Azure subscription.
+     * 
      * List all the partner configurations under an Azure subscription.
-     *
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -162,8 +185,26 @@ public interface PartnerConfigurations {
     PagedIterable<PartnerConfiguration> list(String filter, Integer top, Context context);
 
     /**
+     * Authorize a partner.
+     * 
      * Authorize a single partner either by partner registration immutable Id or by partner name.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param partnerInfo The information of the partner to be authorized.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return partner configuration information along with {@link Response}.
+     */
+    Response<PartnerConfiguration> authorizePartnerWithResponse(String resourceGroupName, Partner partnerInfo,
+        Context context);
+
+    /**
+     * Authorize a partner.
+     * 
+     * Authorize a single partner either by partner registration immutable Id or by partner name.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be authorized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -174,22 +215,26 @@ public interface PartnerConfigurations {
     PartnerConfiguration authorizePartner(String resourceGroupName, Partner partnerInfo);
 
     /**
-     * Authorize a single partner either by partner registration immutable Id or by partner name.
-     *
+     * Unauthorize a partner.
+     * 
+     * Unauthorize a single partner either by partner registration immutable Id or by partner name.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerInfo The information of the partner to be authorized.
+     * @param partnerInfo The information of the partner to be unauthorized.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return partner configuration information along with {@link Response}.
      */
-    Response<PartnerConfiguration> authorizePartnerWithResponse(
-        String resourceGroupName, Partner partnerInfo, Context context);
+    Response<PartnerConfiguration> unauthorizePartnerWithResponse(String resourceGroupName, Partner partnerInfo,
+        Context context);
 
     /**
+     * Unauthorize a partner.
+     * 
      * Unauthorize a single partner either by partner registration immutable Id or by partner name.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param partnerInfo The information of the partner to be unauthorized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,18 +243,4 @@ public interface PartnerConfigurations {
      * @return partner configuration information.
      */
     PartnerConfiguration unauthorizePartner(String resourceGroupName, Partner partnerInfo);
-
-    /**
-     * Unauthorize a single partner either by partner registration immutable Id or by partner name.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param partnerInfo The information of the partner to be unauthorized.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return partner configuration information along with {@link Response}.
-     */
-    Response<PartnerConfiguration> unauthorizePartnerWithResponse(
-        String resourceGroupName, Partner partnerInfo, Context context);
 }

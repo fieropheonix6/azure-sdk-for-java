@@ -13,11 +13,46 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.customerinsights.fluent.models.KpiResourceFormatInner;
 
-/** An instance of this class provides access to all the operations defined in KpisClient. */
+/**
+ * An instance of this class provides access to all the operations defined in KpisClient.
+ */
 public interface KpisClient {
     /**
      * Creates a KPI or updates an existing KPI in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param kpiName The name of the KPI.
+     * @param parameters Parameters supplied to the create/update KPI operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the KPI resource format.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<KpiResourceFormatInner>, KpiResourceFormatInner> beginCreateOrUpdate(String resourceGroupName,
+        String hubName, String kpiName, KpiResourceFormatInner parameters);
+
+    /**
+     * Creates a KPI or updates an existing KPI in the hub.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param kpiName The name of the KPI.
+     * @param parameters Parameters supplied to the create/update KPI operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the KPI resource format.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<KpiResourceFormatInner>, KpiResourceFormatInner> beginCreateOrUpdate(String resourceGroupName,
+        String hubName, String kpiName, KpiResourceFormatInner parameters, Context context);
+
+    /**
+     * Creates a KPI or updates an existing KPI in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -28,12 +63,12 @@ public interface KpisClient {
      * @return the KPI resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<KpiResourceFormatInner>, KpiResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName, String hubName, String kpiName, KpiResourceFormatInner parameters);
+    KpiResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String kpiName,
+        KpiResourceFormatInner parameters);
 
     /**
      * Creates a KPI or updates an existing KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -45,45 +80,28 @@ public interface KpisClient {
      * @return the KPI resource format.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<KpiResourceFormatInner>, KpiResourceFormatInner> beginCreateOrUpdate(
-        String resourceGroupName, String hubName, String kpiName, KpiResourceFormatInner parameters, Context context);
-
-    /**
-     * Creates a KPI or updates an existing KPI in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param kpiName The name of the KPI.
-     * @param parameters Parameters supplied to the create/update KPI operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the KPI resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KpiResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String kpiName, KpiResourceFormatInner parameters);
-
-    /**
-     * Creates a KPI or updates an existing KPI in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param kpiName The name of the KPI.
-     * @param parameters Parameters supplied to the create/update KPI operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the KPI resource format.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    KpiResourceFormatInner createOrUpdate(
-        String resourceGroupName, String hubName, String kpiName, KpiResourceFormatInner parameters, Context context);
+    KpiResourceFormatInner createOrUpdate(String resourceGroupName, String hubName, String kpiName,
+        KpiResourceFormatInner parameters, Context context);
 
     /**
      * Gets a KPI in the hub.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param kpiName The name of the KPI.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a KPI in the hub along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<KpiResourceFormatInner> getWithResponse(String resourceGroupName, String hubName, String kpiName,
+        Context context);
+
+    /**
+     * Gets a KPI in the hub.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -96,38 +114,22 @@ public interface KpisClient {
     KpiResourceFormatInner get(String resourceGroupName, String hubName, String kpiName);
 
     /**
-     * Gets a KPI in the hub.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param kpiName The name of the KPI.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a KPI in the hub.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<KpiResourceFormatInner> getWithResponse(
-        String resourceGroupName, String hubName, String kpiName, Context context);
-
-    /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String kpiName);
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -135,15 +137,15 @@ public interface KpisClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String hubName, String kpiName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hubName, String kpiName,
+        Context context);
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -156,7 +158,7 @@ public interface KpisClient {
 
     /**
      * Deletes a KPI in the hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -170,7 +172,22 @@ public interface KpisClient {
 
     /**
      * Reprocesses the Kpi values of the specified KPI.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param hubName The name of the hub.
+     * @param kpiName The name of the KPI.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> reprocessWithResponse(String resourceGroupName, String hubName, String kpiName, Context context);
+
+    /**
+     * Reprocesses the Kpi values of the specified KPI.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param kpiName The name of the KPI.
@@ -182,43 +199,28 @@ public interface KpisClient {
     void reprocess(String resourceGroupName, String hubName, String kpiName);
 
     /**
-     * Reprocesses the Kpi values of the specified KPI.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param hubName The name of the hub.
-     * @param kpiName The name of the KPI.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> reprocessWithResponse(String resourceGroupName, String hubName, String kpiName, Context context);
-
-    /**
      * Gets all the KPIs in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the KPIs in the specified hub.
+     * @return all the KPIs in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<KpiResourceFormatInner> listByHub(String resourceGroupName, String hubName);
 
     /**
      * Gets all the KPIs in the specified hub.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hubName The name of the hub.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the KPIs in the specified hub.
+     * @return all the KPIs in the specified hub as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<KpiResourceFormatInner> listByHub(String resourceGroupName, String hubName, Context context);

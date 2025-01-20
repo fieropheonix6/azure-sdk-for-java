@@ -10,39 +10,32 @@ import com.azure.resourcemanager.appcontainers.models.ForwardProxyConvention;
 import com.azure.resourcemanager.appcontainers.models.HttpSettings;
 import com.azure.resourcemanager.appcontainers.models.HttpSettingsRoutes;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class HttpSettingsTests {
-    @Test
-    public void testDeserialize() {
-        HttpSettings model =
-            BinaryData
-                .fromString(
-                    "{\"requireHttps\":false,\"routes\":{\"apiPrefix\":\"zwdejbavor\"},\"forwardProxy\":{\"convention\":\"NoProxy\",\"customHostHeaderName\":\"hctbqvudwxdn\",\"customProtoHeaderName\":\"vo\"}}")
-                .toObject(HttpSettings.class);
-        Assertions.assertEquals(false, model.requireHttps());
-        Assertions.assertEquals("zwdejbavor", model.routes().apiPrefix());
-        Assertions.assertEquals(ForwardProxyConvention.NO_PROXY, model.forwardProxy().convention());
-        Assertions.assertEquals("hctbqvudwxdn", model.forwardProxy().customHostHeaderName());
-        Assertions.assertEquals("vo", model.forwardProxy().customProtoHeaderName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        HttpSettings model = BinaryData.fromString(
+            "{\"requireHttps\":true,\"routes\":{\"apiPrefix\":\"wooc\"},\"forwardProxy\":{\"convention\":\"Standard\",\"customHostHeaderName\":\"qvpkvlrxnjeaseip\",\"customProtoHeaderName\":\"oflokey\"}}")
+            .toObject(HttpSettings.class);
+        Assertions.assertEquals(true, model.requireHttps());
+        Assertions.assertEquals("wooc", model.routes().apiPrefix());
+        Assertions.assertEquals(ForwardProxyConvention.STANDARD, model.forwardProxy().convention());
+        Assertions.assertEquals("qvpkvlrxnjeaseip", model.forwardProxy().customHostHeaderName());
+        Assertions.assertEquals("oflokey", model.forwardProxy().customProtoHeaderName());
     }
 
-    @Test
-    public void testSerialize() {
-        HttpSettings model =
-            new HttpSettings()
-                .withRequireHttps(false)
-                .withRoutes(new HttpSettingsRoutes().withApiPrefix("zwdejbavor"))
-                .withForwardProxy(
-                    new ForwardProxy()
-                        .withConvention(ForwardProxyConvention.NO_PROXY)
-                        .withCustomHostHeaderName("hctbqvudwxdn")
-                        .withCustomProtoHeaderName("vo"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        HttpSettings model = new HttpSettings().withRequireHttps(true)
+            .withRoutes(new HttpSettingsRoutes().withApiPrefix("wooc"))
+            .withForwardProxy(new ForwardProxy().withConvention(ForwardProxyConvention.STANDARD)
+                .withCustomHostHeaderName("qvpkvlrxnjeaseip")
+                .withCustomProtoHeaderName("oflokey"));
         model = BinaryData.fromObject(model).toObject(HttpSettings.class);
-        Assertions.assertEquals(false, model.requireHttps());
-        Assertions.assertEquals("zwdejbavor", model.routes().apiPrefix());
-        Assertions.assertEquals(ForwardProxyConvention.NO_PROXY, model.forwardProxy().convention());
-        Assertions.assertEquals("hctbqvudwxdn", model.forwardProxy().customHostHeaderName());
-        Assertions.assertEquals("vo", model.forwardProxy().customProtoHeaderName());
+        Assertions.assertEquals(true, model.requireHttps());
+        Assertions.assertEquals("wooc", model.routes().apiPrefix());
+        Assertions.assertEquals(ForwardProxyConvention.STANDARD, model.forwardProxy().convention());
+        Assertions.assertEquals("qvpkvlrxnjeaseip", model.forwardProxy().customHostHeaderName());
+        Assertions.assertEquals("oflokey", model.forwardProxy().customProtoHeaderName());
     }
 }

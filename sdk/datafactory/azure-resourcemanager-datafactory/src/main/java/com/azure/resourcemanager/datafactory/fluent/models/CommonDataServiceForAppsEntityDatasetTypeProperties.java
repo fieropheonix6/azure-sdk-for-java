@@ -5,24 +5,32 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Common Data Service for Apps entity dataset properties. */
+/**
+ * Common Data Service for Apps entity dataset properties.
+ */
 @Fluent
-public final class CommonDataServiceForAppsEntityDatasetTypeProperties {
+public final class CommonDataServiceForAppsEntityDatasetTypeProperties
+    implements JsonSerializable<CommonDataServiceForAppsEntityDatasetTypeProperties> {
     /*
      * The logical name of the entity. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "entityName")
     private Object entityName;
 
-    /** Creates an instance of CommonDataServiceForAppsEntityDatasetTypeProperties class. */
+    /**
+     * Creates an instance of CommonDataServiceForAppsEntityDatasetTypeProperties class.
+     */
     public CommonDataServiceForAppsEntityDatasetTypeProperties() {
     }
 
     /**
      * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the entityName value.
      */
     public Object entityName() {
@@ -31,7 +39,7 @@ public final class CommonDataServiceForAppsEntityDatasetTypeProperties {
 
     /**
      * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param entityName the entityName value to set.
      * @return the CommonDataServiceForAppsEntityDatasetTypeProperties object itself.
      */
@@ -42,9 +50,47 @@ public final class CommonDataServiceForAppsEntityDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("entityName", this.entityName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommonDataServiceForAppsEntityDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommonDataServiceForAppsEntityDatasetTypeProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommonDataServiceForAppsEntityDatasetTypeProperties.
+     */
+    public static CommonDataServiceForAppsEntityDatasetTypeProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommonDataServiceForAppsEntityDatasetTypeProperties deserializedCommonDataServiceForAppsEntityDatasetTypeProperties
+                = new CommonDataServiceForAppsEntityDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("entityName".equals(fieldName)) {
+                    deserializedCommonDataServiceForAppsEntityDatasetTypeProperties.entityName = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommonDataServiceForAppsEntityDatasetTypeProperties;
+        });
     }
 }

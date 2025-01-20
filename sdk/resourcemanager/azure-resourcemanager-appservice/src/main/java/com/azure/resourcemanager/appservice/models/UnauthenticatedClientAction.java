@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for UnauthenticatedClientAction. */
+/**
+ * The action to take when an unauthenticated client attempts to access the app.
+ */
 public enum UnauthenticatedClientAction {
-    /** Enum value RedirectToLoginPage. */
+    /**
+     * Enum value RedirectToLoginPage.
+     */
     REDIRECT_TO_LOGIN_PAGE("RedirectToLoginPage"),
 
-    /** Enum value AllowAnonymous. */
+    /**
+     * Enum value AllowAnonymous.
+     */
     ALLOW_ANONYMOUS("AllowAnonymous");
 
-    /** The actual serialized value for a UnauthenticatedClientAction instance. */
+    /**
+     * The actual serialized value for a UnauthenticatedClientAction instance.
+     */
     private final String value;
 
     UnauthenticatedClientAction(String value) {
@@ -24,12 +29,14 @@ public enum UnauthenticatedClientAction {
 
     /**
      * Parses a serialized value to a UnauthenticatedClientAction instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed UnauthenticatedClientAction object, or null if unable to parse.
      */
-    @JsonCreator
     public static UnauthenticatedClientAction fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         UnauthenticatedClientAction[] items = UnauthenticatedClientAction.values();
         for (UnauthenticatedClientAction item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum UnauthenticatedClientAction {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -123,7 +124,7 @@ public abstract class Index extends JsonSerializable {
         try {
             result = IndexKind.valueOf(StringUtils.upperCase(super.getString(Constants.Properties.INDEX_KIND)));
         } catch (IllegalArgumentException e) {
-            super.getLogger().warn("INVALID index kind value %s.", super.getString(Constants.Properties.INDEX_KIND));
+            super.getLogger().warn("INVALID index kind value {}", super.getString(Constants.Properties.INDEX_KIND));
         }
 
         return result;
@@ -135,7 +136,7 @@ public abstract class Index extends JsonSerializable {
      * @param indexKind the index kind.
      */
     private Index setKind(IndexKind indexKind) {
-        super.set(Constants.Properties.INDEX_KIND, indexKind.toString());
+        super.set(Constants.Properties.INDEX_KIND, indexKind.toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
         return this;
     }
 }

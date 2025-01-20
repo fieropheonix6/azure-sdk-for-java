@@ -13,41 +13,42 @@ import com.azure.resourcemanager.machinelearning.models.VMPriceOSType;
 import com.azure.resourcemanager.machinelearning.models.VMTier;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EstimatedVMPricesTests {
-    @Test
-    public void testDeserialize() {
-        EstimatedVMPrices model =
-            BinaryData
-                .fromString(
-                    "{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":45.736942050047844,\"osType\":\"Windows\",\"vmTier\":\"LowPriority\"}]}")
-                .toObject(EstimatedVMPrices.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EstimatedVMPrices model = BinaryData.fromString(
+            "{\"billingCurrency\":\"USD\",\"unitOfMeasure\":\"OneHour\",\"values\":[{\"retailPrice\":51.60313899930067,\"osType\":\"Linux\",\"vmTier\":\"Spot\"},{\"retailPrice\":9.272665097148082,\"osType\":\"Windows\",\"vmTier\":\"LowPriority\"},{\"retailPrice\":45.65930032967857,\"osType\":\"Linux\",\"vmTier\":\"Spot\"},{\"retailPrice\":12.242522151631585,\"osType\":\"Linux\",\"vmTier\":\"LowPriority\"}]}")
+            .toObject(EstimatedVMPrices.class);
         Assertions.assertEquals(BillingCurrency.USD, model.billingCurrency());
         Assertions.assertEquals(UnitOfMeasure.ONE_HOUR, model.unitOfMeasure());
-        Assertions.assertEquals(45.736942050047844, model.values().get(0).retailPrice());
-        Assertions.assertEquals(VMPriceOSType.WINDOWS, model.values().get(0).osType());
-        Assertions.assertEquals(VMTier.LOW_PRIORITY, model.values().get(0).vmTier());
+        Assertions.assertEquals(51.60313899930067, model.values().get(0).retailPrice());
+        Assertions.assertEquals(VMPriceOSType.LINUX, model.values().get(0).osType());
+        Assertions.assertEquals(VMTier.SPOT, model.values().get(0).vmTier());
     }
 
-    @Test
-    public void testSerialize() {
-        EstimatedVMPrices model =
-            new EstimatedVMPrices()
-                .withBillingCurrency(BillingCurrency.USD)
-                .withUnitOfMeasure(UnitOfMeasure.ONE_HOUR)
-                .withValues(
-                    Arrays
-                        .asList(
-                            new EstimatedVMPrice()
-                                .withRetailPrice(45.736942050047844)
-                                .withOsType(VMPriceOSType.WINDOWS)
-                                .withVmTier(VMTier.LOW_PRIORITY)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EstimatedVMPrices model = new EstimatedVMPrices().withBillingCurrency(BillingCurrency.USD)
+            .withUnitOfMeasure(UnitOfMeasure.ONE_HOUR)
+            .withValues(Arrays.asList(
+                new EstimatedVMPrice().withRetailPrice(51.60313899930067)
+                    .withOsType(VMPriceOSType.LINUX)
+                    .withVmTier(VMTier.SPOT),
+                new EstimatedVMPrice().withRetailPrice(9.272665097148082)
+                    .withOsType(VMPriceOSType.WINDOWS)
+                    .withVmTier(VMTier.LOW_PRIORITY),
+                new EstimatedVMPrice().withRetailPrice(45.65930032967857)
+                    .withOsType(VMPriceOSType.LINUX)
+                    .withVmTier(VMTier.SPOT),
+                new EstimatedVMPrice().withRetailPrice(12.242522151631585)
+                    .withOsType(VMPriceOSType.LINUX)
+                    .withVmTier(VMTier.LOW_PRIORITY)));
         model = BinaryData.fromObject(model).toObject(EstimatedVMPrices.class);
         Assertions.assertEquals(BillingCurrency.USD, model.billingCurrency());
         Assertions.assertEquals(UnitOfMeasure.ONE_HOUR, model.unitOfMeasure());
-        Assertions.assertEquals(45.736942050047844, model.values().get(0).retailPrice());
-        Assertions.assertEquals(VMPriceOSType.WINDOWS, model.values().get(0).osType());
-        Assertions.assertEquals(VMTier.LOW_PRIORITY, model.values().get(0).vmTier());
+        Assertions.assertEquals(51.60313899930067, model.values().get(0).retailPrice());
+        Assertions.assertEquals(VMPriceOSType.LINUX, model.values().get(0).osType());
+        Assertions.assertEquals(VMTier.SPOT, model.values().get(0).vmTier());
     }
 }

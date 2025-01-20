@@ -11,17 +11,15 @@ import com.azure.resourcemanager.maintenance.fluent.ApplyUpdateForResourceGroups
 import com.azure.resourcemanager.maintenance.fluent.models.ApplyUpdateInner;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdate;
 import com.azure.resourcemanager.maintenance.models.ApplyUpdateForResourceGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApplyUpdateForResourceGroupsImpl implements ApplyUpdateForResourceGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplyUpdateForResourceGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApplyUpdateForResourceGroupsImpl.class);
 
     private final ApplyUpdateForResourceGroupsClient innerClient;
 
     private final com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager;
 
-    public ApplyUpdateForResourceGroupsImpl(
-        ApplyUpdateForResourceGroupsClient innerClient,
+    public ApplyUpdateForResourceGroupsImpl(ApplyUpdateForResourceGroupsClient innerClient,
         com.azure.resourcemanager.maintenance.MaintenanceManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -29,12 +27,12 @@ public final class ApplyUpdateForResourceGroupsImpl implements ApplyUpdateForRes
 
     public PagedIterable<ApplyUpdate> listByResourceGroup(String resourceGroupName) {
         PagedIterable<ApplyUpdateInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ApplyUpdate> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<ApplyUpdateInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ApplyUpdateImpl(inner1, this.manager()));
     }
 
     private ApplyUpdateForResourceGroupsClient serviceClient() {

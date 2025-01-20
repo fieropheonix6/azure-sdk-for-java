@@ -5,47 +5,47 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ComputeModeOptions;
 import com.azure.resourcemanager.appservice.models.WorkerSizeOptions;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Stamp capacity information. */
+/**
+ * Stamp capacity information.
+ */
 @Fluent
-public final class StampCapacityInner {
+public final class StampCapacityInner implements JsonSerializable<StampCapacityInner> {
     /*
      * Name of the stamp.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Available capacity (# of machines, bytes of storage etc...).
      */
-    @JsonProperty(value = "availableCapacity")
     private Long availableCapacity;
 
     /*
      * Total capacity (# of machines, bytes of storage etc...).
      */
-    @JsonProperty(value = "totalCapacity")
     private Long totalCapacity;
 
     /*
      * Name of the unit.
      */
-    @JsonProperty(value = "unit")
     private String unit;
 
     /*
      * Shared/dedicated workers.
      */
-    @JsonProperty(value = "computeMode")
     private ComputeModeOptions computeMode;
 
     /*
      * Size of the machines.
      */
-    @JsonProperty(value = "workerSize")
     private WorkerSizeOptions workerSize;
 
     /*
@@ -54,38 +54,38 @@ public final class StampCapacityInner {
      * 1 - Medium
      * 2 - Large
      */
-    @JsonProperty(value = "workerSizeId")
     private Integer workerSizeId;
 
     /*
      * If <code>true</code>, it includes basic apps.
      * Basic apps are not used for capacity allocation.
      */
-    @JsonProperty(value = "excludeFromCapacityAllocation")
     private Boolean excludeFromCapacityAllocation;
 
     /*
-     * <code>true</code> if capacity is applicable for all apps; otherwise,
-     * <code>false</code>.
+     * <code>true</code> if capacity is applicable for all apps; otherwise, <code>false</code>.
      */
-    @JsonProperty(value = "isApplicableForAllComputeModes")
     private Boolean isApplicableForAllComputeModes;
 
     /*
      * Shared or Dedicated.
      */
-    @JsonProperty(value = "siteMode")
     private String siteMode;
 
     /*
      * Is this a linux stamp capacity
      */
-    @JsonProperty(value = "isLinux")
     private Boolean isLinux;
 
     /**
+     * Creates an instance of StampCapacityInner class.
+     */
+    public StampCapacityInner() {
+    }
+
+    /**
      * Get the name property: Name of the stamp.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -94,7 +94,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the name property: Name of the stamp.
-     *
+     * 
      * @param name the name value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -105,7 +105,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the availableCapacity property: Available capacity (# of machines, bytes of storage etc...).
-     *
+     * 
      * @return the availableCapacity value.
      */
     public Long availableCapacity() {
@@ -114,7 +114,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the availableCapacity property: Available capacity (# of machines, bytes of storage etc...).
-     *
+     * 
      * @param availableCapacity the availableCapacity value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -125,7 +125,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the totalCapacity property: Total capacity (# of machines, bytes of storage etc...).
-     *
+     * 
      * @return the totalCapacity value.
      */
     public Long totalCapacity() {
@@ -134,7 +134,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the totalCapacity property: Total capacity (# of machines, bytes of storage etc...).
-     *
+     * 
      * @param totalCapacity the totalCapacity value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -145,7 +145,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the unit property: Name of the unit.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -154,7 +154,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the unit property: Name of the unit.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -165,7 +165,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the computeMode property: Shared/dedicated workers.
-     *
+     * 
      * @return the computeMode value.
      */
     public ComputeModeOptions computeMode() {
@@ -174,7 +174,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the computeMode property: Shared/dedicated workers.
-     *
+     * 
      * @param computeMode the computeMode value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -185,7 +185,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the workerSize property: Size of the machines.
-     *
+     * 
      * @return the workerSize value.
      */
     public WorkerSizeOptions workerSize() {
@@ -194,7 +194,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the workerSize property: Size of the machines.
-     *
+     * 
      * @param workerSize the workerSize value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -204,8 +204,11 @@ public final class StampCapacityInner {
     }
 
     /**
-     * Get the workerSizeId property: Size ID of machines: 0 - Small 1 - Medium 2 - Large.
-     *
+     * Get the workerSizeId property: Size ID of machines:
+     * 0 - Small
+     * 1 - Medium
+     * 2 - Large.
+     * 
      * @return the workerSizeId value.
      */
     public Integer workerSizeId() {
@@ -213,8 +216,11 @@ public final class StampCapacityInner {
     }
 
     /**
-     * Set the workerSizeId property: Size ID of machines: 0 - Small 1 - Medium 2 - Large.
-     *
+     * Set the workerSizeId property: Size ID of machines:
+     * 0 - Small
+     * 1 - Medium
+     * 2 - Large.
+     * 
      * @param workerSizeId the workerSizeId value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -224,9 +230,9 @@ public final class StampCapacityInner {
     }
 
     /**
-     * Get the excludeFromCapacityAllocation property: If &lt;code&gt;true&lt;/code&gt;, it includes basic apps. Basic
-     * apps are not used for capacity allocation.
-     *
+     * Get the excludeFromCapacityAllocation property: If &lt;code&gt;true&lt;/code&gt;, it includes basic apps.
+     * Basic apps are not used for capacity allocation.
+     * 
      * @return the excludeFromCapacityAllocation value.
      */
     public Boolean excludeFromCapacityAllocation() {
@@ -234,9 +240,9 @@ public final class StampCapacityInner {
     }
 
     /**
-     * Set the excludeFromCapacityAllocation property: If &lt;code&gt;true&lt;/code&gt;, it includes basic apps. Basic
-     * apps are not used for capacity allocation.
-     *
+     * Set the excludeFromCapacityAllocation property: If &lt;code&gt;true&lt;/code&gt;, it includes basic apps.
+     * Basic apps are not used for capacity allocation.
+     * 
      * @param excludeFromCapacityAllocation the excludeFromCapacityAllocation value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -248,7 +254,7 @@ public final class StampCapacityInner {
     /**
      * Get the isApplicableForAllComputeModes property: &lt;code&gt;true&lt;/code&gt; if capacity is applicable for all
      * apps; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isApplicableForAllComputeModes value.
      */
     public Boolean isApplicableForAllComputeModes() {
@@ -258,7 +264,7 @@ public final class StampCapacityInner {
     /**
      * Set the isApplicableForAllComputeModes property: &lt;code&gt;true&lt;/code&gt; if capacity is applicable for all
      * apps; otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param isApplicableForAllComputeModes the isApplicableForAllComputeModes value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -269,7 +275,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the siteMode property: Shared or Dedicated.
-     *
+     * 
      * @return the siteMode value.
      */
     public String siteMode() {
@@ -278,7 +284,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the siteMode property: Shared or Dedicated.
-     *
+     * 
      * @param siteMode the siteMode value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -289,7 +295,7 @@ public final class StampCapacityInner {
 
     /**
      * Get the isLinux property: Is this a linux stamp capacity.
-     *
+     * 
      * @return the isLinux value.
      */
     public Boolean isLinux() {
@@ -298,7 +304,7 @@ public final class StampCapacityInner {
 
     /**
      * Set the isLinux property: Is this a linux stamp capacity.
-     *
+     * 
      * @param isLinux the isLinux value to set.
      * @return the StampCapacityInner object itself.
      */
@@ -309,9 +315,77 @@ public final class StampCapacityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("availableCapacity", this.availableCapacity);
+        jsonWriter.writeNumberField("totalCapacity", this.totalCapacity);
+        jsonWriter.writeStringField("unit", this.unit);
+        jsonWriter.writeStringField("computeMode", this.computeMode == null ? null : this.computeMode.toString());
+        jsonWriter.writeStringField("workerSize", this.workerSize == null ? null : this.workerSize.toString());
+        jsonWriter.writeNumberField("workerSizeId", this.workerSizeId);
+        jsonWriter.writeBooleanField("excludeFromCapacityAllocation", this.excludeFromCapacityAllocation);
+        jsonWriter.writeBooleanField("isApplicableForAllComputeModes", this.isApplicableForAllComputeModes);
+        jsonWriter.writeStringField("siteMode", this.siteMode);
+        jsonWriter.writeBooleanField("isLinux", this.isLinux);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StampCapacityInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StampCapacityInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StampCapacityInner.
+     */
+    public static StampCapacityInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StampCapacityInner deserializedStampCapacityInner = new StampCapacityInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedStampCapacityInner.name = reader.getString();
+                } else if ("availableCapacity".equals(fieldName)) {
+                    deserializedStampCapacityInner.availableCapacity = reader.getNullable(JsonReader::getLong);
+                } else if ("totalCapacity".equals(fieldName)) {
+                    deserializedStampCapacityInner.totalCapacity = reader.getNullable(JsonReader::getLong);
+                } else if ("unit".equals(fieldName)) {
+                    deserializedStampCapacityInner.unit = reader.getString();
+                } else if ("computeMode".equals(fieldName)) {
+                    deserializedStampCapacityInner.computeMode = ComputeModeOptions.fromString(reader.getString());
+                } else if ("workerSize".equals(fieldName)) {
+                    deserializedStampCapacityInner.workerSize = WorkerSizeOptions.fromString(reader.getString());
+                } else if ("workerSizeId".equals(fieldName)) {
+                    deserializedStampCapacityInner.workerSizeId = reader.getNullable(JsonReader::getInt);
+                } else if ("excludeFromCapacityAllocation".equals(fieldName)) {
+                    deserializedStampCapacityInner.excludeFromCapacityAllocation
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("isApplicableForAllComputeModes".equals(fieldName)) {
+                    deserializedStampCapacityInner.isApplicableForAllComputeModes
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("siteMode".equals(fieldName)) {
+                    deserializedStampCapacityInner.siteMode = reader.getString();
+                } else if ("isLinux".equals(fieldName)) {
+                    deserializedStampCapacityInner.isLinux = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStampCapacityInner;
+        });
     }
 }

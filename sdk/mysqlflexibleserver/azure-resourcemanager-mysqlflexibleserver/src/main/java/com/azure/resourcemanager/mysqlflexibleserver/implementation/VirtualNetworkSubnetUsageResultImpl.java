@@ -15,11 +15,18 @@ public final class VirtualNetworkSubnetUsageResultImpl implements VirtualNetwork
 
     private final com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager;
 
-    VirtualNetworkSubnetUsageResultImpl(
-        VirtualNetworkSubnetUsageResultInner innerObject,
+    VirtualNetworkSubnetUsageResultImpl(VirtualNetworkSubnetUsageResultInner innerObject,
         com.azure.resourcemanager.mysqlflexibleserver.MySqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
+    }
+
+    public String location() {
+        return this.innerModel().location();
+    }
+
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
     }
 
     public List<DelegatedSubnetUsage> delegatedSubnetsUsage() {

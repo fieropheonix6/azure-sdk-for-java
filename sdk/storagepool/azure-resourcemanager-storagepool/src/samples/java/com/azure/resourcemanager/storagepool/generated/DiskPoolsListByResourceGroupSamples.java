@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.storagepool.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DiskPools ListByResourceGroup. */
+/**
+ * Samples for DiskPools ListByResourceGroup.
+ */
 public final class DiskPoolsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/DiskPools_ListByResourceGroup.json
+     * x-ms-original-file: specification/storagepool/resource-manager/Microsoft.StoragePool/stable/2021-08-01/examples/
+     * DiskPools_ListByResourceGroup.json
      */
     /**
      * Sample code: List Disk Pools.
-     *
+     * 
      * @param manager Entry point to StoragePoolManager.
      */
     public static void listDiskPools(com.azure.resourcemanager.storagepool.StoragePoolManager manager) {
-        manager.diskPools().listByResourceGroup("myResourceGroup", Context.NONE);
+        manager.diskPools().listByResourceGroup("myResourceGroup", com.azure.core.util.Context.NONE);
     }
 }

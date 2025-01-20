@@ -5,54 +5,55 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Specifies the Linux operating system settings on the virtual machine. &lt;br&gt;&lt;br&gt;For a list of supported
- * Linux distributions, see [Linux on Azure-Endorsed
+ * Specifies the Linux operating system settings on the virtual machine. For a list of supported Linux distributions,
+ * see [Linux on Azure-Endorsed
  * Distributions](https://docs.microsoft.com/azure/virtual-machines/linux/endorsed-distros).
  */
 @Fluent
-public final class LinuxConfiguration {
+public final class LinuxConfiguration implements JsonSerializable<LinuxConfiguration> {
     /*
      * Specifies whether password authentication should be disabled.
      */
-    @JsonProperty(value = "disablePasswordAuthentication")
     private Boolean disablePasswordAuthentication;
 
     /*
      * Specifies the ssh key configuration for a Linux OS.
      */
-    @JsonProperty(value = "ssh")
     private SshConfiguration ssh;
 
     /*
-     * Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this
-     * property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM
-     * Agent is installed on the VM so that extensions can be added to the VM later.
+     * Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not
+     * specified in the request body, default behavior is to set it to true. This will ensure that VM Agent is installed
+     * on the VM so that extensions can be added to the VM later.
      */
-    @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
 
     /*
      * [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
      */
-    @JsonProperty(value = "patchSettings")
     private LinuxPatchSettings patchSettings;
 
     /*
      * Indicates whether VMAgent Platform Updates is enabled for the Linux virtual machine. Default value is false.
      */
-    @JsonProperty(value = "enableVMAgentPlatformUpdates")
     private Boolean enableVMAgentPlatformUpdates;
 
-    /** Creates an instance of LinuxConfiguration class. */
+    /**
+     * Creates an instance of LinuxConfiguration class.
+     */
     public LinuxConfiguration() {
     }
 
     /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
-     *
+     * 
      * @return the disablePasswordAuthentication value.
      */
     public Boolean disablePasswordAuthentication() {
@@ -61,7 +62,7 @@ public final class LinuxConfiguration {
 
     /**
      * Set the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
-     *
+     * 
      * @param disablePasswordAuthentication the disablePasswordAuthentication value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -72,7 +73,7 @@ public final class LinuxConfiguration {
 
     /**
      * Get the ssh property: Specifies the ssh key configuration for a Linux OS.
-     *
+     * 
      * @return the ssh value.
      */
     public SshConfiguration ssh() {
@@ -81,7 +82,7 @@ public final class LinuxConfiguration {
 
     /**
      * Set the ssh property: Specifies the ssh key configuration for a Linux OS.
-     *
+     * 
      * @param ssh the ssh value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -92,10 +93,9 @@ public final class LinuxConfiguration {
 
     /**
      * Get the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
-     * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
-     * it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM
-     * later.
-     *
+     * machine. When this property is not specified in the request body, default behavior is to set it to true. This
+     * will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
+     * 
      * @return the provisionVMAgent value.
      */
     public Boolean provisionVMAgent() {
@@ -104,10 +104,9 @@ public final class LinuxConfiguration {
 
     /**
      * Set the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
-     * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
-     * it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM
-     * later.
-     *
+     * machine. When this property is not specified in the request body, default behavior is to set it to true. This
+     * will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
+     * 
      * @param provisionVMAgent the provisionVMAgent value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -118,7 +117,7 @@ public final class LinuxConfiguration {
 
     /**
      * Get the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
-     *
+     * 
      * @return the patchSettings value.
      */
     public LinuxPatchSettings patchSettings() {
@@ -127,7 +126,7 @@ public final class LinuxConfiguration {
 
     /**
      * Set the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
-     *
+     * 
      * @param patchSettings the patchSettings value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -139,7 +138,7 @@ public final class LinuxConfiguration {
     /**
      * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
      * Linux virtual machine. Default value is false.
-     *
+     * 
      * @return the enableVMAgentPlatformUpdates value.
      */
     public Boolean enableVMAgentPlatformUpdates() {
@@ -149,7 +148,7 @@ public final class LinuxConfiguration {
     /**
      * Set the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
      * Linux virtual machine. Default value is false.
-     *
+     * 
      * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -160,7 +159,7 @@ public final class LinuxConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -170,5 +169,55 @@ public final class LinuxConfiguration {
         if (patchSettings() != null) {
             patchSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("disablePasswordAuthentication", this.disablePasswordAuthentication);
+        jsonWriter.writeJsonField("ssh", this.ssh);
+        jsonWriter.writeBooleanField("provisionVMAgent", this.provisionVMAgent);
+        jsonWriter.writeJsonField("patchSettings", this.patchSettings);
+        jsonWriter.writeBooleanField("enableVMAgentPlatformUpdates", this.enableVMAgentPlatformUpdates);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxConfiguration if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxConfiguration.
+     */
+    public static LinuxConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxConfiguration deserializedLinuxConfiguration = new LinuxConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("disablePasswordAuthentication".equals(fieldName)) {
+                    deserializedLinuxConfiguration.disablePasswordAuthentication
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("ssh".equals(fieldName)) {
+                    deserializedLinuxConfiguration.ssh = SshConfiguration.fromJson(reader);
+                } else if ("provisionVMAgent".equals(fieldName)) {
+                    deserializedLinuxConfiguration.provisionVMAgent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("patchSettings".equals(fieldName)) {
+                    deserializedLinuxConfiguration.patchSettings = LinuxPatchSettings.fromJson(reader);
+                } else if ("enableVMAgentPlatformUpdates".equals(fieldName)) {
+                    deserializedLinuxConfiguration.enableVMAgentPlatformUpdates
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxConfiguration;
+        });
     }
 }

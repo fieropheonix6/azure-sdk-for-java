@@ -7,20 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CosmosDbSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CosmosDbSettingsTests {
-    @Test
-    public void testDeserialize() {
-        CosmosDbSettings model =
-            BinaryData.fromString("{\"collectionsThroughput\":1098993569}").toObject(CosmosDbSettings.class);
-        Assertions.assertEquals(1098993569, model.collectionsThroughput());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CosmosDbSettings model
+            = BinaryData.fromString("{\"collectionsThroughput\":1838469652}").toObject(CosmosDbSettings.class);
+        Assertions.assertEquals(1838469652, model.collectionsThroughput());
     }
 
-    @Test
-    public void testSerialize() {
-        CosmosDbSettings model = new CosmosDbSettings().withCollectionsThroughput(1098993569);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CosmosDbSettings model = new CosmosDbSettings().withCollectionsThroughput(1838469652);
         model = BinaryData.fromObject(model).toObject(CosmosDbSettings.class);
-        Assertions.assertEquals(1098993569, model.collectionsThroughput());
+        Assertions.assertEquals(1838469652, model.collectionsThroughput());
     }
 }

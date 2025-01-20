@@ -5,28 +5,39 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of notification. */
+/**
+ * The type of notification.
+ */
 public final class NotificationDeliveryMechanism extends ExpandableStringEnum<NotificationDeliveryMechanism> {
-    /** Static value Email for NotificationDeliveryMechanism. */
+    /**
+     * Static value Email for NotificationDeliveryMechanism.
+     */
     public static final NotificationDeliveryMechanism EMAIL = fromString("Email");
 
     /**
+     * Creates a new instance of NotificationDeliveryMechanism value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public NotificationDeliveryMechanism() {
+    }
+
+    /**
      * Creates or finds a NotificationDeliveryMechanism from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NotificationDeliveryMechanism.
      */
-    @JsonCreator
     public static NotificationDeliveryMechanism fromString(String name) {
         return fromString(name, NotificationDeliveryMechanism.class);
     }
 
     /**
      * Gets known NotificationDeliveryMechanism values.
-     *
+     * 
      * @return known NotificationDeliveryMechanism values.
      */
     public static Collection<NotificationDeliveryMechanism> values() {

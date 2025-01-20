@@ -9,12 +9,13 @@ import com.azure.messaging.eventhubs.models.EventPosition;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
@@ -23,6 +24,7 @@ import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
  * Verifies we can use various prefetch options with {@link EventHubConsumerAsyncClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 class SetPrefetchCountTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "3";
     // Default number of events to fetch when creating the consumer.
@@ -31,9 +33,6 @@ class SetPrefetchCountTest extends IntegrationTestBase {
     // Set a large number of events to send to the service.
     private static final int NUMBER_OF_EVENTS = DEFAULT_PREFETCH_COUNT * 3;
 
-    // We use these values to keep track of the events we've pushed to the service and ensure the events we receive are
-    // our own.
-    private static final AtomicBoolean HAS_PUSHED_EVENTS = new AtomicBoolean();
     private static volatile IntegrationTestEventData testData = null;
 
     private EventHubConsumerAsyncClient consumer;
@@ -44,29 +43,27 @@ class SetPrefetchCountTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        if (!HAS_PUSHED_EVENTS.getAndSet(true)) {
-            final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(PARTITION_ID);
-            final String messageId = UUID.randomUUID().toString();
+        final CreateBatchOptions options = new CreateBatchOptions().setPartitionId(PARTITION_ID);
+        final String messageId = UUID.randomUUID().toString();
+        final List<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
 
-            final List<EventData> events = TestUtils.getEvents(NUMBER_OF_EVENTS, messageId);
-            try (EventHubProducerClient producer = createBuilder().buildProducerClient()) {
-                final PartitionProperties properties = producer.getPartitionProperties(PARTITION_ID);
+        try (EventHubProducerClient producer = createBuilder().buildProducerClient()) {
+            final PartitionProperties properties = producer.getPartitionProperties(PARTITION_ID);
 
-                EventDataBatch batch = producer.createBatch(options);
-                for (EventData event : events) {
-                    if (batch.tryAdd(event)) {
-                        continue;
-                    }
-
-                    producer.send(batch);
-                    batch = producer.createBatch(options);
+            EventDataBatch batch = producer.createBatch(options);
+            for (EventData event : events) {
+                if (batch.tryAdd(event)) {
+                    continue;
                 }
 
                 producer.send(batch);
-
-                testData = new IntegrationTestEventData(PARTITION_ID, properties, messageId, events);
-                Assertions.assertNotNull(testData);
+                batch = producer.createBatch(options);
             }
+
+            producer.send(batch);
+
+            testData = new IntegrationTestEventData(PARTITION_ID, properties, messageId, events);
+            Assertions.assertNotNull(testData);
         }
     }
 
@@ -81,13 +78,13 @@ class SetPrefetchCountTest extends IntegrationTestBase {
         final long sequenceNumber = testData.getPartitionProperties().getLastEnqueuedSequenceNumber();
         final EventPosition position = EventPosition.fromSequenceNumber(sequenceNumber);
 
-        consumer = createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .prefetchCount(2000)
-            .buildAsyncConsumerClient();
+        consumer = toClose(
+            createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME).prefetchCount(2000).buildAsyncConsumerClient());
 
         // Act & Assert
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
-            .filter(x -> isMatchingEvent(x, testData.getMessageId())))
+        StepVerifier
+            .create(consumer.receiveFromPartition(PARTITION_ID, position)
+                .filter(x -> isMatchingEvent(x, testData.getMessageId())))
             .expectNextCount(NUMBER_OF_EVENTS)
             .thenCancel()
             .verify(Duration.ofMinutes(2));
@@ -103,16 +100,12 @@ class SetPrefetchCountTest extends IntegrationTestBase {
         final long sequenceNumber = testData.getPartitionProperties().getLastEnqueuedSequenceNumber();
         final EventPosition position = EventPosition.fromSequenceNumber(sequenceNumber);
 
-        consumer = createBuilder()
-            .consumerGroup(DEFAULT_CONSUMER_GROUP_NAME)
-            .prefetchCount(11)
-            .buildAsyncConsumerClient();
+        consumer = toClose(
+            createBuilder().consumerGroup(DEFAULT_CONSUMER_GROUP_NAME).prefetchCount(11).buildAsyncConsumerClient());
 
         // Act & Assert
         StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, position)
             .filter(x -> isMatchingEvent(x, testData.getMessageId()))
-            .take(eventCount))
-            .expectNextCount(eventCount)
-            .verifyComplete();
+            .take(eventCount)).expectNextCount(eventCount).expectComplete().verify(TIMEOUT);
     }
 }

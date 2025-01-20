@@ -13,17 +13,15 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.ResourcePoolsClient;
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.ResourcePoolInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.ResourcePool;
 import com.azure.resourcemanager.vmwarecloudsimple.models.ResourcePools;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourcePoolsImpl implements ResourcePools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourcePoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourcePoolsImpl.class);
 
     private final ResourcePoolsClient innerClient;
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public ResourcePoolsImpl(
-        ResourcePoolsClient innerClient,
+    public ResourcePoolsImpl(ResourcePoolsClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,33 +29,30 @@ public final class ResourcePoolsImpl implements ResourcePools {
 
     public PagedIterable<ResourcePool> list(String regionId, String pcName) {
         PagedIterable<ResourcePoolInner> inner = this.serviceClient().list(regionId, pcName);
-        return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ResourcePool> list(String regionId, String pcName, Context context) {
         PagedIterable<ResourcePoolInner> inner = this.serviceClient().list(regionId, pcName, context);
-        return Utils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ResourcePoolImpl(inner1, this.manager()));
+    }
+
+    public Response<ResourcePool> getWithResponse(String regionId, String pcName, String resourcePoolName,
+        Context context) {
+        Response<ResourcePoolInner> inner
+            = this.serviceClient().getWithResponse(regionId, pcName, resourcePoolName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ResourcePoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ResourcePool get(String regionId, String pcName, String resourcePoolName) {
         ResourcePoolInner inner = this.serviceClient().get(regionId, pcName, resourcePoolName);
         if (inner != null) {
             return new ResourcePoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ResourcePool> getWithResponse(
-        String regionId, String pcName, String resourcePoolName, Context context) {
-        Response<ResourcePoolInner> inner =
-            this.serviceClient().getWithResponse(regionId, pcName, resourcePoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ResourcePoolImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -7,68 +7,87 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicefabric.models.ArmServicePackageActivationMode;
-import com.azure.resourcemanager.servicefabric.models.MoveCost;
-import com.azure.resourcemanager.servicefabric.models.PartitionSchemeDescription;
-import com.azure.resourcemanager.servicefabric.models.ServiceCorrelationDescription;
-import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricDescription;
-import com.azure.resourcemanager.servicefabric.models.ServicePlacementPolicyDescription;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.servicefabric.models.ServiceResourceProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** The service resource. */
+/**
+ * The service resource.
+ */
 @Fluent
 public final class ServiceResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceResourceInner.class);
-
     /*
      * The service resource properties.
      */
-    @JsonProperty(value = "properties")
-    private ServiceResourceProperties innerProperties;
+    private ServiceResourceProperties properties;
 
     /*
-     * It will be deprecated in New API, resource location depends on the
-     * parent resource.
+     * It will be deprecated in New API, resource location depends on the parent resource.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Azure resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Azure resource etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /**
-     * Get the innerProperties property: The service resource properties.
-     *
-     * @return the innerProperties value.
+    /*
+     * The type of the resource.
      */
-    private ServiceResourceProperties innerProperties() {
-        return this.innerProperties;
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ServiceResourceInner class.
+     */
+    public ServiceResourceInner() {
+    }
+
+    /**
+     * Get the properties property: The service resource properties.
+     * 
+     * @return the properties value.
+     */
+    public ServiceResourceProperties properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: The service resource properties.
+     * 
+     * @param properties the properties value to set.
+     * @return the ServiceResourceInner object itself.
+     */
+    public ServiceResourceInner withProperties(ServiceResourceProperties properties) {
+        this.properties = properties;
+        return this;
     }
 
     /**
      * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -77,7 +96,7 @@ public final class ServiceResourceInner extends ProxyResource {
 
     /**
      * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ServiceResourceInner object itself.
      */
@@ -88,7 +107,7 @@ public final class ServiceResourceInner extends ProxyResource {
 
     /**
      * Get the tags property: Azure resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -97,7 +116,7 @@ public final class ServiceResourceInner extends ProxyResource {
 
     /**
      * Set the tags property: Azure resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ServiceResourceInner object itself.
      */
@@ -108,7 +127,7 @@ public final class ServiceResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: Azure resource etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -117,7 +136,7 @@ public final class ServiceResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -125,244 +144,97 @@ public final class ServiceResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
-     * response.
-     *
-     * @return the provisioningState value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String provisioningState() {
-        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the serviceTypeName property: The name of the service type.
-     *
-     * @return the serviceTypeName value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String serviceTypeName() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceTypeName();
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the serviceTypeName property: The name of the service type.
-     *
-     * @param serviceTypeName the serviceTypeName value to set.
-     * @return the ServiceResourceInner object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public ServiceResourceInner withServiceTypeName(String serviceTypeName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServiceTypeName(serviceTypeName);
-        return this;
-    }
-
-    /**
-     * Get the partitionDescription property: Describes how the service is partitioned.
-     *
-     * @return the partitionDescription value.
-     */
-    public PartitionSchemeDescription partitionDescription() {
-        return this.innerProperties() == null ? null : this.innerProperties().partitionDescription();
-    }
-
-    /**
-     * Set the partitionDescription property: Describes how the service is partitioned.
-     *
-     * @param partitionDescription the partitionDescription value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withPartitionDescription(PartitionSchemeDescription partitionDescription) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withPartitionDescription(partitionDescription);
-        return this;
-    }
-
-    /**
-     * Get the servicePackageActivationMode property: The activation Mode of the service package.
-     *
-     * @return the servicePackageActivationMode value.
-     */
-    public ArmServicePackageActivationMode servicePackageActivationMode() {
-        return this.innerProperties() == null ? null : this.innerProperties().servicePackageActivationMode();
-    }
-
-    /**
-     * Set the servicePackageActivationMode property: The activation Mode of the service package.
-     *
-     * @param servicePackageActivationMode the servicePackageActivationMode value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServicePackageActivationMode(
-        ArmServicePackageActivationMode servicePackageActivationMode) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServicePackageActivationMode(servicePackageActivationMode);
-        return this;
-    }
-
-    /**
-     * Get the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
-     * accessed via its DNS name instead of service name.
-     *
-     * @return the serviceDnsName value.
-     */
-    public String serviceDnsName() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceDnsName();
-    }
-
-    /**
-     * Set the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
-     * accessed via its DNS name instead of service name.
-     *
-     * @param serviceDnsName the serviceDnsName value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServiceDnsName(String serviceDnsName) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServiceDnsName(serviceDnsName);
-        return this;
-    }
-
-    /**
-     * Get the placementConstraints property: The placement constraints as a string. Placement constraints are boolean
-     * expressions on node properties and allow for restricting a service to particular nodes based on the service
-     * requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor
-     * == blue)".
-     *
-     * @return the placementConstraints value.
-     */
-    public String placementConstraints() {
-        return this.innerProperties() == null ? null : this.innerProperties().placementConstraints();
-    }
-
-    /**
-     * Set the placementConstraints property: The placement constraints as a string. Placement constraints are boolean
-     * expressions on node properties and allow for restricting a service to particular nodes based on the service
-     * requirements. For example, to place a service on nodes where NodeType is blue specify the following: "NodeColor
-     * == blue)".
-     *
-     * @param placementConstraints the placementConstraints value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withPlacementConstraints(String placementConstraints) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withPlacementConstraints(placementConstraints);
-        return this;
-    }
-
-    /**
-     * Get the correlationScheme property: A list that describes the correlation of the service with other services.
-     *
-     * @return the correlationScheme value.
-     */
-    public List<ServiceCorrelationDescription> correlationScheme() {
-        return this.innerProperties() == null ? null : this.innerProperties().correlationScheme();
-    }
-
-    /**
-     * Set the correlationScheme property: A list that describes the correlation of the service with other services.
-     *
-     * @param correlationScheme the correlationScheme value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withCorrelationScheme(correlationScheme);
-        return this;
-    }
-
-    /**
-     * Get the serviceLoadMetrics property: The service load metrics is given as an array of
-     * ServiceLoadMetricDescription objects.
-     *
-     * @return the serviceLoadMetrics value.
-     */
-    public List<ServiceLoadMetricDescription> serviceLoadMetrics() {
-        return this.innerProperties() == null ? null : this.innerProperties().serviceLoadMetrics();
-    }
-
-    /**
-     * Set the serviceLoadMetrics property: The service load metrics is given as an array of
-     * ServiceLoadMetricDescription objects.
-     *
-     * @param serviceLoadMetrics the serviceLoadMetrics value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServiceLoadMetrics(serviceLoadMetrics);
-        return this;
-    }
-
-    /**
-     * Get the servicePlacementPolicies property: A list that describes the correlation of the service with other
-     * services.
-     *
-     * @return the servicePlacementPolicies value.
-     */
-    public List<ServicePlacementPolicyDescription> servicePlacementPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().servicePlacementPolicies();
-    }
-
-    /**
-     * Set the servicePlacementPolicies property: A list that describes the correlation of the service with other
-     * services.
-     *
-     * @param servicePlacementPolicies the servicePlacementPolicies value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withServicePlacementPolicies(servicePlacementPolicies);
-        return this;
-    }
-
-    /**
-     * Get the defaultMoveCost property: Specifies the move cost for the service.
-     *
-     * @return the defaultMoveCost value.
-     */
-    public MoveCost defaultMoveCost() {
-        return this.innerProperties() == null ? null : this.innerProperties().defaultMoveCost();
-    }
-
-    /**
-     * Set the defaultMoveCost property: Specifies the move cost for the service.
-     *
-     * @param defaultMoveCost the defaultMoveCost value to set.
-     * @return the ServiceResourceInner object itself.
-     */
-    public ServiceResourceInner withDefaultMoveCost(MoveCost defaultMoveCost) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new ServiceResourceProperties();
-        }
-        this.innerProperties().withDefaultMoveCost(defaultMoveCost);
-        return this;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ServiceResourceInner.
+     */
+    public static ServiceResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceResourceInner deserializedServiceResourceInner = new ServiceResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedServiceResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedServiceResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedServiceResourceInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServiceResourceInner.properties = ServiceResourceProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedServiceResourceInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServiceResourceInner.tags = tags;
+                } else if ("etag".equals(fieldName)) {
+                    deserializedServiceResourceInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedServiceResourceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceResourceInner;
+        });
     }
 }

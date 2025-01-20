@@ -5,24 +5,33 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ClientDiscoveryForProperties Class to represent shoebox properties in json client discovery. */
+/**
+ * ClientDiscoveryForProperties
+ * 
+ * Class to represent shoebox properties in json client discovery.
+ */
 @Fluent
-public final class ClientDiscoveryForProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClientDiscoveryForProperties.class);
-
+public final class ClientDiscoveryForProperties implements JsonSerializable<ClientDiscoveryForProperties> {
     /*
-     * ClientDiscoveryForServiceSpecification Operation properties.
+     * Operation properties.
      */
-    @JsonProperty(value = "serviceSpecification")
     private ClientDiscoveryForServiceSpecification serviceSpecification;
 
     /**
-     * Get the serviceSpecification property: ClientDiscoveryForServiceSpecification Operation properties.
-     *
+     * Creates an instance of ClientDiscoveryForProperties class.
+     */
+    public ClientDiscoveryForProperties() {
+    }
+
+    /**
+     * Get the serviceSpecification property: Operation properties.
+     * 
      * @return the serviceSpecification value.
      */
     public ClientDiscoveryForServiceSpecification serviceSpecification() {
@@ -30,25 +39,62 @@ public final class ClientDiscoveryForProperties {
     }
 
     /**
-     * Set the serviceSpecification property: ClientDiscoveryForServiceSpecification Operation properties.
-     *
+     * Set the serviceSpecification property: Operation properties.
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the ClientDiscoveryForProperties object itself.
      */
-    public ClientDiscoveryForProperties withServiceSpecification(
-        ClientDiscoveryForServiceSpecification serviceSpecification) {
+    public ClientDiscoveryForProperties
+        withServiceSpecification(ClientDiscoveryForServiceSpecification serviceSpecification) {
         this.serviceSpecification = serviceSpecification;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (serviceSpecification() != null) {
             serviceSpecification().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("serviceSpecification", this.serviceSpecification);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClientDiscoveryForProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClientDiscoveryForProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClientDiscoveryForProperties.
+     */
+    public static ClientDiscoveryForProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClientDiscoveryForProperties deserializedClientDiscoveryForProperties = new ClientDiscoveryForProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceSpecification".equals(fieldName)) {
+                    deserializedClientDiscoveryForProperties.serviceSpecification
+                        = ClientDiscoveryForServiceSpecification.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClientDiscoveryForProperties;
+        });
     }
 }

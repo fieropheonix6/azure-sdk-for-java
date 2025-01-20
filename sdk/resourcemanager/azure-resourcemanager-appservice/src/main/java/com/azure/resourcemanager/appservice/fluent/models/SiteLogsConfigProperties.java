@@ -5,41 +5,49 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ApplicationLogsConfig;
 import com.azure.resourcemanager.appservice.models.EnabledConfig;
 import com.azure.resourcemanager.appservice.models.HttpLogsConfig;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** SiteLogsConfig resource specific properties. */
+/**
+ * SiteLogsConfig resource specific properties.
+ */
 @Fluent
-public final class SiteLogsConfigProperties {
+public final class SiteLogsConfigProperties implements JsonSerializable<SiteLogsConfigProperties> {
     /*
      * Application logs configuration.
      */
-    @JsonProperty(value = "applicationLogs")
     private ApplicationLogsConfig applicationLogs;
 
     /*
      * HTTP logs configuration.
      */
-    @JsonProperty(value = "httpLogs")
     private HttpLogsConfig httpLogs;
 
     /*
      * Failed requests tracing configuration.
      */
-    @JsonProperty(value = "failedRequestsTracing")
     private EnabledConfig failedRequestsTracing;
 
     /*
      * Detailed error messages configuration.
      */
-    @JsonProperty(value = "detailedErrorMessages")
     private EnabledConfig detailedErrorMessages;
 
     /**
+     * Creates an instance of SiteLogsConfigProperties class.
+     */
+    public SiteLogsConfigProperties() {
+    }
+
+    /**
      * Get the applicationLogs property: Application logs configuration.
-     *
+     * 
      * @return the applicationLogs value.
      */
     public ApplicationLogsConfig applicationLogs() {
@@ -48,7 +56,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Set the applicationLogs property: Application logs configuration.
-     *
+     * 
      * @param applicationLogs the applicationLogs value to set.
      * @return the SiteLogsConfigProperties object itself.
      */
@@ -59,7 +67,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Get the httpLogs property: HTTP logs configuration.
-     *
+     * 
      * @return the httpLogs value.
      */
     public HttpLogsConfig httpLogs() {
@@ -68,7 +76,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Set the httpLogs property: HTTP logs configuration.
-     *
+     * 
      * @param httpLogs the httpLogs value to set.
      * @return the SiteLogsConfigProperties object itself.
      */
@@ -79,7 +87,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Get the failedRequestsTracing property: Failed requests tracing configuration.
-     *
+     * 
      * @return the failedRequestsTracing value.
      */
     public EnabledConfig failedRequestsTracing() {
@@ -88,7 +96,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Set the failedRequestsTracing property: Failed requests tracing configuration.
-     *
+     * 
      * @param failedRequestsTracing the failedRequestsTracing value to set.
      * @return the SiteLogsConfigProperties object itself.
      */
@@ -99,7 +107,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Get the detailedErrorMessages property: Detailed error messages configuration.
-     *
+     * 
      * @return the detailedErrorMessages value.
      */
     public EnabledConfig detailedErrorMessages() {
@@ -108,7 +116,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Set the detailedErrorMessages property: Detailed error messages configuration.
-     *
+     * 
      * @param detailedErrorMessages the detailedErrorMessages value to set.
      * @return the SiteLogsConfigProperties object itself.
      */
@@ -119,7 +127,7 @@ public final class SiteLogsConfigProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -135,5 +143,50 @@ public final class SiteLogsConfigProperties {
         if (detailedErrorMessages() != null) {
             detailedErrorMessages().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("applicationLogs", this.applicationLogs);
+        jsonWriter.writeJsonField("httpLogs", this.httpLogs);
+        jsonWriter.writeJsonField("failedRequestsTracing", this.failedRequestsTracing);
+        jsonWriter.writeJsonField("detailedErrorMessages", this.detailedErrorMessages);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteLogsConfigProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteLogsConfigProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SiteLogsConfigProperties.
+     */
+    public static SiteLogsConfigProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteLogsConfigProperties deserializedSiteLogsConfigProperties = new SiteLogsConfigProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("applicationLogs".equals(fieldName)) {
+                    deserializedSiteLogsConfigProperties.applicationLogs = ApplicationLogsConfig.fromJson(reader);
+                } else if ("httpLogs".equals(fieldName)) {
+                    deserializedSiteLogsConfigProperties.httpLogs = HttpLogsConfig.fromJson(reader);
+                } else if ("failedRequestsTracing".equals(fieldName)) {
+                    deserializedSiteLogsConfigProperties.failedRequestsTracing = EnabledConfig.fromJson(reader);
+                } else if ("detailedErrorMessages".equals(fieldName)) {
+                    deserializedSiteLogsConfigProperties.detailedErrorMessages = EnabledConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteLogsConfigProperties;
+        });
     }
 }

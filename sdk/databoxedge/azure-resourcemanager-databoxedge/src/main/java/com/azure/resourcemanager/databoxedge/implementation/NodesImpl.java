@@ -11,10 +11,9 @@ import com.azure.resourcemanager.databoxedge.fluent.NodesClient;
 import com.azure.resourcemanager.databoxedge.fluent.models.NodeInner;
 import com.azure.resourcemanager.databoxedge.models.Node;
 import com.azure.resourcemanager.databoxedge.models.Nodes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NodesImpl implements Nodes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NodesImpl.class);
 
     private final NodesClient innerClient;
 
@@ -27,13 +26,13 @@ public final class NodesImpl implements Nodes {
 
     public PagedIterable<Node> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName) {
         PagedIterable<NodeInner> inner = this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new NodeImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NodeImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Node> listByDataBoxEdgeDevice(String deviceName, String resourceGroupName, Context context) {
-        PagedIterable<NodeInner> inner =
-            this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new NodeImpl(inner1, this.manager()));
+        PagedIterable<NodeInner> inner
+            = this.serviceClient().listByDataBoxEdgeDevice(deviceName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new NodeImpl(inner1, this.manager()));
     }
 
     private NodesClient serviceClient() {

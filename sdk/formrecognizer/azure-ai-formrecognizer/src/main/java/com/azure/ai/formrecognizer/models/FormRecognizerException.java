@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * General exception for FormRecognizer client-side related failures.
  *
- * @see FormRecognizerErrorInformation
+ * {@link FormRecognizerErrorInformation}
  */
 public class FormRecognizerException extends AzureException {
     /**
@@ -38,8 +38,11 @@ public class FormRecognizerException extends AzureException {
         if (!CoreUtils.isNullOrEmpty(errorInformationList)) {
             for (FormRecognizerErrorInformation errorInformation : errorInformationList) {
                 errorInformationStringBuilder.append(", " + "errorCode" + ": [")
-                    .append(errorInformation.getErrorCode()).append("], ").append("message")
-                    .append(": ").append(errorInformation.getMessage());
+                    .append(errorInformation.getErrorCode())
+                    .append("], ")
+                    .append("message")
+                    .append(": ")
+                    .append(errorInformation.getMessage());
             }
             this.errorInformationList = Collections.unmodifiableList(errorInformationList);
         } else {

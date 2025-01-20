@@ -6,44 +6,47 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Route resource. */
+/**
+ * Route resource.
+ */
 @Fluent
 public final class RouteInner extends SubResource {
     /*
      * Properties of the route.
      */
-    @JsonProperty(value = "properties")
     private RoutePropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of RouteInner class. */
+    /**
+     * Creates an instance of RouteInner class.
+     */
     public RouteInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the route.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RoutePropertiesFormat innerProperties() {
@@ -53,7 +56,7 @@ public final class RouteInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +66,7 @@ public final class RouteInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the RouteInner object itself.
      */
@@ -74,7 +77,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -83,7 +86,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Get the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -92,7 +95,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Set the type property: The type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the RouteInner object itself.
      */
@@ -101,7 +104,9 @@ public final class RouteInner extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteInner withId(String id) {
         super.withId(id);
@@ -110,7 +115,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Get the addressPrefix property: The destination CIDR to which the route applies.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -119,7 +124,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Set the addressPrefix property: The destination CIDR to which the route applies.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the RouteInner object itself.
      */
@@ -133,7 +138,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Get the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * 
      * @return the nextHopType value.
      */
     public RouteNextHopType nextHopType() {
@@ -142,7 +147,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Set the nextHopType property: The type of Azure hop the packet should be sent to.
-     *
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the RouteInner object itself.
      */
@@ -157,7 +162,7 @@ public final class RouteInner extends SubResource {
     /**
      * Get the nextHopIpAddress property: The IP address packets should be forwarded to. Next hop values are only
      * allowed in routes where the next hop type is VirtualAppliance.
-     *
+     * 
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
@@ -167,7 +172,7 @@ public final class RouteInner extends SubResource {
     /**
      * Set the nextHopIpAddress property: The IP address packets should be forwarded to. Next hop values are only
      * allowed in routes where the next hop type is VirtualAppliance.
-     *
+     * 
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the RouteInner object itself.
      */
@@ -181,7 +186,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the route resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -191,7 +196,7 @@ public final class RouteInner extends SubResource {
     /**
      * Get the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
      * regardless of LPM.
-     *
+     * 
      * @return the hasBgpOverride value.
      */
     public Boolean hasBgpOverride() {
@@ -199,28 +204,60 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the hasBgpOverride property: A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
-     *
-     * @param hasBgpOverride the hasBgpOverride value to set.
-     * @return the RouteInner object itself.
-     */
-    public RouteInner withHasBgpOverride(Boolean hasBgpOverride) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoutePropertiesFormat();
-        }
-        this.innerProperties().withHasBgpOverride(hasBgpOverride);
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the RouteInner.
+     */
+    public static RouteInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteInner deserializedRouteInner = new RouteInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRouteInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRouteInner.innerProperties = RoutePropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedRouteInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedRouteInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRouteInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteInner;
+        });
     }
 }

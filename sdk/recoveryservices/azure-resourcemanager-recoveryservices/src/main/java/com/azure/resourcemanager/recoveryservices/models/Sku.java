@@ -6,49 +6,54 @@ package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Identifies the unique system identifier for each Azure resource. */
+/**
+ * Identifies the unique system identifier for each Azure resource.
+ */
 @Fluent
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
-     * Name of SKU is RS0 (Recovery Services 0th version) and the tier is
-     * standard tier. They do not have affect on backend storage redundancy or
-     * any other vault settings. To manage storage redundancy, use the
-     * backupstorageconfig
+     * Name of SKU is RS0 (Recovery Services 0th version) and the tier is standard tier. They do not have affect on
+     * backend storage redundancy or any other vault settings. To manage storage redundancy, use the backupstorageconfig
      */
-    @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /*
      * The Sku tier.
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * The sku family
      */
-    @JsonProperty(value = "family")
     private String family;
 
     /*
      * The sku size
      */
-    @JsonProperty(value = "size")
     private String size;
 
     /*
      * The sku capacity
      */
-    @JsonProperty(value = "capacity")
     private String capacity;
+
+    /**
+     * Creates an instance of Sku class.
+     */
+    public Sku() {
+    }
 
     /**
      * Get the name property: Name of SKU is RS0 (Recovery Services 0th version) and the tier is standard tier. They do
      * not have affect on backend storage redundancy or any other vault settings. To manage storage redundancy, use the
      * backupstorageconfig.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -59,7 +64,7 @@ public final class Sku {
      * Set the name property: Name of SKU is RS0 (Recovery Services 0th version) and the tier is standard tier. They do
      * not have affect on backend storage redundancy or any other vault settings. To manage storage redundancy, use the
      * backupstorageconfig.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -70,7 +75,7 @@ public final class Sku {
 
     /**
      * Get the tier property: The Sku tier.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -79,7 +84,7 @@ public final class Sku {
 
     /**
      * Set the tier property: The Sku tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -90,7 +95,7 @@ public final class Sku {
 
     /**
      * Get the family property: The sku family.
-     *
+     * 
      * @return the family value.
      */
     public String family() {
@@ -99,7 +104,7 @@ public final class Sku {
 
     /**
      * Set the family property: The sku family.
-     *
+     * 
      * @param family the family value to set.
      * @return the Sku object itself.
      */
@@ -110,7 +115,7 @@ public final class Sku {
 
     /**
      * Get the size property: The sku size.
-     *
+     * 
      * @return the size value.
      */
     public String size() {
@@ -119,7 +124,7 @@ public final class Sku {
 
     /**
      * Set the size property: The sku size.
-     *
+     * 
      * @param size the size value to set.
      * @return the Sku object itself.
      */
@@ -130,7 +135,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: The sku capacity.
-     *
+     * 
      * @return the capacity value.
      */
     public String capacity() {
@@ -139,7 +144,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: The sku capacity.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -150,15 +155,63 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Sku"));
+            throw LOGGER.atError().log(new IllegalArgumentException("Missing required property name in model Sku"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Sku.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeStringField("family", this.family);
+        jsonWriter.writeStringField("size", this.size);
+        jsonWriter.writeStringField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSku.name = SkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = reader.getString();
+                } else if ("family".equals(fieldName)) {
+                    deserializedSku.family = reader.getString();
+                } else if ("size".equals(fieldName)) {
+                    deserializedSku.size = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
+    }
 }

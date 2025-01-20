@@ -6,38 +6,45 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** PostgreSQL linked service properties. */
+/**
+ * PostgreSQL linked service properties.
+ */
 @Fluent
-public final class PostgreSqlLinkedServiceTypeProperties {
+public final class PostgreSqlLinkedServiceTypeProperties
+    implements JsonSerializable<PostgreSqlLinkedServiceTypeProperties> {
     /*
-     * The connection string.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "password")
     private AzureKeyVaultSecretReference password;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of PostgreSqlLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of PostgreSqlLinkedServiceTypeProperties class.
+     */
     public PostgreSqlLinkedServiceTypeProperties() {
     }
 
     /**
-     * Get the connectionString property: The connection string.
-     *
+     * Get the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -45,8 +52,9 @@ public final class PostgreSqlLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the connectionString property: The connection string.
-     *
+     * Set the connectionString property: The connection string. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
+     * 
      * @param connectionString the connectionString value to set.
      * @return the PostgreSqlLinkedServiceTypeProperties object itself.
      */
@@ -57,7 +65,7 @@ public final class PostgreSqlLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the password value.
      */
     public AzureKeyVaultSecretReference password() {
@@ -66,7 +74,7 @@ public final class PostgreSqlLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param password the password value to set.
      * @return the PostgreSqlLinkedServiceTypeProperties object itself.
      */
@@ -77,37 +85,36 @@ public final class PostgreSqlLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the PostgreSqlLinkedServiceTypeProperties object itself.
      */
-    public PostgreSqlLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public PostgreSqlLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model PostgreSqlLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property connectionString in model PostgreSqlLinkedServiceTypeProperties"));
         }
         if (password() != null) {
             password().validate();
@@ -115,4 +122,49 @@ public final class PostgreSqlLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(PostgreSqlLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeJsonField("password", this.password);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PostgreSqlLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PostgreSqlLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PostgreSqlLinkedServiceTypeProperties.
+     */
+    public static PostgreSqlLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PostgreSqlLinkedServiceTypeProperties deserializedPostgreSqlLinkedServiceTypeProperties
+                = new PostgreSqlLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedPostgreSqlLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("password".equals(fieldName)) {
+                    deserializedPostgreSqlLinkedServiceTypeProperties.password
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedPostgreSqlLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPostgreSqlLinkedServiceTypeProperties;
+        });
+    }
 }

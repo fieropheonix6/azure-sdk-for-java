@@ -6,9 +6,12 @@ package com.azure.core.util.io;
 import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.implementation.AsynchronousFileChannelAdapter;
 import com.azure.core.implementation.ByteCountingAsynchronousByteChannel;
+import com.azure.core.implementation.ImplUtils;
 import com.azure.core.implementation.logging.LoggingKeys;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.core.util.logging.LoggingEventBuilder;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.MonoSink;
 
@@ -18,9 +21,13 @@ import java.nio.channels.AsynchronousByteChannel;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.ReadableByteChannel;
+import java.nio.channels.SeekableByteChannel;
 import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 import java.util.function.BiFunction;
+
+import static com.azure.core.http.HttpHeaderName.TRACEPARENT;
+import static com.azure.core.http.HttpHeaderName.X_MS_CLIENT_REQUEST_ID;
 
 /**
  * Utilities related to IO operations that involve channels, streams, byte transfers.
@@ -28,8 +35,11 @@ import java.util.function.BiFunction;
 public final class IOUtils {
 
     private static final ClientLogger LOGGER = new ClientLogger(IOUtils.class);
-
     private static final int DEFAULT_BUFFER_SIZE = 8192;
+    private static final int SIXTY_FOUR_KB = 64 * 1024;
+    private static final int THIRTY_TWO_KB = 32 * 1024;
+    private static final int MB = 1024 * 1024;
+    private static final int GB = 1024 * MB;
 
     /**
      * Adapts {@link AsynchronousFileChannel} to {@link AsynchronousByteChannel}.
@@ -39,8 +49,8 @@ public final class IOUtils {
      * @throws NullPointerException When {@code fileChannel} is null.
      * @throws IllegalArgumentException When {@code position} is negative.
      */
-    public static AsynchronousByteChannel toAsynchronousByteChannel(
-        AsynchronousFileChannel fileChannel, long position) {
+    public static AsynchronousByteChannel toAsynchronousByteChannel(AsynchronousFileChannel fileChannel,
+        long position) {
         Objects.requireNonNull(fileChannel, "'fileChannel' must not be null");
         if (position < 0) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'position' cannot be less than 0."));
@@ -50,40 +60,82 @@ public final class IOUtils {
 
     /**
      * Transfers bytes from {@link ReadableByteChannel} to {@link WritableByteChannel}.
+     *
      * @param source A source {@link ReadableByteChannel}.
      * @param destination A destination {@link WritableByteChannel}.
      * @throws IOException When I/O operation fails.
-     * @throws NullPointerException When {@code source} is null.
-     * @throws NullPointerException When {@code destination} is null.
+     * @throws NullPointerException When {@code source} or {@code destination} is null.
      */
     public static void transfer(ReadableByteChannel source, WritableByteChannel destination) throws IOException {
-        Objects.requireNonNull(source, "'source' must not be null");
-        Objects.requireNonNull(source, "'destination' must not be null");
-        ByteBuffer buffer = ByteBuffer.allocate(DEFAULT_BUFFER_SIZE);
+        transfer(source, destination, null);
+    }
+
+    /**
+     * Transfers bytes from {@link ReadableByteChannel} to {@link WritableByteChannel}.
+     *
+     * @param source A source {@link ReadableByteChannel}.
+     * @param destination A destination {@link WritableByteChannel}.
+     * @param estimatedSourceSize An estimated size of the source channel, may be null. Used to better determine the
+     * size of the buffer used to transfer data in an attempt to reduce read and write calls.
+     * @throws IOException When I/O operation fails.
+     * @throws NullPointerException When {@code source} or {@code destination} is null.
+     */
+    public static void transfer(ReadableByteChannel source, WritableByteChannel destination, Long estimatedSourceSize)
+        throws IOException {
+        if (source == null && destination == null) {
+            throw new NullPointerException("'source' and 'destination' cannot be null.");
+        } else if (source == null) {
+            throw new NullPointerException("'source' cannot be null.");
+        } else if (destination == null) {
+            throw new NullPointerException("'destination' cannot be null.");
+        }
+
+        int bufferSize = (estimatedSourceSize == null) ? getBufferSize(source) : getBufferSize(estimatedSourceSize);
+        ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         int read;
         do {
             buffer.clear();
             read = source.read(buffer);
             buffer.flip();
-            while (buffer.hasRemaining()) {
-                destination.write(buffer);
-            }
+            ImplUtils.fullyWriteBuffer(buffer, destination);
         } while (read >= 0);
     }
 
     /**
      * Transfers bytes from {@link ReadableByteChannel} to {@link AsynchronousByteChannel}.
+     *
      * @param source A source {@link ReadableByteChannel}.
      * @param destination A destination {@link AsynchronousByteChannel}.
      * @return A {@link Mono} that completes when transfer is finished.
-     * @throws NullPointerException When {@code source} is null.
-     * @throws NullPointerException When {@code destination} is null.
+     * @throws NullPointerException When {@code source} or {@code destination} is null.
      */
     public static Mono<Void> transferAsync(ReadableByteChannel source, AsynchronousByteChannel destination) {
-        Objects.requireNonNull(source, "'source' must not be null");
-        Objects.requireNonNull(source, "'destination' must not be null");
+        return transferAsync(source, destination, null);
+    }
+
+    /**
+     * Transfers bytes from {@link ReadableByteChannel} to {@link AsynchronousByteChannel}.
+     *
+     * @param source A source {@link ReadableByteChannel}.
+     * @param destination A destination {@link AsynchronousByteChannel}.
+     * @param estimatedSourceSize An estimated size of the source channel, may be null. Used to better determine the
+     * size of the buffer used to transfer data in an attempt to reduce read and write calls.
+     * @return A {@link Mono} that completes when transfer is finished.
+     * @throws NullPointerException When {@code source} or {@code destination} is null.
+     */
+    public static Mono<Void> transferAsync(ReadableByteChannel source, AsynchronousByteChannel destination,
+        Long estimatedSourceSize) {
+        if (source == null && destination == null) {
+            return Mono.error(new NullPointerException("'source' and 'destination' cannot be null."));
+        } else if (source == null) {
+            return Mono.error(new NullPointerException("'source' cannot be null."));
+        } else if (destination == null) {
+            return Mono.error(new NullPointerException("'destination' cannot be null."));
+        }
+
+        int bufferSize = (estimatedSourceSize == null) ? getBufferSize(source) : getBufferSize(estimatedSourceSize);
         return Mono.create(sink -> sink.onRequest(value -> {
-            ByteBuffer buffer = ByteBuffer.allocate(DEFAULT_BUFFER_SIZE);
+            ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
             try {
                 transferAsynchronously(source, destination, buffer, sink);
             } catch (IOException e) {
@@ -92,8 +144,7 @@ public final class IOUtils {
         }));
     }
 
-    private static void transferAsynchronously(
-        ReadableByteChannel source, AsynchronousByteChannel destination,
+    private static void transferAsynchronously(ReadableByteChannel source, AsynchronousByteChannel destination,
         ByteBuffer buffer, MonoSink<Void> sink) throws IOException {
         buffer.clear();
         int read = source.read(buffer);
@@ -138,42 +189,91 @@ public final class IOUtils {
      * @param maxRetries The maximum number of times a download can be resumed when an error occurs.
      * @return A {@link Mono} which completion indicates successful transfer.
      */
-    public static Mono<Void> transferStreamResponseToAsynchronousByteChannel(
-        AsynchronousByteChannel targetChannel,
-        StreamResponse sourceResponse,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+    public static Mono<Void> transferStreamResponseToAsynchronousByteChannel(AsynchronousByteChannel targetChannel,
+        StreamResponse sourceResponse, BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
         ProgressReporter progressReporter, int maxRetries) {
 
         return transferStreamResponseToAsynchronousByteChannelHelper(
-            new ByteCountingAsynchronousByteChannel(targetChannel, null, progressReporter),
-            sourceResponse, onErrorResume, maxRetries, 0);
+            new ByteCountingAsynchronousByteChannel(targetChannel, null, progressReporter), sourceResponse,
+            onErrorResume, maxRetries, 0);
     }
 
     private static Mono<Void> transferStreamResponseToAsynchronousByteChannelHelper(
-        ByteCountingAsynchronousByteChannel targetChannel,
-        StreamResponse response,
-        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
-        int maxRetries, int retryCount) {
+        ByteCountingAsynchronousByteChannel targetChannel, StreamResponse response,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, int maxRetries, int retryCount) {
 
-        return response.writeValueToAsync(targetChannel)
-            .doFinally(ignored -> response.close())
-            .onErrorResume(Exception.class, exception -> {
+        return Mono.using(() -> response,
+            r -> r.writeValueToAsync(targetChannel).onErrorResume(Exception.class, exception -> {
                 response.close();
 
                 int updatedRetryCount = retryCount + 1;
 
                 if (updatedRetryCount > maxRetries) {
-                    LOGGER.atError()
+                    createBasicLoggingContext(LogLevel.ERROR, response)
                         .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
-                        .log(() -> "Retry attempts have been exhausted.", exception);
+                        .log("Retry attempts have been exhausted.", exception);
                     return Mono.error(exception);
                 }
 
-                return onErrorResume.apply(exception, targetChannel.getBytesWritten())
-                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(
-                        targetChannel, newResponse,
-                        onErrorResume, maxRetries, updatedRetryCount));
-            });
+                long bytesWritten = targetChannel.getBytesWritten();
+                createBasicLoggingContext(LogLevel.INFORMATIONAL, response)
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, retryCount)
+                    .addKeyValue("maxRetries", maxRetries)
+                    .addKeyValue("bytesWritten", bytesWritten)
+                    .log("Attempt failed. Scheduling retry.", exception);
+                return onErrorResume.apply(exception, bytesWritten)
+                    .flatMap(newResponse -> transferStreamResponseToAsynchronousByteChannelHelper(targetChannel,
+                        newResponse, onErrorResume, maxRetries, updatedRetryCount));
+            }), StreamResponse::close);
+    }
+
+    /*
+     * Helper method to optimize the size of the read buffer to reduce the number of reads and writes that have to be
+     * performed. If the source and/or target is IO-based, file, network connection, etc, this reduces the number of
+     * calls that may have to be handled by the system.
+     */
+    private static int getBufferSize(ReadableByteChannel source) {
+        if (!(source instanceof SeekableByteChannel)) {
+            return DEFAULT_BUFFER_SIZE;
+        }
+
+        SeekableByteChannel seekableSource = (SeekableByteChannel) source;
+        try {
+            long size = seekableSource.size();
+            long position = seekableSource.position();
+
+            return getBufferSize(size - position);
+        } catch (IOException ex) {
+            // Don't let an IOException prevent transfer when we are only trying to gain information.
+            return DEFAULT_BUFFER_SIZE;
+        }
+    }
+
+    private static int getBufferSize(long dataSize) {
+        if (dataSize > GB) {
+            return SIXTY_FOUR_KB;
+        } else if (dataSize > MB) {
+            return THIRTY_TWO_KB;
+        } else {
+            return DEFAULT_BUFFER_SIZE;
+        }
+    }
+
+    private static LoggingEventBuilder createBasicLoggingContext(LogLevel level, StreamResponse response) {
+        LoggingEventBuilder log = LOGGER.atLevel(level);
+        if (LOGGER.canLogAtLevel(level)) {
+            String clientRequestId = response.getRequest().getHeaders().getValue(X_MS_CLIENT_REQUEST_ID);
+            if (clientRequestId != null) {
+                log.addKeyValue(X_MS_CLIENT_REQUEST_ID.getCaseInsensitiveName(), clientRequestId);
+            }
+
+            String traceparent = response.getRequest().getHeaders().getValue(TRACEPARENT);
+            if (traceparent != null) {
+                log.addKeyValue(TRACEPARENT.getCaseInsensitiveName(), traceparent);
+            }
+        }
+
+        return log;
     }
 
     private IOUtils() {

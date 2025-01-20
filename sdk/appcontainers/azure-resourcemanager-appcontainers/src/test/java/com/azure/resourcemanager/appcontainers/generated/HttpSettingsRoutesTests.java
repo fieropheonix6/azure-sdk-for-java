@@ -7,20 +7,19 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.HttpSettingsRoutes;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class HttpSettingsRoutesTests {
-    @Test
-    public void testDeserialize() {
-        HttpSettingsRoutes model =
-            BinaryData.fromString("{\"apiPrefix\":\"ujjugwdkcglh\"}").toObject(HttpSettingsRoutes.class);
-        Assertions.assertEquals("ujjugwdkcglh", model.apiPrefix());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        HttpSettingsRoutes model
+            = BinaryData.fromString("{\"apiPrefix\":\"enjbdlwtgrhp\"}").toObject(HttpSettingsRoutes.class);
+        Assertions.assertEquals("enjbdlwtgrhp", model.apiPrefix());
     }
 
-    @Test
-    public void testSerialize() {
-        HttpSettingsRoutes model = new HttpSettingsRoutes().withApiPrefix("ujjugwdkcglh");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        HttpSettingsRoutes model = new HttpSettingsRoutes().withApiPrefix("enjbdlwtgrhp");
         model = BinaryData.fromObject(model).toObject(HttpSettingsRoutes.class);
-        Assertions.assertEquals("ujjugwdkcglh", model.apiPrefix());
+        Assertions.assertEquals("enjbdlwtgrhp", model.apiPrefix());
     }
 }

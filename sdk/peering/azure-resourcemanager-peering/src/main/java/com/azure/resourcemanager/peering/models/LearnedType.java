@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LearnedType. */
+/**
+ * The prefix learned type.
+ */
 public final class LearnedType extends ExpandableStringEnum<LearnedType> {
-    /** Static value None for LearnedType. */
+    /**
+     * Static value None for LearnedType.
+     */
     public static final LearnedType NONE = fromString("None");
 
-    /** Static value ViaServiceProvider for LearnedType. */
+    /**
+     * Static value ViaServiceProvider for LearnedType.
+     */
     public static final LearnedType VIA_SERVICE_PROVIDER = fromString("ViaServiceProvider");
 
-    /** Static value ViaSession for LearnedType. */
+    /**
+     * Static value ViaSession for LearnedType.
+     */
     public static final LearnedType VIA_SESSION = fromString("ViaSession");
 
     /**
+     * Creates a new instance of LearnedType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LearnedType() {
+    }
+
+    /**
      * Creates or finds a LearnedType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LearnedType.
      */
-    @JsonCreator
     public static LearnedType fromString(String name) {
         return fromString(name, LearnedType.class);
     }
 
-    /** @return known LearnedType values. */
+    /**
+     * Gets known LearnedType values.
+     * 
+     * @return known LearnedType values.
+     */
     public static Collection<LearnedType> values() {
         return values(LearnedType.class);
     }

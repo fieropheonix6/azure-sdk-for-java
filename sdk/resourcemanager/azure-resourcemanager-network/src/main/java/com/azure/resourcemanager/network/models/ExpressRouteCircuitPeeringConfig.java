@@ -5,55 +5,57 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specifies the peering configuration. */
+/**
+ * Specifies the peering configuration.
+ */
 @Fluent
-public final class ExpressRouteCircuitPeeringConfig {
+public final class ExpressRouteCircuitPeeringConfig implements JsonSerializable<ExpressRouteCircuitPeeringConfig> {
     /*
      * The reference to AdvertisedPublicPrefixes.
      */
-    @JsonProperty(value = "advertisedPublicPrefixes")
     private List<String> advertisedPublicPrefixes;
 
     /*
      * The communities of bgp peering. Specified for microsoft peering.
      */
-    @JsonProperty(value = "advertisedCommunities")
     private List<String> advertisedCommunities;
 
     /*
      * The advertised public prefix state of the Peering resource.
      */
-    @JsonProperty(value = "advertisedPublicPrefixesState", access = JsonProperty.Access.WRITE_ONLY)
     private ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState;
 
     /*
      * The legacy mode of the peering.
      */
-    @JsonProperty(value = "legacyMode")
     private Integer legacyMode;
 
     /*
      * The CustomerASN of the peering.
      */
-    @JsonProperty(value = "customerASN")
     private Integer customerAsn;
 
     /*
      * The RoutingRegistryName of the configuration.
      */
-    @JsonProperty(value = "routingRegistryName")
     private String routingRegistryName;
 
-    /** Creates an instance of ExpressRouteCircuitPeeringConfig class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitPeeringConfig class.
+     */
     public ExpressRouteCircuitPeeringConfig() {
     }
 
     /**
      * Get the advertisedPublicPrefixes property: The reference to AdvertisedPublicPrefixes.
-     *
+     * 
      * @return the advertisedPublicPrefixes value.
      */
     public List<String> advertisedPublicPrefixes() {
@@ -62,7 +64,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Set the advertisedPublicPrefixes property: The reference to AdvertisedPublicPrefixes.
-     *
+     * 
      * @param advertisedPublicPrefixes the advertisedPublicPrefixes value to set.
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
@@ -73,7 +75,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Get the advertisedCommunities property: The communities of bgp peering. Specified for microsoft peering.
-     *
+     * 
      * @return the advertisedCommunities value.
      */
     public List<String> advertisedCommunities() {
@@ -82,7 +84,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Set the advertisedCommunities property: The communities of bgp peering. Specified for microsoft peering.
-     *
+     * 
      * @param advertisedCommunities the advertisedCommunities value to set.
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
@@ -93,7 +95,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Get the advertisedPublicPrefixesState property: The advertised public prefix state of the Peering resource.
-     *
+     * 
      * @return the advertisedPublicPrefixesState value.
      */
     public ExpressRouteCircuitPeeringAdvertisedPublicPrefixState advertisedPublicPrefixesState() {
@@ -102,7 +104,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Get the legacyMode property: The legacy mode of the peering.
-     *
+     * 
      * @return the legacyMode value.
      */
     public Integer legacyMode() {
@@ -111,7 +113,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Set the legacyMode property: The legacy mode of the peering.
-     *
+     * 
      * @param legacyMode the legacyMode value to set.
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
@@ -122,7 +124,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Get the customerAsn property: The CustomerASN of the peering.
-     *
+     * 
      * @return the customerAsn value.
      */
     public Integer customerAsn() {
@@ -131,7 +133,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Set the customerAsn property: The CustomerASN of the peering.
-     *
+     * 
      * @param customerAsn the customerAsn value to set.
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
@@ -142,7 +144,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Get the routingRegistryName property: The RoutingRegistryName of the configuration.
-     *
+     * 
      * @return the routingRegistryName value.
      */
     public String routingRegistryName() {
@@ -151,7 +153,7 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Set the routingRegistryName property: The RoutingRegistryName of the configuration.
-     *
+     * 
      * @param routingRegistryName the routingRegistryName value to set.
      * @return the ExpressRouteCircuitPeeringConfig object itself.
      */
@@ -162,9 +164,65 @@ public final class ExpressRouteCircuitPeeringConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("advertisedPublicPrefixes", this.advertisedPublicPrefixes,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("advertisedCommunities", this.advertisedCommunities,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeNumberField("legacyMode", this.legacyMode);
+        jsonWriter.writeNumberField("customerASN", this.customerAsn);
+        jsonWriter.writeStringField("routingRegistryName", this.routingRegistryName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitPeeringConfig from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitPeeringConfig if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitPeeringConfig.
+     */
+    public static ExpressRouteCircuitPeeringConfig fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitPeeringConfig deserializedExpressRouteCircuitPeeringConfig
+                = new ExpressRouteCircuitPeeringConfig();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("advertisedPublicPrefixes".equals(fieldName)) {
+                    List<String> advertisedPublicPrefixes = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExpressRouteCircuitPeeringConfig.advertisedPublicPrefixes = advertisedPublicPrefixes;
+                } else if ("advertisedCommunities".equals(fieldName)) {
+                    List<String> advertisedCommunities = reader.readArray(reader1 -> reader1.getString());
+                    deserializedExpressRouteCircuitPeeringConfig.advertisedCommunities = advertisedCommunities;
+                } else if ("advertisedPublicPrefixesState".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPeeringConfig.advertisedPublicPrefixesState
+                        = ExpressRouteCircuitPeeringAdvertisedPublicPrefixState.fromString(reader.getString());
+                } else if ("legacyMode".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPeeringConfig.legacyMode = reader.getNullable(JsonReader::getInt);
+                } else if ("customerASN".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPeeringConfig.customerAsn = reader.getNullable(JsonReader::getInt);
+                } else if ("routingRegistryName".equals(fieldName)) {
+                    deserializedExpressRouteCircuitPeeringConfig.routingRegistryName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitPeeringConfig;
+        });
     }
 }

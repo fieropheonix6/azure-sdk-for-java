@@ -6,60 +6,32 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
-import com.azure.core.util.Context;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.devcenter.DevCenterManager;
 import com.azure.resourcemanager.devcenter.models.HealthCheckStatusDetails;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 public final class NetworkConnectionsGetHealthDetailsWithResponseMockTests {
     @Test
     public void testGetHealthDetailsWithResponse() throws Exception {
-        HttpClient httpClient = Mockito.mock(HttpClient.class);
-        HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
-        ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
+        String responseStr
+            = "{\"properties\":{\"startDateTime\":\"2021-11-21T17:16:57Z\",\"endDateTime\":\"2021-07-25T21:14:07Z\",\"healthChecks\":[{\"status\":\"Unknown\",\"displayName\":\"tzlswvaj\",\"startDateTime\":\"2021-11-03T15:02:37Z\",\"endDateTime\":\"2021-09-26T07:25:25Z\",\"errorType\":\"joqza\",\"recommendedAction\":\"nwqrjzfrgqh\",\"additionalDetails\":\"hcmbuocnjrohmbp\"},{\"status\":\"Passed\",\"displayName\":\"ameb\",\"startDateTime\":\"2021-06-25T02:42:36Z\",\"endDateTime\":\"2021-01-06T18:36:20Z\",\"errorType\":\"fkmroc\",\"recommendedAction\":\"e\",\"additionalDetails\":\"sm\"},{\"status\":\"Warning\",\"displayName\":\"fpyapucygvoavyu\",\"startDateTime\":\"2021-10-30T10:18:56Z\",\"endDateTime\":\"2021-07-23T07:04:55Z\",\"errorType\":\"hi\",\"recommendedAction\":\"gjlgvvpase\",\"additionalDetails\":\"gbuxantuygdh\"}]},\"id\":\"qipir\",\"name\":\"iwrqofulopmjnl\",\"type\":\"x\"}";
 
-        String responseStr =
-            "{\"properties\":{\"startDateTime\":\"2021-11-14T21:04:41Z\",\"endDateTime\":\"2021-01-21T06:36:36Z\",\"healthChecks\":[]},\"id\":\"smjqfrddgam\",\"name\":\"uhiosrsju\",\"type\":\"vfcdisyirn\"}";
+        HttpClient httpClient
+            = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
+        DevCenterManager manager = DevCenterManager.configure()
+            .withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
-        Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
-            .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
-            .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        HealthCheckStatusDetails response = manager.networkConnections()
+            .getHealthDetailsWithResponse("mtuatmzwcjjncqtj", "mizvgbgatzuuvbx", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        DevCenterManager manager =
-            DevCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
-
-        HealthCheckStatusDetails response =
-            manager.networkConnections().getHealthDetailsWithResponse("ioqaqhvs", "ufuqyrx", Context.NONE).getValue();
     }
 }

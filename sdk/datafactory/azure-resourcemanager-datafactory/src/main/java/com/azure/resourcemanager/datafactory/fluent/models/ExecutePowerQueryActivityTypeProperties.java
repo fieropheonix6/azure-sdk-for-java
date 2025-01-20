@@ -5,41 +5,46 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datafactory.models.ContinuationSettingsReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowReference;
 import com.azure.resourcemanager.datafactory.models.DataFlowStagingInfo;
 import com.azure.resourcemanager.datafactory.models.ExecuteDataFlowActivityTypePropertiesCompute;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.PowerQuerySink;
 import com.azure.resourcemanager.datafactory.models.PowerQuerySinkMapping;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Execute power query data flow activity properties. */
+/**
+ * Execute power query data flow activity properties.
+ */
 @Fluent
 public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFlowActivityTypeProperties {
     /*
      * (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a queryName.
      */
-    @JsonProperty(value = "sinks")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, PowerQuerySink> sinks;
 
     /*
      * List of mapping for Power Query mashup query to sink dataset(s).
      */
-    @JsonProperty(value = "queries")
     private List<PowerQuerySinkMapping> queries;
 
-    /** Creates an instance of ExecutePowerQueryActivityTypeProperties class. */
+    /**
+     * Creates an instance of ExecutePowerQueryActivityTypeProperties class.
+     */
     public ExecutePowerQueryActivityTypeProperties() {
     }
 
     /**
      * Get the sinks property: (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a
      * queryName.
-     *
+     * 
      * @return the sinks value.
      */
     public Map<String, PowerQuerySink> sinks() {
@@ -49,7 +54,7 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
     /**
      * Set the sinks property: (Deprecated. Please use Queries). List of Power Query activity sinks mapped to a
      * queryName.
-     *
+     * 
      * @param sinks the sinks value to set.
      * @return the ExecutePowerQueryActivityTypeProperties object itself.
      */
@@ -60,7 +65,7 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
 
     /**
      * Get the queries property: List of mapping for Power Query mashup query to sink dataset(s).
-     *
+     * 
      * @return the queries value.
      */
     public List<PowerQuerySinkMapping> queries() {
@@ -69,7 +74,7 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
 
     /**
      * Set the queries property: List of mapping for Power Query mashup query to sink dataset(s).
-     *
+     * 
      * @param queries the queries value to set.
      * @return the ExecutePowerQueryActivityTypeProperties object itself.
      */
@@ -78,57 +83,83 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withDataFlow(DataFlowReference dataFlow) {
         super.withDataFlow(dataFlow);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withStaging(DataFlowStagingInfo staging) {
         super.withStaging(staging);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ExecutePowerQueryActivityTypeProperties withIntegrationRuntime(
-        IntegrationRuntimeReference integrationRuntime) {
+    public ExecutePowerQueryActivityTypeProperties
+        withIntegrationRuntime(IntegrationRuntimeReference integrationRuntime) {
         super.withIntegrationRuntime(integrationRuntime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecutePowerQueryActivityTypeProperties
+        withContinuationSettings(ContinuationSettingsReference continuationSettings) {
+        super.withContinuationSettings(continuationSettings);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withCompute(ExecuteDataFlowActivityTypePropertiesCompute compute) {
         super.withCompute(compute);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withTraceLevel(Object traceLevel) {
         super.withTraceLevel(traceLevel);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withContinueOnError(Object continueOnError) {
         super.withContinueOnError(continueOnError);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withRunConcurrently(Object runConcurrently) {
         super.withRunConcurrently(runConcurrently);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecutePowerQueryActivityTypeProperties withSourceStagingConcurrency(Object sourceStagingConcurrency) {
         super.withSourceStagingConcurrency(sourceStagingConcurrency);
@@ -137,24 +168,118 @@ public final class ExecutePowerQueryActivityTypeProperties extends ExecuteDataFl
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (sinks() != null) {
-            sinks()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            sinks().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (queries() != null) {
             queries().forEach(e -> e.validate());
         }
+        if (dataFlow() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataFlow in model ExecutePowerQueryActivityTypeProperties"));
+        } else {
+            dataFlow().validate();
+        }
+        if (staging() != null) {
+            staging().validate();
+        }
+        if (integrationRuntime() != null) {
+            integrationRuntime().validate();
+        }
+        if (continuationSettings() != null) {
+            continuationSettings().validate();
+        }
+        if (compute() != null) {
+            compute().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecutePowerQueryActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("dataFlow", dataFlow());
+        jsonWriter.writeJsonField("staging", staging());
+        jsonWriter.writeJsonField("integrationRuntime", integrationRuntime());
+        jsonWriter.writeJsonField("continuationSettings", continuationSettings());
+        jsonWriter.writeJsonField("compute", compute());
+        jsonWriter.writeUntypedField("traceLevel", traceLevel());
+        jsonWriter.writeUntypedField("continueOnError", continueOnError());
+        jsonWriter.writeUntypedField("runConcurrently", runConcurrently());
+        jsonWriter.writeUntypedField("sourceStagingConcurrency", sourceStagingConcurrency());
+        jsonWriter.writeMapField("sinks", this.sinks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("queries", this.queries, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecutePowerQueryActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecutePowerQueryActivityTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecutePowerQueryActivityTypeProperties.
+     */
+    public static ExecutePowerQueryActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecutePowerQueryActivityTypeProperties deserializedExecutePowerQueryActivityTypeProperties
+                = new ExecutePowerQueryActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFlow".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withDataFlow(DataFlowReference.fromJson(reader));
+                } else if ("staging".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withStaging(DataFlowStagingInfo.fromJson(reader));
+                } else if ("integrationRuntime".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withIntegrationRuntime(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("continuationSettings".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withContinuationSettings(ContinuationSettingsReference.fromJson(reader));
+                } else if ("compute".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withCompute(ExecuteDataFlowActivityTypePropertiesCompute.fromJson(reader));
+                } else if ("traceLevel".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties.withTraceLevel(reader.readUntyped());
+                } else if ("continueOnError".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties.withContinueOnError(reader.readUntyped());
+                } else if ("runConcurrently".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties.withRunConcurrently(reader.readUntyped());
+                } else if ("sourceStagingConcurrency".equals(fieldName)) {
+                    deserializedExecutePowerQueryActivityTypeProperties
+                        .withSourceStagingConcurrency(reader.readUntyped());
+                } else if ("sinks".equals(fieldName)) {
+                    Map<String, PowerQuerySink> sinks = reader.readMap(reader1 -> PowerQuerySink.fromJson(reader1));
+                    deserializedExecutePowerQueryActivityTypeProperties.sinks = sinks;
+                } else if ("queries".equals(fieldName)) {
+                    List<PowerQuerySinkMapping> queries
+                        = reader.readArray(reader1 -> PowerQuerySinkMapping.fromJson(reader1));
+                    deserializedExecutePowerQueryActivityTypeProperties.queries = queries;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExecutePowerQueryActivityTypeProperties;
+        });
     }
 }

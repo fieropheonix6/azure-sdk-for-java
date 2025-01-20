@@ -5,148 +5,237 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.peering.models.ContactDetail;
 import com.azure.resourcemanager.peering.models.ValidationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The essential information related to the peer's ASN. */
-@JsonFlatten
+/**
+ * The essential information related to the peer's ASN.
+ */
 @Fluent
-public class PeerAsnInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerAsnInner.class);
+public final class PeerAsnInner extends ProxyResource {
+    /*
+     * The properties that define a peer's ASN.
+     */
+    private PeerAsnProperties innerProperties;
 
     /*
-     * The Autonomous System Number (ASN) of the peer.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.peerAsn")
-    private Integer peerAsn;
+    private String type;
 
     /*
-     * The contact details of the peer.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.peerContactDetail")
-    private List<ContactDetail> peerContactDetail;
+    private String name;
 
     /*
-     * The name of the peer.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.peerName")
-    private String peerName;
+    private String id;
 
-    /*
-     * The validation state of the ASN associated with the peer.
+    /**
+     * Creates an instance of PeerAsnInner class.
      */
-    @JsonProperty(value = "properties.validationState")
-    private ValidationState validationState;
+    public PeerAsnInner() {
+    }
 
-    /*
-     * The error message for the validation state
+    /**
+     * Get the innerProperties property: The properties that define a peer's ASN.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
+    private PeerAsnProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the peerAsn property: The Autonomous System Number (ASN) of the peer.
-     *
+     * 
      * @return the peerAsn value.
      */
     public Integer peerAsn() {
-        return this.peerAsn;
+        return this.innerProperties() == null ? null : this.innerProperties().peerAsn();
     }
 
     /**
      * Set the peerAsn property: The Autonomous System Number (ASN) of the peer.
-     *
+     * 
      * @param peerAsn the peerAsn value to set.
      * @return the PeerAsnInner object itself.
      */
     public PeerAsnInner withPeerAsn(Integer peerAsn) {
-        this.peerAsn = peerAsn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerAsnProperties();
+        }
+        this.innerProperties().withPeerAsn(peerAsn);
         return this;
     }
 
     /**
      * Get the peerContactDetail property: The contact details of the peer.
-     *
+     * 
      * @return the peerContactDetail value.
      */
     public List<ContactDetail> peerContactDetail() {
-        return this.peerContactDetail;
+        return this.innerProperties() == null ? null : this.innerProperties().peerContactDetail();
     }
 
     /**
      * Set the peerContactDetail property: The contact details of the peer.
-     *
+     * 
      * @param peerContactDetail the peerContactDetail value to set.
      * @return the PeerAsnInner object itself.
      */
     public PeerAsnInner withPeerContactDetail(List<ContactDetail> peerContactDetail) {
-        this.peerContactDetail = peerContactDetail;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerAsnProperties();
+        }
+        this.innerProperties().withPeerContactDetail(peerContactDetail);
         return this;
     }
 
     /**
      * Get the peerName property: The name of the peer.
-     *
+     * 
      * @return the peerName value.
      */
     public String peerName() {
-        return this.peerName;
+        return this.innerProperties() == null ? null : this.innerProperties().peerName();
     }
 
     /**
      * Set the peerName property: The name of the peer.
-     *
+     * 
      * @param peerName the peerName value to set.
      * @return the PeerAsnInner object itself.
      */
     public PeerAsnInner withPeerName(String peerName) {
-        this.peerName = peerName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerAsnProperties();
+        }
+        this.innerProperties().withPeerName(peerName);
         return this;
     }
 
     /**
      * Get the validationState property: The validation state of the ASN associated with the peer.
-     *
+     * 
      * @return the validationState value.
      */
     public ValidationState validationState() {
-        return this.validationState;
+        return this.innerProperties() == null ? null : this.innerProperties().validationState();
     }
 
     /**
      * Set the validationState property: The validation state of the ASN associated with the peer.
-     *
+     * 
      * @param validationState the validationState value to set.
      * @return the PeerAsnInner object itself.
      */
     public PeerAsnInner withValidationState(ValidationState validationState) {
-        this.validationState = validationState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeerAsnProperties();
+        }
+        this.innerProperties().withValidationState(validationState);
         return this;
     }
 
     /**
      * Get the errorMessage property: The error message for the validation state.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
-        return this.errorMessage;
+        return this.innerProperties() == null ? null : this.innerProperties().errorMessage();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (peerContactDetail() != null) {
-            peerContactDetail().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeerAsnInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeerAsnInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeerAsnInner.
+     */
+    public static PeerAsnInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeerAsnInner deserializedPeerAsnInner = new PeerAsnInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPeerAsnInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPeerAsnInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeerAsnInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPeerAsnInner.innerProperties = PeerAsnProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeerAsnInner;
+        });
     }
 }

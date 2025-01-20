@@ -5,33 +5,38 @@
 package com.azure.resourcemanager.quota.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.quota.fluent.models.CurrentQuotaLimitBaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Quota limits. */
+/**
+ * Quota limits.
+ */
 @Fluent
-public final class QuotaLimits {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaLimits.class);
-
+public final class QuotaLimits implements JsonSerializable<QuotaLimits> {
     /*
      * List of quota limits.
      */
-    @JsonProperty(value = "value")
     private List<CurrentQuotaLimitBaseInner> value;
 
     /*
-     * The URI used to fetch the next page of quota limits. When there are no
-     * more pages, this string is null.
+     * The URI used to fetch the next page of quota limits. When there are no more pages, this string is null.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
+     * Creates an instance of QuotaLimits class.
+     */
+    public QuotaLimits() {
+    }
+
+    /**
      * Get the value property: List of quota limits.
-     *
+     * 
      * @return the value value.
      */
     public List<CurrentQuotaLimitBaseInner> value() {
@@ -40,7 +45,7 @@ public final class QuotaLimits {
 
     /**
      * Set the value property: List of quota limits.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaLimits object itself.
      */
@@ -52,7 +57,7 @@ public final class QuotaLimits {
     /**
      * Get the nextLink property: The URI used to fetch the next page of quota limits. When there are no more pages,
      * this string is null.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +67,7 @@ public final class QuotaLimits {
     /**
      * Set the nextLink property: The URI used to fetch the next page of quota limits. When there are no more pages,
      * this string is null.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the QuotaLimits object itself.
      */
@@ -73,12 +78,53 @@ public final class QuotaLimits {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuotaLimits from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuotaLimits if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuotaLimits.
+     */
+    public static QuotaLimits fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuotaLimits deserializedQuotaLimits = new QuotaLimits();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<CurrentQuotaLimitBaseInner> value
+                        = reader.readArray(reader1 -> CurrentQuotaLimitBaseInner.fromJson(reader1));
+                    deserializedQuotaLimits.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedQuotaLimits.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuotaLimits;
+        });
     }
 }

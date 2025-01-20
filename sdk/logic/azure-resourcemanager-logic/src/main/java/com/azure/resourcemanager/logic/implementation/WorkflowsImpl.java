@@ -19,10 +19,9 @@ import com.azure.resourcemanager.logic.models.Workflow;
 import com.azure.resourcemanager.logic.models.WorkflowReference;
 import com.azure.resourcemanager.logic.models.WorkflowTriggerCallbackUrl;
 import com.azure.resourcemanager.logic.models.Workflows;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowsImpl implements Workflows {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowsImpl.class);
 
     private final WorkflowsClient innerClient;
 
@@ -35,24 +34,36 @@ public final class WorkflowsImpl implements Workflows {
 
     public PagedIterable<Workflow> list() {
         PagedIterable<WorkflowInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Workflow> list(Integer top, String filter, Context context) {
         PagedIterable<WorkflowInner> inner = this.serviceClient().list(top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Workflow> listByResourceGroup(String resourceGroupName) {
         PagedIterable<WorkflowInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<Workflow> listByResourceGroup(
-        String resourceGroupName, Integer top, String filter, Context context) {
-        PagedIterable<WorkflowInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, top, filter, context);
-        return Utils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
+    public PagedIterable<Workflow> listByResourceGroup(String resourceGroupName, Integer top, String filter,
+        Context context) {
+        PagedIterable<WorkflowInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, filter, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new WorkflowImpl(inner1, this.manager()));
+    }
+
+    public Response<Workflow> getByResourceGroupWithResponse(String resourceGroupName, String workflowName,
+        Context context) {
+        Response<WorkflowInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, workflowName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkflowImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Workflow getByResourceGroup(String resourceGroupName, String workflowName) {
@@ -64,15 +75,11 @@ public final class WorkflowsImpl implements Workflows {
         }
     }
 
-    public Response<Workflow> getByResourceGroupWithResponse(
-        String resourceGroupName, String workflowName, Context context) {
-        Response<WorkflowInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, workflowName, context);
+    public Response<Workflow> updateWithResponse(String resourceGroupName, String workflowName, Context context) {
+        Response<WorkflowInner> inner
+            = this.serviceClient().updateWithResponse(resourceGroupName, workflowName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new WorkflowImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -88,63 +95,58 @@ public final class WorkflowsImpl implements Workflows {
         }
     }
 
-    public Response<Workflow> updateWithResponse(String resourceGroupName, String workflowName, Context context) {
-        Response<WorkflowInner> inner =
-            this.serviceClient().updateWithResponse(resourceGroupName, workflowName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WorkflowImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String workflowName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, workflowName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String workflowName) {
         this.serviceClient().delete(resourceGroupName, workflowName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String workflowName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, workflowName, context);
+    public Response<Void> disableWithResponse(String resourceGroupName, String workflowName, Context context) {
+        return this.serviceClient().disableWithResponse(resourceGroupName, workflowName, context);
     }
 
     public void disable(String resourceGroupName, String workflowName) {
         this.serviceClient().disable(resourceGroupName, workflowName);
     }
 
-    public Response<Void> disableWithResponse(String resourceGroupName, String workflowName, Context context) {
-        return this.serviceClient().disableWithResponse(resourceGroupName, workflowName, context);
+    public Response<Void> enableWithResponse(String resourceGroupName, String workflowName, Context context) {
+        return this.serviceClient().enableWithResponse(resourceGroupName, workflowName, context);
     }
 
     public void enable(String resourceGroupName, String workflowName) {
         this.serviceClient().enable(resourceGroupName, workflowName);
     }
 
-    public Response<Void> enableWithResponse(String resourceGroupName, String workflowName, Context context) {
-        return this.serviceClient().enableWithResponse(resourceGroupName, workflowName, context);
-    }
-
-    public Object generateUpgradedDefinition(
-        String resourceGroupName, String workflowName, GenerateUpgradedDefinitionParameters parameters) {
-        return this.serviceClient().generateUpgradedDefinition(resourceGroupName, workflowName, parameters);
-    }
-
-    public Response<Object> generateUpgradedDefinitionWithResponse(
-        String resourceGroupName,
-        String workflowName,
-        GenerateUpgradedDefinitionParameters parameters,
-        Context context) {
-        return this
-            .serviceClient()
+    public Response<Object> generateUpgradedDefinitionWithResponse(String resourceGroupName, String workflowName,
+        GenerateUpgradedDefinitionParameters parameters, Context context) {
+        return this.serviceClient()
             .generateUpgradedDefinitionWithResponse(resourceGroupName, workflowName, parameters, context);
     }
 
-    public WorkflowTriggerCallbackUrl listCallbackUrl(
-        String resourceGroupName, String workflowName, GetCallbackUrlParameters listCallbackUrl) {
-        WorkflowTriggerCallbackUrlInner inner =
-            this.serviceClient().listCallbackUrl(resourceGroupName, workflowName, listCallbackUrl);
+    public Object generateUpgradedDefinition(String resourceGroupName, String workflowName,
+        GenerateUpgradedDefinitionParameters parameters) {
+        return this.serviceClient().generateUpgradedDefinition(resourceGroupName, workflowName, parameters);
+    }
+
+    public Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(String resourceGroupName,
+        String workflowName, GetCallbackUrlParameters listCallbackUrl, Context context) {
+        Response<WorkflowTriggerCallbackUrlInner> inner = this.serviceClient()
+            .listCallbackUrlWithResponse(resourceGroupName, workflowName, listCallbackUrl, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkflowTriggerCallbackUrlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public WorkflowTriggerCallbackUrl listCallbackUrl(String resourceGroupName, String workflowName,
+        GetCallbackUrlParameters listCallbackUrl) {
+        WorkflowTriggerCallbackUrlInner inner
+            = this.serviceClient().listCallbackUrl(resourceGroupName, workflowName, listCallbackUrl);
         if (inner != null) {
             return new WorkflowTriggerCallbackUrlImpl(inner, this.manager());
         } else {
@@ -152,27 +154,12 @@ public final class WorkflowsImpl implements Workflows {
         }
     }
 
-    public Response<WorkflowTriggerCallbackUrl> listCallbackUrlWithResponse(
-        String resourceGroupName, String workflowName, GetCallbackUrlParameters listCallbackUrl, Context context) {
-        Response<WorkflowTriggerCallbackUrlInner> inner =
-            this.serviceClient().listCallbackUrlWithResponse(resourceGroupName, workflowName, listCallbackUrl, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WorkflowTriggerCallbackUrlImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Object> listSwaggerWithResponse(String resourceGroupName, String workflowName, Context context) {
+        return this.serviceClient().listSwaggerWithResponse(resourceGroupName, workflowName, context);
     }
 
     public Object listSwagger(String resourceGroupName, String workflowName) {
         return this.serviceClient().listSwagger(resourceGroupName, workflowName);
-    }
-
-    public Response<Object> listSwaggerWithResponse(String resourceGroupName, String workflowName, Context context) {
-        return this.serviceClient().listSwaggerWithResponse(resourceGroupName, workflowName, context);
     }
 
     public void move(String resourceGroupName, String workflowName, WorkflowReference move) {
@@ -183,112 +170,90 @@ public final class WorkflowsImpl implements Workflows {
         this.serviceClient().move(resourceGroupName, workflowName, move, context);
     }
 
+    public Response<Void> regenerateAccessKeyWithResponse(String resourceGroupName, String workflowName,
+        RegenerateActionParameter keyType, Context context) {
+        return this.serviceClient().regenerateAccessKeyWithResponse(resourceGroupName, workflowName, keyType, context);
+    }
+
     public void regenerateAccessKey(String resourceGroupName, String workflowName, RegenerateActionParameter keyType) {
         this.serviceClient().regenerateAccessKey(resourceGroupName, workflowName, keyType);
     }
 
-    public Response<Void> regenerateAccessKeyWithResponse(
-        String resourceGroupName, String workflowName, RegenerateActionParameter keyType, Context context) {
-        return this.serviceClient().regenerateAccessKeyWithResponse(resourceGroupName, workflowName, keyType, context);
+    public Response<Void> validateByResourceGroupWithResponse(String resourceGroupName, String workflowName,
+        WorkflowInner validate, Context context) {
+        return this.serviceClient()
+            .validateByResourceGroupWithResponse(resourceGroupName, workflowName, validate, context);
     }
 
     public void validateByResourceGroup(String resourceGroupName, String workflowName, WorkflowInner validate) {
         this.serviceClient().validateByResourceGroup(resourceGroupName, workflowName, validate);
     }
 
-    public Response<Void> validateByResourceGroupWithResponse(
-        String resourceGroupName, String workflowName, WorkflowInner validate, Context context) {
-        return this
-            .serviceClient()
-            .validateByResourceGroupWithResponse(resourceGroupName, workflowName, validate, context);
-    }
-
-    public void validateByLocation(
-        String resourceGroupName, String location, String workflowName, WorkflowInner validate) {
-        this.serviceClient().validateByLocation(resourceGroupName, location, workflowName, validate);
-    }
-
-    public Response<Void> validateByLocationWithResponse(
-        String resourceGroupName, String location, String workflowName, WorkflowInner validate, Context context) {
-        return this
-            .serviceClient()
+    public Response<Void> validateByLocationWithResponse(String resourceGroupName, String location, String workflowName,
+        WorkflowInner validate, Context context) {
+        return this.serviceClient()
             .validateByLocationWithResponse(resourceGroupName, location, workflowName, validate, context);
     }
 
+    public void validateByLocation(String resourceGroupName, String location, String workflowName,
+        WorkflowInner validate) {
+        this.serviceClient().validateByLocation(resourceGroupName, location, workflowName, validate);
+    }
+
     public Workflow getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workflowName = Utils.getValueFromIdByName(id, "workflows");
+        String workflowName = ResourceManagerUtils.getValueFromIdByName(id, "workflows");
         if (workflowName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, workflowName, Context.NONE).getValue();
     }
 
     public Response<Workflow> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workflowName = Utils.getValueFromIdByName(id, "workflows");
+        String workflowName = ResourceManagerUtils.getValueFromIdByName(id, "workflows");
         if (workflowName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, workflowName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workflowName = Utils.getValueFromIdByName(id, "workflows");
+        String workflowName = ResourceManagerUtils.getValueFromIdByName(id, "workflows");
         if (workflowName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, workflowName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, workflowName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String workflowName = Utils.getValueFromIdByName(id, "workflows");
+        String workflowName = ResourceManagerUtils.getValueFromIdByName(id, "workflows");
         if (workflowName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workflows'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, workflowName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, workflowName, context);
     }
 
     private WorkflowsClient serviceClient() {

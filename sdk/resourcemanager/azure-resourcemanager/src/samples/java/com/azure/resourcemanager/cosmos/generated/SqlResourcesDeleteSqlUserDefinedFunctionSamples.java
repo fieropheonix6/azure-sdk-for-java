@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SqlResources DeleteSqlUserDefinedFunction. */
+/**
+ * Samples for SqlResources DeleteSqlUserDefinedFunction.
+ */
 public final class SqlResourcesDeleteSqlUserDefinedFunctionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlUserDefinedFunctionDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBSqlUserDefinedFunctionDelete.json
      */
     /**
      * Sample code: CosmosDBSqlUserDefinedFunctionDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlUserDefinedFunctionDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getSqlResources()
-            .deleteSqlUserDefinedFunction(
-                "rg1", "ddb1", "databaseName", "containerName", "userDefinedFunctionName", Context.NONE);
+            .deleteSqlUserDefinedFunction("rg1", "ddb1", "databaseName", "containerName", "userDefinedFunctionName",
+                com.azure.core.util.Context.NONE);
     }
 }

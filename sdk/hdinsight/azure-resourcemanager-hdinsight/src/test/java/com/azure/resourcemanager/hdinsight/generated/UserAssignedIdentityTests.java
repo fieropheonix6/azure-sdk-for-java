@@ -7,22 +7,21 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.UserAssignedIdentity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class UserAssignedIdentityTests {
-    @Test
-    public void testDeserialize() {
-        UserAssignedIdentity model =
-            BinaryData
-                .fromString("{\"principalId\":\"sxlzevgbmqj\",\"clientId\":\"bcypmi\",\"tenantId\":\"w\"}")
-                .toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("w", model.tenantId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UserAssignedIdentity model = BinaryData
+            .fromString(
+                "{\"principalId\":\"vxqtayriwwroyqbe\",\"clientId\":\"mcqibycnojv\",\"tenantId\":\"mefqsgzvahapjyzh\"}")
+            .toObject(UserAssignedIdentity.class);
+        Assertions.assertEquals("mefqsgzvahapjyzh", model.tenantId());
     }
 
-    @Test
-    public void testSerialize() {
-        UserAssignedIdentity model = new UserAssignedIdentity().withTenantId("w");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        UserAssignedIdentity model = new UserAssignedIdentity().withTenantId("mefqsgzvahapjyzh");
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
-        Assertions.assertEquals("w", model.tenantId());
+        Assertions.assertEquals("mefqsgzvahapjyzh", model.tenantId());
     }
 }

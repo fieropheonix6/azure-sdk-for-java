@@ -6,29 +6,36 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ApplicationUserAssignedIdentity model. */
+/**
+ * The ApplicationUserAssignedIdentity model.
+ */
 @Fluent
-public class ApplicationUserAssignedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationUserAssignedIdentity.class);
-
+public final class ApplicationUserAssignedIdentity implements JsonSerializable<ApplicationUserAssignedIdentity> {
     /*
      * The friendly name of user assigned identity.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The principal id of user assigned identity.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /**
+     * Creates an instance of ApplicationUserAssignedIdentity class.
+     */
+    public ApplicationUserAssignedIdentity() {
+    }
+
+    /**
      * Get the name property: The friendly name of user assigned identity.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +44,7 @@ public class ApplicationUserAssignedIdentity {
 
     /**
      * Set the name property: The friendly name of user assigned identity.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationUserAssignedIdentity object itself.
      */
@@ -48,7 +55,7 @@ public class ApplicationUserAssignedIdentity {
 
     /**
      * Get the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -57,7 +64,7 @@ public class ApplicationUserAssignedIdentity {
 
     /**
      * Set the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the ApplicationUserAssignedIdentity object itself.
      */
@@ -68,21 +75,62 @@ public class ApplicationUserAssignedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model ApplicationUserAssignedIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model ApplicationUserAssignedIdentity"));
         }
         if (principalId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalId in model ApplicationUserAssignedIdentity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalId in model ApplicationUserAssignedIdentity"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationUserAssignedIdentity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("principalId", this.principalId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationUserAssignedIdentity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationUserAssignedIdentity if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationUserAssignedIdentity.
+     */
+    public static ApplicationUserAssignedIdentity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationUserAssignedIdentity deserializedApplicationUserAssignedIdentity
+                = new ApplicationUserAssignedIdentity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedApplicationUserAssignedIdentity.name = reader.getString();
+                } else if ("principalId".equals(fieldName)) {
+                    deserializedApplicationUserAssignedIdentity.principalId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationUserAssignedIdentity;
+        });
     }
 }

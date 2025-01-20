@@ -9,34 +9,26 @@ import com.azure.resourcemanager.kusto.models.EndpointDependency;
 import com.azure.resourcemanager.kusto.models.EndpointDetail;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EndpointDependencyTests {
-    @Test
-    public void testDeserialize() {
-        EndpointDependency model =
-            BinaryData
-                .fromString(
-                    "{\"domainName\":\"ggxkallatmelwuip\",\"endpointDetails\":[{\"port\":834190026},{\"port\":120709025},{\"port\":154268521},{\"port\":1783583685}]}")
-                .toObject(EndpointDependency.class);
-        Assertions.assertEquals("ggxkallatmelwuip", model.domainName());
-        Assertions.assertEquals(834190026, model.endpointDetails().get(0).port());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EndpointDependency model = BinaryData.fromString(
+            "{\"domainName\":\"lhflsjcdhszfjvf\",\"endpointDetails\":[{\"port\":1130233947,\"ipAddress\":\"jagrqmqhldvr\"}]}")
+            .toObject(EndpointDependency.class);
+        Assertions.assertEquals("lhflsjcdhszfjvf", model.domainName());
+        Assertions.assertEquals(1130233947, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("jagrqmqhldvr", model.endpointDetails().get(0).ipAddress());
     }
 
-    @Test
-    public void testSerialize() {
-        EndpointDependency model =
-            new EndpointDependency()
-                .withDomainName("ggxkallatmelwuip")
-                .withEndpointDetails(
-                    Arrays
-                        .asList(
-                            new EndpointDetail().withPort(834190026),
-                            new EndpointDetail().withPort(120709025),
-                            new EndpointDetail().withPort(154268521),
-                            new EndpointDetail().withPort(1783583685)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EndpointDependency model = new EndpointDependency().withDomainName("lhflsjcdhszfjvf")
+            .withEndpointDetails(
+                Arrays.asList(new EndpointDetail().withPort(1130233947).withIpAddress("jagrqmqhldvr")));
         model = BinaryData.fromObject(model).toObject(EndpointDependency.class);
-        Assertions.assertEquals("ggxkallatmelwuip", model.domainName());
-        Assertions.assertEquals(834190026, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("lhflsjcdhszfjvf", model.domainName());
+        Assertions.assertEquals(1130233947, model.endpointDetails().get(0).port());
+        Assertions.assertEquals("jagrqmqhldvr", model.endpointDetails().get(0).ipAddress());
     }
 }

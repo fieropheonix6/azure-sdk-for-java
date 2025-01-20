@@ -4,19 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for RouteFilters Delete. */
+/**
+ * Samples for RouteFilters Delete.
+ */
 public final class RouteFiltersDeleteSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteFilterDelete.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/RouteFilterDelete.json
      */
     /**
      * Sample code: RouteFilterDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void routeFilterDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getRouteFilters().delete("rg1", "filterName", Context.NONE);
+        azure.networks()
+            .manager()
+            .serviceClient()
+            .getRouteFilters()
+            .delete("rg1", "filterName", com.azure.core.util.Context.NONE);
     }
 }

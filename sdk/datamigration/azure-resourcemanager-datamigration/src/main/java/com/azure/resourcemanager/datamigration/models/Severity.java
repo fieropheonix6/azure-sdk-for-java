@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.datamigration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Severity. */
+/**
+ * Severity of the validation error.
+ */
 public final class Severity extends ExpandableStringEnum<Severity> {
-    /** Static value Message for Severity. */
+    /**
+     * Static value Message for Severity.
+     */
     public static final Severity MESSAGE = fromString("Message");
 
-    /** Static value Warning for Severity. */
+    /**
+     * Static value Warning for Severity.
+     */
     public static final Severity WARNING = fromString("Warning");
 
-    /** Static value Error for Severity. */
+    /**
+     * Static value Error for Severity.
+     */
     public static final Severity ERROR = fromString("Error");
 
     /**
+     * Creates a new instance of Severity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Severity() {
+    }
+
+    /**
      * Creates or finds a Severity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Severity.
      */
-    @JsonCreator
     public static Severity fromString(String name) {
         return fromString(name, Severity.class);
     }
 
-    /** @return known Severity values. */
+    /**
+     * Gets known Severity values.
+     * 
+     * @return known Severity values.
+     */
     public static Collection<Severity> values() {
         return values(Severity.class);
     }

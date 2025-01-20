@@ -102,7 +102,8 @@ public class SpringAppImpl
     @Override
     public String activeDeploymentName() {
         // get the first active deployment
-        Optional<SpringAppDeployment> deployment = deployments.list().stream().filter(SpringAppDeployment::isActive).findFirst();
+        Optional<SpringAppDeployment> deployment
+            = deployments.list().stream().filter(SpringAppDeployment::isActive).findFirst();
         return deployment.map(SpringAppDeployment::appName).orElse(null);
     }
 
@@ -134,8 +135,9 @@ public class SpringAppImpl
 
     @Override
     public Mono<ResourceUploadDefinition> getResourceUploadUrlAsync() {
-        return manager().serviceClient().getApps().getResourceUploadUrlAsync(
-            parent().resourceGroupName(), parent().name(), name());
+        return manager().serviceClient()
+            .getApps()
+            .getResourceUploadUrlAsync(parent().resourceGroupName(), parent().name(), name());
     }
 
     @Override
@@ -160,7 +162,9 @@ public class SpringAppImpl
             return false;
         }
         return addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY) != null
-            && configurationService.id().equalsIgnoreCase((String) addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY).get(Constants.BINDING_RESOURCE_ID));
+            && configurationService.id()
+                .equalsIgnoreCase((String) addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY)
+                    .get(Constants.BINDING_RESOURCE_ID));
     }
 
     @Override
@@ -174,7 +178,9 @@ public class SpringAppImpl
             return false;
         }
         return addonConfigs.get(Constants.SERVICE_REGISTRY_KEY) != null
-            && serviceRegistry.id().equalsIgnoreCase((String) addonConfigs.get(Constants.SERVICE_REGISTRY_KEY).get(Constants.BINDING_RESOURCE_ID));
+            && serviceRegistry.id()
+                .equalsIgnoreCase(
+                    (String) addonConfigs.get(Constants.SERVICE_REGISTRY_KEY).get(Constants.BINDING_RESOURCE_ID));
     }
 
     @Override
@@ -226,16 +232,16 @@ public class SpringAppImpl
     @Override
     public SpringAppImpl withTemporaryDisk(int sizeInGB, String mountPath) {
         ensureProperty();
-        innerModel().properties().withTemporaryDisk(
-            new TemporaryDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
+        innerModel().properties()
+            .withTemporaryDisk(new TemporaryDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
         return this;
     }
 
     @Override
     public SpringAppImpl withPersistentDisk(int sizeInGB, String mountPath) {
         ensureProperty();
-        innerModel().properties().withPersistentDisk(
-            new PersistentDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
+        innerModel().properties()
+            .withPersistentDisk(new PersistentDisk().withSizeInGB(sizeInGB).withMountPath(mountPath));
         return this;
     }
 
@@ -244,10 +250,11 @@ public class SpringAppImpl
         if (CoreUtils.isNullOrEmpty(name)) {
             return this;
         }
-        this.setActiveDeploymentTask =
-            context -> manager().serviceClient().getApps()
-                .setActiveDeploymentsAsync(parent().resourceGroupName(), parent().name(), name(), new ActiveDeploymentCollection().withActiveDeploymentNames(Arrays.asList(name)))
-                .then(context.voidMono());
+        this.setActiveDeploymentTask = context -> manager().serviceClient()
+            .getApps()
+            .setActiveDeploymentsAsync(parent().resourceGroupName(), parent().name(), name(),
+                new ActiveDeploymentCollection().withActiveDeploymentNames(Arrays.asList(name)))
+            .then(context.voidMono());
         return this;
     }
 
@@ -264,16 +271,22 @@ public class SpringAppImpl
         if (springAppDeploymentToCreate == null) {
             withDefaultActiveDeployment();
         }
-        return manager().serviceClient().getApps().createOrUpdateAsync(
-            parent().resourceGroupName(), parent().name(), name(), new AppResourceInner())
+        return manager().serviceClient()
+            .getApps()
+            .createOrUpdateAsync(parent().resourceGroupName(), parent().name(), name(), innerModel())
+            .map(inner -> {
+                setInner(inner);
+                return this;
+            })
             .thenMany(springAppDeploymentToCreate.createAsync())
-            .then(updateResourceAsync());
+            .then(Mono.just(this));
     }
 
     @Override
     public Mono<SpringApp> updateResourceAsync() {
-        return manager().serviceClient().getApps().updateAsync(
-            parent().resourceGroupName(), parent().name(), name(), innerModel())
+        return manager().serviceClient()
+            .getApps()
+            .updateAsync(parent().resourceGroupName(), parent().name(), name(), innerModel())
             .map(inner -> {
                 setInner(inner);
                 return this;
@@ -320,22 +333,20 @@ public class SpringAppImpl
     @Override
     public SpringAppImpl withDefaultActiveDeployment() {
         String defaultDeploymentName = "default";
-        withActiveDeployment(defaultDeploymentName);
         springAppDeploymentToCreate = deployments().define(defaultDeploymentName)
-            .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName));
+            .withExistingSource(UserSourceType.JAR, String.format("<%s>", defaultDeploymentName))
+            .withActivation();
         return this;
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T extends
-        SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
+    public <T extends SpringAppDeployment.DefinitionStages.WithAttach<? extends SpringApp.DefinitionStages.WithCreate, T>>
         SpringAppDeployment.DefinitionStages.Blank<T> defineActiveDeployment(String name) {
-        return (SpringAppDeployment.DefinitionStages.Blank<T>) deployments.define(name);
+        return (SpringAppDeployment.DefinitionStages.Blank<T>) deployments.define(name).withActivation();
     }
 
-    SpringAppImpl addActiveDeployment(SpringAppDeploymentImpl deployment) {
-        withActiveDeployment(deployment.name());
+    SpringAppImpl addDeployment(SpringAppDeploymentImpl deployment) {
         springAppDeploymentToCreate = deployment;
         return this;
     }
@@ -350,7 +361,8 @@ public class SpringAppImpl
         }
         SpringConfigurationService configurationService = parent().getDefaultConfigurationService();
         if (configurationService != null) {
-            Map<String, Object> configurationServiceConfigs = addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, k -> new HashMap<>());
+            Map<String, Object> configurationServiceConfigs
+                = addonConfigs.computeIfAbsent(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY, k -> new HashMap<>());
             configurationServiceConfigs.put(Constants.BINDING_RESOURCE_ID, configurationService.id());
         }
         return this;
@@ -365,7 +377,8 @@ public class SpringAppImpl
         if (addonConfigs == null) {
             return this;
         }
-        Map<String, Object> configurationServiceConfigs = addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
+        Map<String, Object> configurationServiceConfigs
+            = addonConfigs.get(Constants.APPLICATION_CONFIGURATION_SERVICE_KEY);
         if (configurationServiceConfigs == null) {
             return this;
         }
@@ -383,7 +396,8 @@ public class SpringAppImpl
         }
         SpringServiceRegistry serviceRegistry = parent().getDefaultServiceRegistry();
         if (serviceRegistry != null) {
-            Map<String, Object> serviceRegistryConfigs = addonConfigs.computeIfAbsent(Constants.SERVICE_REGISTRY_KEY, k -> new HashMap<>());
+            Map<String, Object> serviceRegistryConfigs
+                = addonConfigs.computeIfAbsent(Constants.SERVICE_REGISTRY_KEY, k -> new HashMap<>());
             serviceRegistryConfigs.put(Constants.BINDING_RESOURCE_ID, serviceRegistry.id());
         }
         return this;

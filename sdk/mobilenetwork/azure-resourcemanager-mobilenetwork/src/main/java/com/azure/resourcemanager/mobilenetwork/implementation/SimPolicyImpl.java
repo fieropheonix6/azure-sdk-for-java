@@ -11,6 +11,7 @@ import com.azure.resourcemanager.mobilenetwork.fluent.models.SimPolicyInner;
 import com.azure.resourcemanager.mobilenetwork.models.Ambr;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SimPolicy;
+import com.azure.resourcemanager.mobilenetwork.models.SiteProvisioningState;
 import com.azure.resourcemanager.mobilenetwork.models.SliceConfiguration;
 import com.azure.resourcemanager.mobilenetwork.models.SliceResourceId;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
@@ -54,6 +55,15 @@ public final class SimPolicyImpl implements SimPolicy, SimPolicy.Definition, Sim
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public Map<String, SiteProvisioningState> siteProvisioningState() {
+        Map<String, SiteProvisioningState> inner = this.innerModel().siteProvisioningState();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
     }
 
     public Ambr ueAmbr() {
@@ -116,20 +126,16 @@ public final class SimPolicyImpl implements SimPolicy, SimPolicy.Definition, Sim
     }
 
     public SimPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimPolicies()
-                .createOrUpdate(resourceGroupName, mobileNetworkName, simPolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, simPolicyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public SimPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimPolicies()
-                .createOrUpdate(resourceGroupName, mobileNetworkName, simPolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .createOrUpdate(resourceGroupName, mobileNetworkName, simPolicyName, this.innerModel(), context);
         return this;
     }
 
@@ -145,52 +151,43 @@ public final class SimPolicyImpl implements SimPolicy, SimPolicy.Definition, Sim
     }
 
     public SimPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimPolicies()
-                .updateTagsWithResponse(
-                    resourceGroupName, mobileNetworkName, simPolicyName, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .updateTagsWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SimPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimPolicies()
-                .updateTagsWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .updateTagsWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    SimPolicyImpl(
-        SimPolicyInner innerObject, com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
+    SimPolicyImpl(SimPolicyInner innerObject,
+        com.azure.resourcemanager.mobilenetwork.MobileNetworkManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.mobileNetworkName = Utils.getValueFromIdByName(innerObject.id(), "mobileNetworks");
-        this.simPolicyName = Utils.getValueFromIdByName(innerObject.id(), "simPolicies");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.mobileNetworkName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mobileNetworks");
+        this.simPolicyName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "simPolicies");
     }
 
     public SimPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimPolicies()
-                .getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public SimPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getSimPolicies()
-                .getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getSimPolicies()
+            .getWithResponse(resourceGroupName, mobileNetworkName, simPolicyName, context)
+            .getValue();
         return this;
     }
 

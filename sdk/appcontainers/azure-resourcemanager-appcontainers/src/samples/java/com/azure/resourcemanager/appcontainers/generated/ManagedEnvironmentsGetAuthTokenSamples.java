@@ -4,20 +4,21 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ManagedEnvironments GetAuthToken. */
+/**
+ * Samples for ManagedEnvironments GetAuthToken.
+ */
 public final class ManagedEnvironmentsGetAuthTokenSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ManagedEnvironments_GetAuthToken.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
+     * ManagedEnvironments_GetAuthToken.json
      */
     /**
      * Sample code: Get Managed Environment Auth Token.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
-    public static void getManagedEnvironmentAuthToken(
-        com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.managedEnvironments().getAuthTokenWithResponse("rg", "testenv", Context.NONE);
+    public static void
+        getManagedEnvironmentAuthToken(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
+        manager.managedEnvironments().getAuthTokenWithResponse("rg", "testenv", com.azure.core.util.Context.NONE);
     }
 }

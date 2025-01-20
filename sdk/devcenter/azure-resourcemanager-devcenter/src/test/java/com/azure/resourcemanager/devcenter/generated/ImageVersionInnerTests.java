@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageVersionInner;
-import org.junit.jupiter.api.Test;
 
 public final class ImageVersionInnerTests {
-    @Test
-    public void testDeserialize() {
-        ImageVersionInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"name\":\"zj\",\"publishedDate\":\"2021-10-23T04:38:56Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":1473301167,\"provisioningState\":\"Deleting\"},\"id\":\"b\",\"name\":\"uofqwe\",\"type\":\"kh\"}")
-                .toObject(ImageVersionInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ImageVersionInner model = BinaryData.fromString(
+            "{\"properties\":{\"name\":\"u\",\"publishedDate\":\"2021-05-30T12:28:52Z\",\"excludeFromLatest\":true,\"osDiskImageSizeInGb\":1508312014,\"provisioningState\":\"Updating\"},\"id\":\"hl\",\"name\":\"qj\",\"type\":\"hckfrlhrx\"}")
+            .toObject(ImageVersionInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageVersionInner model = new ImageVersionInner();
         model = BinaryData.fromObject(model).toObject(ImageVersionInner.class);
     }

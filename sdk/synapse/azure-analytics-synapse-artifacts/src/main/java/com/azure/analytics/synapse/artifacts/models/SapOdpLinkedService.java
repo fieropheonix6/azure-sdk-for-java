@@ -5,141 +5,144 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** SAP ODP Linked Service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SapOdp")
-@JsonFlatten
+/**
+ * SAP ODP Linked Service.
+ */
 @Fluent
 public class SapOdpLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "SapOdp";
+
+    /*
      * Host name of the SAP instance where the table is located. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.server")
     private Object server;
 
     /*
      * System number of the SAP system where the table is located. (Usually a two-digit decimal number represented as a
      * string.) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.systemNumber")
     private Object systemNumber;
 
     /*
      * Client ID of the client on the SAP system where the table is located. (Usually a three-digit decimal number
      * represented as a string) Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clientId")
     private Object clientId;
 
     /*
      * Language of the SAP system where the table is located. The default value is EN. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "typeProperties.language")
     private Object language;
 
     /*
      * SystemID of the SAP system where the table is located. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.systemId")
     private Object systemId;
 
     /*
      * Username to access the SAP server where the table is located. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
      * Password to access the SAP server where the table is located.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
      * The hostname of the SAP Message Server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.messageServer")
     private Object messageServer;
 
     /*
      * The service name or port number of the Message Server. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.messageServerService")
     private Object messageServerService;
 
     /*
      * SNC activation indicator to access the SAP server where the table is located. Must be either 0 (off) or 1 (on).
      * Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.sncMode")
     private Object sncMode;
 
     /*
      * Initiator's SNC name to access the SAP server where the table is located. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "typeProperties.sncMyName")
     private Object sncMyName;
 
     /*
-     * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or
-     * Expression with resultType string).
+     * Communication partner's SNC name to access the SAP server where the table is located. Type: string (or Expression
+     * with resultType string).
      */
-    @JsonProperty(value = "typeProperties.sncPartnerName")
     private Object sncPartnerName;
 
     /*
      * External security product's library to access the SAP server where the table is located. Type: string (or
      * Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.sncLibraryPath")
     private Object sncLibraryPath;
 
     /*
      * SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or Expression with resultType
      * string).
      */
-    @JsonProperty(value = "typeProperties.sncQop")
     private Object sncQop;
 
     /*
      * SNC X509 certificate file path. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.x509CertificatePath")
     private Object x509CertificatePath;
 
     /*
      * The Logon Group for the SAP System. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.logonGroup")
     private Object logonGroup;
 
     /*
      * The subscriber name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.subscriberName")
     private Object subscriberName;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
+
+    /**
+     * Creates an instance of SapOdpLinkedService class.
+     */
+    public SapOdpLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
 
     /**
      * Get the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the server value.
      */
     public Object getServer() {
@@ -149,7 +152,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the server property: Host name of the SAP instance where the table is located. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param server the server value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -161,7 +164,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the systemNumber property: System number of the SAP system where the table is located. (Usually a two-digit
      * decimal number represented as a string.) Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the systemNumber value.
      */
     public Object getSystemNumber() {
@@ -171,7 +174,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the systemNumber property: System number of the SAP system where the table is located. (Usually a two-digit
      * decimal number represented as a string.) Type: string (or Expression with resultType string).
-     *
+     * 
      * @param systemNumber the systemNumber value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -183,7 +186,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the clientId property: Client ID of the client on the SAP system where the table is located. (Usually a
      * three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clientId value.
      */
     public Object getClientId() {
@@ -193,7 +196,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the clientId property: Client ID of the client on the SAP system where the table is located. (Usually a
      * three-digit decimal number represented as a string) Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -205,7 +208,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the language property: Language of the SAP system where the table is located. The default value is EN. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the language value.
      */
     public Object getLanguage() {
@@ -215,7 +218,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the language property: Language of the SAP system where the table is located. The default value is EN. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param language the language value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -227,7 +230,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the systemId property: SystemID of the SAP system where the table is located. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the systemId value.
      */
     public Object getSystemId() {
@@ -237,7 +240,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the systemId property: SystemID of the SAP system where the table is located. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param systemId the systemId value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -249,7 +252,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the userName property: Username to access the SAP server where the table is located. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -259,7 +262,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the userName property: Username to access the SAP server where the table is located. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param userName the userName value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -270,7 +273,7 @@ public class SapOdpLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password to access the SAP server where the table is located.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -279,7 +282,7 @@ public class SapOdpLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password to access the SAP server where the table is located.
-     *
+     * 
      * @param password the password value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -291,7 +294,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the messageServer property: The hostname of the SAP Message Server. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the messageServer value.
      */
     public Object getMessageServer() {
@@ -301,7 +304,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the messageServer property: The hostname of the SAP Message Server. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param messageServer the messageServer value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -313,7 +316,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the messageServerService property: The service name or port number of the Message Server. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the messageServerService value.
      */
     public Object getMessageServerService() {
@@ -323,7 +326,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the messageServerService property: The service name or port number of the Message Server. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param messageServerService the messageServerService value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -335,7 +338,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
      * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sncMode value.
      */
     public Object getSncMode() {
@@ -345,7 +348,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
      * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sncMode the sncMode value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -357,7 +360,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the sncMyName property: Initiator's SNC name to access the SAP server where the table is located. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the sncMyName value.
      */
     public Object getSncMyName() {
@@ -367,7 +370,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the sncMyName property: Initiator's SNC name to access the SAP server where the table is located. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param sncMyName the sncMyName value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -379,7 +382,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the sncPartnerName property: Communication partner's SNC name to access the SAP server where the table is
      * located. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sncPartnerName value.
      */
     public Object getSncPartnerName() {
@@ -389,7 +392,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the sncPartnerName property: Communication partner's SNC name to access the SAP server where the table is
      * located. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sncPartnerName the sncPartnerName value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -401,7 +404,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the sncLibraryPath property: External security product's library to access the SAP server where the table is
      * located. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the sncLibraryPath value.
      */
     public Object getSncLibraryPath() {
@@ -411,7 +414,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the sncLibraryPath property: External security product's library to access the SAP server where the table is
      * located. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param sncLibraryPath the sncLibraryPath value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -423,7 +426,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the sncQop property: SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the sncQop value.
      */
     public Object getSncQop() {
@@ -433,7 +436,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the sncQop property: SNC Quality of Protection. Allowed value include: 1, 2, 3, 8, 9. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param sncQop the sncQop value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -445,7 +448,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the x509CertificatePath value.
      */
     public Object getX509CertificatePath() {
@@ -455,7 +458,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the x509CertificatePath property: SNC X509 certificate file path. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param x509CertificatePath the x509CertificatePath value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -467,7 +470,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the logonGroup property: The Logon Group for the SAP System. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the logonGroup value.
      */
     public Object getLogonGroup() {
@@ -477,7 +480,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the logonGroup property: The Logon Group for the SAP System. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param logonGroup the logonGroup value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -488,7 +491,7 @@ public class SapOdpLinkedService extends LinkedService {
 
     /**
      * Get the subscriberName property: The subscriber name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the subscriberName value.
      */
     public Object getSubscriberName() {
@@ -497,7 +500,7 @@ public class SapOdpLinkedService extends LinkedService {
 
     /**
      * Set the subscriberName property: The subscriber name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param subscriberName the subscriberName value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -509,7 +512,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -519,7 +522,7 @@ public class SapOdpLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the SapOdpLinkedService object itself.
      */
@@ -528,31 +531,185 @@ public class SapOdpLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapOdpLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (server != null
+            || systemNumber != null
+            || clientId != null
+            || language != null
+            || systemId != null
+            || userName != null
+            || password != null
+            || messageServer != null
+            || messageServerService != null
+            || sncMode != null
+            || sncMyName != null
+            || sncPartnerName != null
+            || sncLibraryPath != null
+            || sncQop != null
+            || x509CertificatePath != null
+            || logonGroup != null
+            || subscriberName != null
+            || encryptedCredential != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("server", this.server);
+            jsonWriter.writeUntypedField("systemNumber", this.systemNumber);
+            jsonWriter.writeUntypedField("clientId", this.clientId);
+            jsonWriter.writeUntypedField("language", this.language);
+            jsonWriter.writeUntypedField("systemId", this.systemId);
+            jsonWriter.writeUntypedField("userName", this.userName);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeUntypedField("messageServer", this.messageServer);
+            jsonWriter.writeUntypedField("messageServerService", this.messageServerService);
+            jsonWriter.writeUntypedField("sncMode", this.sncMode);
+            jsonWriter.writeUntypedField("sncMyName", this.sncMyName);
+            jsonWriter.writeUntypedField("sncPartnerName", this.sncPartnerName);
+            jsonWriter.writeUntypedField("sncLibraryPath", this.sncLibraryPath);
+            jsonWriter.writeUntypedField("sncQop", this.sncQop);
+            jsonWriter.writeUntypedField("x509CertificatePath", this.x509CertificatePath);
+            jsonWriter.writeUntypedField("logonGroup", this.logonGroup);
+            jsonWriter.writeUntypedField("subscriberName", this.subscriberName);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapOdpLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapOdpLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapOdpLinkedService.
+     */
+    public static SapOdpLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapOdpLinkedService deserializedSapOdpLinkedService = new SapOdpLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedSapOdpLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedSapOdpLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedSapOdpLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedSapOdpLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedSapOdpLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("server".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.server = reader.readUntyped();
+                        } else if ("systemNumber".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.systemNumber = reader.readUntyped();
+                        } else if ("clientId".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.clientId = reader.readUntyped();
+                        } else if ("language".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.language = reader.readUntyped();
+                        } else if ("systemId".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.systemId = reader.readUntyped();
+                        } else if ("userName".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.userName = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("messageServer".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.messageServer = reader.readUntyped();
+                        } else if ("messageServerService".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.messageServerService = reader.readUntyped();
+                        } else if ("sncMode".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.sncMode = reader.readUntyped();
+                        } else if ("sncMyName".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.sncMyName = reader.readUntyped();
+                        } else if ("sncPartnerName".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.sncPartnerName = reader.readUntyped();
+                        } else if ("sncLibraryPath".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.sncLibraryPath = reader.readUntyped();
+                        } else if ("sncQop".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.sncQop = reader.readUntyped();
+                        } else if ("x509CertificatePath".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.x509CertificatePath = reader.readUntyped();
+                        } else if ("logonGroup".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.logonGroup = reader.readUntyped();
+                        } else if ("subscriberName".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.subscriberName = reader.readUntyped();
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedSapOdpLinkedService.encryptedCredential = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSapOdpLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedSapOdpLinkedService;
+        });
     }
 }

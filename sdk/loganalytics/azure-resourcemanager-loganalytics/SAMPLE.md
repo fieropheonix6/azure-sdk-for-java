@@ -81,6 +81,7 @@
 ## QueryPacks
 
 - [CreateOrUpdate](#querypacks_createorupdate)
+- [CreateOrUpdateWithoutName](#querypacks_createorupdatewithoutname)
 - [Delete](#querypacks_delete)
 - [GetByResourceGroup](#querypacks_getbyresourcegroup)
 - [List](#querypacks_list)
@@ -112,6 +113,7 @@
 
 ## Tables
 
+- [CancelSearch](#tables_cancelsearch)
 - [CreateOrUpdate](#tables_createorupdate)
 - [Delete](#tables_delete)
 - [Get](#tables_get)
@@ -139,20 +141,23 @@
 ### AvailableServiceTiers_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for AvailableServiceTiers ListByWorkspace. */
+/**
+ * Samples for AvailableServiceTiers ListByWorkspace.
+ */
 public final class AvailableServiceTiersListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesAvailableServiceTiers.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesAvailableServiceTiers.json
      */
     /**
      * Sample code: AvailableServiceTiers.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void availableServiceTiers(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.availableServiceTiers().listByWorkspaceWithResponse("rg1", "workspace1", Context.NONE);
+        manager.availableServiceTiers()
+            .listByWorkspaceWithResponse("rg1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -166,30 +171,32 @@ import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters CreateOrUpdate. */
+/**
+ * Samples for Clusters CreateOrUpdate.
+ */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersCreate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersCreate.json
      */
     /**
      * Sample code: ClustersCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .clusters()
+        manager.clusters()
             .define("oiautorest6685")
             .withRegion("australiasoutheast")
             .withExistingResourceGroup("oiautorest6685")
             .withTags(mapOf("tag1", "val1"))
-            .withSku(
-                new ClusterSku()
-                    .withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
-                    .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
+            .withSku(new ClusterSku().withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
+                .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -206,20 +213,22 @@ public final class ClustersCreateOrUpdateSamples {
 ### Clusters_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Clusters Delete. */
+/**
+ * Samples for Clusters Delete.
+ */
 public final class ClustersDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersDelete.json
      */
     /**
      * Sample code: ClustersDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.clusters().delete("oiautorest6685", "oiautorest6685", Context.NONE);
+        manager.clusters().delete("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -227,20 +236,23 @@ public final class ClustersDeleteSamples {
 ### Clusters_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Clusters GetByResourceGroup. */
+/**
+ * Samples for Clusters GetByResourceGroup.
+ */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersGet.json
      */
     /**
      * Sample code: ClustersGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.clusters().getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", Context.NONE);
+        manager.clusters()
+            .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -248,20 +260,22 @@ public final class ClustersGetByResourceGroupSamples {
 ### Clusters_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Clusters List. */
+/**
+ * Samples for Clusters List.
+ */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersSubscriptionList.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersSubscriptionList.json
      */
     /**
      * Sample code: ClustersSubscriptionList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersSubscriptionList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.clusters().list(Context.NONE);
+        manager.clusters().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -269,20 +283,22 @@ public final class ClustersListSamples {
 ### Clusters_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Clusters ListByResourceGroup. */
+/**
+ * Samples for Clusters ListByResourceGroup.
+ */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersListByResourceGroup.json
      */
     /**
      * Sample code: ClustersGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.clusters().listByResourceGroup("oiautorest6685", Context.NONE);
+        manager.clusters().listByResourceGroup("oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -290,57 +306,51 @@ public final class ClustersListByResourceGroupSamples {
 ### Clusters_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.Capacity;
 import com.azure.resourcemanager.loganalytics.models.Cluster;
 import com.azure.resourcemanager.loganalytics.models.ClusterSku;
 import com.azure.resourcemanager.loganalytics.models.ClusterSkuNameEnum;
-import com.azure.resourcemanager.loganalytics.models.Identity;
-import com.azure.resourcemanager.loganalytics.models.IdentityType;
 import com.azure.resourcemanager.loganalytics.models.KeyVaultProperties;
-import com.azure.resourcemanager.loganalytics.models.UserIdentityProperties;
+import com.azure.resourcemanager.loganalytics.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.loganalytics.models.ManagedServiceIdentityType;
+import com.azure.resourcemanager.loganalytics.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters Update. */
+/**
+ * Samples for Clusters Update.
+ */
 public final class ClustersUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2021-06-01/examples/ClustersUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * ClustersUpdate.json
      */
     /**
      * Sample code: ClustersPatch.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void clustersPatch(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        Cluster resource =
-            manager
-                .clusters()
-                .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("tag1", "val1"))
-            .withIdentity(
-                new Identity()
-                    .withType(IdentityType.USER_ASSIGNED)
-                    .withUserAssignedIdentities(
-                        mapOf(
-                            "/subscriptions/00000000-0000-0000-0000-00000000000/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
-                            new UserIdentityProperties())))
-            .withSku(
-                new ClusterSku()
-                    .withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
-                    .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
-            .withKeyVaultProperties(
-                new KeyVaultProperties()
-                    .withKeyVaultUri("https://aztest2170.vault.azure.net")
-                    .withKeyName("aztest2170cert")
-                    .withKeyVersion("654ft6c4e63845cbb50fd6fg51540429")
-                    .withKeyRsaSize(1024))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/53bc36c5-91e1-4d09-92c9-63b89e571926/resourcegroups/oiautorest6685/providers/Microsoft.ManagedIdentity/userAssignedIdentities/myidentity",
+                    new UserAssignedIdentity())))
+            .withSku(new ClusterSku().withCapacity(Capacity.ONE_ZERO_ZERO_ZERO)
+                .withName(ClusterSkuNameEnum.CAPACITY_RESERVATION))
+            .withKeyVaultProperties(new KeyVaultProperties().withKeyVaultUri("fakeTokenPlaceholder")
+                .withKeyName("fakeTokenPlaceholder")
+                .withKeyVersion("fakeTokenPlaceholder")
+                .withKeyRsaSize(1024))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -359,19 +369,22 @@ public final class ClustersUpdateSamples {
 ```java
 import java.util.Arrays;
 
-/** Samples for DataExports CreateOrUpdate. */
+/**
+ * Samples for DataExports CreateOrUpdate.
+ */
 public final class DataExportsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataExportCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataExportCreateOrUpdate.json
      */
     /**
      * Sample code: DataExportCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .dataExports()
+        manager.dataExports()
             .define("export1")
             .withExistingWorkspace("RgTest1", "DeWnTest1234")
             .withTableNames(Arrays.asList("Heartbeat"))
@@ -385,20 +398,23 @@ public final class DataExportsCreateOrUpdateSamples {
 ### DataExports_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DataExports Delete. */
+/**
+ * Samples for DataExports Delete.
+ */
 public final class DataExportsDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataExportDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataExportDelete.json
      */
     /**
      * Sample code: DataExportDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataExports().deleteWithResponse("RgTest1", "DeWnTest1234", "export1", Context.NONE);
+        manager.dataExports()
+            .deleteWithResponse("RgTest1", "DeWnTest1234", "export1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -406,20 +422,22 @@ public final class DataExportsDeleteSamples {
 ### DataExports_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DataExports Get. */
+/**
+ * Samples for DataExports Get.
+ */
 public final class DataExportsGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataExportGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataExportGet.json
      */
     /**
      * Sample code: DataExportGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataExports().getWithResponse("RgTest1", "DeWnTest1234", "export1", Context.NONE);
+        manager.dataExports().getWithResponse("RgTest1", "DeWnTest1234", "export1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -427,20 +445,22 @@ public final class DataExportsGetSamples {
 ### DataExports_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DataExports ListByWorkspace. */
+/**
+ * Samples for DataExports ListByWorkspace.
+ */
 public final class DataExportsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataExportListByWorkspace.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataExportListByWorkspace.json
      */
     /**
      * Sample code: DataExportGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataExportGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataExports().listByWorkspace("RgTest1", "DeWnTest1234", Context.NONE);
+        manager.dataExports().listByWorkspace("RgTest1", "DeWnTest1234", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -453,29 +473,29 @@ import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.loganalytics.models.DataSourceKind;
 import java.io.IOException;
 
-/** Samples for DataSources CreateOrUpdate. */
+/**
+ * Samples for DataSources CreateOrUpdate.
+ */
 public final class DataSourcesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataSourcesCreate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataSourcesCreate.json
      */
     /**
      * Sample code: DataSourcesCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager)
         throws IOException {
-        manager
-            .dataSources()
+        manager.dataSources()
             .define("AzTestDS774")
             .withExistingWorkspace("OIAutoRest5123", "AzTest9724")
-            .withProperties(
-                SerializerFactory
-                    .createDefaultManagementSerializerAdapter()
-                    .deserialize(
-                        "{\"LinkedResourceId\":\"/subscriptions/00000000-0000-0000-0000-00000000000/providers/microsoft.insights/eventtypes/management\"}",
-                        Object.class,
-                        SerializerEncoding.JSON))
+            .withProperties(SerializerFactory.createDefaultManagementSerializerAdapter()
+                .deserialize(
+                    "{\"LinkedResourceId\":\"/subscriptions/00000000-0000-0000-0000-00000000000/providers/microsoft.insights/eventtypes/management\"}",
+                    Object.class, SerializerEncoding.JSON))
             .withKind(DataSourceKind.AZURE_ACTIVITY_LOG)
             .create();
     }
@@ -485,20 +505,23 @@ public final class DataSourcesCreateOrUpdateSamples {
 ### DataSources_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DataSources Delete. */
+/**
+ * Samples for DataSources Delete.
+ */
 public final class DataSourcesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataSourcesDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataSourcesDelete.json
      */
     /**
      * Sample code: DataSourcesDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataSources().deleteWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", Context.NONE);
+        manager.dataSources()
+            .deleteWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -506,20 +529,23 @@ public final class DataSourcesDeleteSamples {
 ### DataSources_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DataSources Get. */
+/**
+ * Samples for DataSources Get.
+ */
 public final class DataSourcesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataSourcesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataSourcesGet.json
      */
     /**
      * Sample code: DataSourcesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.dataSources().getWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", Context.NONE);
+        manager.dataSources()
+            .getWithResponse("OIAutoRest5123", "AzTest9724", "AzTestDS774", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -527,22 +553,24 @@ public final class DataSourcesGetSamples {
 ### DataSources_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DataSources ListByWorkspace. */
+/**
+ * Samples for DataSources ListByWorkspace.
+ */
 public final class DataSourcesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/DataSourcesListByWorkspace.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * DataSourcesListByWorkspace.json
      */
     /**
      * Sample code: DataSourcesListByWorkspace.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void dataSourcesListByWorkspace(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .dataSources()
-            .listByWorkspace("OIAutoRest5123", "AzTest9724", "kind='WindowsEvent'", null, Context.NONE);
+        manager.dataSources()
+            .listByWorkspace("OIAutoRest5123", "AzTest9724", "kind='WindowsEvent'", null,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -550,20 +578,22 @@ public final class DataSourcesListByWorkspaceSamples {
 ### DeletedWorkspaces_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DeletedWorkspaces List. */
+/**
+ * Samples for DeletedWorkspaces List.
+ */
 public final class DeletedWorkspacesListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesSubscriptionList.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesSubscriptionList.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesSubscriptionList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.deletedWorkspaces().list(Context.NONE);
+        manager.deletedWorkspaces().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -571,20 +601,22 @@ public final class DeletedWorkspacesListSamples {
 ### DeletedWorkspaces_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for DeletedWorkspaces ListByResourceGroup. */
+/**
+ * Samples for DeletedWorkspaces ListByResourceGroup.
+ */
 public final class DeletedWorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesListByResourceGroup.json
      */
     /**
      * Sample code: WorkspacesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.deletedWorkspaces().listByResourceGroup("oiautorest6685", Context.NONE);
+        manager.deletedWorkspaces().listByResourceGroup("oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -592,22 +624,24 @@ public final class DeletedWorkspacesListByResourceGroupSamples {
 ### Gateways_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Gateways Delete. */
+/**
+ * Samples for Gateways Delete.
+ */
 public final class GatewaysDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesGatewaysDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesGatewaysDelete.json
      */
     /**
      * Sample code: DeleteGateways.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void deleteGateways(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .gateways()
-            .deleteWithResponse("OIAutoRest5123", "aztest5048", "00000000-0000-0000-0000-00000000000", Context.NONE);
+        manager.gateways()
+            .deleteWithResponse("OIAutoRest5123", "aztest5048", "00000000-0000-0000-0000-00000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -615,20 +649,23 @@ public final class GatewaysDeleteSamples {
 ### IntelligencePacks_Disable
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for IntelligencePacks Disable. */
+/**
+ * Samples for IntelligencePacks Disable.
+ */
 public final class IntelligencePacksDisableSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesDisableIntelligencePack.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesDisableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksDisable.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void intelligencePacksDisable(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.intelligencePacks().disableWithResponse("rg1", "TestLinkWS", "ChangeTracking", Context.NONE);
+        manager.intelligencePacks()
+            .disableWithResponse("rg1", "TestLinkWS", "ChangeTracking", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -636,20 +673,23 @@ public final class IntelligencePacksDisableSamples {
 ### IntelligencePacks_Enable
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for IntelligencePacks Enable. */
+/**
+ * Samples for IntelligencePacks Enable.
+ */
 public final class IntelligencePacksEnableSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesEnableIntelligencePack.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesEnableIntelligencePack.json
      */
     /**
      * Sample code: IntelligencePacksEnable.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void intelligencePacksEnable(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.intelligencePacks().enableWithResponse("rg1", "TestLinkWS", "ChangeTracking", Context.NONE);
+        manager.intelligencePacks()
+            .enableWithResponse("rg1", "TestLinkWS", "ChangeTracking", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -657,20 +697,22 @@ public final class IntelligencePacksEnableSamples {
 ### IntelligencePacks_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for IntelligencePacks List. */
+/**
+ * Samples for IntelligencePacks List.
+ */
 public final class IntelligencePacksListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesListIntelligencePacks.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesListIntelligencePacks.json
      */
     /**
      * Sample code: IntelligencePacksList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void intelligencePacksList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.intelligencePacks().listWithResponse("rg1", "TestLinkWS", Context.NONE);
+        manager.intelligencePacks().listWithResponse("rg1", "TestLinkWS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -678,19 +720,22 @@ public final class IntelligencePacksListSamples {
 ### LinkedServices_CreateOrUpdate
 
 ```java
-/** Samples for LinkedServices CreateOrUpdate. */
+/**
+ * Samples for LinkedServices CreateOrUpdate.
+ */
 public final class LinkedServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedServicesCreate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedServicesCreate.json
      */
     /**
      * Sample code: LinkedServicesCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void linkedServicesCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .linkedServices()
+        manager.linkedServices()
             .define("Cluster")
             .withExistingWorkspace("mms-eus", "TestLinkWS")
             .withWriteAccessResourceId(
@@ -703,20 +748,22 @@ public final class LinkedServicesCreateOrUpdateSamples {
 ### LinkedServices_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for LinkedServices Delete. */
+/**
+ * Samples for LinkedServices Delete.
+ */
 public final class LinkedServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedServicesDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedServicesDelete.json
      */
     /**
      * Sample code: LinkedServicesDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void linkedServicesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.linkedServices().delete("rg1", "TestLinkWS", "Cluster", Context.NONE);
+        manager.linkedServices().delete("rg1", "TestLinkWS", "Cluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -724,20 +771,22 @@ public final class LinkedServicesDeleteSamples {
 ### LinkedServices_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for LinkedServices Get. */
+/**
+ * Samples for LinkedServices Get.
+ */
 public final class LinkedServicesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedServicesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedServicesGet.json
      */
     /**
      * Sample code: LinkedServicesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void linkedServicesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.linkedServices().getWithResponse("mms-eus", "TestLinkWS", "Cluster", Context.NONE);
+        manager.linkedServices().getWithResponse("mms-eus", "TestLinkWS", "Cluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -745,21 +794,23 @@ public final class LinkedServicesGetSamples {
 ### LinkedServices_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for LinkedServices ListByWorkspace. */
+/**
+ * Samples for LinkedServices ListByWorkspace.
+ */
 public final class LinkedServicesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedServicesListByWorkspace.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedServicesListByWorkspace.json
      */
     /**
      * Sample code: LinkedServicesListByWorkspace.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
-    public static void linkedServicesListByWorkspace(
-        com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.linkedServices().listByWorkspace("mms-eus", "TestLinkWS", Context.NONE);
+    public static void
+        linkedServicesListByWorkspace(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.linkedServices().listByWorkspace("mms-eus", "TestLinkWS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -770,26 +821,27 @@ public final class LinkedServicesListByWorkspaceSamples {
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 import java.util.Arrays;
 
-/** Samples for LinkedStorageAccounts CreateOrUpdate. */
+/**
+ * Samples for LinkedStorageAccounts CreateOrUpdate.
+ */
 public final class LinkedStorageAccountsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedStorageAccountsCreate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedStorageAccountsCreate.json
      */
     /**
      * Sample code: LinkedStorageAccountsCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void linkedStorageAccountsCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .linkedStorageAccounts()
+        manager.linkedStorageAccounts()
             .define(DataSourceType.CUSTOM_LOGS)
             .withExistingWorkspace("mms-eus", "testLinkStorageAccountsWS")
-            .withStorageAccountIds(
-                Arrays
-                    .asList(
-                        "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/mms-eus/providers/Microsoft.Storage/storageAccounts/testStorageA",
-                        "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/mms-eus/providers/Microsoft.Storage/storageAccounts/testStorageB"))
+            .withStorageAccountIds(Arrays.asList(
+                "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/mms-eus/providers/Microsoft.Storage/storageAccounts/testStorageA",
+                "/subscriptions/00000000-0000-0000-0000-00000000000/resourceGroups/mms-eus/providers/Microsoft.Storage/storageAccounts/testStorageB"))
             .create();
     }
 }
@@ -798,23 +850,26 @@ public final class LinkedStorageAccountsCreateOrUpdateSamples {
 ### LinkedStorageAccounts_Delete
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 
-/** Samples for LinkedStorageAccounts Delete. */
+/**
+ * Samples for LinkedStorageAccounts Delete.
+ */
 public final class LinkedStorageAccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedStorageAccountsDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedStorageAccountsDelete.json
      */
     /**
      * Sample code: LinkedStorageAccountsDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void linkedStorageAccountsDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .linkedStorageAccounts()
-            .deleteWithResponse("mms-eus", "testLinkStorageAccountsWS", DataSourceType.CUSTOM_LOGS, Context.NONE);
+        manager.linkedStorageAccounts()
+            .deleteWithResponse("mms-eus", "testLinkStorageAccountsWS", DataSourceType.CUSTOM_LOGS,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -822,23 +877,26 @@ public final class LinkedStorageAccountsDeleteSamples {
 ### LinkedStorageAccounts_Get
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 
-/** Samples for LinkedStorageAccounts Get. */
+/**
+ * Samples for LinkedStorageAccounts Get.
+ */
 public final class LinkedStorageAccountsGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedStorageAccountsGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedStorageAccountsGet.json
      */
     /**
      * Sample code: LinkedStorageAccountsGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void linkedStorageAccountsGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .linkedStorageAccounts()
-            .getWithResponse("mms-eus", "testLinkStorageAccountsWS", DataSourceType.CUSTOM_LOGS, Context.NONE);
+        manager.linkedStorageAccounts()
+            .getWithResponse("mms-eus", "testLinkStorageAccountsWS", DataSourceType.CUSTOM_LOGS,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -846,21 +904,24 @@ public final class LinkedStorageAccountsGetSamples {
 ### LinkedStorageAccounts_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for LinkedStorageAccounts ListByWorkspace. */
+/**
+ * Samples for LinkedStorageAccounts ListByWorkspace.
+ */
 public final class LinkedStorageAccountsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedStorageAccountsListByWorkspace.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedStorageAccountsListByWorkspace.json
      */
     /**
      * Sample code: Gets list of linked storage accounts on a workspace.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void getsListOfLinkedStorageAccountsOnAWorkspace(
         com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.linkedStorageAccounts().listByWorkspace("mms-eus", "testLinkStorageAccountsWS", Context.NONE);
+        manager.linkedStorageAccounts()
+            .listByWorkspace("mms-eus", "testLinkStorageAccountsWS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -868,21 +929,23 @@ public final class LinkedStorageAccountsListByWorkspaceSamples {
 ### ManagementGroups_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ManagementGroups List. */
+/**
+ * Samples for ManagementGroups List.
+ */
 public final class ManagementGroupsListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesListManagementGroups.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesListManagementGroups.json
      */
     /**
      * Sample code: WorkspacesListManagementGroups.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
-    public static void workspacesListManagementGroups(
-        com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.managementGroups().list("rg1", "TestLinkWS", Context.NONE);
+    public static void
+        workspacesListManagementGroups(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.managementGroups().list("rg1", "TestLinkWS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -890,20 +953,23 @@ public final class ManagementGroupsListSamples {
 ### OperationStatuses_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for OperationStatuses Get. */
+/**
+ * Samples for OperationStatuses Get.
+ */
 public final class OperationStatusesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/OperationStatusesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * OperationStatusesGet.json
      */
     /**
      * Sample code: Get specific operation status.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void getSpecificOperationStatus(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.operationStatuses().getWithResponse("West US", "713192d7-503f-477a-9cfe-4efc3ee2bd11", Context.NONE);
+        manager.operationStatuses()
+            .getWithResponse("West US", "713192d7-503f-477a-9cfe-4efc3ee2bd11", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -911,20 +977,22 @@ public final class OperationStatusesGetSamples {
 ### Operations_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Operations List. */
+/**
+ * Samples for Operations List.
+ */
 public final class OperationsListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/OperationsListByTenant.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * OperationsListByTenant.json
      */
     /**
      * Sample code: Get specific operation status.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void getSpecificOperationStatus(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.operations().list(Context.NONE);
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -932,23 +1000,24 @@ public final class OperationsListSamples {
 ### Queries_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Queries Delete. */
+/**
+ * Samples for Queries Delete.
+ */
 public final class QueriesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackQueriesDelete.json
      */
     /**
      * Sample code: QueryDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queries()
-            .deleteWithResponse(
-                "my-resource-group", "my-querypack", "a449f8af-8e64-4b3a-9b16-5a7165ff98c4", Context.NONE);
+        manager.queries()
+            .deleteWithResponse("my-resource-group", "my-querypack", "a449f8af-8e64-4b3a-9b16-5a7165ff98c4",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -956,22 +1025,24 @@ public final class QueriesDeleteSamples {
 ### Queries_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Queries Get. */
+/**
+ * Samples for Queries Get.
+ */
 public final class QueriesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackQueriesGet.json
      */
     /**
      * Sample code: QueryGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queries()
-            .getWithResponse("my-resource-group", "my-querypack", "a449f8af-8e64-4b3a-9b16-5a7165ff98c4", Context.NONE);
+        manager.queries()
+            .getWithResponse("my-resource-group", "my-querypack", "a449f8af-8e64-4b3a-9b16-5a7165ff98c4",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -979,20 +1050,22 @@ public final class QueriesGetSamples {
 ### Queries_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Queries List. */
+/**
+ * Samples for Queries List.
+ */
 public final class QueriesListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesList.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackQueriesList.json
      */
     /**
      * Sample code: QueryList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.queries().list("my-resource-group", "my-querypack", null, true, null, Context.NONE);
+        manager.queries().list("my-resource-group", "my-querypack", null, true, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1005,42 +1078,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Queries Put. */
+/**
+ * Samples for Queries Put.
+ */
 public final class QueriesPutSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesPut.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackQueriesPut.json
      */
     /**
      * Sample code: QueryPut.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPut(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queries()
+        manager.queries()
             .define("a449f8af-8e64-4b3a-9b16-5a7165ff98c4")
             .withExistingQueryPack("my-resource-group", "my-querypack")
             .withTags(mapOf("my-label", Arrays.asList("label1"), "my-other-label", Arrays.asList("label2")))
             .withDisplayName("Exceptions - New in the last 24 hours")
             .withDescription("my description")
             .withBody(
-                "let newExceptionsTimeRange = 1d;\n"
-                    + "let timeRangeToCheckBefore = 7d;\n"
-                    + "exceptions\n"
-                    + "| where timestamp < ago(timeRangeToCheckBefore)\n"
-                    + "| summarize count() by problemId\n"
-                    + "| join kind= rightanti (\n"
-                    + "exceptions\n"
-                    + "| where timestamp >= ago(newExceptionsTimeRange)\n"
-                    + "| extend stack = tostring(details[0].rawStack)\n"
-                    + "| summarize count(), dcount(user_AuthenticatedId), min(timestamp), max(timestamp), any(stack) by"
-                    + " problemId  \n"
-                    + ") on problemId \n"
-                    + "| order by  count_ desc\n")
+                "let newExceptionsTimeRange = 1d;\nlet timeRangeToCheckBefore = 7d;\nexceptions\n| where timestamp < ago(timeRangeToCheckBefore)\n| summarize count() by problemId\n| join kind= rightanti (\nexceptions\n| where timestamp >= ago(newExceptionsTimeRange)\n| extend stack = tostring(details[0].rawStack)\n| summarize count(), dcount(user_AuthenticatedId), min(timestamp), max(timestamp), any(stack) by problemId  \n) on problemId \n| order by  count_ desc\n")
             .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated().withCategories(Arrays.asList("analytics")))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1057,40 +1122,37 @@ public final class QueriesPutSamples {
 ### Queries_Search
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQuerySearchProperties;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQuerySearchPropertiesRelated;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Queries Search. */
+/**
+ * Samples for Queries Search.
+ */
 public final class QueriesSearchSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesSearch.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackQueriesSearch.json
      */
     /**
      * Sample code: QuerySearch.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void querySearch(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queries()
-            .search(
-                "my-resource-group",
-                "my-querypack",
+        manager.queries()
+            .search("my-resource-group", "my-querypack",
                 new LogAnalyticsQueryPackQuerySearchProperties()
-                    .withRelated(
-                        new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
-                            .withCategories(Arrays.asList("other", "analytics")))
+                    .withRelated(new LogAnalyticsQueryPackQuerySearchPropertiesRelated()
+                        .withCategories(Arrays.asList("other", "analytics")))
                     .withTags(mapOf("my-label", Arrays.asList("label1"))),
-                3L,
-                true,
-                null,
-                Context.NONE);
+                3L, true, null, com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1107,53 +1169,42 @@ public final class QueriesSearchSamples {
 ### Queries_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQuery;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPackQueryPropertiesRelated;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Queries Update. */
+/**
+ * Samples for Queries Update.
+ */
 public final class QueriesUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPackQueriesUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackQueriesUpdate.json
      */
     /**
      * Sample code: QueryPatch.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPatch(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        LogAnalyticsQueryPackQuery resource =
-            manager
-                .queries()
-                .getWithResponse(
-                    "my-resource-group", "my-querypack", "a449f8af-8e64-4b3a-9b16-5a7165ff98c4", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        LogAnalyticsQueryPackQuery resource = manager.queries()
+            .getWithResponse("my-resource-group", "my-querypack", "a449f8af-8e64-4b3a-9b16-5a7165ff98c4",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("my-label", Arrays.asList("label1"), "my-other-label", Arrays.asList("label2")))
             .withDisplayName("Exceptions - New in the last 24 hours")
             .withDescription("my description")
             .withBody(
-                "let newExceptionsTimeRange = 1d;\n"
-                    + "let timeRangeToCheckBefore = 7d;\n"
-                    + "exceptions\n"
-                    + "| where timestamp < ago(timeRangeToCheckBefore)\n"
-                    + "| summarize count() by problemId\n"
-                    + "| join kind= rightanti (\n"
-                    + "exceptions\n"
-                    + "| where timestamp >= ago(newExceptionsTimeRange)\n"
-                    + "| extend stack = tostring(details[0].rawStack)\n"
-                    + "| summarize count(), dcount(user_AuthenticatedId), min(timestamp), max(timestamp), any(stack) by"
-                    + " problemId  \n"
-                    + ") on problemId \n"
-                    + "| order by  count_ desc\n")
+                "let newExceptionsTimeRange = 1d;\nlet timeRangeToCheckBefore = 7d;\nexceptions\n| where timestamp < ago(timeRangeToCheckBefore)\n| summarize count() by problemId\n| join kind= rightanti (\nexceptions\n| where timestamp >= ago(newExceptionsTimeRange)\n| extend stack = tostring(details[0].rawStack)\n| summarize count(), dcount(user_AuthenticatedId), min(timestamp), max(timestamp), any(stack) by problemId  \n) on problemId \n| order by  count_ desc\n")
             .withRelated(new LogAnalyticsQueryPackQueryPropertiesRelated().withCategories(Arrays.asList("analytics")))
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1173,19 +1224,22 @@ public final class QueriesUpdateSamples {
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for QueryPacks CreateOrUpdate. */
+/**
+ * Samples for QueryPacks CreateOrUpdate.
+ */
 public final class QueryPacksCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksCreate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksCreate.json
      */
     /**
      * Sample code: QueryPackCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPackCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queryPacks()
+        manager.queryPacks()
             .define("my-querypack")
             .withRegion("South Central US")
             .withExistingResourceGroup("my-resource-group")
@@ -1193,16 +1247,17 @@ public final class QueryPacksCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksUpdate.json
      */
     /**
      * Sample code: QueryPackUpdate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPackUpdate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .queryPacks()
+        manager.queryPacks()
             .define("my-querypack")
             .withRegion("South Central US")
             .withExistingResourceGroup("my-resource-group")
@@ -1210,6 +1265,65 @@ public final class QueryPacksCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### QueryPacks_CreateOrUpdateWithoutName
+
+```java
+import com.azure.resourcemanager.loganalytics.fluent.models.LogAnalyticsQueryPackInner;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for QueryPacks CreateOrUpdateWithoutName.
+ */
+public final class QueryPacksCreateOrUpdateWithoutNameSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksCreateNoName.json
+     */
+    /**
+     * Sample code: QueryPackCreateNoName.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void queryPackCreateNoName(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.queryPacks()
+            .createOrUpdateWithoutNameWithResponse("my-resource-group",
+                new LogAnalyticsQueryPackInner().withLocation("South Central US"), com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPackUpdateNoName.json
+     */
+    /**
+     * Sample code: QueryPackUpdateNoName.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void queryPackUpdateNoName(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.queryPacks()
+            .createOrUpdateWithoutNameWithResponse("my-resource-group",
+                new LogAnalyticsQueryPackInner().withLocation("South Central US").withTags(mapOf("Tag1", "Value1")),
+                com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1226,20 +1340,23 @@ public final class QueryPacksCreateOrUpdateSamples {
 ### QueryPacks_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for QueryPacks Delete. */
+/**
+ * Samples for QueryPacks Delete.
+ */
 public final class QueryPacksDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksDelete.json
      */
     /**
      * Sample code: QueryPacksDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPacksDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.queryPacks().deleteWithResponse("my-resource-group", "my-querypack", Context.NONE);
+        manager.queryPacks()
+            .deleteByResourceGroupWithResponse("my-resource-group", "my-querypack", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1247,20 +1364,23 @@ public final class QueryPacksDeleteSamples {
 ### QueryPacks_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for QueryPacks GetByResourceGroup. */
+/**
+ * Samples for QueryPacks GetByResourceGroup.
+ */
 public final class QueryPacksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksGet.json
      */
     /**
      * Sample code: QueryPackGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPackGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.queryPacks().getByResourceGroupWithResponse("my-resource-group", "my-querypack", Context.NONE);
+        manager.queryPacks()
+            .getByResourceGroupWithResponse("my-resource-group", "my-querypack", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1268,20 +1388,22 @@ public final class QueryPacksGetByResourceGroupSamples {
 ### QueryPacks_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for QueryPacks List. */
+/**
+ * Samples for QueryPacks List.
+ */
 public final class QueryPacksListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksList.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksList.json
      */
     /**
      * Sample code: QueryPacksList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPacksList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.queryPacks().list(Context.NONE);
+        manager.queryPacks().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1289,21 +1411,23 @@ public final class QueryPacksListSamples {
 ### QueryPacks_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for QueryPacks ListByResourceGroup. */
+/**
+ * Samples for QueryPacks ListByResourceGroup.
+ */
 public final class QueryPacksListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksListByResourceGroup.json
      */
     /**
      * Sample code: QueryPackListByResourceGroup.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
-    public static void queryPackListByResourceGroup(
-        com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.queryPacks().listByResourceGroup("my-resource-group", Context.NONE);
+    public static void
+        queryPackListByResourceGroup(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.queryPacks().listByResourceGroup("my-resource-group", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1311,30 +1435,32 @@ public final class QueryPacksListByResourceGroupSamples {
 ### QueryPacks_UpdateTags
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.LogAnalyticsQueryPack;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for QueryPacks UpdateTags. */
+/**
+ * Samples for QueryPacks UpdateTags.
+ */
 public final class QueryPacksUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/QueryPacksUpdateTagsOnly.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2019-09-01/examples/
+     * QueryPacksUpdateTagsOnly.json
      */
     /**
      * Sample code: QueryPackUpdateTagsOnly.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void queryPackUpdateTagsOnly(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        LogAnalyticsQueryPack resource =
-            manager
-                .queryPacks()
-                .getByResourceGroupWithResponse("my-resource-group", "my-querypack", Context.NONE)
-                .getValue();
+        LogAnalyticsQueryPack resource = manager.queryPacks()
+            .getByResourceGroupWithResponse("my-resource-group", "my-querypack", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("Tag1", "Value1", "Tag2", "Value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1354,19 +1480,22 @@ public final class QueryPacksUpdateTagsSamples {
 import com.azure.resourcemanager.loganalytics.models.Tag;
 import java.util.Arrays;
 
-/** Samples for SavedSearches CreateOrUpdate. */
+/**
+ * Samples for SavedSearches CreateOrUpdate.
+ */
 public final class SavedSearchesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesSavedSearchesCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesSavedSearchesCreateOrUpdate.json
      */
     /**
      * Sample code: SavedSearchCreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void savedSearchCreateOrUpdate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .savedSearches()
+        manager.savedSearches()
             .define("00000000-0000-0000-0000-00000000000")
             .withExistingWorkspace("TestRG", "TestWS")
             .withCategory("Saved Search Test Category")
@@ -1384,22 +1513,24 @@ public final class SavedSearchesCreateOrUpdateSamples {
 ### SavedSearches_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SavedSearches Delete. */
+/**
+ * Samples for SavedSearches Delete.
+ */
 public final class SavedSearchesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesDeleteSavedSearches.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesDeleteSavedSearches.json
      */
     /**
      * Sample code: SavedSearchesDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void savedSearchesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .savedSearches()
-            .deleteWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000", Context.NONE);
+        manager.savedSearches()
+            .deleteWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1407,22 +1538,24 @@ public final class SavedSearchesDeleteSamples {
 ### SavedSearches_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SavedSearches Get. */
+/**
+ * Samples for SavedSearches Get.
+ */
 public final class SavedSearchesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesSavedSearchesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesSavedSearchesGet.json
      */
     /**
      * Sample code: SavedSearchesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void savedSearchesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .savedSearches()
-            .getWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000", Context.NONE);
+        manager.savedSearches()
+            .getWithResponse("TestRG", "TestWS", "00000000-0000-0000-0000-00000000000",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1430,20 +1563,22 @@ public final class SavedSearchesGetSamples {
 ### SavedSearches_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SavedSearches ListByWorkspace. */
+/**
+ * Samples for SavedSearches ListByWorkspace.
+ */
 public final class SavedSearchesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/SavedSearchesListByWorkspace.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * SavedSearchesListByWorkspace.json
      */
     /**
      * Sample code: SavedSearchesList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void savedSearchesList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.savedSearches().listByWorkspaceWithResponse("TestRG", "TestWS", Context.NONE);
+        manager.savedSearches().listByWorkspaceWithResponse("TestRG", "TestWS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1451,20 +1586,22 @@ public final class SavedSearchesListByWorkspaceSamples {
 ### Schema_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Schema Get. */
+/**
+ * Samples for Schema Get.
+ */
 public final class SchemaGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/SavedSearchesGetSchema.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * SavedSearchesGetSchema.json
      */
     /**
      * Sample code: WorkspacesGetSchema.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesGetSchema(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.schemas().getWithResponse("mms-eus", "atlantisdemo", Context.NONE);
+        manager.schemas().getWithResponse("mms-eus", "atlantisdemo", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1472,20 +1609,22 @@ public final class SchemaGetSamples {
 ### SharedKeysOperation_GetSharedKeys
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SharedKeysOperation GetSharedKeys. */
+/**
+ * Samples for SharedKeysOperation GetSharedKeys.
+ */
 public final class SharedKeysOperationGetSharedKeysSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesGetSharedKeys.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesGetSharedKeys.json
      */
     /**
      * Sample code: SharedKeysList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void sharedKeysList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.sharedKeysOperations().getSharedKeysWithResponse("rg1", "TestLinkWS", Context.NONE);
+        manager.sharedKeysOperations().getSharedKeysWithResponse("rg1", "TestLinkWS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1493,20 +1632,22 @@ public final class SharedKeysOperationGetSharedKeysSamples {
 ### SharedKeysOperation_Regenerate
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for SharedKeysOperation Regenerate. */
+/**
+ * Samples for SharedKeysOperation Regenerate.
+ */
 public final class SharedKeysOperationRegenerateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesRegenerateSharedKeys.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesRegenerateSharedKeys.json
      */
     /**
      * Sample code: RegenerateSharedKeys.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void regenerateSharedKeys(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.sharedKeysOperations().regenerateWithResponse("rg1", "workspace1", Context.NONE);
+        manager.sharedKeysOperations().regenerateWithResponse("rg1", "workspace1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1517,28 +1658,29 @@ public final class SharedKeysOperationRegenerateSamples {
 import com.azure.resourcemanager.loganalytics.models.StorageAccount;
 import java.util.Arrays;
 
-/** Samples for StorageInsightConfigs CreateOrUpdate. */
+/**
+ * Samples for StorageInsightConfigs CreateOrUpdate.
+ */
 public final class StorageInsightConfigsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/StorageInsightsCreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * StorageInsightsCreateOrUpdate.json
      */
     /**
      * Sample code: StorageInsightsCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void storageInsightsCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .storageInsightConfigs()
+        manager.storageInsightConfigs()
             .define("AzTestSI1110")
             .withExistingWorkspace("OIAutoRest5123", "aztest5048")
             .withContainers(Arrays.asList("wad-iis-logfiles"))
             .withTables(Arrays.asList("WADWindowsEventLogsTable", "LinuxSyslogVer2v0"))
-            .withStorageAccount(
-                new StorageAccount()
-                    .withId(
-                        "/subscriptions/00000000-0000-0000-0000-000000000005/resourcegroups/OIAutoRest6987/providers/microsoft.storage/storageaccounts/AzTestFakeSA9945")
-                    .withKey("1234"))
+            .withStorageAccount(new StorageAccount().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000005/resourcegroups/OIAutoRest6987/providers/microsoft.storage/storageaccounts/AzTestFakeSA9945")
+                .withKey("fakeTokenPlaceholder"))
             .create();
     }
 }
@@ -1547,22 +1689,23 @@ public final class StorageInsightConfigsCreateOrUpdateSamples {
 ### StorageInsightConfigs_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for StorageInsightConfigs Delete. */
+/**
+ * Samples for StorageInsightConfigs Delete.
+ */
 public final class StorageInsightConfigsDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/StorageInsightsDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * StorageInsightsDelete.json
      */
     /**
      * Sample code: StorageInsightsDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void storageInsightsDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .storageInsightConfigs()
-            .deleteWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", Context.NONE);
+        manager.storageInsightConfigs()
+            .deleteWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1570,20 +1713,23 @@ public final class StorageInsightConfigsDeleteSamples {
 ### StorageInsightConfigs_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for StorageInsightConfigs Get. */
+/**
+ * Samples for StorageInsightConfigs Get.
+ */
 public final class StorageInsightConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/StorageInsightsGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * StorageInsightsGet.json
      */
     /**
      * Sample code: StorageInsightsGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void storageInsightsGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.storageInsightConfigs().getWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", Context.NONE);
+        manager.storageInsightConfigs()
+            .getWithResponse("OIAutoRest5123", "aztest5048", "AzTestSI1110", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1591,20 +1737,48 @@ public final class StorageInsightConfigsGetSamples {
 ### StorageInsightConfigs_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for StorageInsightConfigs ListByWorkspace. */
+/**
+ * Samples for StorageInsightConfigs ListByWorkspace.
+ */
 public final class StorageInsightConfigsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/StorageInsightsListByWorkspace.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * StorageInsightsListByWorkspace.json
      */
     /**
      * Sample code: StorageInsightsList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void storageInsightsList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.storageInsightConfigs().listByWorkspace("OIAutoRest5123", "aztest5048", Context.NONE);
+        manager.storageInsightConfigs()
+            .listByWorkspace("OIAutoRest5123", "aztest5048", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Tables_CancelSearch
+
+```java
+/**
+ * Samples for Tables CancelSearch.
+ */
+public final class TablesCancelSearchSamples {
+    /*
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesSearchCancel.json
+     */
+    /**
+     * Sample code: TablesSearchCancel.
+     * 
+     * @param manager Entry point to LogAnalyticsManager.
+     */
+    public static void tablesSearchCancel(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.tables()
+            .cancelSearchWithResponse("oiautorest6685", "oiautorest6685", "table1_SRCH",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1617,27 +1791,28 @@ import com.azure.resourcemanager.loganalytics.models.ColumnTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.Schema;
 import java.util.Arrays;
 
-/** Samples for Tables CreateOrUpdate. */
+/**
+ * Samples for Tables CreateOrUpdate.
+ */
 public final class TablesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesUpsert.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void tablesUpsert(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .tables()
+        manager.tables()
             .define("AzureNetworkFlow")
             .withExistingWorkspace("oiautorest6685", "oiautorest6685")
             .withRetentionInDays(45)
             .withTotalRetentionInDays(70)
-            .withSchema(
-                new Schema()
-                    .withName("AzureNetworkFlow")
-                    .withColumns(Arrays.asList(new Column().withName("MyNewColumn").withType(ColumnTypeEnum.GUID))))
+            .withSchema(new Schema().withName("AzureNetworkFlow")
+                .withColumns(Arrays.asList(new Column().withName("MyNewColumn").withType(ColumnTypeEnum.GUID))))
             .create();
     }
 }
@@ -1646,20 +1821,22 @@ public final class TablesCreateOrUpdateSamples {
 ### Tables_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Tables Delete. */
+/**
+ * Samples for Tables Delete.
+ */
 public final class TablesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesDelete.json
      */
     /**
-     * Sample code: TablesGet.
-     *
+     * Sample code: TablesDelete.
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
-    public static void tablesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.tables().delete("oiautorest6685", "oiautorest6685", "table1_CL", Context.NONE);
+    public static void tablesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.tables().delete("oiautorest6685", "oiautorest6685", "table1_CL", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1667,20 +1844,23 @@ public final class TablesDeleteSamples {
 ### Tables_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Tables Get. */
+/**
+ * Samples for Tables Get.
+ */
 public final class TablesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesGet.json
      */
     /**
      * Sample code: TablesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void tablesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.tables().getWithResponse("oiautorest6685", "oiautorest6685", "table1_SRCH", Context.NONE);
+        manager.tables()
+            .getWithResponse("oiautorest6685", "oiautorest6685", "table1_SRCH", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1688,20 +1868,22 @@ public final class TablesGetSamples {
 ### Tables_ListByWorkspace
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Tables ListByWorkspace. */
+/**
+ * Samples for Tables ListByWorkspace.
+ */
 public final class TablesListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesList.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesList.json
      */
     /**
      * Sample code: TablesListByWorkspace.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void tablesListByWorkspace(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.tables().listByWorkspace("oiautorest6685", "oiautorest6685", Context.NONE);
+        manager.tables().listByWorkspace("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1709,20 +1891,23 @@ public final class TablesListByWorkspaceSamples {
 ### Tables_Migrate
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Tables Migrate. */
+/**
+ * Samples for Tables Migrate.
+ */
 public final class TablesMigrateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesMigrate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesMigrate.json
      */
     /**
-     * Sample code: TablesGet.
-     *
+     * Sample code: TablesMigrate.
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
-    public static void tablesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.tables().migrateWithResponse("oiautorest6685", "oiautorest6685", "table1_CL", Context.NONE);
+    public static void tablesMigrate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
+        manager.tables()
+            .migrateWithResponse("oiautorest6685", "oiautorest6685", "table1_CL", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1730,37 +1915,35 @@ public final class TablesMigrateSamples {
 ### Tables_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.Column;
 import com.azure.resourcemanager.loganalytics.models.ColumnTypeEnum;
 import com.azure.resourcemanager.loganalytics.models.Schema;
 import com.azure.resourcemanager.loganalytics.models.Table;
 import java.util.Arrays;
 
-/** Samples for Tables Update. */
+/**
+ * Samples for Tables Update.
+ */
 public final class TablesUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/TablesUpsert.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * TablesUpsert.json
      */
     /**
      * Sample code: TablesUpsert.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void tablesUpsert(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        Table resource =
-            manager
-                .tables()
-                .getWithResponse("oiautorest6685", "oiautorest6685", "AzureNetworkFlow", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Table resource = manager.tables()
+            .getWithResponse("oiautorest6685", "oiautorest6685", "AzureNetworkFlow", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withRetentionInDays(45)
             .withTotalRetentionInDays(70)
-            .withSchema(
-                new Schema()
-                    .withName("AzureNetworkFlow")
-                    .withColumns(Arrays.asList(new Column().withName("MyNewColumn").withType(ColumnTypeEnum.GUID))))
+            .withSchema(new Schema().withName("AzureNetworkFlow")
+                .withColumns(Arrays.asList(new Column().withName("MyNewColumn").withType(ColumnTypeEnum.GUID))))
             .apply();
     }
 }
@@ -1769,20 +1952,22 @@ public final class TablesUpdateSamples {
 ### Usages_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Usages List. */
+/**
+ * Samples for Usages List.
+ */
 public final class UsagesListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesListUsages.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesListUsages.json
      */
     /**
      * Sample code: UsagesList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void usagesList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.usages().list("rg1", "TestLinkWS", Context.NONE);
+        manager.usages().list("rg1", "TestLinkWS", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1790,23 +1975,24 @@ public final class UsagesListSamples {
 ### WorkspacePurge_GetPurgeStatus
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for WorkspacePurge GetPurgeStatus. */
+/**
+ * Samples for WorkspacePurge GetPurgeStatus.
+ */
 public final class WorkspacePurgeGetPurgeStatusSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesPurgeOperation.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesPurgeOperation.json
      */
     /**
      * Sample code: WorkspacePurgeOperation.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacePurgeOperation(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .workspacePurges()
-            .getPurgeStatusWithResponse(
-                "OIAutoRest5123", "aztest5048", "purge-970318e7-b859-4edb-8903-83b1b54d0b74", Context.NONE);
+        manager.workspacePurges()
+            .getPurgeStatusWithResponse("OIAutoRest5123", "aztest5048", "purge-970318e7-b859-4edb-8903-83b1b54d0b74",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1814,64 +2000,52 @@ public final class WorkspacePurgeGetPurgeStatusSamples {
 ### WorkspacePurge_Purge
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBody;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeBodyFilters;
 import java.util.Arrays;
 
-/** Samples for WorkspacePurge Purge. */
+/**
+ * Samples for WorkspacePurge Purge.
+ */
 public final class WorkspacePurgePurgeSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesPurgeResourceId.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesPurgeResourceId.json
      */
     /**
      * Sample code: WorkspacePurgeResourceId.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacePurgeResourceId(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .workspacePurges()
-            .purgeWithResponse(
-                "OIAutoRest5123",
-                "aztest5048",
-                new WorkspacePurgeBody()
-                    .withTable("Heartbeat")
-                    .withFilters(
-                        Arrays
-                            .asList(
-                                new WorkspacePurgeBodyFilters()
-                                    .withColumn("_ResourceId")
-                                    .withOperator("==")
-                                    .withValue(
-                                        "/subscriptions/12341234-1234-1234-1234-123412341234/resourceGroups/SomeResourceGroup/providers/microsoft.insights/components/AppInsightResource"))),
-                Context.NONE);
+        manager.workspacePurges()
+            .purgeWithResponse("OIAutoRest5123", "aztest5048", new WorkspacePurgeBody().withTable("Heartbeat")
+                .withFilters(Arrays.asList(new WorkspacePurgeBodyFilters().withColumn("_ResourceId")
+                    .withOperator("==")
+                    .withValue(
+                        "/subscriptions/12341234-1234-1234-1234-123412341234/resourceGroups/SomeResourceGroup/providers/microsoft.insights/components/AppInsightResource"))),
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/WorkspacesPurge.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * WorkspacesPurge.json
      */
     /**
      * Sample code: WorkspacePurge.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacePurge(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .workspacePurges()
-            .purgeWithResponse(
-                "OIAutoRest5123",
-                "aztest5048",
-                new WorkspacePurgeBody()
-                    .withTable("Heartbeat")
-                    .withFilters(
-                        Arrays
-                            .asList(
-                                new WorkspacePurgeBodyFilters()
-                                    .withColumn("TimeGenerated")
-                                    .withOperator(">")
-                                    .withValue("2017-09-01T00:00:00"))),
-                Context.NONE);
+        manager.workspacePurges()
+            .purgeWithResponse("OIAutoRest5123", "aztest5048",
+                new WorkspacePurgeBody().withTable("Heartbeat")
+                    .withFilters(Arrays.asList(new WorkspacePurgeBodyFilters().withColumn("TimeGenerated")
+                        .withOperator(">")
+                        .withValue("2017-09-01T00:00:00"))),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1884,19 +2058,22 @@ import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Workspaces CreateOrUpdate. */
+/**
+ * Samples for Workspaces CreateOrUpdate.
+ */
 public final class WorkspacesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesCreate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesCreate.json
      */
     /**
      * Sample code: WorkspacesCreate.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesCreate(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager
-            .workspaces()
+        manager.workspaces()
             .define("oiautorest6685")
             .withRegion("australiasoutheast")
             .withExistingResourceGroup("oiautorest6685")
@@ -1906,6 +2083,7 @@ public final class WorkspacesCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1922,20 +2100,22 @@ public final class WorkspacesCreateOrUpdateSamples {
 ### Workspaces_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Workspaces Delete. */
+/**
+ * Samples for Workspaces Delete.
+ */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesDelete.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesDelete.json
      */
     /**
      * Sample code: WorkspacesDelete.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesDelete(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.workspaces().delete("oiautorest6685", "oiautorest6685", null, Context.NONE);
+        manager.workspaces().delete("oiautorest6685", "oiautorest6685", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1943,20 +2123,23 @@ public final class WorkspacesDeleteSamples {
 ### Workspaces_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Workspaces GetByResourceGroup. */
+/**
+ * Samples for Workspaces GetByResourceGroup.
+ */
 public final class WorkspacesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesGet.json
      */
     /**
      * Sample code: WorkspaceGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspaceGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.workspaces().getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", Context.NONE);
+        manager.workspaces()
+            .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1964,20 +2147,22 @@ public final class WorkspacesGetByResourceGroupSamples {
 ### Workspaces_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Workspaces List. */
+/**
+ * Samples for Workspaces List.
+ */
 public final class WorkspacesListSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesSubscriptionList.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesSubscriptionList.json
      */
     /**
      * Sample code: WorkspacesSubscriptionList.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesSubscriptionList(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.workspaces().list(Context.NONE);
+        manager.workspaces().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1985,20 +2170,22 @@ public final class WorkspacesListSamples {
 ### Workspaces_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Workspaces ListByResourceGroup. */
+/**
+ * Samples for Workspaces ListByResourceGroup.
+ */
 public final class WorkspacesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesListByResourceGroup.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesListByResourceGroup.json
      */
     /**
      * Sample code: WorkspacesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.workspaces().listByResourceGroup("oiautorest6685", Context.NONE);
+        manager.workspaces().listByResourceGroup("oiautorest6685", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2006,33 +2193,33 @@ public final class WorkspacesListByResourceGroupSamples {
 ### Workspaces_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.loganalytics.models.Workspace;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceCapping;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSku;
 import com.azure.resourcemanager.loganalytics.models.WorkspaceSkuNameEnum;
 
-/** Samples for Workspaces Update. */
+/**
+ * Samples for Workspaces Update.
+ */
 public final class WorkspacesUpdateSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/preview/2021-12-01-preview/examples/WorkspacesUpdate.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2022-10-01/examples/
+     * WorkspacesUpdate.json
      */
     /**
      * Sample code: WorkspacesPatch.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void workspacesPatch(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        Workspace resource =
-            manager
-                .workspaces()
-                .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", Context.NONE)
-                .getValue();
-        resource
-            .update()
+        Workspace resource = manager.workspaces()
+            .getByResourceGroupWithResponse("oiautorest6685", "oiautorest6685", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withSku(new WorkspaceSku().withName(WorkspaceSkuNameEnum.PER_GB2018))
             .withRetentionInDays(30)
-            .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(-1.0))
+            .withWorkspaceCapping(new WorkspaceCapping().withDailyQuotaGb(-1.0D))
             .apply();
     }
 }

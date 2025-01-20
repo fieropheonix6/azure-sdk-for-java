@@ -4,48 +4,40 @@
 
 package com.azure.resourcemanager.appconfiguration.models;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of KeyValues. */
+/**
+ * Resource collection API of KeyValues.
+ */
 public interface KeyValues {
     /**
-     * Lists the key-values for a given configuration store.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list key-values as paginated response with {@link PagedIterable}.
-     */
-    PagedIterable<KeyValue> listByConfigurationStore(String resourceGroupName, String configStoreName);
-
-    /**
-     * Lists the key-values for a given configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list key-values as paginated response with {@link PagedIterable}.
+     * @return the properties of the specified key-value along with {@link Response}.
      */
-    PagedIterable<KeyValue> listByConfigurationStore(
-        String resourceGroupName, String configStoreName, String skipToken, Context context);
+    Response<KeyValue> getWithResponse(String resourceGroupName, String configStoreName, String keyValueName,
+        Context context);
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -54,28 +46,13 @@ public interface KeyValues {
     KeyValue get(String resourceGroupName, String configStoreName, String keyValueName);
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified key-value along with {@link Response}.
-     */
-    Response<KeyValue> getWithResponse(
-        String resourceGroupName, String configStoreName, String keyValueName, Context context);
-
-    /**
-     * Deletes a key-value.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -83,12 +60,13 @@ public interface KeyValues {
     void delete(String resourceGroupName, String configStoreName, String keyValueName);
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param keyValueName Identifier of key and label combination. Key and label are joined by $ character. Label is
-     *     optional.
+     * optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,8 +75,10 @@ public interface KeyValues {
     void delete(String resourceGroupName, String configStoreName, String keyValueName, Context context);
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -108,8 +88,10 @@ public interface KeyValues {
     KeyValue getById(String id);
 
     /**
-     * Gets the properties of the specified key-value.
-     *
+     * Gets the properties of the specified key-value. NOTE: This operation is intended for use in ARM Template
+     * deployments. For all other scenarios involving App Configuration key-values the data plane API should be used
+     * instead.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -120,8 +102,9 @@ public interface KeyValues {
     Response<KeyValue> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,8 +113,9 @@ public interface KeyValues {
     void deleteById(String id);
 
     /**
-     * Deletes a key-value.
-     *
+     * Deletes a key-value. NOTE: This operation is intended for use in ARM Template deployments. For all other
+     * scenarios involving App Configuration key-values the data plane API should be used instead.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +126,7 @@ public interface KeyValues {
 
     /**
      * Begins definition for a new KeyValue resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new KeyValue definition.
      */

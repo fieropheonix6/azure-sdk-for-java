@@ -9,24 +9,26 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 
-/** Resource collection API of VirtualMachineSchedules. */
+/**
+ * Resource collection API of VirtualMachineSchedules.
+ */
 public interface VirtualMachineSchedules {
     /**
      * List schedules in a given virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Schedule> list(String resourceGroupName, String labName, String virtualMachineName);
 
     /**
      * List schedules in a given virtual machine.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -38,21 +40,31 @@ public interface VirtualMachineSchedules {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Schedule> list(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<Schedule> list(String resourceGroupName, String labName, String virtualMachineName, String expand,
+        String filter, Integer top, String orderby, Context context);
 
     /**
      * Get schedule.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param virtualMachineName The name of the virtual machine.
+     * @param name The name of the schedule.
+     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schedule along with {@link Response}.
+     */
+    Response<Schedule> getWithResponse(String resourceGroupName, String labName, String virtualMachineName, String name,
+        String expand, Context context);
+
+    /**
+     * Get schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -65,30 +77,25 @@ public interface VirtualMachineSchedules {
     Schedule get(String resourceGroupName, String labName, String virtualMachineName, String name);
 
     /**
-     * Get schedule.
-     *
+     * Create or replace an existing schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
      * @param name The name of the schedule.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
+     * @param schedule A schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return a schedule along with {@link Response}.
      */
-    Response<Schedule> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        String expand,
-        Context context);
+    Response<Schedule> createOrUpdateWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        String name, ScheduleInner schedule, Context context);
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -99,34 +106,28 @@ public interface VirtualMachineSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule.
      */
-    Schedule createOrUpdate(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleInner schedule);
+    Schedule createOrUpdate(String resourceGroupName, String labName, String virtualMachineName, String name,
+        ScheduleInner schedule);
 
     /**
-     * Create or replace an existing schedule.
-     *
+     * Delete schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
      * @param name The name of the schedule.
-     * @param schedule A schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
+     * @return the {@link Response}.
      */
-    Response<Schedule> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        ScheduleInner schedule,
+    Response<Void> deleteWithResponse(String resourceGroupName, String labName, String virtualMachineName, String name,
         Context context);
 
     /**
      * Delete schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -138,24 +139,25 @@ public interface VirtualMachineSchedules {
     void delete(String resourceGroupName, String labName, String virtualMachineName, String name);
 
     /**
-     * Delete schedule.
-     *
+     * Allows modifying tags of schedules. All other properties will be ignored.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
      * @param name The name of the schedule.
+     * @param schedule A schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a schedule along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String labName, String virtualMachineName, String name, Context context);
+    Response<Schedule> updateWithResponse(String resourceGroupName, String labName, String virtualMachineName,
+        String name, ScheduleFragment schedule, Context context);
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -166,34 +168,12 @@ public interface VirtualMachineSchedules {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a schedule.
      */
-    Schedule update(
-        String resourceGroupName, String labName, String virtualMachineName, String name, ScheduleFragment schedule);
-
-    /**
-     * Allows modifying tags of schedules. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param virtualMachineName The name of the virtual machine.
-     * @param name The name of the schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
-    Response<Schedule> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String virtualMachineName,
-        String name,
-        ScheduleFragment schedule,
-        Context context);
+    Schedule update(String resourceGroupName, String labName, String virtualMachineName, String name,
+        ScheduleFragment schedule);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.
@@ -206,7 +186,7 @@ public interface VirtualMachineSchedules {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param virtualMachineName The name of the virtual machine.

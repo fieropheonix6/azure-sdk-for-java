@@ -5,73 +5,76 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** RecoveryPointDataStoreDetails RecoveryPoint datastore details. */
+/**
+ * RecoveryPointDataStoreDetails
+ * 
+ * RecoveryPoint datastore details.
+ */
 @Fluent
-public final class RecoveryPointDataStoreDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointDataStoreDetails.class);
-
+public final class RecoveryPointDataStoreDetails implements JsonSerializable<RecoveryPointDataStoreDetails> {
     /*
      * The creationTime property.
      */
-    @JsonProperty(value = "creationTime")
     private OffsetDateTime creationTime;
 
     /*
      * The expiryTime property.
      */
-    @JsonProperty(value = "expiryTime")
     private OffsetDateTime expiryTime;
 
     /*
      * The id property.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The metaData property.
      */
-    @JsonProperty(value = "metaData")
     private String metadata;
 
     /*
      * The state property.
      */
-    @JsonProperty(value = "state")
     private String state;
 
     /*
      * The type property.
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The visible property.
      */
-    @JsonProperty(value = "visible")
     private Boolean visible;
 
     /*
      * The rehydrationExpiryTime property.
      */
-    @JsonProperty(value = "rehydrationExpiryTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime rehydrationExpiryTime;
 
     /*
      * The rehydrationStatus property.
      */
-    @JsonProperty(value = "rehydrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RehydrationStatus rehydrationStatus;
 
     /**
+     * Creates an instance of RecoveryPointDataStoreDetails class.
+     */
+    public RecoveryPointDataStoreDetails() {
+    }
+
+    /**
      * Get the creationTime property: The creationTime property.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -80,7 +83,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the creationTime property: The creationTime property.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -91,7 +94,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the expiryTime property: The expiryTime property.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -100,7 +103,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the expiryTime property: The expiryTime property.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -111,7 +114,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -120,7 +123,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -131,7 +134,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the metadata property: The metaData property.
-     *
+     * 
      * @return the metadata value.
      */
     public String metadata() {
@@ -140,7 +143,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the metadata property: The metaData property.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -151,7 +154,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -160,7 +163,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -171,7 +174,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -180,7 +183,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -191,7 +194,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the visible property: The visible property.
-     *
+     * 
      * @return the visible value.
      */
     public Boolean visible() {
@@ -200,7 +203,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the visible property: The visible property.
-     *
+     * 
      * @param visible the visible value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -211,7 +214,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the rehydrationExpiryTime property: The rehydrationExpiryTime property.
-     *
+     * 
      * @return the rehydrationExpiryTime value.
      */
     public OffsetDateTime rehydrationExpiryTime() {
@@ -220,7 +223,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the rehydrationStatus property: The rehydrationStatus property.
-     *
+     * 
      * @return the rehydrationStatus value.
      */
     public RehydrationStatus rehydrationStatus() {
@@ -229,9 +232,74 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("creationTime",
+            this.creationTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.creationTime));
+        jsonWriter.writeStringField("expiryTime",
+            this.expiryTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.expiryTime));
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("metaData", this.metadata);
+        jsonWriter.writeStringField("state", this.state);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeBooleanField("visible", this.visible);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecoveryPointDataStoreDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecoveryPointDataStoreDetails if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecoveryPointDataStoreDetails.
+     */
+    public static RecoveryPointDataStoreDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecoveryPointDataStoreDetails deserializedRecoveryPointDataStoreDetails
+                = new RecoveryPointDataStoreDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("creationTime".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("expiryTime".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.expiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("id".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.id = reader.getString();
+                } else if ("metaData".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.metadata = reader.getString();
+                } else if ("state".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.state = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.type = reader.getString();
+                } else if ("visible".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.visible = reader.getNullable(JsonReader::getBoolean);
+                } else if ("rehydrationExpiryTime".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.rehydrationExpiryTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("rehydrationStatus".equals(fieldName)) {
+                    deserializedRecoveryPointDataStoreDetails.rehydrationStatus
+                        = RehydrationStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRecoveryPointDataStoreDetails;
+        });
     }
 }

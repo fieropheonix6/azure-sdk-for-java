@@ -5,30 +5,41 @@
 package com.azure.resourcemanager.vmwarecloudsimple.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The OperationsGetHeaders model. */
+/**
+ * The OperationsGetHeaders model.
+ */
 @Fluent
 public final class OperationsGetHeaders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsGetHeaders.class);
-
     /*
      * The Retry-After property.
      */
-    @JsonProperty(value = "Retry-After")
     private Integer retryAfter;
 
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of OperationsGetHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public OperationsGetHeaders(HttpHeaders rawHeaders) {
+        String retryAfter = rawHeaders.getValue(HttpHeaderName.RETRY_AFTER);
+        if (retryAfter != null) {
+            this.retryAfter = Integer.parseInt(retryAfter);
+        }
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+    }
 
     /**
      * Get the retryAfter property: The Retry-After property.
-     *
+     * 
      * @return the retryAfter value.
      */
     public Integer retryAfter() {
@@ -37,7 +48,7 @@ public final class OperationsGetHeaders {
 
     /**
      * Set the retryAfter property: The Retry-After property.
-     *
+     * 
      * @param retryAfter the retryAfter value to set.
      * @return the OperationsGetHeaders object itself.
      */
@@ -48,7 +59,7 @@ public final class OperationsGetHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -57,7 +68,7 @@ public final class OperationsGetHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the OperationsGetHeaders object itself.
      */
@@ -68,7 +79,7 @@ public final class OperationsGetHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

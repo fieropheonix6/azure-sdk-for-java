@@ -5,26 +5,32 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Enables or disables a capability on the virtual machine or virtual machine scale set. */
+/**
+ * Enables or disables a capability on the virtual machine or virtual machine scale set.
+ */
 @Fluent
-public final class AdditionalCapabilities {
+public final class AdditionalCapabilities implements JsonSerializable<AdditionalCapabilities> {
     /*
      * The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage
      * account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual
      * machine or virtual machine scale set only if this property is enabled.
      */
-    @JsonProperty(value = "ultraSSDEnabled")
     private Boolean ultraSsdEnabled;
 
     /*
      * The flag that enables or disables hibernation capability on the VM.
      */
-    @JsonProperty(value = "hibernationEnabled")
     private Boolean hibernationEnabled;
 
-    /** Creates an instance of AdditionalCapabilities class. */
+    /**
+     * Creates an instance of AdditionalCapabilities class.
+     */
     public AdditionalCapabilities() {
     }
 
@@ -32,7 +38,7 @@ public final class AdditionalCapabilities {
      * Get the ultraSsdEnabled property: The flag that enables or disables a capability to have one or more managed data
      * disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type
      * UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.
-     *
+     * 
      * @return the ultraSsdEnabled value.
      */
     public Boolean ultraSsdEnabled() {
@@ -43,7 +49,7 @@ public final class AdditionalCapabilities {
      * Set the ultraSsdEnabled property: The flag that enables or disables a capability to have one or more managed data
      * disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type
      * UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.
-     *
+     * 
      * @param ultraSsdEnabled the ultraSsdEnabled value to set.
      * @return the AdditionalCapabilities object itself.
      */
@@ -54,7 +60,7 @@ public final class AdditionalCapabilities {
 
     /**
      * Get the hibernationEnabled property: The flag that enables or disables hibernation capability on the VM.
-     *
+     * 
      * @return the hibernationEnabled value.
      */
     public Boolean hibernationEnabled() {
@@ -63,7 +69,7 @@ public final class AdditionalCapabilities {
 
     /**
      * Set the hibernationEnabled property: The flag that enables or disables hibernation capability on the VM.
-     *
+     * 
      * @param hibernationEnabled the hibernationEnabled value to set.
      * @return the AdditionalCapabilities object itself.
      */
@@ -74,9 +80,48 @@ public final class AdditionalCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("ultraSSDEnabled", this.ultraSsdEnabled);
+        jsonWriter.writeBooleanField("hibernationEnabled", this.hibernationEnabled);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AdditionalCapabilities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AdditionalCapabilities if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AdditionalCapabilities.
+     */
+    public static AdditionalCapabilities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AdditionalCapabilities deserializedAdditionalCapabilities = new AdditionalCapabilities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("ultraSSDEnabled".equals(fieldName)) {
+                    deserializedAdditionalCapabilities.ultraSsdEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("hibernationEnabled".equals(fieldName)) {
+                    deserializedAdditionalCapabilities.hibernationEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAdditionalCapabilities;
+        });
     }
 }

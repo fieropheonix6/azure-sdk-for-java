@@ -5,70 +5,70 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SsisAccessCredential;
 import com.azure.resourcemanager.datafactory.models.SsisChildPackage;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** SSIS package location properties. */
+/**
+ * SSIS package location properties.
+ */
 @Fluent
-public final class SsisPackageLocationTypeProperties {
+public final class SsisPackageLocationTypeProperties implements JsonSerializable<SsisPackageLocationTypeProperties> {
     /*
      * Password of the package.
      */
-    @JsonProperty(value = "packagePassword")
     private SecretBase packagePassword;
 
     /*
      * The package access credential.
      */
-    @JsonProperty(value = "accessCredential")
     private SsisAccessCredential accessCredential;
 
     /*
      * The configuration file of the package execution. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "configurationPath")
     private Object configurationPath;
 
     /*
      * The configuration file access credential.
      */
-    @JsonProperty(value = "configurationAccessCredential")
     private SsisAccessCredential configurationAccessCredential;
 
     /*
      * The package name.
      */
-    @JsonProperty(value = "packageName")
     private String packageName;
 
     /*
      * The embedded package content. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "packageContent")
     private Object packageContent;
 
     /*
      * The embedded package last modified date.
      */
-    @JsonProperty(value = "packageLastModifiedDate")
     private String packageLastModifiedDate;
 
     /*
      * The embedded child package list.
      */
-    @JsonProperty(value = "childPackages")
     private List<SsisChildPackage> childPackages;
 
-    /** Creates an instance of SsisPackageLocationTypeProperties class. */
+    /**
+     * Creates an instance of SsisPackageLocationTypeProperties class.
+     */
     public SsisPackageLocationTypeProperties() {
     }
 
     /**
      * Get the packagePassword property: Password of the package.
-     *
+     * 
      * @return the packagePassword value.
      */
     public SecretBase packagePassword() {
@@ -77,7 +77,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the packagePassword property: Password of the package.
-     *
+     * 
      * @param packagePassword the packagePassword value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -88,7 +88,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Get the accessCredential property: The package access credential.
-     *
+     * 
      * @return the accessCredential value.
      */
     public SsisAccessCredential accessCredential() {
@@ -97,7 +97,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the accessCredential property: The package access credential.
-     *
+     * 
      * @param accessCredential the accessCredential value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -109,7 +109,7 @@ public final class SsisPackageLocationTypeProperties {
     /**
      * Get the configurationPath property: The configuration file of the package execution. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the configurationPath value.
      */
     public Object configurationPath() {
@@ -119,7 +119,7 @@ public final class SsisPackageLocationTypeProperties {
     /**
      * Set the configurationPath property: The configuration file of the package execution. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param configurationPath the configurationPath value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -130,7 +130,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Get the configurationAccessCredential property: The configuration file access credential.
-     *
+     * 
      * @return the configurationAccessCredential value.
      */
     public SsisAccessCredential configurationAccessCredential() {
@@ -139,19 +139,19 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the configurationAccessCredential property: The configuration file access credential.
-     *
+     * 
      * @param configurationAccessCredential the configurationAccessCredential value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
-    public SsisPackageLocationTypeProperties withConfigurationAccessCredential(
-        SsisAccessCredential configurationAccessCredential) {
+    public SsisPackageLocationTypeProperties
+        withConfigurationAccessCredential(SsisAccessCredential configurationAccessCredential) {
         this.configurationAccessCredential = configurationAccessCredential;
         return this;
     }
 
     /**
      * Get the packageName property: The package name.
-     *
+     * 
      * @return the packageName value.
      */
     public String packageName() {
@@ -160,7 +160,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the packageName property: The package name.
-     *
+     * 
      * @param packageName the packageName value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -172,7 +172,7 @@ public final class SsisPackageLocationTypeProperties {
     /**
      * Get the packageContent property: The embedded package content. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the packageContent value.
      */
     public Object packageContent() {
@@ -182,7 +182,7 @@ public final class SsisPackageLocationTypeProperties {
     /**
      * Set the packageContent property: The embedded package content. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param packageContent the packageContent value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -193,7 +193,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Get the packageLastModifiedDate property: The embedded package last modified date.
-     *
+     * 
      * @return the packageLastModifiedDate value.
      */
     public String packageLastModifiedDate() {
@@ -202,7 +202,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the packageLastModifiedDate property: The embedded package last modified date.
-     *
+     * 
      * @param packageLastModifiedDate the packageLastModifiedDate value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -213,7 +213,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Get the childPackages property: The embedded child package list.
-     *
+     * 
      * @return the childPackages value.
      */
     public List<SsisChildPackage> childPackages() {
@@ -222,7 +222,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Set the childPackages property: The embedded child package list.
-     *
+     * 
      * @param childPackages the childPackages value to set.
      * @return the SsisPackageLocationTypeProperties object itself.
      */
@@ -233,7 +233,7 @@ public final class SsisPackageLocationTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -249,5 +249,67 @@ public final class SsisPackageLocationTypeProperties {
         if (childPackages() != null) {
             childPackages().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("packagePassword", this.packagePassword);
+        jsonWriter.writeJsonField("accessCredential", this.accessCredential);
+        jsonWriter.writeUntypedField("configurationPath", this.configurationPath);
+        jsonWriter.writeJsonField("configurationAccessCredential", this.configurationAccessCredential);
+        jsonWriter.writeStringField("packageName", this.packageName);
+        jsonWriter.writeUntypedField("packageContent", this.packageContent);
+        jsonWriter.writeStringField("packageLastModifiedDate", this.packageLastModifiedDate);
+        jsonWriter.writeArrayField("childPackages", this.childPackages, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SsisPackageLocationTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SsisPackageLocationTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SsisPackageLocationTypeProperties.
+     */
+    public static SsisPackageLocationTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SsisPackageLocationTypeProperties deserializedSsisPackageLocationTypeProperties
+                = new SsisPackageLocationTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packagePassword".equals(fieldName)) {
+                    deserializedSsisPackageLocationTypeProperties.packagePassword = SecretBase.fromJson(reader);
+                } else if ("accessCredential".equals(fieldName)) {
+                    deserializedSsisPackageLocationTypeProperties.accessCredential
+                        = SsisAccessCredential.fromJson(reader);
+                } else if ("configurationPath".equals(fieldName)) {
+                    deserializedSsisPackageLocationTypeProperties.configurationPath = reader.readUntyped();
+                } else if ("configurationAccessCredential".equals(fieldName)) {
+                    deserializedSsisPackageLocationTypeProperties.configurationAccessCredential
+                        = SsisAccessCredential.fromJson(reader);
+                } else if ("packageName".equals(fieldName)) {
+                    deserializedSsisPackageLocationTypeProperties.packageName = reader.getString();
+                } else if ("packageContent".equals(fieldName)) {
+                    deserializedSsisPackageLocationTypeProperties.packageContent = reader.readUntyped();
+                } else if ("packageLastModifiedDate".equals(fieldName)) {
+                    deserializedSsisPackageLocationTypeProperties.packageLastModifiedDate = reader.getString();
+                } else if ("childPackages".equals(fieldName)) {
+                    List<SsisChildPackage> childPackages
+                        = reader.readArray(reader1 -> SsisChildPackage.fromJson(reader1));
+                    deserializedSsisPackageLocationTypeProperties.childPackages = childPackages;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSsisPackageLocationTypeProperties;
+        });
     }
 }

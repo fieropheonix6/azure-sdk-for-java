@@ -7,22 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.IdAssetReference;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class IdAssetReferenceTests {
-    @Test
-    public void testDeserialize() {
-        IdAssetReference model =
-            BinaryData
-                .fromString("{\"referenceType\":\"Id\",\"assetId\":\"itpkpztrgdg\"}")
-                .toObject(IdAssetReference.class);
-        Assertions.assertEquals("itpkpztrgdg", model.assetId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        IdAssetReference model
+            = BinaryData.fromString("{\"referenceType\":\"Id\",\"assetId\":\"jow\"}").toObject(IdAssetReference.class);
+        Assertions.assertEquals("jow", model.assetId());
     }
 
-    @Test
-    public void testSerialize() {
-        IdAssetReference model = new IdAssetReference().withAssetId("itpkpztrgdg");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        IdAssetReference model = new IdAssetReference().withAssetId("jow");
         model = BinaryData.fromObject(model).toObject(IdAssetReference.class);
-        Assertions.assertEquals("itpkpztrgdg", model.assetId());
+        Assertions.assertEquals("jow", model.assetId());
     }
 }

@@ -16,11 +16,13 @@ import com.azure.resourcemanager.appservice.fluent.models.CsmOperationDescriptio
  */
 public interface CertificateRegistrationProvidersClient {
     /**
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     * 
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     *
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedFlux}.
      */
@@ -28,11 +30,13 @@ public interface CertificateRegistrationProvidersClient {
     PagedFlux<CsmOperationDescriptionInner> listOperationsAsync();
 
     /**
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     * 
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     *
+     * 
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedIterable}.
      */
@@ -40,13 +44,15 @@ public interface CertificateRegistrationProvidersClient {
     PagedIterable<CsmOperationDescriptionInner> listOperations();
 
     /**
+     * Implements Csm operations Api to exposes the list of available Csm Apis under the resource provider
+     * 
      * Description for Implements Csm operations Api to exposes the list of available Csm Apis under the resource
      * provider.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     *     rejected by server.
+     * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Azure resource manager operation metadata as paginated response with {@link PagedIterable}.
      */

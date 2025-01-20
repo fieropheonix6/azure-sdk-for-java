@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Clusters List. */
+/**
+ * Samples for Clusters List.
+ */
 public final class ClustersListSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListClusters.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListClusters.json
      */
     /**
      * Sample code: ListClusters.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
     public static void listClusters(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.clusters().list(Context.NONE);
+        manager.clusters().list(com.azure.core.util.Context.NONE);
     }
 }

@@ -1,15 +1,13 @@
 trigger: none
 
-stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
-    parameters:
-      ServiceDirectory: search
-      # TODO: change 'Preview' cloud back to public after search RP fixes deletion metadata issue
-      Clouds: 'Preview'
-      SupportedClouds: 'Preview,UsGov,China'
-      TimeoutInMinutes: 60
-      MaxParallel: 7
-      Artifacts:
-        - name: azure-search-documents
-          groupId: com.azure
-          safeName: azuresearch
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: search
+    TimeoutInMinutes: 60
+    EnvVars:
+      AZURE_SEARCH_TEST_MODE: Live
+    Artifacts:
+      - name: azure-search-documents
+        groupId: com.azure
+        safeName: azuresearch

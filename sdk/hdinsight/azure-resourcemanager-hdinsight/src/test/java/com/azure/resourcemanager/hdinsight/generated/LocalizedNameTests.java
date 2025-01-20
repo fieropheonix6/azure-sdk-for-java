@@ -7,24 +7,21 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.LocalizedName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LocalizedNameTests {
-    @Test
-    public void testDeserialize() {
-        LocalizedName model =
-            BinaryData
-                .fromString("{\"value\":\"n\",\"localizedValue\":\"xqugjhkycubedd\"}")
-                .toObject(LocalizedName.class);
-        Assertions.assertEquals("n", model.value());
-        Assertions.assertEquals("xqugjhkycubedd", model.localizedValue());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LocalizedName model = BinaryData.fromString("{\"value\":\"rdgrtw\",\"localizedValue\":\"nuuzkopbm\"}")
+            .toObject(LocalizedName.class);
+        Assertions.assertEquals("rdgrtw", model.value());
+        Assertions.assertEquals("nuuzkopbm", model.localizedValue());
     }
 
-    @Test
-    public void testSerialize() {
-        LocalizedName model = new LocalizedName().withValue("n").withLocalizedValue("xqugjhkycubedd");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LocalizedName model = new LocalizedName().withValue("rdgrtw").withLocalizedValue("nuuzkopbm");
         model = BinaryData.fromObject(model).toObject(LocalizedName.class);
-        Assertions.assertEquals("n", model.value());
-        Assertions.assertEquals("xqugjhkycubedd", model.localizedValue());
+        Assertions.assertEquals("rdgrtw", model.value());
+        Assertions.assertEquals("nuuzkopbm", model.localizedValue());
     }
 }

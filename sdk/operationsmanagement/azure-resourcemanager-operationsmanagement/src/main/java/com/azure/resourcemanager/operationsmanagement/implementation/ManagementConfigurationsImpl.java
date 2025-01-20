@@ -14,20 +14,29 @@ import com.azure.resourcemanager.operationsmanagement.fluent.models.ManagementCo
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfiguration;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfigurationPropertiesList;
 import com.azure.resourcemanager.operationsmanagement.models.ManagementConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ManagementConfigurationsImpl implements ManagementConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementConfigurationsImpl.class);
 
     private final ManagementConfigurationsClient innerClient;
 
     private final com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager;
 
-    public ManagementConfigurationsImpl(
-        ManagementConfigurationsClient innerClient,
+    public ManagementConfigurationsImpl(ManagementConfigurationsClient innerClient,
         com.azure.resourcemanager.operationsmanagement.OperationsManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<ManagementConfigurationPropertiesList> listBySubscriptionWithResponse(Context context) {
+        Response<ManagementConfigurationPropertiesListInner> inner
+            = this.serviceClient().listBySubscriptionWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagementConfigurationPropertiesListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagementConfigurationPropertiesList listBySubscription() {
@@ -39,32 +48,30 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         }
     }
 
-    public Response<ManagementConfigurationPropertiesList> listBySubscriptionWithResponse(Context context) {
-        Response<ManagementConfigurationPropertiesListInner> inner =
-            this.serviceClient().listBySubscriptionWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ManagementConfigurationPropertiesListImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName,
+        String managementConfigurationName, Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, managementConfigurationName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String managementConfigurationName) {
         this.serviceClient().delete(resourceGroupName, managementConfigurationName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, managementConfigurationName, context);
+    public Response<ManagementConfiguration> getByResourceGroupWithResponse(String resourceGroupName,
+        String managementConfigurationName, Context context) {
+        Response<ManagementConfigurationInner> inner = this.serviceClient()
+            .getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ManagementConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ManagementConfiguration getByResourceGroup(String resourceGroupName, String managementConfigurationName) {
-        ManagementConfigurationInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, managementConfigurationName);
+        ManagementConfigurationInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, managementConfigurationName);
         if (inner != null) {
             return new ManagementConfigurationImpl(inner, this.manager());
         } else {
@@ -72,111 +79,61 @@ public final class ManagementConfigurationsImpl implements ManagementConfigurati
         }
     }
 
-    public Response<ManagementConfiguration> getByResourceGroupWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context) {
-        Response<ManagementConfigurationInner> inner =
-            this
-                .serviceClient()
-                .getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ManagementConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public ManagementConfiguration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String managementConfigurationName = Utils.getValueFromIdByName(id, "ManagementConfigurations");
+        String managementConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "ManagementConfigurations");
         if (managementConfigurationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.", id)));
         }
-        return this
-            .getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, Context.NONE)
+        return this.getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, Context.NONE)
             .getValue();
     }
 
     public Response<ManagementConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String managementConfigurationName = Utils.getValueFromIdByName(id, "ManagementConfigurations");
+        String managementConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "ManagementConfigurations");
         if (managementConfigurationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String managementConfigurationName = Utils.getValueFromIdByName(id, "ManagementConfigurations");
+        String managementConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "ManagementConfigurations");
         if (managementConfigurationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, managementConfigurationName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String managementConfigurationName = Utils.getValueFromIdByName(id, "ManagementConfigurations");
+        String managementConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "ManagementConfigurations");
         if (managementConfigurationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'ManagementConfigurations'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, managementConfigurationName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, managementConfigurationName, context);
     }
 
     private ManagementConfigurationsClient serviceClient() {

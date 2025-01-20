@@ -6,10 +6,16 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
+import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliaryMode;
+import com.azure.resourcemanager.compute.models.NetworkInterfaceAuxiliarySku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdateIpConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -17,68 +23,72 @@ import java.util.List;
  * network profile's IP Configuration.
  */
 @Fluent
-public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
+public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+    implements JsonSerializable<VirtualMachineScaleSetUpdateNetworkConfigurationProperties> {
     /*
      * Whether this is a primary NIC on a virtual machine.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * Specifies whether the network interface is accelerated networking-enabled.
      */
-    @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
 
     /*
      * Specifies whether the network interface is disabled for tcp state tracking.
      */
-    @JsonProperty(value = "disableTcpStateTracking")
     private Boolean disableTcpStateTracking;
 
     /*
      * Specifies whether the network interface is FPGA networking-enabled.
      */
-    @JsonProperty(value = "enableFpga")
     private Boolean enableFpga;
 
     /*
      * The network security group.
      */
-    @JsonProperty(value = "networkSecurityGroup")
     private SubResource networkSecurityGroup;
 
     /*
      * The dns settings to be applied on the network interfaces.
      */
-    @JsonProperty(value = "dnsSettings")
     private VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings;
 
     /*
      * The virtual machine scale set IP Configuration.
      */
-    @JsonProperty(value = "ipConfigurations")
     private List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations;
 
     /*
      * Whether IP forwarding enabled on this NIC.
      */
-    @JsonProperty(value = "enableIPForwarding")
     private Boolean enableIpForwarding;
 
     /*
      * Specify what happens to the network interface when the VM is deleted
      */
-    @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
-    /** Creates an instance of VirtualMachineScaleSetUpdateNetworkConfigurationProperties class. */
+    /*
+     * Specifies whether the Auxiliary mode is enabled for the Network Interface resource.
+     */
+    private NetworkInterfaceAuxiliaryMode auxiliaryMode;
+
+    /*
+     * Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     */
+    private NetworkInterfaceAuxiliarySku auxiliarySku;
+
+    /**
+     * Creates an instance of VirtualMachineScaleSetUpdateNetworkConfigurationProperties class.
+     */
     public VirtualMachineScaleSetUpdateNetworkConfigurationProperties() {
     }
 
     /**
      * Get the primary property: Whether this is a primary NIC on a virtual machine.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -87,7 +97,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Set the primary property: Whether this is a primary NIC on a virtual machine.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
@@ -99,7 +109,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     /**
      * Get the enableAcceleratedNetworking property: Specifies whether the network interface is accelerated
      * networking-enabled.
-     *
+     * 
      * @return the enableAcceleratedNetworking value.
      */
     public Boolean enableAcceleratedNetworking() {
@@ -109,12 +119,12 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     /**
      * Set the enableAcceleratedNetworking property: Specifies whether the network interface is accelerated
      * networking-enabled.
-     *
+     * 
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableAcceleratedNetworking(
-        Boolean enableAcceleratedNetworking) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+        withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
         return this;
     }
@@ -122,7 +132,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     /**
      * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
      * tracking.
-     *
+     * 
      * @return the disableTcpStateTracking value.
      */
     public Boolean disableTcpStateTracking() {
@@ -132,19 +142,19 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     /**
      * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
      * tracking.
-     *
+     * 
      * @param disableTcpStateTracking the disableTcpStateTracking value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withDisableTcpStateTracking(
-        Boolean disableTcpStateTracking) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+        withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
         this.disableTcpStateTracking = disableTcpStateTracking;
         return this;
     }
 
     /**
      * Get the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
-     *
+     * 
      * @return the enableFpga value.
      */
     public Boolean enableFpga() {
@@ -153,7 +163,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Set the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
-     *
+     * 
      * @param enableFpga the enableFpga value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
@@ -164,7 +174,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Get the networkSecurityGroup property: The network security group.
-     *
+     * 
      * @return the networkSecurityGroup value.
      */
     public SubResource networkSecurityGroup() {
@@ -173,19 +183,19 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Set the networkSecurityGroup property: The network security group.
-     *
+     * 
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withNetworkSecurityGroup(
-        SubResource networkSecurityGroup) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+        withNetworkSecurityGroup(SubResource networkSecurityGroup) {
         this.networkSecurityGroup = networkSecurityGroup;
         return this;
     }
 
     /**
      * Get the dnsSettings property: The dns settings to be applied on the network interfaces.
-     *
+     * 
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings() {
@@ -194,19 +204,19 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Set the dnsSettings property: The dns settings to be applied on the network interfaces.
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withDnsSettings(
-        VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+        withDnsSettings(VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
     }
 
     /**
      * Get the ipConfigurations property: The virtual machine scale set IP Configuration.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations() {
@@ -215,19 +225,19 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Set the ipConfigurations property: The virtual machine scale set IP Configuration.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withIpConfigurations(
-        List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+        withIpConfigurations(List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
 
     /**
      * Get the enableIpForwarding property: Whether IP forwarding enabled on this NIC.
-     *
+     * 
      * @return the enableIpForwarding value.
      */
     public Boolean enableIpForwarding() {
@@ -236,19 +246,19 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Set the enableIpForwarding property: Whether IP forwarding enabled on this NIC.
-     *
+     * 
      * @param enableIpForwarding the enableIpForwarding value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties withEnableIpForwarding(
-        Boolean enableIpForwarding) {
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+        withEnableIpForwarding(Boolean enableIpForwarding) {
         this.enableIpForwarding = enableIpForwarding;
         return this;
     }
 
     /**
      * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
+     * 
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
@@ -257,7 +267,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
 
     /**
      * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
      */
@@ -267,8 +277,52 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
     }
 
     /**
+     * Get the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     * 
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.auxiliaryMode;
+    }
+
+    /**
+     * Set the auxiliaryMode property: Specifies whether the Auxiliary mode is enabled for the Network Interface
+     * resource.
+     * 
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+        withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        this.auxiliaryMode = auxiliaryMode;
+        return this;
+    }
+
+    /**
+     * Get the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     * 
+     * @return the auxiliarySku value.
+     */
+    public NetworkInterfaceAuxiliarySku auxiliarySku() {
+        return this.auxiliarySku;
+    }
+
+    /**
+     * Set the auxiliarySku property: Specifies whether the Auxiliary sku is enabled for the Network Interface resource.
+     * 
+     * @param auxiliarySku the auxiliarySku value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetUpdateNetworkConfigurationProperties
+        withAuxiliarySku(NetworkInterfaceAuxiliarySku auxiliarySku) {
+        this.auxiliarySku = auxiliarySku;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -278,5 +332,88 @@ public final class VirtualMachineScaleSetUpdateNetworkConfigurationProperties {
         if (ipConfigurations() != null) {
             ipConfigurations().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeBooleanField("enableAcceleratedNetworking", this.enableAcceleratedNetworking);
+        jsonWriter.writeBooleanField("disableTcpStateTracking", this.disableTcpStateTracking);
+        jsonWriter.writeBooleanField("enableFpga", this.enableFpga);
+        jsonWriter.writeJsonField("networkSecurityGroup", this.networkSecurityGroup);
+        jsonWriter.writeJsonField("dnsSettings", this.dnsSettings);
+        jsonWriter.writeArrayField("ipConfigurations", this.ipConfigurations,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("enableIPForwarding", this.enableIpForwarding);
+        jsonWriter.writeStringField("deleteOption", this.deleteOption == null ? null : this.deleteOption.toString());
+        jsonWriter.writeStringField("auxiliaryMode", this.auxiliaryMode == null ? null : this.auxiliaryMode.toString());
+        jsonWriter.writeStringField("auxiliarySku", this.auxiliarySku == null ? null : this.auxiliarySku.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdateNetworkConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdateNetworkConfigurationProperties if the JsonReader was pointing
+     * to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * VirtualMachineScaleSetUpdateNetworkConfigurationProperties.
+     */
+    public static VirtualMachineScaleSetUpdateNetworkConfigurationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdateNetworkConfigurationProperties deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties
+                = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("primary".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAcceleratedNetworking".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.enableAcceleratedNetworking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("disableTcpStateTracking".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.disableTcpStateTracking
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableFpga".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.enableFpga
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("networkSecurityGroup".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.networkSecurityGroup
+                        = SubResource.fromJson(reader);
+                } else if ("dnsSettings".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.dnsSettings
+                        = VirtualMachineScaleSetNetworkConfigurationDnsSettings.fromJson(reader);
+                } else if ("ipConfigurations".equals(fieldName)) {
+                    List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetUpdateIpConfiguration.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.ipConfigurations
+                        = ipConfigurations;
+                } else if ("enableIPForwarding".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.enableIpForwarding
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deleteOption".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.deleteOption
+                        = DeleteOptions.fromString(reader.getString());
+                } else if ("auxiliaryMode".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.auxiliaryMode
+                        = NetworkInterfaceAuxiliaryMode.fromString(reader.getString());
+                } else if ("auxiliarySku".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties.auxiliarySku
+                        = NetworkInterfaceAuxiliarySku.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdateNetworkConfigurationProperties;
+        });
     }
 }

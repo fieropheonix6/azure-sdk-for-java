@@ -6,28 +6,38 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.TopLevelDomainInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of Top-level domains. */
+/**
+ * Collection of Top-level domains.
+ */
 @Fluent
-public final class TopLevelDomainCollection {
+public final class TopLevelDomainCollection implements JsonSerializable<TopLevelDomainCollection> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<TopLevelDomainInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of TopLevelDomainCollection class.
+     */
+    public TopLevelDomainCollection() {
+    }
+
+    /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<TopLevelDomainInner> value() {
@@ -36,7 +46,7 @@ public final class TopLevelDomainCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the TopLevelDomainCollection object itself.
      */
@@ -47,7 +57,7 @@ public final class TopLevelDomainCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,18 +66,58 @@ public final class TopLevelDomainCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model TopLevelDomainCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model TopLevelDomainCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(TopLevelDomainCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopLevelDomainCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopLevelDomainCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TopLevelDomainCollection.
+     */
+    public static TopLevelDomainCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopLevelDomainCollection deserializedTopLevelDomainCollection = new TopLevelDomainCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<TopLevelDomainInner> value
+                        = reader.readArray(reader1 -> TopLevelDomainInner.fromJson(reader1));
+                    deserializedTopLevelDomainCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedTopLevelDomainCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopLevelDomainCollection;
+        });
+    }
 }

@@ -4,41 +4,43 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DedicatedHosts Delete. */
+/**
+ * Samples for DedicatedHosts Delete.
+ */
 public final class DedicatedHostsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHosts_Delete_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * dedicatedHostExamples/DedicatedHost_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: DedicatedHosts_Delete_MaximumSet_Gen.
-     *
+     * Sample code: DedicatedHost_Delete_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostsDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void dedicatedHostDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getDedicatedHosts()
-            .delete("rgcompute", "aaaaaa", "aaaaaaaaaaaaaaa", Context.NONE);
+            .delete("rgcompute", "aaaaaa", "aaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHosts_Delete_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * dedicatedHostExamples/DedicatedHost_Delete_MinimumSet_Gen.json
      */
     /**
-     * Sample code: DedicatedHosts_Delete_MinimumSet_Gen.
-     *
+     * Sample code: DedicatedHost_Delete_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void dedicatedHostsDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void dedicatedHostDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getDedicatedHosts()
-            .delete("rgcompute", "aaaaaaaaaaaaaaa", "aaaaa", Context.NONE);
+            .delete("rgcompute", "aaaaaaaaaaaaaaa", "aaaaa", com.azure.core.util.Context.NONE);
     }
 }

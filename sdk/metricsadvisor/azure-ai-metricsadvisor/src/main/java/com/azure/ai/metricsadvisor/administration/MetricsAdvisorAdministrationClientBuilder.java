@@ -3,10 +3,10 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder;
-import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImpl;
+import com.azure.ai.metricsadvisor.implementation.MetricsAdvisorImplBuilder;
+import com.azure.ai.metricsadvisor.models.MetricsAdvisorKeyCredential;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
@@ -34,8 +34,11 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -57,7 +60,7 @@ import java.util.Objects;
  * {@link #credential(MetricsAdvisorKeyCredential)} gives the builder access to credential.
  * </p>
  *
- * <p><strong>Instantiating an asynchronous Metrics Advisor Client</strong></p>
+ * <p><strong>Instantiating an asynchronous Metrics Advisor Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
  * <pre>
@@ -69,7 +72,7 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
  *
- * <p><strong>Instantiating a synchronous Metrics Advisor Client</strong></p>
+ * <p><strong>Instantiating a synchronous Metrics Advisor Administration Client</strong></p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
  * <pre>
@@ -81,13 +84,11 @@ import java.util.Objects;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
  *
- * <p>
- * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
+ * <p>Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
  * authenticated way to communicate with the service. Set the pipeline with {@link #pipeline(HttpPipeline) this} and
  * set the service endpoint with {@link #endpoint(String) this}. Using a
  * pipeline requires additional setup but allows for finer control on how the {@link MetricsAdvisorAdministrationClient}
- * and {@link MetricsAdvisorAdministrationAsyncClient} is built.
- * </p>
+ * and {@link MetricsAdvisorAdministrationAsyncClient} is built.</p>
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.pipeline.instantiation -->
  * <pre>
@@ -107,12 +108,11 @@ import java.util.Objects;
  * @see MetricsAdvisorAdministrationAsyncClient
  * @see MetricsAdvisorAdministrationClient
  */
-@ServiceClientBuilder(serviceClients = {MetricsAdvisorAdministrationAsyncClient.class,
-    MetricsAdvisorAdministrationClient.class})
-public final class MetricsAdvisorAdministrationClientBuilder implements
-    ConfigurationTrait<MetricsAdvisorAdministrationClientBuilder>,
-    EndpointTrait<MetricsAdvisorAdministrationClientBuilder>,
-    HttpTrait<MetricsAdvisorAdministrationClientBuilder>,
+@ServiceClientBuilder(
+    serviceClients = { MetricsAdvisorAdministrationAsyncClient.class, MetricsAdvisorAdministrationClient.class })
+public final class MetricsAdvisorAdministrationClientBuilder
+    implements ConfigurationTrait<MetricsAdvisorAdministrationClientBuilder>,
+    EndpointTrait<MetricsAdvisorAdministrationClientBuilder>, HttpTrait<MetricsAdvisorAdministrationClientBuilder>,
     TokenCredentialTrait<MetricsAdvisorAdministrationClientBuilder> {
 
     private static final String ECHO_REQUEST_ID_HEADER = "x-ms-return-client-request-id";
@@ -121,8 +121,8 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
     private static final String METRICSADVISOR_PROPERTIES = "azure-ai-metricsadvisor.properties";
     private static final String NAME = "name";
     private static final String VERSION = "version";
-    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms",
-        ChronoUnit.MILLIS);
+    private static final String METRICS_ADVISOR_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
+    private static final RetryPolicy DEFAULT_RETRY_POLICY = new RetryPolicy("retry-after-ms", ChronoUnit.MILLIS);
     private static final String DEFAULT_SCOPE = "https://cognitiveservices.azure.com/.default";
     private static final HttpLogOptions DEFAULT_LOG_OPTIONS = new HttpLogOptions();
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
@@ -159,9 +159,7 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         clientName = properties.getOrDefault(NAME, "UnknownName");
         clientVersion = properties.getOrDefault(VERSION, "UnknownVersion");
 
-        headers = new HttpHeaders()
-            .set(ECHO_REQUEST_ID_HEADER, "true")
-            .set(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
+        headers = new HttpHeaders().set(ECHO_REQUEST_ID_HEADER, "true").set(ACCEPT_HEADER, CONTENT_TYPE_HEADER_VALUE);
     }
 
     /**
@@ -182,7 +180,23 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
      * and {@link #retryPolicy(RetryPolicy)} have been set.
      */
     public MetricsAdvisorAdministrationClient buildClient() {
-        return new MetricsAdvisorAdministrationClient(buildAsyncClient());
+        // Endpoint cannot be null, which is required in request authentication
+        Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
+
+        // Global Env configuration store
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
+
+        HttpPipeline pipeline = httpPipeline;
+        // Create a default Pipeline if it is not given
+        if (pipeline == null) {
+            pipeline = getDefaultHttpPipeline(buildConfiguration);
+        }
+
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2
+            = new MetricsAdvisorImplBuilder().endpoint(endpoint).pipeline(pipeline).buildClient();
+
+        return new MetricsAdvisorAdministrationClient(advisorRestAPIOpenAPIV2);
     }
 
     /**
@@ -208,23 +222,21 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         Objects.requireNonNull(endpoint, "'Endpoint' is required and can not be null.");
 
         // Global Env configuration store
-        final Configuration buildConfiguration = (configuration == null)
-            ? Configuration.getGlobalConfiguration().clone() : configuration;
+        final Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration().clone() : configuration;
 
         // Service Version
-        final MetricsAdvisorServiceVersion serviceVersion =
-            version != null ? version : MetricsAdvisorServiceVersion.getLatest();
+        final MetricsAdvisorServiceVersion serviceVersion
+            = version != null ? version : MetricsAdvisorServiceVersion.getLatest();
 
         HttpPipeline pipeline = httpPipeline;
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
             pipeline = getDefaultHttpPipeline(buildConfiguration);
         }
-        final AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl advisorRestAPIOpenAPIV2 =
-            new AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2ImplBuilder()
-                .endpoint(endpoint)
-                .pipeline(pipeline)
-                .buildClient();
+
+        final MetricsAdvisorImpl advisorRestAPIOpenAPIV2
+            = new MetricsAdvisorImplBuilder().endpoint(endpoint).pipeline(pipeline).buildClient();
 
         return new MetricsAdvisorAdministrationAsyncClient(advisorRestAPIOpenAPIV2, serviceVersion);
     }
@@ -250,8 +262,7 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         HttpLogOptions buildLogOptions = this.httpLogOptions == null ? DEFAULT_LOG_OPTIONS : this.httpLogOptions;
         final String applicationId = CoreUtils.getApplicationId(buildClientOptions, buildLogOptions);
 
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion,
-            buildConfiguration));
+        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersPolicy(headers));
 
@@ -263,9 +274,17 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         policies.addAll(this.policies);
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        TracingOptions tracingOptions = null;
+        if (clientOptions != null) {
+            tracingOptions = clientOptions.getTracingOptions();
+        }
+
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(clientName, clientVersion, METRICS_ADVISOR_TRACING_NAMESPACE_VALUE, tracingOptions);
+
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .tracer(tracer)
             .build();
     }
 
@@ -321,10 +340,10 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
      * @return The updated MetricsAdvisorAdministrationClientBuilder object.
      * @throws NullPointerException If {@code metricsAdvisorKeyCredential} is null.
      */
-    public MetricsAdvisorAdministrationClientBuilder credential(
-        MetricsAdvisorKeyCredential metricsAdvisorKeyCredential) {
-        this.metricsAdvisorKeyCredential = Objects.requireNonNull(metricsAdvisorKeyCredential,
-            "'metricsAdvisorKeyCredential' cannot be null.");
+    public MetricsAdvisorAdministrationClientBuilder
+        credential(MetricsAdvisorKeyCredential metricsAdvisorKeyCredential) {
+        this.metricsAdvisorKeyCredential
+            = Objects.requireNonNull(metricsAdvisorKeyCredential, "'metricsAdvisorKeyCredential' cannot be null.");
         return this;
     }
 
@@ -373,7 +392,6 @@ public final class MetricsAdvisorAdministrationClientBuilder implements
         this.clientOptions = clientOptions;
         return this;
     }
-
 
     /**
      * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.

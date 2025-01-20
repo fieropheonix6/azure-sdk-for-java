@@ -14,123 +14,20 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.sql.fluent.models.ElasticPoolInner;
-import com.azure.resourcemanager.sql.fluent.models.MetricDefinitionInner;
-import com.azure.resourcemanager.sql.fluent.models.MetricInner;
 import com.azure.resourcemanager.sql.models.ElasticPoolUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ElasticPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ElasticPoolsClient.
+ */
 public interface ElasticPoolsClient {
     /**
-     * Returns elastic pool metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MetricInner> listMetricsAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, String filter);
-
-    /**
-     * Returns elastic pool metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MetricInner> listMetrics(
-        String resourceGroupName, String serverName, String elasticPoolName, String filter);
-
-    /**
-     * Returns elastic pool metrics.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param filter An OData filter expression that describes a subset of metrics to return.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metrics request as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MetricInner> listMetrics(
-        String resourceGroupName, String serverName, String elasticPoolName, String filter, Context context);
-
-    /**
-     * Returns elastic pool metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<MetricDefinitionInner> listMetricDefinitionsAsync(
-        String resourceGroupName, String serverName, String elasticPoolName);
-
-    /**
-     * Returns elastic pool metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MetricDefinitionInner> listMetricDefinitions(
-        String resourceGroupName, String serverName, String elasticPoolName);
-
-    /**
-     * Returns elastic pool metric definitions.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list database metric definitions request as paginated response with {@link
-     *     PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<MetricDefinitionInner> listMetricDefinitions(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context);
-
-    /**
      * Gets all elastic pools in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param skip The number of elements in the collection to skip.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,13 +36,13 @@ public interface ElasticPoolsClient {
      * @return all elastic pools in a server as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ElasticPoolInner> listByServerAsync(String resourceGroupName, String serverName, Integer skip);
+    PagedFlux<ElasticPoolInner> listByServerAsync(String resourceGroupName, String serverName, Long skip);
 
     /**
      * Gets all elastic pools in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -157,9 +54,9 @@ public interface ElasticPoolsClient {
 
     /**
      * Gets all elastic pools in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,9 +68,9 @@ public interface ElasticPoolsClient {
 
     /**
      * Gets all elastic pools in a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param skip The number of elements in the collection to skip.
      * @param context The context to associate with this operation.
@@ -183,14 +80,14 @@ public interface ElasticPoolsClient {
      * @return all elastic pools in a server as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ElasticPoolInner> listByServer(
-        String resourceGroupName, String serverName, Integer skip, Context context);
+    PagedIterable<ElasticPoolInner> listByServer(String resourceGroupName, String serverName, Long skip,
+        Context context);
 
     /**
      * Gets an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -199,14 +96,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ElasticPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String elasticPoolName);
+    Mono<Response<ElasticPoolInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Gets an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -219,9 +116,26 @@ public interface ElasticPoolsClient {
 
     /**
      * Gets an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param elasticPoolName The name of the elastic pool.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an elastic pool along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ElasticPoolInner> getWithResponse(String resourceGroupName, String serverName, String elasticPoolName,
+        Context context);
+
+    /**
+     * Gets an elastic pool.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -233,27 +147,10 @@ public interface ElasticPoolsClient {
     ElasticPoolInner get(String resourceGroupName, String serverName, String elasticPoolName);
 
     /**
-     * Gets an elastic pool.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param elasticPoolName The name of the elastic pool.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an elastic pool along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ElasticPoolInner> getWithResponse(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context);
-
-    /**
      * Creates or updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool parameters.
@@ -263,14 +160,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName, ElasticPoolInner parameters);
 
     /**
      * Creates or updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool parameters.
@@ -280,14 +177,14 @@ public interface ElasticPoolsClient {
      * @return the {@link PollerFlux} for polling of an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters);
+    PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String serverName, String elasticPoolName, ElasticPoolInner parameters);
 
     /**
      * Creates or updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool parameters.
@@ -297,14 +194,14 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdate(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters);
+    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String elasticPoolName, ElasticPoolInner parameters);
 
     /**
      * Creates or updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool parameters.
@@ -315,18 +212,14 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String elasticPoolName,
-        ElasticPoolInner parameters,
-        Context context);
+    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginCreateOrUpdate(String resourceGroupName,
+        String serverName, String elasticPoolName, ElasticPoolInner parameters, Context context);
 
     /**
      * Creates or updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool parameters.
@@ -336,14 +229,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ElasticPoolInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters);
+    Mono<ElasticPoolInner> createOrUpdateAsync(String resourceGroupName, String serverName, String elasticPoolName,
+        ElasticPoolInner parameters);
 
     /**
      * Creates or updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool parameters.
@@ -353,14 +246,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ElasticPoolInner createOrUpdate(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolInner parameters);
+    ElasticPoolInner createOrUpdate(String resourceGroupName, String serverName, String elasticPoolName,
+        ElasticPoolInner parameters);
 
     /**
      * Creates or updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool parameters.
@@ -371,18 +264,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ElasticPoolInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String elasticPoolName,
-        ElasticPoolInner parameters,
-        Context context);
+    ElasticPoolInner createOrUpdate(String resourceGroupName, String serverName, String elasticPoolName,
+        ElasticPoolInner parameters, Context context);
 
     /**
      * Deletes an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -391,14 +280,14 @@ public interface ElasticPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String elasticPoolName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Deletes an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -407,14 +296,14 @@ public interface ElasticPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String serverName, String elasticPoolName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Deletes an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -427,9 +316,9 @@ public interface ElasticPoolsClient {
 
     /**
      * Deletes an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param context The context to associate with this operation.
@@ -439,14 +328,14 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serverName, String elasticPoolName,
+        Context context);
 
     /**
      * Deletes an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,9 +348,9 @@ public interface ElasticPoolsClient {
 
     /**
      * Deletes an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -473,9 +362,9 @@ public interface ElasticPoolsClient {
 
     /**
      * Deletes an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param context The context to associate with this operation.
@@ -488,9 +377,9 @@ public interface ElasticPoolsClient {
 
     /**
      * Updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool update parameters.
@@ -500,14 +389,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName, ElasticPoolUpdate parameters);
 
     /**
      * Updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool update parameters.
@@ -517,14 +406,14 @@ public interface ElasticPoolsClient {
      * @return the {@link PollerFlux} for polling of an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolUpdate parameters);
+    PollerFlux<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdateAsync(String resourceGroupName,
+        String serverName, String elasticPoolName, ElasticPoolUpdate parameters);
 
     /**
      * Updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool update parameters.
@@ -534,14 +423,14 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdate(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolUpdate parameters);
+    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdate(String resourceGroupName, String serverName,
+        String elasticPoolName, ElasticPoolUpdate parameters);
 
     /**
      * Updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool update parameters.
@@ -552,18 +441,14 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String elasticPoolName,
-        ElasticPoolUpdate parameters,
-        Context context);
+    SyncPoller<PollResult<ElasticPoolInner>, ElasticPoolInner> beginUpdate(String resourceGroupName, String serverName,
+        String elasticPoolName, ElasticPoolUpdate parameters, Context context);
 
     /**
      * Updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool update parameters.
@@ -573,14 +458,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ElasticPoolInner> updateAsync(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolUpdate parameters);
+    Mono<ElasticPoolInner> updateAsync(String resourceGroupName, String serverName, String elasticPoolName,
+        ElasticPoolUpdate parameters);
 
     /**
      * Updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool update parameters.
@@ -590,14 +475,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ElasticPoolInner update(
-        String resourceGroupName, String serverName, String elasticPoolName, ElasticPoolUpdate parameters);
+    ElasticPoolInner update(String resourceGroupName, String serverName, String elasticPoolName,
+        ElasticPoolUpdate parameters);
 
     /**
      * Updates an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool.
      * @param parameters The elastic pool update parameters.
@@ -608,18 +493,14 @@ public interface ElasticPoolsClient {
      * @return an elastic pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ElasticPoolInner update(
-        String resourceGroupName,
-        String serverName,
-        String elasticPoolName,
-        ElasticPoolUpdate parameters,
-        Context context);
+    ElasticPoolInner update(String resourceGroupName, String serverName, String elasticPoolName,
+        ElasticPoolUpdate parameters, Context context);
 
     /**
      * Failovers an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -628,14 +509,14 @@ public interface ElasticPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(
-        String resourceGroupName, String serverName, String elasticPoolName);
+    Mono<Response<Flux<ByteBuffer>>> failoverWithResponseAsync(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Failovers an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -644,14 +525,14 @@ public interface ElasticPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(
-        String resourceGroupName, String serverName, String elasticPoolName);
+    PollerFlux<PollResult<Void>, Void> beginFailoverAsync(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Failovers an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -660,14 +541,14 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginFailover(
-        String resourceGroupName, String serverName, String elasticPoolName);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
+        String elasticPoolName);
 
     /**
      * Failovers an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool to failover.
      * @param context The context to associate with this operation.
@@ -677,14 +558,14 @@ public interface ElasticPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginFailover(
-        String resourceGroupName, String serverName, String elasticPoolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginFailover(String resourceGroupName, String serverName,
+        String elasticPoolName, Context context);
 
     /**
      * Failovers an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -697,9 +578,9 @@ public interface ElasticPoolsClient {
 
     /**
      * Failovers an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool to failover.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -711,9 +592,9 @@ public interface ElasticPoolsClient {
 
     /**
      * Failovers an elastic pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param elasticPoolName The name of the elastic pool to failover.
      * @param context The context to associate with this operation.

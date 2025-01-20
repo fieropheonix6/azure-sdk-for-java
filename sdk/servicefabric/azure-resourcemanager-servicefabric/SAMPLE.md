@@ -40,6 +40,10 @@
 - [ListUpgradableVersions](#clusters_listupgradableversions)
 - [Update](#clusters_update)
 
+## Operations
+
+- [List](#operations_list)
+
 ## Services
 
 - [CreateOrUpdate](#services_createorupdate)
@@ -53,22 +57,23 @@
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ApplicationTypeVersions CreateOrUpdate. */
+/**
+ * Samples for ApplicationTypeVersions CreateOrUpdate.
+ */
 public final class ApplicationTypeVersionsCreateOrUpdateSamples {
     /*
-     * operationId: ApplicationTypeVersions_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put an application type version
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeVersionPutOperation_example.json
      */
     /**
      * Sample code: Put an application type version.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void putAnApplicationTypeVersion(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .applicationTypeVersions()
+    public static void
+        putAnApplicationTypeVersion(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applicationTypeVersions()
             .define("1.0")
             .withExistingApplicationType("resRg", "myCluster", "myAppType")
             .withTags(mapOf())
@@ -76,6 +81,7 @@ public final class ApplicationTypeVersionsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -92,23 +98,24 @@ public final class ApplicationTypeVersionsCreateOrUpdateSamples {
 ### ApplicationTypeVersions_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ApplicationTypeVersions Delete. */
+/**
+ * Samples for ApplicationTypeVersions Delete.
+ */
 public final class ApplicationTypeVersionsDeleteSamples {
     /*
-     * operationId: ApplicationTypeVersions_Delete
-     * api-version: 2021-06-01
-     * x-ms-examples: Delete an application type version
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeVersionDeleteOperation_example.json
      */
     /**
      * Sample code: Delete an application type version.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void deleteAnApplicationTypeVersion(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypeVersions().delete("resRg", "myCluster", "myAppType", "1.0", Context.NONE);
+    public static void
+        deleteAnApplicationTypeVersion(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applicationTypeVersions()
+            .delete("resRg", "myCluster", "myAppType", "1.0", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -116,23 +123,24 @@ public final class ApplicationTypeVersionsDeleteSamples {
 ### ApplicationTypeVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ApplicationTypeVersions Get. */
+/**
+ * Samples for ApplicationTypeVersions Get.
+ */
 public final class ApplicationTypeVersionsGetSamples {
     /*
-     * operationId: ApplicationTypeVersions_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: Get an application type version
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeVersionGetOperation_example.json
      */
     /**
      * Sample code: Get an application type version.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void getAnApplicationTypeVersion(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypeVersions().getWithResponse("resRg", "myCluster", "myAppType", "1.0", Context.NONE);
+    public static void
+        getAnApplicationTypeVersion(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applicationTypeVersions()
+            .getWithResponse("resRg", "myCluster", "myAppType", "1.0", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -140,23 +148,23 @@ public final class ApplicationTypeVersionsGetSamples {
 ### ApplicationTypeVersions_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ApplicationTypeVersions List. */
+/**
+ * Samples for ApplicationTypeVersions List.
+ */
 public final class ApplicationTypeVersionsListSamples {
     /*
-     * operationId: ApplicationTypeVersions_List
-     * api-version: 2021-06-01
-     * x-ms-examples: Get a list of application type version resources
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeVersionListOperation_example.json
      */
     /**
      * Sample code: Get a list of application type version resources.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getAListOfApplicationTypeVersionResources(
         com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypeVersions().listWithResponse("resRg", "myCluster", "myAppType", Context.NONE);
+        manager.applicationTypeVersions().list("resRg", "myCluster", "myAppType", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -167,27 +175,29 @@ public final class ApplicationTypeVersionsListSamples {
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ApplicationTypes CreateOrUpdate. */
+/**
+ * Samples for ApplicationTypes CreateOrUpdate.
+ */
 public final class ApplicationTypesCreateOrUpdateSamples {
     /*
-     * operationId: ApplicationTypes_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put an application type
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeNamePutOperation_example.json
      */
     /**
      * Sample code: Put an application type.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void putAnApplicationType(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .applicationTypes()
+        manager.applicationTypes()
             .define("myAppType")
             .withExistingCluster("resRg", "myCluster")
             .withTags(mapOf())
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -204,22 +214,22 @@ public final class ApplicationTypesCreateOrUpdateSamples {
 ### ApplicationTypes_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ApplicationTypes Delete. */
+/**
+ * Samples for ApplicationTypes Delete.
+ */
 public final class ApplicationTypesDeleteSamples {
     /*
-     * operationId: ApplicationTypes_Delete
-     * api-version: 2021-06-01
-     * x-ms-examples: Delete an application type
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeNameDeleteOperation_example.json
      */
     /**
      * Sample code: Delete an application type.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void deleteAnApplicationType(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypes().delete("resRg", "myCluster", "myAppType", Context.NONE);
+        manager.applicationTypes().delete("resRg", "myCluster", "myAppType", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -227,22 +237,22 @@ public final class ApplicationTypesDeleteSamples {
 ### ApplicationTypes_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ApplicationTypes Get. */
+/**
+ * Samples for ApplicationTypes Get.
+ */
 public final class ApplicationTypesGetSamples {
     /*
-     * operationId: ApplicationTypes_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: Get an application type
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeNameGetOperation_example.json
      */
     /**
      * Sample code: Get an application type.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getAnApplicationType(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypes().getWithResponse("resRg", "myCluster", "myAppType", Context.NONE);
+        manager.applicationTypes().getWithResponse("resRg", "myCluster", "myAppType", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -250,23 +260,23 @@ public final class ApplicationTypesGetSamples {
 ### ApplicationTypes_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ApplicationTypes List. */
+/**
+ * Samples for ApplicationTypes List.
+ */
 public final class ApplicationTypesListSamples {
     /*
-     * operationId: ApplicationTypes_List
-     * api-version: 2021-06-01
-     * x-ms-examples: Get a list of application type name resources
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationTypeNameListOperation_example.json
      */
     /**
      * Sample code: Get a list of application type name resources.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void getAListOfApplicationTypeNameResources(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applicationTypes().listWithResponse("resRg", "myCluster", Context.NONE);
+    public static void
+        getAListOfApplicationTypeNameResources(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applicationTypes().list("resRg", "myCluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -285,78 +295,68 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Applications CreateOrUpdate. */
+/**
+ * Samples for Applications CreateOrUpdate.
+ */
 public final class ApplicationsCreateOrUpdateSamples {
     /*
-     * operationId: Applications_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put an application with maximum parameters
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationPutOperation_example_max.json
      */
     /**
      * Sample code: Put an application with maximum parameters.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void putAnApplicationWithMaximumParameters(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .applications()
+    public static void
+        putAnApplicationWithMaximumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applications()
             .define("myApp")
             .withExistingCluster("resRg", "myCluster")
             .withTags(mapOf())
             .withTypeName("myAppType")
             .withTypeVersion("1.0")
             .withParameters(mapOf("param1", "value1"))
-            .withUpgradePolicy(
-                new ApplicationUpgradePolicy()
-                    .withUpgradeReplicaSetCheckTimeout("01:00:00")
-                    .withForceRestart(false)
-                    .withRollingUpgradeMonitoringPolicy(
-                        new ArmRollingUpgradeMonitoringPolicy()
-                            .withFailureAction(ArmUpgradeFailureAction.ROLLBACK)
-                            .withHealthCheckWaitDuration("00:02:00")
-                            .withHealthCheckStableDuration("00:05:00")
-                            .withHealthCheckRetryTimeout("00:10:00")
-                            .withUpgradeTimeout("01:00:00")
-                            .withUpgradeDomainTimeout("1.06:00:00"))
-                    .withApplicationHealthPolicy(
-                        new ArmApplicationHealthPolicy()
-                            .withConsiderWarningAsError(true)
-                            .withMaxPercentUnhealthyDeployedApplications(0)
-                            .withDefaultServiceTypeHealthPolicy(
-                                new ArmServiceTypeHealthPolicy()
-                                    .withMaxPercentUnhealthyServices(0)
-                                    .withMaxPercentUnhealthyPartitionsPerService(0)
-                                    .withMaxPercentUnhealthyReplicasPerPartition(0)))
-                    .withUpgradeMode(RollingUpgradeMode.MONITORED))
+            .withUpgradePolicy(new ApplicationUpgradePolicy().withUpgradeReplicaSetCheckTimeout("01:00:00")
+                .withForceRestart(false)
+                .withRollingUpgradeMonitoringPolicy(
+                    new ArmRollingUpgradeMonitoringPolicy().withFailureAction(ArmUpgradeFailureAction.ROLLBACK)
+                        .withHealthCheckWaitDuration("00:02:00")
+                        .withHealthCheckStableDuration("00:05:00")
+                        .withHealthCheckRetryTimeout("00:10:00")
+                        .withUpgradeTimeout("01:00:00")
+                        .withUpgradeDomainTimeout("1.06:00:00"))
+                .withApplicationHealthPolicy(new ArmApplicationHealthPolicy().withConsiderWarningAsError(true)
+                    .withMaxPercentUnhealthyDeployedApplications(0)
+                    .withDefaultServiceTypeHealthPolicy(
+                        new ArmServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(0)
+                            .withMaxPercentUnhealthyPartitionsPerService(0)
+                            .withMaxPercentUnhealthyReplicasPerPartition(0)))
+                .withUpgradeMode(RollingUpgradeMode.MONITORED))
             .withMinimumNodes(1L)
             .withMaximumNodes(3L)
             .withRemoveApplicationCapacity(false)
-            .withMetrics(
-                Arrays
-                    .asList(
-                        new ApplicationMetricDescription()
-                            .withName("metric1")
-                            .withMaximumCapacity(3L)
-                            .withReservationCapacity(1L)
-                            .withTotalApplicationCapacity(5L)))
+            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
+                .withMaximumCapacity(3L)
+                .withReservationCapacity(1L)
+                .withTotalApplicationCapacity(5L)))
             .create();
     }
 
     /*
-     * operationId: Applications_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put an application with minimum parameters
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationPutOperation_example_min.json
      */
     /**
      * Sample code: Put an application with minimum parameters.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void putAnApplicationWithMinimumParameters(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .applications()
+    public static void
+        putAnApplicationWithMinimumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applications()
             .define("myApp")
             .withExistingCluster("resRg", "myCluster")
             .withRegion("eastus")
@@ -368,19 +368,18 @@ public final class ApplicationsCreateOrUpdateSamples {
     }
 
     /*
-     * operationId: Applications_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put an application with recreate option
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationPutOperation_recreate_example.json
      */
     /**
      * Sample code: Put an application with recreate option.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void putAnApplicationWithRecreateOption(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .applications()
+    public static void
+        putAnApplicationWithRecreateOption(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applications()
             .define("myApp")
             .withExistingCluster("resRg", "myCluster")
             .withTags(mapOf())
@@ -391,6 +390,7 @@ public final class ApplicationsCreateOrUpdateSamples {
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -407,22 +407,22 @@ public final class ApplicationsCreateOrUpdateSamples {
 ### Applications_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Applications Delete. */
+/**
+ * Samples for Applications Delete.
+ */
 public final class ApplicationsDeleteSamples {
     /*
-     * operationId: Applications_Delete
-     * api-version: 2021-06-01
-     * x-ms-examples: Delete an application
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationDeleteOperation_example.json
      */
     /**
      * Sample code: Delete an application.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void deleteAnApplication(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applications().delete("resRg", "myCluster", "myApp", Context.NONE);
+        manager.applications().delete("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -430,22 +430,22 @@ public final class ApplicationsDeleteSamples {
 ### Applications_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Applications Get. */
+/**
+ * Samples for Applications Get.
+ */
 public final class ApplicationsGetSamples {
     /*
-     * operationId: Applications_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: Get an application
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationGetOperation_example.json
      */
     /**
      * Sample code: Get an application.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getAnApplication(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applications().getWithResponse("resRg", "myCluster", "myApp", Context.NONE);
+        manager.applications().getWithResponse("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -453,23 +453,23 @@ public final class ApplicationsGetSamples {
 ### Applications_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Applications List. */
+/**
+ * Samples for Applications List.
+ */
 public final class ApplicationsListSamples {
     /*
-     * operationId: Applications_List
-     * api-version: 2021-06-01
-     * x-ms-examples: Get a list of application resources
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationListOperation_example.json
      */
     /**
      * Sample code: Get a list of application resources.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void getAListOfApplicationResources(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.applications().listWithResponse("resRg", "myCluster", Context.NONE);
+    public static void
+        getAListOfApplicationResources(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.applications().list("resRg", "myCluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -477,38 +477,35 @@ public final class ApplicationsListSamples {
 ### Applications_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.models.ApplicationMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ApplicationResource;
 import java.util.Arrays;
 
-/** Samples for Applications Update. */
+/**
+ * Samples for Applications Update.
+ */
 public final class ApplicationsUpdateSamples {
     /*
-     * operationId: Applications_Update
-     * api-version: 2021-06-01
-     * x-ms-examples: Patch an application
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ApplicationPatchOperation_example.json
      */
     /**
      * Sample code: Patch an application.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchAnApplication(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        ApplicationResource resource =
-            manager.applications().getWithResponse("resRg", "myCluster", "myApp", Context.NONE).getValue();
-        resource
-            .update()
+        ApplicationResource resource = manager.applications()
+            .getWithResponse("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTypeVersion("1.0")
             .withRemoveApplicationCapacity(false)
-            .withMetrics(
-                Arrays
-                    .asList(
-                        new ApplicationMetricDescription()
-                            .withName("metric1")
-                            .withMaximumCapacity(3L)
-                            .withReservationCapacity(1L)
-                            .withTotalApplicationCapacity(5L)))
+            .withMetrics(Arrays.asList(new ApplicationMetricDescription().withName("metric1")
+                .withMaximumCapacity(3L)
+                .withReservationCapacity(1L)
+                .withTotalApplicationCapacity(5L)))
             .apply();
     }
 }
@@ -517,22 +514,22 @@ public final class ApplicationsUpdateSamples {
 ### ClusterVersions_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ClusterVersions Get. */
+/**
+ * Samples for ClusterVersions Get.
+ */
 public final class ClusterVersionsGetSamples {
     /*
-     * operationId: ClusterVersions_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: Get cluster version
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterVersionsGet_example.json
      */
     /**
      * Sample code: Get cluster version.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getClusterVersion(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusterVersions().getWithResponse("eastus", "6.1.480.9494", Context.NONE);
+        manager.clusterVersions().getWithResponse("eastus", "6.1.480.9494", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -540,26 +537,27 @@ public final class ClusterVersionsGetSamples {
 ### ClusterVersions_GetByEnvironment
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.models.ClusterVersionsEnvironment;
 
-/** Samples for ClusterVersions GetByEnvironment. */
+/**
+ * Samples for ClusterVersions GetByEnvironment.
+ */
 public final class ClusterVersionsGetByEnvironmentSamples {
     /*
-     * operationId: ClusterVersions_GetByEnvironment
-     * api-version: 2021-06-01
-     * x-ms-examples: Get cluster version by environment
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterVersionsGetByEnvironment_example.json
      */
     /**
      * Sample code: Get cluster version by environment.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void getClusterVersionByEnvironment(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .clusterVersions()
-            .getByEnvironmentWithResponse("eastus", ClusterVersionsEnvironment.WINDOWS, "6.1.480.9494", Context.NONE);
+    public static void
+        getClusterVersionByEnvironment(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.clusterVersions()
+            .getByEnvironmentWithResponse("eastus", ClusterVersionsEnvironment.WINDOWS, "6.1.480.9494",
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -567,22 +565,22 @@ public final class ClusterVersionsGetByEnvironmentSamples {
 ### ClusterVersions_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for ClusterVersions List. */
+/**
+ * Samples for ClusterVersions List.
+ */
 public final class ClusterVersionsListSamples {
     /*
-     * operationId: ClusterVersions_List
-     * api-version: 2021-06-01
-     * x-ms-examples: List cluster versions
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterVersionsList_example.json
      */
     /**
      * Sample code: List cluster versions.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void listClusterVersions(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusterVersions().listWithResponse("eastus", Context.NONE);
+        manager.clusterVersions().listWithResponse("eastus", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -590,26 +588,27 @@ public final class ClusterVersionsListSamples {
 ### ClusterVersions_ListByEnvironment
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.models.ClusterVersionsEnvironment;
 
-/** Samples for ClusterVersions ListByEnvironment. */
+/**
+ * Samples for ClusterVersions ListByEnvironment.
+ */
 public final class ClusterVersionsListByEnvironmentSamples {
     /*
-     * operationId: ClusterVersions_ListByEnvironment
-     * api-version: 2021-06-01
-     * x-ms-examples: List cluster versions by environment
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterVersionsListByEnvironment.json
      */
     /**
      * Sample code: List cluster versions by environment.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void listClusterVersionsByEnvironment(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .clusterVersions()
-            .listByEnvironmentWithResponse("eastus", ClusterVersionsEnvironment.WINDOWS, Context.NONE);
+    public static void
+        listClusterVersionsByEnvironment(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.clusterVersions()
+            .listByEnvironmentWithResponse("eastus", ClusterVersionsEnvironment.WINDOWS,
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -653,145 +652,91 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters CreateOrUpdate. */
+/**
+ * Samples for Clusters CreateOrUpdate.
+ */
 public final class ClustersCreateOrUpdateSamples {
     /*
-     * operationId: Clusters_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put a cluster with maximum parameters
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterPutOperation_example_max.json
      */
     /**
      * Sample code: Put a cluster with maximum parameters.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void putAClusterWithMaximumParameters(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .clusters()
+    public static void
+        putAClusterWithMaximumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.clusters()
             .define("myCluster")
             .withRegion("eastus")
             .withExistingResourceGroup("resRg")
             .withTags(mapOf())
-            .withAddOnFeatures(
-                Arrays
-                    .asList(
-                        AddOnFeatures.REPAIR_MANAGER,
-                        AddOnFeatures.DNS_SERVICE,
-                        AddOnFeatures.BACKUP_RESTORE_SERVICE,
-                        AddOnFeatures.RESOURCE_MONITOR_SERVICE))
-            .withAzureActiveDirectory(
-                new AzureActiveDirectory()
-                    .withTenantId("6abcc6a0-8666-43f1-87b8-172cf86a9f9c")
-                    .withClusterApplication("5886372e-7bf4-4878-a497-8098aba608ae")
-                    .withClientApplication("d151ad89-4bce-4ae8-b3d1-1dc79679fa75"))
-            .withCertificateCommonNames(
-                new ServerCertificateCommonNames()
-                    .withCommonNames(
-                        Arrays
-                            .asList(
-                                new ServerCertificateCommonName()
-                                    .withCertificateCommonName("abc.com")
-                                    .withCertificateIssuerThumbprint("12599211F8F14C90AFA9532AD79A6F2CA1C00622")))
-                    .withX509StoreName(StoreName.MY))
-            .withClientCertificateCommonNames(
-                Arrays
-                    .asList(
-                        new ClientCertificateCommonName()
-                            .withIsAdmin(true)
-                            .withCertificateCommonName("abc.com")
-                            .withCertificateIssuerThumbprint("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A")))
-            .withClientCertificateThumbprints(
-                Arrays
-                    .asList(
-                        new ClientCertificateThumbprint()
-                            .withIsAdmin(true)
-                            .withCertificateThumbprint("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A")))
+            .withAddOnFeatures(Arrays.asList(AddOnFeatures.REPAIR_MANAGER, AddOnFeatures.DNS_SERVICE,
+                AddOnFeatures.BACKUP_RESTORE_SERVICE, AddOnFeatures.RESOURCE_MONITOR_SERVICE))
+            .withAzureActiveDirectory(new AzureActiveDirectory().withTenantId("6abcc6a0-8666-43f1-87b8-172cf86a9f9c")
+                .withClusterApplication("5886372e-7bf4-4878-a497-8098aba608ae")
+                .withClientApplication("d151ad89-4bce-4ae8-b3d1-1dc79679fa75"))
+            .withCertificateCommonNames(new ServerCertificateCommonNames()
+                .withCommonNames(Arrays.asList(new ServerCertificateCommonName().withCertificateCommonName("abc.com")
+                    .withCertificateIssuerThumbprint("12599211F8F14C90AFA9532AD79A6F2CA1C00622")))
+                .withX509StoreName(StoreName.MY))
+            .withClientCertificateCommonNames(Arrays.asList(new ClientCertificateCommonName().withIsAdmin(true)
+                .withCertificateCommonName("abc.com")
+                .withCertificateIssuerThumbprint("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A")))
+            .withClientCertificateThumbprints(Arrays.asList(new ClientCertificateThumbprint().withIsAdmin(true)
+                .withCertificateThumbprint("5F3660C715EBBDA31DB1FFDCF508302348DE8E7A")))
             .withClusterCodeVersion("7.0.470.9590")
-            .withDiagnosticsStorageAccountConfig(
-                new DiagnosticsStorageAccountConfig()
-                    .withStorageAccountName("diag")
-                    .withProtectedAccountKeyName("StorageAccountKey1")
-                    .withBlobEndpoint("https://diag.blob.core.windows.net/")
-                    .withQueueEndpoint("https://diag.queue.core.windows.net/")
-                    .withTableEndpoint("https://diag.table.core.windows.net/"))
+            .withDiagnosticsStorageAccountConfig(new DiagnosticsStorageAccountConfig().withStorageAccountName("diag")
+                .withProtectedAccountKeyName("fakeTokenPlaceholder")
+                .withBlobEndpoint("https://diag.blob.core.windows.net/")
+                .withQueueEndpoint("https://diag.queue.core.windows.net/")
+                .withTableEndpoint("https://diag.table.core.windows.net/"))
             .withEventStoreServiceEnabled(true)
-            .withFabricSettings(
-                Arrays
-                    .asList(
-                        new SettingsSectionDescription()
-                            .withName("UpgradeService")
-                            .withParameters(
-                                Arrays
-                                    .asList(
-                                        new SettingsParameterDescription()
-                                            .withName("AppPollIntervalInSeconds")
-                                            .withValue("60")))))
+            .withFabricSettings(Arrays.asList(new SettingsSectionDescription().withName("UpgradeService")
+                .withParameters(Arrays
+                    .asList(new SettingsParameterDescription().withName("AppPollIntervalInSeconds").withValue("60")))))
             .withManagementEndpoint("https://myCluster.eastus.cloudapp.azure.com:19080")
-            .withNodeTypes(
-                Arrays
-                    .asList(
-                        new NodeTypeDescription()
-                            .withName("nt1vm")
-                            .withClientConnectionEndpointPort(19000)
-                            .withHttpGatewayEndpointPort(19007)
-                            .withDurabilityLevel(DurabilityLevel.SILVER)
-                            .withApplicationPorts(
-                                new EndpointRangeDescription().withStartPort(20000).withEndPort(30000))
-                            .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
-                            .withIsPrimary(true)
-                            .withVmInstanceCount(5)
-                            .withIsStateless(false)
-                            .withMultipleAvailabilityZones(true)))
+            .withNodeTypes(Arrays.asList(new NodeTypeDescription().withName("nt1vm")
+                .withClientConnectionEndpointPort(19000)
+                .withHttpGatewayEndpointPort(19007)
+                .withDurabilityLevel(DurabilityLevel.SILVER)
+                .withApplicationPorts(new EndpointRangeDescription().withStartPort(20000).withEndPort(30000))
+                .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
+                .withIsPrimary(true)
+                .withVmInstanceCount(5)
+                .withIsStateless(false)
+                .withMultipleAvailabilityZones(true)))
             .withReliabilityLevel(ReliabilityLevel.PLATINUM)
-            .withReverseProxyCertificateCommonNames(
-                new ServerCertificateCommonNames()
-                    .withCommonNames(
-                        Arrays
-                            .asList(
-                                new ServerCertificateCommonName()
-                                    .withCertificateCommonName("abc.com")
-                                    .withCertificateIssuerThumbprint("12599211F8F14C90AFA9532AD79A6F2CA1C00622")))
-                    .withX509StoreName(StoreName.MY))
-            .withUpgradeDescription(
-                new ClusterUpgradePolicy()
-                    .withForceRestart(false)
-                    .withUpgradeReplicaSetCheckTimeout("00:10:00")
-                    .withHealthCheckWaitDuration("00:00:30")
-                    .withHealthCheckStableDuration("00:00:30")
-                    .withHealthCheckRetryTimeout("00:05:00")
-                    .withUpgradeTimeout("01:00:00")
-                    .withUpgradeDomainTimeout("00:15:00")
-                    .withHealthPolicy(
-                        new ClusterHealthPolicy()
-                            .withMaxPercentUnhealthyNodes(0)
-                            .withMaxPercentUnhealthyApplications(0)
-                            .withApplicationHealthPolicies(
-                                mapOf(
-                                    "fabric:/myApp1",
-                                    new ApplicationHealthPolicy()
-                                        .withDefaultServiceTypeHealthPolicy(
-                                            new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(0))
-                                        .withServiceTypeHealthPolicies(
-                                            mapOf(
-                                                "myServiceType1",
-                                                new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(100))))))
-                    .withDeltaHealthPolicy(
-                        new ClusterUpgradeDeltaHealthPolicy()
-                            .withMaxPercentDeltaUnhealthyNodes(0)
-                            .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(0)
-                            .withMaxPercentDeltaUnhealthyApplications(0)
-                            .withApplicationDeltaHealthPolicies(
-                                mapOf(
-                                    "fabric:/myApp1",
-                                    new ApplicationDeltaHealthPolicy()
-                                        .withDefaultServiceTypeDeltaHealthPolicy(
-                                            new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(0))
-                                        .withServiceTypeDeltaHealthPolicies(
-                                            mapOf(
-                                                "myServiceType1",
-                                                new ServiceTypeDeltaHealthPolicy()
-                                                    .withMaxPercentDeltaUnhealthyServices(0)))))))
+            .withReverseProxyCertificateCommonNames(new ServerCertificateCommonNames()
+                .withCommonNames(Arrays.asList(new ServerCertificateCommonName().withCertificateCommonName("abc.com")
+                    .withCertificateIssuerThumbprint("12599211F8F14C90AFA9532AD79A6F2CA1C00622")))
+                .withX509StoreName(StoreName.MY))
+            .withUpgradeDescription(new ClusterUpgradePolicy().withForceRestart(false)
+                .withUpgradeReplicaSetCheckTimeout("00:10:00")
+                .withHealthCheckWaitDuration("00:00:30")
+                .withHealthCheckStableDuration("00:00:30")
+                .withHealthCheckRetryTimeout("00:05:00")
+                .withUpgradeTimeout("01:00:00")
+                .withUpgradeDomainTimeout("00:15:00")
+                .withHealthPolicy(new ClusterHealthPolicy().withMaxPercentUnhealthyNodes(0)
+                    .withMaxPercentUnhealthyApplications(0)
+                    .withApplicationHealthPolicies(mapOf("fabric:/myApp1",
+                        new ApplicationHealthPolicy()
+                            .withDefaultServiceTypeHealthPolicy(
+                                new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(0))
+                            .withServiceTypeHealthPolicies(mapOf("myServiceType1",
+                                new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(100))))))
+                .withDeltaHealthPolicy(new ClusterUpgradeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyNodes(0)
+                    .withMaxPercentUpgradeDomainDeltaUnhealthyNodes(0)
+                    .withMaxPercentDeltaUnhealthyApplications(0)
+                    .withApplicationDeltaHealthPolicies(mapOf("fabric:/myApp1",
+                        new ApplicationDeltaHealthPolicy()
+                            .withDefaultServiceTypeDeltaHealthPolicy(
+                                new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(0))
+                            .withServiceTypeDeltaHealthPolicies(mapOf("myServiceType1",
+                                new ServiceTypeDeltaHealthPolicy().withMaxPercentDeltaUnhealthyServices(0)))))))
             .withUpgradeMode(UpgradeMode.MANUAL)
             .withApplicationTypeVersionsCleanupPolicy(
                 new ApplicationTypeVersionsCleanupPolicy().withMaxUnusedVersionsToKeep(2L))
@@ -802,93 +747,66 @@ public final class ClustersCreateOrUpdateSamples {
             .withUpgradeWave(ClusterUpgradeCadence.WAVE1)
             .withUpgradePauseStartTimestampUtc(OffsetDateTime.parse("2021-06-21T22:00:00Z"))
             .withUpgradePauseEndTimestampUtc(OffsetDateTime.parse("2021-06-25T22:00:00Z"))
-            .withNotifications(
-                Arrays
-                    .asList(
-                        new Notification()
-                            .withIsEnabled(true)
-                            .withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
-                            .withNotificationLevel(NotificationLevel.CRITICAL)
-                            .withNotificationTargets(
-                                Arrays
-                                    .asList(
-                                        new NotificationTarget()
-                                            .withNotificationChannel(NotificationChannel.EMAIL_USER)
-                                            .withReceivers(Arrays.asList("****@microsoft.com", "****@microsoft.com")),
-                                        new NotificationTarget()
-                                            .withNotificationChannel(NotificationChannel.EMAIL_SUBSCRIPTION)
-                                            .withReceivers(Arrays.asList("Owner", "AccountAdmin")))),
-                        new Notification()
-                            .withIsEnabled(true)
-                            .withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
-                            .withNotificationLevel(NotificationLevel.ALL)
-                            .withNotificationTargets(
-                                Arrays
-                                    .asList(
-                                        new NotificationTarget()
-                                            .withNotificationChannel(NotificationChannel.EMAIL_USER)
-                                            .withReceivers(Arrays.asList("****@microsoft.com", "****@microsoft.com")),
-                                        new NotificationTarget()
-                                            .withNotificationChannel(NotificationChannel.EMAIL_SUBSCRIPTION)
-                                            .withReceivers(Arrays.asList("Owner", "AccountAdmin"))))))
+            .withNotifications(Arrays.asList(
+                new Notification().withIsEnabled(true)
+                    .withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
+                    .withNotificationLevel(NotificationLevel.CRITICAL)
+                    .withNotificationTargets(Arrays.asList(
+                        new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_USER)
+                            .withReceivers(Arrays.asList("****@microsoft.com", "****@microsoft.com")),
+                        new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_SUBSCRIPTION)
+                            .withReceivers(Arrays.asList("Owner", "AccountAdmin")))),
+                new Notification().withIsEnabled(true)
+                    .withNotificationCategory(NotificationCategory.WAVE_PROGRESS)
+                    .withNotificationLevel(NotificationLevel.ALL)
+                    .withNotificationTargets(Arrays.asList(
+                        new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_USER)
+                            .withReceivers(Arrays.asList("****@microsoft.com", "****@microsoft.com")),
+                        new NotificationTarget().withNotificationChannel(NotificationChannel.EMAIL_SUBSCRIPTION)
+                            .withReceivers(Arrays.asList("Owner", "AccountAdmin"))))))
             .create();
     }
 
     /*
-     * operationId: Clusters_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put a cluster with minimum parameters
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterPutOperation_example_min.json
      */
     /**
      * Sample code: Put a cluster with minimum parameters.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void putAClusterWithMinimumParameters(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .clusters()
+    public static void
+        putAClusterWithMinimumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.clusters()
             .define("myCluster")
             .withRegion("eastus")
             .withExistingResourceGroup("resRg")
             .withTags(mapOf())
-            .withDiagnosticsStorageAccountConfig(
-                new DiagnosticsStorageAccountConfig()
-                    .withStorageAccountName("diag")
-                    .withProtectedAccountKeyName("StorageAccountKey1")
-                    .withBlobEndpoint("https://diag.blob.core.windows.net/")
-                    .withQueueEndpoint("https://diag.queue.core.windows.net/")
-                    .withTableEndpoint("https://diag.table.core.windows.net/"))
-            .withFabricSettings(
-                Arrays
-                    .asList(
-                        new SettingsSectionDescription()
-                            .withName("UpgradeService")
-                            .withParameters(
-                                Arrays
-                                    .asList(
-                                        new SettingsParameterDescription()
-                                            .withName("AppPollIntervalInSeconds")
-                                            .withValue("60")))))
+            .withDiagnosticsStorageAccountConfig(new DiagnosticsStorageAccountConfig().withStorageAccountName("diag")
+                .withProtectedAccountKeyName("fakeTokenPlaceholder")
+                .withBlobEndpoint("https://diag.blob.core.windows.net/")
+                .withQueueEndpoint("https://diag.queue.core.windows.net/")
+                .withTableEndpoint("https://diag.table.core.windows.net/"))
+            .withFabricSettings(Arrays.asList(new SettingsSectionDescription().withName("UpgradeService")
+                .withParameters(Arrays
+                    .asList(new SettingsParameterDescription().withName("AppPollIntervalInSeconds").withValue("60")))))
             .withManagementEndpoint("http://myCluster.eastus.cloudapp.azure.com:19080")
-            .withNodeTypes(
-                Arrays
-                    .asList(
-                        new NodeTypeDescription()
-                            .withName("nt1vm")
-                            .withClientConnectionEndpointPort(19000)
-                            .withHttpGatewayEndpointPort(19007)
-                            .withDurabilityLevel(DurabilityLevel.BRONZE)
-                            .withApplicationPorts(
-                                new EndpointRangeDescription().withStartPort(20000).withEndPort(30000))
-                            .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
-                            .withIsPrimary(true)
-                            .withVmInstanceCount(5)))
+            .withNodeTypes(Arrays.asList(new NodeTypeDescription().withName("nt1vm")
+                .withClientConnectionEndpointPort(19000)
+                .withHttpGatewayEndpointPort(19007)
+                .withDurabilityLevel(DurabilityLevel.BRONZE)
+                .withApplicationPorts(new EndpointRangeDescription().withStartPort(20000).withEndPort(30000))
+                .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
+                .withIsPrimary(true)
+                .withVmInstanceCount(5)))
             .withReliabilityLevel(ReliabilityLevel.SILVER)
             .withUpgradeMode(UpgradeMode.AUTOMATIC)
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -905,22 +823,22 @@ public final class ClustersCreateOrUpdateSamples {
 ### Clusters_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Clusters Delete. */
+/**
+ * Samples for Clusters Delete.
+ */
 public final class ClustersDeleteSamples {
     /*
-     * operationId: Clusters_Delete
-     * api-version: 2021-06-01
-     * x-ms-examples: Delete a cluster
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterDeleteOperation_example.json
      */
     /**
      * Sample code: Delete a cluster.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void deleteACluster(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().deleteWithResponse("resRg", "myCluster", Context.NONE);
+        manager.clusters().deleteByResourceGroupWithResponse("resRg", "myCluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -928,22 +846,22 @@ public final class ClustersDeleteSamples {
 ### Clusters_GetByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Clusters GetByResourceGroup. */
+/**
+ * Samples for Clusters GetByResourceGroup.
+ */
 public final class ClustersGetByResourceGroupSamples {
     /*
-     * operationId: Clusters_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: Get a cluster
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterGetOperation_example.json
      */
     /**
      * Sample code: Get a cluster.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getACluster(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().getByResourceGroupWithResponse("resRg", "myCluster", Context.NONE);
+        manager.clusters().getByResourceGroupWithResponse("resRg", "myCluster", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -951,22 +869,22 @@ public final class ClustersGetByResourceGroupSamples {
 ### Clusters_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Clusters List. */
+/**
+ * Samples for Clusters List.
+ */
 public final class ClustersListSamples {
     /*
-     * operationId: Clusters_List
-     * api-version: 2021-06-01
-     * x-ms-examples: List clusters
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterListOperation_example.json
      */
     /**
      * Sample code: List clusters.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void listClusters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().listWithResponse(Context.NONE);
+        manager.clusters().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -974,23 +892,23 @@ public final class ClustersListSamples {
 ### Clusters_ListByResourceGroup
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Clusters ListByResourceGroup. */
+/**
+ * Samples for Clusters ListByResourceGroup.
+ */
 public final class ClustersListByResourceGroupSamples {
     /*
-     * operationId: Clusters_ListByResourceGroup
-     * api-version: 2021-06-01
-     * x-ms-examples: List cluster by resource group
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterListByResourceGroupOperation_example.json
      */
     /**
      * Sample code: List cluster by resource group.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void listClusterByResourceGroup(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().listByResourceGroupWithResponse("resRg", Context.NONE);
+    public static void
+        listClusterByResourceGroup(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.clusters().listByResourceGroup("resRg", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -998,44 +916,43 @@ public final class ClustersListByResourceGroupSamples {
 ### Clusters_ListUpgradableVersions
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.models.UpgradableVersionsDescription;
 
-/** Samples for Clusters ListUpgradableVersions. */
+/**
+ * Samples for Clusters ListUpgradableVersions.
+ */
 public final class ClustersListUpgradableVersionsSamples {
     /*
-     * operationId: Clusters_ListUpgradableVersions
-     * api-version: 2021-06-01
-     * x-ms-examples: Get minimum and maximum code versions
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ListUpgradableVersionsMinMax_example.json
      */
     /**
      * Sample code: Get minimum and maximum code versions.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void getMinimumAndMaximumCodeVersions(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.clusters().listUpgradableVersionsWithResponse("resRg", "myCluster", null, Context.NONE);
+    public static void
+        getMinimumAndMaximumCodeVersions(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.clusters()
+            .listUpgradableVersionsWithResponse("resRg", "myCluster", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * operationId: Clusters_ListUpgradableVersions
-     * api-version: 2021-06-01
-     * x-ms-examples: Get upgrade path
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ListUpgradableVersionsPath_example.json
      */
     /**
      * Sample code: Get upgrade path.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getUpgradePath(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .clusters()
-            .listUpgradableVersionsWithResponse(
-                "resRg",
-                "myCluster",
+        manager.clusters()
+            .listUpgradableVersionsWithResponse("resRg", "myCluster",
                 new UpgradableVersionsDescription().withTargetVersion("7.2.432.9590"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1043,7 +960,6 @@ public final class ClustersListUpgradableVersionsSamples {
 ### Clusters_Update
 
 ```java
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.models.Cluster;
 import com.azure.resourcemanager.servicefabric.models.ClusterUpgradeCadence;
 import com.azure.resourcemanager.servicefabric.models.DurabilityLevel;
@@ -1056,30 +972,31 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Clusters Update. */
+/**
+ * Samples for Clusters Update.
+ */
 public final class ClustersUpdateSamples {
     /*
-     * operationId: Clusters_Update
-     * api-version: 2021-06-01
-     * x-ms-examples: Patch a cluster
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ClusterPatchOperation_example.json
      */
     /**
      * Sample code: Patch a cluster.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchACluster(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        Cluster resource =
-            manager.clusters().getByResourceGroupWithResponse("resRg", "myCluster", Context.NONE).getValue();
-        resource
-            .update()
+        Cluster resource = manager.clusters()
+            .getByResourceGroupWithResponse("resRg", "myCluster", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
             .withTags(mapOf("a", "b"))
             .withEventStoreServiceEnabled(true)
             .withNodeTypes(
                 Arrays
                     .asList(
-                        new NodeTypeDescription()
-                            .withName("nt1vm")
+                        new NodeTypeDescription().withName("nt1vm")
                             .withClientConnectionEndpointPort(19000)
                             .withHttpGatewayEndpointPort(19007)
                             .withDurabilityLevel(DurabilityLevel.BRONZE)
@@ -1088,8 +1005,7 @@ public final class ClustersUpdateSamples {
                             .withEphemeralPorts(new EndpointRangeDescription().withStartPort(49000).withEndPort(64000))
                             .withIsPrimary(true)
                             .withVmInstanceCount(5),
-                        new NodeTypeDescription()
-                            .withName("testnt1")
+                        new NodeTypeDescription().withName("testnt1")
                             .withClientConnectionEndpointPort(0)
                             .withHttpGatewayEndpointPort(0)
                             .withDurabilityLevel(DurabilityLevel.BRONZE)
@@ -1105,6 +1021,7 @@ public final class ClustersUpdateSamples {
             .apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1114,6 +1031,29 @@ public final class ClustersUpdateSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### Operations_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/ListOperations.
+     * json
+     */
+    /**
+     * Sample code: ListOperations.
+     * 
+     * @param manager Entry point to ServiceFabricManager.
+     */
+    public static void listOperations(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1128,71 +1068,70 @@ import com.azure.resourcemanager.servicefabric.models.ServiceCorrelationScheme;
 import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricDescription;
 import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricWeight;
 import com.azure.resourcemanager.servicefabric.models.SingletonPartitionSchemeDescription;
+import com.azure.resourcemanager.servicefabric.models.StatelessServiceProperties;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Services CreateOrUpdate. */
+/**
+ * Samples for Services CreateOrUpdate.
+ */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * operationId: Services_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put a service with minimum parameters
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ServicePutOperation_example_min.json
      */
     /**
      * Sample code: Put a service with minimum parameters.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void putAServiceWithMinimumParameters(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .services()
+    public static void
+        putAServiceWithMinimumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.services()
             .define("myService")
             .withExistingApplication("resRg", "myCluster", "myApp")
             .withTags(mapOf())
-            .withServiceTypeName("myServiceType")
-            .withPartitionDescription(new SingletonPartitionSchemeDescription())
+            .withProperties(new StatelessServiceProperties().withServiceTypeName("myServiceType")
+                .withPartitionDescription(new SingletonPartitionSchemeDescription())
+                .withInstanceCount(1))
             .create();
     }
 
     /*
-     * operationId: Services_CreateOrUpdate
-     * api-version: 2021-06-01
-     * x-ms-examples: Put a service with maximum parameters
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ServicePutOperation_example_max.json
      */
     /**
      * Sample code: Put a service with maximum parameters.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void putAServiceWithMaximumParameters(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager
-            .services()
+    public static void
+        putAServiceWithMaximumParameters(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.services()
             .define("myService")
             .withExistingApplication("resRg", "myCluster", "myApp")
             .withTags(mapOf())
-            .withServiceTypeName("myServiceType")
-            .withPartitionDescription(new SingletonPartitionSchemeDescription())
-            .withServicePackageActivationMode(ArmServicePackageActivationMode.SHARED_PROCESS)
-            .withServiceDnsName("my.service.dns")
-            .withPlacementConstraints("NodeType==frontend")
-            .withCorrelationScheme(
-                Arrays
-                    .asList(
-                        new ServiceCorrelationDescription()
-                            .withScheme(ServiceCorrelationScheme.AFFINITY)
-                            .withServiceName("fabric:/app1/app1~svc1")))
-            .withServiceLoadMetrics(
-                Arrays
-                    .asList(
-                        new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW)))
-            .withServicePlacementPolicies(Arrays.asList())
-            .withDefaultMoveCost(MoveCost.MEDIUM)
+            .withProperties(new StatelessServiceProperties().withPlacementConstraints("NodeType==frontend")
+                .withCorrelationScheme(
+                    Arrays.asList(new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
+                        .withServiceName("fabric:/app1/app1~svc1")))
+                .withServiceLoadMetrics(Arrays.asList(
+                    new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW)))
+                .withServicePlacementPolicies(Arrays.asList())
+                .withDefaultMoveCost(MoveCost.MEDIUM)
+                .withServiceTypeName("myServiceType")
+                .withPartitionDescription(new SingletonPartitionSchemeDescription())
+                .withServicePackageActivationMode(ArmServicePackageActivationMode.SHARED_PROCESS)
+                .withServiceDnsName("my.service.dns")
+                .withInstanceCount(5))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();
@@ -1209,22 +1148,22 @@ public final class ServicesCreateOrUpdateSamples {
 ### Services_Delete
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Services Delete. */
+/**
+ * Samples for Services Delete.
+ */
 public final class ServicesDeleteSamples {
     /*
-     * operationId: Services_Delete
-     * api-version: 2021-06-01
-     * x-ms-examples: Delete a service
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ServiceDeleteOperation_example.json
      */
     /**
      * Sample code: Delete a service.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void deleteAService(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.services().delete("resRg", "myCluster", "myApp", "myService", Context.NONE);
+        manager.services().delete("resRg", "myCluster", "myApp", "myService", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1232,22 +1171,23 @@ public final class ServicesDeleteSamples {
 ### Services_Get
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Services Get. */
+/**
+ * Samples for Services Get.
+ */
 public final class ServicesGetSamples {
     /*
-     * operationId: Services_Get
-     * api-version: 2021-06-01
-     * x-ms-examples: Get a service
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ServiceGetOperation_example.json
      */
     /**
      * Sample code: Get a service.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void getAService(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.services().getWithResponse("resRg", "myCluster", "myApp", "myService", Context.NONE);
+        manager.services()
+            .getWithResponse("resRg", "myCluster", "myApp", "myService", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1255,23 +1195,23 @@ public final class ServicesGetSamples {
 ### Services_List
 
 ```java
-import com.azure.core.util.Context;
-
-/** Samples for Services List. */
+/**
+ * Samples for Services List.
+ */
 public final class ServicesListSamples {
     /*
-     * operationId: Services_List
-     * api-version: 2021-06-01
-     * x-ms-examples: Get a list of service resources
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ServiceListOperation_example.json
      */
     /**
      * Sample code: Get a list of service resources.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
-    public static void getAListOfServiceResources(
-        com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        manager.services().listWithResponse("resRg", "myCluster", "myApp", Context.NONE);
+    public static void
+        getAListOfServiceResources(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
+        manager.services().list("resRg", "myCluster", "myApp", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1279,25 +1219,34 @@ public final class ServicesListSamples {
 ### Services_Update
 
 ```java
-import com.azure.core.util.Context;
+import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricDescription;
+import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricWeight;
 import com.azure.resourcemanager.servicefabric.models.ServiceResource;
+import com.azure.resourcemanager.servicefabric.models.StatelessServiceUpdateProperties;
+import java.util.Arrays;
 
-/** Samples for Services Update. */
+/**
+ * Samples for Services Update.
+ */
 public final class ServicesUpdateSamples {
     /*
-     * operationId: Services_Update
-     * api-version: 2021-06-01
-     * x-ms-examples: Patch a service
+     * x-ms-original-file:
+     * specification/servicefabric/resource-manager/Microsoft.ServiceFabric/stable/2021-06-01/examples/
+     * ServicePatchOperation_example.json
      */
     /**
      * Sample code: Patch a service.
-     *
+     * 
      * @param manager Entry point to ServiceFabricManager.
      */
     public static void patchAService(com.azure.resourcemanager.servicefabric.ServiceFabricManager manager) {
-        ServiceResource resource =
-            manager.services().getWithResponse("resRg", "myCluster", "myApp", "myService", Context.NONE).getValue();
-        resource.update().apply();
+        ServiceResource resource = manager.services()
+            .getWithResponse("resRg", "myCluster", "myApp", "myService", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new StatelessServiceUpdateProperties().withServiceLoadMetrics(Arrays.asList(
+                new ServiceLoadMetricDescription().withName("metric1").withWeight(ServiceLoadMetricWeight.LOW))))
+            .apply();
     }
 }
 ```

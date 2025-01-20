@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.util.CoreUtils;
 
 import java.util.Collections;
@@ -15,11 +16,40 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
- * A collection of headers on an HTTP request or response.
+ * <p>Represents a collection of headers on an HTTP request or response.</p>
+ *
+ * <p>This class encapsulates the headers of an HTTP request or response. It provides methods to add, set, get, and
+ * remove headers. It also provides methods to convert the headers to a Map, and to get a Stream representation of the
+ * headers.</p>
+ *
+ * <p>Each header is represented by an {@link HttpHeader} instance, which encapsulates the name and value(s) of a header.
+ * If multiple values are associated with the same header name, they are stored in a single HttpHeader instance
+ * with values separated by commas.</p>
+ *
+ * <p>Note: Header names are case-insensitive.</p>
  */
 public class HttpHeaders implements Iterable<HttpHeader> {
     // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
     private final Map<String, HttpHeader> headers;
+
+    static {
+        HttpHeadersAccessHelper.setAccessor(new HttpHeadersAccessHelper.HttpHeadersAccessor() {
+            @Override
+            public Map<String, HttpHeader> getRawHeaderMap(HttpHeaders headers) {
+                return headers.headers;
+            }
+
+            @Override
+            public void addInternal(HttpHeaders headers, String formattedName, String name, String value) {
+                headers.addInternal(formattedName, name, value);
+            }
+
+            @Override
+            public void setInternal(HttpHeaders headers, String formattedName, String name, List<String> values) {
+                headers.setInternal(formattedName, name, values);
+            }
+        });
+    }
 
     /**
      * Create an empty HttpHeaders instance.
@@ -46,16 +76,14 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     public HttpHeaders(Iterable<HttpHeader> headers) {
         this.headers = new HashMap<>();
         for (final HttpHeader header : headers) {
-            this.set(header.getName(), header.getValue());
+            this.set(header.getName(), header.getValuesList());
         }
     }
 
     HttpHeaders(HttpHeaders headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
-        // TODO (alzimmer): This, and the API above, should be copying using the value list as this will String
-        //  join multiple values. Or, better yet provide better copy methods on HttpHeader and Header.
-        headers.headers.forEach((key, value) ->
-            this.headers.put(key, new HttpHeader(value.getName(), value.getValue())));
+        headers.headers
+            .forEach((key, value) -> this.headers.put(key, new HttpHeader(value.getName(), value.getValuesList())));
     }
 
     /**
@@ -83,7 +111,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param name The name of the header.
      * @param value The value of the header.
      * @return The updated HttpHeaders object.
+     * @deprecated Use {@link #add(HttpHeaderName, String)} as it provides better performance.
      */
+    @Deprecated
     public HttpHeaders add(String name, String value) {
         return addInternal(formatKey(name), name, value);
     }
@@ -125,7 +155,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param name the name
      * @param value the value
      * @return The updated HttpHeaders object
-     * @deprecated Use {@link #set(String, String)} instead.
+     * @deprecated Use {@link #set(HttpHeaderName, String)} instead.
      */
     @Deprecated
     public HttpHeaders put(String name, String value) {
@@ -140,7 +170,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * headers.
      * @param value the value
      * @return The updated HttpHeaders object
+     * @deprecated Use {@link #set(HttpHeaderName, String)} as it provides better performance.
      */
+    @Deprecated
     public HttpHeaders set(String name, String value) {
         return setInternal(formatKey(name), name, value);
     }
@@ -179,7 +211,9 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @param name the name
      * @param values the values that will be comma-separated as appropriate
      * @return The updated HttpHeaders object
+     * @deprecated Use {@link #set(HttpHeaderName, List)} as it provides better performance.
      */
+    @Deprecated
     public HttpHeaders set(String name, List<String> values) {
         return setInternal(formatKey(name), name, values);
     }
@@ -216,9 +250,13 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * words, this will create a header for each key in the provided map, replacing or removing an existing one,
      * depending on the value. If the given values list is null, the header with the given name will be removed. If the
      * given name is already a header, it will be removed and replaced with the headers provided.
+     * <p>
+     * Use {@link #setAllHttpHeaders(HttpHeaders)} if you already have an instance of {@link HttpHeaders} as it provides better
+     * performance.
      *
      * @param headers a map containing keys representing header names, and keys representing the associated values.
      * @return The updated HttpHeaders object
+     * @throws NullPointerException If {@code headers} is null.
      */
     public HttpHeaders setAll(Map<String, List<String>> headers) {
         headers.forEach(this::set);
@@ -226,18 +264,40 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Gets the {@link HttpHeader header} for the provided header name. {@code Null} is returned if the header isn't
+     * Sets all headers from the passed {@code headers} into this {@link HttpHeaders}.
+     * <p>
+     * This is the equivalent to calling {@code headers.forEach(header -> set(header.getName(), header.getValuesList())}
+     * and therefore the behavior is as specified in {@link #set(String, List)}.
+     * <p>
+     * If {@code headers} is null this is a no-op.
+     *
+     * @param headers The headers to add into this {@link HttpHeaders}.
+     * @return The updated HttpHeaders object.
+     */
+    public HttpHeaders setAllHttpHeaders(HttpHeaders headers) {
+        if (headers != null) {
+            headers.headers
+                .forEach((headerName, header) -> setInternal(headerName, header.getName(), header.getValuesList()));
+        }
+
+        return this;
+    }
+
+    /**
+     * Gets the {@link HttpHeader header} for the provided header name. null is returned if the header isn't
      * found.
      *
      * @param name the name of the header to find.
      * @return the header if found, null otherwise.
+     * @deprecated Use {@link #get(HttpHeaderName)} as it provides better performance.
      */
+    @Deprecated
     public HttpHeader get(String name) {
         return getInternal(formatKey(name));
     }
 
     /**
-     * Gets the {@link HttpHeader header} for the provided header name. {@code Null} is returned if the header isn't
+     * Gets the {@link HttpHeader header} for the provided header name. null is returned if the header isn't
      * found.
      *
      * @param name the name of the header to find.
@@ -252,18 +312,20 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Removes the {@link HttpHeader header} with the provided header name. {@code Null} is returned if the header isn't
+     * Removes the {@link HttpHeader header} with the provided header name. null is returned if the header isn't
      * found.
      *
      * @param name the name of the header to remove.
      * @return the header if removed, null otherwise.
+     * @deprecated Use {@link #remove(HttpHeaderName)} as it provides better performance.
      */
+    @Deprecated
     public HttpHeader remove(String name) {
         return removeInternal(formatKey(name));
     }
 
     /**
-     * Removes the {@link HttpHeader header} with the provided header name. {@code Null} is returned if the header isn't
+     * Removes the {@link HttpHeader header} with the provided header name. null is returned if the header isn't
      * found.
      *
      * @param name the name of the header to remove.
@@ -278,17 +340,19 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Get the value for the provided header name. {@code Null} is returned if the header name isn't found.
+     * Get the value for the provided header name. null is returned if the header name isn't found.
      *
      * @param name the name of the header whose value is being retrieved.
      * @return the value of the header, or null if the header isn't found
+     * @deprecated Use {@link #getValue(HttpHeaderName)} as it provides better performance.
      */
+    @Deprecated
     public String getValue(String name) {
         return getValueInternal(formatKey(name));
     }
 
     /**
-     * Get the value for the provided header name. {@code Null} is returned if the header name isn't found.
+     * Get the value for the provided header name. null is returned if the header name isn't found.
      *
      * @param name the name of the header whose value is being retrieved.
      * @return the value of the header, or null if the header isn't found
@@ -303,19 +367,21 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Get the values for the provided header name. {@code Null} is returned if the header name isn't found.
+     * Get the values for the provided header name. null is returned if the header name isn't found.
      *
      * <p>This returns {@link #getValue(String) getValue} split by {@code comma}.</p>
      *
      * @param name the name of the header whose value is being retrieved.
      * @return the values of the header, or null if the header isn't found
+     * @deprecated Use {@link #getValue(HttpHeaderName)} as it provides better performance.
      */
+    @Deprecated
     public String[] getValues(String name) {
         return getValuesInternal(formatKey(name));
     }
 
     /**
-     * Get the values for the provided header name. {@code Null} is returned if the header name isn't found.
+     * Get the values for the provided header name. null is returned if the header name isn't found.
      *
      * <p>This returns {@link #getValue(String) getValue} split by {@code comma}.</p>
      *

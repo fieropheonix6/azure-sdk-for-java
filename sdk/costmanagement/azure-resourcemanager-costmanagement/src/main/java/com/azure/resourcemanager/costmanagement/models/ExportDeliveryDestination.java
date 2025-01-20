@@ -6,41 +6,69 @@ package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * The destination information for the delivery of the export. To allow access to a storage account, you must register
- * the account's subscription with the Microsoft.CostManagementExports resource provider. This is required once per
- * subscription. When creating an export in the Azure portal, it is done automatically, however API users need to
- * register the subscription. For more information see
- * https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-supported-services .
+ * This represents the blob storage account location where exports of costs will be delivered. There are two ways to
+ * configure the destination. The approach recommended for most customers is to specify the resourceId of the storage
+ * account. This requires a one-time registration of the account's subscription with the Microsoft.CostManagementExports
+ * resource provider in order to give Cost Management services access to the storage. When creating an export in the
+ * Azure portal this registration is performed automatically but API users may need to register the subscription
+ * explicitly (for more information see
+ * https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-supported-services ). Another way to
+ * configure the destination is available ONLY to Partners with a Microsoft Partner Agreement plan who are global admins
+ * of their billing account. These Partners, instead of specifying the resourceId of a storage account, can specify the
+ * storage account name along with a SAS token for the account. This allows exports of costs to a storage account in any
+ * tenant. The SAS token should be created for the blob service with Service/Container/Object resource types and with
+ * Read/Write/Delete/List/Add/Create permissions (for more information see
+ * https://docs.microsoft.com/en-us/azure/cost-management-billing/costs/export-cost-data-storage-account-sas-key ).
  */
 @Fluent
-public final class ExportDeliveryDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportDeliveryDestination.class);
-
+public final class ExportDeliveryDestination implements JsonSerializable<ExportDeliveryDestination> {
     /*
-     * The resource id of the storage account where exports will be delivered.
+     * The resource id of the storage account where exports will be delivered. This is not required if a sasToken and
+     * storageAccount are specified.
      */
-    @JsonProperty(value = "resourceId", required = true)
     private String resourceId;
 
     /*
-     * The name of the container where exports will be uploaded.
+     * The name of the container where exports will be uploaded. If the container does not exist it will be created.
      */
-    @JsonProperty(value = "container", required = true)
     private String container;
 
     /*
      * The name of the directory where exports will be uploaded.
      */
-    @JsonProperty(value = "rootFolderPath")
     private String rootFolderPath;
 
+    /*
+     * A SAS token for the storage account. For a restricted set of Azure customers this together with storageAccount
+     * can be specified instead of resourceId. Note: the value returned by the API for this property will always be
+     * obfuscated. Returning this same obfuscated value will not result in the SAS token being updated. To update this
+     * value a new SAS token must be specified.
+     */
+    private String sasToken;
+
+    /*
+     * The storage account where exports will be uploaded. For a restricted set of Azure customers this together with
+     * sasToken can be specified instead of resourceId.
+     */
+    private String storageAccount;
+
     /**
-     * Get the resourceId property: The resource id of the storage account where exports will be delivered.
-     *
+     * Creates an instance of ExportDeliveryDestination class.
+     */
+    public ExportDeliveryDestination() {
+    }
+
+    /**
+     * Get the resourceId property: The resource id of the storage account where exports will be delivered. This is not
+     * required if a sasToken and storageAccount are specified.
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -48,8 +76,9 @@ public final class ExportDeliveryDestination {
     }
 
     /**
-     * Set the resourceId property: The resource id of the storage account where exports will be delivered.
-     *
+     * Set the resourceId property: The resource id of the storage account where exports will be delivered. This is not
+     * required if a sasToken and storageAccount are specified.
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ExportDeliveryDestination object itself.
      */
@@ -59,8 +88,9 @@ public final class ExportDeliveryDestination {
     }
 
     /**
-     * Get the container property: The name of the container where exports will be uploaded.
-     *
+     * Get the container property: The name of the container where exports will be uploaded. If the container does not
+     * exist it will be created.
+     * 
      * @return the container value.
      */
     public String container() {
@@ -68,8 +98,9 @@ public final class ExportDeliveryDestination {
     }
 
     /**
-     * Set the container property: The name of the container where exports will be uploaded.
-     *
+     * Set the container property: The name of the container where exports will be uploaded. If the container does not
+     * exist it will be created.
+     * 
      * @param container the container value to set.
      * @return the ExportDeliveryDestination object itself.
      */
@@ -80,7 +111,7 @@ public final class ExportDeliveryDestination {
 
     /**
      * Get the rootFolderPath property: The name of the directory where exports will be uploaded.
-     *
+     * 
      * @return the rootFolderPath value.
      */
     public String rootFolderPath() {
@@ -89,7 +120,7 @@ public final class ExportDeliveryDestination {
 
     /**
      * Set the rootFolderPath property: The name of the directory where exports will be uploaded.
-     *
+     * 
      * @param rootFolderPath the rootFolderPath value to set.
      * @return the ExportDeliveryDestination object itself.
      */
@@ -99,22 +130,114 @@ public final class ExportDeliveryDestination {
     }
 
     /**
+     * Get the sasToken property: A SAS token for the storage account. For a restricted set of Azure customers this
+     * together with storageAccount can be specified instead of resourceId. Note: the value returned by the API for this
+     * property will always be obfuscated. Returning this same obfuscated value will not result in the SAS token being
+     * updated. To update this value a new SAS token must be specified.
+     * 
+     * @return the sasToken value.
+     */
+    public String sasToken() {
+        return this.sasToken;
+    }
+
+    /**
+     * Set the sasToken property: A SAS token for the storage account. For a restricted set of Azure customers this
+     * together with storageAccount can be specified instead of resourceId. Note: the value returned by the API for this
+     * property will always be obfuscated. Returning this same obfuscated value will not result in the SAS token being
+     * updated. To update this value a new SAS token must be specified.
+     * 
+     * @param sasToken the sasToken value to set.
+     * @return the ExportDeliveryDestination object itself.
+     */
+    public ExportDeliveryDestination withSasToken(String sasToken) {
+        this.sasToken = sasToken;
+        return this;
+    }
+
+    /**
+     * Get the storageAccount property: The storage account where exports will be uploaded. For a restricted set of
+     * Azure customers this together with sasToken can be specified instead of resourceId.
+     * 
+     * @return the storageAccount value.
+     */
+    public String storageAccount() {
+        return this.storageAccount;
+    }
+
+    /**
+     * Set the storageAccount property: The storage account where exports will be uploaded. For a restricted set of
+     * Azure customers this together with sasToken can be specified instead of resourceId.
+     * 
+     * @param storageAccount the storageAccount value to set.
+     * @return the ExportDeliveryDestination object itself.
+     */
+    public ExportDeliveryDestination withStorageAccount(String storageAccount) {
+        this.storageAccount = storageAccount;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (resourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model ExportDeliveryDestination"));
-        }
         if (container() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property container in model ExportDeliveryDestination"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property container in model ExportDeliveryDestination"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExportDeliveryDestination.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("container", this.container);
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("rootFolderPath", this.rootFolderPath);
+        jsonWriter.writeStringField("sasToken", this.sasToken);
+        jsonWriter.writeStringField("storageAccount", this.storageAccount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportDeliveryDestination from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportDeliveryDestination if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExportDeliveryDestination.
+     */
+    public static ExportDeliveryDestination fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportDeliveryDestination deserializedExportDeliveryDestination = new ExportDeliveryDestination();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("container".equals(fieldName)) {
+                    deserializedExportDeliveryDestination.container = reader.getString();
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedExportDeliveryDestination.resourceId = reader.getString();
+                } else if ("rootFolderPath".equals(fieldName)) {
+                    deserializedExportDeliveryDestination.rootFolderPath = reader.getString();
+                } else if ("sasToken".equals(fieldName)) {
+                    deserializedExportDeliveryDestination.sasToken = reader.getString();
+                } else if ("storageAccount".equals(fieldName)) {
+                    deserializedExportDeliveryDestination.storageAccount = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportDeliveryDestination;
+        });
     }
 }

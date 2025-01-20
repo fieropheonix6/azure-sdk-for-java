@@ -4,30 +4,33 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistration;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PartnerRegistrations Update. */
+/**
+ * Samples for PartnerRegistrations Update.
+ */
 public final class PartnerRegistrationsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerRegistrations_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * PartnerRegistrations_Update.json
      */
     /**
      * Sample code: PartnerRegistrations_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerRegistrationsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        PartnerRegistration resource =
-            manager
-                .partnerRegistrations()
-                .getByResourceGroupWithResponse("examplerg", "examplePartnerRegistrationName1", Context.NONE)
-                .getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+        PartnerRegistration resource = manager.partnerRegistrations()
+            .getByResourceGroupWithResponse("examplerg", "examplePartnerRegistrationName1",
+                com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withTags(mapOf("NewKey", "fakeTokenPlaceholder")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

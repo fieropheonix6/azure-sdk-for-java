@@ -8,37 +8,32 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ProtectionContainerTests {
-    @Test
-    public void testDeserialize() {
-        ProtectionContainer model =
-            BinaryData
-                .fromString(
-                    "{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"axhexiilivp\",\"backupManagementType\":\"DPM\",\"registrationStatus\":\"r\",\"healthStatus\":\"d\",\"protectableObjectType\":\"axoruzfgsquy\"}")
-                .toObject(ProtectionContainer.class);
-        Assertions.assertEquals("axhexiilivp", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("r", model.registrationStatus());
-        Assertions.assertEquals("d", model.healthStatus());
-        Assertions.assertEquals("axoruzfgsquy", model.protectableObjectType());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ProtectionContainer model = BinaryData.fromString(
+            "{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"r\",\"backupManagementType\":\"AzureBackupServer\",\"registrationStatus\":\"mjsjqb\",\"healthStatus\":\"hyxxrwlycoduhpk\",\"protectableObjectType\":\"gymare\"}")
+            .toObject(ProtectionContainer.class);
+        Assertions.assertEquals("r", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("mjsjqb", model.registrationStatus());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.healthStatus());
+        Assertions.assertEquals("gymare", model.protectableObjectType());
     }
 
-    @Test
-    public void testSerialize() {
-        ProtectionContainer model =
-            new ProtectionContainer()
-                .withFriendlyName("axhexiilivp")
-                .withBackupManagementType(BackupManagementType.DPM)
-                .withRegistrationStatus("r")
-                .withHealthStatus("d")
-                .withProtectableObjectType("axoruzfgsquy");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ProtectionContainer model = new ProtectionContainer().withFriendlyName("r")
+            .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
+            .withRegistrationStatus("mjsjqb")
+            .withHealthStatus("hyxxrwlycoduhpk")
+            .withProtectableObjectType("gymare");
         model = BinaryData.fromObject(model).toObject(ProtectionContainer.class);
-        Assertions.assertEquals("axhexiilivp", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.DPM, model.backupManagementType());
-        Assertions.assertEquals("r", model.registrationStatus());
-        Assertions.assertEquals("d", model.healthStatus());
-        Assertions.assertEquals("axoruzfgsquy", model.protectableObjectType());
+        Assertions.assertEquals("r", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
+        Assertions.assertEquals("mjsjqb", model.registrationStatus());
+        Assertions.assertEquals("hyxxrwlycoduhpk", model.healthStatus());
+        Assertions.assertEquals("gymare", model.protectableObjectType());
     }
 }

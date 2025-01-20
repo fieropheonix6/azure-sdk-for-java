@@ -6,6 +6,9 @@ package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageProperties;
 import com.azure.resourcemanager.batch.models.BatchAccountIdentity;
@@ -16,32 +19,49 @@ import com.azure.resourcemanager.batch.models.PoolAllocationMode;
 import com.azure.resourcemanager.batch.models.ProvisioningState;
 import com.azure.resourcemanager.batch.models.PublicNetworkAccessType;
 import com.azure.resourcemanager.batch.models.VirtualMachineFamilyCoreQuota;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Contains information about an Azure Batch account. */
+/**
+ * Contains information about an Azure Batch account.
+ */
 @Fluent
 public final class BatchAccountInner extends Resource {
     /*
      * The properties associated with the account.
      */
-    @JsonProperty(value = "properties")
     private BatchAccountProperties innerProperties;
 
     /*
      * The identity of the Batch account.
      */
-    @JsonProperty(value = "identity")
     private BatchAccountIdentity identity;
 
-    /** Creates an instance of BatchAccountInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of BatchAccountInner class.
+     */
     public BatchAccountInner() {
     }
 
     /**
      * Get the innerProperties property: The properties associated with the account.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BatchAccountProperties innerProperties() {
@@ -50,7 +70,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the identity property: The identity of the Batch account.
-     *
+     * 
      * @return the identity value.
      */
     public BatchAccountIdentity identity() {
@@ -59,7 +79,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Set the identity property: The identity of the Batch account.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the BatchAccountInner object itself.
      */
@@ -68,14 +88,48 @@ public final class BatchAccountInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BatchAccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BatchAccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -84,7 +138,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the accountEndpoint property: The account endpoint used to interact with the Batch service.
-     *
+     * 
      * @return the accountEndpoint value.
      */
     public String accountEndpoint() {
@@ -94,7 +148,7 @@ public final class BatchAccountInner extends Resource {
     /**
      * Get the nodeManagementEndpoint property: The endpoint used by compute node to connect to the Batch node
      * management service.
-     *
+     * 
      * @return the nodeManagementEndpoint value.
      */
     public String nodeManagementEndpoint() {
@@ -103,7 +157,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioned state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -112,7 +166,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the poolAllocationMode property: The allocation mode for creating pools in the Batch account.
-     *
+     * 
      * @return the poolAllocationMode value.
      */
     public PoolAllocationMode poolAllocationMode() {
@@ -121,7 +175,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the keyVaultReference property: Identifies the Azure key vault associated with a Batch account.
-     *
+     * 
      * @return the keyVaultReference value.
      */
     public KeyVaultReference keyVaultReference() {
@@ -130,7 +184,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: If not specified, the default value is 'enabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessType publicNetworkAccess() {
@@ -139,7 +193,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: If not specified, the default value is 'enabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the BatchAccountInner object itself.
      */
@@ -153,7 +207,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
-     *
+     * 
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -162,7 +216,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Set the networkProfile property: The network profile only takes effect when publicNetworkAccess is enabled.
-     *
+     * 
      * @param networkProfile the networkProfile value to set.
      * @return the BatchAccountInner object itself.
      */
@@ -177,7 +231,7 @@ public final class BatchAccountInner extends Resource {
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the Batch
      * account.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -187,7 +241,7 @@ public final class BatchAccountInner extends Resource {
     /**
      * Get the autoStorage property: Contains information about the auto-storage account associated with a Batch
      * account.
-     *
+     * 
      * @return the autoStorage value.
      */
     public AutoStorageProperties autoStorage() {
@@ -198,7 +252,7 @@ public final class BatchAccountInner extends Resource {
      * Get the encryption property: Configures how customer data is encrypted inside the Batch account. By default,
      * accounts are encrypted using a Microsoft managed key. For additional control, a customer-managed key can be used
      * instead.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
@@ -206,11 +260,9 @@ public final class BatchAccountInner extends Resource {
     }
 
     /**
-     * Get the dedicatedCoreQuota property: The dedicated core quota for the Batch account.
-     *
-     * <p>For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this
-     * value is not returned.
-     *
+     * Get the dedicatedCoreQuota property: For accounts with PoolAllocationMode set to UserSubscription, quota is
+     * managed on the subscription so this value is not returned.
+     * 
      * @return the dedicatedCoreQuota value.
      */
     public Integer dedicatedCoreQuota() {
@@ -218,11 +270,9 @@ public final class BatchAccountInner extends Resource {
     }
 
     /**
-     * Get the lowPriorityCoreQuota property: The Spot/low-priority core quota for the Batch account.
-     *
-     * <p>For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the subscription so this
-     * value is not returned.
-     *
+     * Get the lowPriorityCoreQuota property: For accounts with PoolAllocationMode set to UserSubscription, quota is
+     * managed on the subscription so this value is not returned.
+     * 
      * @return the lowPriorityCoreQuota value.
      */
     public Integer lowPriorityCoreQuota() {
@@ -233,7 +283,7 @@ public final class BatchAccountInner extends Resource {
      * Get the dedicatedCoreQuotaPerVMFamily property: A list of the dedicated core quota per Virtual Machine family for
      * the Batch account. For accounts with PoolAllocationMode set to UserSubscription, quota is managed on the
      * subscription so this value is not returned.
-     *
+     * 
      * @return the dedicatedCoreQuotaPerVMFamily value.
      */
     public List<VirtualMachineFamilyCoreQuota> dedicatedCoreQuotaPerVMFamily() {
@@ -241,13 +291,11 @@ public final class BatchAccountInner extends Resource {
     }
 
     /**
-     * Get the dedicatedCoreQuotaPerVMFamilyEnforced property: A value indicating whether core quotas per Virtual
-     * Machine family are enforced for this account
-     *
-     * <p>If this flag is true, dedicated core quota is enforced via both the dedicatedCoreQuotaPerVMFamily and
-     * dedicatedCoreQuota properties on the account. If this flag is false, dedicated core quota is enforced only via
-     * the dedicatedCoreQuota property on the account and does not consider Virtual Machine family.
-     *
+     * Get the dedicatedCoreQuotaPerVMFamilyEnforced property: If this flag is true, dedicated core quota is enforced
+     * via both the dedicatedCoreQuotaPerVMFamily and dedicatedCoreQuota properties on the account. If this flag is
+     * false, dedicated core quota is enforced only via the dedicatedCoreQuota property on the account and does not
+     * consider Virtual Machine family.
+     * 
      * @return the dedicatedCoreQuotaPerVMFamilyEnforced value.
      */
     public Boolean dedicatedCoreQuotaPerVMFamilyEnforced() {
@@ -256,7 +304,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the poolQuota property: The pool quota for the Batch account.
-     *
+     * 
      * @return the poolQuota value.
      */
     public Integer poolQuota() {
@@ -265,7 +313,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Get the activeJobAndJobScheduleQuota property: The active job and job schedule quota for the Batch account.
-     *
+     * 
      * @return the activeJobAndJobScheduleQuota value.
      */
     public Integer activeJobAndJobScheduleQuota() {
@@ -275,7 +323,7 @@ public final class BatchAccountInner extends Resource {
     /**
      * Get the allowedAuthenticationModes property: List of allowed authentication modes for the Batch account that can
      * be used to authenticate with the data plane. This does not affect authentication with the control plane.
-     *
+     * 
      * @return the allowedAuthenticationModes value.
      */
     public List<AuthenticationMode> allowedAuthenticationModes() {
@@ -284,7 +332,7 @@ public final class BatchAccountInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -294,5 +342,58 @@ public final class BatchAccountInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BatchAccountInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BatchAccountInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BatchAccountInner.
+     */
+    public static BatchAccountInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BatchAccountInner deserializedBatchAccountInner = new BatchAccountInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBatchAccountInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBatchAccountInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBatchAccountInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedBatchAccountInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedBatchAccountInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBatchAccountInner.innerProperties = BatchAccountProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedBatchAccountInner.identity = BatchAccountIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBatchAccountInner;
+        });
     }
 }

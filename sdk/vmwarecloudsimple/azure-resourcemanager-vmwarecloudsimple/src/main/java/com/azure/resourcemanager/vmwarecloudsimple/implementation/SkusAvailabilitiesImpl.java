@@ -11,17 +11,15 @@ import com.azure.resourcemanager.vmwarecloudsimple.fluent.SkusAvailabilitiesClie
 import com.azure.resourcemanager.vmwarecloudsimple.fluent.models.SkuAvailabilityInner;
 import com.azure.resourcemanager.vmwarecloudsimple.models.SkuAvailability;
 import com.azure.resourcemanager.vmwarecloudsimple.models.SkusAvailabilities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SkusAvailabilitiesImpl implements SkusAvailabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkusAvailabilitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SkusAvailabilitiesImpl.class);
 
     private final SkusAvailabilitiesClient innerClient;
 
     private final com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager;
 
-    public SkusAvailabilitiesImpl(
-        SkusAvailabilitiesClient innerClient,
+    public SkusAvailabilitiesImpl(SkusAvailabilitiesClient innerClient,
         com.azure.resourcemanager.vmwarecloudsimple.VMwareCloudSimpleManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -29,12 +27,12 @@ public final class SkusAvailabilitiesImpl implements SkusAvailabilities {
 
     public PagedIterable<SkuAvailability> list(String regionId) {
         PagedIterable<SkuAvailabilityInner> inner = this.serviceClient().list(regionId);
-        return Utils.mapPage(inner, inner1 -> new SkuAvailabilityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuAvailabilityImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SkuAvailability> list(String regionId, String skuId, Context context) {
         PagedIterable<SkuAvailabilityInner> inner = this.serviceClient().list(regionId, skuId, context);
-        return Utils.mapPage(inner, inner1 -> new SkuAvailabilityImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SkuAvailabilityImpl(inner1, this.manager()));
     }
 
     private SkusAvailabilitiesClient serviceClient() {

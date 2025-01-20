@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.VirtualHubInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,26 +18,26 @@ import java.util.List;
  * of results.
  */
 @Fluent
-public final class ListVirtualHubsResult {
+public final class ListVirtualHubsResult implements JsonSerializable<ListVirtualHubsResult> {
     /*
      * List of VirtualHubs.
      */
-    @JsonProperty(value = "value")
     private List<VirtualHubInner> value;
 
     /*
      * URL to get the next set of operation list results if there are any.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListVirtualHubsResult class. */
+    /**
+     * Creates an instance of ListVirtualHubsResult class.
+     */
     public ListVirtualHubsResult() {
     }
 
     /**
      * Get the value property: List of VirtualHubs.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualHubInner> value() {
@@ -42,7 +46,7 @@ public final class ListVirtualHubsResult {
 
     /**
      * Set the value property: List of VirtualHubs.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVirtualHubsResult object itself.
      */
@@ -53,7 +57,7 @@ public final class ListVirtualHubsResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class ListVirtualHubsResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVirtualHubsResult object itself.
      */
@@ -73,12 +77,52 @@ public final class ListVirtualHubsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListVirtualHubsResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListVirtualHubsResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ListVirtualHubsResult.
+     */
+    public static ListVirtualHubsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListVirtualHubsResult deserializedListVirtualHubsResult = new ListVirtualHubsResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<VirtualHubInner> value = reader.readArray(reader1 -> VirtualHubInner.fromJson(reader1));
+                    deserializedListVirtualHubsResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListVirtualHubsResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListVirtualHubsResult;
+        });
     }
 }

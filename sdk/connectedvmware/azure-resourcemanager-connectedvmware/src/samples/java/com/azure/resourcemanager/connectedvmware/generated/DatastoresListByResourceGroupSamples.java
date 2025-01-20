@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Datastores ListByResourceGroup. */
+/**
+ * Samples for Datastores ListByResourceGroup.
+ */
 public final class DatastoresListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListDatastoresByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListDatastoresByResourceGroup.json
      */
     /**
      * Sample code: ListDatastoresByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listDatastoresByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.datastores().listByResourceGroup("testrg", Context.NONE);
+    public static void
+        listDatastoresByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        manager.datastores().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

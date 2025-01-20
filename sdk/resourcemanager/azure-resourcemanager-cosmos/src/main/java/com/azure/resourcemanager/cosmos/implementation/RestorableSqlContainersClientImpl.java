@@ -30,23 +30,28 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableSqlContainerGetR
 import com.azure.resourcemanager.cosmos.models.RestorableSqlContainersListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RestorableSqlContainersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableSqlContainersClient.
+ */
 public final class RestorableSqlContainersClientImpl implements RestorableSqlContainersClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RestorableSqlContainersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of RestorableSqlContainersClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RestorableSqlContainersClientImpl(CosmosDBManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(RestorableSqlContainersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RestorableSqlContainersService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -56,56 +61,45 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      */
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
-    private interface RestorableSqlContainersService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}"
-                + "/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers")
-        @ExpectedResponses({200})
+    public interface RestorableSqlContainersService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableSqlContainers")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorableSqlContainersListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("instanceId") String instanceId,
+        Mono<Response<RestorableSqlContainersListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("instanceId") String instanceId,
             @QueryParam("restorableSqlDatabaseRid") String restorableSqlDatabaseRid,
-            @QueryParam("startTime") String startTime,
-            @QueryParam("endTime") String endTime,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("startTime") String startTime, @QueryParam("endTime") String endTime,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableSqlContainerGetResultInner>> listSinglePageAsync(
-        String location, String instanceId, String restorableSqlDatabaseRid, String startTime, String endTime) {
+    private Mono<PagedResponse<RestorableSqlContainerGetResultInner>> listSinglePageAsync(String location,
+        String instanceId, String restorableSqlDatabaseRid, String startTime, String endTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -115,24 +109,11 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            instanceId,
-                            restorableSqlDatabaseRid,
-                            startTime,
-                            endTime,
-                            accept,
-                            context))
-            .<PagedResponse<RestorableSqlContainerGetResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, instanceId, restorableSqlDatabaseRid, startTime, endTime,
+                accept, context))
+            .<PagedResponse<RestorableSqlContainerGetResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -140,38 +121,29 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableSqlContainerGetResultInner>> listSinglePageAsync(
-        String location,
-        String instanceId,
-        String restorableSqlDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    private Mono<PagedResponse<RestorableSqlContainerGetResultInner>> listSinglePageAsync(String location,
+        String instanceId, String restorableSqlDatabaseRid, String startTime, String endTime, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -182,42 +154,31 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                instanceId,
-                restorableSqlDatabaseRid,
-                startTime,
-                endTime,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location,
+                instanceId, restorableSqlDatabaseRid, startTime, endTime, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RestorableSqlContainerGetResultInner> listAsync(
-        String location, String instanceId, String restorableSqlDatabaseRid, String startTime, String endTime) {
+    public PagedFlux<RestorableSqlContainerGetResultInner> listAsync(String location, String instanceId,
+        String restorableSqlDatabaseRid, String startTime, String endTime) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, instanceId, restorableSqlDatabaseRid, startTime, endTime));
     }
@@ -226,14 +187,14 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableSqlContainerGetResultInner> listAsync(String location, String instanceId) {
@@ -248,27 +209,22 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RestorableSqlContainerGetResultInner> listAsync(
-        String location,
-        String instanceId,
-        String restorableSqlDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    private PagedFlux<RestorableSqlContainerGetResultInner> listAsync(String location, String instanceId,
+        String restorableSqlDatabaseRid, String startTime, String endTime, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, instanceId, restorableSqlDatabaseRid, startTime, endTime, context));
     }
@@ -277,14 +233,14 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableSqlContainerGetResultInner> list(String location, String instanceId) {
@@ -298,27 +254,22 @@ public final class RestorableSqlContainersClientImpl implements RestorableSqlCon
      * Show the event feed of all mutations done on all the Azure Cosmos DB SQL containers under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableSqlDatabaseRid The resource ID of the SQL database.
-     * @param startTime The snapshot create timestamp after which snapshots need to be listed.
-     * @param endTime The snapshot create timestamp before which snapshots need to be listed.
+     * @param startTime Restorable Sql containers event feed start time.
+     * @param endTime Restorable Sql containers event feed end time.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the SQL container events and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RestorableSqlContainerGetResultInner> list(
-        String location,
-        String instanceId,
-        String restorableSqlDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    public PagedIterable<RestorableSqlContainerGetResultInner> list(String location, String instanceId,
+        String restorableSqlDatabaseRid, String startTime, String endTime, Context context) {
         return new PagedIterable<>(
             listAsync(location, instanceId, restorableSqlDatabaseRid, startTime, endTime, context));
     }

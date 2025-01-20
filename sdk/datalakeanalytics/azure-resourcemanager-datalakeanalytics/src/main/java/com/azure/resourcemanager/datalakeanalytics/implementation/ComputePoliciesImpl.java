@@ -13,17 +13,15 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.ComputePoliciesClient;
 import com.azure.resourcemanager.datalakeanalytics.fluent.models.ComputePolicyInner;
 import com.azure.resourcemanager.datalakeanalytics.models.ComputePolicies;
 import com.azure.resourcemanager.datalakeanalytics.models.ComputePolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ComputePoliciesImpl implements ComputePolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputePoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ComputePoliciesImpl.class);
 
     private final ComputePoliciesClient innerClient;
 
     private final com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager;
 
-    public ComputePoliciesImpl(
-        ComputePoliciesClient innerClient,
+    public ComputePoliciesImpl(ComputePoliciesClient innerClient,
         com.azure.resourcemanager.datalakeanalytics.DataLakeAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,13 +29,25 @@ public final class ComputePoliciesImpl implements ComputePolicies {
 
     public PagedIterable<ComputePolicy> listByAccount(String resourceGroupName, String accountName) {
         PagedIterable<ComputePolicyInner> inner = this.serviceClient().listByAccount(resourceGroupName, accountName);
-        return Utils.mapPage(inner, inner1 -> new ComputePolicyImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ComputePolicyImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ComputePolicy> listByAccount(String resourceGroupName, String accountName, Context context) {
-        PagedIterable<ComputePolicyInner> inner =
-            this.serviceClient().listByAccount(resourceGroupName, accountName, context);
-        return Utils.mapPage(inner, inner1 -> new ComputePolicyImpl(inner1, this.manager()));
+        PagedIterable<ComputePolicyInner> inner
+            = this.serviceClient().listByAccount(resourceGroupName, accountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ComputePolicyImpl(inner1, this.manager()));
+    }
+
+    public Response<ComputePolicy> getWithResponse(String resourceGroupName, String accountName,
+        String computePolicyName, Context context) {
+        Response<ComputePolicyInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, accountName, computePolicyName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ComputePolicyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ComputePolicy get(String resourceGroupName, String accountName, String computePolicyName) {
@@ -49,134 +59,87 @@ public final class ComputePoliciesImpl implements ComputePolicies {
         }
     }
 
-    public Response<ComputePolicy> getWithResponse(
-        String resourceGroupName, String accountName, String computePolicyName, Context context) {
-        Response<ComputePolicyInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, accountName, computePolicyName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ComputePolicyImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String computePolicyName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, computePolicyName, context);
     }
 
     public void delete(String resourceGroupName, String accountName, String computePolicyName) {
         this.serviceClient().delete(resourceGroupName, accountName, computePolicyName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String computePolicyName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, accountName, computePolicyName, context);
-    }
-
     public ComputePolicy getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        String computePolicyName = Utils.getValueFromIdByName(id, "computePolicies");
+        String computePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "computePolicies");
         if (computePolicyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE).getValue();
     }
 
     public Response<ComputePolicy> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        String computePolicyName = Utils.getValueFromIdByName(id, "computePolicies");
+        String computePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "computePolicies");
         if (computePolicyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, computePolicyName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        String computePolicyName = Utils.getValueFromIdByName(id, "computePolicies");
+        String computePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "computePolicies");
         if (computePolicyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, computePolicyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String accountName = Utils.getValueFromIdByName(id, "accounts");
+        String accountName = ResourceManagerUtils.getValueFromIdByName(id, "accounts");
         if (accountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'accounts'.", id)));
         }
-        String computePolicyName = Utils.getValueFromIdByName(id, "computePolicies");
+        String computePolicyName = ResourceManagerUtils.getValueFromIdByName(id, "computePolicies");
         if (computePolicyName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'computePolicies'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, accountName, computePolicyName, context);
     }

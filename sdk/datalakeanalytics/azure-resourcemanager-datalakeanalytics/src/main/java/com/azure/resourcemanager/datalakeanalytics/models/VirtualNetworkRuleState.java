@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.datalakeanalytics.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for VirtualNetworkRuleState. */
+/**
+ * The current state of the VirtualNetworkRule for this account.
+ */
 public enum VirtualNetworkRuleState {
-    /** Enum value Active. */
+    /**
+     * Enum value Active.
+     */
     ACTIVE("Active"),
 
-    /** Enum value NetworkSourceDeleted. */
+    /**
+     * Enum value NetworkSourceDeleted.
+     */
     NETWORK_SOURCE_DELETED("NetworkSourceDeleted"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed");
 
-    /** The actual serialized value for a VirtualNetworkRuleState instance. */
+    /**
+     * The actual serialized value for a VirtualNetworkRuleState instance.
+     */
     private final String value;
 
     VirtualNetworkRuleState(String value) {
@@ -27,12 +34,14 @@ public enum VirtualNetworkRuleState {
 
     /**
      * Parses a serialized value to a VirtualNetworkRuleState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed VirtualNetworkRuleState object, or null if unable to parse.
      */
-    @JsonCreator
     public static VirtualNetworkRuleState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         VirtualNetworkRuleState[] items = VirtualNetworkRuleState.values();
         for (VirtualNetworkRuleState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum VirtualNetworkRuleState {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

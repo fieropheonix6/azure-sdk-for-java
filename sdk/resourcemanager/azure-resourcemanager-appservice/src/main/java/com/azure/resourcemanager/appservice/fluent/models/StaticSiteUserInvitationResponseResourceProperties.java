@@ -5,27 +5,39 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** StaticSiteUserInvitationResponseResource resource specific properties. */
+/**
+ * StaticSiteUserInvitationResponseResource resource specific properties.
+ */
 @Immutable
-public final class StaticSiteUserInvitationResponseResourceProperties {
+public final class StaticSiteUserInvitationResponseResourceProperties
+    implements JsonSerializable<StaticSiteUserInvitationResponseResourceProperties> {
     /*
      * The expiration time of the invitation
      */
-    @JsonProperty(value = "expiresOn", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expiresOn;
 
     /*
      * The url for the invitation link
      */
-    @JsonProperty(value = "invitationUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String invitationUrl;
 
     /**
+     * Creates an instance of StaticSiteUserInvitationResponseResourceProperties class.
+     */
+    public StaticSiteUserInvitationResponseResourceProperties() {
+    }
+
+    /**
      * Get the expiresOn property: The expiration time of the invitation.
-     *
+     * 
      * @return the expiresOn value.
      */
     public OffsetDateTime expiresOn() {
@@ -34,7 +46,7 @@ public final class StaticSiteUserInvitationResponseResourceProperties {
 
     /**
      * Get the invitationUrl property: The url for the invitation link.
-     *
+     * 
      * @return the invitationUrl value.
      */
     public String invitationUrl() {
@@ -43,9 +55,49 @@ public final class StaticSiteUserInvitationResponseResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSiteUserInvitationResponseResourceProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSiteUserInvitationResponseResourceProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticSiteUserInvitationResponseResourceProperties.
+     */
+    public static StaticSiteUserInvitationResponseResourceProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSiteUserInvitationResponseResourceProperties deserializedStaticSiteUserInvitationResponseResourceProperties
+                = new StaticSiteUserInvitationResponseResourceProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expiresOn".equals(fieldName)) {
+                    deserializedStaticSiteUserInvitationResponseResourceProperties.expiresOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("invitationUrl".equals(fieldName)) {
+                    deserializedStaticSiteUserInvitationResponseResourceProperties.invitationUrl = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSiteUserInvitationResponseResourceProperties;
+        });
     }
 }

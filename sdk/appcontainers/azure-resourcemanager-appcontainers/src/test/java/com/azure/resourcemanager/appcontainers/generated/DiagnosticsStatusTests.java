@@ -7,24 +7,21 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticsStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticsStatusTests {
-    @Test
-    public void testDeserialize() {
-        DiagnosticsStatus model =
-            BinaryData
-                .fromString("{\"message\":\"uwhcjyxccybv\",\"statusId\":940165825}")
-                .toObject(DiagnosticsStatus.class);
-        Assertions.assertEquals("uwhcjyxccybv", model.message());
-        Assertions.assertEquals(940165825, model.statusId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DiagnosticsStatus model
+            = BinaryData.fromString("{\"message\":\"h\",\"statusId\":963815011}").toObject(DiagnosticsStatus.class);
+        Assertions.assertEquals("h", model.message());
+        Assertions.assertEquals(963815011, model.statusId());
     }
 
-    @Test
-    public void testSerialize() {
-        DiagnosticsStatus model = new DiagnosticsStatus().withMessage("uwhcjyxccybv").withStatusId(940165825);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DiagnosticsStatus model = new DiagnosticsStatus().withMessage("h").withStatusId(963815011);
         model = BinaryData.fromObject(model).toObject(DiagnosticsStatus.class);
-        Assertions.assertEquals("uwhcjyxccybv", model.message());
-        Assertions.assertEquals(940165825, model.statusId());
+        Assertions.assertEquals("h", model.message());
+        Assertions.assertEquals(963815011, model.statusId());
     }
 }

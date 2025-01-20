@@ -7,25 +7,21 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateIpAddressTests {
-    @Test
-    public void testDeserialize() {
-        PrivateIpAddress model =
-            BinaryData
-                .fromString("{\"ipAddress\":\"mfdatscmdvpj\",\"subnetResourceId\":\"lsuuvmkjozkrwfnd\"}")
-                .toObject(PrivateIpAddress.class);
-        Assertions.assertEquals("mfdatscmdvpj", model.ipAddress());
-        Assertions.assertEquals("lsuuvmkjozkrwfnd", model.subnetResourceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateIpAddress model = BinaryData.fromString("{\"ipAddress\":\"wjzrnfygxgisp\",\"subnetResourceId\":\"vtz\"}")
+            .toObject(PrivateIpAddress.class);
+        Assertions.assertEquals("wjzrnfygxgisp", model.ipAddress());
+        Assertions.assertEquals("vtz", model.subnetResourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateIpAddress model =
-            new PrivateIpAddress().withIpAddress("mfdatscmdvpj").withSubnetResourceId("lsuuvmkjozkrwfnd");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateIpAddress model = new PrivateIpAddress().withIpAddress("wjzrnfygxgisp").withSubnetResourceId("vtz");
         model = BinaryData.fromObject(model).toObject(PrivateIpAddress.class);
-        Assertions.assertEquals("mfdatscmdvpj", model.ipAddress());
-        Assertions.assertEquals("lsuuvmkjozkrwfnd", model.subnetResourceId());
+        Assertions.assertEquals("wjzrnfygxgisp", model.ipAddress());
+        Assertions.assertEquals("vtz", model.subnetResourceId());
     }
 }

@@ -8,39 +8,41 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of MoveResources. */
+/**
+ * Resource collection API of MoveResources.
+ */
 public interface MoveResources {
     /**
      * Lists the Move Resources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of move resources.
+     * @return defines the collection of move resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MoveResource> list(String resourceGroupName, String moveCollectionName);
 
     /**
      * Lists the Move Resources in the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param filter The filter to apply on the operation. For example, you can use $filter=Properties/ProvisioningState
-     *     eq 'Succeeded'.
+     * eq 'Succeeded'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the collection of move resources.
+     * @return defines the collection of move resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<MoveResource> list(
-        String resourceGroupName, String moveCollectionName, String filter, Context context);
+    PagedIterable<MoveResource> list(String resourceGroupName, String moveCollectionName, String filter,
+        Context context);
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -53,7 +55,7 @@ public interface MoveResources {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -63,12 +65,27 @@ public interface MoveResources {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operation status REST resource.
      */
-    OperationStatus delete(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
+    OperationStatus delete(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        Context context);
 
     /**
      * Gets the Move Resource.
-     *
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param moveCollectionName The Move Collection Name.
+     * @param moveResourceName The Move Resource Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Move Resource along with {@link Response}.
+     */
+    Response<MoveResource> getWithResponse(String resourceGroupName, String moveCollectionName, String moveResourceName,
+        Context context);
+
+    /**
+     * Gets the Move Resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param moveResourceName The Move Resource Name.
@@ -81,45 +98,30 @@ public interface MoveResources {
 
     /**
      * Gets the Move Resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param moveCollectionName The Move Collection Name.
-     * @param moveResourceName The Move Resource Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Move Resource.
-     */
-    Response<MoveResource> getWithResponse(
-        String resourceGroupName, String moveCollectionName, String moveResourceName, Context context);
-
-    /**
-     * Gets the Move Resource.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Move Resource.
+     * @return the Move Resource along with {@link Response}.
      */
     MoveResource getById(String id);
 
     /**
      * Gets the Move Resource.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Move Resource.
+     * @return the Move Resource along with {@link Response}.
      */
     Response<MoveResource> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -130,7 +132,7 @@ public interface MoveResources {
 
     /**
      * Deletes a Move Resource from the move collection.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,7 +144,7 @@ public interface MoveResources {
 
     /**
      * Begins definition for a new MoveResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new MoveResource definition.
      */

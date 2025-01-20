@@ -22,30 +22,43 @@ public final class ApiKeysImpl implements ApiKeys {
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public ApiKeysImpl(
-        ApiKeysClient innerClient,
+    public ApiKeysImpl(ApiKeysClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ApplicationInsightsComponentApiKey> list(String resourceGroupName, String resourceName) {
-        PagedIterable<ApplicationInsightsComponentApiKeyInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName);
-        return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
+        PagedIterable<ApplicationInsightsComponentApiKeyInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<ApplicationInsightsComponentApiKey> list(
-        String resourceGroupName, String resourceName, Context context) {
-        PagedIterable<ApplicationInsightsComponentApiKeyInner> inner =
-            this.serviceClient().list(resourceGroupName, resourceName, context);
-        return Utils.mapPage(inner, inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
+    public PagedIterable<ApplicationInsightsComponentApiKey> list(String resourceGroupName, String resourceName,
+        Context context) {
+        PagedIterable<ApplicationInsightsComponentApiKeyInner> inner
+            = this.serviceClient().list(resourceGroupName, resourceName, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new ApplicationInsightsComponentApiKeyImpl(inner1, this.manager()));
     }
 
-    public ApplicationInsightsComponentApiKey create(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties) {
-        ApplicationInsightsComponentApiKeyInner inner =
-            this.serviceClient().create(resourceGroupName, resourceName, apiKeyProperties);
+    public Response<ApplicationInsightsComponentApiKey> createWithResponse(String resourceGroupName,
+        String resourceName, ApiKeyRequest apiKeyProperties, Context context) {
+        Response<ApplicationInsightsComponentApiKeyInner> inner
+            = this.serviceClient().createWithResponse(resourceGroupName, resourceName, apiKeyProperties, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplicationInsightsComponentApiKeyImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ApplicationInsightsComponentApiKey create(String resourceGroupName, String resourceName,
+        ApiKeyRequest apiKeyProperties) {
+        ApplicationInsightsComponentApiKeyInner inner
+            = this.serviceClient().create(resourceGroupName, resourceName, apiKeyProperties);
         if (inner != null) {
             return new ApplicationInsightsComponentApiKeyImpl(inner, this.manager());
         } else {
@@ -53,15 +66,12 @@ public final class ApiKeysImpl implements ApiKeys {
         }
     }
 
-    public Response<ApplicationInsightsComponentApiKey> createWithResponse(
-        String resourceGroupName, String resourceName, ApiKeyRequest apiKeyProperties, Context context) {
-        Response<ApplicationInsightsComponentApiKeyInner> inner =
-            this.serviceClient().createWithResponse(resourceGroupName, resourceName, apiKeyProperties, context);
+    public Response<ApplicationInsightsComponentApiKey> deleteWithResponse(String resourceGroupName,
+        String resourceName, String keyId, Context context) {
+        Response<ApplicationInsightsComponentApiKeyInner> inner
+            = this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, keyId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentApiKeyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -69,8 +79,8 @@ public final class ApiKeysImpl implements ApiKeys {
     }
 
     public ApplicationInsightsComponentApiKey delete(String resourceGroupName, String resourceName, String keyId) {
-        ApplicationInsightsComponentApiKeyInner inner =
-            this.serviceClient().delete(resourceGroupName, resourceName, keyId);
+        ApplicationInsightsComponentApiKeyInner inner
+            = this.serviceClient().delete(resourceGroupName, resourceName, keyId);
         if (inner != null) {
             return new ApplicationInsightsComponentApiKeyImpl(inner, this.manager());
         } else {
@@ -78,15 +88,12 @@ public final class ApiKeysImpl implements ApiKeys {
         }
     }
 
-    public Response<ApplicationInsightsComponentApiKey> deleteWithResponse(
-        String resourceGroupName, String resourceName, String keyId, Context context) {
-        Response<ApplicationInsightsComponentApiKeyInner> inner =
-            this.serviceClient().deleteWithResponse(resourceGroupName, resourceName, keyId, context);
+    public Response<ApplicationInsightsComponentApiKey> getWithResponse(String resourceGroupName, String resourceName,
+        String keyId, Context context) {
+        Response<ApplicationInsightsComponentApiKeyInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, keyId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ApplicationInsightsComponentApiKeyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -94,25 +101,10 @@ public final class ApiKeysImpl implements ApiKeys {
     }
 
     public ApplicationInsightsComponentApiKey get(String resourceGroupName, String resourceName, String keyId) {
-        ApplicationInsightsComponentApiKeyInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName, keyId);
+        ApplicationInsightsComponentApiKeyInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName, keyId);
         if (inner != null) {
             return new ApplicationInsightsComponentApiKeyImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<ApplicationInsightsComponentApiKey> getWithResponse(
-        String resourceGroupName, String resourceName, String keyId, Context context) {
-        Response<ApplicationInsightsComponentApiKeyInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, keyId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ApplicationInsightsComponentApiKeyImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

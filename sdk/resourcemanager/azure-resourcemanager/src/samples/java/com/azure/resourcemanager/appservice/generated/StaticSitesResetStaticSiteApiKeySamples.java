@@ -4,31 +4,29 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appservice.models.StaticSiteResetPropertiesArmResource;
 
-/** Samples for StaticSites ResetStaticSiteApiKey. */
+/**
+ * Samples for StaticSites ResetStaticSiteApiKey.
+ */
 public final class StaticSitesResetStaticSiteApiKeySamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/ResetStaticSiteApiKey.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/ResetStaticSiteApiKey.json
      */
     /**
      * Sample code: Reset the api key for a static site.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetTheApiKeyForAStaticSite(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+        azure.webApps()
             .manager()
             .serviceClient()
             .getStaticSites()
-            .resetStaticSiteApiKeyWithResponse(
-                "rg",
-                "testStaticSite0",
-                new StaticSiteResetPropertiesArmResource()
-                    .withRepositoryToken("repoToken123")
+            .resetStaticSiteApiKeyWithResponse("rg", "testStaticSite0",
+                new StaticSiteResetPropertiesArmResource().withRepositoryToken("fakeTokenPlaceholder")
                     .withShouldUpdateRepository(true),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

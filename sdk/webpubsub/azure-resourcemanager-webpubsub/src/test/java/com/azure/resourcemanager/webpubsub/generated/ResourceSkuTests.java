@@ -8,28 +8,25 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ResourceSku;
 import com.azure.resourcemanager.webpubsub.models.WebPubSubSkuTier;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceSkuTests {
-    @Test
-    public void testDeserialize() {
-        ResourceSku model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"zwtruwiqzbqjvsov\",\"tier\":\"Basic\",\"size\":\"acspkwl\",\"family\":\"dobpxjmflbvvn\",\"capacity\":1044580515}")
-                .toObject(ResourceSku.class);
-        Assertions.assertEquals("zwtruwiqzbqjvsov", model.name());
-        Assertions.assertEquals(WebPubSubSkuTier.BASIC, model.tier());
-        Assertions.assertEquals(1044580515, model.capacity());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceSku model = BinaryData.fromString(
+            "{\"name\":\"hqkvpuvksgplsak\",\"tier\":\"Free\",\"size\":\"synljphuopxodl\",\"family\":\"ynt\",\"capacity\":863114887}")
+            .toObject(ResourceSku.class);
+        Assertions.assertEquals("hqkvpuvksgplsak", model.name());
+        Assertions.assertEquals(WebPubSubSkuTier.FREE, model.tier());
+        Assertions.assertEquals(863114887, model.capacity());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceSku model =
-            new ResourceSku().withName("zwtruwiqzbqjvsov").withTier(WebPubSubSkuTier.BASIC).withCapacity(1044580515);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceSku model
+            = new ResourceSku().withName("hqkvpuvksgplsak").withTier(WebPubSubSkuTier.FREE).withCapacity(863114887);
         model = BinaryData.fromObject(model).toObject(ResourceSku.class);
-        Assertions.assertEquals("zwtruwiqzbqjvsov", model.name());
-        Assertions.assertEquals(WebPubSubSkuTier.BASIC, model.tier());
-        Assertions.assertEquals(1044580515, model.capacity());
+        Assertions.assertEquals("hqkvpuvksgplsak", model.name());
+        Assertions.assertEquals(WebPubSubSkuTier.FREE, model.tier());
+        Assertions.assertEquals(863114887, model.capacity());
     }
 }

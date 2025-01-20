@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for SiteAvailabilityState. */
+/**
+ * Management information availability state for the app.
+ */
 public enum SiteAvailabilityState {
-    /** Enum value Normal. */
+    /**
+     * Enum value Normal.
+     */
     NORMAL("Normal"),
 
-    /** Enum value Limited. */
+    /**
+     * Enum value Limited.
+     */
     LIMITED("Limited"),
 
-    /** Enum value DisasterRecoveryMode. */
+    /**
+     * Enum value DisasterRecoveryMode.
+     */
     DISASTER_RECOVERY_MODE("DisasterRecoveryMode");
 
-    /** The actual serialized value for a SiteAvailabilityState instance. */
+    /**
+     * The actual serialized value for a SiteAvailabilityState instance.
+     */
     private final String value;
 
     SiteAvailabilityState(String value) {
@@ -27,12 +34,14 @@ public enum SiteAvailabilityState {
 
     /**
      * Parses a serialized value to a SiteAvailabilityState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SiteAvailabilityState object, or null if unable to parse.
      */
-    @JsonCreator
     public static SiteAvailabilityState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SiteAvailabilityState[] items = SiteAvailabilityState.values();
         for (SiteAvailabilityState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum SiteAvailabilityState {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

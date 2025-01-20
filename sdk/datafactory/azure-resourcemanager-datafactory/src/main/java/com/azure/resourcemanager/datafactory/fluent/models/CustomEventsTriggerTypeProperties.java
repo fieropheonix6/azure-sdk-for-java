@@ -6,46 +6,50 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Custom Events Trigger properties. */
+/**
+ * Custom Events Trigger properties.
+ */
 @Fluent
-public final class CustomEventsTriggerTypeProperties {
+public final class CustomEventsTriggerTypeProperties implements JsonSerializable<CustomEventsTriggerTypeProperties> {
     /*
      * The event subject must begin with the pattern provided for trigger to fire. At least one of these must be
      * provided: subjectBeginsWith, subjectEndsWith.
      */
-    @JsonProperty(value = "subjectBeginsWith")
     private String subjectBeginsWith;
 
     /*
-     * The event subject must end with the pattern provided for trigger to fire. At least one of these must be
-     * provided: subjectBeginsWith, subjectEndsWith.
+     * The event subject must end with the pattern provided for trigger to fire. At least one of these must be provided:
+     * subjectBeginsWith, subjectEndsWith.
      */
-    @JsonProperty(value = "subjectEndsWith")
     private String subjectEndsWith;
 
     /*
      * The list of event types that cause this trigger to fire.
      */
-    @JsonProperty(value = "events", required = true)
     private List<Object> events;
 
     /*
      * The ARM resource ID of the Azure Event Grid Topic.
      */
-    @JsonProperty(value = "scope", required = true)
     private String scope;
 
-    /** Creates an instance of CustomEventsTriggerTypeProperties class. */
+    /**
+     * Creates an instance of CustomEventsTriggerTypeProperties class.
+     */
     public CustomEventsTriggerTypeProperties() {
     }
 
     /**
      * Get the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @return the subjectBeginsWith value.
      */
     public String subjectBeginsWith() {
@@ -55,7 +59,7 @@ public final class CustomEventsTriggerTypeProperties {
     /**
      * Set the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @param subjectBeginsWith the subjectBeginsWith value to set.
      * @return the CustomEventsTriggerTypeProperties object itself.
      */
@@ -67,7 +71,7 @@ public final class CustomEventsTriggerTypeProperties {
     /**
      * Get the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @return the subjectEndsWith value.
      */
     public String subjectEndsWith() {
@@ -77,7 +81,7 @@ public final class CustomEventsTriggerTypeProperties {
     /**
      * Set the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @param subjectEndsWith the subjectEndsWith value to set.
      * @return the CustomEventsTriggerTypeProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Get the events property: The list of event types that cause this trigger to fire.
-     *
+     * 
      * @return the events value.
      */
     public List<Object> events() {
@@ -97,7 +101,7 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Set the events property: The list of event types that cause this trigger to fire.
-     *
+     * 
      * @param events the events value to set.
      * @return the CustomEventsTriggerTypeProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Get the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -117,7 +121,7 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Set the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the CustomEventsTriggerTypeProperties object itself.
      */
@@ -128,23 +132,69 @@ public final class CustomEventsTriggerTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (events() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property events in model CustomEventsTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property events in model CustomEventsTriggerTypeProperties"));
         }
         if (scope() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property scope in model CustomEventsTriggerTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property scope in model CustomEventsTriggerTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(CustomEventsTriggerTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("events", this.events, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("scope", this.scope);
+        jsonWriter.writeStringField("subjectBeginsWith", this.subjectBeginsWith);
+        jsonWriter.writeStringField("subjectEndsWith", this.subjectEndsWith);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomEventsTriggerTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomEventsTriggerTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CustomEventsTriggerTypeProperties.
+     */
+    public static CustomEventsTriggerTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomEventsTriggerTypeProperties deserializedCustomEventsTriggerTypeProperties
+                = new CustomEventsTriggerTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("events".equals(fieldName)) {
+                    List<Object> events = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedCustomEventsTriggerTypeProperties.events = events;
+                } else if ("scope".equals(fieldName)) {
+                    deserializedCustomEventsTriggerTypeProperties.scope = reader.getString();
+                } else if ("subjectBeginsWith".equals(fieldName)) {
+                    deserializedCustomEventsTriggerTypeProperties.subjectBeginsWith = reader.getString();
+                } else if ("subjectEndsWith".equals(fieldName)) {
+                    deserializedCustomEventsTriggerTypeProperties.subjectEndsWith = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomEventsTriggerTypeProperties;
+        });
+    }
 }

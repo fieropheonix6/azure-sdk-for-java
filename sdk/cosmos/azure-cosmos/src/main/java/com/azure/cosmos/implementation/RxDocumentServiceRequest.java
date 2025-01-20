@@ -4,16 +4,20 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.implementation.faultinjection.FaultInjectionRequestContext;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.directconnectivity.WFConstants;
-import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
-import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.models.PriorityLevel;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import reactor.core.publisher.Flux;
@@ -21,6 +25,7 @@ import reactor.core.publisher.Flux;
 import java.net.URI;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -53,10 +58,12 @@ public class RxDocumentServiceRequest implements Cloneable {
     private boolean isForcedAddressRefresh;
 
     public DocumentServiceRequestContext requestContext;
+    public FaultInjectionRequestContext faultInjectionRequestContext;
 
     // has the non serialized value of the partition-key
     private PartitionKeyInternal partitionKeyInternal;
-
+    private PartitionKeyDefinition partitionKeyDefinition;
+    private String effectivePartitionKey;
     private FeedRangeInternal feedRange;
     private Range<String> effectiveRange;
     private int numberOfItemsInBatchRequest;
@@ -76,15 +83,14 @@ public class RxDocumentServiceRequest implements Cloneable {
     public volatile Map<String, Object> properties;
     public String throughputControlGroupName;
     public volatile boolean intendedCollectionRidPassedIntoSDK = false;
+    private volatile Duration responseTimeout;
+
+    private volatile boolean nonIdempotentWriteRetriesEnabled = false;
+
+    private volatile boolean hasFeedRangeFilteringBeenApplied = false;
 
     public boolean isReadOnlyRequest() {
-        return this.operationType == OperationType.Read
-                || this.operationType == OperationType.ReadFeed
-                || this.operationType == OperationType.Head
-                || this.operationType == OperationType.HeadFeed
-                || this.operationType == OperationType.Query
-                || this.operationType == OperationType.SqlQuery
-                || this.operationType == OperationType.QueryPlan;
+        return this.operationType.isReadOnlyOperation();
     }
 
     public void setResourceAddress(String newAddress) {
@@ -98,6 +104,30 @@ public class RxDocumentServiceRequest implements Cloneable {
         } else {
             return this.operationType.equals(OperationType.ExecuteJavaScript) && isReadOnlyScript.equalsIgnoreCase(Boolean.TRUE.toString());
         }
+    }
+
+    public boolean isMetadataRequest() {
+        return (this.getOperationType() != OperationType.ExecuteJavaScript
+            && this.getResourceType() == ResourceType.StoredProcedure)
+            || this.getResourceType() != ResourceType.Document;
+    }
+
+    public RxDocumentServiceRequest setNonIdempotentWriteRetriesEnabled(boolean enabled) {
+        this.nonIdempotentWriteRetriesEnabled = enabled;
+
+        return this;
+    }
+
+    public boolean getNonIdempotentWriteRetriesEnabled() {
+        return this.nonIdempotentWriteRetriesEnabled;
+    }
+
+    public boolean hasFeedRangeFilteringBeenApplied() {
+        return this.hasFeedRangeFilteringBeenApplied;
+    }
+
+    public void setHasFeedRangeFilteringBeenApplied(boolean hasFeedRangeFilteringBeenApplied) {
+        this.hasFeedRangeFilteringBeenApplied = hasFeedRangeFilteringBeenApplied;
     }
 
     public boolean isReadOnly() {
@@ -147,7 +177,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceType = resourceType;
         this.contentAsByteArray = toByteArray(byteBuffer);
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID();
+        this.activityId = UUID.randomUUID();
         this.isFeed = false;
         this.isNameBased = isNameBased;
         if (!isNameBased) {
@@ -156,6 +186,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.resourceAddress = resourceIdOrFullName;
         this.authorizationTokenType = authorizationTokenType;
         this.requestContext = new DocumentServiceRequestContext();
+        this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         if (StringUtils.isNotEmpty(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID)))
             this.partitionKeyRangeIdentity = PartitionKeyRangeIdentity.fromHeader(this.headers.get(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID));
     }
@@ -175,11 +206,12 @@ public class RxDocumentServiceRequest implements Cloneable {
                                      Map<String, String> headers) {
         this.clientContext = clientContext;
         this.requestContext = new DocumentServiceRequestContext();
+        this.faultInjectionRequestContext = new FaultInjectionRequestContext();
         this.operationType = operationType;
         this.resourceType = resourceType;
         this.requestContext.sessionToken = null;
         this.headers = headers != null ? headers : new HashMap<>();
-        this.activityId = Utils.randomUUID();
+        this.activityId = UUID.randomUUID();
         this.isFeed = false;
 
         if (StringUtils.isNotEmpty(path)) {
@@ -213,7 +245,7 @@ public class RxDocumentServiceRequest implements Cloneable {
                     this.resourceId = null;
                 }
             } else {
-                throw new IllegalArgumentException(RMResources.NotFound);
+                throw new IllegalArgumentException(RMResources.NotFound + ", - Path: " + path);
             }
         } else {
             this.isNameBased = false;
@@ -367,7 +399,12 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Object options) {
 
         RxDocumentServiceRequest request = new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath,
-            ModelBridgeInternal.serializeJsonToByteBuffer(resource), headers, AuthorizationTokenType.PrimaryMasterKey);
+            resource.serializeJsonToByteBuffer(
+                CosmosItemSerializer.DEFAULT_SERIALIZER,
+                null,
+                resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert)),
+            headers,
+            AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
         return request;
@@ -411,6 +448,7 @@ public class RxDocumentServiceRequest implements Cloneable {
             byteBuffer, headers, AuthorizationTokenType.PrimaryMasterKey);
         request.properties = getProperties(options);
         request.throughputControlGroupName = getThroughputControlGroupName(options);
+
         return request;
     }
 
@@ -551,7 +589,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   ResourceType resourceType,
                                                   String relativePath,
                                                   Map<String, String> headers) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -572,7 +613,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   String relativePath,
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceType, relativePath, resourceContent, headers, authorizationTokenType);
     }
 
@@ -627,7 +671,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   ResourceType resourceType,
                                                   Resource resource,
                                                   Map<String, String> headers) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceId, resourceType, resourceContent, headers, false, AuthorizationTokenType.PrimaryMasterKey);
     }
 
@@ -648,7 +695,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                                                   Resource resource,
                                                   Map<String, String> headers,
                                                   AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operation == OperationType.Create || operation == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext, operation, resourceId, resourceType, resourceContent, headers, false, authorizationTokenType);
     }
 
@@ -702,7 +752,10 @@ public class RxDocumentServiceRequest implements Cloneable {
             Resource resource,
             String resourceFullName,
             ResourceType resourceType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operationType == OperationType.Create || operationType == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext,
                 operationType,
                 resourceFullName,
@@ -721,7 +774,10 @@ public class RxDocumentServiceRequest implements Cloneable {
             String resourceFullName,
             ResourceType resourceType,
             AuthorizationTokenType authorizationTokenType) {
-        ByteBuffer resourceContent = ModelBridgeInternal.serializeJsonToByteBuffer(resource);
+        ByteBuffer resourceContent = resource.serializeJsonToByteBuffer(
+            CosmosItemSerializer.DEFAULT_SERIALIZER,
+            null,
+            resourceType == ResourceType.Document && (operationType == OperationType.Create || operationType == OperationType.Upsert));
         return new RxDocumentServiceRequest(clientContext,
                 operationType,
                 resourceFullName,
@@ -902,6 +958,14 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.partitionKeyInternal;
     }
 
+    public void setPartitionKeyDefinition(PartitionKeyDefinition partitionKeyDefinition) {
+        this.partitionKeyDefinition = partitionKeyDefinition;
+    }
+
+    public PartitionKeyDefinition getPartitionKeyDefinition() {
+        return this.partitionKeyDefinition;
+    }
+
     public boolean isChangeFeedRequest() {
         return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
     }
@@ -1015,9 +1079,10 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     @Override
     public RxDocumentServiceRequest clone() {
-        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(), this.resourceId,this.getResourceType(),this.getHeaders());
+        RxDocumentServiceRequest rxDocumentServiceRequest = RxDocumentServiceRequest.create(this.clientContext, this.getOperationType(),
+            this.resourceId, this.isNameBased, this.getResourceType(),this.getHeaders());
         rxDocumentServiceRequest.setPartitionKeyInternal(this.getPartitionKeyInternal());
-        rxDocumentServiceRequest.setContentBytes(rxDocumentServiceRequest.contentAsByteArray);
+        rxDocumentServiceRequest.setContentBytes(this.contentAsByteArray);
         rxDocumentServiceRequest.setContinuation(this.getContinuation());
         rxDocumentServiceRequest.setDefaultReplicaIndex(this.getDefaultReplicaIndex());
         rxDocumentServiceRequest.setEndpointOverride(this.getEndpointOverride());
@@ -1029,7 +1094,23 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
         rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.requestContext = this.requestContext;
+        rxDocumentServiceRequest.faultInjectionRequestContext = new FaultInjectionRequestContext(this.faultInjectionRequestContext);
+        rxDocumentServiceRequest.nonIdempotentWriteRetriesEnabled = this.nonIdempotentWriteRetriesEnabled;
+        rxDocumentServiceRequest.setResourceAddress(this.resourceAddress);
+        rxDocumentServiceRequest.requestContext = this.requestContext.clone();
+        rxDocumentServiceRequest.feedRange = this.feedRange;
+        rxDocumentServiceRequest.effectiveRange = this.effectiveRange;
+        rxDocumentServiceRequest.isFeed = this.isFeed;
+        rxDocumentServiceRequest.resourceId = this.resourceId;
+        rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
         return rxDocumentServiceRequest;
+    }
+
+    // Used by clone
+    private static RxDocumentServiceRequest create(DiagnosticsClientContext clientContext, OperationType operationType, String resourceId,
+                                                   boolean isNameBased, ResourceType resourceType, Map<String, String> headers) {
+        return new RxDocumentServiceRequest(clientContext, operationType, resourceId,resourceType, (ByteBuffer) null, headers,
+            isNameBased, AuthorizationTokenType.PrimaryMasterKey) ;
     }
 
     public void dispose() {
@@ -1129,5 +1210,27 @@ public class RxDocumentServiceRequest implements Cloneable {
 
     public void setNumberOfItemsInBatchRequest(int numberOfItemsInBatchRequest) {
         this.numberOfItemsInBatchRequest = numberOfItemsInBatchRequest;
+    }
+
+    public void setPriorityLevel(PriorityLevel priorityLevel) {
+        if (priorityLevel != null) {
+            this.headers.put(HttpConstants.HttpHeaders.PRIORITY_LEVEL, priorityLevel.toString());
+        }
+    }
+
+    public Duration getResponseTimeout() {
+        return responseTimeout;
+    }
+
+    public void setResponseTimeout(Duration responseTimeout) {
+        this.responseTimeout = responseTimeout;
+    }
+
+    public String getEffectivePartitionKey() {
+        return effectivePartitionKey;
+    }
+
+    public void setEffectivePartitionKey(String effectivePartitionKey) {
+        this.effectivePartitionKey = effectivePartitionKey;
     }
 }

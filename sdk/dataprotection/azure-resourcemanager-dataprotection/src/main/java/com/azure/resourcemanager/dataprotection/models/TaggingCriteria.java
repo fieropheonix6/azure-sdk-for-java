@@ -6,43 +6,49 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** TaggingCriteria Tagging criteria. */
+/**
+ * TaggingCriteria
+ * 
+ * Tagging criteria.
+ */
 @Fluent
-public final class TaggingCriteria {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TaggingCriteria.class);
-
+public final class TaggingCriteria implements JsonSerializable<TaggingCriteria> {
     /*
-     * Criteria which decides whether the tag can be applied to a triggered
-     * backup.
+     * Criteria which decides whether the tag can be applied to a triggered backup.
      */
-    @JsonProperty(value = "criteria")
     private List<BackupCriteria> criteria;
 
     /*
      * Specifies if tag is default.
      */
-    @JsonProperty(value = "isDefault", required = true)
     private boolean isDefault;
 
     /*
      * Retention Tag priority.
      */
-    @JsonProperty(value = "taggingPriority", required = true)
     private long taggingPriority;
 
     /*
-     * RetentionTag Retention tag information
+     * Retention tag information
      */
-    @JsonProperty(value = "tagInfo", required = true)
     private RetentionTag tagInfo;
 
     /**
+     * Creates an instance of TaggingCriteria class.
+     */
+    public TaggingCriteria() {
+    }
+
+    /**
      * Get the criteria property: Criteria which decides whether the tag can be applied to a triggered backup.
-     *
+     * 
      * @return the criteria value.
      */
     public List<BackupCriteria> criteria() {
@@ -51,7 +57,7 @@ public final class TaggingCriteria {
 
     /**
      * Set the criteria property: Criteria which decides whether the tag can be applied to a triggered backup.
-     *
+     * 
      * @param criteria the criteria value to set.
      * @return the TaggingCriteria object itself.
      */
@@ -62,7 +68,7 @@ public final class TaggingCriteria {
 
     /**
      * Get the isDefault property: Specifies if tag is default.
-     *
+     * 
      * @return the isDefault value.
      */
     public boolean isDefault() {
@@ -71,7 +77,7 @@ public final class TaggingCriteria {
 
     /**
      * Set the isDefault property: Specifies if tag is default.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the TaggingCriteria object itself.
      */
@@ -82,7 +88,7 @@ public final class TaggingCriteria {
 
     /**
      * Get the taggingPriority property: Retention Tag priority.
-     *
+     * 
      * @return the taggingPriority value.
      */
     public long taggingPriority() {
@@ -91,7 +97,7 @@ public final class TaggingCriteria {
 
     /**
      * Set the taggingPriority property: Retention Tag priority.
-     *
+     * 
      * @param taggingPriority the taggingPriority value to set.
      * @return the TaggingCriteria object itself.
      */
@@ -101,8 +107,8 @@ public final class TaggingCriteria {
     }
 
     /**
-     * Get the tagInfo property: RetentionTag Retention tag information.
-     *
+     * Get the tagInfo property: Retention tag information.
+     * 
      * @return the tagInfo value.
      */
     public RetentionTag tagInfo() {
@@ -110,8 +116,8 @@ public final class TaggingCriteria {
     }
 
     /**
-     * Set the tagInfo property: RetentionTag Retention tag information.
-     *
+     * Set the tagInfo property: Retention tag information.
+     * 
      * @param tagInfo the tagInfo value to set.
      * @return the TaggingCriteria object itself.
      */
@@ -122,7 +128,7 @@ public final class TaggingCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -130,11 +136,59 @@ public final class TaggingCriteria {
             criteria().forEach(e -> e.validate());
         }
         if (tagInfo() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tagInfo in model TaggingCriteria"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property tagInfo in model TaggingCriteria"));
         } else {
             tagInfo().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TaggingCriteria.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isDefault", this.isDefault);
+        jsonWriter.writeLongField("taggingPriority", this.taggingPriority);
+        jsonWriter.writeJsonField("tagInfo", this.tagInfo);
+        jsonWriter.writeArrayField("criteria", this.criteria, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TaggingCriteria from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TaggingCriteria if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TaggingCriteria.
+     */
+    public static TaggingCriteria fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TaggingCriteria deserializedTaggingCriteria = new TaggingCriteria();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("isDefault".equals(fieldName)) {
+                    deserializedTaggingCriteria.isDefault = reader.getBoolean();
+                } else if ("taggingPriority".equals(fieldName)) {
+                    deserializedTaggingCriteria.taggingPriority = reader.getLong();
+                } else if ("tagInfo".equals(fieldName)) {
+                    deserializedTaggingCriteria.tagInfo = RetentionTag.fromJson(reader);
+                } else if ("criteria".equals(fieldName)) {
+                    List<BackupCriteria> criteria = reader.readArray(reader1 -> BackupCriteria.fromJson(reader1));
+                    deserializedTaggingCriteria.criteria = criteria;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTaggingCriteria;
+        });
     }
 }

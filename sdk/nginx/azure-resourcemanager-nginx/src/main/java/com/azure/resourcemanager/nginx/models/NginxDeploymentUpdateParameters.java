@@ -5,51 +5,52 @@
 package com.azure.resourcemanager.nginx.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The NginxDeploymentUpdateParameters model. */
+/**
+ * The NginxDeploymentUpdateParameters model.
+ */
 @Fluent
-public final class NginxDeploymentUpdateParameters {
+public final class NginxDeploymentUpdateParameters implements JsonSerializable<NginxDeploymentUpdateParameters> {
     /*
      * The identity property.
      */
-    @JsonProperty(value = "identity")
     private IdentityProperties identity;
 
     /*
      * Dictionary of <string>
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * The sku property.
      */
-    @JsonProperty(value = "sku")
     private ResourceSku sku;
 
     /*
      * The location property.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The properties property.
      */
-    @JsonProperty(value = "properties")
     private NginxDeploymentUpdateProperties properties;
 
-    /** Creates an instance of NginxDeploymentUpdateParameters class. */
+    /**
+     * Creates an instance of NginxDeploymentUpdateParameters class.
+     */
     public NginxDeploymentUpdateParameters() {
     }
 
     /**
      * Get the identity property: The identity property.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityProperties identity() {
@@ -58,7 +59,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the identity property: The identity property.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -69,7 +70,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Get the tags property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -78,7 +79,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the tags property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -89,7 +90,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Get the sku property: The sku property.
-     *
+     * 
      * @return the sku value.
      */
     public ResourceSku sku() {
@@ -98,7 +99,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the sku property: The sku property.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -109,7 +110,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Get the location property: The location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -118,7 +119,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the location property: The location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -129,7 +130,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Get the properties property: The properties property.
-     *
+     * 
      * @return the properties value.
      */
     public NginxDeploymentUpdateProperties properties() {
@@ -138,7 +139,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Set the properties property: The properties property.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the NginxDeploymentUpdateParameters object itself.
      */
@@ -149,7 +150,7 @@ public final class NginxDeploymentUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -162,5 +163,56 @@ public final class NginxDeploymentUpdateParameters {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NginxDeploymentUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NginxDeploymentUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the NginxDeploymentUpdateParameters.
+     */
+    public static NginxDeploymentUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NginxDeploymentUpdateParameters deserializedNginxDeploymentUpdateParameters
+                = new NginxDeploymentUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identity".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateParameters.identity = IdentityProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNginxDeploymentUpdateParameters.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateParameters.sku = ResourceSku.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateParameters.location = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNginxDeploymentUpdateParameters.properties
+                        = NginxDeploymentUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNginxDeploymentUpdateParameters;
+        });
     }
 }

@@ -20,6 +20,12 @@ public class TypedDocumentField<T> {
     private Float confidence;
 
     /**
+     * Create a TypedDocumentField instance.
+     */
+    public TypedDocumentField() {
+    }
+
+    /**
      * Get value of the field.
      * @return the value of the field
      */
@@ -116,7 +122,7 @@ public class TypedDocumentField<T> {
 
             @Override
             public <T> void setBoundingRegions(TypedDocumentField<T> typedDocumentField,
-                                               List<BoundingRegion> boundingRegions) {
+                List<BoundingRegion> boundingRegions) {
                 typedDocumentField.setBoundingRegions(boundingRegions);
             }
 

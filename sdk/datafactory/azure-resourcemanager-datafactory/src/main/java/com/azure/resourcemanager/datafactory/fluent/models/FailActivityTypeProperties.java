@@ -6,33 +6,39 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Fail activity properties. */
+/**
+ * Fail activity properties.
+ */
 @Fluent
-public final class FailActivityTypeProperties {
+public final class FailActivityTypeProperties implements JsonSerializable<FailActivityTypeProperties> {
     /*
      * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non
      * empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "message", required = true)
     private Object message;
 
     /*
      * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated
      * to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "errorCode", required = true)
     private Object errorCode;
 
-    /** Creates an instance of FailActivityTypeProperties class. */
+    /**
+     * Creates an instance of FailActivityTypeProperties class.
+     */
     public FailActivityTypeProperties() {
     }
 
     /**
      * Get the message property: The error message that surfaced in the Fail activity. It can be dynamic content that's
      * evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the message value.
      */
     public Object message() {
@@ -42,7 +48,7 @@ public final class FailActivityTypeProperties {
     /**
      * Set the message property: The error message that surfaced in the Fail activity. It can be dynamic content that's
      * evaluated to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param message the message value to set.
      * @return the FailActivityTypeProperties object itself.
      */
@@ -55,7 +61,7 @@ public final class FailActivityTypeProperties {
      * Get the errorCode property: The error code that categorizes the error type of the Fail activity. It can be
      * dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the errorCode value.
      */
     public Object errorCode() {
@@ -66,7 +72,7 @@ public final class FailActivityTypeProperties {
      * Set the errorCode property: The error code that categorizes the error type of the Fail activity. It can be
      * dynamic content that's evaluated to a non empty/blank string at runtime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the FailActivityTypeProperties object itself.
      */
@@ -77,23 +83,61 @@ public final class FailActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (message() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property message in model FailActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property message in model FailActivityTypeProperties"));
         }
         if (errorCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property errorCode in model FailActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property errorCode in model FailActivityTypeProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(FailActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("message", this.message);
+        jsonWriter.writeUntypedField("errorCode", this.errorCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FailActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FailActivityTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FailActivityTypeProperties.
+     */
+    public static FailActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FailActivityTypeProperties deserializedFailActivityTypeProperties = new FailActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("message".equals(fieldName)) {
+                    deserializedFailActivityTypeProperties.message = reader.readUntyped();
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedFailActivityTypeProperties.errorCode = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFailActivityTypeProperties;
+        });
+    }
 }

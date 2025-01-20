@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageVersionProperties;
-import org.junit.jupiter.api.Test;
 
 public final class ImageVersionPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ImageVersionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"n\",\"publishedDate\":\"2021-11-13T11:48:47Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":393211595,\"provisioningState\":\"Updated\"}")
-                .toObject(ImageVersionProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ImageVersionProperties model = BinaryData.fromString(
+            "{\"name\":\"kyv\",\"publishedDate\":\"2021-08-31T04:23:50Z\",\"excludeFromLatest\":false,\"osDiskImageSizeInGb\":106855620,\"provisioningState\":\"NotSpecified\"}")
+            .toObject(ImageVersionProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageVersionProperties model = new ImageVersionProperties();
         model = BinaryData.fromObject(model).toObject(ImageVersionProperties.class);
     }

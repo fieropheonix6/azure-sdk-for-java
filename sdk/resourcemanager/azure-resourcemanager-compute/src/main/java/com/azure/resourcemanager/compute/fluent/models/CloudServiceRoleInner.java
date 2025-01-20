@@ -5,56 +5,58 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.CloudServiceRoleProperties;
 import com.azure.resourcemanager.compute.models.CloudServiceRoleSku;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Describes a role of the cloud service. */
+/**
+ * Describes a role of the cloud service.
+ */
 @Fluent
-public final class CloudServiceRoleInner {
+public final class CloudServiceRoleInner implements JsonSerializable<CloudServiceRoleInner> {
     /*
      * Resource id
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Resource name
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Resource type
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Resource location
      */
-    @JsonProperty(value = "location", access = JsonProperty.Access.WRITE_ONLY)
     private String location;
 
     /*
      * Describes the cloud service role sku.
      */
-    @JsonProperty(value = "sku")
     private CloudServiceRoleSku sku;
 
     /*
      * The cloud service role properties.
      */
-    @JsonProperty(value = "properties")
     private CloudServiceRoleProperties properties;
 
-    /** Creates an instance of CloudServiceRoleInner class. */
+    /**
+     * Creates an instance of CloudServiceRoleInner class.
+     */
     public CloudServiceRoleInner() {
     }
 
     /**
      * Get the id property: Resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -63,7 +65,7 @@ public final class CloudServiceRoleInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -72,7 +74,7 @@ public final class CloudServiceRoleInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,7 +83,7 @@ public final class CloudServiceRoleInner {
 
     /**
      * Get the location property: Resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -90,7 +92,7 @@ public final class CloudServiceRoleInner {
 
     /**
      * Get the sku property: Describes the cloud service role sku.
-     *
+     * 
      * @return the sku value.
      */
     public CloudServiceRoleSku sku() {
@@ -99,7 +101,7 @@ public final class CloudServiceRoleInner {
 
     /**
      * Set the sku property: Describes the cloud service role sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the CloudServiceRoleInner object itself.
      */
@@ -110,7 +112,7 @@ public final class CloudServiceRoleInner {
 
     /**
      * Get the properties property: The cloud service role properties.
-     *
+     * 
      * @return the properties value.
      */
     public CloudServiceRoleProperties properties() {
@@ -119,7 +121,7 @@ public final class CloudServiceRoleInner {
 
     /**
      * Set the properties property: The cloud service role properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CloudServiceRoleInner object itself.
      */
@@ -130,7 +132,7 @@ public final class CloudServiceRoleInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -140,5 +142,52 @@ public final class CloudServiceRoleInner {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CloudServiceRoleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CloudServiceRoleInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CloudServiceRoleInner.
+     */
+    public static CloudServiceRoleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CloudServiceRoleInner deserializedCloudServiceRoleInner = new CloudServiceRoleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCloudServiceRoleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCloudServiceRoleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCloudServiceRoleInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedCloudServiceRoleInner.location = reader.getString();
+                } else if ("sku".equals(fieldName)) {
+                    deserializedCloudServiceRoleInner.sku = CloudServiceRoleSku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCloudServiceRoleInner.properties = CloudServiceRoleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCloudServiceRoleInner;
+        });
     }
 }

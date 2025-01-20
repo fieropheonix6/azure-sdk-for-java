@@ -6,59 +6,94 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.Office365LinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Office365 linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Office365")
+/**
+ * Office365 linked service.
+ */
 @Fluent
 public final class Office365LinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "Office365";
+
+    /*
      * Office365 linked service properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private Office365LinkedServiceTypeProperties innerTypeProperties = new Office365LinkedServiceTypeProperties();
 
-    /** Creates an instance of Office365LinkedService class. */
+    /**
+     * Creates an instance of Office365LinkedService class.
+     */
     public Office365LinkedService() {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Office365 linked service properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private Office365LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Office365LinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365LinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365LinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365LinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365LinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +103,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Get the office365TenantId property: Azure tenant ID to which the Office 365 account belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the office365TenantId value.
      */
     public Object office365TenantId() {
@@ -78,7 +113,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Set the office365TenantId property: Azure tenant ID to which the Office 365 account belongs. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param office365TenantId the office365TenantId value to set.
      * @return the Office365LinkedService object itself.
      */
@@ -93,7 +128,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Get the servicePrincipalTenantId property: Specify the tenant information under which your Azure AD web
      * application resides. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the servicePrincipalTenantId value.
      */
     public Object servicePrincipalTenantId() {
@@ -103,7 +138,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Set the servicePrincipalTenantId property: Specify the tenant information under which your Azure AD web
      * application resides. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param servicePrincipalTenantId the servicePrincipalTenantId value to set.
      * @return the Office365LinkedService object itself.
      */
@@ -118,7 +153,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Get the servicePrincipalId property: Specify the application's client ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -128,7 +163,7 @@ public final class Office365LinkedService extends LinkedService {
     /**
      * Set the servicePrincipalId property: Specify the application's client ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the Office365LinkedService object itself.
      */
@@ -142,7 +177,7 @@ public final class Office365LinkedService extends LinkedService {
 
     /**
      * Get the servicePrincipalKey property: Specify the application's key.
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase servicePrincipalKey() {
@@ -151,7 +186,7 @@ public final class Office365LinkedService extends LinkedService {
 
     /**
      * Set the servicePrincipalKey property: Specify the application's key.
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the Office365LinkedService object itself.
      */
@@ -165,22 +200,22 @@ public final class Office365LinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the Office365LinkedService object itself.
      */
-    public Office365LinkedService withEncryptedCredential(Object encryptedCredential) {
+    public Office365LinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new Office365LinkedServiceTypeProperties();
         }
@@ -190,21 +225,99 @@ public final class Office365LinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model Office365LinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model Office365LinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(Office365LinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Office365LinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Office365LinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the Office365LinkedService.
+     */
+    public static Office365LinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Office365LinkedService deserializedOffice365LinkedService = new Office365LinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedOffice365LinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedOffice365LinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedOffice365LinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedOffice365LinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedOffice365LinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedOffice365LinkedService.innerTypeProperties
+                        = Office365LinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedOffice365LinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedOffice365LinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedOffice365LinkedService;
+        });
+    }
 }

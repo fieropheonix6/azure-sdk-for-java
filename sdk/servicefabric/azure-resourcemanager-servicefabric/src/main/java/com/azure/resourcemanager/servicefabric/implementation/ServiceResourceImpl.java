@@ -8,16 +8,11 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceInner;
-import com.azure.resourcemanager.servicefabric.models.ArmServicePackageActivationMode;
-import com.azure.resourcemanager.servicefabric.models.MoveCost;
-import com.azure.resourcemanager.servicefabric.models.PartitionSchemeDescription;
-import com.azure.resourcemanager.servicefabric.models.ServiceCorrelationDescription;
-import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricDescription;
-import com.azure.resourcemanager.servicefabric.models.ServicePlacementPolicyDescription;
 import com.azure.resourcemanager.servicefabric.models.ServiceResource;
+import com.azure.resourcemanager.servicefabric.models.ServiceResourceProperties;
 import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdate;
+import com.azure.resourcemanager.servicefabric.models.ServiceResourceUpdateProperties;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class ServiceResourceImpl implements ServiceResource, ServiceResource.Definition, ServiceResource.Update {
@@ -35,6 +30,10 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public ServiceResourceProperties properties() {
+        return this.innerModel().properties();
     }
 
     public String location() {
@@ -58,67 +57,16 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         return this.innerModel().systemData();
     }
 
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public String serviceTypeName() {
-        return this.innerModel().serviceTypeName();
-    }
-
-    public PartitionSchemeDescription partitionDescription() {
-        return this.innerModel().partitionDescription();
-    }
-
-    public ArmServicePackageActivationMode servicePackageActivationMode() {
-        return this.innerModel().servicePackageActivationMode();
-    }
-
-    public String serviceDnsName() {
-        return this.innerModel().serviceDnsName();
-    }
-
-    public String placementConstraints() {
-        return this.innerModel().placementConstraints();
-    }
-
-    public List<ServiceCorrelationDescription> correlationScheme() {
-        List<ServiceCorrelationDescription> inner = this.innerModel().correlationScheme();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<ServiceLoadMetricDescription> serviceLoadMetrics() {
-        List<ServiceLoadMetricDescription> inner = this.innerModel().serviceLoadMetrics();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<ServicePlacementPolicyDescription> servicePlacementPolicies() {
-        List<ServicePlacementPolicyDescription> inner = this.innerModel().servicePlacementPolicies();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public MoveCost defaultMoveCost() {
-        return this.innerModel().defaultMoveCost();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ServiceResourceInner innerModel() {
@@ -139,8 +87,8 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
 
     private ServiceResourceUpdate updateParameters;
 
-    public ServiceResourceImpl withExistingApplication(
-        String resourceGroupName, String clusterName, String applicationName) {
+    public ServiceResourceImpl withExistingApplication(String resourceGroupName, String clusterName,
+        String applicationName) {
         this.resourceGroupName = resourceGroupName;
         this.clusterName = clusterName;
         this.applicationName = applicationName;
@@ -148,22 +96,17 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(),
+                Context.NONE);
         return this;
     }
 
     public ServiceResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdate(
-                    resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdate(resourceGroupName, clusterName, applicationName, serviceName, this.innerModel(), context);
         return this;
     }
 
@@ -179,50 +122,42 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, Context.NONE);
         return this;
     }
 
     public ServiceResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .update(resourceGroupName, clusterName, applicationName, serviceName, updateParameters, context);
         return this;
     }
 
-    ServiceResourceImpl(
-        ServiceResourceInner innerObject, com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
+    ServiceResourceImpl(ServiceResourceInner innerObject,
+        com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.clusterName = Utils.getValueFromIdByName(innerObject.id(), "clusters");
-        this.applicationName = Utils.getValueFromIdByName(innerObject.id(), "applications");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "services");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.clusterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "clusters");
+        this.applicationName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "applications");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "services");
     }
 
     public ServiceResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getWithResponse(resourceGroupName, clusterName, applicationName, serviceName, context)
+            .getValue();
         return this;
     }
 
@@ -241,50 +176,13 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         return this;
     }
 
-    public ServiceResourceImpl withServiceTypeName(String serviceTypeName) {
-        this.innerModel().withServiceTypeName(serviceTypeName);
+    public ServiceResourceImpl withProperties(ServiceResourceProperties properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 
-    public ServiceResourceImpl withPartitionDescription(PartitionSchemeDescription partitionDescription) {
-        this.innerModel().withPartitionDescription(partitionDescription);
-        return this;
-    }
-
-    public ServiceResourceImpl withServicePackageActivationMode(
-        ArmServicePackageActivationMode servicePackageActivationMode) {
-        this.innerModel().withServicePackageActivationMode(servicePackageActivationMode);
-        return this;
-    }
-
-    public ServiceResourceImpl withServiceDnsName(String serviceDnsName) {
-        this.innerModel().withServiceDnsName(serviceDnsName);
-        return this;
-    }
-
-    public ServiceResourceImpl withPlacementConstraints(String placementConstraints) {
-        this.innerModel().withPlacementConstraints(placementConstraints);
-        return this;
-    }
-
-    public ServiceResourceImpl withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
-        this.innerModel().withCorrelationScheme(correlationScheme);
-        return this;
-    }
-
-    public ServiceResourceImpl withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
-        this.innerModel().withServiceLoadMetrics(serviceLoadMetrics);
-        return this;
-    }
-
-    public ServiceResourceImpl withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
-        this.innerModel().withServicePlacementPolicies(servicePlacementPolicies);
-        return this;
-    }
-
-    public ServiceResourceImpl withDefaultMoveCost(MoveCost defaultMoveCost) {
-        this.innerModel().withDefaultMoveCost(defaultMoveCost);
+    public ServiceResourceImpl withProperties(ServiceResourceUpdateProperties properties) {
+        this.updateParameters.withProperties(properties);
         return this;
     }
 }

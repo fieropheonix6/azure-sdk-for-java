@@ -5,29 +5,86 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Function information. */
+/**
+ * Function information.
+ */
 @Fluent
 public final class FunctionEnvelopeInner extends ProxyOnlyResource {
     /*
      * FunctionEnvelope resource specific properties
      */
-    @JsonProperty(value = "properties")
     private FunctionEnvelopeProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FunctionEnvelopeInner class.
+     */
+    public FunctionEnvelopeInner() {
+    }
 
     /**
      * Get the innerProperties property: FunctionEnvelope resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FunctionEnvelopeProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FunctionEnvelopeInner withKind(String kind) {
         super.withKind(kind);
@@ -36,7 +93,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the functionAppId property: Function App ID.
-     *
+     * 
      * @return the functionAppId value.
      */
     public String functionAppId() {
@@ -45,7 +102,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the functionAppId property: Function App ID.
-     *
+     * 
      * @param functionAppId the functionAppId value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -59,7 +116,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the scriptRootPathHref property: Script root path URI.
-     *
+     * 
      * @return the scriptRootPathHref value.
      */
     public String scriptRootPathHref() {
@@ -68,7 +125,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the scriptRootPathHref property: Script root path URI.
-     *
+     * 
      * @param scriptRootPathHref the scriptRootPathHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -82,7 +139,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the scriptHref property: Script URI.
-     *
+     * 
      * @return the scriptHref value.
      */
     public String scriptHref() {
@@ -91,7 +148,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the scriptHref property: Script URI.
-     *
+     * 
      * @param scriptHref the scriptHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -105,7 +162,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the configHref property: Config URI.
-     *
+     * 
      * @return the configHref value.
      */
     public String configHref() {
@@ -114,7 +171,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the configHref property: Config URI.
-     *
+     * 
      * @param configHref the configHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -128,7 +185,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the testDataHref property: Test data URI.
-     *
+     * 
      * @return the testDataHref value.
      */
     public String testDataHref() {
@@ -137,7 +194,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the testDataHref property: Test data URI.
-     *
+     * 
      * @param testDataHref the testDataHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -151,7 +208,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the secretsFileHref property: Secrets file URI.
-     *
+     * 
      * @return the secretsFileHref value.
      */
     public String secretsFileHref() {
@@ -160,7 +217,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the secretsFileHref property: Secrets file URI.
-     *
+     * 
      * @param secretsFileHref the secretsFileHref value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -174,7 +231,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the href property: Function URI.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -183,7 +240,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the href property: Function URI.
-     *
+     * 
      * @param href the href value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -197,7 +254,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the config property: Config information.
-     *
+     * 
      * @return the config value.
      */
     public Object config() {
@@ -206,7 +263,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the config property: Config information.
-     *
+     * 
      * @param config the config value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -220,7 +277,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the files property: File list.
-     *
+     * 
      * @return the files value.
      */
     public Map<String, String> files() {
@@ -229,7 +286,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the files property: File list.
-     *
+     * 
      * @param files the files value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -243,7 +300,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the testData property: Test data used when testing via the Azure Portal.
-     *
+     * 
      * @return the testData value.
      */
     public String testData() {
@@ -252,7 +309,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the testData property: Test data used when testing via the Azure Portal.
-     *
+     * 
      * @param testData the testData value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -266,7 +323,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the invokeUrlTemplate property: The invocation URL.
-     *
+     * 
      * @return the invokeUrlTemplate value.
      */
     public String invokeUrlTemplate() {
@@ -275,7 +332,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the invokeUrlTemplate property: The invocation URL.
-     *
+     * 
      * @param invokeUrlTemplate the invokeUrlTemplate value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -289,7 +346,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the language property: The function language.
-     *
+     * 
      * @return the language value.
      */
     public String language() {
@@ -298,7 +355,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the language property: The function language.
-     *
+     * 
      * @param language the language value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -312,7 +369,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Get the isDisabled property: Gets or sets a value indicating whether the function is disabled.
-     *
+     * 
      * @return the isDisabled value.
      */
     public Boolean isDisabled() {
@@ -321,7 +378,7 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Set the isDisabled property: Gets or sets a value indicating whether the function is disabled.
-     *
+     * 
      * @param isDisabled the isDisabled value to set.
      * @return the FunctionEnvelopeInner object itself.
      */
@@ -335,14 +392,59 @@ public final class FunctionEnvelopeInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FunctionEnvelopeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FunctionEnvelopeInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FunctionEnvelopeInner.
+     */
+    public static FunctionEnvelopeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FunctionEnvelopeInner deserializedFunctionEnvelopeInner = new FunctionEnvelopeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFunctionEnvelopeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFunctionEnvelopeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFunctionEnvelopeInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedFunctionEnvelopeInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFunctionEnvelopeInner.innerProperties = FunctionEnvelopeProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFunctionEnvelopeInner;
+        });
     }
 }

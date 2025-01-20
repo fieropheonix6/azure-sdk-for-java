@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Accounts List. */
+/**
+ * Samples for Accounts List.
+ */
 public final class AccountsListSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2022-05-01/examples/Accounts_List.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2024-07-01-preview/examples/Accounts_List.json
      */
     /**
      * Sample code: Accounts_List.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void accountsList(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
-        manager.accounts().list(Context.NONE);
+        manager.accounts().list(com.azure.core.util.Context.NONE);
     }
 }

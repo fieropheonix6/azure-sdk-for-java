@@ -8,30 +8,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Backups. */
+/**
+ * Resource collection API of Backups.
+ */
 public interface Backups {
     /**
-     * Get volume's backup status
-     *
-     * <p>Get the status of the backup for a volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the backup for a volume.
-     */
-    BackupStatus getStatus(String resourceGroupName, String accountName, String poolName, String volumeName);
-
-    /**
-     * Get volume's backup status
-     *
-     * <p>Get the status of the backup for a volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Get the latest backup status of a volume
+     * 
+     * Get the latest status of the backup for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -39,34 +25,33 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the backup for a volume along with {@link Response}.
+     * @return the latest status of the backup for a volume along with {@link Response}.
      */
-    Response<BackupStatus> getStatusWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    Response<BackupStatus> getLatestStatusWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
 
     /**
-     * Get volume's restore status
-     *
-     * <p>Get the status of the restore for a volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Get the latest backup status of a volume
+     * 
+     * Get the latest status of the backup for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume.
+     * @return the latest status of the backup for a volume.
      */
-    RestoreStatus getVolumeRestoreStatus(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    BackupStatus getLatestStatus(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Get volume's restore status
-     *
-     * <p>Get the status of the restore for a volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Get the latest restore status of a volume
+     * 
+     * Get the latest status of the restore for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -74,157 +59,160 @@ public interface Backups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume along with {@link Response}.
+     * @return the latest status of the restore for a volume along with {@link Response}.
      */
-    Response<RestoreStatus> getVolumeRestoreStatusWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    Response<RestoreStatus> getVolumeLatestRestoreStatusWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
+
+    /**
+     * Get the latest restore status of a volume
+     * 
+     * Get the latest status of the restore for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the latest status of the restore for a volume.
+     */
+    RestoreStatus getVolumeLatestRestoreStatus(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * List Backups
-     *
-     * <p>List all backups for a volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
+     * @param backupVaultName The name of the Backup Vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Backups as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Backup> list(String resourceGroupName, String accountName, String poolName, String volumeName);
+    PagedIterable<Backup> listByVault(String resourceGroupName, String accountName, String backupVaultName);
 
     /**
      * List Backups
-     *
-     * <p>List all backups for a volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param filter An option to specify the VolumeResourceId. If present, then only returns the backups under the
+     * specified volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Backups as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Backup> list(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    PagedIterable<Backup> listByVault(String resourceGroupName, String accountName, String backupVaultName,
+        String filter, Context context);
 
     /**
-     * Get a backup
-     *
-     * <p>Gets the specified backup of the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param backupName The name of the backup.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume.
-     */
-    Backup get(String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
-
-    /**
-     * Get a backup
-     *
-     * <p>Gets the specified backup of the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
+     * @param backupVaultName The name of the Backup Vault.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume along with {@link Response}.
+     * @return the specified Backup under Backup Vault along with {@link Response}.
      */
-    Response<Backup> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String backupName,
-        Context context);
+    Response<Backup> getWithResponse(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName, Context context);
+
+    /**
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Backup under Backup Vault.
+     */
+    Backup get(String resourceGroupName, String accountName, String backupVaultName, String backupName);
 
     /**
      * Delete backup
-     *
-     * <p>Delete a backup of the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
+     * @param backupVaultName The name of the Backup Vault.
      * @param backupName The name of the backup.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
+    void delete(String resourceGroupName, String accountName, String backupVaultName, String backupName);
 
     /**
      * Delete backup
-     *
-     * <p>Delete a backup of the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
+     * @param backupVaultName The name of the Backup Vault.
      * @param backupName The name of the backup.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String backupName,
+    void delete(String resourceGroupName, String accountName, String backupVaultName, String backupName,
         Context context);
 
     /**
-     * Get a backup
-     *
-     * <p>Gets the specified backup of the volume.
-     *
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume along with {@link Response}.
+     * @return the specified Backup under Backup Vault along with {@link Response}.
      */
     Backup getById(String id);
 
     /**
-     * Get a backup
-     *
-     * <p>Gets the specified backup of the volume.
-     *
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume along with {@link Response}.
+     * @return the specified Backup under Backup Vault along with {@link Response}.
      */
     Response<Backup> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete backup
-     *
-     * <p>Delete a backup of the volume.
-     *
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -234,9 +222,9 @@ public interface Backups {
 
     /**
      * Delete backup
-     *
-     * <p>Delete a backup of the volume.
-     *
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -247,7 +235,7 @@ public interface Backups {
 
     /**
      * Begins definition for a new Backup resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Backup definition.
      */

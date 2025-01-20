@@ -5,34 +5,49 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancerType. */
+/**
+ * The type of the load balancer.
+ */
 public final class LoadBalancerType extends ExpandableStringEnum<LoadBalancerType> {
-    /** Static value BreadthFirst for LoadBalancerType. */
+    /**
+     * Static value BreadthFirst for LoadBalancerType.
+     */
     public static final LoadBalancerType BREADTH_FIRST = fromString("BreadthFirst");
 
-    /** Static value DepthFirst for LoadBalancerType. */
+    /**
+     * Static value DepthFirst for LoadBalancerType.
+     */
     public static final LoadBalancerType DEPTH_FIRST = fromString("DepthFirst");
 
-    /** Static value Persistent for LoadBalancerType. */
+    /**
+     * Static value Persistent for LoadBalancerType.
+     */
     public static final LoadBalancerType PERSISTENT = fromString("Persistent");
 
     /**
+     * Creates a new instance of LoadBalancerType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerType() {
+    }
+
+    /**
      * Creates or finds a LoadBalancerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LoadBalancerType.
      */
-    @JsonCreator
     public static LoadBalancerType fromString(String name) {
         return fromString(name, LoadBalancerType.class);
     }
 
     /**
      * Gets known LoadBalancerType values.
-     *
+     * 
      * @return known LoadBalancerType values.
      */
     public static Collection<LoadBalancerType> values() {

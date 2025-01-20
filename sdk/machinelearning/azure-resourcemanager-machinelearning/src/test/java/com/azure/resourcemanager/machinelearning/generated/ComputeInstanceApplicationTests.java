@@ -7,25 +7,23 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ComputeInstanceApplication;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ComputeInstanceApplicationTests {
-    @Test
-    public void testDeserialize() {
-        ComputeInstanceApplication model =
-            BinaryData
-                .fromString("{\"displayName\":\"cyychunsjlp\",\"endpointUri\":\"twszhvvuic\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ComputeInstanceApplication model
+            = BinaryData.fromString("{\"displayName\":\"lfr\",\"endpointUri\":\"qownkiuajewnahw\"}")
                 .toObject(ComputeInstanceApplication.class);
-        Assertions.assertEquals("cyychunsjlp", model.displayName());
-        Assertions.assertEquals("twszhvvuic", model.endpointUri());
+        Assertions.assertEquals("lfr", model.displayName());
+        Assertions.assertEquals("qownkiuajewnahw", model.endpointUri());
     }
 
-    @Test
-    public void testSerialize() {
-        ComputeInstanceApplication model =
-            new ComputeInstanceApplication().withDisplayName("cyychunsjlp").withEndpointUri("twszhvvuic");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ComputeInstanceApplication model
+            = new ComputeInstanceApplication().withDisplayName("lfr").withEndpointUri("qownkiuajewnahw");
         model = BinaryData.fromObject(model).toObject(ComputeInstanceApplication.class);
-        Assertions.assertEquals("cyychunsjlp", model.displayName());
-        Assertions.assertEquals("twszhvvuic", model.endpointUri());
+        Assertions.assertEquals("lfr", model.displayName());
+        Assertions.assertEquals("qownkiuajewnahw", model.endpointUri());
     }
 }

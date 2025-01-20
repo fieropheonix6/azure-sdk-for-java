@@ -6,72 +6,121 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.DeleteActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Delete activity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Delete")
+/**
+ * Delete activity.
+ */
 @Fluent
 public final class DeleteActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "Delete";
+
+    /*
      * Delete activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private DeleteActivityTypeProperties innerTypeProperties = new DeleteActivityTypeProperties();
 
-    /** Creates an instance of DeleteActivity class. */
+    /**
+     * Creates an instance of DeleteActivity class.
+     */
     public DeleteActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Delete activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private DeleteActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DeleteActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public DeleteActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DeleteActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -81,7 +130,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Get the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the recursive value.
      */
     public Object recursive() {
@@ -91,7 +140,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Set the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
      * Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param recursive the recursive value to set.
      * @return the DeleteActivity object itself.
      */
@@ -106,7 +155,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Get the maxConcurrentConnections property: The max concurrent connections to connect data source at the same
      * time.
-     *
+     * 
      * @return the maxConcurrentConnections value.
      */
     public Integer maxConcurrentConnections() {
@@ -116,7 +165,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Set the maxConcurrentConnections property: The max concurrent connections to connect data source at the same
      * time.
-     *
+     * 
      * @param maxConcurrentConnections the maxConcurrentConnections value to set.
      * @return the DeleteActivity object itself.
      */
@@ -131,7 +180,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Get the enableLogging property: Whether to record detailed logs of delete-activity execution. Default value is
      * false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the enableLogging value.
      */
     public Object enableLogging() {
@@ -141,7 +190,7 @@ public final class DeleteActivity extends ExecutionActivity {
     /**
      * Set the enableLogging property: Whether to record detailed logs of delete-activity execution. Default value is
      * false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param enableLogging the enableLogging value to set.
      * @return the DeleteActivity object itself.
      */
@@ -155,7 +204,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the logStorageSettings property: Log storage settings customer need to provide when enableLogging is true.
-     *
+     * 
      * @return the logStorageSettings value.
      */
     public LogStorageSettings logStorageSettings() {
@@ -164,7 +213,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the logStorageSettings property: Log storage settings customer need to provide when enableLogging is true.
-     *
+     * 
      * @param logStorageSettings the logStorageSettings value to set.
      * @return the DeleteActivity object itself.
      */
@@ -178,7 +227,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the dataset property: Delete activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference dataset() {
@@ -187,7 +236,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the dataset property: Delete activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the DeleteActivity object itself.
      */
@@ -201,7 +250,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Get the storeSettings property: Delete activity store settings.
-     *
+     * 
      * @return the storeSettings value.
      */
     public StoreReadSettings storeSettings() {
@@ -210,7 +259,7 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Set the storeSettings property: Delete activity store settings.
-     *
+     * 
      * @param storeSettings the storeSettings value to set.
      * @return the DeleteActivity object itself.
      */
@@ -224,21 +273,115 @@ public final class DeleteActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model DeleteActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model DeleteActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model DeleteActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
+        if (linkedServiceName() != null) {
+            linkedServiceName().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DeleteActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeJsonField("policy", policy());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeleteActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeleteActivity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DeleteActivity.
+     */
+    public static DeleteActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeleteActivity deserializedDeleteActivity = new DeleteActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedDeleteActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedDeleteActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedDeleteActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedDeleteActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedDeleteActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedDeleteActivity.withUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedDeleteActivity.withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedDeleteActivity.withPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedDeleteActivity.innerTypeProperties = DeleteActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedDeleteActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDeleteActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedDeleteActivity;
+        });
+    }
 }

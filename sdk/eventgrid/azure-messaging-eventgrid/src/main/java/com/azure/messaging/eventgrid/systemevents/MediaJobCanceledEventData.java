@@ -5,7 +5,10 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -17,12 +20,27 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
     /*
      * Gets the Job outputs.
      */
-    @JsonProperty(value = "outputs")
     private List<MediaJobOutput> outputs;
+
+    /*
+     * The new state of the Job.
+     */
+    private MediaJobState state;
+
+    /*
+     * The previous state of the Job.
+     */
+    private MediaJobState previousState;
+
+    /**
+     * Creates an instance of MediaJobCanceledEventData class.
+     */
+    public MediaJobCanceledEventData() {
+    }
 
     /**
      * Get the outputs property: Gets the Job outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public List<MediaJobOutput> getOutputs() {
@@ -31,7 +49,7 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
 
     /**
      * Set the outputs property: Gets the Job outputs.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the MediaJobCanceledEventData object itself.
      */
@@ -40,10 +58,78 @@ public final class MediaJobCanceledEventData extends MediaJobStateChangeEventDat
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the state property: The new state of the Job.
+     * 
+     * @return the state value.
+     */
+    @Override
+    public MediaJobState getState() {
+        return this.state;
+    }
+
+    /**
+     * Get the previousState property: The previous state of the Job.
+     * 
+     * @return the previousState value.
+     */
+    @Override
+    public MediaJobState getPreviousState() {
+        return this.previousState;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobCanceledEventData setCorrelationData(Map<String, String> correlationData) {
         super.setCorrelationData(correlationData);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("correlationData", getCorrelationData(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaJobCanceledEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobCanceledEventData if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobCanceledEventData.
+     */
+    public static MediaJobCanceledEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobCanceledEventData deserializedMediaJobCanceledEventData = new MediaJobCanceledEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("previousState".equals(fieldName)) {
+                    deserializedMediaJobCanceledEventData.previousState = MediaJobState.fromString(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedMediaJobCanceledEventData.state = MediaJobState.fromString(reader.getString());
+                } else if ("correlationData".equals(fieldName)) {
+                    Map<String, String> correlationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobCanceledEventData.setCorrelationData(correlationData);
+                } else if ("outputs".equals(fieldName)) {
+                    List<MediaJobOutput> outputs = reader.readArray(reader1 -> MediaJobOutput.fromJson(reader1));
+                    deserializedMediaJobCanceledEventData.outputs = outputs;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaJobCanceledEventData;
+        });
     }
 }

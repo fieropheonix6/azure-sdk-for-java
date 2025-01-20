@@ -8,27 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PreValidateEnableBackupRequest;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PreValidateEnableBackupRequestTests {
-    @Test
-    public void testDeserialize() {
-        PreValidateEnableBackupRequest model =
-            BinaryData
-                .fromString(
-                    "{\"resourceType\":\"Sharepoint\",\"resourceId\":\"gdf\",\"vaultId\":\"lzl\",\"properties\":\"xrifkwmrvkts\"}")
-                .toObject(PreValidateEnableBackupRequest.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PreValidateEnableBackupRequest model = BinaryData.fromString(
+            "{\"resourceType\":\"Sharepoint\",\"resourceId\":\"gdf\",\"vaultId\":\"lzl\",\"properties\":\"xrifkwmrvkts\"}")
+            .toObject(PreValidateEnableBackupRequest.class);
         Assertions.assertEquals(DataSourceType.SHAREPOINT, model.resourceType());
         Assertions.assertEquals("gdf", model.resourceId());
         Assertions.assertEquals("lzl", model.vaultId());
         Assertions.assertEquals("xrifkwmrvkts", model.properties());
     }
 
-    @Test
-    public void testSerialize() {
-        PreValidateEnableBackupRequest model =
-            new PreValidateEnableBackupRequest()
-                .withResourceType(DataSourceType.SHAREPOINT)
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PreValidateEnableBackupRequest model
+            = new PreValidateEnableBackupRequest().withResourceType(DataSourceType.SHAREPOINT)
                 .withResourceId("gdf")
                 .withVaultId("lzl")
                 .withProperties("xrifkwmrvkts");

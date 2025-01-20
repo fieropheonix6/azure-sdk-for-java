@@ -4,33 +4,48 @@
 
 package com.azure.resourcemanager.customerinsights.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ConnectorMappingStates. */
+/**
+ * State of connector mapping.
+ */
 public enum ConnectorMappingStates {
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating"),
 
-    /** Enum value Created. */
+    /**
+     * Enum value Created.
+     */
     CREATED("Created"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Ready. */
+    /**
+     * Enum value Ready.
+     */
     READY("Ready"),
 
-    /** Enum value Running. */
+    /**
+     * Enum value Running.
+     */
     RUNNING("Running"),
 
-    /** Enum value Stopped. */
+    /**
+     * Enum value Stopped.
+     */
     STOPPED("Stopped"),
 
-    /** Enum value Expiring. */
+    /**
+     * Enum value Expiring.
+     */
     EXPIRING("Expiring");
 
-    /** The actual serialized value for a ConnectorMappingStates instance. */
+    /**
+     * The actual serialized value for a ConnectorMappingStates instance.
+     */
     private final String value;
 
     ConnectorMappingStates(String value) {
@@ -39,12 +54,14 @@ public enum ConnectorMappingStates {
 
     /**
      * Parses a serialized value to a ConnectorMappingStates instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ConnectorMappingStates object, or null if unable to parse.
      */
-    @JsonCreator
     public static ConnectorMappingStates fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ConnectorMappingStates[] items = ConnectorMappingStates.values();
         for (ConnectorMappingStates item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -54,7 +71,9 @@ public enum ConnectorMappingStates {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

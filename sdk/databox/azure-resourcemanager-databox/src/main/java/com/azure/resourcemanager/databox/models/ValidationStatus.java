@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ValidationStatus. */
+/**
+ * Create order limit validation status.
+ */
 public enum ValidationStatus {
-    /** Enum value Valid. */
+    /**
+     * Enum value Valid.
+     */
     VALID("Valid"),
 
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid"),
 
-    /** Enum value Skipped. */
+    /**
+     * Enum value Skipped.
+     */
     SKIPPED("Skipped");
 
-    /** The actual serialized value for a ValidationStatus instance. */
+    /**
+     * The actual serialized value for a ValidationStatus instance.
+     */
     private final String value;
 
     ValidationStatus(String value) {
@@ -27,12 +34,14 @@ public enum ValidationStatus {
 
     /**
      * Parses a serialized value to a ValidationStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ValidationStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static ValidationStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ValidationStatus[] items = ValidationStatus.values();
         for (ValidationStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum ValidationStatus {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

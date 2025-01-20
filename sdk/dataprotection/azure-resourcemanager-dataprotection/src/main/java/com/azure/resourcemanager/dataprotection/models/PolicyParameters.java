@@ -5,25 +5,37 @@
 package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Parameters in Policy. */
+/**
+ * Parameters in Policy.
+ */
 @Fluent
-public final class PolicyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyParameters.class);
-
+public final class PolicyParameters implements JsonSerializable<PolicyParameters> {
     /*
      * Gets or sets the DataStore Parameters
      */
-    @JsonProperty(value = "dataStoreParametersList")
     private List<DataStoreParameters> dataStoreParametersList;
+
+    /*
+     * Gets or sets the Backup Data Source Parameters
+     */
+    private List<BackupDatasourceParameters> backupDatasourceParametersList;
+
+    /**
+     * Creates an instance of PolicyParameters class.
+     */
+    public PolicyParameters() {
+    }
 
     /**
      * Get the dataStoreParametersList property: Gets or sets the DataStore Parameters.
-     *
+     * 
      * @return the dataStoreParametersList value.
      */
     public List<DataStoreParameters> dataStoreParametersList() {
@@ -32,7 +44,7 @@ public final class PolicyParameters {
 
     /**
      * Set the dataStoreParametersList property: Gets or sets the DataStore Parameters.
-     *
+     * 
      * @param dataStoreParametersList the dataStoreParametersList value to set.
      * @return the PolicyParameters object itself.
      */
@@ -42,13 +54,82 @@ public final class PolicyParameters {
     }
 
     /**
+     * Get the backupDatasourceParametersList property: Gets or sets the Backup Data Source Parameters.
+     * 
+     * @return the backupDatasourceParametersList value.
+     */
+    public List<BackupDatasourceParameters> backupDatasourceParametersList() {
+        return this.backupDatasourceParametersList;
+    }
+
+    /**
+     * Set the backupDatasourceParametersList property: Gets or sets the Backup Data Source Parameters.
+     * 
+     * @param backupDatasourceParametersList the backupDatasourceParametersList value to set.
+     * @return the PolicyParameters object itself.
+     */
+    public PolicyParameters
+        withBackupDatasourceParametersList(List<BackupDatasourceParameters> backupDatasourceParametersList) {
+        this.backupDatasourceParametersList = backupDatasourceParametersList;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dataStoreParametersList() != null) {
             dataStoreParametersList().forEach(e -> e.validate());
         }
+        if (backupDatasourceParametersList() != null) {
+            backupDatasourceParametersList().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("dataStoreParametersList", this.dataStoreParametersList,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("backupDatasourceParametersList", this.backupDatasourceParametersList,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyParameters if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyParameters.
+     */
+    public static PolicyParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyParameters deserializedPolicyParameters = new PolicyParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataStoreParametersList".equals(fieldName)) {
+                    List<DataStoreParameters> dataStoreParametersList
+                        = reader.readArray(reader1 -> DataStoreParameters.fromJson(reader1));
+                    deserializedPolicyParameters.dataStoreParametersList = dataStoreParametersList;
+                } else if ("backupDatasourceParametersList".equals(fieldName)) {
+                    List<BackupDatasourceParameters> backupDatasourceParametersList
+                        = reader.readArray(reader1 -> BackupDatasourceParameters.fromJson(reader1));
+                    deserializedPolicyParameters.backupDatasourceParametersList = backupDatasourceParametersList;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyParameters;
+        });
     }
 }

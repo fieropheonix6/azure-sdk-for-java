@@ -5,123 +5,120 @@
 package com.azure.containers.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.time.format.DateTimeFormatter;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Additional information provided through arbitrary metadata. */
+/**
+ * Additional information provided through arbitrary metadata.
+ */
 @Fluent
-public final class OciAnnotations {
+public final class OciAnnotations implements JsonSerializable<OciAnnotations> {
     /*
-     * Date and time on which the image was built (string, date-time as defined
-     * by https://tools.ietf.org/html/rfc3339#section-5.6)
+     * Date and time on which the image was built (string, date-time as defined by
+     * https://tools.ietf.org/html/rfc3339#section-5.6)
      */
-    @JsonProperty(value = "org.opencontainers.image.created")
-    private OffsetDateTime created;
+    private OffsetDateTime createdOn;
 
     /*
      * Contact details of the people or organization responsible for the image.
      */
-    @JsonProperty(value = "org.opencontainers.image.authors")
     private String authors;
 
     /*
      * URL to find more information on the image.
      */
-    @JsonProperty(value = "org.opencontainers.image.url")
     private String url;
 
     /*
      * URL to get documentation on the image.
      */
-    @JsonProperty(value = "org.opencontainers.image.documentation")
     private String documentation;
 
     /*
      * URL to get source code for building the image.
      */
-    @JsonProperty(value = "org.opencontainers.image.source")
     private String source;
 
     /*
-     * Version of the packaged software. The version MAY match a label or tag
-     * in the source code repository, may also be Semantic
-     * versioning-compatible
+     * Version of the packaged software. The version MAY match a label or tag in the source code repository, may also be
+     * Semantic versioning-compatible
      */
-    @JsonProperty(value = "org.opencontainers.image.version")
     private String version;
 
     /*
      * Source control revision identifier for the packaged software.
      */
-    @JsonProperty(value = "org.opencontainers.image.revision")
     private String revision;
 
     /*
      * Name of the distributing entity, organization or individual.
      */
-    @JsonProperty(value = "org.opencontainers.image.vendor")
     private String vendor;
 
     /*
-     * License(s) under which contained software is distributed as an SPDX
-     * License Expression.
+     * License(s) under which contained software is distributed as an SPDX License Expression.
      */
-    @JsonProperty(value = "org.opencontainers.image.licenses")
     private String licenses;
 
     /*
      * Name of the reference for a target.
      */
-    @JsonProperty(value = "org.opencontainers.image.ref.name")
     private String name;
 
     /*
      * Human-readable title of the image
      */
-    @JsonProperty(value = "org.opencontainers.image.title")
     private String title;
 
     /*
      * Human-readable description of the software packaged in the image
      */
-    @JsonProperty(value = "org.opencontainers.image.description")
     private String description;
 
     /*
      * Additional information provided through arbitrary metadata.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
     /**
-     * Get the created property: Date and time on which the image was built (string, date-time as defined by
-     * https://tools.ietf.org/html/rfc3339#section-5.6).
-     *
-     * @return the created value.
+     * Creates an instance of OciAnnotations class.
      */
-    public OffsetDateTime getCreated() {
-        return this.created;
+    public OciAnnotations() {
     }
 
     /**
-     * Set the created property: Date and time on which the image was built (string, date-time as defined by
+     * Get the createdOn property: Date and time on which the image was built (string, date-time as defined by
      * https://tools.ietf.org/html/rfc3339#section-5.6).
-     *
-     * @param created the created value to set.
+     * 
+     * @return the createdOn value.
+     */
+    public OffsetDateTime getCreatedOn() {
+        return this.createdOn;
+    }
+
+    /**
+     * Set the createdOn property: Date and time on which the image was built (string, date-time as defined by
+     * https://tools.ietf.org/html/rfc3339#section-5.6).
+     * 
+     * @param createdOn the createdOn value to set.
      * @return the OciAnnotations object itself.
      */
-    public OciAnnotations setCreated(OffsetDateTime created) {
-        this.created = created;
+    public OciAnnotations setCreatedOn(OffsetDateTime createdOn) {
+        this.createdOn = createdOn;
         return this;
     }
 
     /**
      * Get the authors property: Contact details of the people or organization responsible for the image.
-     *
+     * 
      * @return the authors value.
      */
     public String getAuthors() {
@@ -130,7 +127,7 @@ public final class OciAnnotations {
 
     /**
      * Set the authors property: Contact details of the people or organization responsible for the image.
-     *
+     * 
      * @param authors the authors value to set.
      * @return the OciAnnotations object itself.
      */
@@ -141,7 +138,7 @@ public final class OciAnnotations {
 
     /**
      * Get the url property: URL to find more information on the image.
-     *
+     * 
      * @return the url value.
      */
     public String getUrl() {
@@ -150,7 +147,7 @@ public final class OciAnnotations {
 
     /**
      * Set the url property: URL to find more information on the image.
-     *
+     * 
      * @param url the url value to set.
      * @return the OciAnnotations object itself.
      */
@@ -161,7 +158,7 @@ public final class OciAnnotations {
 
     /**
      * Get the documentation property: URL to get documentation on the image.
-     *
+     * 
      * @return the documentation value.
      */
     public String getDocumentation() {
@@ -170,7 +167,7 @@ public final class OciAnnotations {
 
     /**
      * Set the documentation property: URL to get documentation on the image.
-     *
+     * 
      * @param documentation the documentation value to set.
      * @return the OciAnnotations object itself.
      */
@@ -181,7 +178,7 @@ public final class OciAnnotations {
 
     /**
      * Get the source property: URL to get source code for building the image.
-     *
+     * 
      * @return the source value.
      */
     public String getSource() {
@@ -190,7 +187,7 @@ public final class OciAnnotations {
 
     /**
      * Set the source property: URL to get source code for building the image.
-     *
+     * 
      * @param source the source value to set.
      * @return the OciAnnotations object itself.
      */
@@ -202,7 +199,7 @@ public final class OciAnnotations {
     /**
      * Get the version property: Version of the packaged software. The version MAY match a label or tag in the source
      * code repository, may also be Semantic versioning-compatible.
-     *
+     * 
      * @return the version value.
      */
     public String getVersion() {
@@ -212,7 +209,7 @@ public final class OciAnnotations {
     /**
      * Set the version property: Version of the packaged software. The version MAY match a label or tag in the source
      * code repository, may also be Semantic versioning-compatible.
-     *
+     * 
      * @param version the version value to set.
      * @return the OciAnnotations object itself.
      */
@@ -223,7 +220,7 @@ public final class OciAnnotations {
 
     /**
      * Get the revision property: Source control revision identifier for the packaged software.
-     *
+     * 
      * @return the revision value.
      */
     public String getRevision() {
@@ -232,7 +229,7 @@ public final class OciAnnotations {
 
     /**
      * Set the revision property: Source control revision identifier for the packaged software.
-     *
+     * 
      * @param revision the revision value to set.
      * @return the OciAnnotations object itself.
      */
@@ -243,7 +240,7 @@ public final class OciAnnotations {
 
     /**
      * Get the vendor property: Name of the distributing entity, organization or individual.
-     *
+     * 
      * @return the vendor value.
      */
     public String getVendor() {
@@ -252,7 +249,7 @@ public final class OciAnnotations {
 
     /**
      * Set the vendor property: Name of the distributing entity, organization or individual.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the OciAnnotations object itself.
      */
@@ -264,7 +261,7 @@ public final class OciAnnotations {
     /**
      * Get the licenses property: License(s) under which contained software is distributed as an SPDX License
      * Expression.
-     *
+     * 
      * @return the licenses value.
      */
     public String getLicenses() {
@@ -274,7 +271,7 @@ public final class OciAnnotations {
     /**
      * Set the licenses property: License(s) under which contained software is distributed as an SPDX License
      * Expression.
-     *
+     * 
      * @param licenses the licenses value to set.
      * @return the OciAnnotations object itself.
      */
@@ -285,7 +282,7 @@ public final class OciAnnotations {
 
     /**
      * Get the name property: Name of the reference for a target.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -294,7 +291,7 @@ public final class OciAnnotations {
 
     /**
      * Set the name property: Name of the reference for a target.
-     *
+     * 
      * @param name the name value to set.
      * @return the OciAnnotations object itself.
      */
@@ -305,7 +302,7 @@ public final class OciAnnotations {
 
     /**
      * Get the title property: Human-readable title of the image.
-     *
+     * 
      * @return the title value.
      */
     public String getTitle() {
@@ -314,7 +311,7 @@ public final class OciAnnotations {
 
     /**
      * Set the title property: Human-readable title of the image.
-     *
+     * 
      * @param title the title value to set.
      * @return the OciAnnotations object itself.
      */
@@ -325,7 +322,7 @@ public final class OciAnnotations {
 
     /**
      * Get the description property: Human-readable description of the software packaged in the image.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -334,7 +331,7 @@ public final class OciAnnotations {
 
     /**
      * Set the description property: Human-readable description of the software packaged in the image.
-     *
+     * 
      * @param description the description value to set.
      * @return the OciAnnotations object itself.
      */
@@ -345,17 +342,16 @@ public final class OciAnnotations {
 
     /**
      * Get the additionalProperties property: Additional information provided through arbitrary metadata.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> getAdditionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Additional information provided through arbitrary metadata.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the OciAnnotations object itself.
      */
@@ -364,11 +360,85 @@ public final class OciAnnotations {
         return this;
     }
 
-    @JsonAnySetter
-    void setAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("org.opencontainers.image.created",
+            this.createdOn == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdOn));
+        jsonWriter.writeStringField("org.opencontainers.image.authors", this.authors);
+        jsonWriter.writeStringField("org.opencontainers.image.url", this.url);
+        jsonWriter.writeStringField("org.opencontainers.image.documentation", this.documentation);
+        jsonWriter.writeStringField("org.opencontainers.image.source", this.source);
+        jsonWriter.writeStringField("org.opencontainers.image.version", this.version);
+        jsonWriter.writeStringField("org.opencontainers.image.revision", this.revision);
+        jsonWriter.writeStringField("org.opencontainers.image.vendor", this.vendor);
+        jsonWriter.writeStringField("org.opencontainers.image.licenses", this.licenses);
+        jsonWriter.writeStringField("org.opencontainers.image.ref.name", this.name);
+        jsonWriter.writeStringField("org.opencontainers.image.title", this.title);
+        jsonWriter.writeStringField("org.opencontainers.image.description", this.description);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
         }
-        additionalProperties.put(key, value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OciAnnotations from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OciAnnotations if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OciAnnotations.
+     */
+    public static OciAnnotations fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OciAnnotations deserializedOciAnnotations = new OciAnnotations();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("org.opencontainers.image.created".equals(fieldName)) {
+                    deserializedOciAnnotations.createdOn = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("org.opencontainers.image.authors".equals(fieldName)) {
+                    deserializedOciAnnotations.authors = reader.getString();
+                } else if ("org.opencontainers.image.url".equals(fieldName)) {
+                    deserializedOciAnnotations.url = reader.getString();
+                } else if ("org.opencontainers.image.documentation".equals(fieldName)) {
+                    deserializedOciAnnotations.documentation = reader.getString();
+                } else if ("org.opencontainers.image.source".equals(fieldName)) {
+                    deserializedOciAnnotations.source = reader.getString();
+                } else if ("org.opencontainers.image.version".equals(fieldName)) {
+                    deserializedOciAnnotations.version = reader.getString();
+                } else if ("org.opencontainers.image.revision".equals(fieldName)) {
+                    deserializedOciAnnotations.revision = reader.getString();
+                } else if ("org.opencontainers.image.vendor".equals(fieldName)) {
+                    deserializedOciAnnotations.vendor = reader.getString();
+                } else if ("org.opencontainers.image.licenses".equals(fieldName)) {
+                    deserializedOciAnnotations.licenses = reader.getString();
+                } else if ("org.opencontainers.image.ref.name".equals(fieldName)) {
+                    deserializedOciAnnotations.name = reader.getString();
+                } else if ("org.opencontainers.image.title".equals(fieldName)) {
+                    deserializedOciAnnotations.title = reader.getString();
+                } else if ("org.opencontainers.image.description".equals(fieldName)) {
+                    deserializedOciAnnotations.description = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedOciAnnotations.additionalProperties = additionalProperties;
+
+            return deserializedOciAnnotations;
+        });
     }
 }

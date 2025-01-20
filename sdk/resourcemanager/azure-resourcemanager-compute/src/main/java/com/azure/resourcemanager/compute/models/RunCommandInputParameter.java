@@ -6,30 +6,36 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the properties of a run command parameter. */
+/**
+ * Describes the properties of a run command parameter.
+ */
 @Fluent
-public final class RunCommandInputParameter {
+public final class RunCommandInputParameter implements JsonSerializable<RunCommandInputParameter> {
     /*
      * The run command parameter name.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
      * The run command parameter value.
      */
-    @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of RunCommandInputParameter class. */
+    /**
+     * Creates an instance of RunCommandInputParameter class.
+     */
     public RunCommandInputParameter() {
     }
 
     /**
      * Get the name property: The run command parameter name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +44,7 @@ public final class RunCommandInputParameter {
 
     /**
      * Set the name property: The run command parameter name.
-     *
+     * 
      * @param name the name value to set.
      * @return the RunCommandInputParameter object itself.
      */
@@ -49,7 +55,7 @@ public final class RunCommandInputParameter {
 
     /**
      * Get the value property: The run command parameter value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +64,7 @@ public final class RunCommandInputParameter {
 
     /**
      * Set the value property: The run command parameter value.
-     *
+     * 
      * @param value the value value to set.
      * @return the RunCommandInputParameter object itself.
      */
@@ -69,21 +75,59 @@ public final class RunCommandInputParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RunCommandInputParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model RunCommandInputParameter"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model RunCommandInputParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model RunCommandInputParameter"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RunCommandInputParameter.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RunCommandInputParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RunCommandInputParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RunCommandInputParameter.
+     */
+    public static RunCommandInputParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RunCommandInputParameter deserializedRunCommandInputParameter = new RunCommandInputParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRunCommandInputParameter.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedRunCommandInputParameter.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRunCommandInputParameter;
+        });
+    }
 }

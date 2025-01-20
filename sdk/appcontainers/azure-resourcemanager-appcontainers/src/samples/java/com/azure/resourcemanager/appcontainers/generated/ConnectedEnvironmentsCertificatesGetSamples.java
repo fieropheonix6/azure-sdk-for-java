@@ -4,21 +4,22 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ConnectedEnvironmentsCertificates Get. */
+/**
+ * Samples for ConnectedEnvironmentsCertificates Get.
+ */
 public final class ConnectedEnvironmentsCertificatesGetSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/ConnectedEnvironmentsCertificate_Get.json
+     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/
+     * ConnectedEnvironmentsCertificate_Get.json
      */
     /**
      * Sample code: Get Certificate.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void getCertificate(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager
-            .connectedEnvironmentsCertificates()
-            .getWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name", Context.NONE);
+        manager.connectedEnvironmentsCertificates()
+            .getWithResponse("examplerg", "testcontainerenv", "certificate-firendly-name",
+                com.azure.core.util.Context.NONE);
     }
 }

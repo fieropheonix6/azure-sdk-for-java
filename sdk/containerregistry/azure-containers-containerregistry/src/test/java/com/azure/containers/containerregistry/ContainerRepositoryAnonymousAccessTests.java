@@ -4,9 +4,12 @@
 package com.azure.containers.containerregistry;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.identity.AzureAuthorityHosts;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -19,21 +22,32 @@ import static com.azure.containers.containerregistry.TestUtils.ANONYMOUS_REGISTR
 import static com.azure.containers.containerregistry.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
 import static com.azure.containers.containerregistry.TestUtils.HELLO_WORLD_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.getAuthority;
+import static com.azure.containers.containerregistry.TestUtils.importImage;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.SAME_THREAD)
 public class ContainerRepositoryAnonymousAccessTests extends ContainerRegistryClientsTestBase {
     @BeforeEach
     void beforeEach() throws InterruptedException {
-        TestUtils.importImage(getTestMode(), ANONYMOUS_REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME, Arrays.asList("latest", "v1", "v2", "v3", "v4"), ANONYMOUS_REGISTRY_ENDPOINT);
+        importImage(getTestMode(), ANONYMOUS_REGISTRY_NAME, HELLO_WORLD_REPOSITORY_NAME,
+            Arrays.asList("latest", "v1", "v2", "v3", "v4"), ANONYMOUS_REGISTRY_ENDPOINT);
+    }
+
+    private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient).assertSync().build();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getHttpClients")
     public void listAnonymousRepositories(HttpClient httpClient) {
         Assumptions.assumeFalse(ANONYMOUS_REGISTRY_ENDPOINT == null);
-        Assumptions.assumeTrue(getAuthority(ANONYMOUS_REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
+        Assumptions
+            .assumeTrue(getAuthority(ANONYMOUS_REGISTRY_ENDPOINT).equals(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD));
 
-        ContainerRegistryClient client = getContainerRegistryBuilder(httpClient, null, ANONYMOUS_REGISTRY_ENDPOINT).buildClient();
+        ContainerRegistryClient client = getContainerRegistryBuilder(
+            buildSyncAssertingClient(
+                interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient),
+            null, ANONYMOUS_REGISTRY_ENDPOINT).buildClient();
         List<String> repositories = client.listRepositoryNames().stream().collect(Collectors.toList());
         assertTrue(repositories.stream().anyMatch(HELLO_WORLD_REPOSITORY_NAME::equals));
     }

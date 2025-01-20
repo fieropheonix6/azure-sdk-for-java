@@ -5,35 +5,36 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
-/** The HealthcareEntitiesDocumentResult model. */
+/**
+ * The HealthcareEntitiesDocumentResult model.
+ */
 @Fluent
 public class HealthcareEntitiesDocumentResult extends DocumentResult {
     /*
      * Healthcare entities.
      */
-    @JsonProperty(value = "entities", required = true)
     private List<HealthcareEntity> entities;
 
     /*
      * Healthcare entity relations.
      */
-    @JsonProperty(value = "relations", required = true)
     private List<HealthcareRelation> relations;
 
-    /*
-     * JSON bundle containing a FHIR compatible object for consumption in other Healthcare tools. For additional
-     * information see https://www.hl7.org/fhir/overview.html.
+    /**
+     * Creates an instance of HealthcareEntitiesDocumentResult class.
      */
-    @JsonProperty(value = "fhirBundle")
-    private Map<String, Object> fhirBundle;
+    public HealthcareEntitiesDocumentResult() {
+    }
 
     /**
      * Get the entities property: Healthcare entities.
-     *
+     * 
      * @return the entities value.
      */
     public List<HealthcareEntity> getEntities() {
@@ -42,7 +43,7 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Set the entities property: Healthcare entities.
-     *
+     * 
      * @param entities the entities value to set.
      * @return the HealthcareEntitiesDocumentResult object itself.
      */
@@ -53,7 +54,7 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Get the relations property: Healthcare entity relations.
-     *
+     * 
      * @return the relations value.
      */
     public List<HealthcareRelation> getRelations() {
@@ -62,7 +63,7 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
 
     /**
      * Set the relations property: Healthcare entity relations.
-     *
+     * 
      * @param relations the relations value to set.
      * @return the HealthcareEntitiesDocumentResult object itself.
      */
@@ -72,45 +73,83 @@ public class HealthcareEntitiesDocumentResult extends DocumentResult {
     }
 
     /**
-     * Get the fhirBundle property: JSON bundle containing a FHIR compatible object for consumption in other Healthcare
-     * tools. For additional information see https://www.hl7.org/fhir/overview.html.
-     *
-     * @return the fhirBundle value.
+     * {@inheritDoc}
      */
-    public Map<String, Object> getFhirBundle() {
-        return this.fhirBundle;
-    }
-
-    /**
-     * Set the fhirBundle property: JSON bundle containing a FHIR compatible object for consumption in other Healthcare
-     * tools. For additional information see https://www.hl7.org/fhir/overview.html.
-     *
-     * @param fhirBundle the fhirBundle value to set.
-     * @return the HealthcareEntitiesDocumentResult object itself.
-     */
-    public HealthcareEntitiesDocumentResult setFhirBundle(Map<String, Object> fhirBundle) {
-        this.fhirBundle = fhirBundle;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public HealthcareEntitiesDocumentResult setId(String id) {
         super.setId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareEntitiesDocumentResult setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HealthcareEntitiesDocumentResult setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeArrayField("warnings", getWarnings(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("statistics", getStatistics());
+        jsonWriter.writeArrayField("entities", this.entities, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("relations", this.relations, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthcareEntitiesDocumentResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthcareEntitiesDocumentResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HealthcareEntitiesDocumentResult.
+     */
+    public static HealthcareEntitiesDocumentResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthcareEntitiesDocumentResult deserializedHealthcareEntitiesDocumentResult
+                = new HealthcareEntitiesDocumentResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHealthcareEntitiesDocumentResult.setId(reader.getString());
+                } else if ("warnings".equals(fieldName)) {
+                    List<DocumentWarning> warnings = reader.readArray(reader1 -> DocumentWarning.fromJson(reader1));
+                    deserializedHealthcareEntitiesDocumentResult.setWarnings(warnings);
+                } else if ("statistics".equals(fieldName)) {
+                    deserializedHealthcareEntitiesDocumentResult.setStatistics(DocumentStatistics.fromJson(reader));
+                } else if ("entities".equals(fieldName)) {
+                    List<HealthcareEntity> entities = reader.readArray(reader1 -> HealthcareEntity.fromJson(reader1));
+                    deserializedHealthcareEntitiesDocumentResult.entities = entities;
+                } else if ("relations".equals(fieldName)) {
+                    List<HealthcareRelation> relations
+                        = reader.readArray(reader1 -> HealthcareRelation.fromJson(reader1));
+                    deserializedHealthcareEntitiesDocumentResult.relations = relations;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthcareEntitiesDocumentResult;
+        });
     }
 }

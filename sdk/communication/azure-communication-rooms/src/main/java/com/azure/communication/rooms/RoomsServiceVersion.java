@@ -10,14 +10,14 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum RoomsServiceVersion implements ServiceVersion {
     /**
-     * Service version {@code 2021-04-07}
+     * Service version {@code 2023-06-14}
      */
-    V2021_04_07("2021-04-07"),
+    V2023_06_14("2023-06-14"),
 
     /**
-     * Service version {@code 2022-02-01}
+     * Service version {@code 2024-04-15}
      */
-    V2022_02_01("2022-02-01");
+    V2024_04_15("2024-04-15");
 
     private final String version;
 
@@ -39,6 +39,6 @@ public enum RoomsServiceVersion implements ServiceVersion {
      * @return the latest {@link RoomsServiceVersion}
      */
     public static RoomsServiceVersion getLatest() {
-        return V2022_02_01;
+        return V2024_04_15;
     }
 }

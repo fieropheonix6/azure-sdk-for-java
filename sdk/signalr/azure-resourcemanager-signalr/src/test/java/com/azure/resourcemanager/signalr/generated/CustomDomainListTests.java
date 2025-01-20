@@ -7,35 +7,32 @@ package com.azure.resourcemanager.signalr.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.signalr.fluent.models.CustomDomainInner;
 import com.azure.resourcemanager.signalr.models.CustomDomainList;
+import com.azure.resourcemanager.signalr.models.ResourceReference;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomDomainListTests {
-    @Test
-    public void testDeserialize() {
-        CustomDomainList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Running\",\"domainName\":\"gynduha\"},\"id\":\"hqlkthumaqo\",\"name\":\"bgycduiertgccym\",\"type\":\"aolps\"},{\"properties\":{\"provisioningState\":\"Creating\",\"domainName\":\"fmmdnbbg\"},\"id\":\"zpswiydmc\",\"name\":\"yhz\",\"type\":\"xssadbzmnvdf\"},{\"properties\":{\"provisioningState\":\"Moving\",\"domainName\":\"ao\"},\"id\":\"vxzbncb\",\"name\":\"ylpstdbhhxsrzdz\",\"type\":\"cers\"}],\"nextLink\":\"ntnev\"}")
-                .toObject(CustomDomainList.class);
-        Assertions.assertEquals("gynduha", model.value().get(0).domainName());
-        Assertions.assertEquals("ntnev", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CustomDomainList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"domainName\":\"ublwpcesutrg\",\"customCertificate\":{\"id\":\"pauutpw\"}},\"id\":\"qhih\",\"name\":\"jqgwzp\",\"type\":\"fqntcyp\"},{\"properties\":{\"provisioningState\":\"Canceled\",\"domainName\":\"foimwkslircizjxv\",\"customCertificate\":{\"id\":\"fceacvlhvygd\"}},\"id\":\"ftumrtwnawjslbiw\",\"name\":\"ojgcyzt\",\"type\":\"fmznba\"}],\"nextLink\":\"ph\"}")
+            .toObject(CustomDomainList.class);
+        Assertions.assertEquals("ublwpcesutrg", model.value().get(0).domainName());
+        Assertions.assertEquals("pauutpw", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("ph", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        CustomDomainList model =
-            new CustomDomainList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new CustomDomainInner().withDomainName("gynduha"),
-                            new CustomDomainInner().withDomainName("fmmdnbbg"),
-                            new CustomDomainInner().withDomainName("ao")))
-                .withNextLink("ntnev");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CustomDomainList model = new CustomDomainList().withValue(Arrays.asList(
+            new CustomDomainInner().withDomainName("ublwpcesutrg")
+                .withCustomCertificate(new ResourceReference().withId("pauutpw")),
+            new CustomDomainInner().withDomainName("foimwkslircizjxv")
+                .withCustomCertificate(new ResourceReference().withId("fceacvlhvygd"))))
+            .withNextLink("ph");
         model = BinaryData.fromObject(model).toObject(CustomDomainList.class);
-        Assertions.assertEquals("gynduha", model.value().get(0).domainName());
-        Assertions.assertEquals("ntnev", model.nextLink());
+        Assertions.assertEquals("ublwpcesutrg", model.value().get(0).domainName());
+        Assertions.assertEquals("pauutpw", model.value().get(0).customCertificate().id());
+        Assertions.assertEquals("ph", model.nextLink());
     }
 }

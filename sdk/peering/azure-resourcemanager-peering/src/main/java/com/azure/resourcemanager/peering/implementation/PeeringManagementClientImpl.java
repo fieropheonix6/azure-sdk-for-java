@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.peering.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -15,6 +16,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -43,261 +45,302 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the PeeringManagementClientImpl type. */
+/**
+ * Initializes a new instance of the PeeringManagementClientImpl type.
+ */
 @ServiceClient(builder = PeeringManagementClientBuilder.class)
 public final class PeeringManagementClientImpl implements PeeringManagementClient {
-    private final ClientLogger logger = new ClientLogger(PeeringManagementClientImpl.class);
-
-    /** The Azure subscription ID. */
+    /**
+     * The Azure subscription ID.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The Azure subscription ID.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The CdnPeeringPrefixesClient object to access its operations. */
+    /**
+     * The CdnPeeringPrefixesClient object to access its operations.
+     */
     private final CdnPeeringPrefixesClient cdnPeeringPrefixes;
 
     /**
      * Gets the CdnPeeringPrefixesClient object to access its operations.
-     *
+     * 
      * @return the CdnPeeringPrefixesClient object.
      */
     public CdnPeeringPrefixesClient getCdnPeeringPrefixes() {
         return this.cdnPeeringPrefixes;
     }
 
-    /** The ResourceProvidersClient object to access its operations. */
+    /**
+     * The ResourceProvidersClient object to access its operations.
+     */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The LegacyPeeringsClient object to access its operations. */
+    /**
+     * The LegacyPeeringsClient object to access its operations.
+     */
     private final LegacyPeeringsClient legacyPeerings;
 
     /**
      * Gets the LegacyPeeringsClient object to access its operations.
-     *
+     * 
      * @return the LegacyPeeringsClient object.
      */
     public LegacyPeeringsClient getLegacyPeerings() {
         return this.legacyPeerings;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The PeerAsnsClient object to access its operations. */
+    /**
+     * The PeerAsnsClient object to access its operations.
+     */
     private final PeerAsnsClient peerAsns;
 
     /**
      * Gets the PeerAsnsClient object to access its operations.
-     *
+     * 
      * @return the PeerAsnsClient object.
      */
     public PeerAsnsClient getPeerAsns() {
         return this.peerAsns;
     }
 
-    /** The PeeringLocationsClient object to access its operations. */
+    /**
+     * The PeeringLocationsClient object to access its operations.
+     */
     private final PeeringLocationsClient peeringLocations;
 
     /**
      * Gets the PeeringLocationsClient object to access its operations.
-     *
+     * 
      * @return the PeeringLocationsClient object.
      */
     public PeeringLocationsClient getPeeringLocations() {
         return this.peeringLocations;
     }
 
-    /** The RegisteredAsnsClient object to access its operations. */
+    /**
+     * The RegisteredAsnsClient object to access its operations.
+     */
     private final RegisteredAsnsClient registeredAsns;
 
     /**
      * Gets the RegisteredAsnsClient object to access its operations.
-     *
+     * 
      * @return the RegisteredAsnsClient object.
      */
     public RegisteredAsnsClient getRegisteredAsns() {
         return this.registeredAsns;
     }
 
-    /** The RegisteredPrefixesClient object to access its operations. */
+    /**
+     * The RegisteredPrefixesClient object to access its operations.
+     */
     private final RegisteredPrefixesClient registeredPrefixes;
 
     /**
      * Gets the RegisteredPrefixesClient object to access its operations.
-     *
+     * 
      * @return the RegisteredPrefixesClient object.
      */
     public RegisteredPrefixesClient getRegisteredPrefixes() {
         return this.registeredPrefixes;
     }
 
-    /** The PeeringsClient object to access its operations. */
+    /**
+     * The PeeringsClient object to access its operations.
+     */
     private final PeeringsClient peerings;
 
     /**
      * Gets the PeeringsClient object to access its operations.
-     *
+     * 
      * @return the PeeringsClient object.
      */
     public PeeringsClient getPeerings() {
         return this.peerings;
     }
 
-    /** The ReceivedRoutesClient object to access its operations. */
+    /**
+     * The ReceivedRoutesClient object to access its operations.
+     */
     private final ReceivedRoutesClient receivedRoutes;
 
     /**
      * Gets the ReceivedRoutesClient object to access its operations.
-     *
+     * 
      * @return the ReceivedRoutesClient object.
      */
     public ReceivedRoutesClient getReceivedRoutes() {
         return this.receivedRoutes;
     }
 
-    /** The PeeringServiceCountriesClient object to access its operations. */
+    /**
+     * The PeeringServiceCountriesClient object to access its operations.
+     */
     private final PeeringServiceCountriesClient peeringServiceCountries;
 
     /**
      * Gets the PeeringServiceCountriesClient object to access its operations.
-     *
+     * 
      * @return the PeeringServiceCountriesClient object.
      */
     public PeeringServiceCountriesClient getPeeringServiceCountries() {
         return this.peeringServiceCountries;
     }
 
-    /** The PeeringServiceLocationsClient object to access its operations. */
+    /**
+     * The PeeringServiceLocationsClient object to access its operations.
+     */
     private final PeeringServiceLocationsClient peeringServiceLocations;
 
     /**
      * Gets the PeeringServiceLocationsClient object to access its operations.
-     *
+     * 
      * @return the PeeringServiceLocationsClient object.
      */
     public PeeringServiceLocationsClient getPeeringServiceLocations() {
         return this.peeringServiceLocations;
     }
 
-    /** The PrefixesClient object to access its operations. */
+    /**
+     * The PrefixesClient object to access its operations.
+     */
     private final PrefixesClient prefixes;
 
     /**
      * Gets the PrefixesClient object to access its operations.
-     *
+     * 
      * @return the PrefixesClient object.
      */
     public PrefixesClient getPrefixes() {
         return this.prefixes;
     }
 
-    /** The PeeringServiceProvidersClient object to access its operations. */
+    /**
+     * The PeeringServiceProvidersClient object to access its operations.
+     */
     private final PeeringServiceProvidersClient peeringServiceProviders;
 
     /**
      * Gets the PeeringServiceProvidersClient object to access its operations.
-     *
+     * 
      * @return the PeeringServiceProvidersClient object.
      */
     public PeeringServiceProvidersClient getPeeringServiceProviders() {
         return this.peeringServiceProviders;
     }
 
-    /** The PeeringServicesClient object to access its operations. */
+    /**
+     * The PeeringServicesClient object to access its operations.
+     */
     private final PeeringServicesClient peeringServices;
 
     /**
      * Gets the PeeringServicesClient object to access its operations.
-     *
+     * 
      * @return the PeeringServicesClient object.
      */
     public PeeringServicesClient getPeeringServices() {
@@ -306,7 +349,7 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
 
     /**
      * Initializes an instance of PeeringManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -314,13 +357,8 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
      * @param subscriptionId The Azure subscription ID.
      * @param endpoint server parameter.
      */
-    PeeringManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    PeeringManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
@@ -346,7 +384,7 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -355,20 +393,17 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -378,26 +413,15 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -410,24 +434,21 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -463,7 +484,7 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {
@@ -486,4 +507,6 @@ public final class PeeringManagementClientImpl implements PeeringManagementClien
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PeeringManagementClientImpl.class);
 }

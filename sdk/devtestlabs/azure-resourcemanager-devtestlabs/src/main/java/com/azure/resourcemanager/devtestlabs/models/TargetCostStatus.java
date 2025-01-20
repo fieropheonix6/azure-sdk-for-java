@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TargetCostStatus. */
+/**
+ * Target cost status.
+ */
 public final class TargetCostStatus extends ExpandableStringEnum<TargetCostStatus> {
-    /** Static value Enabled for TargetCostStatus. */
+    /**
+     * Static value Enabled for TargetCostStatus.
+     */
     public static final TargetCostStatus ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for TargetCostStatus. */
+    /**
+     * Static value Disabled for TargetCostStatus.
+     */
     public static final TargetCostStatus DISABLED = fromString("Disabled");
 
     /**
+     * Creates a new instance of TargetCostStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TargetCostStatus() {
+    }
+
+    /**
      * Creates or finds a TargetCostStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TargetCostStatus.
      */
-    @JsonCreator
     public static TargetCostStatus fromString(String name) {
         return fromString(name, TargetCostStatus.class);
     }
 
-    /** @return known TargetCostStatus values. */
+    /**
+     * Gets known TargetCostStatus values.
+     * 
+     * @return known TargetCostStatus values.
+     */
     public static Collection<TargetCostStatus> values() {
         return values(TargetCostStatus.class);
     }

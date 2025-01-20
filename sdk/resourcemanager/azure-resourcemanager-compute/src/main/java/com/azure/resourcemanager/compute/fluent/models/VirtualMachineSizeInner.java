@@ -5,15 +5,20 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the properties of a VM size. */
+/**
+ * Describes the properties of a VM size.
+ */
 @Fluent
-public final class VirtualMachineSizeInner {
+public final class VirtualMachineSizeInner implements JsonSerializable<VirtualMachineSizeInner> {
     /*
      * The name of the virtual machine size.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
@@ -22,40 +27,37 @@ public final class VirtualMachineSizeInner {
      * https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
      * https://docs.microsoft.com/rest/api/compute/resourceskus/list
      */
-    @JsonProperty(value = "numberOfCores")
     private Integer numberOfCores;
 
     /*
      * The OS disk size, in MB, allowed by the virtual machine size.
      */
-    @JsonProperty(value = "osDiskSizeInMB")
     private Integer osDiskSizeInMB;
 
     /*
      * The resource disk size, in MB, allowed by the virtual machine size.
      */
-    @JsonProperty(value = "resourceDiskSizeInMB")
     private Integer resourceDiskSizeInMB;
 
     /*
      * The amount of memory, in MB, supported by the virtual machine size.
      */
-    @JsonProperty(value = "memoryInMB")
     private Integer memoryInMB;
 
     /*
      * The maximum number of data disks that can be attached to the virtual machine size.
      */
-    @JsonProperty(value = "maxDataDiskCount")
     private Integer maxDataDiskCount;
 
-    /** Creates an instance of VirtualMachineSizeInner class. */
+    /**
+     * Creates an instance of VirtualMachineSizeInner class.
+     */
     public VirtualMachineSizeInner() {
     }
 
     /**
      * Get the name property: The name of the virtual machine size.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +66,7 @@ public final class VirtualMachineSizeInner {
 
     /**
      * Set the name property: The name of the virtual machine size.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualMachineSizeInner object itself.
      */
@@ -78,7 +80,7 @@ public final class VirtualMachineSizeInner {
      * capable VM sizes, this number represents the total vCPUs of quota that the VM uses. For accurate vCPU count,
      * please refer to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
      * https://docs.microsoft.com/rest/api/compute/resourceskus/list.
-     *
+     * 
      * @return the numberOfCores value.
      */
     public Integer numberOfCores() {
@@ -90,7 +92,7 @@ public final class VirtualMachineSizeInner {
      * capable VM sizes, this number represents the total vCPUs of quota that the VM uses. For accurate vCPU count,
      * please refer to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
      * https://docs.microsoft.com/rest/api/compute/resourceskus/list.
-     *
+     * 
      * @param numberOfCores the numberOfCores value to set.
      * @return the VirtualMachineSizeInner object itself.
      */
@@ -101,7 +103,7 @@ public final class VirtualMachineSizeInner {
 
     /**
      * Get the osDiskSizeInMB property: The OS disk size, in MB, allowed by the virtual machine size.
-     *
+     * 
      * @return the osDiskSizeInMB value.
      */
     public Integer osDiskSizeInMB() {
@@ -110,7 +112,7 @@ public final class VirtualMachineSizeInner {
 
     /**
      * Set the osDiskSizeInMB property: The OS disk size, in MB, allowed by the virtual machine size.
-     *
+     * 
      * @param osDiskSizeInMB the osDiskSizeInMB value to set.
      * @return the VirtualMachineSizeInner object itself.
      */
@@ -121,7 +123,7 @@ public final class VirtualMachineSizeInner {
 
     /**
      * Get the resourceDiskSizeInMB property: The resource disk size, in MB, allowed by the virtual machine size.
-     *
+     * 
      * @return the resourceDiskSizeInMB value.
      */
     public Integer resourceDiskSizeInMB() {
@@ -130,7 +132,7 @@ public final class VirtualMachineSizeInner {
 
     /**
      * Set the resourceDiskSizeInMB property: The resource disk size, in MB, allowed by the virtual machine size.
-     *
+     * 
      * @param resourceDiskSizeInMB the resourceDiskSizeInMB value to set.
      * @return the VirtualMachineSizeInner object itself.
      */
@@ -141,7 +143,7 @@ public final class VirtualMachineSizeInner {
 
     /**
      * Get the memoryInMB property: The amount of memory, in MB, supported by the virtual machine size.
-     *
+     * 
      * @return the memoryInMB value.
      */
     public Integer memoryInMB() {
@@ -150,7 +152,7 @@ public final class VirtualMachineSizeInner {
 
     /**
      * Set the memoryInMB property: The amount of memory, in MB, supported by the virtual machine size.
-     *
+     * 
      * @param memoryInMB the memoryInMB value to set.
      * @return the VirtualMachineSizeInner object itself.
      */
@@ -162,7 +164,7 @@ public final class VirtualMachineSizeInner {
     /**
      * Get the maxDataDiskCount property: The maximum number of data disks that can be attached to the virtual machine
      * size.
-     *
+     * 
      * @return the maxDataDiskCount value.
      */
     public Integer maxDataDiskCount() {
@@ -172,7 +174,7 @@ public final class VirtualMachineSizeInner {
     /**
      * Set the maxDataDiskCount property: The maximum number of data disks that can be attached to the virtual machine
      * size.
-     *
+     * 
      * @param maxDataDiskCount the maxDataDiskCount value to set.
      * @return the VirtualMachineSizeInner object itself.
      */
@@ -183,9 +185,60 @@ public final class VirtualMachineSizeInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeNumberField("numberOfCores", this.numberOfCores);
+        jsonWriter.writeNumberField("osDiskSizeInMB", this.osDiskSizeInMB);
+        jsonWriter.writeNumberField("resourceDiskSizeInMB", this.resourceDiskSizeInMB);
+        jsonWriter.writeNumberField("memoryInMB", this.memoryInMB);
+        jsonWriter.writeNumberField("maxDataDiskCount", this.maxDataDiskCount);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineSizeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineSizeInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineSizeInner.
+     */
+    public static VirtualMachineSizeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineSizeInner deserializedVirtualMachineSizeInner = new VirtualMachineSizeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineSizeInner.name = reader.getString();
+                } else if ("numberOfCores".equals(fieldName)) {
+                    deserializedVirtualMachineSizeInner.numberOfCores = reader.getNullable(JsonReader::getInt);
+                } else if ("osDiskSizeInMB".equals(fieldName)) {
+                    deserializedVirtualMachineSizeInner.osDiskSizeInMB = reader.getNullable(JsonReader::getInt);
+                } else if ("resourceDiskSizeInMB".equals(fieldName)) {
+                    deserializedVirtualMachineSizeInner.resourceDiskSizeInMB = reader.getNullable(JsonReader::getInt);
+                } else if ("memoryInMB".equals(fieldName)) {
+                    deserializedVirtualMachineSizeInner.memoryInMB = reader.getNullable(JsonReader::getInt);
+                } else if ("maxDataDiskCount".equals(fieldName)) {
+                    deserializedVirtualMachineSizeInner.maxDataDiskCount = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineSizeInner;
+        });
     }
 }

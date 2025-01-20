@@ -8,34 +8,29 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadProtectableItem;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkloadProtectableItemTests {
-    @Test
-    public void testDeserialize() {
-        WorkloadProtectableItem model =
-            BinaryData
-                .fromString(
-                    "{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"hhahhxvrhmzkwpjg\",\"workloadType\":\"spughftqsxhq\",\"friendlyName\":\"j\",\"protectionState\":\"Protecting\"}")
-                .toObject(WorkloadProtectableItem.class);
-        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.backupManagementType());
-        Assertions.assertEquals("spughftqsxhq", model.workloadType());
-        Assertions.assertEquals("j", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        WorkloadProtectableItem model = BinaryData.fromString(
+            "{\"protectableItemType\":\"WorkloadProtectableItem\",\"backupManagementType\":\"mokzhjjklf\",\"workloadType\":\"mouwqlgzrfzeey\",\"friendlyName\":\"izikayuhq\",\"protectionState\":\"ProtectionFailed\"}")
+            .toObject(WorkloadProtectableItem.class);
+        Assertions.assertEquals("mokzhjjklf", model.backupManagementType());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.workloadType());
+        Assertions.assertEquals("izikayuhq", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 
-    @Test
-    public void testSerialize() {
-        WorkloadProtectableItem model =
-            new WorkloadProtectableItem()
-                .withBackupManagementType("hhahhxvrhmzkwpjg")
-                .withWorkloadType("spughftqsxhq")
-                .withFriendlyName("j")
-                .withProtectionState(ProtectionStatus.PROTECTING);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        WorkloadProtectableItem model = new WorkloadProtectableItem().withBackupManagementType("mokzhjjklf")
+            .withWorkloadType("mouwqlgzrfzeey")
+            .withFriendlyName("izikayuhq")
+            .withProtectionState(ProtectionStatus.PROTECTION_FAILED);
         model = BinaryData.fromObject(model).toObject(WorkloadProtectableItem.class);
-        Assertions.assertEquals("hhahhxvrhmzkwpjg", model.backupManagementType());
-        Assertions.assertEquals("spughftqsxhq", model.workloadType());
-        Assertions.assertEquals("j", model.friendlyName());
-        Assertions.assertEquals(ProtectionStatus.PROTECTING, model.protectionState());
+        Assertions.assertEquals("mokzhjjklf", model.backupManagementType());
+        Assertions.assertEquals("mouwqlgzrfzeey", model.workloadType());
+        Assertions.assertEquals("izikayuhq", model.friendlyName());
+        Assertions.assertEquals(ProtectionStatus.PROTECTION_FAILED, model.protectionState());
     }
 }

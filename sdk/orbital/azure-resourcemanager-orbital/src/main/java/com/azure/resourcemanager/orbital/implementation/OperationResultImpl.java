@@ -9,14 +9,16 @@ import com.azure.resourcemanager.orbital.models.OperationResult;
 import com.azure.resourcemanager.orbital.models.OperationResultErrorProperties;
 import com.azure.resourcemanager.orbital.models.Status;
 import java.time.OffsetDateTime;
+import java.util.Collections;
+import java.util.List;
 
 public final class OperationResultImpl implements OperationResult {
     private OperationResultInner innerObject;
 
     private final com.azure.resourcemanager.orbital.OrbitalManager serviceManager;
 
-    OperationResultImpl(
-        OperationResultInner innerObject, com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
+    OperationResultImpl(OperationResultInner innerObject,
+        com.azure.resourcemanager.orbital.OrbitalManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -43,6 +45,19 @@ public final class OperationResultImpl implements OperationResult {
 
     public Double percentComplete() {
         return this.innerModel().percentComplete();
+    }
+
+    public List<Object> value() {
+        List<Object> inner = this.innerModel().value();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String nextLink() {
+        return this.innerModel().nextLink();
     }
 
     public Object properties() {

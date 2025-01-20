@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Group connectivity type. */
+/**
+ * Group connectivity type.
+ */
 public final class GroupConnectivity extends ExpandableStringEnum<GroupConnectivity> {
-    /** Static value None for GroupConnectivity. */
+    /**
+     * Static value None for GroupConnectivity.
+     */
     public static final GroupConnectivity NONE = fromString("None");
 
-    /** Static value DirectlyConnected for GroupConnectivity. */
+    /**
+     * Static value DirectlyConnected for GroupConnectivity.
+     */
     public static final GroupConnectivity DIRECTLY_CONNECTED = fromString("DirectlyConnected");
 
     /**
+     * Creates a new instance of GroupConnectivity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GroupConnectivity() {
+    }
+
+    /**
      * Creates or finds a GroupConnectivity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GroupConnectivity.
      */
-    @JsonCreator
     public static GroupConnectivity fromString(String name) {
         return fromString(name, GroupConnectivity.class);
     }
 
     /**
      * Gets known GroupConnectivity values.
-     *
+     * 
      * @return known GroupConnectivity values.
      */
     public static Collection<GroupConnectivity> values() {

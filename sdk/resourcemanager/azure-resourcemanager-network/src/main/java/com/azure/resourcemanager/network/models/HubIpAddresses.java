@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** IP addresses associated with azure firewall. */
+/**
+ * IP addresses associated with azure firewall.
+ */
 @Fluent
-public final class HubIpAddresses {
+public final class HubIpAddresses implements JsonSerializable<HubIpAddresses> {
     /*
      * Public IP addresses associated with azure firewall.
      */
-    @JsonProperty(value = "publicIPs")
     private HubPublicIpAddresses publicIPs;
 
     /*
      * Private IP Address associated with azure firewall.
      */
-    @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
 
-    /** Creates an instance of HubIpAddresses class. */
+    /**
+     * Creates an instance of HubIpAddresses class.
+     */
     public HubIpAddresses() {
     }
 
     /**
      * Get the publicIPs property: Public IP addresses associated with azure firewall.
-     *
+     * 
      * @return the publicIPs value.
      */
     public HubPublicIpAddresses publicIPs() {
@@ -37,7 +43,7 @@ public final class HubIpAddresses {
 
     /**
      * Set the publicIPs property: Public IP addresses associated with azure firewall.
-     *
+     * 
      * @param publicIPs the publicIPs value to set.
      * @return the HubIpAddresses object itself.
      */
@@ -48,7 +54,7 @@ public final class HubIpAddresses {
 
     /**
      * Get the privateIpAddress property: Private IP Address associated with azure firewall.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -57,7 +63,7 @@ public final class HubIpAddresses {
 
     /**
      * Set the privateIpAddress property: Private IP Address associated with azure firewall.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the HubIpAddresses object itself.
      */
@@ -68,12 +74,51 @@ public final class HubIpAddresses {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publicIPs() != null) {
             publicIPs().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("publicIPs", this.publicIPs);
+        jsonWriter.writeStringField("privateIPAddress", this.privateIpAddress);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HubIpAddresses from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HubIpAddresses if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HubIpAddresses.
+     */
+    public static HubIpAddresses fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HubIpAddresses deserializedHubIpAddresses = new HubIpAddresses();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("publicIPs".equals(fieldName)) {
+                    deserializedHubIpAddresses.publicIPs = HubPublicIpAddresses.fromJson(reader);
+                } else if ("privateIPAddress".equals(fieldName)) {
+                    deserializedHubIpAddresses.privateIpAddress = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHubIpAddresses;
+        });
     }
 }

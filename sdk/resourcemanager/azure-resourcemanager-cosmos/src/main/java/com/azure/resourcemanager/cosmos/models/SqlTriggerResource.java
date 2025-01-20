@@ -6,38 +6,46 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Cosmos DB SQL trigger resource object. */
+/**
+ * Cosmos DB SQL trigger resource object.
+ */
 @Fluent
-public class SqlTriggerResource {
+public class SqlTriggerResource implements JsonSerializable<SqlTriggerResource> {
     /*
      * Name of the Cosmos DB SQL trigger
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
      * Body of the Trigger
      */
-    @JsonProperty(value = "body")
     private String body;
 
     /*
      * Type of the Trigger
      */
-    @JsonProperty(value = "triggerType")
     private TriggerType triggerType;
 
     /*
      * The operation the trigger is associated with
      */
-    @JsonProperty(value = "triggerOperation")
     private TriggerOperation triggerOperation;
 
     /**
+     * Creates an instance of SqlTriggerResource class.
+     */
+    public SqlTriggerResource() {
+    }
+
+    /**
      * Get the id property: Name of the Cosmos DB SQL trigger.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -46,7 +54,7 @@ public class SqlTriggerResource {
 
     /**
      * Set the id property: Name of the Cosmos DB SQL trigger.
-     *
+     * 
      * @param id the id value to set.
      * @return the SqlTriggerResource object itself.
      */
@@ -57,7 +65,7 @@ public class SqlTriggerResource {
 
     /**
      * Get the body property: Body of the Trigger.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -66,7 +74,7 @@ public class SqlTriggerResource {
 
     /**
      * Set the body property: Body of the Trigger.
-     *
+     * 
      * @param body the body value to set.
      * @return the SqlTriggerResource object itself.
      */
@@ -77,7 +85,7 @@ public class SqlTriggerResource {
 
     /**
      * Get the triggerType property: Type of the Trigger.
-     *
+     * 
      * @return the triggerType value.
      */
     public TriggerType triggerType() {
@@ -86,7 +94,7 @@ public class SqlTriggerResource {
 
     /**
      * Set the triggerType property: Type of the Trigger.
-     *
+     * 
      * @param triggerType the triggerType value to set.
      * @return the SqlTriggerResource object itself.
      */
@@ -97,7 +105,7 @@ public class SqlTriggerResource {
 
     /**
      * Get the triggerOperation property: The operation the trigger is associated with.
-     *
+     * 
      * @return the triggerOperation value.
      */
     public TriggerOperation triggerOperation() {
@@ -106,7 +114,7 @@ public class SqlTriggerResource {
 
     /**
      * Set the triggerOperation property: The operation the trigger is associated with.
-     *
+     * 
      * @param triggerOperation the triggerOperation value to set.
      * @return the SqlTriggerResource object itself.
      */
@@ -117,16 +125,62 @@ public class SqlTriggerResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model SqlTriggerResource"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model SqlTriggerResource"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(SqlTriggerResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("body", this.body);
+        jsonWriter.writeStringField("triggerType", this.triggerType == null ? null : this.triggerType.toString());
+        jsonWriter.writeStringField("triggerOperation",
+            this.triggerOperation == null ? null : this.triggerOperation.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlTriggerResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlTriggerResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlTriggerResource.
+     */
+    public static SqlTriggerResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlTriggerResource deserializedSqlTriggerResource = new SqlTriggerResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlTriggerResource.id = reader.getString();
+                } else if ("body".equals(fieldName)) {
+                    deserializedSqlTriggerResource.body = reader.getString();
+                } else if ("triggerType".equals(fieldName)) {
+                    deserializedSqlTriggerResource.triggerType = TriggerType.fromString(reader.getString());
+                } else if ("triggerOperation".equals(fieldName)) {
+                    deserializedSqlTriggerResource.triggerOperation = TriggerOperation.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlTriggerResource;
+        });
+    }
 }

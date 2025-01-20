@@ -3,15 +3,14 @@
 
 package com.azure.messaging.eventhubs;
 
-import com.azure.core.amqp.AmqpTransportType;
-import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -19,15 +18,16 @@ import reactor.test.StepVerifier;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.azure.messaging.eventhubs.TestUtils.getEventHubName;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 /**
  * Tests for asynchronous {@link EventHubProducerAsyncClient}.
  */
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     private static final String PARTITION_ID = "2";
-
     private EventHubProducerAsyncClient producer;
 
     EventHubProducerAsyncClientIntegrationTest() {
@@ -36,17 +36,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void beforeTest() {
-        producer = new EventHubClientBuilder()
-            .connectionString(getConnectionString())
-            .retry(RETRY_OPTIONS)
-            .buildAsyncProducerClient();
-    }
-
-    @Override
-    protected void afterTest() {
-        if (producer != null) {
-            producer.close();
-        }
+        producer = toClose(createBuilder().buildAsyncProducerClient());
     }
 
     /**
@@ -56,14 +46,11 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     void sendMessageToPartition() {
         // Arrange
         final SendOptions sendOptions = new SendOptions().setPartitionId(PARTITION_ID);
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        StepVerifier.create(producer.send(events, sendOptions))
-            .verifyComplete();
+        StepVerifier.create(producer.send(events, sendOptions)).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -73,14 +60,11 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void sendMessage() {
         // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act & Assert
-        StepVerifier.create(producer.send(events))
-            .verifyComplete();
+        StepVerifier.create(producer.send(events)).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -89,10 +73,8 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void sendBatch() {
         // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         final Mono<EventDataBatch> createBatch = producer.createBatch().map(batch -> {
             events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
@@ -101,8 +83,7 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
         });
 
         // Act & Assert
-        StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch)))
-            .verifyComplete();
+        StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch))).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -111,24 +92,20 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void sendBatchWithPartitionKey() {
         // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         final CreateBatchOptions options = new CreateBatchOptions().setPartitionKey("my-partition-key");
-        final Mono<EventDataBatch> createBatch = producer.createBatch(options)
-            .map(batch -> {
-                Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
+        final Mono<EventDataBatch> createBatch = producer.createBatch(options).map(batch -> {
+            Assertions.assertEquals(options.getPartitionKey(), batch.getPartitionKey());
 
-                events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
+            events.forEach(event -> Assertions.assertTrue(batch.tryAdd(event)));
 
-                return batch;
-            });
+            return batch;
+        });
 
         // Act & Assert
-        StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch)))
-            .verifyComplete();
+        StepVerifier.create(createBatch.flatMap(batch -> producer.send(batch))).expectComplete().verify(TIMEOUT);
     }
 
     /**
@@ -137,21 +114,17 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
     @Test
     void sendEventsWithKeyAndPartition() {
         // Arrange
-        final List<EventData> events = Arrays.asList(
-            new EventData("Event 1".getBytes(UTF_8)),
-            new EventData("Event 2".getBytes(UTF_8)),
-            new EventData("Event 3".getBytes(UTF_8)));
+        final List<EventData> events = Arrays.asList(new EventData("Event 1".getBytes(UTF_8)),
+            new EventData("Event 2".getBytes(UTF_8)), new EventData("Event 3".getBytes(UTF_8)));
 
         // Act
-        final Mono<Void> onComplete = Mono.when(producer.send(events),
-            producer.send(Flux.just(events.get(0))),
+        final Mono<Void> onComplete = Mono.when(producer.send(events), producer.send(Flux.just(events.get(0))),
             producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("3")),
             producer.send(Flux.fromIterable(events), new SendOptions().setPartitionId("4")),
             producer.send(Flux.fromIterable(events), new SendOptions().setPartitionKey("sandwiches")));
 
         // Assert
-        StepVerifier.create(onComplete)
-            .verifyComplete();
+        StepVerifier.create(onComplete).expectComplete().verify(TIMEOUT);
     }
 
     @Test
@@ -161,12 +134,12 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
         Assertions.assertNotNull(partitionIds);
 
         for (String partitionId : partitionIds) {
-            final EventDataBatch batch =
-                producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
+            final EventDataBatch batch
+                = producer.createBatch(new CreateBatchOptions().setPartitionId(partitionId)).block(TIMEOUT);
             Assertions.assertNotNull(batch);
 
-            Assertions.assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid",
-                Integer.parseInt(partitionId))));
+            Assertions
+                .assertTrue(batch.tryAdd(TestUtils.getEvent("event", "test guid", Integer.parseInt(partitionId))));
 
             // Act & Assert
             StepVerifier.create(producer.send(batch)).expectComplete().verify(TIMEOUT);
@@ -181,55 +154,18 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
         // Arrange
         final EventData event = new EventData("body");
         final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        final EventHubProducerAsyncClient client = createBuilder(true)
-            .buildAsyncProducerClient();
+        final EventHubProducerAsyncClient client = createBuilder(true).buildAsyncProducerClient();
 
         // Act & Assert
         try {
-            StepVerifier.create(client.getEventHubProperties())
-                .assertNext(properties -> {
-                    Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-                })
-                .expectComplete()
-                .verify(TIMEOUT);
+            StepVerifier.create(client.getEventHubProperties()).assertNext(properties -> {
+                Assertions.assertEquals(getEventHubName(), properties.getName());
+                Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
+            }).expectComplete().verify(TIMEOUT);
 
-            StepVerifier.create(client.send(event, options))
-                .expectComplete()
-                .verify(TIMEOUT);
+            StepVerifier.create(client.send(event, options)).expectComplete().verify(TIMEOUT);
         } finally {
             dispose(client);
         }
-    }
-
-    @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_EVENTHUBS_CONNECTION_STRING_WITH_SAS", matches =
-        ".*ShadAccessSignature .*")
-    void sendWithSasConnectionString() {
-        final EventData event = new EventData("body");
-        final SendOptions options = new SendOptions().setPartitionId(PARTITION_ID);
-        EventHubProducerAsyncClient eventHubAsyncClient = new EventHubClientBuilder()
-            .proxyOptions(ProxyOptions.SYSTEM_DEFAULTS)
-            .retry(RETRY_OPTIONS)
-            .transportType(AmqpTransportType.AMQP)
-            .connectionString(getConnectionString(true))
-            .buildAsyncProducerClient();
-
-        try {
-            StepVerifier.create(eventHubAsyncClient.getEventHubProperties())
-                .assertNext(properties -> {
-                    Assertions.assertEquals(getEventHubName(), properties.getName());
-                    Assertions.assertEquals(NUMBER_OF_PARTITIONS, properties.getPartitionIds().stream().count());
-                })
-                .expectComplete()
-                .verify(TIMEOUT);
-
-            StepVerifier.create(eventHubAsyncClient.send(event, options))
-                .expectComplete()
-                .verify(TIMEOUT);
-        } finally {
-            dispose(eventHubAsyncClient);
-        }
-
     }
 }

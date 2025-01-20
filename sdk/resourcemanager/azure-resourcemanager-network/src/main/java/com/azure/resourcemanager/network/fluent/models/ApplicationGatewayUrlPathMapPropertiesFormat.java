@@ -6,62 +6,64 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Properties of UrlPathMap of the application gateway. */
+/**
+ * Properties of UrlPathMap of the application gateway.
+ */
 @Fluent
-public final class ApplicationGatewayUrlPathMapPropertiesFormat {
+public final class ApplicationGatewayUrlPathMapPropertiesFormat
+    implements JsonSerializable<ApplicationGatewayUrlPathMapPropertiesFormat> {
     /*
      * Default backend address pool resource of URL path map.
      */
-    @JsonProperty(value = "defaultBackendAddressPool")
     private SubResource defaultBackendAddressPool;
 
     /*
      * Default backend http settings resource of URL path map.
      */
-    @JsonProperty(value = "defaultBackendHttpSettings")
     private SubResource defaultBackendHttpSettings;
 
     /*
      * Default Rewrite rule set resource of URL path map.
      */
-    @JsonProperty(value = "defaultRewriteRuleSet")
     private SubResource defaultRewriteRuleSet;
 
     /*
      * Default redirect configuration resource of URL path map.
      */
-    @JsonProperty(value = "defaultRedirectConfiguration")
     private SubResource defaultRedirectConfiguration;
 
     /*
      * Default Load Distribution Policy resource of URL path map.
      */
-    @JsonProperty(value = "defaultLoadDistributionPolicy")
     private SubResource defaultLoadDistributionPolicy;
 
     /*
      * Path rule of URL path map resource.
      */
-    @JsonProperty(value = "pathRules")
     private List<ApplicationGatewayPathRuleInner> pathRules;
 
     /*
      * The provisioning state of the URL path map resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayUrlPathMapPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayUrlPathMapPropertiesFormat class.
+     */
     public ApplicationGatewayUrlPathMapPropertiesFormat() {
     }
 
     /**
      * Get the defaultBackendAddressPool property: Default backend address pool resource of URL path map.
-     *
+     * 
      * @return the defaultBackendAddressPool value.
      */
     public SubResource defaultBackendAddressPool() {
@@ -70,19 +72,19 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Set the defaultBackendAddressPool property: Default backend address pool resource of URL path map.
-     *
+     * 
      * @param defaultBackendAddressPool the defaultBackendAddressPool value to set.
      * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
      */
-    public ApplicationGatewayUrlPathMapPropertiesFormat withDefaultBackendAddressPool(
-        SubResource defaultBackendAddressPool) {
+    public ApplicationGatewayUrlPathMapPropertiesFormat
+        withDefaultBackendAddressPool(SubResource defaultBackendAddressPool) {
         this.defaultBackendAddressPool = defaultBackendAddressPool;
         return this;
     }
 
     /**
      * Get the defaultBackendHttpSettings property: Default backend http settings resource of URL path map.
-     *
+     * 
      * @return the defaultBackendHttpSettings value.
      */
     public SubResource defaultBackendHttpSettings() {
@@ -91,19 +93,19 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Set the defaultBackendHttpSettings property: Default backend http settings resource of URL path map.
-     *
+     * 
      * @param defaultBackendHttpSettings the defaultBackendHttpSettings value to set.
      * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
      */
-    public ApplicationGatewayUrlPathMapPropertiesFormat withDefaultBackendHttpSettings(
-        SubResource defaultBackendHttpSettings) {
+    public ApplicationGatewayUrlPathMapPropertiesFormat
+        withDefaultBackendHttpSettings(SubResource defaultBackendHttpSettings) {
         this.defaultBackendHttpSettings = defaultBackendHttpSettings;
         return this;
     }
 
     /**
      * Get the defaultRewriteRuleSet property: Default Rewrite rule set resource of URL path map.
-     *
+     * 
      * @return the defaultRewriteRuleSet value.
      */
     public SubResource defaultRewriteRuleSet() {
@@ -112,7 +114,7 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Set the defaultRewriteRuleSet property: Default Rewrite rule set resource of URL path map.
-     *
+     * 
      * @param defaultRewriteRuleSet the defaultRewriteRuleSet value to set.
      * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
      */
@@ -123,7 +125,7 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Get the defaultRedirectConfiguration property: Default redirect configuration resource of URL path map.
-     *
+     * 
      * @return the defaultRedirectConfiguration value.
      */
     public SubResource defaultRedirectConfiguration() {
@@ -132,19 +134,19 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Set the defaultRedirectConfiguration property: Default redirect configuration resource of URL path map.
-     *
+     * 
      * @param defaultRedirectConfiguration the defaultRedirectConfiguration value to set.
      * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
      */
-    public ApplicationGatewayUrlPathMapPropertiesFormat withDefaultRedirectConfiguration(
-        SubResource defaultRedirectConfiguration) {
+    public ApplicationGatewayUrlPathMapPropertiesFormat
+        withDefaultRedirectConfiguration(SubResource defaultRedirectConfiguration) {
         this.defaultRedirectConfiguration = defaultRedirectConfiguration;
         return this;
     }
 
     /**
      * Get the defaultLoadDistributionPolicy property: Default Load Distribution Policy resource of URL path map.
-     *
+     * 
      * @return the defaultLoadDistributionPolicy value.
      */
     public SubResource defaultLoadDistributionPolicy() {
@@ -153,19 +155,19 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Set the defaultLoadDistributionPolicy property: Default Load Distribution Policy resource of URL path map.
-     *
+     * 
      * @param defaultLoadDistributionPolicy the defaultLoadDistributionPolicy value to set.
      * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
      */
-    public ApplicationGatewayUrlPathMapPropertiesFormat withDefaultLoadDistributionPolicy(
-        SubResource defaultLoadDistributionPolicy) {
+    public ApplicationGatewayUrlPathMapPropertiesFormat
+        withDefaultLoadDistributionPolicy(SubResource defaultLoadDistributionPolicy) {
         this.defaultLoadDistributionPolicy = defaultLoadDistributionPolicy;
         return this;
     }
 
     /**
      * Get the pathRules property: Path rule of URL path map resource.
-     *
+     * 
      * @return the pathRules value.
      */
     public List<ApplicationGatewayPathRuleInner> pathRules() {
@@ -174,7 +176,7 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Set the pathRules property: Path rule of URL path map resource.
-     *
+     * 
      * @param pathRules the pathRules value to set.
      * @return the ApplicationGatewayUrlPathMapPropertiesFormat object itself.
      */
@@ -185,7 +187,7 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the URL path map resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -194,12 +196,74 @@ public final class ApplicationGatewayUrlPathMapPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pathRules() != null) {
             pathRules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("defaultBackendAddressPool", this.defaultBackendAddressPool);
+        jsonWriter.writeJsonField("defaultBackendHttpSettings", this.defaultBackendHttpSettings);
+        jsonWriter.writeJsonField("defaultRewriteRuleSet", this.defaultRewriteRuleSet);
+        jsonWriter.writeJsonField("defaultRedirectConfiguration", this.defaultRedirectConfiguration);
+        jsonWriter.writeJsonField("defaultLoadDistributionPolicy", this.defaultLoadDistributionPolicy);
+        jsonWriter.writeArrayField("pathRules", this.pathRules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayUrlPathMapPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayUrlPathMapPropertiesFormat if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayUrlPathMapPropertiesFormat.
+     */
+    public static ApplicationGatewayUrlPathMapPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayUrlPathMapPropertiesFormat deserializedApplicationGatewayUrlPathMapPropertiesFormat
+                = new ApplicationGatewayUrlPathMapPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("defaultBackendAddressPool".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlPathMapPropertiesFormat.defaultBackendAddressPool
+                        = SubResource.fromJson(reader);
+                } else if ("defaultBackendHttpSettings".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlPathMapPropertiesFormat.defaultBackendHttpSettings
+                        = SubResource.fromJson(reader);
+                } else if ("defaultRewriteRuleSet".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlPathMapPropertiesFormat.defaultRewriteRuleSet
+                        = SubResource.fromJson(reader);
+                } else if ("defaultRedirectConfiguration".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlPathMapPropertiesFormat.defaultRedirectConfiguration
+                        = SubResource.fromJson(reader);
+                } else if ("defaultLoadDistributionPolicy".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlPathMapPropertiesFormat.defaultLoadDistributionPolicy
+                        = SubResource.fromJson(reader);
+                } else if ("pathRules".equals(fieldName)) {
+                    List<ApplicationGatewayPathRuleInner> pathRules
+                        = reader.readArray(reader1 -> ApplicationGatewayPathRuleInner.fromJson(reader1));
+                    deserializedApplicationGatewayUrlPathMapPropertiesFormat.pathRules = pathRules;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedApplicationGatewayUrlPathMapPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayUrlPathMapPropertiesFormat;
+        });
     }
 }

@@ -35,7 +35,9 @@
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-data-cosmos</module>
+        <module>spring-cloud-azure-starter-data-redis-lettuce</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
+        <module>spring-cloud-azure-starter-eventgrid</module>
         <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
@@ -55,10 +57,20 @@
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus</module>
-        <module>spring-cloud-azure-trace-sleuth</module>
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-testcontainers</module>
+        <module>spring-cloud-azure-docker-compose</module>
         <module>spring-cloud-azure-integration-tests</module>
+        <module>spring-cloud-azure-integration-test-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config-web</module>
+        <module>spring-cloud-azure-feature-management</module>
+        <module>spring-cloud-azure-feature-management-web</module>
+        <module>spring-cloud-azure-starter-appconfiguration-config</module>
+        <module>azure-spring-data-cosmos</module>
+        <module>spring-cloud-azure-starter-monitor</module>
+        <module>spring-cloud-azure-starter-monitor-test</module>
       </modules>
     </profile>
 
@@ -87,7 +99,9 @@
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-data-cosmos</module>
+        <module>spring-cloud-azure-starter-data-redis-lettuce</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
+        <module>spring-cloud-azure-starter-eventgrid</module>
         <module>spring-cloud-azure-starter-keyvault</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
@@ -107,9 +121,25 @@
         <module>spring-cloud-azure-stream-binder-servicebus</module>
         <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-starter-stream-servicebus</module>
-        <module>spring-cloud-azure-trace-sleuth</module>
         <module>spring-cloud-azure-starter-jdbc-mysql</module>
         <module>spring-cloud-azure-starter-jdbc-postgresql</module>
+        <module>spring-cloud-azure-testcontainers</module>
+        <module>spring-cloud-azure-docker-compose</module>
+        <module>spring-cloud-azure-integration-test-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config</module>
+        <module>spring-cloud-azure-appconfiguration-config-web</module>
+        <module>spring-cloud-azure-feature-management</module>
+        <module>spring-cloud-azure-feature-management-web</module>
+        <module>spring-cloud-azure-starter-appconfiguration-config</module>
+        <module>azure-spring-data-cosmos</module>
+      </modules>
+    </profile>
+    <profile>
+      <id>monitor</id>
+      <modules>
+        <module>../../eng/code-quality-reports</module>
+        <module>spring-cloud-azure-starter-monitor</module>
+        <module>spring-cloud-azure-starter-monitor-test</module>
       </modules>
     </profile>
   </profiles>

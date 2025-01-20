@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.batch.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The authentication mode for the Batch account. */
+/**
+ * The authentication mode for the Batch account.
+ */
 public enum AuthenticationMode {
-    /** Enum value SharedKey. */
+    /**
+     * Enum value SharedKey.
+     */
     SHARED_KEY("SharedKey"),
 
-    /** Enum value AAD. */
+    /**
+     * Enum value AAD.
+     */
     AAD("AAD"),
 
-    /** Enum value TaskAuthenticationToken. */
+    /**
+     * Enum value TaskAuthenticationToken.
+     */
     TASK_AUTHENTICATION_TOKEN("TaskAuthenticationToken");
 
-    /** The actual serialized value for a AuthenticationMode instance. */
+    /**
+     * The actual serialized value for a AuthenticationMode instance.
+     */
     private final String value;
 
     AuthenticationMode(String value) {
@@ -27,11 +34,10 @@ public enum AuthenticationMode {
 
     /**
      * Parses a serialized value to a AuthenticationMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AuthenticationMode object, or null if unable to parse.
      */
-    @JsonCreator
     public static AuthenticationMode fromString(String value) {
         if (value == null) {
             return null;
@@ -45,8 +51,9 @@ public enum AuthenticationMode {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

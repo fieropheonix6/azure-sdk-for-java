@@ -5,231 +5,113 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventHubEventSourceResourceProperties;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.EventSourceResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** An event source that receives its data from an Azure EventHub. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Microsoft.EventHub")
-@JsonFlatten
+/**
+ * An event source that receives its data from an Azure EventHub.
+ */
 @Fluent
-public class EventHubEventSourceResource extends EventSourceResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubEventSourceResource.class);
+public final class EventHubEventSourceResource extends EventSourceResourceInner {
+    /*
+     * The kind of the event source.
+     */
+    private EventSourceResourceKind kind = EventSourceResourceKind.MICROSOFT_EVENT_HUB;
 
     /*
-     * Provisioning state of the resource.
+     * Properties of the EventHub event source resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private EventHubEventSourceResourceProperties innerProperties = new EventHubEventSourceResourceProperties();
 
     /*
-     * The time the resource was created.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime creationTime;
+    private String type;
 
     /*
-     * The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or
-     * empty-string is specified, the event creation time will be used.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.timestampPropertyName")
-    private String timestampPropertyName;
+    private String name;
 
     /*
-     * The resource id of the event source in Azure Resource Manager.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.eventSourceResourceId", required = true)
-    private String eventSourceResourceId;
-
-    /*
-     * The name of the service bus that contains the event hub.
-     */
-    @JsonProperty(value = "properties.serviceBusNamespace", required = true)
-    private String serviceBusNamespace;
-
-    /*
-     * The name of the event hub.
-     */
-    @JsonProperty(value = "properties.eventHubName", required = true)
-    private String eventHubName;
-
-    /*
-     * The name of the event hub's consumer group that holds the partitions
-     * from which events will be read.
-     */
-    @JsonProperty(value = "properties.consumerGroupName", required = true)
-    private String consumerGroupName;
-
-    /*
-     * The name of the SAS key that grants the Time Series Insights service
-     * access to the event hub. The shared access policies for this key must
-     * grant 'Listen' permissions to the event hub.
-     */
-    @JsonProperty(value = "properties.keyName", required = true)
-    private String keyName;
+    private String id;
 
     /**
-     * Get the provisioningState property: Provisioning state of the resource.
-     *
-     * @return the provisioningState value.
+     * Creates an instance of EventHubEventSourceResource class.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    public EventHubEventSourceResource() {
     }
 
     /**
-     * Get the creationTime property: The time the resource was created.
-     *
-     * @return the creationTime value.
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
      */
-    public OffsetDateTime creationTime() {
-        return this.creationTime;
+    @Override
+    public EventSourceResourceKind kind() {
+        return this.kind;
     }
 
     /**
-     * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
-     * time will be used.
-     *
-     * @return the timestampPropertyName value.
+     * Get the innerProperties property: Properties of the EventHub event source resource.
+     * 
+     * @return the innerProperties value.
      */
-    public String timestampPropertyName() {
-        return this.timestampPropertyName;
+    private EventHubEventSourceResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
-     * time will be used.
-     *
-     * @param timestampPropertyName the timestampPropertyName value to set.
-     * @return the EventHubEventSourceResource object itself.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public EventHubEventSourceResource withTimestampPropertyName(String timestampPropertyName) {
-        this.timestampPropertyName = timestampPropertyName;
-        return this;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
-     *
-     * @return the eventSourceResourceId value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String eventSourceResourceId() {
-        return this.eventSourceResourceId;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
-     *
-     * @param eventSourceResourceId the eventSourceResourceId value to set.
-     * @return the EventHubEventSourceResource object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public EventHubEventSourceResource withEventSourceResourceId(String eventSourceResourceId) {
-        this.eventSourceResourceId = eventSourceResourceId;
-        return this;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the serviceBusNamespace property: The name of the service bus that contains the event hub.
-     *
-     * @return the serviceBusNamespace value.
+     * {@inheritDoc}
      */
-    public String serviceBusNamespace() {
-        return this.serviceBusNamespace;
-    }
-
-    /**
-     * Set the serviceBusNamespace property: The name of the service bus that contains the event hub.
-     *
-     * @param serviceBusNamespace the serviceBusNamespace value to set.
-     * @return the EventHubEventSourceResource object itself.
-     */
-    public EventHubEventSourceResource withServiceBusNamespace(String serviceBusNamespace) {
-        this.serviceBusNamespace = serviceBusNamespace;
-        return this;
-    }
-
-    /**
-     * Get the eventHubName property: The name of the event hub.
-     *
-     * @return the eventHubName value.
-     */
-    public String eventHubName() {
-        return this.eventHubName;
-    }
-
-    /**
-     * Set the eventHubName property: The name of the event hub.
-     *
-     * @param eventHubName the eventHubName value to set.
-     * @return the EventHubEventSourceResource object itself.
-     */
-    public EventHubEventSourceResource withEventHubName(String eventHubName) {
-        this.eventHubName = eventHubName;
-        return this;
-    }
-
-    /**
-     * Get the consumerGroupName property: The name of the event hub's consumer group that holds the partitions from
-     * which events will be read.
-     *
-     * @return the consumerGroupName value.
-     */
-    public String consumerGroupName() {
-        return this.consumerGroupName;
-    }
-
-    /**
-     * Set the consumerGroupName property: The name of the event hub's consumer group that holds the partitions from
-     * which events will be read.
-     *
-     * @param consumerGroupName the consumerGroupName value to set.
-     * @return the EventHubEventSourceResource object itself.
-     */
-    public EventHubEventSourceResource withConsumerGroupName(String consumerGroupName) {
-        this.consumerGroupName = consumerGroupName;
-        return this;
-    }
-
-    /**
-     * Get the keyName property: The name of the SAS key that grants the Time Series Insights service access to the
-     * event hub. The shared access policies for this key must grant 'Listen' permissions to the event hub.
-     *
-     * @return the keyName value.
-     */
-    public String keyName() {
-        return this.keyName;
-    }
-
-    /**
-     * Set the keyName property: The name of the SAS key that grants the Time Series Insights service access to the
-     * event hub. The shared access policies for this key must grant 'Listen' permissions to the event hub.
-     *
-     * @param keyName the keyName value to set.
-     * @return the EventHubEventSourceResource object itself.
-     */
-    public EventHubEventSourceResource withKeyName(String keyName) {
-        this.keyName = keyName;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public EventHubEventSourceResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubEventSourceResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -237,42 +119,316 @@ public class EventHubEventSourceResource extends EventSourceResourceInner {
     }
 
     /**
+     * Get the serviceBusNamespace property: The name of the service bus that contains the event hub.
+     * 
+     * @return the serviceBusNamespace value.
+     */
+    public String serviceBusNamespace() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusNamespace();
+    }
+
+    /**
+     * Set the serviceBusNamespace property: The name of the service bus that contains the event hub.
+     * 
+     * @param serviceBusNamespace the serviceBusNamespace value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withServiceBusNamespace(String serviceBusNamespace) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withServiceBusNamespace(serviceBusNamespace);
+        return this;
+    }
+
+    /**
+     * Get the eventHubName property: The name of the event hub.
+     * 
+     * @return the eventHubName value.
+     */
+    public String eventHubName() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventHubName();
+    }
+
+    /**
+     * Set the eventHubName property: The name of the event hub.
+     * 
+     * @param eventHubName the eventHubName value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withEventHubName(String eventHubName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withEventHubName(eventHubName);
+        return this;
+    }
+
+    /**
+     * Get the consumerGroupName property: The name of the event hub's consumer group that holds the partitions from
+     * which events will be read.
+     * 
+     * @return the consumerGroupName value.
+     */
+    public String consumerGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().consumerGroupName();
+    }
+
+    /**
+     * Set the consumerGroupName property: The name of the event hub's consumer group that holds the partitions from
+     * which events will be read.
+     * 
+     * @param consumerGroupName the consumerGroupName value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withConsumerGroupName(String consumerGroupName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withConsumerGroupName(consumerGroupName);
+        return this;
+    }
+
+    /**
+     * Get the keyName property: The name of the SAS key that grants the Time Series Insights service access to the
+     * event hub. The shared access policies for this key must grant 'Listen' permissions to the event hub.
+     * 
+     * @return the keyName value.
+     */
+    public String keyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().keyName();
+    }
+
+    /**
+     * Set the keyName property: The name of the SAS key that grants the Time Series Insights service access to the
+     * event hub. The shared access policies for this key must grant 'Listen' permissions to the event hub.
+     * 
+     * @param keyName the keyName value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withKeyName(String keyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withKeyName(keyName);
+        return this;
+    }
+
+    /**
+     * Get the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
+     * 
+     * @return the eventSourceResourceId value.
+     */
+    public String eventSourceResourceId() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventSourceResourceId();
+    }
+
+    /**
+     * Set the eventSourceResourceId property: The resource id of the event source in Azure Resource Manager.
+     * 
+     * @param eventSourceResourceId the eventSourceResourceId value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withEventSourceResourceId(String eventSourceResourceId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withEventSourceResourceId(eventSourceResourceId);
+        return this;
+    }
+
+    /**
+     * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
+     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
+     * time will be used.
+     * 
+     * @return the timestampPropertyName value.
+     */
+    public String timestampPropertyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().timestampPropertyName();
+    }
+
+    /**
+     * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
+     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
+     * time will be used.
+     * 
+     * @param timestampPropertyName the timestampPropertyName value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withTimestampPropertyName(String timestampPropertyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withTimestampPropertyName(timestampPropertyName);
+        return this;
+    }
+
+    /**
+     * Get the localTimestamp property: An object that represents the local timestamp property. It contains the format
+     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
+     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+     * 
+     * @return the localTimestamp value.
+     */
+    public LocalTimestamp localTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().localTimestamp();
+    }
+
+    /**
+     * Set the localTimestamp property: An object that represents the local timestamp property. It contains the format
+     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
+     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
+     * 
+     * @param localTimestamp the localTimestamp value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withLocalTimestamp(LocalTimestamp localTimestamp) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withLocalTimestamp(localTimestamp);
+        return this;
+    }
+
+    /**
+     * Get the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @return the type value.
+     */
+    public IngressStartAtType typePropertiesType() {
+        return this.innerProperties() == null ? null : this.innerProperties().type();
+    }
+
+    /**
+     * Set the type property: The type of the ingressStartAt, It can be "EarliestAvailable", "EventSourceCreationTime",
+     * "CustomEnqueuedTime".
+     * 
+     * @param type the type value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withTypePropertiesType(IngressStartAtType type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withType(type);
+        return this;
+    }
+
+    /**
+     * Get the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @return the time value.
+     */
+    public String time() {
+        return this.innerProperties() == null ? null : this.innerProperties().time();
+    }
+
+    /**
+     * Set the time property: ISO8601 UTC datetime with seconds precision (milliseconds are optional), specifying the
+     * date and time that will be the starting point for Events to be consumed.
+     * 
+     * @param time the time value to set.
+     * @return the EventHubEventSourceResource object itself.
+     */
+    public EventHubEventSourceResource withTime(String time) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EventHubEventSourceResourceProperties();
+        }
+        this.innerProperties().withTime(time);
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: Provisioning state of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the creationTime property: The time the resource was created.
+     * 
+     * @return the creationTime value.
+     */
+    public OffsetDateTime creationTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().creationTime();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (eventSourceResourceId() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventSourceResourceId in model EventHubEventSourceResource"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model EventHubEventSourceResource"));
+        } else {
+            innerProperties().validate();
         }
-        if (serviceBusNamespace() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property serviceBusNamespace in model EventHubEventSourceResource"));
-        }
-        if (eventHubName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubName in model EventHubEventSourceResource"));
-        }
-        if (consumerGroupName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property consumerGroupName in model EventHubEventSourceResource"));
-        }
-        if (keyName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model EventHubEventSourceResource"));
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubEventSourceResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EventHubEventSourceResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EventHubEventSourceResource if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EventHubEventSourceResource.
+     */
+    public static EventHubEventSourceResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EventHubEventSourceResource deserializedEventHubEventSourceResource = new EventHubEventSourceResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEventHubEventSourceResource.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEventHubEventSourceResource.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEventHubEventSourceResource.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedEventHubEventSourceResource.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedEventHubEventSourceResource.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEventHubEventSourceResource.innerProperties
+                        = EventHubEventSourceResourceProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedEventHubEventSourceResource.kind
+                        = EventSourceResourceKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEventHubEventSourceResource;
+        });
     }
 }

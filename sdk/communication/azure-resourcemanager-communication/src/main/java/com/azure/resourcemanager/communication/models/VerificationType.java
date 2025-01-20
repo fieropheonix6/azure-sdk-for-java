@@ -5,40 +5,59 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of verification. */
+/**
+ * Type of verification.
+ */
 public final class VerificationType extends ExpandableStringEnum<VerificationType> {
-    /** Static value Domain for VerificationType. */
+    /**
+     * Static value Domain for VerificationType.
+     */
     public static final VerificationType DOMAIN = fromString("Domain");
 
-    /** Static value SPF for VerificationType. */
+    /**
+     * Static value SPF for VerificationType.
+     */
     public static final VerificationType SPF = fromString("SPF");
 
-    /** Static value DKIM for VerificationType. */
+    /**
+     * Static value DKIM for VerificationType.
+     */
     public static final VerificationType DKIM = fromString("DKIM");
 
-    /** Static value DKIM2 for VerificationType. */
+    /**
+     * Static value DKIM2 for VerificationType.
+     */
     public static final VerificationType DKIM2 = fromString("DKIM2");
 
-    /** Static value DMARC for VerificationType. */
+    /**
+     * Static value DMARC for VerificationType.
+     */
     public static final VerificationType DMARC = fromString("DMARC");
 
     /**
+     * Creates a new instance of VerificationType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VerificationType() {
+    }
+
+    /**
      * Creates or finds a VerificationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VerificationType.
      */
-    @JsonCreator
     public static VerificationType fromString(String name) {
         return fromString(name, VerificationType.class);
     }
 
     /**
      * Gets known VerificationType values.
-     *
+     * 
      * @return known VerificationType values.
      */
     public static Collection<VerificationType> values() {

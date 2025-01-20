@@ -8,22 +8,18 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.LoginScopes;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LoginScopesTests {
-    @Test
-    public void testDeserialize() {
-        LoginScopes model =
-            BinaryData
-                .fromString("{\"scopes\":[\"nbdxk\",\"pxokajionp\",\"mexgstxgcp\",\"dg\"]}")
-                .toObject(LoginScopes.class);
-        Assertions.assertEquals("nbdxk", model.scopes().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LoginScopes model = BinaryData.fromString("{\"scopes\":[\"clwhijcoejctbz\"]}").toObject(LoginScopes.class);
+        Assertions.assertEquals("clwhijcoejctbz", model.scopes().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        LoginScopes model = new LoginScopes().withScopes(Arrays.asList("nbdxk", "pxokajionp", "mexgstxgcp", "dg"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LoginScopes model = new LoginScopes().withScopes(Arrays.asList("clwhijcoejctbz"));
         model = BinaryData.fromObject(model).toObject(LoginScopes.class);
-        Assertions.assertEquals("nbdxk", model.scopes().get(0));
+        Assertions.assertEquals("clwhijcoejctbz", model.scopes().get(0));
     }
 }

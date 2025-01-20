@@ -8,7 +8,7 @@ import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
 /**
- * The {@link LinkedEntity} model.
+ * The {@code LinkedEntity} model.
  */
 @Immutable
 public final class LinkedEntity {
@@ -50,7 +50,7 @@ public final class LinkedEntity {
     private String bingEntitySearchApiId;
 
     /**
-     * Creates a {@link LinkedEntity} model that describes linked entity.
+     * Creates a {@code LinkedEntity} model that describes linked entity.
      *
      * @param name The entity Linking formal name.
      * @param matches A list of instances this entity appears in the text.
@@ -60,7 +60,7 @@ public final class LinkedEntity {
      * @param dataSource The data source used to extract entity linking, such as Wiki/Bing etc.
      */
     public LinkedEntity(String name, IterableStream<LinkedEntityMatch> matches, String language,
-                        String dataSourceEntityId, String url, String dataSource) {
+        String dataSourceEntityId, String url, String dataSource) {
         this.name = name;
         this.matches = matches;
         this.language = language;
@@ -70,8 +70,8 @@ public final class LinkedEntity {
     }
 
     static {
-        LinkedEntityPropertiesHelper.setAccessor(
-            (entity, bingEntitySearchApiId) -> entity.setBingEntitySearchApiId(bingEntitySearchApiId));
+        LinkedEntityPropertiesHelper
+            .setAccessor((entity, bingEntitySearchApiId) -> entity.setBingEntitySearchApiId(bingEntitySearchApiId));
     }
 
     /**
@@ -89,7 +89,7 @@ public final class LinkedEntity {
      * @return The linked entities matched value.
      */
     public IterableStream<LinkedEntityMatch> getMatches() {
-        return this.matches;
+        return this.matches == null ? IterableStream.of(null) : this.matches;
     }
 
     /**

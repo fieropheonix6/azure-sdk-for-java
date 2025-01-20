@@ -8,25 +8,21 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkResourceProperties;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkResourcePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkResourceProperties model =
-            BinaryData
-                .fromString(
-                    "{\"groupId\":\"ozuhkfp\",\"requiredMembers\":[\"yofd\",\"luu\",\"dttouwaboekqvkel\",\"smv\"],\"requiredZoneNames\":[\"yjsflhhcaalnji\",\"isxyawjoyaqcslyj\",\"kiidzyex\",\"nelixhnrztfo\"],\"displayName\":\"bnxknalaulppg\"}")
-                .toObject(PrivateLinkResourceProperties.class);
-        Assertions.assertEquals("yjsflhhcaalnji", model.requiredZoneNames().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkResourceProperties model = BinaryData.fromString(
+            "{\"groupId\":\"xsdszuempsb\",\"requiredMembers\":[\"z\"],\"requiredZoneNames\":[\"v\",\"nqicvinvkjjxdxrb\",\"ukzclewyhmlwpaz\",\"zpof\"],\"displayName\":\"ckw\"}")
+            .toObject(PrivateLinkResourceProperties.class);
+        Assertions.assertEquals("v", model.requiredZoneNames().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkResourceProperties model =
-            new PrivateLinkResourceProperties()
-                .withRequiredZoneNames(Arrays.asList("yjsflhhcaalnji", "isxyawjoyaqcslyj", "kiidzyex", "nelixhnrztfo"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkResourceProperties model = new PrivateLinkResourceProperties()
+            .withRequiredZoneNames(Arrays.asList("v", "nqicvinvkjjxdxrb", "ukzclewyhmlwpaz", "zpof"));
         model = BinaryData.fromObject(model).toObject(PrivateLinkResourceProperties.class);
-        Assertions.assertEquals("yjsflhhcaalnji", model.requiredZoneNames().get(0));
+        Assertions.assertEquals("v", model.requiredZoneNames().get(0));
     }
 }

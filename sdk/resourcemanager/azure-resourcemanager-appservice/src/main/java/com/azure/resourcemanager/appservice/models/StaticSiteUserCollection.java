@@ -6,28 +6,38 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserArmResourceInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Collection of static site custom users. */
+/**
+ * Collection of static site custom users.
+ */
 @Fluent
-public final class StaticSiteUserCollection {
+public final class StaticSiteUserCollection implements JsonSerializable<StaticSiteUserCollection> {
     /*
      * Collection of resources.
      */
-    @JsonProperty(value = "value", required = true)
     private List<StaticSiteUserArmResourceInner> value;
 
     /*
      * Link to next page of resources.
      */
-    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
     /**
+     * Creates an instance of StaticSiteUserCollection class.
+     */
+    public StaticSiteUserCollection() {
+    }
+
+    /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticSiteUserArmResourceInner> value() {
@@ -36,7 +46,7 @@ public final class StaticSiteUserCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticSiteUserCollection object itself.
      */
@@ -47,7 +57,7 @@ public final class StaticSiteUserCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -56,18 +66,58 @@ public final class StaticSiteUserCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model StaticSiteUserCollection"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model StaticSiteUserCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(StaticSiteUserCollection.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticSiteUserCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticSiteUserCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the StaticSiteUserCollection.
+     */
+    public static StaticSiteUserCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticSiteUserCollection deserializedStaticSiteUserCollection = new StaticSiteUserCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<StaticSiteUserArmResourceInner> value
+                        = reader.readArray(reader1 -> StaticSiteUserArmResourceInner.fromJson(reader1));
+                    deserializedStaticSiteUserCollection.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedStaticSiteUserCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticSiteUserCollection;
+        });
+    }
 }

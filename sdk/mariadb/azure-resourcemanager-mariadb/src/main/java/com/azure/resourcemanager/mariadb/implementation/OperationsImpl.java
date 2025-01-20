@@ -12,38 +12,34 @@ import com.azure.resourcemanager.mariadb.fluent.OperationsClient;
 import com.azure.resourcemanager.mariadb.fluent.models.OperationListResultInner;
 import com.azure.resourcemanager.mariadb.models.OperationListResult;
 import com.azure.resourcemanager.mariadb.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
     private final com.azure.resourcemanager.mariadb.MariaDBManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.mariadb.MariaDBManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationListResult> listWithResponse(Context context) {
+        Response<OperationListResultInner> inner = this.serviceClient().listWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationListResult list() {
         OperationListResultInner inner = this.serviceClient().list();
         if (inner != null) {
             return new OperationListResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationListResult> listWithResponse(Context context) {
-        Response<OperationListResultInner> inner = this.serviceClient().listWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationListResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

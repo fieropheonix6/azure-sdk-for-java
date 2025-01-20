@@ -5,85 +5,83 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The SingleQueryResult model. */
+/**
+ * The SingleQueryResult model.
+ */
 @Fluent
-public final class SingleQueryResult {
+public final class SingleQueryResult implements JsonSerializable<SingleQueryResult> {
     /*
      * The ID of the signature
      */
-    @JsonProperty(value = "signatureId")
     private Integer signatureId;
 
     /*
      * The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny
      */
-    @JsonProperty(value = "mode")
     private FirewallPolicyIdpsSignatureMode mode;
 
     /*
-     * Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High
+     * Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low
      */
-    @JsonProperty(value = "severity")
     private FirewallPolicyIdpsSignatureSeverity severity;
 
     /*
-     * Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound, 2 - Bidirectional
+     * Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound, 2 - Any, 3 - Internal, 4 -
+     * InternalOutbound, 5 - InternalInbound
      */
-    @JsonProperty(value = "direction")
     private FirewallPolicyIdpsSignatureDirection direction;
 
     /*
      * Describes the groups the signature belongs to
      */
-    @JsonProperty(value = "group")
     private String group;
 
     /*
      * Describes what is the signature enforces
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /*
      * Describes the protocol the signatures is being enforced in
      */
-    @JsonProperty(value = "protocol")
     private String protocol;
 
     /*
      * Describes the list of source ports related to this signature
      */
-    @JsonProperty(value = "sourcePorts")
     private List<String> sourcePorts;
 
     /*
      * Describes the list of destination ports related to this signature
      */
-    @JsonProperty(value = "destinationPorts")
     private List<String> destinationPorts;
 
     /*
      * Describes the last updated time of the signature (provided from 3rd party vendor)
      */
-    @JsonProperty(value = "lastUpdated")
     private String lastUpdated;
 
     /*
      * Describes if this override is inherited from base policy or not
      */
-    @JsonProperty(value = "inheritedFromParentPolicy")
     private Boolean inheritedFromParentPolicy;
 
-    /** Creates an instance of SingleQueryResult class. */
+    /**
+     * Creates an instance of SingleQueryResult class.
+     */
     public SingleQueryResult() {
     }
 
     /**
      * Get the signatureId property: The ID of the signature.
-     *
+     * 
      * @return the signatureId value.
      */
     public Integer signatureId() {
@@ -92,7 +90,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the signatureId property: The ID of the signature.
-     *
+     * 
      * @param signatureId the signatureId value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -103,7 +101,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the mode property: The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny.
-     *
+     * 
      * @return the mode value.
      */
     public FirewallPolicyIdpsSignatureMode mode() {
@@ -112,7 +110,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the mode property: The current mode enforced, 0 - Disabled, 1 - Alert, 2 -Deny.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -122,8 +120,8 @@ public final class SingleQueryResult {
     }
 
     /**
-     * Get the severity property: Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High.
-     *
+     * Get the severity property: Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low.
+     * 
      * @return the severity value.
      */
     public FirewallPolicyIdpsSignatureSeverity severity() {
@@ -131,8 +129,8 @@ public final class SingleQueryResult {
     }
 
     /**
-     * Set the severity property: Describes the severity of signature: 1 - Low, 2 - Medium, 3 - High.
-     *
+     * Set the severity property: Describes the severity of signature: 1 - High, 2 - Medium, 3 - Low.
+     * 
      * @param severity the severity value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -142,9 +140,9 @@ public final class SingleQueryResult {
     }
 
     /**
-     * Get the direction property: Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound,
-     * 2 - Bidirectional.
-     *
+     * Get the direction property: Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
+     * 2 - Any, 3 - Internal, 4 - InternalOutbound, 5 - InternalInbound.
+     * 
      * @return the direction value.
      */
     public FirewallPolicyIdpsSignatureDirection direction() {
@@ -152,9 +150,9 @@ public final class SingleQueryResult {
     }
 
     /**
-     * Set the direction property: Describes in which direction signature is being enforced: 0 - Inbound, 1 - OutBound,
-     * 2 - Bidirectional.
-     *
+     * Set the direction property: Describes in which direction signature is being enforced: 0 - OutBound, 1 - InBound,
+     * 2 - Any, 3 - Internal, 4 - InternalOutbound, 5 - InternalInbound.
+     * 
      * @param direction the direction value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -165,7 +163,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the group property: Describes the groups the signature belongs to.
-     *
+     * 
      * @return the group value.
      */
     public String group() {
@@ -174,7 +172,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the group property: Describes the groups the signature belongs to.
-     *
+     * 
      * @param group the group value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -185,7 +183,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the description property: Describes what is the signature enforces.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -194,7 +192,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the description property: Describes what is the signature enforces.
-     *
+     * 
      * @param description the description value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -205,7 +203,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the protocol property: Describes the protocol the signatures is being enforced in.
-     *
+     * 
      * @return the protocol value.
      */
     public String protocol() {
@@ -214,7 +212,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the protocol property: Describes the protocol the signatures is being enforced in.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -225,7 +223,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the sourcePorts property: Describes the list of source ports related to this signature.
-     *
+     * 
      * @return the sourcePorts value.
      */
     public List<String> sourcePorts() {
@@ -234,7 +232,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the sourcePorts property: Describes the list of source ports related to this signature.
-     *
+     * 
      * @param sourcePorts the sourcePorts value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -245,7 +243,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the destinationPorts property: Describes the list of destination ports related to this signature.
-     *
+     * 
      * @return the destinationPorts value.
      */
     public List<String> destinationPorts() {
@@ -254,7 +252,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the destinationPorts property: Describes the list of destination ports related to this signature.
-     *
+     * 
      * @param destinationPorts the destinationPorts value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -265,7 +263,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the lastUpdated property: Describes the last updated time of the signature (provided from 3rd party vendor).
-     *
+     * 
      * @return the lastUpdated value.
      */
     public String lastUpdated() {
@@ -274,7 +272,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the lastUpdated property: Describes the last updated time of the signature (provided from 3rd party vendor).
-     *
+     * 
      * @param lastUpdated the lastUpdated value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -285,7 +283,7 @@ public final class SingleQueryResult {
 
     /**
      * Get the inheritedFromParentPolicy property: Describes if this override is inherited from base policy or not.
-     *
+     * 
      * @return the inheritedFromParentPolicy value.
      */
     public Boolean inheritedFromParentPolicy() {
@@ -294,7 +292,7 @@ public final class SingleQueryResult {
 
     /**
      * Set the inheritedFromParentPolicy property: Describes if this override is inherited from base policy or not.
-     *
+     * 
      * @param inheritedFromParentPolicy the inheritedFromParentPolicy value to set.
      * @return the SingleQueryResult object itself.
      */
@@ -305,9 +303,81 @@ public final class SingleQueryResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("signatureId", this.signatureId);
+        jsonWriter.writeNumberField("mode", this.mode == null ? null : this.mode.toInt());
+        jsonWriter.writeNumberField("severity", this.severity == null ? null : this.severity.toInt());
+        jsonWriter.writeNumberField("direction", this.direction == null ? null : this.direction.toInt());
+        jsonWriter.writeStringField("group", this.group);
+        jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeStringField("protocol", this.protocol);
+        jsonWriter.writeArrayField("sourcePorts", this.sourcePorts, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("destinationPorts", this.destinationPorts,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("lastUpdated", this.lastUpdated);
+        jsonWriter.writeBooleanField("inheritedFromParentPolicy", this.inheritedFromParentPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SingleQueryResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SingleQueryResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SingleQueryResult.
+     */
+    public static SingleQueryResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SingleQueryResult deserializedSingleQueryResult = new SingleQueryResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("signatureId".equals(fieldName)) {
+                    deserializedSingleQueryResult.signatureId = reader.getNullable(JsonReader::getInt);
+                } else if ("mode".equals(fieldName)) {
+                    deserializedSingleQueryResult.mode = FirewallPolicyIdpsSignatureMode.fromInt(reader.getInt());
+                } else if ("severity".equals(fieldName)) {
+                    deserializedSingleQueryResult.severity
+                        = FirewallPolicyIdpsSignatureSeverity.fromInt(reader.getInt());
+                } else if ("direction".equals(fieldName)) {
+                    deserializedSingleQueryResult.direction
+                        = FirewallPolicyIdpsSignatureDirection.fromInt(reader.getInt());
+                } else if ("group".equals(fieldName)) {
+                    deserializedSingleQueryResult.group = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedSingleQueryResult.description = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedSingleQueryResult.protocol = reader.getString();
+                } else if ("sourcePorts".equals(fieldName)) {
+                    List<String> sourcePorts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSingleQueryResult.sourcePorts = sourcePorts;
+                } else if ("destinationPorts".equals(fieldName)) {
+                    List<String> destinationPorts = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSingleQueryResult.destinationPorts = destinationPorts;
+                } else if ("lastUpdated".equals(fieldName)) {
+                    deserializedSingleQueryResult.lastUpdated = reader.getString();
+                } else if ("inheritedFromParentPolicy".equals(fieldName)) {
+                    deserializedSingleQueryResult.inheritedFromParentPolicy
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSingleQueryResult;
+        });
     }
 }

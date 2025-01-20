@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Tier. */
+/**
+ * The tier of the peering SKU.
+ */
 public final class Tier extends ExpandableStringEnum<Tier> {
-    /** Static value Basic for Tier. */
+    /**
+     * Static value Basic for Tier.
+     */
     public static final Tier BASIC = fromString("Basic");
 
-    /** Static value Premium for Tier. */
+    /**
+     * Static value Premium for Tier.
+     */
     public static final Tier PREMIUM = fromString("Premium");
 
     /**
+     * Creates a new instance of Tier value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Tier() {
+    }
+
+    /**
      * Creates or finds a Tier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Tier.
      */
-    @JsonCreator
     public static Tier fromString(String name) {
         return fromString(name, Tier.class);
     }
 
-    /** @return known Tier values. */
+    /**
+     * Gets known Tier values.
+     * 
+     * @return known Tier values.
+     */
     public static Collection<Tier> values() {
         return values(Tier.class);
     }

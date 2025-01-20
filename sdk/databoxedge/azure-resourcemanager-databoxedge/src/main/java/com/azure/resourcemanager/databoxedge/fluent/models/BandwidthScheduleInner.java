@@ -5,146 +5,235 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.DayOfWeek;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The bandwidth schedule details. */
-@JsonFlatten
+/**
+ * The bandwidth schedule details.
+ */
 @Fluent
-public class BandwidthScheduleInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BandwidthScheduleInner.class);
+public final class BandwidthScheduleInner extends ArmBaseModel {
+    /*
+     * The properties of the bandwidth schedule.
+     */
+    private BandwidthScheduleProperties innerProperties = new BandwidthScheduleProperties();
 
     /*
-     * The start time of the schedule in UTC.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.start", required = true)
-    private String start;
+    private String type;
 
     /*
-     * The stop time of the schedule in UTC.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.stop", required = true)
-    private String stop;
+    private String name;
 
     /*
-     * The bandwidth rate in Mbps.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.rateInMbps", required = true)
-    private int rateInMbps;
+    private String id;
 
-    /*
-     * The days of the week when this schedule is applicable.
+    /**
+     * Creates an instance of BandwidthScheduleInner class.
      */
-    @JsonProperty(value = "properties.days", required = true)
-    private List<DayOfWeek> days;
+    public BandwidthScheduleInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties of the bandwidth schedule.
+     * 
+     * @return the innerProperties value.
+     */
+    private BandwidthScheduleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the start property: The start time of the schedule in UTC.
-     *
+     * 
      * @return the start value.
      */
     public String start() {
-        return this.start;
+        return this.innerProperties() == null ? null : this.innerProperties().start();
     }
 
     /**
      * Set the start property: The start time of the schedule in UTC.
-     *
+     * 
      * @param start the start value to set.
      * @return the BandwidthScheduleInner object itself.
      */
     public BandwidthScheduleInner withStart(String start) {
-        this.start = start;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BandwidthScheduleProperties();
+        }
+        this.innerProperties().withStart(start);
         return this;
     }
 
     /**
      * Get the stop property: The stop time of the schedule in UTC.
-     *
+     * 
      * @return the stop value.
      */
     public String stop() {
-        return this.stop;
+        return this.innerProperties() == null ? null : this.innerProperties().stop();
     }
 
     /**
      * Set the stop property: The stop time of the schedule in UTC.
-     *
+     * 
      * @param stop the stop value to set.
      * @return the BandwidthScheduleInner object itself.
      */
     public BandwidthScheduleInner withStop(String stop) {
-        this.stop = stop;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BandwidthScheduleProperties();
+        }
+        this.innerProperties().withStop(stop);
         return this;
     }
 
     /**
      * Get the rateInMbps property: The bandwidth rate in Mbps.
-     *
+     * 
      * @return the rateInMbps value.
      */
     public int rateInMbps() {
-        return this.rateInMbps;
+        return this.innerProperties() == null ? 0 : this.innerProperties().rateInMbps();
     }
 
     /**
      * Set the rateInMbps property: The bandwidth rate in Mbps.
-     *
+     * 
      * @param rateInMbps the rateInMbps value to set.
      * @return the BandwidthScheduleInner object itself.
      */
     public BandwidthScheduleInner withRateInMbps(int rateInMbps) {
-        this.rateInMbps = rateInMbps;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BandwidthScheduleProperties();
+        }
+        this.innerProperties().withRateInMbps(rateInMbps);
         return this;
     }
 
     /**
      * Get the days property: The days of the week when this schedule is applicable.
-     *
+     * 
      * @return the days value.
      */
     public List<DayOfWeek> days() {
-        return this.days;
+        return this.innerProperties() == null ? null : this.innerProperties().days();
     }
 
     /**
      * Set the days property: The days of the week when this schedule is applicable.
-     *
+     * 
      * @param days the days value to set.
      * @return the BandwidthScheduleInner object itself.
      */
     public BandwidthScheduleInner withDays(List<DayOfWeek> days) {
-        this.days = days;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BandwidthScheduleProperties();
+        }
+        this.innerProperties().withDays(days);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (start() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property start in model BandwidthScheduleInner"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model BandwidthScheduleInner"));
+        } else {
+            innerProperties().validate();
         }
-        if (stop() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property stop in model BandwidthScheduleInner"));
-        }
-        if (days() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property days in model BandwidthScheduleInner"));
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BandwidthScheduleInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BandwidthScheduleInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BandwidthScheduleInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BandwidthScheduleInner.
+     */
+    public static BandwidthScheduleInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BandwidthScheduleInner deserializedBandwidthScheduleInner = new BandwidthScheduleInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBandwidthScheduleInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBandwidthScheduleInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBandwidthScheduleInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBandwidthScheduleInner.innerProperties = BandwidthScheduleProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBandwidthScheduleInner;
+        });
     }
 }

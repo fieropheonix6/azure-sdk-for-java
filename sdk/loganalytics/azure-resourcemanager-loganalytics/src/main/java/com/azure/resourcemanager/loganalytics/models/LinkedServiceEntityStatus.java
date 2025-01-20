@@ -5,37 +5,54 @@
 package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LinkedServiceEntityStatus. */
+/**
+ * The provisioning state of the linked service.
+ */
 public final class LinkedServiceEntityStatus extends ExpandableStringEnum<LinkedServiceEntityStatus> {
-    /** Static value Succeeded for LinkedServiceEntityStatus. */
+    /**
+     * Static value Succeeded for LinkedServiceEntityStatus.
+     */
     public static final LinkedServiceEntityStatus SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Deleting for LinkedServiceEntityStatus. */
+    /**
+     * Static value Deleting for LinkedServiceEntityStatus.
+     */
     public static final LinkedServiceEntityStatus DELETING = fromString("Deleting");
 
-    /** Static value ProvisioningAccount for LinkedServiceEntityStatus. */
+    /**
+     * Static value ProvisioningAccount for LinkedServiceEntityStatus.
+     */
     public static final LinkedServiceEntityStatus PROVISIONING_ACCOUNT = fromString("ProvisioningAccount");
 
-    /** Static value Updating for LinkedServiceEntityStatus. */
+    /**
+     * Static value Updating for LinkedServiceEntityStatus.
+     */
     public static final LinkedServiceEntityStatus UPDATING = fromString("Updating");
 
     /**
+     * Creates a new instance of LinkedServiceEntityStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LinkedServiceEntityStatus() {
+    }
+
+    /**
      * Creates or finds a LinkedServiceEntityStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LinkedServiceEntityStatus.
      */
-    @JsonCreator
     public static LinkedServiceEntityStatus fromString(String name) {
         return fromString(name, LinkedServiceEntityStatus.class);
     }
 
     /**
      * Gets known LinkedServiceEntityStatus values.
-     *
+     * 
      * @return known LinkedServiceEntityStatus values.
      */
     public static Collection<LinkedServiceEntityStatus> values() {

@@ -22,19 +22,30 @@ public final class SignInSettingsImpl implements SignInSettings {
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public SignInSettingsImpl(
-        SignInSettingsClient innerClient, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    public SignInSettingsImpl(SignInSettingsClient innerClient,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public SignInSettingsGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        Context context) {
+        return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, context);
     }
 
     public void getEntityTag(String resourceGroupName, String serviceName) {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName);
     }
 
-    public SignInSettingsGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, context);
+    public Response<PortalSigninSettings> getWithResponse(String resourceGroupName, String serviceName,
+        Context context) {
+        SignInSettingsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PortalSigninSettingsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PortalSigninSettings get(String resourceGroupName, String serviceName) {
@@ -46,61 +57,34 @@ public final class SignInSettingsImpl implements SignInSettings {
         }
     }
 
-    public Response<PortalSigninSettings> getWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        SignInSettingsGetResponse inner = this.serviceClient().getWithResponse(resourceGroupName, serviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PortalSigninSettingsImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void update(
-        String resourceGroupName, String serviceName, String ifMatch, PortalSigninSettingsInner parameters) {
-        this.serviceClient().update(resourceGroupName, serviceName, ifMatch, parameters);
-    }
-
-    public Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        String ifMatch,
-        PortalSigninSettingsInner parameters,
-        Context context) {
+    public Response<Void> updateWithResponse(String resourceGroupName, String serviceName, String ifMatch,
+        PortalSigninSettingsInner parameters, Context context) {
         return this.serviceClient().updateWithResponse(resourceGroupName, serviceName, ifMatch, parameters, context);
     }
 
-    public PortalSigninSettings createOrUpdate(
-        String resourceGroupName, String serviceName, PortalSigninSettingsInner parameters) {
-        PortalSigninSettingsInner inner =
-            this.serviceClient().createOrUpdate(resourceGroupName, serviceName, parameters);
+    public void update(String resourceGroupName, String serviceName, String ifMatch,
+        PortalSigninSettingsInner parameters) {
+        this.serviceClient().update(resourceGroupName, serviceName, ifMatch, parameters);
+    }
+
+    public Response<PortalSigninSettings> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PortalSigninSettingsInner parameters, String ifMatch, Context context) {
+        Response<PortalSigninSettingsInner> inner = this.serviceClient()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, parameters, ifMatch, context);
         if (inner != null) {
-            return new PortalSigninSettingsImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PortalSigninSettingsImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<PortalSigninSettings> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PortalSigninSettingsInner parameters,
-        String ifMatch,
-        Context context) {
-        Response<PortalSigninSettingsInner> inner =
-            this
-                .serviceClient()
-                .createOrUpdateWithResponse(resourceGroupName, serviceName, parameters, ifMatch, context);
+    public PortalSigninSettings createOrUpdate(String resourceGroupName, String serviceName,
+        PortalSigninSettingsInner parameters) {
+        PortalSigninSettingsInner inner
+            = this.serviceClient().createOrUpdate(resourceGroupName, serviceName, parameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PortalSigninSettingsImpl(inner.getValue(), this.manager()));
+            return new PortalSigninSettingsImpl(inner, this.manager());
         } else {
             return null;
         }

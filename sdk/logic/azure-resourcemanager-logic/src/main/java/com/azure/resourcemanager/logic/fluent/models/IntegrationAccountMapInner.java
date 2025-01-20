@@ -5,207 +5,100 @@
 package com.azure.resourcemanager.logic.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.logic.models.ContentLink;
 import com.azure.resourcemanager.logic.models.IntegrationAccountMapPropertiesParametersSchema;
 import com.azure.resourcemanager.logic.models.MapType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The integration account map. */
-@JsonFlatten
+/**
+ * The integration account map.
+ */
 @Fluent
-public class IntegrationAccountMapInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountMapInner.class);
+public final class IntegrationAccountMapInner extends Resource {
+    /*
+     * The integration account map properties.
+     */
+    private IntegrationAccountMapProperties innerProperties = new IntegrationAccountMapProperties();
 
     /*
-     * The map type.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.mapType", required = true)
-    private MapType mapType;
+    private String type;
 
     /*
-     * The parameters schema of integration account map.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.parametersSchema")
-    private IntegrationAccountMapPropertiesParametersSchema parametersSchema;
+    private String name;
 
     /*
-     * The created time.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
-
-    /*
-     * The changed time.
-     */
-    @JsonProperty(value = "properties.changedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime changedTime;
-
-    /*
-     * The content.
-     */
-    @JsonProperty(value = "properties.content")
-    private String content;
-
-    /*
-     * The content type.
-     */
-    @JsonProperty(value = "properties.contentType")
-    private String contentType;
-
-    /*
-     * The content link.
-     */
-    @JsonProperty(value = "properties.contentLink", access = JsonProperty.Access.WRITE_ONLY)
-    private ContentLink contentLink;
-
-    /*
-     * The metadata.
-     */
-    @JsonProperty(value = "properties.metadata")
-    private Object metadata;
+    private String id;
 
     /**
-     * Get the mapType property: The map type.
-     *
-     * @return the mapType value.
+     * Creates an instance of IntegrationAccountMapInner class.
      */
-    public MapType mapType() {
-        return this.mapType;
+    public IntegrationAccountMapInner() {
     }
 
     /**
-     * Set the mapType property: The map type.
-     *
-     * @param mapType the mapType value to set.
-     * @return the IntegrationAccountMapInner object itself.
+     * Get the innerProperties property: The integration account map properties.
+     * 
+     * @return the innerProperties value.
      */
-    public IntegrationAccountMapInner withMapType(MapType mapType) {
-        this.mapType = mapType;
-        return this;
+    private IntegrationAccountMapProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the parametersSchema property: The parameters schema of integration account map.
-     *
-     * @return the parametersSchema value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public IntegrationAccountMapPropertiesParametersSchema parametersSchema() {
-        return this.parametersSchema;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the parametersSchema property: The parameters schema of integration account map.
-     *
-     * @param parametersSchema the parametersSchema value to set.
-     * @return the IntegrationAccountMapInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public IntegrationAccountMapInner withParametersSchema(
-        IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
-        this.parametersSchema = parametersSchema;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the createdTime property: The created time.
-     *
-     * @return the createdTime value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public OffsetDateTime createdTime() {
-        return this.createdTime;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the changedTime property: The changed time.
-     *
-     * @return the changedTime value.
+     * {@inheritDoc}
      */
-    public OffsetDateTime changedTime() {
-        return this.changedTime;
-    }
-
-    /**
-     * Get the content property: The content.
-     *
-     * @return the content value.
-     */
-    public String content() {
-        return this.content;
-    }
-
-    /**
-     * Set the content property: The content.
-     *
-     * @param content the content value to set.
-     * @return the IntegrationAccountMapInner object itself.
-     */
-    public IntegrationAccountMapInner withContent(String content) {
-        this.content = content;
-        return this;
-    }
-
-    /**
-     * Get the contentType property: The content type.
-     *
-     * @return the contentType value.
-     */
-    public String contentType() {
-        return this.contentType;
-    }
-
-    /**
-     * Set the contentType property: The content type.
-     *
-     * @param contentType the contentType value to set.
-     * @return the IntegrationAccountMapInner object itself.
-     */
-    public IntegrationAccountMapInner withContentType(String contentType) {
-        this.contentType = contentType;
-        return this;
-    }
-
-    /**
-     * Get the contentLink property: The content link.
-     *
-     * @return the contentLink value.
-     */
-    public ContentLink contentLink() {
-        return this.contentLink;
-    }
-
-    /**
-     * Get the metadata property: The metadata.
-     *
-     * @return the metadata value.
-     */
-    public Object metadata() {
-        return this.metadata;
-    }
-
-    /**
-     * Set the metadata property: The metadata.
-     *
-     * @param metadata the metadata value to set.
-     * @return the IntegrationAccountMapInner object itself.
-     */
-    public IntegrationAccountMapInner withMetadata(Object metadata) {
-        this.metadata = metadata;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public IntegrationAccountMapInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IntegrationAccountMapInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -213,22 +106,213 @@ public class IntegrationAccountMapInner extends Resource {
     }
 
     /**
+     * Get the mapType property: The map type.
+     * 
+     * @return the mapType value.
+     */
+    public MapType mapType() {
+        return this.innerProperties() == null ? null : this.innerProperties().mapType();
+    }
+
+    /**
+     * Set the mapType property: The map type.
+     * 
+     * @param mapType the mapType value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withMapType(MapType mapType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withMapType(mapType);
+        return this;
+    }
+
+    /**
+     * Get the parametersSchema property: The parameters schema of integration account map.
+     * 
+     * @return the parametersSchema value.
+     */
+    public IntegrationAccountMapPropertiesParametersSchema parametersSchema() {
+        return this.innerProperties() == null ? null : this.innerProperties().parametersSchema();
+    }
+
+    /**
+     * Set the parametersSchema property: The parameters schema of integration account map.
+     * 
+     * @param parametersSchema the parametersSchema value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner
+        withParametersSchema(IntegrationAccountMapPropertiesParametersSchema parametersSchema) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withParametersSchema(parametersSchema);
+        return this;
+    }
+
+    /**
+     * Get the createdTime property: The created time.
+     * 
+     * @return the createdTime value.
+     */
+    public OffsetDateTime createdTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
+    }
+
+    /**
+     * Get the changedTime property: The changed time.
+     * 
+     * @return the changedTime value.
+     */
+    public OffsetDateTime changedTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().changedTime();
+    }
+
+    /**
+     * Get the content property: The content.
+     * 
+     * @return the content value.
+     */
+    public String content() {
+        return this.innerProperties() == null ? null : this.innerProperties().content();
+    }
+
+    /**
+     * Set the content property: The content.
+     * 
+     * @param content the content value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withContent(String content) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withContent(content);
+        return this;
+    }
+
+    /**
+     * Get the contentType property: The content type.
+     * 
+     * @return the contentType value.
+     */
+    public String contentType() {
+        return this.innerProperties() == null ? null : this.innerProperties().contentType();
+    }
+
+    /**
+     * Set the contentType property: The content type.
+     * 
+     * @param contentType the contentType value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withContentType(String contentType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withContentType(contentType);
+        return this;
+    }
+
+    /**
+     * Get the contentLink property: The content link.
+     * 
+     * @return the contentLink value.
+     */
+    public ContentLink contentLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().contentLink();
+    }
+
+    /**
+     * Get the metadata property: The metadata.
+     * 
+     * @return the metadata value.
+     */
+    public Object metadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadata();
+    }
+
+    /**
+     * Set the metadata property: The metadata.
+     * 
+     * @param metadata the metadata value to set.
+     * @return the IntegrationAccountMapInner object itself.
+     */
+    public IntegrationAccountMapInner withMetadata(Object metadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IntegrationAccountMapProperties();
+        }
+        this.innerProperties().withMetadata(metadata);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (mapType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property mapType in model IntegrationAccountMapInner"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model IntegrationAccountMapInner"));
+        } else {
+            innerProperties().validate();
         }
-        if (parametersSchema() != null) {
-            parametersSchema().validate();
-        }
-        if (contentLink() != null) {
-            contentLink().validate();
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountMapInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IntegrationAccountMapInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IntegrationAccountMapInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the IntegrationAccountMapInner.
+     */
+    public static IntegrationAccountMapInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IntegrationAccountMapInner deserializedIntegrationAccountMapInner = new IntegrationAccountMapInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIntegrationAccountMapInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIntegrationAccountMapInner.innerProperties
+                        = IntegrationAccountMapProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIntegrationAccountMapInner;
+        });
     }
 }

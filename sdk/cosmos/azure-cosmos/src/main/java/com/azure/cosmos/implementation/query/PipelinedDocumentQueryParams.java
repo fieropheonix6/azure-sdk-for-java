@@ -5,11 +5,13 @@ package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
+import com.azure.cosmos.implementation.query.hybridsearch.HybridSearchQueryInfo;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PipelinedDocumentQueryParams<T> {
     private int top = -1;
@@ -24,7 +26,10 @@ public class PipelinedDocumentQueryParams<T> {
     private final UUID correlatedActivityId;
     private CosmosQueryRequestOptions cosmosQueryRequestOptions;
     private final QueryInfo queryInfo;
+    private final HybridSearchQueryInfo hybridSearchQueryInfo;
     private final List<FeedRangeEpkImpl> feedRanges;
+    private final List<FeedRangeEpkImpl> allFeedRanges;
+    private final AtomicBoolean isQueryCancelledOnTimeout;
 
     public PipelinedDocumentQueryParams(
         ResourceType resourceTypeEnum,
@@ -36,9 +41,12 @@ public class PipelinedDocumentQueryParams<T> {
         boolean isContinuationExpected,
         int initialPageSize,
         QueryInfo queryInfo,
+        HybridSearchQueryInfo hybridSearchQueryInfo,
         CosmosQueryRequestOptions cosmosQueryRequestOptions,
         UUID correlatedActivityId,
-        List<FeedRangeEpkImpl> feedRanges) {
+        List<FeedRangeEpkImpl> feedRanges,
+        List<FeedRangeEpkImpl> allFeedRanges,
+        final AtomicBoolean isQueryCancelledOnTimeout) {
 
         this.resourceTypeEnum = resourceTypeEnum;
         this.resourceType = resourceType;
@@ -49,9 +57,12 @@ public class PipelinedDocumentQueryParams<T> {
         this.isContinuationExpected = isContinuationExpected;
         this.initialPageSize = initialPageSize;
         this.queryInfo = queryInfo;
+        this.hybridSearchQueryInfo = hybridSearchQueryInfo;
         this.cosmosQueryRequestOptions = cosmosQueryRequestOptions;
         this.correlatedActivityId = correlatedActivityId;
         this.feedRanges = feedRanges;
+        this.allFeedRanges = allFeedRanges;
+        this.isQueryCancelledOnTimeout = isQueryCancelledOnTimeout;
     }
 
     public int getTop() {
@@ -110,8 +121,18 @@ public class PipelinedDocumentQueryParams<T> {
         return queryInfo;
     }
 
+    public HybridSearchQueryInfo getHybridSearchQueryInfo() { return hybridSearchQueryInfo; }
+
     public List<FeedRangeEpkImpl> getFeedRanges() {
         return feedRanges;
+    }
+
+    public List<FeedRangeEpkImpl> getAllFeedRanges() {
+        return allFeedRanges;
+    }
+
+    public AtomicBoolean isQueryCancelledOnTimeout() {
+        return isQueryCancelledOnTimeout;
     }
 
     public <TNew> PipelinedDocumentQueryParams<TNew> convertGenericType(Class<TNew> tNew) {
@@ -125,8 +146,11 @@ public class PipelinedDocumentQueryParams<T> {
             this.isContinuationExpected,
             this.initialPageSize,
             this.queryInfo,
+            this.hybridSearchQueryInfo,
             this.cosmosQueryRequestOptions,
             this.correlatedActivityId,
-            this.feedRanges);
+            this.feedRanges,
+            this.allFeedRanges,
+            this.isQueryCancelledOnTimeout);
     }
 }

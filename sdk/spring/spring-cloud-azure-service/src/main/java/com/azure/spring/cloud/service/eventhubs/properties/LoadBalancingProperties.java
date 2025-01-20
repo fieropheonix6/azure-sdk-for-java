@@ -14,13 +14,19 @@ import java.time.Duration;
 public class LoadBalancingProperties implements EventProcessorClientProperties.LoadBalancing {
 
     /**
+     * Creates an instance of {@link LoadBalancingProperties}.
+     */
+    public LoadBalancingProperties() {
+    }
+
+    /**
      * The time interval between load balancing update cycles.
      */
     private Duration updateInterval;
     /**
      * The load balancing strategy for claiming partition ownership.
      */
-    private LoadBalancingStrategy strategy = LoadBalancingStrategy.BALANCED;
+    private LoadBalancingStrategy strategy;
     /**
      * The time duration after which the ownership of partition expires.
      */

@@ -5,9 +5,11 @@
 package com.azure.resourcemanager.servicefabric.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -15,18 +17,21 @@ import java.util.List;
  * if no target was given.
  */
 @Fluent
-public final class UpgradableVersionPathResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpgradableVersionPathResultInner.class);
-
+public final class UpgradableVersionPathResultInner implements JsonSerializable<UpgradableVersionPathResultInner> {
     /*
      * The supportedPath property.
      */
-    @JsonProperty(value = "supportedPath")
     private List<String> supportedPath;
 
     /**
+     * Creates an instance of UpgradableVersionPathResultInner class.
+     */
+    public UpgradableVersionPathResultInner() {
+    }
+
+    /**
      * Get the supportedPath property: The supportedPath property.
-     *
+     * 
      * @return the supportedPath value.
      */
     public List<String> supportedPath() {
@@ -35,7 +40,7 @@ public final class UpgradableVersionPathResultInner {
 
     /**
      * Set the supportedPath property: The supportedPath property.
-     *
+     * 
      * @param supportedPath the supportedPath value to set.
      * @return the UpgradableVersionPathResultInner object itself.
      */
@@ -46,9 +51,48 @@ public final class UpgradableVersionPathResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("supportedPath", this.supportedPath,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpgradableVersionPathResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpgradableVersionPathResultInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpgradableVersionPathResultInner.
+     */
+    public static UpgradableVersionPathResultInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpgradableVersionPathResultInner deserializedUpgradableVersionPathResultInner
+                = new UpgradableVersionPathResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("supportedPath".equals(fieldName)) {
+                    List<String> supportedPath = reader.readArray(reader1 -> reader1.getString());
+                    deserializedUpgradableVersionPathResultInner.supportedPath = supportedPath;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpgradableVersionPathResultInner;
+        });
     }
 }

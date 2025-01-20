@@ -4,41 +4,43 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachines PowerOff. */
+/**
+ * Samples for VirtualMachines PowerOff.
+ */
 public final class VirtualMachinesPowerOffSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineExamples/VirtualMachine_PowerOff_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_PowerOff_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachine_PowerOff_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesPowerOffMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachinePowerOffMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaa", null, Context.NONE);
+            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_PowerOff_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineExamples/VirtualMachine_PowerOff_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_PowerOff_MaximumSet_Gen.
-     *
+     * Sample code: VirtualMachine_PowerOff_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesPowerOffMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachinePowerOffMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", true, Context.NONE);
+            .powerOff("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaa", true, com.azure.core.util.Context.NONE);
     }
 }

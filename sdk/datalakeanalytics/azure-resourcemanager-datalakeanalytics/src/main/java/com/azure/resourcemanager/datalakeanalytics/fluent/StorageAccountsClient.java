@@ -15,18 +15,21 @@ import com.azure.resourcemanager.datalakeanalytics.fluent.models.StorageContaine
 import com.azure.resourcemanager.datalakeanalytics.models.AddStorageAccountParameters;
 import com.azure.resourcemanager.datalakeanalytics.models.UpdateStorageAccountParameters;
 
-/** An instance of this class provides access to all the operations defined in StorageAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageAccountsClient.
+ */
 public interface StorageAccountsClient {
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The
      * response includes a link to the next page, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StorageAccountInformationInner> listByAccount(String resourceGroupName, String accountName);
@@ -34,40 +37,49 @@ public interface StorageAccountsClient {
     /**
      * Gets the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account. The
      * response includes a link to the next page, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param filter The OData filter. Optional.
      * @param top The number of items to return. Optional.
      * @param skip The number of items to skip over before returning elements. Optional.
      * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g.
-     *     Categories?$select=CategoryName,Description. Optional.
+     * Categories?$select=CategoryName,Description. Optional.
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or
-     *     "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc.
-     *     Optional.
+     * "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the
-     *     resources in the response, e.g. Categories?$count=true. Optional.
+     * resources in the response, e.g. Categories?$count=true. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account.
+     * @return the first page of Azure Storage accounts, if any, linked to the specified Data Lake Analytics account as
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageAccountInformationInner> listByAccount(
-        String resourceGroupName,
-        String accountName,
-        String filter,
-        Integer top,
-        Integer skip,
-        String select,
-        String orderby,
-        Boolean count,
-        Context context);
+    PagedIterable<StorageAccountInformationInner> listByAccount(String resourceGroupName, String accountName,
+        String filter, Integer top, Integer skip, String select, String orderby, Boolean count, Context context);
 
     /**
      * Updates the specified Data Lake Analytics account to add an Azure Storage account.
-     *
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param storageAccountName The name of the Azure Storage account to add.
+     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> addWithResponse(String resourceGroupName, String accountName, String storageAccountName,
+        AddStorageAccountParameters parameters, Context context);
+
+    /**
+     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The name of the Azure Storage account to add.
@@ -77,36 +89,29 @@ public interface StorageAccountsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void add(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
+    void add(String resourceGroupName, String accountName, String storageAccountName,
         AddStorageAccountParameters parameters);
 
     /**
-     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
-     *
+     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The name of the Azure Storage account to add.
-     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
+     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the specified Azure Storage account linked to the given Data Lake Analytics account along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        AddStorageAccountParameters parameters,
-        Context context);
+    Response<StorageAccountInformationInner> getWithResponse(String resourceGroupName, String accountName,
+        String storageAccountName, Context context);
 
     /**
      * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
@@ -119,25 +124,28 @@ public interface StorageAccountsClient {
     StorageAccountInformationInner get(String resourceGroupName, String accountName, String storageAccountName);
 
     /**
-     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
-     *
+     * Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key
+     * and/or suffix.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
+     * @param storageAccountName The Azure Storage account to modify.
+     * @param parameters The parameters containing the access key and suffix to update the storage account with, if any.
+     * Passing nothing results in no change.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Storage account linked to the given Data Lake Analytics account.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageAccountInformationInner> getWithResponse(
-        String resourceGroupName, String accountName, String storageAccountName, Context context);
+    Response<Void> updateWithResponse(String resourceGroupName, String accountName, String storageAccountName,
+        UpdateStorageAccountParameters parameters, Context context);
 
     /**
      * Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key
      * and/or suffix.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The Azure Storage account to modify.
@@ -149,31 +157,24 @@ public interface StorageAccountsClient {
     void update(String resourceGroupName, String accountName, String storageAccountName);
 
     /**
-     * Updates the Data Lake Analytics account to replace Azure Storage blob account details, such as the access key
-     * and/or suffix.
-     *
+     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The Azure Storage account to modify.
-     * @param parameters The parameters containing the access key and suffix to update the storage account with, if any.
-     *     Passing nothing results in no change.
+     * @param storageAccountName The name of the Azure Storage account to remove.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String storageAccountName,
-        UpdateStorageAccountParameters parameters,
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String storageAccountName,
         Context context);
 
     /**
      * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The name of the Azure Storage account to remove.
@@ -185,25 +186,9 @@ public interface StorageAccountsClient {
     void delete(String resourceGroupName, String accountName, String storageAccountName);
 
     /**
-     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The name of the Azure Storage account to remove.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String storageAccountName, Context context);
-
-    /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage
      * account combination. The response includes a link to the next page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The name of the Azure storage account from which to list blob containers.
@@ -211,16 +196,16 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     * account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageContainerInner> listStorageContainers(
-        String resourceGroupName, String accountName, String storageAccountName);
+    PagedIterable<StorageContainerInner> listStorageContainers(String resourceGroupName, String accountName,
+        String storageAccountName);
 
     /**
      * Lists the Azure Storage containers, if any, associated with the specified Data Lake Analytics and Azure Storage
      * account combination. The response includes a link to the next page of results, if any.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The name of the Azure storage account from which to list blob containers.
@@ -229,34 +214,16 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of blob containers associated with the storage account attached to the Data Lake Analytics
-     *     account.
+     * account as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<StorageContainerInner> listStorageContainers(
-        String resourceGroupName, String accountName, String storageAccountName, Context context);
+    PagedIterable<StorageContainerInner> listStorageContainers(String resourceGroupName, String accountName,
+        String storageAccountName, Context context);
 
     /**
      * Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
      * accounts.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param accountName The name of the Data Lake Analytics account.
-     * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
-     * @param containerName The name of the Azure storage container to retrieve.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     *     accounts.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    StorageContainerInner getStorageContainer(
-        String resourceGroupName, String accountName, String storageAccountName, String containerName);
-
-    /**
-     * Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     * accounts.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
@@ -266,16 +233,34 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
-     *     accounts.
+     * accounts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StorageContainerInner> getStorageContainerWithResponse(
-        String resourceGroupName, String accountName, String storageAccountName, String containerName, Context context);
+    Response<StorageContainerInner> getStorageContainerWithResponse(String resourceGroupName, String accountName,
+        String storageAccountName, String containerName, Context context);
+
+    /**
+     * Gets the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
+     * accounts.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param accountName The name of the Data Lake Analytics account.
+     * @param storageAccountName The name of the Azure storage account from which to retrieve the blob container.
+     * @param containerName The name of the Azure storage container to retrieve.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure Storage container associated with the given Data Lake Analytics and Azure Storage
+     * accounts.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StorageContainerInner getStorageContainer(String resourceGroupName, String accountName, String storageAccountName,
+        String containerName);
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
      * combination.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The name of the Azure storage account for which the SAS token is being requested.
@@ -284,16 +269,16 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     * combination as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SasTokenInformationInner> listSasTokens(
-        String resourceGroupName, String accountName, String storageAccountName, String containerName);
+    PagedIterable<SasTokenInformationInner> listSasTokens(String resourceGroupName, String accountName,
+        String storageAccountName, String containerName);
 
     /**
      * Gets the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
      * combination.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param accountName The name of the Data Lake Analytics account.
      * @param storageAccountName The name of the Azure storage account for which the SAS token is being requested.
@@ -303,9 +288,9 @@ public interface StorageAccountsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS token associated with the specified Data Lake Analytics and Azure Storage account and container
-     *     combination.
+     * combination as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SasTokenInformationInner> listSasTokens(
-        String resourceGroupName, String accountName, String storageAccountName, String containerName, Context context);
+    PagedIterable<SasTokenInformationInner> listSasTokens(String resourceGroupName, String accountName,
+        String storageAccountName, String containerName, Context context);
 }

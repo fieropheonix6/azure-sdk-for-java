@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.azurestack.implementation;
 
-import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestack.fluent.models.CustomerSubscriptionInner;
 import com.azure.resourcemanager.azurestack.models.CustomerSubscription;
@@ -14,8 +13,8 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
 
     private final com.azure.resourcemanager.azurestack.AzureStackManager serviceManager;
 
-    CustomerSubscriptionImpl(
-        CustomerSubscriptionInner innerObject, com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
+    CustomerSubscriptionImpl(CustomerSubscriptionInner innerObject,
+        com.azure.resourcemanager.azurestack.AzureStackManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -32,16 +31,12 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
         return this.innerModel().type();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public String etag() {
+        return this.innerModel().etag();
     }
 
     public String tenantId() {
         return this.innerModel().tenantId();
-    }
-
-    public String etag() {
-        return this.innerModel().etag();
     }
 
     public CustomerSubscriptionInner innerModel() {
@@ -65,24 +60,19 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
     }
 
     public CustomerSubscription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomerSubscriptions()
-                .createWithResponse(
-                    resourceGroup, registrationName, customerSubscriptionName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomerSubscriptions()
+            .createWithResponse(resourceGroup, registrationName, customerSubscriptionName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomerSubscription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomerSubscriptions()
-                .createWithResponse(
-                    resourceGroup, registrationName, customerSubscriptionName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomerSubscriptions()
+            .createWithResponse(resourceGroup, registrationName, customerSubscriptionName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -93,32 +83,28 @@ public final class CustomerSubscriptionImpl implements CustomerSubscription, Cus
     }
 
     public CustomerSubscription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomerSubscriptions()
-                .getWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomerSubscriptions()
+            .getWithResponse(resourceGroup, registrationName, customerSubscriptionName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public CustomerSubscription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCustomerSubscriptions()
-                .getWithResponse(resourceGroup, registrationName, customerSubscriptionName, context)
-                .getValue();
-        return this;
-    }
-
-    public CustomerSubscriptionImpl withTenantId(String tenantId) {
-        this.innerModel().withTenantId(tenantId);
+        this.innerObject = serviceManager.serviceClient()
+            .getCustomerSubscriptions()
+            .getWithResponse(resourceGroup, registrationName, customerSubscriptionName, context)
+            .getValue();
         return this;
     }
 
     public CustomerSubscriptionImpl withEtag(String etag) {
         this.innerModel().withEtag(etag);
+        return this;
+    }
+
+    public CustomerSubscriptionImpl withTenantId(String tenantId) {
+        this.innerModel().withTenantId(tenantId);
         return this;
     }
 }

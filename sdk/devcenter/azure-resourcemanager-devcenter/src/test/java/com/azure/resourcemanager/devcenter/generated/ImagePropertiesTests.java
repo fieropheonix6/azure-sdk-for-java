@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageProperties;
-import org.junit.jupiter.api.Test;
 
 public final class ImagePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ImageProperties model =
-            BinaryData
-                .fromString(
-                    "{\"description\":\"scxaq\",\"publisher\":\"ochcbonqvpkvl\",\"offer\":\"njeaseipheofloke\",\"sku\":\"ienjbdlwtgr\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":469621378,\"max\":523400535},\"vCPUs\":{\"min\":1786348929,\"max\":2023668162}},\"provisioningState\":\"Updated\"}")
-                .toObject(ImageProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ImageProperties model = BinaryData.fromString(
+            "{\"description\":\"ped\",\"publisher\":\"jn\",\"offer\":\"ckhsmtxpsieb\",\"sku\":\"hvpesapskrdqm\",\"recommendedMachineConfiguration\":{\"memory\":{\"min\":1444957859,\"max\":1056627326},\"vCPUs\":{\"min\":2108720528,\"max\":1644974889}},\"provisioningState\":\"Updated\",\"hibernateSupport\":\"Disabled\"}")
+            .toObject(ImageProperties.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ImageProperties model = new ImageProperties();
         model = BinaryData.fromObject(model).toObject(ImageProperties.class);
     }

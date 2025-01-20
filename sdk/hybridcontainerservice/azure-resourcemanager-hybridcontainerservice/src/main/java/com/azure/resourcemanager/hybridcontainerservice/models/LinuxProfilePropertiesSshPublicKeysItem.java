@@ -5,26 +5,34 @@
 package com.azure.resourcemanager.hybridcontainerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The LinuxProfilePropertiesSshPublicKeysItem model. */
+/**
+ * The LinuxProfilePropertiesSshPublicKeysItem model.
+ */
 @Fluent
-public final class LinuxProfilePropertiesSshPublicKeysItem {
+public final class LinuxProfilePropertiesSshPublicKeysItem
+    implements JsonSerializable<LinuxProfilePropertiesSshPublicKeysItem> {
     /*
-     * KeyData - Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM
-     * format with or without headers.
+     * Certificate public key used to authenticate with VMs through SSH. The certificate must be in PEM format with or
+     * without headers.
      */
-    @JsonProperty(value = "keyData")
     private String keyData;
 
-    /** Creates an instance of LinuxProfilePropertiesSshPublicKeysItem class. */
+    /**
+     * Creates an instance of LinuxProfilePropertiesSshPublicKeysItem class.
+     */
     public LinuxProfilePropertiesSshPublicKeysItem() {
     }
 
     /**
-     * Get the keyData property: KeyData - Certificate public key used to authenticate with VMs through SSH. The
-     * certificate must be in PEM format with or without headers.
-     *
+     * Get the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
+     * be in PEM format with or without headers.
+     * 
      * @return the keyData value.
      */
     public String keyData() {
@@ -32,9 +40,9 @@ public final class LinuxProfilePropertiesSshPublicKeysItem {
     }
 
     /**
-     * Set the keyData property: KeyData - Certificate public key used to authenticate with VMs through SSH. The
-     * certificate must be in PEM format with or without headers.
-     *
+     * Set the keyData property: Certificate public key used to authenticate with VMs through SSH. The certificate must
+     * be in PEM format with or without headers.
+     * 
      * @param keyData the keyData value to set.
      * @return the LinuxProfilePropertiesSshPublicKeysItem object itself.
      */
@@ -45,9 +53,46 @@ public final class LinuxProfilePropertiesSshPublicKeysItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyData", this.keyData);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LinuxProfilePropertiesSshPublicKeysItem from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LinuxProfilePropertiesSshPublicKeysItem if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LinuxProfilePropertiesSshPublicKeysItem.
+     */
+    public static LinuxProfilePropertiesSshPublicKeysItem fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LinuxProfilePropertiesSshPublicKeysItem deserializedLinuxProfilePropertiesSshPublicKeysItem
+                = new LinuxProfilePropertiesSshPublicKeysItem();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyData".equals(fieldName)) {
+                    deserializedLinuxProfilePropertiesSshPublicKeysItem.keyData = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLinuxProfilePropertiesSshPublicKeysItem;
+        });
     }
 }

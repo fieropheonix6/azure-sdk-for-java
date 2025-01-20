@@ -6,22 +6,47 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateParametersContractProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Email Template details. */
+/**
+ * Email Template details.
+ */
 @Fluent
 public final class EmailTemplateContractInner extends ProxyResource {
     /*
      * Email Template entity contract properties.
      */
-    @JsonProperty(value = "properties")
     private EmailTemplateContractProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of EmailTemplateContractInner class.
+     */
+    public EmailTemplateContractInner() {
+    }
 
     /**
      * Get the innerProperties property: Email Template entity contract properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EmailTemplateContractProperties innerProperties() {
@@ -29,8 +54,38 @@ public final class EmailTemplateContractInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the subject property: Subject of the Template.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
@@ -39,7 +94,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Set the subject property: Subject of the Template.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the EmailTemplateContractInner object itself.
      */
@@ -53,7 +108,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Get the body property: Email Template Body. This should be a valid XDocument.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
@@ -62,7 +117,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Set the body property: Email Template Body. This should be a valid XDocument.
-     *
+     * 
      * @param body the body value to set.
      * @return the EmailTemplateContractInner object itself.
      */
@@ -76,7 +131,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Get the title property: Title of the Template.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -85,7 +140,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Set the title property: Title of the Template.
-     *
+     * 
      * @param title the title value to set.
      * @return the EmailTemplateContractInner object itself.
      */
@@ -99,7 +154,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Get the description property: Description of the Email Template.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -108,7 +163,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Set the description property: Description of the Email Template.
-     *
+     * 
      * @param description the description value to set.
      * @return the EmailTemplateContractInner object itself.
      */
@@ -123,7 +178,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
     /**
      * Get the isDefault property: Whether the template is the default template provided by API Management or has been
      * edited.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -132,7 +187,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Get the parameters property: Email Template Parameter values.
-     *
+     * 
      * @return the parameters value.
      */
     public List<EmailTemplateParametersContractProperties> parameters() {
@@ -141,7 +196,7 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Set the parameters property: Email Template Parameter values.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the EmailTemplateContractInner object itself.
      */
@@ -155,12 +210,56 @@ public final class EmailTemplateContractInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of EmailTemplateContractInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of EmailTemplateContractInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the EmailTemplateContractInner.
+     */
+    public static EmailTemplateContractInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            EmailTemplateContractInner deserializedEmailTemplateContractInner = new EmailTemplateContractInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedEmailTemplateContractInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedEmailTemplateContractInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedEmailTemplateContractInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedEmailTemplateContractInner.innerProperties
+                        = EmailTemplateContractProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedEmailTemplateContractInner;
+        });
     }
 }

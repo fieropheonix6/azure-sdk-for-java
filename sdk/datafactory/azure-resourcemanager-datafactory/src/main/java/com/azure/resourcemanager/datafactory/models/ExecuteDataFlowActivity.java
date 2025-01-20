@@ -6,72 +6,121 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.ExecuteDataFlowActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
-/** Execute data flow activity. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("ExecuteDataFlow")
+/**
+ * Execute data flow activity.
+ */
 @Fluent
 public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /*
+     * Type of activity.
+     */
+    private String type = "ExecuteDataFlow";
+
+    /*
      * Execute data flow activity properties.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private ExecuteDataFlowActivityTypeProperties innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
 
-    /** Creates an instance of ExecuteDataFlowActivity class. */
+    /**
+     * Creates an instance of ExecuteDataFlowActivity class.
+     */
     public ExecuteDataFlowActivity() {
     }
 
     /**
+     * Get the type property: Type of activity.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Execute data flow activity properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private ExecuteDataFlowActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withPolicy(ActivityPolicy policy) {
         super.withPolicy(policy);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecuteDataFlowActivity withState(ActivityState state) {
+        super.withState(state);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExecuteDataFlowActivity withOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
+        super.withOnInactiveMarkAs(onInactiveMarkAs);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withDependsOn(List<ActivityDependency> dependsOn) {
         super.withDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExecuteDataFlowActivity withUserProperties(List<UserProperty> userProperties) {
         super.withUserProperties(userProperties);
@@ -80,7 +129,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Get the dataFlow property: Data flow reference.
-     *
+     * 
      * @return the dataFlow value.
      */
     public DataFlowReference dataFlow() {
@@ -89,7 +138,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Set the dataFlow property: Data flow reference.
-     *
+     * 
      * @param dataFlow the dataFlow value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -103,7 +152,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Get the staging property: Staging info for execute data flow activity.
-     *
+     * 
      * @return the staging value.
      */
     public DataFlowStagingInfo staging() {
@@ -112,7 +161,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Set the staging property: Staging info for execute data flow activity.
-     *
+     * 
      * @param staging the staging value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -126,7 +175,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Get the integrationRuntime property: The integration runtime reference.
-     *
+     * 
      * @return the integrationRuntime value.
      */
     public IntegrationRuntimeReference integrationRuntime() {
@@ -135,7 +184,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Set the integrationRuntime property: The integration runtime reference.
-     *
+     * 
      * @param integrationRuntime the integrationRuntime value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -148,8 +197,31 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @return the continuationSettings value.
+     */
+    public ContinuationSettingsReference continuationSettings() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().continuationSettings();
+    }
+
+    /**
+     * Set the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @param continuationSettings the continuationSettings value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity withContinuationSettings(ContinuationSettingsReference continuationSettings) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
+        }
+        this.innerTypeProperties().withContinuationSettings(continuationSettings);
+        return this;
+    }
+
+    /**
      * Get the compute property: Compute properties for data flow activity.
-     *
+     * 
      * @return the compute value.
      */
     public ExecuteDataFlowActivityTypePropertiesCompute compute() {
@@ -158,7 +230,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Set the compute property: Compute properties for data flow activity.
-     *
+     * 
      * @param compute the compute value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -173,7 +245,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Get the traceLevel property: Trace level setting used for data flow monitoring output. Supported values are:
      * 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the traceLevel value.
      */
     public Object traceLevel() {
@@ -183,7 +255,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Set the traceLevel property: Trace level setting used for data flow monitoring output. Supported values are:
      * 'coarse', 'fine', and 'none'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param traceLevel the traceLevel value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -198,7 +270,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Get the continueOnError property: Continue on error setting used for data flow execution. Enables processing to
      * continue if a sink fails. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the continueOnError value.
      */
     public Object continueOnError() {
@@ -208,7 +280,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Set the continueOnError property: Continue on error setting used for data flow execution. Enables processing to
      * continue if a sink fails. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param continueOnError the continueOnError value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -223,7 +295,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Get the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
      * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the runConcurrently value.
      */
     public Object runConcurrently() {
@@ -233,7 +305,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Set the runConcurrently property: Concurrent run setting used for data flow execution. Allows sinks with the same
      * save order to be processed concurrently. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param runConcurrently the runConcurrently value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -248,7 +320,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the sourceStagingConcurrency value.
      */
     public Object sourceStagingConcurrency() {
@@ -258,7 +330,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     /**
      * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
      * Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
      * @return the ExecuteDataFlowActivity object itself.
      */
@@ -272,21 +344,116 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model ExecuteDataFlowActivity"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model ExecuteDataFlowActivity"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (name() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property name in model ExecuteDataFlowActivity"));
+        }
+        if (dependsOn() != null) {
+            dependsOn().forEach(e -> e.validate());
+        }
+        if (userProperties() != null) {
+            userProperties().forEach(e -> e.validate());
+        }
+        if (linkedServiceName() != null) {
+            linkedServiceName().validate();
+        }
+        if (policy() != null) {
+            policy().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ExecuteDataFlowActivity.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", name());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeStringField("state", state() == null ? null : state().toString());
+        jsonWriter.writeStringField("onInactiveMarkAs",
+            onInactiveMarkAs() == null ? null : onInactiveMarkAs().toString());
+        jsonWriter.writeArrayField("dependsOn", dependsOn(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("userProperties", userProperties(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("linkedServiceName", linkedServiceName());
+        jsonWriter.writeJsonField("policy", policy());
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExecuteDataFlowActivity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExecuteDataFlowActivity if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExecuteDataFlowActivity.
+     */
+    public static ExecuteDataFlowActivity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExecuteDataFlowActivity deserializedExecuteDataFlowActivity = new ExecuteDataFlowActivity();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.withName(reader.getString());
+                } else if ("description".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.withDescription(reader.getString());
+                } else if ("state".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.withState(ActivityState.fromString(reader.getString()));
+                } else if ("onInactiveMarkAs".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity
+                        .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.fromString(reader.getString()));
+                } else if ("dependsOn".equals(fieldName)) {
+                    List<ActivityDependency> dependsOn
+                        = reader.readArray(reader1 -> ActivityDependency.fromJson(reader1));
+                    deserializedExecuteDataFlowActivity.withDependsOn(dependsOn);
+                } else if ("userProperties".equals(fieldName)) {
+                    List<UserProperty> userProperties = reader.readArray(reader1 -> UserProperty.fromJson(reader1));
+                    deserializedExecuteDataFlowActivity.withUserProperties(userProperties);
+                } else if ("linkedServiceName".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.withLinkedServiceName(LinkedServiceReference.fromJson(reader));
+                } else if ("policy".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.withPolicy(ActivityPolicy.fromJson(reader));
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.innerTypeProperties
+                        = ExecuteDataFlowActivityTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedExecuteDataFlowActivity.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedExecuteDataFlowActivity.withAdditionalProperties(additionalProperties);
+
+            return deserializedExecuteDataFlowActivity;
+        });
+    }
 }

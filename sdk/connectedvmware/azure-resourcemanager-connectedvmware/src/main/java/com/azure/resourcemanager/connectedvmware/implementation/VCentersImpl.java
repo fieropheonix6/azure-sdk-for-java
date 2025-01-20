@@ -21,10 +21,22 @@ public final class VCentersImpl implements VCenters {
 
     private final com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager;
 
-    public VCentersImpl(
-        VCentersClient innerClient, com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
+    public VCentersImpl(VCentersClient innerClient,
+        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<VCenter> getByResourceGroupWithResponse(String resourceGroupName, String vcenterName,
+        Context context) {
+        Response<VCenterInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, vcenterName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new VCenterImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public VCenter getByResourceGroup(String resourceGroupName, String vcenterName) {
@@ -34,25 +46,6 @@ public final class VCentersImpl implements VCenters {
         } else {
             return null;
         }
-    }
-
-    public Response<VCenter> getByResourceGroupWithResponse(
-        String resourceGroupName, String vcenterName, Context context) {
-        Response<VCenterInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, vcenterName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new VCenterImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
-    public void delete(String resourceGroupName, String vcenterName, Boolean force) {
-        this.serviceClient().delete(resourceGroupName, vcenterName, force);
     }
 
     public void delete(String resourceGroupName, String vcenterName) {
@@ -65,97 +58,77 @@ public final class VCentersImpl implements VCenters {
 
     public PagedIterable<VCenter> list() {
         PagedIterable<VCenterInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new VCenterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VCenterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VCenter> list(Context context) {
         PagedIterable<VCenterInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new VCenterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VCenterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VCenter> listByResourceGroup(String resourceGroupName) {
         PagedIterable<VCenterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new VCenterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VCenterImpl(inner1, this.manager()));
     }
 
     public PagedIterable<VCenter> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<VCenterInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new VCenterImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new VCenterImpl(inner1, this.manager()));
     }
 
     public VCenter getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, vcenterName, Context.NONE).getValue();
     }
 
     public Response<VCenter> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, vcenterName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
         Boolean localForce = null;
         this.delete(resourceGroupName, vcenterName, localForce, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Boolean force, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String vcenterName = Utils.getValueFromIdByName(id, "vcenters");
+        String vcenterName = ResourceManagerUtils.getValueFromIdByName(id, "vcenters");
         if (vcenterName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vcenters'.", id)));
         }
         this.delete(resourceGroupName, vcenterName, force, context);
     }

@@ -8,27 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.CookieExpiration;
 import com.azure.resourcemanager.appcontainers.models.CookieExpirationConvention;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CookieExpirationTests {
-    @Test
-    public void testDeserialize() {
-        CookieExpiration model =
-            BinaryData
-                .fromString("{\"convention\":\"IdentityProviderDerived\",\"timeToExpiration\":\"cftadeh\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CookieExpiration model
+            = BinaryData.fromString("{\"convention\":\"FixedTime\",\"timeToExpiration\":\"wxrjfeallnwsub\"}")
                 .toObject(CookieExpiration.class);
-        Assertions.assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.convention());
-        Assertions.assertEquals("cftadeh", model.timeToExpiration());
+        Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.convention());
+        Assertions.assertEquals("wxrjfeallnwsub", model.timeToExpiration());
     }
 
-    @Test
-    public void testSerialize() {
-        CookieExpiration model =
-            new CookieExpiration()
-                .withConvention(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED)
-                .withTimeToExpiration("cftadeh");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CookieExpiration model = new CookieExpiration().withConvention(CookieExpirationConvention.FIXED_TIME)
+            .withTimeToExpiration("wxrjfeallnwsub");
         model = BinaryData.fromObject(model).toObject(CookieExpiration.class);
-        Assertions.assertEquals(CookieExpirationConvention.IDENTITY_PROVIDER_DERIVED, model.convention());
-        Assertions.assertEquals("cftadeh", model.timeToExpiration());
+        Assertions.assertEquals(CookieExpirationConvention.FIXED_TIME, model.convention());
+        Assertions.assertEquals("wxrjfeallnwsub", model.timeToExpiration());
     }
 }

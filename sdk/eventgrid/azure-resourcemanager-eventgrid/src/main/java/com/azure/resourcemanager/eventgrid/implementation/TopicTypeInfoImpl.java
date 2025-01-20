@@ -6,6 +6,7 @@ package com.azure.resourcemanager.eventgrid.implementation;
 
 import com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
+import com.azure.resourcemanager.eventgrid.models.TopicTypeAdditionalEnforcedPermission;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope;
@@ -17,8 +18,8 @@ public final class TopicTypeInfoImpl implements TopicTypeInfo {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    TopicTypeInfoImpl(
-        TopicTypeInfoInner innerObject, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    TopicTypeInfoImpl(TopicTypeInfoInner innerObject,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -70,6 +71,19 @@ public final class TopicTypeInfoImpl implements TopicTypeInfo {
 
     public List<TopicTypeSourceScope> supportedScopesForSource() {
         List<TopicTypeSourceScope> inner = this.innerModel().supportedScopesForSource();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public Boolean areRegionalAndGlobalSourcesSupported() {
+        return this.innerModel().areRegionalAndGlobalSourcesSupported();
+    }
+
+    public List<TopicTypeAdditionalEnforcedPermission> additionalEnforcedPermissions() {
+        List<TopicTypeAdditionalEnforcedPermission> inner = this.innerModel().additionalEnforcedPermissions();
         if (inner != null) {
             return Collections.unmodifiableList(inner);
         } else {

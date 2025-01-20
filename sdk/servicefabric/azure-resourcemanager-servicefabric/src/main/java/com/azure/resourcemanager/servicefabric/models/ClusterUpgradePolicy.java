@@ -6,89 +6,81 @@ package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the policy used when upgrading the cluster. */
+/**
+ * Describes the policy used when upgrading the cluster.
+ */
 @Fluent
-public final class ClusterUpgradePolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterUpgradePolicy.class);
-
+public final class ClusterUpgradePolicy implements JsonSerializable<ClusterUpgradePolicy> {
     /*
-     * If true, then processes are forcefully restarted during upgrade even
-     * when the code version has not changed (the upgrade only changes
-     * configuration or data).
+     * If true, then processes are forcefully restarted during upgrade even when the code version has not changed (the
+     * upgrade only changes configuration or data).
      */
-    @JsonProperty(value = "forceRestart")
     private Boolean forceRestart;
 
     /*
-     * The maximum amount of time to block processing of an upgrade domain and
-     * prevent loss of availability when there are unexpected issues. When this
-     * timeout expires, processing of the upgrade domain will proceed
-     * regardless of availability loss issues. The timeout is reset at the
-     * start of each upgrade domain. The timeout can be in either hh:mm:ss or
-     * in d.hh:mm:ss.ms format.
+     * The maximum amount of time to block processing of an upgrade domain and prevent loss of availability when there
+     * are unexpected issues. When this timeout expires, processing of the upgrade domain will proceed regardless of
+     * availability loss issues. The timeout is reset at the start of each upgrade domain. The timeout can be in either
+     * hh:mm:ss or in d.hh:mm:ss.ms format.
      */
-    @JsonProperty(value = "upgradeReplicaSetCheckTimeout", required = true)
     private String upgradeReplicaSetCheckTimeout;
 
     /*
-     * The length of time to wait after completing an upgrade domain before
-     * performing health checks. The duration can be in either hh:mm:ss or in
-     * d.hh:mm:ss.ms format.
+     * The length of time to wait after completing an upgrade domain before performing health checks. The duration can
+     * be in either hh:mm:ss or in d.hh:mm:ss.ms format.
      */
-    @JsonProperty(value = "healthCheckWaitDuration", required = true)
     private String healthCheckWaitDuration;
 
     /*
-     * The amount of time that the application or cluster must remain healthy
-     * before the upgrade proceeds to the next upgrade domain. The duration can
-     * be in either hh:mm:ss or in d.hh:mm:ss.ms format.
+     * The amount of time that the application or cluster must remain healthy before the upgrade proceeds to the next
+     * upgrade domain. The duration can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
      */
-    @JsonProperty(value = "healthCheckStableDuration", required = true)
     private String healthCheckStableDuration;
 
     /*
-     * The amount of time to retry health evaluation when the application or
-     * cluster is unhealthy before the upgrade rolls back. The timeout can be
-     * in either hh:mm:ss or in d.hh:mm:ss.ms format.
+     * The amount of time to retry health evaluation when the application or cluster is unhealthy before the upgrade
+     * rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
      */
-    @JsonProperty(value = "healthCheckRetryTimeout", required = true)
     private String healthCheckRetryTimeout;
 
     /*
-     * The amount of time the overall upgrade has to complete before the
-     * upgrade rolls back. The timeout can be in either hh:mm:ss or in
-     * d.hh:mm:ss.ms format.
+     * The amount of time the overall upgrade has to complete before the upgrade rolls back. The timeout can be in
+     * either hh:mm:ss or in d.hh:mm:ss.ms format.
      */
-    @JsonProperty(value = "upgradeTimeout", required = true)
     private String upgradeTimeout;
 
     /*
-     * The amount of time each upgrade domain has to complete before the
-     * upgrade rolls back. The timeout can be in either hh:mm:ss or in
-     * d.hh:mm:ss.ms format.
+     * The amount of time each upgrade domain has to complete before the upgrade rolls back. The timeout can be in
+     * either hh:mm:ss or in d.hh:mm:ss.ms format.
      */
-    @JsonProperty(value = "upgradeDomainTimeout", required = true)
     private String upgradeDomainTimeout;
 
     /*
      * The cluster health policy used when upgrading the cluster.
      */
-    @JsonProperty(value = "healthPolicy", required = true)
     private ClusterHealthPolicy healthPolicy;
 
     /*
      * The cluster delta health policy used when upgrading the cluster.
      */
-    @JsonProperty(value = "deltaHealthPolicy")
     private ClusterUpgradeDeltaHealthPolicy deltaHealthPolicy;
+
+    /**
+     * Creates an instance of ClusterUpgradePolicy class.
+     */
+    public ClusterUpgradePolicy() {
+    }
 
     /**
      * Get the forceRestart property: If true, then processes are forcefully restarted during upgrade even when the code
      * version has not changed (the upgrade only changes configuration or data).
-     *
+     * 
      * @return the forceRestart value.
      */
     public Boolean forceRestart() {
@@ -98,7 +90,7 @@ public final class ClusterUpgradePolicy {
     /**
      * Set the forceRestart property: If true, then processes are forcefully restarted during upgrade even when the code
      * version has not changed (the upgrade only changes configuration or data).
-     *
+     * 
      * @param forceRestart the forceRestart value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -112,7 +104,7 @@ public final class ClusterUpgradePolicy {
      * domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing
      * of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of
      * each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
-     *
+     * 
      * @return the upgradeReplicaSetCheckTimeout value.
      */
     public String upgradeReplicaSetCheckTimeout() {
@@ -124,7 +116,7 @@ public final class ClusterUpgradePolicy {
      * domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing
      * of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of
      * each upgrade domain. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
-     *
+     * 
      * @param upgradeReplicaSetCheckTimeout the upgradeReplicaSetCheckTimeout value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -136,7 +128,7 @@ public final class ClusterUpgradePolicy {
     /**
      * Get the healthCheckWaitDuration property: The length of time to wait after completing an upgrade domain before
      * performing health checks. The duration can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
-     *
+     * 
      * @return the healthCheckWaitDuration value.
      */
     public String healthCheckWaitDuration() {
@@ -146,7 +138,7 @@ public final class ClusterUpgradePolicy {
     /**
      * Set the healthCheckWaitDuration property: The length of time to wait after completing an upgrade domain before
      * performing health checks. The duration can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
-     *
+     * 
      * @param healthCheckWaitDuration the healthCheckWaitDuration value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -159,7 +151,7 @@ public final class ClusterUpgradePolicy {
      * Get the healthCheckStableDuration property: The amount of time that the application or cluster must remain
      * healthy before the upgrade proceeds to the next upgrade domain. The duration can be in either hh:mm:ss or in
      * d.hh:mm:ss.ms format.
-     *
+     * 
      * @return the healthCheckStableDuration value.
      */
     public String healthCheckStableDuration() {
@@ -170,7 +162,7 @@ public final class ClusterUpgradePolicy {
      * Set the healthCheckStableDuration property: The amount of time that the application or cluster must remain
      * healthy before the upgrade proceeds to the next upgrade domain. The duration can be in either hh:mm:ss or in
      * d.hh:mm:ss.ms format.
-     *
+     * 
      * @param healthCheckStableDuration the healthCheckStableDuration value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -183,7 +175,7 @@ public final class ClusterUpgradePolicy {
      * Get the healthCheckRetryTimeout property: The amount of time to retry health evaluation when the application or
      * cluster is unhealthy before the upgrade rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms
      * format.
-     *
+     * 
      * @return the healthCheckRetryTimeout value.
      */
     public String healthCheckRetryTimeout() {
@@ -194,7 +186,7 @@ public final class ClusterUpgradePolicy {
      * Set the healthCheckRetryTimeout property: The amount of time to retry health evaluation when the application or
      * cluster is unhealthy before the upgrade rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms
      * format.
-     *
+     * 
      * @param healthCheckRetryTimeout the healthCheckRetryTimeout value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -206,7 +198,7 @@ public final class ClusterUpgradePolicy {
     /**
      * Get the upgradeTimeout property: The amount of time the overall upgrade has to complete before the upgrade rolls
      * back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
-     *
+     * 
      * @return the upgradeTimeout value.
      */
     public String upgradeTimeout() {
@@ -216,7 +208,7 @@ public final class ClusterUpgradePolicy {
     /**
      * Set the upgradeTimeout property: The amount of time the overall upgrade has to complete before the upgrade rolls
      * back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
-     *
+     * 
      * @param upgradeTimeout the upgradeTimeout value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -228,7 +220,7 @@ public final class ClusterUpgradePolicy {
     /**
      * Get the upgradeDomainTimeout property: The amount of time each upgrade domain has to complete before the upgrade
      * rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
-     *
+     * 
      * @return the upgradeDomainTimeout value.
      */
     public String upgradeDomainTimeout() {
@@ -238,7 +230,7 @@ public final class ClusterUpgradePolicy {
     /**
      * Set the upgradeDomainTimeout property: The amount of time each upgrade domain has to complete before the upgrade
      * rolls back. The timeout can be in either hh:mm:ss or in d.hh:mm:ss.ms format.
-     *
+     * 
      * @param upgradeDomainTimeout the upgradeDomainTimeout value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -249,7 +241,7 @@ public final class ClusterUpgradePolicy {
 
     /**
      * Get the healthPolicy property: The cluster health policy used when upgrading the cluster.
-     *
+     * 
      * @return the healthPolicy value.
      */
     public ClusterHealthPolicy healthPolicy() {
@@ -258,7 +250,7 @@ public final class ClusterUpgradePolicy {
 
     /**
      * Set the healthPolicy property: The cluster health policy used when upgrading the cluster.
-     *
+     * 
      * @param healthPolicy the healthPolicy value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -269,7 +261,7 @@ public final class ClusterUpgradePolicy {
 
     /**
      * Get the deltaHealthPolicy property: The cluster delta health policy used when upgrading the cluster.
-     *
+     * 
      * @return the deltaHealthPolicy value.
      */
     public ClusterUpgradeDeltaHealthPolicy deltaHealthPolicy() {
@@ -278,7 +270,7 @@ public final class ClusterUpgradePolicy {
 
     /**
      * Set the deltaHealthPolicy property: The cluster delta health policy used when upgrading the cluster.
-     *
+     * 
      * @param deltaHealthPolicy the deltaHealthPolicy value to set.
      * @return the ClusterUpgradePolicy object itself.
      */
@@ -289,56 +281,113 @@ public final class ClusterUpgradePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (upgradeReplicaSetCheckTimeout() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property upgradeReplicaSetCheckTimeout in model ClusterUpgradePolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property upgradeReplicaSetCheckTimeout in model ClusterUpgradePolicy"));
         }
         if (healthCheckWaitDuration() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property healthCheckWaitDuration in model ClusterUpgradePolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property healthCheckWaitDuration in model ClusterUpgradePolicy"));
         }
         if (healthCheckStableDuration() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property healthCheckStableDuration in model ClusterUpgradePolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property healthCheckStableDuration in model ClusterUpgradePolicy"));
         }
         if (healthCheckRetryTimeout() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property healthCheckRetryTimeout in model ClusterUpgradePolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property healthCheckRetryTimeout in model ClusterUpgradePolicy"));
         }
         if (upgradeTimeout() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property upgradeTimeout in model ClusterUpgradePolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property upgradeTimeout in model ClusterUpgradePolicy"));
         }
         if (upgradeDomainTimeout() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property upgradeDomainTimeout in model ClusterUpgradePolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property upgradeDomainTimeout in model ClusterUpgradePolicy"));
         }
         if (healthPolicy() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property healthPolicy in model ClusterUpgradePolicy"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property healthPolicy in model ClusterUpgradePolicy"));
         } else {
             healthPolicy().validate();
         }
         if (deltaHealthPolicy() != null) {
             deltaHealthPolicy().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterUpgradePolicy.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("upgradeReplicaSetCheckTimeout", this.upgradeReplicaSetCheckTimeout);
+        jsonWriter.writeStringField("healthCheckWaitDuration", this.healthCheckWaitDuration);
+        jsonWriter.writeStringField("healthCheckStableDuration", this.healthCheckStableDuration);
+        jsonWriter.writeStringField("healthCheckRetryTimeout", this.healthCheckRetryTimeout);
+        jsonWriter.writeStringField("upgradeTimeout", this.upgradeTimeout);
+        jsonWriter.writeStringField("upgradeDomainTimeout", this.upgradeDomainTimeout);
+        jsonWriter.writeJsonField("healthPolicy", this.healthPolicy);
+        jsonWriter.writeBooleanField("forceRestart", this.forceRestart);
+        jsonWriter.writeJsonField("deltaHealthPolicy", this.deltaHealthPolicy);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterUpgradePolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterUpgradePolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterUpgradePolicy.
+     */
+    public static ClusterUpgradePolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterUpgradePolicy deserializedClusterUpgradePolicy = new ClusterUpgradePolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradeReplicaSetCheckTimeout".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.upgradeReplicaSetCheckTimeout = reader.getString();
+                } else if ("healthCheckWaitDuration".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.healthCheckWaitDuration = reader.getString();
+                } else if ("healthCheckStableDuration".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.healthCheckStableDuration = reader.getString();
+                } else if ("healthCheckRetryTimeout".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.healthCheckRetryTimeout = reader.getString();
+                } else if ("upgradeTimeout".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.upgradeTimeout = reader.getString();
+                } else if ("upgradeDomainTimeout".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.upgradeDomainTimeout = reader.getString();
+                } else if ("healthPolicy".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.healthPolicy = ClusterHealthPolicy.fromJson(reader);
+                } else if ("forceRestart".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.forceRestart = reader.getNullable(JsonReader::getBoolean);
+                } else if ("deltaHealthPolicy".equals(fieldName)) {
+                    deserializedClusterUpgradePolicy.deltaHealthPolicy
+                        = ClusterUpgradeDeltaHealthPolicy.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterUpgradePolicy;
+        });
     }
 }

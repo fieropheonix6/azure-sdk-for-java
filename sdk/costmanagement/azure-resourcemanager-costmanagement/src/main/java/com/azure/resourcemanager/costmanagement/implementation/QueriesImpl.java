@@ -14,19 +14,28 @@ import com.azure.resourcemanager.costmanagement.models.ExternalCloudProviderType
 import com.azure.resourcemanager.costmanagement.models.Queries;
 import com.azure.resourcemanager.costmanagement.models.QueryDefinition;
 import com.azure.resourcemanager.costmanagement.models.QueryResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class QueriesImpl implements Queries {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueriesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(QueriesImpl.class);
 
     private final QueriesClient innerClient;
 
     private final com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager;
 
-    public QueriesImpl(
-        QueriesClient innerClient, com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
+    public QueriesImpl(QueriesClient innerClient,
+        com.azure.resourcemanager.costmanagement.CostManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<QueryResult> usageWithResponse(String scope, QueryDefinition parameters, Context context) {
+        Response<QueryResultInner> inner = this.serviceClient().usageWithResponse(scope, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new QueryResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public QueryResult usage(String scope, QueryDefinition parameters) {
@@ -38,50 +47,26 @@ public final class QueriesImpl implements Queries {
         }
     }
 
-    public Response<QueryResult> usageWithResponse(String scope, QueryDefinition parameters, Context context) {
-        Response<QueryResultInner> inner = this.serviceClient().usageWithResponse(scope, parameters, context);
+    public Response<QueryResult> usageByExternalCloudProviderTypeWithResponse(
+        ExternalCloudProviderType externalCloudProviderType, String externalCloudProviderId, QueryDefinition parameters,
+        Context context) {
+        Response<QueryResultInner> inner = this.serviceClient()
+            .usageByExternalCloudProviderTypeWithResponse(externalCloudProviderType, externalCloudProviderId,
+                parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new QueryResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public QueryResult usageByExternalCloudProviderType(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters) {
-        QueryResultInner inner =
-            this
-                .serviceClient()
-                .usageByExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId, parameters);
+    public QueryResult usageByExternalCloudProviderType(ExternalCloudProviderType externalCloudProviderType,
+        String externalCloudProviderId, QueryDefinition parameters) {
+        QueryResultInner inner = this.serviceClient()
+            .usageByExternalCloudProviderType(externalCloudProviderType, externalCloudProviderId, parameters);
         if (inner != null) {
             return new QueryResultImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<QueryResult> usageByExternalCloudProviderTypeWithResponse(
-        ExternalCloudProviderType externalCloudProviderType,
-        String externalCloudProviderId,
-        QueryDefinition parameters,
-        Context context) {
-        Response<QueryResultInner> inner =
-            this
-                .serviceClient()
-                .usageByExternalCloudProviderTypeWithResponse(
-                    externalCloudProviderType, externalCloudProviderId, parameters, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new QueryResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

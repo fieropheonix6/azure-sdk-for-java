@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MyWorkbookManagedIdentityType. */
+/**
+ * The identity type.
+ */
 public final class MyWorkbookManagedIdentityType extends ExpandableStringEnum<MyWorkbookManagedIdentityType> {
-    /** Static value UserAssigned for MyWorkbookManagedIdentityType. */
+    /**
+     * Static value UserAssigned for MyWorkbookManagedIdentityType.
+     */
     public static final MyWorkbookManagedIdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    /** Static value None for MyWorkbookManagedIdentityType. */
+    /**
+     * Static value None for MyWorkbookManagedIdentityType.
+     */
     public static final MyWorkbookManagedIdentityType NONE = fromString("None");
 
     /**
+     * Creates a new instance of MyWorkbookManagedIdentityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MyWorkbookManagedIdentityType() {
+    }
+
+    /**
      * Creates or finds a MyWorkbookManagedIdentityType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MyWorkbookManagedIdentityType.
      */
-    @JsonCreator
     public static MyWorkbookManagedIdentityType fromString(String name) {
         return fromString(name, MyWorkbookManagedIdentityType.class);
     }
 
     /**
      * Gets known MyWorkbookManagedIdentityType values.
-     *
+     * 
      * @return known MyWorkbookManagedIdentityType values.
      */
     public static Collection<MyWorkbookManagedIdentityType> values() {

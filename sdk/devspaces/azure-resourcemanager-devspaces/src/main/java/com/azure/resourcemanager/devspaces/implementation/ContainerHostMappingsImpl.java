@@ -12,44 +12,38 @@ import com.azure.resourcemanager.devspaces.fluent.ContainerHostMappingsClient;
 import com.azure.resourcemanager.devspaces.fluent.models.ContainerHostMappingInner;
 import com.azure.resourcemanager.devspaces.models.ContainerHostMapping;
 import com.azure.resourcemanager.devspaces.models.ContainerHostMappings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ContainerHostMappingsImpl implements ContainerHostMappings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerHostMappingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerHostMappingsImpl.class);
 
     private final ContainerHostMappingsClient innerClient;
 
     private final com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager;
 
-    public ContainerHostMappingsImpl(
-        ContainerHostMappingsClient innerClient, com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager) {
+    public ContainerHostMappingsImpl(ContainerHostMappingsClient innerClient,
+        com.azure.resourcemanager.devspaces.DevSpacesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ContainerHostMapping getContainerHostMapping(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping) {
-        ContainerHostMappingInner inner =
-            this.serviceClient().getContainerHostMapping(resourceGroupName, location, containerHostMapping);
+    public Response<ContainerHostMapping> getContainerHostMappingWithResponse(String resourceGroupName, String location,
+        ContainerHostMappingInner containerHostMapping, Context context) {
+        Response<ContainerHostMappingInner> inner = this.serviceClient()
+            .getContainerHostMappingWithResponse(resourceGroupName, location, containerHostMapping, context);
         if (inner != null) {
-            return new ContainerHostMappingImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ContainerHostMappingImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<ContainerHostMapping> getContainerHostMappingWithResponse(
-        String resourceGroupName, String location, ContainerHostMappingInner containerHostMapping, Context context) {
-        Response<ContainerHostMappingInner> inner =
-            this
-                .serviceClient()
-                .getContainerHostMappingWithResponse(resourceGroupName, location, containerHostMapping, context);
+    public ContainerHostMapping getContainerHostMapping(String resourceGroupName, String location,
+        ContainerHostMappingInner containerHostMapping) {
+        ContainerHostMappingInner inner
+            = this.serviceClient().getContainerHostMapping(resourceGroupName, location, containerHostMapping);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ContainerHostMappingImpl(inner.getValue(), this.manager()));
+            return new ContainerHostMappingImpl(inner, this.manager());
         } else {
             return null;
         }

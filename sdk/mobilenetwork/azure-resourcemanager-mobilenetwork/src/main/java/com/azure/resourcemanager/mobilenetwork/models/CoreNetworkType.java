@@ -4,35 +4,58 @@
 
 package com.azure.resourcemanager.mobilenetwork.models;
 
-import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import java.util.Collection;
-
-/** Defines values for CoreNetworkType. */
-public final class CoreNetworkType extends ExpandableStringEnum<CoreNetworkType> {
-    /** Static value 5GC for CoreNetworkType. */
-    public static final CoreNetworkType FIVE_GC = fromString("5GC");
-
-    /** Static value EPC for CoreNetworkType. */
-    public static final CoreNetworkType EPC = fromString("EPC");
+/**
+ * The core network technology generation (5G core, EPC / 4G core or EPC / 4G + 5G core).
+ */
+public enum CoreNetworkType {
+    /**
+     * Enum value 5GC.
+     */
+    FIVE_GC("5GC"),
 
     /**
-     * Creates or finds a CoreNetworkType from its string representation.
-     *
-     * @param name a name to look for.
-     * @return the corresponding CoreNetworkType.
+     * Enum value EPC.
      */
-    @JsonCreator
-    public static CoreNetworkType fromString(String name) {
-        return fromString(name, CoreNetworkType.class);
+    EPC("EPC"),
+
+    /**
+     * Enum value EPC + 5GC.
+     */
+    EPC_5GC("EPC + 5GC");
+
+    /**
+     * The actual serialized value for a CoreNetworkType instance.
+     */
+    private final String value;
+
+    CoreNetworkType(String value) {
+        this.value = value;
     }
 
     /**
-     * Gets known CoreNetworkType values.
-     *
-     * @return known CoreNetworkType values.
+     * Parses a serialized value to a CoreNetworkType instance.
+     * 
+     * @param value the serialized value to parse.
+     * @return the parsed CoreNetworkType object, or null if unable to parse.
      */
-    public static Collection<CoreNetworkType> values() {
-        return values(CoreNetworkType.class);
+    public static CoreNetworkType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
+        CoreNetworkType[] items = CoreNetworkType.values();
+        for (CoreNetworkType item : items) {
+            if (item.toString().equalsIgnoreCase(value)) {
+                return item;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public String toString() {
+        return this.value;
     }
 }

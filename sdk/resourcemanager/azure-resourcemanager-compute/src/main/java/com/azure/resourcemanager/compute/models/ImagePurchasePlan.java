@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the gallery image definition purchase plan. This is used by marketplace images. */
+/**
+ * Describes the gallery image definition purchase plan. This is used by marketplace images.
+ */
 @Fluent
-public final class ImagePurchasePlan {
+public final class ImagePurchasePlan implements JsonSerializable<ImagePurchasePlan> {
     /*
      * The plan ID.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The publisher ID.
      */
-    @JsonProperty(value = "publisher")
     private String publisher;
 
     /*
      * The product ID.
      */
-    @JsonProperty(value = "product")
     private String product;
 
-    /** Creates an instance of ImagePurchasePlan class. */
+    /**
+     * Creates an instance of ImagePurchasePlan class.
+     */
     public ImagePurchasePlan() {
     }
 
     /**
      * Get the name property: The plan ID.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +48,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Set the name property: The plan ID.
-     *
+     * 
      * @param name the name value to set.
      * @return the ImagePurchasePlan object itself.
      */
@@ -54,7 +59,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Get the publisher property: The publisher ID.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -63,7 +68,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Set the publisher property: The publisher ID.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ImagePurchasePlan object itself.
      */
@@ -74,7 +79,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Get the product property: The product ID.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -83,7 +88,7 @@ public final class ImagePurchasePlan {
 
     /**
      * Set the product property: The product ID.
-     *
+     * 
      * @param product the product value to set.
      * @return the ImagePurchasePlan object itself.
      */
@@ -94,9 +99,51 @@ public final class ImagePurchasePlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("publisher", this.publisher);
+        jsonWriter.writeStringField("product", this.product);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImagePurchasePlan from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImagePurchasePlan if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImagePurchasePlan.
+     */
+    public static ImagePurchasePlan fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImagePurchasePlan deserializedImagePurchasePlan = new ImagePurchasePlan();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedImagePurchasePlan.name = reader.getString();
+                } else if ("publisher".equals(fieldName)) {
+                    deserializedImagePurchasePlan.publisher = reader.getString();
+                } else if ("product".equals(fieldName)) {
+                    deserializedImagePurchasePlan.product = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImagePurchasePlan;
+        });
     }
 }

@@ -4,126 +4,80 @@
 
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.JobErrorDetails;
 import com.azure.resourcemanager.databoxedge.models.JobStatus;
 import com.azure.resourcemanager.databoxedge.models.JobType;
 import com.azure.resourcemanager.databoxedge.models.UpdateDownloadProgress;
 import com.azure.resourcemanager.databoxedge.models.UpdateInstallProgress;
 import com.azure.resourcemanager.databoxedge.models.UpdateOperationStage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A device job. */
-@JsonFlatten
-@Fluent
-public class JobInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobInner.class);
-
+/**
+ * A device job.
+ */
+@Immutable
+public final class JobInner implements JsonSerializable<JobInner> {
     /*
      * The path ID that uniquely identifies the object.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the object.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The hierarchical type of the object.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The current status of the job.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private JobStatus status;
 
     /*
      * The UTC date and time at which the job started.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime startTime;
 
     /*
      * The UTC date and time at which the job completed.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime endTime;
 
     /*
      * The percentage of the job that is complete.
      */
-    @JsonProperty(value = "percentComplete", access = JsonProperty.Access.WRITE_ONLY)
     private Integer percentComplete;
 
     /*
      * The error details.
      */
-    @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private JobErrorDetails error;
 
     /*
-     * The type of the job.
+     * The properties of the job.
      */
-    @JsonProperty(value = "properties.jobType", access = JsonProperty.Access.WRITE_ONLY)
-    private JobType jobType;
+    private JobProperties innerProperties;
 
-    /*
-     * Current stage of the update operation.
+    /**
+     * Creates an instance of JobInner class.
      */
-    @JsonProperty(value = "properties.currentStage", access = JsonProperty.Access.WRITE_ONLY)
-    private UpdateOperationStage currentStage;
-
-    /*
-     * The download progress.
-     */
-    @JsonProperty(value = "properties.downloadProgress", access = JsonProperty.Access.WRITE_ONLY)
-    private UpdateDownloadProgress downloadProgress;
-
-    /*
-     * The install progress.
-     */
-    @JsonProperty(value = "properties.installProgress", access = JsonProperty.Access.WRITE_ONLY)
-    private UpdateInstallProgress installProgress;
-
-    /*
-     * Total number of errors encountered during the refresh process.
-     */
-    @JsonProperty(value = "properties.totalRefreshErrors", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer totalRefreshErrors;
-
-    /*
-     * Local share/remote container relative path to the error manifest file of
-     * the refresh.
-     */
-    @JsonProperty(value = "properties.errorManifestFile", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorManifestFile;
-
-    /*
-     * ARM ID of the entity that was refreshed.
-     */
-    @JsonProperty(value = "properties.refreshedEntityId", access = JsonProperty.Access.WRITE_ONLY)
-    private String refreshedEntityId;
-
-    /*
-     * If only subfolders need to be refreshed, then the subfolder path inside
-     * the share or container. (The path is empty if there are no subfolders.)
-     */
-    @JsonProperty(value = "properties.folder")
-    private String folder;
+    public JobInner() {
+    }
 
     /**
      * Get the id property: The path ID that uniquely identifies the object.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -132,7 +86,7 @@ public class JobInner {
 
     /**
      * Get the name property: The name of the object.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -141,7 +95,7 @@ public class JobInner {
 
     /**
      * Get the type property: The hierarchical type of the object.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -150,7 +104,7 @@ public class JobInner {
 
     /**
      * Get the status property: The current status of the job.
-     *
+     * 
      * @return the status value.
      */
     public JobStatus status() {
@@ -159,7 +113,7 @@ public class JobInner {
 
     /**
      * Get the startTime property: The UTC date and time at which the job started.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -168,7 +122,7 @@ public class JobInner {
 
     /**
      * Get the endTime property: The UTC date and time at which the job completed.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -177,7 +131,7 @@ public class JobInner {
 
     /**
      * Get the percentComplete property: The percentage of the job that is complete.
-     *
+     * 
      * @return the percentComplete value.
      */
     public Integer percentComplete() {
@@ -186,7 +140,7 @@ public class JobInner {
 
     /**
      * Get the error property: The error details.
-     *
+     * 
      * @return the error value.
      */
     public JobErrorDetails error() {
@@ -194,105 +148,167 @@ public class JobInner {
     }
 
     /**
+     * Get the innerProperties property: The properties of the job.
+     * 
+     * @return the innerProperties value.
+     */
+    private JobProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the jobType property: The type of the job.
-     *
+     * 
      * @return the jobType value.
      */
     public JobType jobType() {
-        return this.jobType;
+        return this.innerProperties() == null ? null : this.innerProperties().jobType();
     }
 
     /**
      * Get the currentStage property: Current stage of the update operation.
-     *
+     * 
      * @return the currentStage value.
      */
     public UpdateOperationStage currentStage() {
-        return this.currentStage;
+        return this.innerProperties() == null ? null : this.innerProperties().currentStage();
     }
 
     /**
      * Get the downloadProgress property: The download progress.
-     *
+     * 
      * @return the downloadProgress value.
      */
     public UpdateDownloadProgress downloadProgress() {
-        return this.downloadProgress;
+        return this.innerProperties() == null ? null : this.innerProperties().downloadProgress();
     }
 
     /**
      * Get the installProgress property: The install progress.
-     *
+     * 
      * @return the installProgress value.
      */
     public UpdateInstallProgress installProgress() {
-        return this.installProgress;
+        return this.innerProperties() == null ? null : this.innerProperties().installProgress();
     }
 
     /**
      * Get the totalRefreshErrors property: Total number of errors encountered during the refresh process.
-     *
+     * 
      * @return the totalRefreshErrors value.
      */
     public Integer totalRefreshErrors() {
-        return this.totalRefreshErrors;
+        return this.innerProperties() == null ? null : this.innerProperties().totalRefreshErrors();
     }
 
     /**
      * Get the errorManifestFile property: Local share/remote container relative path to the error manifest file of the
      * refresh.
-     *
+     * 
      * @return the errorManifestFile value.
      */
     public String errorManifestFile() {
-        return this.errorManifestFile;
+        return this.innerProperties() == null ? null : this.innerProperties().errorManifestFile();
     }
 
     /**
      * Get the refreshedEntityId property: ARM ID of the entity that was refreshed.
-     *
+     * 
      * @return the refreshedEntityId value.
      */
     public String refreshedEntityId() {
-        return this.refreshedEntityId;
+        return this.innerProperties() == null ? null : this.innerProperties().refreshedEntityId();
     }
 
     /**
      * Get the folder property: If only subfolders need to be refreshed, then the subfolder path inside the share or
      * container. (The path is empty if there are no subfolders.).
-     *
+     * 
      * @return the folder value.
      */
     public String folder() {
-        return this.folder;
+        return this.innerProperties() == null ? null : this.innerProperties().folder();
     }
 
     /**
      * Set the folder property: If only subfolders need to be refreshed, then the subfolder path inside the share or
      * container. (The path is empty if there are no subfolders.).
-     *
+     * 
      * @param folder the folder value to set.
      * @return the JobInner object itself.
      */
     public JobInner withFolder(String folder) {
-        this.folder = folder;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobProperties();
+        }
+        this.innerProperties().withFolder(folder);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (error() != null) {
             error().validate();
         }
-        if (downloadProgress() != null) {
-            downloadProgress().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (installProgress() != null) {
-            installProgress().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of JobInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of JobInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the JobInner.
+     */
+    public static JobInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JobInner deserializedJobInner = new JobInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedJobInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedJobInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedJobInner.type = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedJobInner.status = JobStatus.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedJobInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedJobInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("percentComplete".equals(fieldName)) {
+                    deserializedJobInner.percentComplete = reader.getNullable(JsonReader::getInt);
+                } else if ("error".equals(fieldName)) {
+                    deserializedJobInner.error = JobErrorDetails.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedJobInner.innerProperties = JobProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedJobInner;
+        });
     }
 }

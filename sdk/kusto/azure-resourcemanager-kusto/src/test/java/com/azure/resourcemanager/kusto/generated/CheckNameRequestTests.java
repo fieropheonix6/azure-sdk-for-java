@@ -8,25 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.CheckNameRequest;
 import com.azure.resourcemanager.kusto.models.Type;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CheckNameRequestTests {
-    @Test
-    public void testDeserialize() {
-        CheckNameRequest model =
-            BinaryData
-                .fromString("{\"name\":\"fcnj\",\"type\":\"Microsoft.Kusto/clusters/databases\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CheckNameRequest model
+            = BinaryData.fromString("{\"name\":\"tpvjzbexilzznfqq\",\"type\":\"Microsoft.Kusto/clusters/databases\"}")
                 .toObject(CheckNameRequest.class);
-        Assertions.assertEquals("fcnj", model.name());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.name());
         Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        CheckNameRequest model =
-            new CheckNameRequest().withName("fcnj").withType(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CheckNameRequest model
+            = new CheckNameRequest().withName("tpvjzbexilzznfqq").withType(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES);
         model = BinaryData.fromObject(model).toObject(CheckNameRequest.class);
-        Assertions.assertEquals("fcnj", model.name());
+        Assertions.assertEquals("tpvjzbexilzznfqq", model.name());
         Assertions.assertEquals(Type.MICROSOFT_KUSTO_CLUSTERS_DATABASES, model.type());
     }
 }

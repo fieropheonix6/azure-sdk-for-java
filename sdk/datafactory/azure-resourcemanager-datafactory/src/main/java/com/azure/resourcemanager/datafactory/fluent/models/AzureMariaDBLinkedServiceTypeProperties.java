@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Azure Database for MariaDB linked service properties. */
+/**
+ * Azure Database for MariaDB linked service properties.
+ */
 @Fluent
-public final class AzureMariaDBLinkedServiceTypeProperties {
+public final class AzureMariaDBLinkedServiceTypeProperties
+    implements JsonSerializable<AzureMariaDBLinkedServiceTypeProperties> {
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of password in connection string.
      */
-    @JsonProperty(value = "pwd")
     private AzureKeyVaultSecretReference pwd;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of AzureMariaDBLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureMariaDBLinkedServiceTypeProperties class.
+     */
     public AzureMariaDBLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -47,7 +53,7 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureMariaDBLinkedServiceTypeProperties object itself.
      */
@@ -58,7 +64,7 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
 
     /**
      * Get the pwd property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @return the pwd value.
      */
     public AzureKeyVaultSecretReference pwd() {
@@ -67,7 +73,7 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
 
     /**
      * Set the pwd property: The Azure key vault secret reference of password in connection string.
-     *
+     * 
      * @param pwd the pwd value to set.
      * @return the AzureMariaDBLinkedServiceTypeProperties object itself.
      */
@@ -78,34 +84,78 @@ public final class AzureMariaDBLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureMariaDBLinkedServiceTypeProperties object itself.
      */
-    public AzureMariaDBLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public AzureMariaDBLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (pwd() != null) {
             pwd().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeJsonField("pwd", this.pwd);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureMariaDBLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureMariaDBLinkedServiceTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureMariaDBLinkedServiceTypeProperties.
+     */
+    public static AzureMariaDBLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureMariaDBLinkedServiceTypeProperties deserializedAzureMariaDBLinkedServiceTypeProperties
+                = new AzureMariaDBLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedAzureMariaDBLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("pwd".equals(fieldName)) {
+                    deserializedAzureMariaDBLinkedServiceTypeProperties.pwd
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedAzureMariaDBLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureMariaDBLinkedServiceTypeProperties;
+        });
     }
 }

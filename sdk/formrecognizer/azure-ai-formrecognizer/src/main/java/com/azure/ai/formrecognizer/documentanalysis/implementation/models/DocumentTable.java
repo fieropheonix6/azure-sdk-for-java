@@ -5,48 +5,62 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-/** A table object consisting table cells arranged in a rectangular layout. */
+/**
+ * A table object consisting table cells arranged in a rectangular layout.
+ */
 @Fluent
-public final class DocumentTable {
+public final class DocumentTable implements JsonSerializable<DocumentTable> {
     /*
      * Number of rows in the table.
      */
-    @JsonProperty(value = "rowCount", required = true)
-    private int rowCount;
+    private final int rowCount;
 
     /*
      * Number of columns in the table.
      */
-    @JsonProperty(value = "columnCount", required = true)
-    private int columnCount;
+    private final int columnCount;
 
     /*
      * Cells contained within the table.
      */
-    @JsonProperty(value = "cells", required = true)
-    private List<DocumentTableCell> cells;
+    private final List<DocumentTableCell> cells;
 
     /*
      * Bounding regions covering the table.
      */
-    @JsonProperty(value = "boundingRegions")
     private List<BoundingRegion> boundingRegions;
 
     /*
      * Location of the table in the reading order concatenated content.
      */
-    @JsonProperty(value = "spans", required = true)
-    private List<DocumentSpan> spans;
+    private final List<DocumentSpan> spans;
 
-    /** Creates an instance of DocumentTable class. */
-    public DocumentTable() {}
+    /**
+     * Creates an instance of DocumentTable class.
+     * 
+     * @param rowCount the rowCount value to set.
+     * @param columnCount the columnCount value to set.
+     * @param cells the cells value to set.
+     * @param spans the spans value to set.
+     */
+    public DocumentTable(int rowCount, int columnCount, List<DocumentTableCell> cells, List<DocumentSpan> spans) {
+        this.rowCount = rowCount;
+        this.columnCount = columnCount;
+        this.cells = cells;
+        this.spans = spans;
+    }
 
     /**
      * Get the rowCount property: Number of rows in the table.
-     *
+     * 
      * @return the rowCount value.
      */
     public int getRowCount() {
@@ -54,19 +68,8 @@ public final class DocumentTable {
     }
 
     /**
-     * Set the rowCount property: Number of rows in the table.
-     *
-     * @param rowCount the rowCount value to set.
-     * @return the DocumentTable object itself.
-     */
-    public DocumentTable setRowCount(int rowCount) {
-        this.rowCount = rowCount;
-        return this;
-    }
-
-    /**
      * Get the columnCount property: Number of columns in the table.
-     *
+     * 
      * @return the columnCount value.
      */
     public int getColumnCount() {
@@ -74,19 +77,8 @@ public final class DocumentTable {
     }
 
     /**
-     * Set the columnCount property: Number of columns in the table.
-     *
-     * @param columnCount the columnCount value to set.
-     * @return the DocumentTable object itself.
-     */
-    public DocumentTable setColumnCount(int columnCount) {
-        this.columnCount = columnCount;
-        return this;
-    }
-
-    /**
      * Get the cells property: Cells contained within the table.
-     *
+     * 
      * @return the cells value.
      */
     public List<DocumentTableCell> getCells() {
@@ -94,19 +86,8 @@ public final class DocumentTable {
     }
 
     /**
-     * Set the cells property: Cells contained within the table.
-     *
-     * @param cells the cells value to set.
-     * @return the DocumentTable object itself.
-     */
-    public DocumentTable setCells(List<DocumentTableCell> cells) {
-        this.cells = cells;
-        return this;
-    }
-
-    /**
      * Get the boundingRegions property: Bounding regions covering the table.
-     *
+     * 
      * @return the boundingRegions value.
      */
     public List<BoundingRegion> getBoundingRegions() {
@@ -115,7 +96,7 @@ public final class DocumentTable {
 
     /**
      * Set the boundingRegions property: Bounding regions covering the table.
-     *
+     * 
      * @param boundingRegions the boundingRegions value to set.
      * @return the DocumentTable object itself.
      */
@@ -126,7 +107,7 @@ public final class DocumentTable {
 
     /**
      * Get the spans property: Location of the table in the reading order concatenated content.
-     *
+     * 
      * @return the spans value.
      */
     public List<DocumentSpan> getSpans() {
@@ -134,13 +115,84 @@ public final class DocumentTable {
     }
 
     /**
-     * Set the spans property: Location of the table in the reading order concatenated content.
-     *
-     * @param spans the spans value to set.
-     * @return the DocumentTable object itself.
+     * {@inheritDoc}
      */
-    public DocumentTable setSpans(List<DocumentSpan> spans) {
-        this.spans = spans;
-        return this;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("rowCount", this.rowCount);
+        jsonWriter.writeIntField("columnCount", this.columnCount);
+        jsonWriter.writeArrayField("cells", this.cells, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("spans", this.spans, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("boundingRegions", this.boundingRegions,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentTable from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentTable if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentTable.
+     */
+    public static DocumentTable fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean rowCountFound = false;
+            int rowCount = 0;
+            boolean columnCountFound = false;
+            int columnCount = 0;
+            boolean cellsFound = false;
+            List<DocumentTableCell> cells = null;
+            boolean spansFound = false;
+            List<DocumentSpan> spans = null;
+            List<BoundingRegion> boundingRegions = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rowCount".equals(fieldName)) {
+                    rowCount = reader.getInt();
+                    rowCountFound = true;
+                } else if ("columnCount".equals(fieldName)) {
+                    columnCount = reader.getInt();
+                    columnCountFound = true;
+                } else if ("cells".equals(fieldName)) {
+                    cells = reader.readArray(reader1 -> DocumentTableCell.fromJson(reader1));
+                    cellsFound = true;
+                } else if ("spans".equals(fieldName)) {
+                    spans = reader.readArray(reader1 -> DocumentSpan.fromJson(reader1));
+                    spansFound = true;
+                } else if ("boundingRegions".equals(fieldName)) {
+                    boundingRegions = reader.readArray(reader1 -> BoundingRegion.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (rowCountFound && columnCountFound && cellsFound && spansFound) {
+                DocumentTable deserializedDocumentTable = new DocumentTable(rowCount, columnCount, cells, spans);
+                deserializedDocumentTable.boundingRegions = boundingRegions;
+
+                return deserializedDocumentTable;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!rowCountFound) {
+                missingProperties.add("rowCount");
+            }
+            if (!columnCountFound) {
+                missingProperties.add("columnCount");
+            }
+            if (!cellsFound) {
+                missingProperties.add("cells");
+            }
+            if (!spansFound) {
+                missingProperties.add("spans");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

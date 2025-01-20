@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mobilenetwork.fluent.models.DataNetworkInner;
 import com.azure.resourcemanager.mobilenetwork.models.TagsObject;
 
-/** An instance of this class provides access to all the operations defined in DataNetworksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataNetworksClient.
+ */
 public interface DataNetworksClient {
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -28,12 +30,12 @@ public interface DataNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName);
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -44,12 +46,12 @@ public interface DataNetworksClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, Context context);
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -62,7 +64,7 @@ public interface DataNetworksClient {
 
     /**
      * Deletes the specified data network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -76,7 +78,23 @@ public interface DataNetworksClient {
 
     /**
      * Gets information about the specified data network.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param dataNetworkName The name of the data network.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified data network along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DataNetworkInner> getWithResponse(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, Context context);
+
+    /**
+     * Gets information about the specified data network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -89,24 +107,8 @@ public interface DataNetworksClient {
     DataNetworkInner get(String resourceGroupName, String mobileNetworkName, String dataNetworkName);
 
     /**
-     * Gets information about the specified data network.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the data network.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified data network along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataNetworkInner> getWithResponse(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, Context context);
-
-    /**
-     * Creates or updates a data network.
-     *
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -117,12 +119,12 @@ public interface DataNetworksClient {
      * @return the {@link SyncPoller} for polling of data network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters);
+    SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters);
 
     /**
-     * Creates or updates a data network.
-     *
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -134,16 +136,12 @@ public interface DataNetworksClient {
      * @return the {@link SyncPoller} for polling of data network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        DataNetworkInner parameters,
-        Context context);
+    SyncPoller<PollResult<DataNetworkInner>, DataNetworkInner> beginCreateOrUpdate(String resourceGroupName,
+        String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters, Context context);
 
     /**
-     * Creates or updates a data network.
-     *
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -154,12 +152,12 @@ public interface DataNetworksClient {
      * @return data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataNetworkInner createOrUpdate(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, DataNetworkInner parameters);
+    DataNetworkInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String dataNetworkName,
+        DataNetworkInner parameters);
 
     /**
-     * Creates or updates a data network.
-     *
+     * Creates or updates a data network. Must be created in the same location as its parent mobile network.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -171,32 +169,12 @@ public interface DataNetworksClient {
      * @return data network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataNetworkInner createOrUpdate(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        DataNetworkInner parameters,
-        Context context);
+    DataNetworkInner createOrUpdate(String resourceGroupName, String mobileNetworkName, String dataNetworkName,
+        DataNetworkInner parameters, Context context);
 
     /**
      * Updates data network tags.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param mobileNetworkName The name of the mobile network.
-     * @param dataNetworkName The name of the data network.
-     * @param parameters Parameters supplied to update data network tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataNetworkInner updateTags(
-        String resourceGroupName, String mobileNetworkName, String dataNetworkName, TagsObject parameters);
-
-    /**
-     * Updates data network tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param dataNetworkName The name of the data network.
@@ -208,16 +186,28 @@ public interface DataNetworksClient {
      * @return data network resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataNetworkInner> updateTagsWithResponse(
-        String resourceGroupName,
-        String mobileNetworkName,
-        String dataNetworkName,
-        TagsObject parameters,
-        Context context);
+    Response<DataNetworkInner> updateTagsWithResponse(String resourceGroupName, String mobileNetworkName,
+        String dataNetworkName, TagsObject parameters, Context context);
+
+    /**
+     * Updates data network tags.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param mobileNetworkName The name of the mobile network.
+     * @param dataNetworkName The name of the data network.
+     * @param parameters Parameters supplied to update data network tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DataNetworkInner updateTags(String resourceGroupName, String mobileNetworkName, String dataNetworkName,
+        TagsObject parameters);
 
     /**
      * Lists all data networks in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,7 +220,7 @@ public interface DataNetworksClient {
 
     /**
      * Lists all data networks in the mobile network.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param mobileNetworkName The name of the mobile network.
      * @param context The context to associate with this operation.
@@ -240,6 +230,6 @@ public interface DataNetworksClient {
      * @return response for data network API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DataNetworkInner> listByMobileNetwork(
-        String resourceGroupName, String mobileNetworkName, Context context);
+    PagedIterable<DataNetworkInner> listByMobileNetwork(String resourceGroupName, String mobileNetworkName,
+        Context context);
 }

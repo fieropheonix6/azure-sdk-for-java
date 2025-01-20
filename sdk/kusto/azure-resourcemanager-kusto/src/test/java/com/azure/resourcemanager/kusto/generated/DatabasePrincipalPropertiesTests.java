@@ -9,34 +9,29 @@ import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalProperties
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DatabasePrincipalPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        DatabasePrincipalProperties model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"ojgjrwjueiotwmc\",\"role\":\"Viewer\",\"tenantId\":\"dxwitx\",\"principalType\":\"App\",\"tenantName\":\"awgqwgxhni\",\"principalName\":\"x\",\"provisioningState\":\"Creating\",\"aadObjectId\":\"y\"}")
-                .toObject(DatabasePrincipalProperties.class);
-        Assertions.assertEquals("ojgjrwjueiotwmc", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, model.role());
-        Assertions.assertEquals("dxwitx", model.tenantId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DatabasePrincipalProperties model = BinaryData.fromString(
+            "{\"principalId\":\"opcjwvnhd\",\"role\":\"Ingestor\",\"tenantId\":\"mgxcxrslpm\",\"principalType\":\"App\",\"tenantName\":\"uoegrpkhjwniyqs\",\"principalName\":\"i\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"gk\"}")
+            .toObject(DatabasePrincipalProperties.class);
+        Assertions.assertEquals("opcjwvnhd", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.role());
+        Assertions.assertEquals("mgxcxrslpm", model.tenantId());
         Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 
-    @Test
-    public void testSerialize() {
-        DatabasePrincipalProperties model =
-            new DatabasePrincipalProperties()
-                .withPrincipalId("ojgjrwjueiotwmc")
-                .withRole(DatabasePrincipalRole.VIEWER)
-                .withTenantId("dxwitx")
-                .withPrincipalType(PrincipalType.APP);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DatabasePrincipalProperties model = new DatabasePrincipalProperties().withPrincipalId("opcjwvnhd")
+            .withRole(DatabasePrincipalRole.INGESTOR)
+            .withTenantId("mgxcxrslpm")
+            .withPrincipalType(PrincipalType.APP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalProperties.class);
-        Assertions.assertEquals("ojgjrwjueiotwmc", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, model.role());
-        Assertions.assertEquals("dxwitx", model.tenantId());
+        Assertions.assertEquals("opcjwvnhd", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, model.role());
+        Assertions.assertEquals("mgxcxrslpm", model.tenantId());
         Assertions.assertEquals(PrincipalType.APP, model.principalType());
     }
 }

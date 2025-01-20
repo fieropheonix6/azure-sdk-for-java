@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.powerbidedicated.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VCoreSkuTier. */
+/**
+ * The name of the Azure pricing tier to which the SKU applies.
+ */
 public final class VCoreSkuTier extends ExpandableStringEnum<VCoreSkuTier> {
-    /** Static value AutoScale for VCoreSkuTier. */
+    /**
+     * Static value AutoScale for VCoreSkuTier.
+     */
     public static final VCoreSkuTier AUTO_SCALE = fromString("AutoScale");
 
     /**
+     * Creates a new instance of VCoreSkuTier value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VCoreSkuTier() {
+    }
+
+    /**
      * Creates or finds a VCoreSkuTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VCoreSkuTier.
      */
-    @JsonCreator
     public static VCoreSkuTier fromString(String name) {
         return fromString(name, VCoreSkuTier.class);
     }
 
-    /** @return known VCoreSkuTier values. */
+    /**
+     * Gets known VCoreSkuTier values.
+     * 
+     * @return known VCoreSkuTier values.
+     */
     public static Collection<VCoreSkuTier> values() {
         return values(VCoreSkuTier.class);
     }

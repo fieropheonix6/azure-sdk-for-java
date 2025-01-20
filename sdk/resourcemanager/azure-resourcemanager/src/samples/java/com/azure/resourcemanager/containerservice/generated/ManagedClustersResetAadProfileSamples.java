@@ -4,33 +4,32 @@
 
 package com.azure.resourcemanager.containerservice.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 
-/** Samples for ManagedClusters ResetAadProfile. */
+/**
+ * Samples for ManagedClusters ResetAadProfile.
+ */
 public final class ManagedClustersResetAadProfileSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/stable/2022-09-01/examples/ManagedClustersResetAADProfile.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2024-09-01/examples/
+     * ManagedClustersResetAADProfile.json
      */
     /**
      * Sample code: Reset AAD Profile.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void resetAADProfile(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
+        azure.kubernetesClusters()
             .manager()
             .serviceClient()
             .getManagedClusters()
-            .resetAadProfile(
-                "rg1",
-                "clustername1",
-                new ManagedClusterAadProfile()
-                    .withClientAppId("clientappid")
+            .resetAadProfile("rg1", "clustername1",
+                new ManagedClusterAadProfile().withClientAppId("clientappid")
                     .withServerAppId("serverappid")
-                    .withServerAppSecret("fakeServerAppSecretPlaceholder")
+                    .withServerAppSecret("fakeTokenPlaceholder")
                     .withTenantId("tenantid"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

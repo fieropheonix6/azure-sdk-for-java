@@ -27,8 +27,7 @@ public class TimeUtils {
         }
         String[] splitPath = path.split("/");
 
-        return OffsetDateTime.of(
-            Integer.parseInt(splitPath[2]), /* year */
+        return OffsetDateTime.of(Integer.parseInt(splitPath[2]), /* year */
             splitPath.length < 4 ? 1 : Integer.parseInt(splitPath[3]), /* month */
             splitPath.length < 5 ? 1 : Integer.parseInt(splitPath[4]), /* day */
             splitPath.length < 6 ? 0 : Integer.parseInt(splitPath[5]) / 100, /* hour */
@@ -44,7 +43,7 @@ public class TimeUtils {
      * @param year The year.
      * @param start The start time.
      * @param end The end time.
-     * @return Whether or not the year lies within the start and end times.
+     * @return Whether the year lies within the start and end times.
      */
     public static boolean validYear(String year, OffsetDateTime start, OffsetDateTime end) {
         if (year == null || start == null || end == null) {
@@ -62,7 +61,7 @@ public class TimeUtils {
      * @param segment The segment.
      * @param start The start time.
      * @param end The end time.
-     * @return Whether or not the segment lies within the start and end times.
+     * @return Whether the segment lies within the start and end times.
      */
     public static boolean validSegment(String segment, OffsetDateTime start, OffsetDateTime end) {
         if (segment == null || start == null || end == null) {
@@ -71,8 +70,7 @@ public class TimeUtils {
         OffsetDateTime hour = convertPathToTime(segment);
         OffsetDateTime startHour = roundDownToNearestHour(start);
         OffsetDateTime endHour = roundUpToNearestHour(end);
-        return ((hour.isEqual(startHour) || hour.isAfter(startHour))
-            && hour.isBefore(endHour));
+        return ((hour.isEqual(startHour) || hour.isAfter(startHour)) && hour.isBefore(endHour));
     }
 
     /**
@@ -108,7 +106,7 @@ public class TimeUtils {
     /**
      * Rounds a time down to the nearest year.
      */
-    private static OffsetDateTime roundDownToNearestYear(OffsetDateTime time) {
+    public static OffsetDateTime roundDownToNearestYear(OffsetDateTime time) {
         if (time == null) {
             return null;
         }

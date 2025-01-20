@@ -39,24 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient.
+ */
 public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpointConnectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final PrivateEndpointConnectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of PrivateEndpointConnectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     PrivateEndpointConnectionsClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    PrivateEndpointConnectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(PrivateEndpointConnectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,32 +70,24 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
-    private interface PrivateEndpointConnectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200})
+    public interface PrivateEndpointConnectionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateEndpointConnectionInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("parentType") PrivateEndpointConnectionsParentType parentType,
             @PathParam("parentName") String parentName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("parentType") PrivateEndpointConnectionsParentType parentType,
@@ -99,86 +95,68 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") PrivateEndpointConnectionInner privateEndpointConnection,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("parentType") PrivateEndpointConnectionsParentType parentType,
             @PathParam("parentName") String parentName,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
+            @QueryParam("api-version") String apiVersion, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid"
-                + "/{parentType}/{parentName}/privateEndpointConnections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/{parentType}/{parentName}/privateEndpointConnections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateEndpointConnectionListResult>> listByResource(
-            @HostParam("$host") String endpoint,
+        Mono<Response<PrivateEndpointConnectionListResult>> listByResource(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("parentType") PrivateEndpointConnectionsParentType parentType,
-            @PathParam("parentName") String parentName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("parentName") String parentName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateEndpointConnectionListResult>> listByResourceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Get a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Get a specific private endpoint connection.
+     * 
+     * Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private endpoint connection under a topic, domain, or partner namespace along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return a specific private endpoint connection under a topic, domain, or partner namespace or namespace along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName) {
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,63 +169,46 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parentType,
-                            parentName,
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, parentType, parentName, privateEndpointConnectionName, this.client.getApiVersion(),
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Get a specific private endpoint connection.
+     * 
+     * Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private endpoint connection under a topic, domain, or partner namespace along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return a specific private endpoint connection under a topic, domain, or partner namespace or namespace along
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    private Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -260,109 +221,98 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parentType,
-                parentName,
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, parentType,
+            parentName, privateEndpointConnectionName, this.client.getApiVersion(), accept, context);
     }
 
     /**
-     * Get a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Get a specific private endpoint connection.
+     * 
+     * Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private endpoint connection under a topic, domain, or partner namespace on successful
-     *     completion of {@link Mono}.
+     * @return a specific private endpoint connection under a topic, domain, or partner namespace or namespace on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> getAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName) {
+    private Mono<PrivateEndpointConnectionInner> getAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName) {
         return getWithResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Get a specific private endpoint connection.
+     * 
+     * Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
-     * @param privateEndpointConnectionName The name of the private endpoint connection connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private endpoint connection under a topic, domain, or partner namespace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner get(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName) {
-        return getAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Get a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific private endpoint connection under a topic, domain, or partner namespace along with {@link
-     *     Response}.
+     * @return a specific private endpoint connection under a topic, domain, or partner namespace or namespace along
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateEndpointConnectionInner> getWithResponse(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    public Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         Context context) {
         return getWithResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, context)
             .block();
     }
 
     /**
-     * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * Get a specific private endpoint connection.
+     * 
+     * Get a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
+     * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionInner get(String resourceGroupName, PrivateEndpointConnectionsParentType parentType,
+        String parentName, String privateEndpointConnectionName) {
+        return getWithResponse(resourceGroupName, parentType, parentName, privateEndpointConnectionName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Update a specific private endpoint connection.
+     * 
+     * Update a specific private endpoint connection under a topic, domain or partner namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
+     * \'partnerNamespaces\' or \'namespaces\'.
+     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -371,23 +321,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -400,46 +343,33 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (privateEndpointConnection == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnection is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null."));
         } else {
             privateEndpointConnection.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parentType,
-                            parentName,
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            privateEndpointConnection,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, parentType, parentName, privateEndpointConnectionName, this.client.getApiVersion(),
+                privateEndpointConnection, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
+     * Update a specific private endpoint connection.
+     * 
      * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @param context The context to associate with this operation.
@@ -449,24 +379,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -479,43 +401,32 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (privateEndpointConnection == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnection is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter privateEndpointConnection is required and cannot be null."));
         } else {
             privateEndpointConnection.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parentType,
-                parentName,
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                privateEndpointConnection,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, parentType,
+            parentName, privateEndpointConnectionName, this.client.getApiVersion(), privateEndpointConnection, accept,
+            context);
     }
 
     /**
+     * Update a specific private endpoint connection.
+     * 
      * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -525,32 +436,25 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdateAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection);
-        return this
-            .client
-            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionInner.class,
-                PrivateEndpointConnectionInner.class,
-                this.client.getContext());
+        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, parentType, parentName,
+            privateEndpointConnectionName, privateEndpointConnection);
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
+            this.client.getContext());
     }
 
     /**
+     * Update a specific private endpoint connection.
+     * 
      * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @param context The context to associate with this operation.
@@ -561,66 +465,54 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdateAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName,
-                parentType,
-                parentName,
-                privateEndpointConnectionName,
-                privateEndpointConnection,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, parentType, parentName,
+            privateEndpointConnectionName, privateEndpointConnection, context);
+        return this.client.<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(mono,
+            this.client.getHttpPipeline(), PrivateEndpointConnectionInner.class, PrivateEndpointConnectionInner.class,
+            context);
+    }
+
+    /**
+     * Update a specific private endpoint connection.
+     * 
+     * Update a specific private endpoint connection under a topic, domain or partner namespace.
+     * 
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
+     * \'partnerNamespaces\' or \'namespaces\'.
+     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
+     * namespace name or namespace name).
+     * @param privateEndpointConnectionName The name of the private endpoint connection connection.
+     * @param privateEndpointConnection The private endpoint connection object to update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
+        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection) {
         return this
-            .client
-            .<PrivateEndpointConnectionInner, PrivateEndpointConnectionInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                PrivateEndpointConnectionInner.class,
-                PrivateEndpointConnectionInner.class,
-                context);
-    }
-
-    /**
-     * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
-     * @param resourceGroupName The name of the resource group within the user's subscription.
-     * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
-     * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
-     * @param privateEndpointConnectionName The name of the private endpoint connection connection.
-     * @param privateEndpointConnection The private endpoint connection object to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection) {
-        return beginUpdateAsync(
-                resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection)
+            .beginUpdateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
+                privateEndpointConnection)
             .getSyncPoller();
     }
 
     /**
+     * Update a specific private endpoint connection.
+     * 
      * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @param context The context to associate with this operation.
@@ -631,30 +523,25 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PrivateEndpointConnectionInner>, PrivateEndpointConnectionInner> beginUpdate(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
+        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionInner privateEndpointConnection,
         Context context) {
-        return beginUpdateAsync(
-                resourceGroupName,
-                parentType,
-                parentName,
-                privateEndpointConnectionName,
-                privateEndpointConnection,
-                context)
+        return this
+            .beginUpdateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
+                privateEndpointConnection, context)
             .getSyncPoller();
     }
 
     /**
+     * Update a specific private endpoint connection.
+     * 
      * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -663,26 +550,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> updateAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    private Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
-        return beginUpdateAsync(
-                resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginUpdateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
+            privateEndpointConnection).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Update a specific private endpoint connection.
+     * 
      * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @param context The context to associate with this operation.
@@ -692,32 +576,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateEndpointConnectionInner> updateAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context) {
-        return beginUpdateAsync(
-                resourceGroupName,
-                parentType,
-                parentName,
-                privateEndpointConnectionName,
-                privateEndpointConnection,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
+        return beginUpdateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
+            privateEndpointConnection, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
+     * Update a specific private endpoint connection.
+     * 
      * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -726,25 +601,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    public PrivateEndpointConnectionInner update(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         PrivateEndpointConnectionInner privateEndpointConnection) {
-        return updateAsync(
-                resourceGroupName, parentType, parentName, privateEndpointConnectionName, privateEndpointConnection)
-            .block();
+        return updateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
+            privateEndpointConnection).block();
     }
 
     /**
+     * Update a specific private endpoint connection.
+     * 
      * Update a specific private endpoint connection under a topic, domain or partner namespace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param privateEndpointConnection The private endpoint connection object to update.
      * @param context The context to associate with this operation.
@@ -754,31 +627,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionInner update(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionInner privateEndpointConnection,
-        Context context) {
-        return updateAsync(
-                resourceGroupName,
-                parentType,
-                parentName,
-                privateEndpointConnectionName,
-                privateEndpointConnection,
-                context)
-            .block();
+    public PrivateEndpointConnectionInner update(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner privateEndpointConnection, Context context) {
+        return updateAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName,
+            privateEndpointConnection, context).block();
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -786,22 +651,15 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -814,35 +672,26 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parentType,
-                            parentName,
-                            privateEndpointConnectionName,
-                            this.client.getApiVersion(),
-                            context))
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    parentType, parentName, privateEndpointConnectionName, this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -851,23 +700,16 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -880,32 +722,24 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter parentName is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter privateEndpointConnectionName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parentType,
-                parentName,
-                privateEndpointConnectionName,
-                this.client.getApiVersion(),
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, parentType,
+            parentName, privateEndpointConnectionName, this.client.getApiVersion(), context);
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -913,27 +747,24 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -942,28 +773,26 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, parentType, parentName,
+            privateEndpointConnectionName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -971,23 +800,22 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName) {
+        return this.beginDeleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName)
             .getSyncPoller();
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -996,24 +824,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String privateEndpointConnectionName,
         Context context) {
-        return beginDeleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, context)
+        return this.beginDeleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, context)
             .getSyncPoller();
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1021,24 +848,22 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName) {
-        return beginDeleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, PrivateEndpointConnectionsParentType parentType,
+        String parentName, String privateEndpointConnectionName) {
+        return beginDeleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1047,47 +872,44 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        Context context) {
+    private Mono<Void> deleteAsync(String resourceGroupName, PrivateEndpointConnectionsParentType parentType,
+        String parentName, String privateEndpointConnectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
+    public void delete(String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
         String privateEndpointConnectionName) {
         deleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName).block();
     }
 
     /**
-     * Delete a specific private endpoint connection under a topic, domain, or partner namespace.
-     *
+     * Delete a specific private endpoint connection.
+     * 
+     * Delete a specific private endpoint connection under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param privateEndpointConnectionName The name of the private endpoint connection connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1095,55 +917,44 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String privateEndpointConnectionName,
-        Context context) {
+    public void delete(String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName,
+        String privateEndpointConnectionName, Context context) {
         deleteAsync(resourceGroupName, parentType, parentName, privateEndpointConnectionName, context).block();
     }
 
     /**
-     * Get all private endpoint connections under a topic, domain, or partner namespace.
-     *
+     * Lists all private endpoint connections under a resource.
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all private endpoint connections under a topic, domain, or partner namespace or namespace along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByResourceSinglePageAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String filter,
-        Integer top) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByResourceSinglePageAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1157,74 +968,48 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResource(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            parentType,
-                            parentName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateEndpointConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResource(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, parentType, parentName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Get all private endpoint connections under a topic, domain, or partner namespace.
-     *
+     * Lists all private endpoint connections under a resource.
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return all private endpoint connections under a topic, domain, or partner namespace or namespace along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByResourceSinglePageAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String filter,
-        Integer top,
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByResourceSinglePageAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String filter, Integer top,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1239,79 +1024,62 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResource(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                parentType,
-                parentName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResource(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, parentType,
+                parentName, this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
-     * Get all private endpoint connections under a topic, domain, or partner namespace.
-     *
+     * Lists all private endpoint connections under a resource.
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
-     *     {@link PagedFlux}.
+     * @return all private endpoint connections under a topic, domain, or partner namespace or namespace as paginated
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionInner> listByResourceAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String filter,
-        Integer top) {
+    private PagedFlux<PrivateEndpointConnectionInner> listByResourceAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String filter, Integer top) {
         return new PagedFlux<>(
             () -> listByResourceSinglePageAsync(resourceGroupName, parentType, parentName, filter, top),
             nextLink -> listByResourceNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Get all private endpoint connections under a topic, domain, or partner namespace.
-     *
+     * Lists all private endpoint connections under a resource.
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
-     *     {@link PagedFlux}.
+     * @return all private endpoint connections under a topic, domain, or partner namespace or namespace as paginated
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionInner> listByResourceAsync(
-        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName) {
+    private PagedFlux<PrivateEndpointConnectionInner> listByResourceAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName) {
         final String filter = null;
         final Integer top = null;
         return new PagedFlux<>(
@@ -1320,35 +1088,32 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Get all private endpoint connections under a topic, domain, or partner namespace.
-     *
+     * Lists all private endpoint connections under a resource.
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
-     *     {@link PagedFlux}.
+     * @return all private endpoint connections under a topic, domain, or partner namespace or namespace as paginated
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateEndpointConnectionInner> listByResourceAsync(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String filter,
-        Integer top,
+    private PagedFlux<PrivateEndpointConnectionInner> listByResourceAsync(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String filter, Integer top,
         Context context) {
         return new PagedFlux<>(
             () -> listByResourceSinglePageAsync(resourceGroupName, parentType, parentName, filter, top, context),
@@ -1356,57 +1121,56 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     }
 
     /**
-     * Get all private endpoint connections under a topic, domain, or partner namespace.
-     *
+     * Lists all private endpoint connections under a resource.
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
-     *     {@link PagedIterable}.
+     * @return all private endpoint connections under a topic, domain, or partner namespace or namespace as paginated
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionInner> listByResource(
-        String resourceGroupName, PrivateEndpointConnectionsParentType parentType, String parentName) {
+    public PagedIterable<PrivateEndpointConnectionInner> listByResource(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName) {
         final String filter = null;
         final Integer top = null;
         return new PagedIterable<>(listByResourceAsync(resourceGroupName, parentType, parentName, filter, top));
     }
 
     /**
-     * Get all private endpoint connections under a topic, domain, or partner namespace.
-     *
+     * Lists all private endpoint connections under a resource.
+     * 
+     * Get all private endpoint connections under a topic, domain, or partner namespace or namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param parentType The type of the parent resource. This can be either \'topics\', \'domains\', or
-     *     \'partnerNamespaces\'.
+     * \'partnerNamespaces\' or \'namespaces\'.
      * @param parentName The name of the parent resource (namely, either, the topic name, domain name, or partner
-     *     namespace name).
+     * namespace name or namespace name).
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private endpoint connections under a topic, domain, or partner namespace as paginated response with
-     *     {@link PagedIterable}.
+     * @return all private endpoint connections under a topic, domain, or partner namespace or namespace as paginated
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateEndpointConnectionInner> listByResource(
-        String resourceGroupName,
-        PrivateEndpointConnectionsParentType parentType,
-        String parentName,
-        String filter,
-        Integer top,
+    public PagedIterable<PrivateEndpointConnectionInner> listByResource(String resourceGroupName,
+        PrivateEndpointConnectionsParentType parentType, String parentName, String filter, Integer top,
         Context context) {
         return new PagedIterable<>(
             listByResourceAsync(resourceGroupName, parentType, parentName, filter, top, context));
@@ -1414,13 +1178,13 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the list of all private endpoint connections operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByResourceNextSinglePageAsync(String nextLink) {
@@ -1428,61 +1192,42 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByResourceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<PrivateEndpointConnectionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<PrivateEndpointConnectionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the list of all private endpoint connections operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByResourceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<PrivateEndpointConnectionInner>> listByResourceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

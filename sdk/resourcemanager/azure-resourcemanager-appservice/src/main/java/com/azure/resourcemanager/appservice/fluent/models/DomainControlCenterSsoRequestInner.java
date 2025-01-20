@@ -5,33 +5,41 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Single sign-on request information for domain management. */
+/**
+ * Single sign-on request information for domain management.
+ */
 @Immutable
-public final class DomainControlCenterSsoRequestInner {
+public final class DomainControlCenterSsoRequestInner implements JsonSerializable<DomainControlCenterSsoRequestInner> {
     /*
      * URL where the single sign-on request is to be made.
      */
-    @JsonProperty(value = "url", access = JsonProperty.Access.WRITE_ONLY)
     private String url;
 
     /*
      * Post parameter key.
      */
-    @JsonProperty(value = "postParameterKey", access = JsonProperty.Access.WRITE_ONLY)
     private String postParameterKey;
 
     /*
-     * Post parameter value. Client should use
-     * 'application/x-www-form-urlencoded' encoding for this value.
+     * Post parameter value. Client should use 'application/x-www-form-urlencoded' encoding for this value.
      */
-    @JsonProperty(value = "postParameterValue", access = JsonProperty.Access.WRITE_ONLY)
     private String postParameterValue;
 
     /**
+     * Creates an instance of DomainControlCenterSsoRequestInner class.
+     */
+    public DomainControlCenterSsoRequestInner() {
+    }
+
+    /**
      * Get the url property: URL where the single sign-on request is to be made.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -40,7 +48,7 @@ public final class DomainControlCenterSsoRequestInner {
 
     /**
      * Get the postParameterKey property: Post parameter key.
-     *
+     * 
      * @return the postParameterKey value.
      */
     public String postParameterKey() {
@@ -50,7 +58,7 @@ public final class DomainControlCenterSsoRequestInner {
     /**
      * Get the postParameterValue property: Post parameter value. Client should use 'application/x-www-form-urlencoded'
      * encoding for this value.
-     *
+     * 
      * @return the postParameterValue value.
      */
     public String postParameterValue() {
@@ -59,9 +67,49 @@ public final class DomainControlCenterSsoRequestInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainControlCenterSsoRequestInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainControlCenterSsoRequestInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DomainControlCenterSsoRequestInner.
+     */
+    public static DomainControlCenterSsoRequestInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainControlCenterSsoRequestInner deserializedDomainControlCenterSsoRequestInner
+                = new DomainControlCenterSsoRequestInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("url".equals(fieldName)) {
+                    deserializedDomainControlCenterSsoRequestInner.url = reader.getString();
+                } else if ("postParameterKey".equals(fieldName)) {
+                    deserializedDomainControlCenterSsoRequestInner.postParameterKey = reader.getString();
+                } else if ("postParameterValue".equals(fieldName)) {
+                    deserializedDomainControlCenterSsoRequestInner.postParameterValue = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainControlCenterSsoRequestInner;
+        });
     }
 }

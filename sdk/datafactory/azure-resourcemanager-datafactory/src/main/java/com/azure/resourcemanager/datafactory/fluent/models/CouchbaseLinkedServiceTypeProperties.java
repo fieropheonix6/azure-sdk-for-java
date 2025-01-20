@@ -5,39 +5,45 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Couchbase server linked service properties. */
+/**
+ * Couchbase server linked service properties.
+ */
 @Fluent
-public final class CouchbaseLinkedServiceTypeProperties {
+public final class CouchbaseLinkedServiceTypeProperties
+    implements JsonSerializable<CouchbaseLinkedServiceTypeProperties> {
     /*
      * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
-    @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
      * The Azure key vault secret reference of credString in connection string.
      */
-    @JsonProperty(value = "credString")
     private AzureKeyVaultSecretReference credString;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of CouchbaseLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of CouchbaseLinkedServiceTypeProperties class.
+     */
     public CouchbaseLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object connectionString() {
@@ -47,7 +53,7 @@ public final class CouchbaseLinkedServiceTypeProperties {
     /**
      * Set the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the CouchbaseLinkedServiceTypeProperties object itself.
      */
@@ -58,7 +64,7 @@ public final class CouchbaseLinkedServiceTypeProperties {
 
     /**
      * Get the credString property: The Azure key vault secret reference of credString in connection string.
-     *
+     * 
      * @return the credString value.
      */
     public AzureKeyVaultSecretReference credString() {
@@ -67,7 +73,7 @@ public final class CouchbaseLinkedServiceTypeProperties {
 
     /**
      * Set the credString property: The Azure key vault secret reference of credString in connection string.
-     *
+     * 
      * @param credString the credString value to set.
      * @return the CouchbaseLinkedServiceTypeProperties object itself.
      */
@@ -78,34 +84,78 @@ public final class CouchbaseLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the CouchbaseLinkedServiceTypeProperties object itself.
      */
-    public CouchbaseLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public CouchbaseLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (credString() != null) {
             credString().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionString", this.connectionString);
+        jsonWriter.writeJsonField("credString", this.credString);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CouchbaseLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CouchbaseLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CouchbaseLinkedServiceTypeProperties.
+     */
+    public static CouchbaseLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CouchbaseLinkedServiceTypeProperties deserializedCouchbaseLinkedServiceTypeProperties
+                = new CouchbaseLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionString".equals(fieldName)) {
+                    deserializedCouchbaseLinkedServiceTypeProperties.connectionString = reader.readUntyped();
+                } else if ("credString".equals(fieldName)) {
+                    deserializedCouchbaseLinkedServiceTypeProperties.credString
+                        = AzureKeyVaultSecretReference.fromJson(reader);
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedCouchbaseLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCouchbaseLinkedServiceTypeProperties;
+        });
     }
 }

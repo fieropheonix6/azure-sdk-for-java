@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.azurestackhci.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Extensions Delete. */
+/**
+ * Samples for Extensions Delete.
+ */
 public final class ExtensionsDeleteSamples {
     /*
-     * x-ms-original-file: specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/stable/2022-05-01/examples/DeleteExtension.json
+     * x-ms-original-file:
+     * specification/azurestackhci/resource-manager/Microsoft.AzureStackHCI/StackHCI/stable/2024-04-01/examples/
+     * DeleteExtension.json
      */
     /**
      * Sample code: Delete Arc Extension.
-     *
+     * 
      * @param manager Entry point to AzureStackHciManager.
      */
     public static void deleteArcExtension(com.azure.resourcemanager.azurestackhci.AzureStackHciManager manager) {
-        manager.extensions().delete("test-rg", "myCluster", "default", "MicrosoftMonitoringAgent", Context.NONE);
+        manager.extensions()
+            .delete("test-rg", "myCluster", "default", "MicrosoftMonitoringAgent", com.azure.core.util.Context.NONE);
     }
 }

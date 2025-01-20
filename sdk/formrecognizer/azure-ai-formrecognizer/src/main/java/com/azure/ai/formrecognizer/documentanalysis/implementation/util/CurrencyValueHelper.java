@@ -19,7 +19,10 @@ public final class CurrencyValueHelper {
      */
     public interface CurrencyValueAccessor {
         void setAmount(CurrencyValue currencyValue, double amount);
+
         void setSymbol(CurrencyValue currencyValue, String currencySymbol);
+
+        void setCode(CurrencyValue currencyValue, String code);
     }
 
     /**
@@ -37,5 +40,9 @@ public final class CurrencyValueHelper {
 
     static void setCurrencySymbol(CurrencyValue currencyValue, String currencySymbol) {
         accessor.setSymbol(currencyValue, currencySymbol);
+    }
+
+    static void setCode(CurrencyValue currencyValue, String code) {
+        accessor.setCode(currencyValue, code);
     }
 }

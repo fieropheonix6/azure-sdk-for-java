@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackendProtocol. */
+/**
+ * Backend communication protocol.
+ */
 public final class BackendProtocol extends ExpandableStringEnum<BackendProtocol> {
-    /** Static value http for BackendProtocol. */
+    /**
+     * Static value http for BackendProtocol.
+     */
     public static final BackendProtocol HTTP = fromString("http");
 
-    /** Static value soap for BackendProtocol. */
+    /**
+     * Static value soap for BackendProtocol.
+     */
     public static final BackendProtocol SOAP = fromString("soap");
 
     /**
+     * Creates a new instance of BackendProtocol value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public BackendProtocol() {
+    }
+
+    /**
      * Creates or finds a BackendProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BackendProtocol.
      */
-    @JsonCreator
     public static BackendProtocol fromString(String name) {
         return fromString(name, BackendProtocol.class);
     }
 
-    /** @return known BackendProtocol values. */
+    /**
+     * Gets known BackendProtocol values.
+     * 
+     * @return known BackendProtocol values.
+     */
     public static Collection<BackendProtocol> values() {
         return values(BackendProtocol.class);
     }

@@ -6,71 +6,72 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.IpVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdatePublicIpAddressConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes a virtual machine scale set network profile's IP configuration properties. */
+/**
+ * Describes a virtual machine scale set network profile's IP configuration properties.
+ */
 @Fluent
-public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
+public final class VirtualMachineScaleSetUpdateIpConfigurationProperties
+    implements JsonSerializable<VirtualMachineScaleSetUpdateIpConfigurationProperties> {
     /*
      * The subnet.
      */
-    @JsonProperty(value = "subnet")
     private ApiEntityReference subnet;
 
     /*
      * Specifies the primary IP Configuration in case the network interface has more than one IP Configuration.
      */
-    @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
      * The publicIPAddressConfiguration.
      */
-    @JsonProperty(value = "publicIPAddressConfiguration")
     private VirtualMachineScaleSetUpdatePublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
      * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
-     * IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'.
+     * IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      */
-    @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
 
     /*
      * The application gateway backend address pools.
      */
-    @JsonProperty(value = "applicationGatewayBackendAddressPools")
     private List<SubResource> applicationGatewayBackendAddressPools;
 
     /*
      * Specifies an array of references to application security group.
      */
-    @JsonProperty(value = "applicationSecurityGroups")
     private List<SubResource> applicationSecurityGroups;
 
     /*
      * The load balancer backend address pools.
      */
-    @JsonProperty(value = "loadBalancerBackendAddressPools")
     private List<SubResource> loadBalancerBackendAddressPools;
 
     /*
      * The load balancer inbound nat pools.
      */
-    @JsonProperty(value = "loadBalancerInboundNatPools")
     private List<SubResource> loadBalancerInboundNatPools;
 
-    /** Creates an instance of VirtualMachineScaleSetUpdateIpConfigurationProperties class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetUpdateIpConfigurationProperties class.
+     */
     public VirtualMachineScaleSetUpdateIpConfigurationProperties() {
     }
 
     /**
      * Get the subnet property: The subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public ApiEntityReference subnet() {
@@ -79,7 +80,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
 
     /**
      * Set the subnet property: The subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the VirtualMachineScaleSetUpdateIpConfigurationProperties object itself.
      */
@@ -91,7 +92,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     /**
      * Get the primary property: Specifies the primary IP Configuration in case the network interface has more than one
      * IP Configuration.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -101,7 +102,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     /**
      * Set the primary property: Specifies the primary IP Configuration in case the network interface has more than one
      * IP Configuration.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the VirtualMachineScaleSetUpdateIpConfigurationProperties object itself.
      */
@@ -112,7 +113,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
 
     /**
      * Get the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
-     *
+     * 
      * @return the publicIpAddressConfiguration value.
      */
     public VirtualMachineScaleSetUpdatePublicIpAddressConfiguration publicIpAddressConfiguration() {
@@ -121,7 +122,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
 
     /**
      * Set the publicIpAddressConfiguration property: The publicIPAddressConfiguration.
-     *
+     * 
      * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
      * @return the VirtualMachineScaleSetUpdateIpConfigurationProperties object itself.
      */
@@ -134,7 +135,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     /**
      * Get the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @return the privateIpAddressVersion value.
      */
     public IpVersion privateIpAddressVersion() {
@@ -144,19 +145,19 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     /**
      * Set the privateIpAddressVersion property: Available from Api-Version 2017-03-30 onwards, it represents whether
      * the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
-     *
+     * 
      * @param privateIpAddressVersion the privateIpAddressVersion value to set.
      * @return the VirtualMachineScaleSetUpdateIpConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateIpConfigurationProperties withPrivateIpAddressVersion(
-        IpVersion privateIpAddressVersion) {
+    public VirtualMachineScaleSetUpdateIpConfigurationProperties
+        withPrivateIpAddressVersion(IpVersion privateIpAddressVersion) {
         this.privateIpAddressVersion = privateIpAddressVersion;
         return this;
     }
 
     /**
      * Get the applicationGatewayBackendAddressPools property: The application gateway backend address pools.
-     *
+     * 
      * @return the applicationGatewayBackendAddressPools value.
      */
     public List<SubResource> applicationGatewayBackendAddressPools() {
@@ -165,19 +166,19 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
 
     /**
      * Set the applicationGatewayBackendAddressPools property: The application gateway backend address pools.
-     *
+     * 
      * @param applicationGatewayBackendAddressPools the applicationGatewayBackendAddressPools value to set.
      * @return the VirtualMachineScaleSetUpdateIpConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateIpConfigurationProperties withApplicationGatewayBackendAddressPools(
-        List<SubResource> applicationGatewayBackendAddressPools) {
+    public VirtualMachineScaleSetUpdateIpConfigurationProperties
+        withApplicationGatewayBackendAddressPools(List<SubResource> applicationGatewayBackendAddressPools) {
         this.applicationGatewayBackendAddressPools = applicationGatewayBackendAddressPools;
         return this;
     }
 
     /**
      * Get the applicationSecurityGroups property: Specifies an array of references to application security group.
-     *
+     * 
      * @return the applicationSecurityGroups value.
      */
     public List<SubResource> applicationSecurityGroups() {
@@ -186,19 +187,19 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
 
     /**
      * Set the applicationSecurityGroups property: Specifies an array of references to application security group.
-     *
+     * 
      * @param applicationSecurityGroups the applicationSecurityGroups value to set.
      * @return the VirtualMachineScaleSetUpdateIpConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateIpConfigurationProperties withApplicationSecurityGroups(
-        List<SubResource> applicationSecurityGroups) {
+    public VirtualMachineScaleSetUpdateIpConfigurationProperties
+        withApplicationSecurityGroups(List<SubResource> applicationSecurityGroups) {
         this.applicationSecurityGroups = applicationSecurityGroups;
         return this;
     }
 
     /**
      * Get the loadBalancerBackendAddressPools property: The load balancer backend address pools.
-     *
+     * 
      * @return the loadBalancerBackendAddressPools value.
      */
     public List<SubResource> loadBalancerBackendAddressPools() {
@@ -207,19 +208,19 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
 
     /**
      * Set the loadBalancerBackendAddressPools property: The load balancer backend address pools.
-     *
+     * 
      * @param loadBalancerBackendAddressPools the loadBalancerBackendAddressPools value to set.
      * @return the VirtualMachineScaleSetUpdateIpConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateIpConfigurationProperties withLoadBalancerBackendAddressPools(
-        List<SubResource> loadBalancerBackendAddressPools) {
+    public VirtualMachineScaleSetUpdateIpConfigurationProperties
+        withLoadBalancerBackendAddressPools(List<SubResource> loadBalancerBackendAddressPools) {
         this.loadBalancerBackendAddressPools = loadBalancerBackendAddressPools;
         return this;
     }
 
     /**
      * Get the loadBalancerInboundNatPools property: The load balancer inbound nat pools.
-     *
+     * 
      * @return the loadBalancerInboundNatPools value.
      */
     public List<SubResource> loadBalancerInboundNatPools() {
@@ -228,19 +229,19 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
 
     /**
      * Set the loadBalancerInboundNatPools property: The load balancer inbound nat pools.
-     *
+     * 
      * @param loadBalancerInboundNatPools the loadBalancerInboundNatPools value to set.
      * @return the VirtualMachineScaleSetUpdateIpConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdateIpConfigurationProperties withLoadBalancerInboundNatPools(
-        List<SubResource> loadBalancerInboundNatPools) {
+    public VirtualMachineScaleSetUpdateIpConfigurationProperties
+        withLoadBalancerInboundNatPools(List<SubResource> loadBalancerInboundNatPools) {
         this.loadBalancerInboundNatPools = loadBalancerInboundNatPools;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -250,5 +251,85 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
         if (publicIpAddressConfiguration() != null) {
             publicIpAddressConfiguration().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("subnet", this.subnet);
+        jsonWriter.writeBooleanField("primary", this.primary);
+        jsonWriter.writeJsonField("publicIPAddressConfiguration", this.publicIpAddressConfiguration);
+        jsonWriter.writeStringField("privateIPAddressVersion",
+            this.privateIpAddressVersion == null ? null : this.privateIpAddressVersion.toString());
+        jsonWriter.writeArrayField("applicationGatewayBackendAddressPools", this.applicationGatewayBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("applicationSecurityGroups", this.applicationSecurityGroups,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerBackendAddressPools", this.loadBalancerBackendAddressPools,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("loadBalancerInboundNatPools", this.loadBalancerInboundNatPools,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetUpdateIpConfigurationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetUpdateIpConfigurationProperties if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetUpdateIpConfigurationProperties.
+     */
+    public static VirtualMachineScaleSetUpdateIpConfigurationProperties fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetUpdateIpConfigurationProperties deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties
+                = new VirtualMachineScaleSetUpdateIpConfigurationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnet".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties.subnet
+                        = ApiEntityReference.fromJson(reader);
+                } else if ("primary".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties.primary
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("publicIPAddressConfiguration".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties.publicIpAddressConfiguration
+                        = VirtualMachineScaleSetUpdatePublicIpAddressConfiguration.fromJson(reader);
+                } else if ("privateIPAddressVersion".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties.privateIpAddressVersion
+                        = IpVersion.fromString(reader.getString());
+                } else if ("applicationGatewayBackendAddressPools".equals(fieldName)) {
+                    List<SubResource> applicationGatewayBackendAddressPools
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties.applicationGatewayBackendAddressPools
+                        = applicationGatewayBackendAddressPools;
+                } else if ("applicationSecurityGroups".equals(fieldName)) {
+                    List<SubResource> applicationSecurityGroups
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties.applicationSecurityGroups
+                        = applicationSecurityGroups;
+                } else if ("loadBalancerBackendAddressPools".equals(fieldName)) {
+                    List<SubResource> loadBalancerBackendAddressPools
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties.loadBalancerBackendAddressPools
+                        = loadBalancerBackendAddressPools;
+                } else if ("loadBalancerInboundNatPools".equals(fieldName)) {
+                    List<SubResource> loadBalancerInboundNatPools
+                        = reader.readArray(reader1 -> SubResource.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties.loadBalancerInboundNatPools
+                        = loadBalancerInboundNatPools;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetUpdateIpConfigurationProperties;
+        });
     }
 }

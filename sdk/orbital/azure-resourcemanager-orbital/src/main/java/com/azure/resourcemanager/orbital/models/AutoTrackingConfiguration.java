@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.orbital.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for AutoTrackingConfiguration. */
+/**
+ * Auto-tracking configuration.
+ */
 public enum AutoTrackingConfiguration {
-    /** Enum value disabled. */
+    /**
+     * Enum value disabled.
+     */
     DISABLED("disabled"),
 
-    /** Enum value xBand. */
+    /**
+     * Enum value xBand.
+     */
     X_BAND("xBand"),
 
-    /** Enum value sBand. */
+    /**
+     * Enum value sBand.
+     */
     S_BAND("sBand");
 
-    /** The actual serialized value for a AutoTrackingConfiguration instance. */
+    /**
+     * The actual serialized value for a AutoTrackingConfiguration instance.
+     */
     private final String value;
 
     AutoTrackingConfiguration(String value) {
@@ -27,12 +34,14 @@ public enum AutoTrackingConfiguration {
 
     /**
      * Parses a serialized value to a AutoTrackingConfiguration instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AutoTrackingConfiguration object, or null if unable to parse.
      */
-    @JsonCreator
     public static AutoTrackingConfiguration fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AutoTrackingConfiguration[] items = AutoTrackingConfiguration.values();
         for (AutoTrackingConfiguration item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum AutoTrackingConfiguration {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

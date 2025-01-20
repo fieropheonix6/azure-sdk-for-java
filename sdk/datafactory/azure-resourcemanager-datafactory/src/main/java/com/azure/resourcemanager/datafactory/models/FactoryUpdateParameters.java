@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.FactoryUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters for updating a factory resource. */
+/**
+ * Parameters for updating a factory resource.
+ */
 @Fluent
-public final class FactoryUpdateParameters {
+public final class FactoryUpdateParameters implements JsonSerializable<FactoryUpdateParameters> {
     /*
      * The resource tags.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Managed service identity of the factory.
      */
-    @JsonProperty(value = "identity")
     private FactoryIdentity identity;
 
     /*
      * Properties of update the factory.
      */
-    @JsonProperty(value = "properties")
     private FactoryUpdateProperties innerProperties;
 
-    /** Creates an instance of FactoryUpdateParameters class. */
+    /**
+     * Creates an instance of FactoryUpdateParameters class.
+     */
     public FactoryUpdateParameters() {
     }
 
     /**
      * Get the tags property: The resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -47,7 +50,7 @@ public final class FactoryUpdateParameters {
 
     /**
      * Set the tags property: The resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the FactoryUpdateParameters object itself.
      */
@@ -58,7 +61,7 @@ public final class FactoryUpdateParameters {
 
     /**
      * Get the identity property: Managed service identity of the factory.
-     *
+     * 
      * @return the identity value.
      */
     public FactoryIdentity identity() {
@@ -67,7 +70,7 @@ public final class FactoryUpdateParameters {
 
     /**
      * Set the identity property: Managed service identity of the factory.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FactoryUpdateParameters object itself.
      */
@@ -78,7 +81,7 @@ public final class FactoryUpdateParameters {
 
     /**
      * Get the innerProperties property: Properties of update the factory.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FactoryUpdateProperties innerProperties() {
@@ -87,7 +90,7 @@ public final class FactoryUpdateParameters {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -96,7 +99,7 @@ public final class FactoryUpdateParameters {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FactoryUpdateParameters object itself.
      */
@@ -110,7 +113,7 @@ public final class FactoryUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -120,5 +123,48 @@ public final class FactoryUpdateParameters {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FactoryUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FactoryUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FactoryUpdateParameters.
+     */
+    public static FactoryUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FactoryUpdateParameters deserializedFactoryUpdateParameters = new FactoryUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFactoryUpdateParameters.tags = tags;
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFactoryUpdateParameters.identity = FactoryIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFactoryUpdateParameters.innerProperties = FactoryUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFactoryUpdateParameters;
+        });
     }
 }

@@ -6,37 +6,42 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Avro dataset properties. */
+/**
+ * Avro dataset properties.
+ */
 @Fluent
-public final class AvroDatasetTypeProperties {
+public final class AvroDatasetTypeProperties implements JsonSerializable<AvroDatasetTypeProperties> {
     /*
      * The location of the avro storage.
      */
-    @JsonProperty(value = "location", required = true)
     private DatasetLocation location;
 
     /*
      * The data avroCompressionCodec. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "avroCompressionCodec")
     private Object avroCompressionCodec;
 
     /*
      * The avroCompressionLevel property.
      */
-    @JsonProperty(value = "avroCompressionLevel")
     private Integer avroCompressionLevel;
 
-    /** Creates an instance of AvroDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AvroDatasetTypeProperties class.
+     */
     public AvroDatasetTypeProperties() {
     }
 
     /**
      * Get the location property: The location of the avro storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation location() {
@@ -45,7 +50,7 @@ public final class AvroDatasetTypeProperties {
 
     /**
      * Set the location property: The location of the avro storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the AvroDatasetTypeProperties object itself.
      */
@@ -57,7 +62,7 @@ public final class AvroDatasetTypeProperties {
     /**
      * Get the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the avroCompressionCodec value.
      */
     public Object avroCompressionCodec() {
@@ -67,7 +72,7 @@ public final class AvroDatasetTypeProperties {
     /**
      * Set the avroCompressionCodec property: The data avroCompressionCodec. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param avroCompressionCodec the avroCompressionCodec value to set.
      * @return the AvroDatasetTypeProperties object itself.
      */
@@ -78,7 +83,7 @@ public final class AvroDatasetTypeProperties {
 
     /**
      * Get the avroCompressionLevel property: The avroCompressionLevel property.
-     *
+     * 
      * @return the avroCompressionLevel value.
      */
     public Integer avroCompressionLevel() {
@@ -87,7 +92,7 @@ public final class AvroDatasetTypeProperties {
 
     /**
      * Set the avroCompressionLevel property: The avroCompressionLevel property.
-     *
+     * 
      * @param avroCompressionLevel the avroCompressionLevel value to set.
      * @return the AvroDatasetTypeProperties object itself.
      */
@@ -98,19 +103,61 @@ public final class AvroDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model AvroDatasetTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property location in model AvroDatasetTypeProperties"));
         } else {
             location().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(AvroDatasetTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("location", this.location);
+        jsonWriter.writeUntypedField("avroCompressionCodec", this.avroCompressionCodec);
+        jsonWriter.writeNumberField("avroCompressionLevel", this.avroCompressionLevel);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvroDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvroDatasetTypeProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AvroDatasetTypeProperties.
+     */
+    public static AvroDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvroDatasetTypeProperties deserializedAvroDatasetTypeProperties = new AvroDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("location".equals(fieldName)) {
+                    deserializedAvroDatasetTypeProperties.location = DatasetLocation.fromJson(reader);
+                } else if ("avroCompressionCodec".equals(fieldName)) {
+                    deserializedAvroDatasetTypeProperties.avroCompressionCodec = reader.readUntyped();
+                } else if ("avroCompressionLevel".equals(fieldName)) {
+                    deserializedAvroDatasetTypeProperties.avroCompressionLevel = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvroDatasetTypeProperties;
+        });
+    }
 }

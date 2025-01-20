@@ -6,37 +6,57 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupPropertiesIntent;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.SubResourceWithColocationStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Specifies information about the proximity placement group. */
+/**
+ * Specifies information about the proximity placement group.
+ */
 @Fluent
 public final class ProximityPlacementGroupInner extends Resource {
     /*
      * Describes the properties of a Proximity Placement Group.
      */
-    @JsonProperty(value = "properties")
     private ProximityPlacementGroupProperties innerProperties;
 
     /*
      * Specifies the Availability Zone where virtual machine, virtual machine scale set or availability set associated
-     * with the  proximity placement group can be created.
+     * with the proximity placement group can be created.
      */
-    @JsonProperty(value = "zones")
     private List<String> zones;
 
-    /** Creates an instance of ProximityPlacementGroupInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ProximityPlacementGroupInner class.
+     */
     public ProximityPlacementGroupInner() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of a Proximity Placement Group.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ProximityPlacementGroupProperties innerProperties() {
@@ -46,7 +66,7 @@ public final class ProximityPlacementGroupInner extends Resource {
     /**
      * Get the zones property: Specifies the Availability Zone where virtual machine, virtual machine scale set or
      * availability set associated with the proximity placement group can be created.
-     *
+     * 
      * @return the zones value.
      */
     public List<String> zones() {
@@ -56,7 +76,7 @@ public final class ProximityPlacementGroupInner extends Resource {
     /**
      * Set the zones property: Specifies the Availability Zone where virtual machine, virtual machine scale set or
      * availability set associated with the proximity placement group can be created.
-     *
+     * 
      * @param zones the zones value to set.
      * @return the ProximityPlacementGroupInner object itself.
      */
@@ -65,14 +85,48 @@ public final class ProximityPlacementGroupInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProximityPlacementGroupInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ProximityPlacementGroupInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -80,10 +134,10 @@ public final class ProximityPlacementGroupInner extends Resource {
     }
 
     /**
-     * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future use.
-     *
+     * Get the proximityPlacementGroupType property: Specifies the type of the proximity placement group. Possible
+     * values are: **Standard** : Co-locate resources within an Azure region or Availability Zone. **Ultra** : For
+     * future use.
+     * 
      * @return the proximityPlacementGroupType value.
      */
     public ProximityPlacementGroupType proximityPlacementGroupType() {
@@ -91,15 +145,15 @@ public final class ProximityPlacementGroupInner extends Resource {
     }
 
     /**
-     * Set the proximityPlacementGroupType property: Specifies the type of the proximity placement group.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Standard** : Co-locate resources within an Azure
-     * region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For future use.
-     *
+     * Set the proximityPlacementGroupType property: Specifies the type of the proximity placement group. Possible
+     * values are: **Standard** : Co-locate resources within an Azure region or Availability Zone. **Ultra** : For
+     * future use.
+     * 
      * @param proximityPlacementGroupType the proximityPlacementGroupType value to set.
      * @return the ProximityPlacementGroupInner object itself.
      */
-    public ProximityPlacementGroupInner withProximityPlacementGroupType(
-        ProximityPlacementGroupType proximityPlacementGroupType) {
+    public ProximityPlacementGroupInner
+        withProximityPlacementGroupType(ProximityPlacementGroupType proximityPlacementGroupType) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ProximityPlacementGroupProperties();
         }
@@ -109,7 +163,7 @@ public final class ProximityPlacementGroupInner extends Resource {
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the proximity placement group.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<SubResourceWithColocationStatus> virtualMachines() {
@@ -119,7 +173,7 @@ public final class ProximityPlacementGroupInner extends Resource {
     /**
      * Get the virtualMachineScaleSets property: A list of references to all virtual machine scale sets in the proximity
      * placement group.
-     *
+     * 
      * @return the virtualMachineScaleSets value.
      */
     public List<SubResourceWithColocationStatus> virtualMachineScaleSets() {
@@ -129,7 +183,7 @@ public final class ProximityPlacementGroupInner extends Resource {
     /**
      * Get the availabilitySets property: A list of references to all availability sets in the proximity placement
      * group.
-     *
+     * 
      * @return the availabilitySets value.
      */
     public List<SubResourceWithColocationStatus> availabilitySets() {
@@ -138,7 +192,7 @@ public final class ProximityPlacementGroupInner extends Resource {
 
     /**
      * Get the colocationStatus property: Describes colocation status of the Proximity Placement Group.
-     *
+     * 
      * @return the colocationStatus value.
      */
     public InstanceViewStatus colocationStatus() {
@@ -147,7 +201,7 @@ public final class ProximityPlacementGroupInner extends Resource {
 
     /**
      * Set the colocationStatus property: Describes colocation status of the Proximity Placement Group.
-     *
+     * 
      * @param colocationStatus the colocationStatus value to set.
      * @return the ProximityPlacementGroupInner object itself.
      */
@@ -161,7 +215,7 @@ public final class ProximityPlacementGroupInner extends Resource {
 
     /**
      * Get the intent property: Specifies the user intent of the proximity placement group.
-     *
+     * 
      * @return the intent value.
      */
     public ProximityPlacementGroupPropertiesIntent intent() {
@@ -170,7 +224,7 @@ public final class ProximityPlacementGroupInner extends Resource {
 
     /**
      * Set the intent property: Specifies the user intent of the proximity placement group.
-     *
+     * 
      * @param intent the intent value to set.
      * @return the ProximityPlacementGroupInner object itself.
      */
@@ -184,12 +238,67 @@ public final class ProximityPlacementGroupInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeArrayField("zones", this.zones, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProximityPlacementGroupInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProximityPlacementGroupInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ProximityPlacementGroupInner.
+     */
+    public static ProximityPlacementGroupInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProximityPlacementGroupInner deserializedProximityPlacementGroupInner = new ProximityPlacementGroupInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedProximityPlacementGroupInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedProximityPlacementGroupInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedProximityPlacementGroupInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedProximityPlacementGroupInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProximityPlacementGroupInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedProximityPlacementGroupInner.innerProperties
+                        = ProximityPlacementGroupProperties.fromJson(reader);
+                } else if ("zones".equals(fieldName)) {
+                    List<String> zones = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProximityPlacementGroupInner.zones = zones;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProximityPlacementGroupInner;
+        });
     }
 }

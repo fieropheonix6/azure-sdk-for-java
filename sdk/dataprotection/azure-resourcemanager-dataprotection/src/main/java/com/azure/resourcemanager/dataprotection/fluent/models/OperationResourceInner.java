@@ -6,67 +6,69 @@ package com.azure.resourcemanager.dataprotection.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.dataprotection.models.OperationExtendedInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** OperationResource Operation Resource. */
+/**
+ * OperationResource
+ * 
+ * Operation Resource.
+ */
 @Fluent
-public final class OperationResourceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResourceInner.class);
-
+public final class OperationResourceInner implements JsonSerializable<OperationResourceInner> {
     /*
      * End time of the operation
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
-     * Required if status == failed or status == canceled. This is the OData v4
-     * error format, used by the RPC and will go into the v2.2 Azure REST API
-     * guidelines.
-     * The full set of optional properties (e.g. inner errors / details) can be
-     * found in the "Error Response" section.
+     * Required if status == failed or status == canceled. This is the OData v4 error format, used by the RPC and will
+     * go into the v2.2 Azure REST API guidelines.
+     * The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
      */
-    @JsonProperty(value = "error")
     private ManagementError error;
 
     /*
      * It should match what is used to GET the operation result
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * It must match the last segment of the "id" field, and will typically be
-     * a GUID / system generated value
+     * It must match the last segment of the "id" field, and will typically be a GUID / system generated value
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
-     * OperationExtendedInfo End time of the operation
+     * End time of the operation
      */
-    @JsonProperty(value = "properties")
     private OperationExtendedInfo properties;
 
     /*
      * Start time of the operation
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * The status property.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /**
+     * Creates an instance of OperationResourceInner class.
+     */
+    public OperationResourceInner() {
+    }
+
+    /**
      * Get the endTime property: End time of the operation.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -75,7 +77,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the endTime property: End time of the operation.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -86,9 +88,9 @@ public final class OperationResourceInner {
 
     /**
      * Get the error property: Required if status == failed or status == canceled. This is the OData v4 error format,
-     * used by the RPC and will go into the v2.2 Azure REST API guidelines. The full set of optional properties (e.g.
-     * inner errors / details) can be found in the "Error Response" section.
-     *
+     * used by the RPC and will go into the v2.2 Azure REST API guidelines.
+     * The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
+     * 
      * @return the error value.
      */
     public ManagementError error() {
@@ -97,9 +99,9 @@ public final class OperationResourceInner {
 
     /**
      * Set the error property: Required if status == failed or status == canceled. This is the OData v4 error format,
-     * used by the RPC and will go into the v2.2 Azure REST API guidelines. The full set of optional properties (e.g.
-     * inner errors / details) can be found in the "Error Response" section.
-     *
+     * used by the RPC and will go into the v2.2 Azure REST API guidelines.
+     * The full set of optional properties (e.g. inner errors / details) can be found in the "Error Response" section.
+     * 
      * @param error the error value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -110,7 +112,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the id property: It should match what is used to GET the operation result.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -119,7 +121,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the id property: It should match what is used to GET the operation result.
-     *
+     * 
      * @param id the id value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -131,7 +133,7 @@ public final class OperationResourceInner {
     /**
      * Get the name property: It must match the last segment of the "id" field, and will typically be a GUID / system
      * generated value.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -141,7 +143,7 @@ public final class OperationResourceInner {
     /**
      * Set the name property: It must match the last segment of the "id" field, and will typically be a GUID / system
      * generated value.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -151,8 +153,8 @@ public final class OperationResourceInner {
     }
 
     /**
-     * Get the properties property: OperationExtendedInfo End time of the operation.
-     *
+     * Get the properties property: End time of the operation.
+     * 
      * @return the properties value.
      */
     public OperationExtendedInfo properties() {
@@ -160,8 +162,8 @@ public final class OperationResourceInner {
     }
 
     /**
-     * Set the properties property: OperationExtendedInfo End time of the operation.
-     *
+     * Set the properties property: End time of the operation.
+     * 
      * @param properties the properties value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -172,7 +174,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the startTime property: Start time of the operation.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -181,7 +183,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the startTime property: Start time of the operation.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -192,7 +194,7 @@ public final class OperationResourceInner {
 
     /**
      * Get the status property: The status property.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -201,7 +203,7 @@ public final class OperationResourceInner {
 
     /**
      * Set the status property: The status property.
-     *
+     * 
      * @param status the status value to set.
      * @return the OperationResourceInner object itself.
      */
@@ -212,12 +214,70 @@ public final class OperationResourceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() != null) {
             properties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeJsonField("error", this.error);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("status", this.status);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResourceInner.
+     */
+    public static OperationResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResourceInner deserializedOperationResourceInner = new OperationResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endTime".equals(fieldName)) {
+                    deserializedOperationResourceInner.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("error".equals(fieldName)) {
+                    deserializedOperationResourceInner.error = ManagementError.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedOperationResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationResourceInner.name = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationResourceInner.properties = OperationExtendedInfo.fromJson(reader);
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationResourceInner.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResourceInner.status = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResourceInner;
+        });
     }
 }

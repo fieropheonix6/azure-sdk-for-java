@@ -5,41 +5,61 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * serviceLevel
- *
- * <p>The service level of the file system.
+ * 
+ * The service level of the file system.
  */
 public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
-    /** Static value Standard for ServiceLevel. */
+    /**
+     * Static value Standard for ServiceLevel.
+     */
     public static final ServiceLevel STANDARD = fromString("Standard");
 
-    /** Static value Premium for ServiceLevel. */
+    /**
+     * Static value Premium for ServiceLevel.
+     */
     public static final ServiceLevel PREMIUM = fromString("Premium");
 
-    /** Static value Ultra for ServiceLevel. */
+    /**
+     * Static value Ultra for ServiceLevel.
+     */
     public static final ServiceLevel ULTRA = fromString("Ultra");
 
-    /** Static value StandardZRS for ServiceLevel. */
+    /**
+     * Static value StandardZRS for ServiceLevel.
+     */
     public static final ServiceLevel STANDARD_ZRS = fromString("StandardZRS");
 
     /**
+     * Static value Flexible for ServiceLevel.
+     */
+    public static final ServiceLevel FLEXIBLE = fromString("Flexible");
+
+    /**
+     * Creates a new instance of ServiceLevel value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ServiceLevel() {
+    }
+
+    /**
      * Creates or finds a ServiceLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceLevel.
      */
-    @JsonCreator
     public static ServiceLevel fromString(String name) {
         return fromString(name, ServiceLevel.class);
     }
 
     /**
      * Gets known ServiceLevel values.
-     *
+     * 
      * @return known ServiceLevel values.
      */
     public static Collection<ServiceLevel> values() {

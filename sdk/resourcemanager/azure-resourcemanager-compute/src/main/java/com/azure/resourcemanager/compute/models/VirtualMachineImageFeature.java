@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies additional capabilities supported by the image. */
+/**
+ * Specifies additional capabilities supported by the image.
+ */
 @Fluent
-public final class VirtualMachineImageFeature {
+public final class VirtualMachineImageFeature implements JsonSerializable<VirtualMachineImageFeature> {
     /*
      * The name of the feature.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The corresponding value for the feature.
      */
-    @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of VirtualMachineImageFeature class. */
+    /**
+     * Creates an instance of VirtualMachineImageFeature class.
+     */
     public VirtualMachineImageFeature() {
     }
 
     /**
      * Get the name property: The name of the feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +43,7 @@ public final class VirtualMachineImageFeature {
 
     /**
      * Set the name property: The name of the feature.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualMachineImageFeature object itself.
      */
@@ -48,7 +54,7 @@ public final class VirtualMachineImageFeature {
 
     /**
      * Get the value property: The corresponding value for the feature.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +63,7 @@ public final class VirtualMachineImageFeature {
 
     /**
      * Set the value property: The corresponding value for the feature.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineImageFeature object itself.
      */
@@ -68,9 +74,48 @@ public final class VirtualMachineImageFeature {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("value", this.value);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineImageFeature from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineImageFeature if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineImageFeature.
+     */
+    public static VirtualMachineImageFeature fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineImageFeature deserializedVirtualMachineImageFeature = new VirtualMachineImageFeature();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineImageFeature.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedVirtualMachineImageFeature.value = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineImageFeature;
+        });
     }
 }

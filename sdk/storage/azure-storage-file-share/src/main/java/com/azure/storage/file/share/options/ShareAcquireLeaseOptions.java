@@ -10,7 +10,6 @@ import com.azure.core.annotation.Fluent;
  */
 @Fluent
 public class ShareAcquireLeaseOptions {
-
     private int duration;
 
     /**
@@ -21,19 +20,23 @@ public class ShareAcquireLeaseOptions {
     }
 
     /**
-     * @return The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     * Gets the duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
+     *
+     * @return The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      */
     public int getDuration() {
         return this.duration;
     }
 
     /**
-     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
-     *                 Note: Share files only support infinite lease.
+     * Sets the duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
+     *
+     * @param durationInSeconds The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
+     * Note: Share files only support infinite lease.
      * @return The updated options.
      */
-    public ShareAcquireLeaseOptions setDuration(int duration) {
-        this.duration = duration;
+    public ShareAcquireLeaseOptions setDuration(int durationInSeconds) {
+        this.duration = durationInSeconds;
         return this;
     }
 }

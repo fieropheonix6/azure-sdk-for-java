@@ -5,37 +5,49 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.fluent.models.DomainUpdateParameterProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** Properties of the Domain update. */
+/**
+ * Properties of the Domain update.
+ */
 @Fluent
-public final class DomainUpdateParameters {
+public final class DomainUpdateParameters implements JsonSerializable<DomainUpdateParameters> {
     /*
      * Tags of the domains resource.
      */
-    @JsonProperty(value = "tags")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /*
      * Properties of the resource.
      */
-    @JsonProperty(value = "properties")
     private DomainUpdateParameterProperties innerProperties;
 
     /*
      * Identity information for the resource.
      */
-    @JsonProperty(value = "identity")
     private IdentityInfo identity;
+
+    /*
+     * The Sku pricing tier for the domain.
+     */
+    private ResourceSku sku;
+
+    /**
+     * Creates an instance of DomainUpdateParameters class.
+     */
+    public DomainUpdateParameters() {
+    }
 
     /**
      * Get the tags property: Tags of the domains resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -44,7 +56,7 @@ public final class DomainUpdateParameters {
 
     /**
      * Set the tags property: Tags of the domains resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DomainUpdateParameters object itself.
      */
@@ -55,7 +67,7 @@ public final class DomainUpdateParameters {
 
     /**
      * Get the innerProperties property: Properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DomainUpdateParameterProperties innerProperties() {
@@ -64,7 +76,7 @@ public final class DomainUpdateParameters {
 
     /**
      * Get the identity property: Identity information for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityInfo identity() {
@@ -73,7 +85,7 @@ public final class DomainUpdateParameters {
 
     /**
      * Set the identity property: Identity information for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the DomainUpdateParameters object itself.
      */
@@ -83,11 +95,32 @@ public final class DomainUpdateParameters {
     }
 
     /**
+     * Get the sku property: The Sku pricing tier for the domain.
+     * 
+     * @return the sku value.
+     */
+    public ResourceSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku property: The Sku pricing tier for the domain.
+     * 
+     * @param sku the sku value to set.
+     * @return the DomainUpdateParameters object itself.
+     */
+    public DomainUpdateParameters withSku(ResourceSku sku) {
+        this.sku = sku;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules"
      * /&gt;.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -96,10 +129,11 @@ public final class DomainUpdateParameters {
 
     /**
      * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.DomainUpdateParameterProperties.InboundIpRules"
      * /&gt;.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DomainUpdateParameters object itself.
      */
@@ -114,7 +148,7 @@ public final class DomainUpdateParameters {
     /**
      * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
      * These are considered only if PublicNetworkAccess is enabled.
-     *
+     * 
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
@@ -124,7 +158,7 @@ public final class DomainUpdateParameters {
     /**
      * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
      * These are considered only if PublicNetworkAccess is enabled.
-     *
+     * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the DomainUpdateParameters object itself.
      */
@@ -137,10 +171,35 @@ public final class DomainUpdateParameters {
     }
 
     /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     * 
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersionAllowed();
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * domain.
+     * 
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the DomainUpdateParameters object itself.
+     */
+    public DomainUpdateParameters withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+        return this;
+    }
+
+    /**
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
      * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
      * the domain.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -151,7 +210,7 @@ public final class DomainUpdateParameters {
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
      * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
      * the domain.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the DomainUpdateParameters object itself.
      */
@@ -165,15 +224,19 @@ public final class DomainUpdateParameters {
 
     /**
      * Get the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
-     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, creation of
-     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
-     * true. When this property is null or set to true, Event Grid is responsible of automatically creating the domain
-     * topic when the first event subscription is created at the scope of the domain topic. If this property is set to
-     * false, then creating the first event subscription will require creating a domain topic by the user. The
-     * self-management mode can be used if the user wants full control of when the domain topic is created, while
-     * auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the user.
-     * Also, note that in auto-managed creation mode, user is allowed to create the domain topic on demand if needed.
-     *
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+     * In this context, creation of domain topic can be auto-managed (when true) or self-managed (when false). The
+     * default value for this property is true.
+     * When this property is null or set to true, Event Grid is responsible of automatically creating the domain topic
+     * when the first event subscription is
+     * created at the scope of the domain topic. If this property is set to false, then creating the first event
+     * subscription will require creating a domain topic
+     * by the user. The self-management mode can be used if the user wants full control of when the domain topic is
+     * created, while auto-managed mode provides the
+     * flexibility to perform less operations and manage fewer resources by the user. Also, note that in auto-managed
+     * creation mode, user is allowed to create the
+     * domain topic on demand if needed.
+     * 
      * @return the autoCreateTopicWithFirstSubscription value.
      */
     public Boolean autoCreateTopicWithFirstSubscription() {
@@ -182,20 +245,24 @@ public final class DomainUpdateParameters {
 
     /**
      * Set the autoCreateTopicWithFirstSubscription property: This Boolean is used to specify the creation mechanism for
-     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, creation of
-     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
-     * true. When this property is null or set to true, Event Grid is responsible of automatically creating the domain
-     * topic when the first event subscription is created at the scope of the domain topic. If this property is set to
-     * false, then creating the first event subscription will require creating a domain topic by the user. The
-     * self-management mode can be used if the user wants full control of when the domain topic is created, while
-     * auto-managed mode provides the flexibility to perform less operations and manage fewer resources by the user.
-     * Also, note that in auto-managed creation mode, user is allowed to create the domain topic on demand if needed.
-     *
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+     * In this context, creation of domain topic can be auto-managed (when true) or self-managed (when false). The
+     * default value for this property is true.
+     * When this property is null or set to true, Event Grid is responsible of automatically creating the domain topic
+     * when the first event subscription is
+     * created at the scope of the domain topic. If this property is set to false, then creating the first event
+     * subscription will require creating a domain topic
+     * by the user. The self-management mode can be used if the user wants full control of when the domain topic is
+     * created, while auto-managed mode provides the
+     * flexibility to perform less operations and manage fewer resources by the user. Also, note that in auto-managed
+     * creation mode, user is allowed to create the
+     * domain topic on demand if needed.
+     * 
      * @param autoCreateTopicWithFirstSubscription the autoCreateTopicWithFirstSubscription value to set.
      * @return the DomainUpdateParameters object itself.
      */
-    public DomainUpdateParameters withAutoCreateTopicWithFirstSubscription(
-        Boolean autoCreateTopicWithFirstSubscription) {
+    public DomainUpdateParameters
+        withAutoCreateTopicWithFirstSubscription(Boolean autoCreateTopicWithFirstSubscription) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DomainUpdateParameterProperties();
         }
@@ -205,15 +272,19 @@ public final class DomainUpdateParameters {
 
     /**
      * Get the autoDeleteTopicWithLastSubscription property: This Boolean is used to specify the deletion mechanism for
-     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, deletion of
-     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
-     * true. When this property is set to true, Event Grid is responsible of automatically deleting the domain topic
-     * when the last event subscription at the scope of the domain topic is deleted. If this property is set to false,
-     * then the user needs to manually delete the domain topic when it is no longer needed (e.g., when last event
-     * subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the
-     * user wants full control of when the domain topic needs to be deleted, while auto-managed mode provides the
-     * flexibility to perform less operations and manage fewer resources by the user.
-     *
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+     * In this context, deletion of domain topic can be auto-managed (when true) or self-managed (when false). The
+     * default value for this property is true.
+     * When this property is set to true, Event Grid is responsible of automatically deleting the domain topic when the
+     * last event subscription at the scope
+     * of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the
+     * domain topic when it is no longer needed
+     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+     * can be used if the user wants full
+     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform
+     * less operations and manage fewer
+     * resources by the user.
+     * 
      * @return the autoDeleteTopicWithLastSubscription value.
      */
     public Boolean autoDeleteTopicWithLastSubscription() {
@@ -222,15 +293,19 @@ public final class DomainUpdateParameters {
 
     /**
      * Set the autoDeleteTopicWithLastSubscription property: This Boolean is used to specify the deletion mechanism for
-     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource. In this context, deletion of
-     * domain topic can be auto-managed (when true) or self-managed (when false). The default value for this property is
-     * true. When this property is set to true, Event Grid is responsible of automatically deleting the domain topic
-     * when the last event subscription at the scope of the domain topic is deleted. If this property is set to false,
-     * then the user needs to manually delete the domain topic when it is no longer needed (e.g., when last event
-     * subscription is deleted and the resource needs to be cleaned up). The self-management mode can be used if the
-     * user wants full control of when the domain topic needs to be deleted, while auto-managed mode provides the
-     * flexibility to perform less operations and manage fewer resources by the user.
-     *
+     * 'all' the Event Grid Domain Topics associated with this Event Grid Domain resource.
+     * In this context, deletion of domain topic can be auto-managed (when true) or self-managed (when false). The
+     * default value for this property is true.
+     * When this property is set to true, Event Grid is responsible of automatically deleting the domain topic when the
+     * last event subscription at the scope
+     * of the domain topic is deleted. If this property is set to false, then the user needs to manually delete the
+     * domain topic when it is no longer needed
+     * (e.g., when last event subscription is deleted and the resource needs to be cleaned up). The self-management mode
+     * can be used if the user wants full
+     * control of when the domain topic needs to be deleted, while auto-managed mode provides the flexibility to perform
+     * less operations and manage fewer
+     * resources by the user.
+     * 
      * @param autoDeleteTopicWithLastSubscription the autoDeleteTopicWithLastSubscription value to set.
      * @return the DomainUpdateParameters object itself.
      */
@@ -244,7 +319,7 @@ public final class DomainUpdateParameters {
 
     /**
      * Get the dataResidencyBoundary property: The data residency boundary for the domain.
-     *
+     * 
      * @return the dataResidencyBoundary value.
      */
     public DataResidencyBoundary dataResidencyBoundary() {
@@ -253,7 +328,7 @@ public final class DomainUpdateParameters {
 
     /**
      * Set the dataResidencyBoundary property: The data residency boundary for the domain.
-     *
+     * 
      * @param dataResidencyBoundary the dataResidencyBoundary value to set.
      * @return the DomainUpdateParameters object itself.
      */
@@ -266,8 +341,31 @@ public final class DomainUpdateParameters {
     }
 
     /**
+     * Get the eventTypeInfo property: The eventTypeInfo for the domain.
+     * 
+     * @return the eventTypeInfo value.
+     */
+    public EventTypeInfo eventTypeInfo() {
+        return this.innerProperties() == null ? null : this.innerProperties().eventTypeInfo();
+    }
+
+    /**
+     * Set the eventTypeInfo property: The eventTypeInfo for the domain.
+     * 
+     * @param eventTypeInfo the eventTypeInfo value to set.
+     * @return the DomainUpdateParameters object itself.
+     */
+    public DomainUpdateParameters withEventTypeInfo(EventTypeInfo eventTypeInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DomainUpdateParameterProperties();
+        }
+        this.innerProperties().withEventTypeInfo(eventTypeInfo);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -277,5 +375,55 @@ public final class DomainUpdateParameters {
         if (identity() != null) {
             identity().validate();
         }
+        if (sku() != null) {
+            sku().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DomainUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DomainUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DomainUpdateParameters.
+     */
+    public static DomainUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DomainUpdateParameters deserializedDomainUpdateParameters = new DomainUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDomainUpdateParameters.tags = tags;
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDomainUpdateParameters.innerProperties
+                        = DomainUpdateParameterProperties.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedDomainUpdateParameters.identity = IdentityInfo.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDomainUpdateParameters.sku = ResourceSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDomainUpdateParameters;
+        });
     }
 }

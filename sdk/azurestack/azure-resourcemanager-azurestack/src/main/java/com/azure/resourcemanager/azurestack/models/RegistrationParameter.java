@@ -5,32 +5,47 @@
 package com.azure.resourcemanager.azurestack.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.azurestack.fluent.models.RegistrationParameterProperties;
+import java.io.IOException;
 
-/** Registration resource. */
-@JsonFlatten
+/**
+ * Registration resource.
+ */
 @Fluent
-public class RegistrationParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistrationParameter.class);
+public final class RegistrationParameter implements JsonSerializable<RegistrationParameter> {
+    /*
+     * Properties of the Azure Stack registration resource
+     */
+    private RegistrationParameterProperties innerProperties = new RegistrationParameterProperties();
 
     /*
      * Location of the resource.
      */
-    @JsonProperty(value = "location", required = true)
     private Location location;
 
-    /*
-     * The token identifying registered Azure Stack
+    /**
+     * Creates an instance of RegistrationParameter class.
      */
-    @JsonProperty(value = "properties.registrationToken", required = true)
-    private String registrationToken;
+    public RegistrationParameter() {
+    }
+
+    /**
+     * Get the innerProperties property: Properties of the Azure Stack registration resource.
+     * 
+     * @return the innerProperties value.
+     */
+    private RegistrationParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the location property: Location of the resource.
-     *
+     * 
      * @return the location value.
      */
     public Location location() {
@@ -39,7 +54,7 @@ public class RegistrationParameter {
 
     /**
      * Set the location property: Location of the resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the RegistrationParameter object itself.
      */
@@ -50,40 +65,86 @@ public class RegistrationParameter {
 
     /**
      * Get the registrationToken property: The token identifying registered Azure Stack.
-     *
+     * 
      * @return the registrationToken value.
      */
     public String registrationToken() {
-        return this.registrationToken;
+        return this.innerProperties() == null ? null : this.innerProperties().registrationToken();
     }
 
     /**
      * Set the registrationToken property: The token identifying registered Azure Stack.
-     *
+     * 
      * @param registrationToken the registrationToken value to set.
      * @return the RegistrationParameter object itself.
      */
     public RegistrationParameter withRegistrationToken(String registrationToken) {
-        this.registrationToken = registrationToken;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistrationParameterProperties();
+        }
+        this.innerProperties().withRegistrationToken(registrationToken);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model RegistrationParameter"));
+        } else {
+            innerProperties().validate();
+        }
         if (location() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property location in model RegistrationParameter"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property location in model RegistrationParameter"));
         }
-        if (registrationToken() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property registrationToken in model RegistrationParameter"));
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegistrationParameter.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location == null ? null : this.location.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RegistrationParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RegistrationParameter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RegistrationParameter.
+     */
+    public static RegistrationParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RegistrationParameter deserializedRegistrationParameter = new RegistrationParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedRegistrationParameter.innerProperties
+                        = RegistrationParameterProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedRegistrationParameter.location = Location.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRegistrationParameter;
+        });
     }
 }

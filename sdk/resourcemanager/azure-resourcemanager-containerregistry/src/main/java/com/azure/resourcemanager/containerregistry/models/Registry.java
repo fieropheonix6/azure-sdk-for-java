@@ -8,37 +8,65 @@ import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
+import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import java.time.OffsetDateTime;
 import java.util.Collection;
+import java.util.List;
+
 import reactor.core.publisher.Mono;
 
 /** An immutable client-side representation of an Azure registry. */
 @Fluent
-public interface Registry
-    extends GroupableResource<ContainerRegistryManager, RegistryInner>,
-        Refreshable<Registry>,
-        Updatable<Registry.Update> {
+public interface Registry extends GroupableResource<ContainerRegistryManager, RegistryInner>, Refreshable<Registry>,
+    Updatable<Registry.Update>, SupportsListingPrivateLinkResource, SupportsListingPrivateEndpointConnection,
+    SupportsUpdatingPrivateEndpointConnection {
 
-    /** @return the SKU of the container registry. */
+    /**
+     * Gets the SKU of the container registry.
+     *
+     * @return the SKU of the container registry.
+     */
     Sku sku();
 
-    /** @return the URL that can be used to log into the container registry */
+    /**
+     * Gets the URL that can be used to log into the container registry.
+     *
+     * @return the URL that can be used to log into the container registry
+     */
     String loginServerUrl();
 
-    /** @return the creation date of the container registry in ISO8601 format */
+    /**
+     * Gets the creation date of the container registry.
+     *
+     * @return the creation date of the container registry in ISO8601 format
+     */
     OffsetDateTime creationDate();
 
-    /** @return the value that indicates whether the admin user is enabled */
+    /**
+     * Checks whether the admin user is enabled.
+     *
+     * @return the value that indicates whether the admin user is enabled
+     */
     boolean adminUserEnabled();
 
-    /** @return the login credentials for the specified container registry */
+    /**
+     * Gets the login credentials for the specified container registry.
+     *
+     * @return the login credentials for the specified container registry
+     */
     RegistryCredentials getCredentials();
 
-    /** @return a representation of the future computation of this call */
+    /**
+     * Gets a representation of the future computation of this call.
+     *
+     * @return a representation of the future computation of this call
+     */
     Mono<RegistryCredentials> getCredentialsAsync();
 
     /**
@@ -71,7 +99,11 @@ public interface Registry
      */
     PagedFlux<RegistryUsage> listQuotaUsagesAsync();
 
-    /** @return returns the upload location for the user to be able to upload the source. */
+    /**
+     * Gets the upload location for the user to be able to upload the source.
+     *
+     * @return returns the upload location for the user to be able to upload the source.
+     */
     SourceUploadDefinition getBuildSourceUploadUrl();
 
     /**
@@ -81,13 +113,54 @@ public interface Registry
      */
     Mono<SourceUploadDefinition> getBuildSourceUploadUrlAsync();
 
-    /** @return returns entry point to manage container registry webhooks. */
+    /**
+     * Gets entry point to manage container registry webhooks.
+     *
+     * @return returns entry point to manage container registry webhooks.
+     */
     WebhookOperations webhooks();
 
     /**
+     * Gets the state of public network access for the container registry.
+     *
      * @return the state of public network access for the container registry.
      */
     PublicNetworkAccess publicNetworkAccess();
+
+    /**
+     * Checks whether the container registry can be access from trusted services
+     *
+     * @return whether the container registry can be access from trusted services
+     */
+    boolean canAccessFromTrustedServices();
+
+    /**
+     * Gets the network rule set for the container registry.
+     *
+     * @return the network rule set for the container registry
+     */
+    NetworkRuleSet networkRuleSet();
+
+    /**
+     * Checks whether the container registries dedicated data endpoints can be accessed from public network.
+     *
+     * @return whether the container registries dedicated data endpoints can be accessed from public network
+     */
+    boolean isDedicatedDataEndpointsEnabled();
+
+    /**
+     * Checks whether zone redundancy is enabled for this container registry.
+     *
+     * @return Whether zone redundancy is enabled for this container registry
+     */
+    boolean isZoneRedundancyEnabled();
+
+    /**
+     * Gets list of host names that will serve data when isDedicatedDataEndpointsEnabled is true.
+     *
+     * @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true
+     */
+    List<String> dedicatedDataEndpointsHostNames();
 
     /**
      * Begins the definition of the task run.
@@ -97,11 +170,8 @@ public interface Registry
     RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun();
 
     /** Container interface for all the definitions related to a registry. */
-    interface Definition
-        extends DefinitionStages.Blank,
-            DefinitionStages.WithGroup,
-            DefinitionStages.WithSku,
-            DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithSku,
+        DefinitionStages.WithCreate {
     }
 
     /** Grouping of registry definition stages. */
@@ -167,29 +237,86 @@ public interface Registry
              * @return the next stage of the definition
              */
             WithCreate disablePublicNetworkAccess();
+
+            /**
+             * Specifies that by default access to container registry should be denied from all networks except from those
+             * networks specified via {@link WithPublicNetworkAccess#withAccessFromIpAddress(String)} ()}
+             * {@link WithPublicNetworkAccess#withAccessFromIpAddressRange(String)}.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withAccessFromSelectedNetworks();
+
+            /**
+             * Specifies that access to the container registry from the specific ip range should be allowed.
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withAccessFromIpAddressRange(String ipAddressCidr);
+
+            /**
+             * Specifies that access to the container registry from the specific ip address should be allowed.
+             *
+             * @param ipAddress the ip address
+             * @return the next stage of the definition
+             */
+            WithCreate withAccessFromIpAddress(String ipAddress);
+
+            /**
+             * Specifies that access to the container registry from trusted services should be allowed.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/allow-access-trusted-services#trusted-services">
+             *     Trusted services
+             *     </a>
+             */
+            WithCreate withAccessFromTrustedServices();
+        }
+
+        /**
+         * The stage of the container registry definition allowing to configure dedicated data endpoints.
+         */
+        interface WithDedicatedDataEndpoints {
+            /**
+             * Enables dedicated data endpoints for the container registry.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-firewall-access-rules#enable-dedicated-data-endpoints">
+             *      Enable dedicated data endpoints
+             *      </a>
+             */
+            WithCreate enableDedicatedDataEndpoints();
+        }
+
+        /**
+         * The stage of the container registry definition allowing to configure Zone Redundancy.
+         */
+        interface WithZoneRedundancy {
+            /**
+             * Enables zone redundancy for the container registry.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/zone-redundancy">
+             *      Enable zone redundancy
+             *      </a>
+             */
+            WithCreate withZoneRedundancy();
         }
 
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
-        interface WithCreate
-            extends Creatable<Registry>,
-            WithAdminUserEnabled,
-            WithWebhook,
-            WithPublicNetworkAccess,
-            Resource.DefinitionWithTags<WithCreate> {
+        interface WithCreate extends Creatable<Registry>, WithAdminUserEnabled, WithWebhook, WithPublicNetworkAccess,
+            WithDedicatedDataEndpoints, WithZoneRedundancy, Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
-    interface Update
-        extends Resource.UpdateWithTags<Update>,
-            Appliable<Registry>,
-            UpdateStages.WithAdminUserEnabled,
-            UpdateStages.WithSku,
-            UpdateStages.WithWebhook,
-            UpdateStages.WithPublicNetworkAccess {
+    interface Update extends Resource.UpdateWithTags<Update>, Appliable<Registry>, UpdateStages.WithAdminUserEnabled,
+        UpdateStages.WithSku, UpdateStages.WithWebhook, UpdateStages.WithDedicatedDataEndpoints,
+        UpdateStages.WithPublicNetworkAccess {
     }
 
     /** Grouping of container service update stages. */
@@ -277,6 +404,96 @@ public interface Registry
              * @return the next stage of the update
              */
             Update disablePublicNetworkAccess();
+
+            /**
+             * Specifies that by default access to container registry should be denied from all networks except from those
+             * networks specified via {@link DefinitionStages.WithPublicNetworkAccess#withAccessFromIpAddress(String)} ()}
+             * {@link WithPublicNetworkAccess#withAccessFromIpAddressRange(String)}.
+             *
+             * @return the next stage of the definition
+             */
+            Update withAccessFromSelectedNetworks();
+
+            /**
+             * Specifies that by default access to container registry should be allowed from all networks.
+             *
+             * @return the next stage of the definition
+             */
+            Update withAccessFromAllNetworks();
+
+            /**
+             * Specifies that access to the container registry from the specific ip range should be allowed.
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             *
+             * @return the next stage of the definition
+             */
+            Update withAccessFromIpAddressRange(String ipAddressCidr);
+
+            /**
+             * Remove the allowed ip address range.
+             *
+             * @param ipAddressCidr the ip address range expressed in cidr format
+             * @return the next stage of the definition
+             */
+            Update withoutAccessFromIpAddressRange(String ipAddressCidr);
+
+            /**
+             * Specifies that access to the container registry from the specific ip address should be allowed.
+             *
+             * @param ipAddress the ip address
+             * @return the next stage of the definition
+             */
+            Update withAccessFromIpAddress(String ipAddress);
+
+            /**
+             * Remove the allowed ip address.
+             *
+             * @param ipAddress the ip address
+             * @return the next stage of the definition
+             */
+            Update withoutAccessFromIpAddress(String ipAddress);
+
+            /**
+             * Specifies that access to the container registry from trusted services should be allowed regardless of whether
+             * public network access is disabled.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/allow-access-trusted-services#trusted-services">
+             *     Trusted services
+             *     </a>
+             */
+            Update withAccessFromTrustedServices();
+
+            /**
+             * Specifies that access to the container registry from trusted services should be denied when public network access is disabled.
+             * When public network access is allowed, trusted services will still have access to the container registry
+             * regardless of this configuration.
+             *
+             * @return the next stage of the definition
+             */
+            Update withoutAccessFromTrustedServices();
+        }
+
+        /**
+         * The stage of the container registry definition allowing to configure dedicated data endpoints.
+         */
+        interface WithDedicatedDataEndpoints {
+            /**
+             * Enables dedicated data endpoints for the container registry.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/container-registry-firewall-access-rules#enable-dedicated-data-endpoints">
+             *      Enable dedicated data endpoints
+             *      </a>
+             */
+            Update enableDedicatedDataEndpoints();
+
+            /**
+             * Disables dedicated data endpoints for the container registry.
+             *
+             * @return the next stage of the definition
+             */
+            Update disableDedicatedDataEndpoints();
         }
     }
 }

@@ -5,97 +5,92 @@
 package com.azure.resourcemanager.hybridkubernetes.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectivityStatus;
 import com.azure.resourcemanager.hybridkubernetes.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of the connected cluster. */
+/**
+ * Properties of the connected cluster.
+ */
 @Fluent
-public final class ConnectedClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectedClusterProperties.class);
-
+public final class ConnectedClusterProperties implements JsonSerializable<ConnectedClusterProperties> {
     /*
-     * Base64 encoded public certificate used by the agent to do the initial
-     * handshake to the backend services in Azure.
+     * Base64 encoded public certificate used by the agent to do the initial handshake to the backend services in Azure.
      */
-    @JsonProperty(value = "agentPublicKeyCertificate", required = true)
     private String agentPublicKeyCertificate;
 
     /*
      * The Kubernetes version of the connected cluster resource
      */
-    @JsonProperty(value = "kubernetesVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kubernetesVersion;
 
     /*
      * Number of nodes present in the connected cluster resource
      */
-    @JsonProperty(value = "totalNodeCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalNodeCount;
 
     /*
      * Number of CPU cores present in the connected cluster resource
      */
-    @JsonProperty(value = "totalCoreCount", access = JsonProperty.Access.WRITE_ONLY)
     private Integer totalCoreCount;
 
     /*
      * Version of the agent running on the connected cluster resource
      */
-    @JsonProperty(value = "agentVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String agentVersion;
 
     /*
      * Provisioning state of the connected cluster resource.
      */
-    @JsonProperty(value = "provisioningState")
     private ProvisioningState provisioningState;
 
     /*
      * The Kubernetes distribution running on this connected cluster.
      */
-    @JsonProperty(value = "distribution")
     private String distribution;
 
     /*
-     * The infrastructure on which the Kubernetes cluster represented by this
-     * connected cluster is running on.
+     * The infrastructure on which the Kubernetes cluster represented by this connected cluster is running on.
      */
-    @JsonProperty(value = "infrastructure")
     private String infrastructure;
 
     /*
      * Connected cluster offering
      */
-    @JsonProperty(value = "offering", access = JsonProperty.Access.WRITE_ONLY)
     private String offering;
 
     /*
      * Expiration time of the managed identity certificate
      */
-    @JsonProperty(value = "managedIdentityCertificateExpirationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime managedIdentityCertificateExpirationTime;
 
     /*
-     * Time representing the last instance when heart beat was received from
-     * the cluster
+     * Time representing the last instance when heart beat was received from the cluster
      */
-    @JsonProperty(value = "lastConnectivityTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastConnectivityTime;
 
     /*
      * Represents the connectivity status of the connected cluster.
      */
-    @JsonProperty(value = "connectivityStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ConnectivityStatus connectivityStatus;
+
+    /**
+     * Creates an instance of ConnectedClusterProperties class.
+     */
+    public ConnectedClusterProperties() {
+    }
 
     /**
      * Get the agentPublicKeyCertificate property: Base64 encoded public certificate used by the agent to do the initial
      * handshake to the backend services in Azure.
-     *
+     * 
      * @return the agentPublicKeyCertificate value.
      */
     public String agentPublicKeyCertificate() {
@@ -105,7 +100,7 @@ public final class ConnectedClusterProperties {
     /**
      * Set the agentPublicKeyCertificate property: Base64 encoded public certificate used by the agent to do the initial
      * handshake to the backend services in Azure.
-     *
+     * 
      * @param agentPublicKeyCertificate the agentPublicKeyCertificate value to set.
      * @return the ConnectedClusterProperties object itself.
      */
@@ -116,7 +111,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version of the connected cluster resource.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -125,7 +120,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the totalNodeCount property: Number of nodes present in the connected cluster resource.
-     *
+     * 
      * @return the totalNodeCount value.
      */
     public Integer totalNodeCount() {
@@ -134,7 +129,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the totalCoreCount property: Number of CPU cores present in the connected cluster resource.
-     *
+     * 
      * @return the totalCoreCount value.
      */
     public Integer totalCoreCount() {
@@ -143,7 +138,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the agentVersion property: Version of the agent running on the connected cluster resource.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -152,7 +147,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the connected cluster resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -161,7 +156,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Set the provisioningState property: Provisioning state of the connected cluster resource.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ConnectedClusterProperties object itself.
      */
@@ -172,7 +167,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the distribution property: The Kubernetes distribution running on this connected cluster.
-     *
+     * 
      * @return the distribution value.
      */
     public String distribution() {
@@ -181,7 +176,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Set the distribution property: The Kubernetes distribution running on this connected cluster.
-     *
+     * 
      * @param distribution the distribution value to set.
      * @return the ConnectedClusterProperties object itself.
      */
@@ -193,7 +188,7 @@ public final class ConnectedClusterProperties {
     /**
      * Get the infrastructure property: The infrastructure on which the Kubernetes cluster represented by this connected
      * cluster is running on.
-     *
+     * 
      * @return the infrastructure value.
      */
     public String infrastructure() {
@@ -203,7 +198,7 @@ public final class ConnectedClusterProperties {
     /**
      * Set the infrastructure property: The infrastructure on which the Kubernetes cluster represented by this connected
      * cluster is running on.
-     *
+     * 
      * @param infrastructure the infrastructure value to set.
      * @return the ConnectedClusterProperties object itself.
      */
@@ -214,7 +209,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the offering property: Connected cluster offering.
-     *
+     * 
      * @return the offering value.
      */
     public String offering() {
@@ -223,7 +218,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the managedIdentityCertificateExpirationTime property: Expiration time of the managed identity certificate.
-     *
+     * 
      * @return the managedIdentityCertificateExpirationTime value.
      */
     public OffsetDateTime managedIdentityCertificateExpirationTime() {
@@ -233,7 +228,7 @@ public final class ConnectedClusterProperties {
     /**
      * Get the lastConnectivityTime property: Time representing the last instance when heart beat was received from the
      * cluster.
-     *
+     * 
      * @return the lastConnectivityTime value.
      */
     public OffsetDateTime lastConnectivityTime() {
@@ -242,7 +237,7 @@ public final class ConnectedClusterProperties {
 
     /**
      * Get the connectivityStatus property: Represents the connectivity status of the connected cluster.
-     *
+     * 
      * @return the connectivityStatus value.
      */
     public ConnectivityStatus connectivityStatus() {
@@ -251,15 +246,83 @@ public final class ConnectedClusterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (agentPublicKeyCertificate() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property agentPublicKeyCertificate in model ConnectedClusterProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property agentPublicKeyCertificate in model ConnectedClusterProperties"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectedClusterProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("agentPublicKeyCertificate", this.agentPublicKeyCertificate);
+        jsonWriter.writeStringField("provisioningState",
+            this.provisioningState == null ? null : this.provisioningState.toString());
+        jsonWriter.writeStringField("distribution", this.distribution);
+        jsonWriter.writeStringField("infrastructure", this.infrastructure);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConnectedClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConnectedClusterProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConnectedClusterProperties.
+     */
+    public static ConnectedClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConnectedClusterProperties deserializedConnectedClusterProperties = new ConnectedClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("agentPublicKeyCertificate".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.agentPublicKeyCertificate = reader.getString();
+                } else if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.kubernetesVersion = reader.getString();
+                } else if ("totalNodeCount".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.totalNodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("totalCoreCount".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.totalCoreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("agentVersion".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.agentVersion = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("distribution".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.distribution = reader.getString();
+                } else if ("infrastructure".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.infrastructure = reader.getString();
+                } else if ("offering".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.offering = reader.getString();
+                } else if ("managedIdentityCertificateExpirationTime".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.managedIdentityCertificateExpirationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastConnectivityTime".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.lastConnectivityTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("connectivityStatus".equals(fieldName)) {
+                    deserializedConnectedClusterProperties.connectivityStatus
+                        = ConnectivityStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConnectedClusterProperties;
+        });
     }
 }

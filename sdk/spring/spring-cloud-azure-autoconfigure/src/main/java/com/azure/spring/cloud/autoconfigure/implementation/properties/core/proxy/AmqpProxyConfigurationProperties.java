@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.implementation.properties.core.proxy;
 
 
-import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyConfigurationProperties;
 import com.azure.spring.cloud.core.provider.ProxyOptionsProvider;
 
 /**
@@ -14,7 +13,7 @@ public class AmqpProxyConfigurationProperties extends ProxyConfigurationProperti
     implements ProxyOptionsProvider.AmqpProxyOptions {
 
     /**
-     * Authentication type used against the proxy.
+     * Authentication type used against the proxy. For instance, 'none', 'basic', 'digest'. The default value is `'none'`.
      */
     private String authenticationType;
 

@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.datafactory.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Factories List. */
+/**
+ * Samples for Factories List.
+ */
 public final class FactoriesListSamples {
     /*
-     * x-ms-original-file: specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_List.json
+     * x-ms-original-file:
+     * specification/datafactory/resource-manager/Microsoft.DataFactory/stable/2018-06-01/examples/Factories_List.json
      */
     /**
      * Sample code: Factories_List.
-     *
+     * 
      * @param manager Entry point to DataFactoryManager.
      */
     public static void factoriesList(com.azure.resourcemanager.datafactory.DataFactoryManager manager) {
-        manager.factories().list(Context.NONE);
+        manager.factories().list(com.azure.core.util.Context.NONE);
     }
 }

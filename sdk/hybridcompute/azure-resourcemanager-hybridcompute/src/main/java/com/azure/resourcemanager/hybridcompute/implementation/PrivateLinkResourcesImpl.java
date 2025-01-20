@@ -13,54 +13,49 @@ import com.azure.resourcemanager.hybridcompute.fluent.PrivateLinkResourcesClient
 import com.azure.resourcemanager.hybridcompute.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResource;
 import com.azure.resourcemanager.hybridcompute.models.PrivateLinkResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    public PrivateLinkResourcesImpl(
-        PrivateLinkResourcesClient innerClient,
+    public PrivateLinkResourcesImpl(PrivateLinkResourcesClient innerClient,
         com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PrivateLinkResource> listByPrivateLinkScope(String resourceGroupName, String scopeName) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByPrivateLinkScope(resourceGroupName, scopeName);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByPrivateLinkScope(resourceGroupName, scopeName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateLinkResource> listByPrivateLinkScope(
-        String resourceGroupName, String scopeName, Context context) {
-        PagedIterable<PrivateLinkResourceInner> inner =
-            this.serviceClient().listByPrivateLinkScope(resourceGroupName, scopeName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+    public PagedIterable<PrivateLinkResource> listByPrivateLinkScope(String resourceGroupName, String scopeName,
+        Context context) {
+        PagedIterable<PrivateLinkResourceInner> inner
+            = this.serviceClient().listByPrivateLinkScope(resourceGroupName, scopeName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateLinkResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<PrivateLinkResource> getWithResponse(String resourceGroupName, String scopeName, String groupName,
+        Context context) {
+        Response<PrivateLinkResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, scopeName, groupName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateLinkResource get(String resourceGroupName, String scopeName, String groupName) {
         PrivateLinkResourceInner inner = this.serviceClient().get(resourceGroupName, scopeName, groupName);
         if (inner != null) {
             return new PrivateLinkResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<PrivateLinkResource> getWithResponse(
-        String resourceGroupName, String scopeName, String groupName, Context context) {
-        Response<PrivateLinkResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, scopeName, groupName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateLinkResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -5,66 +5,66 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** MSDeploy ARM PUT core information. */
+/**
+ * MSDeploy ARM PUT core information.
+ */
 @Fluent
-public class MSDeployCore {
+public class MSDeployCore implements JsonSerializable<MSDeployCore> {
     /*
      * Package URI
      */
-    @JsonProperty(value = "packageUri")
     private String packageUri;
 
     /*
      * SQL Connection String
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * Database Type
      */
-    @JsonProperty(value = "dbType")
     private String dbType;
 
     /*
-     * URI of MSDeploy Parameters file. Must not be set if SetParameters is
-     * used.
+     * URI of MSDeploy Parameters file. Must not be set if SetParameters is used.
      */
-    @JsonProperty(value = "setParametersXmlFileUri")
     private String setParametersXmlFileUri;
 
     /*
      * MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
      */
-    @JsonProperty(value = "setParameters")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> setParameters;
 
     /*
      * Controls whether the MSDeploy operation skips the App_Data directory.
-     * If set to <code>true</code>, the existing App_Data directory on the
-     * destination
-     * will not be deleted, and any App_Data directory in the source will be
-     * ignored.
+     * If set to <code>true</code>, the existing App_Data directory on the destination
+     * will not be deleted, and any App_Data directory in the source will be ignored.
      * Setting is <code>false</code> by default.
      */
-    @JsonProperty(value = "skipAppData")
     private Boolean skipAppData;
 
     /*
      * Sets the AppOffline rule while the MSDeploy operation executes.
      * Setting is <code>false</code> by default.
      */
-    @JsonProperty(value = "appOffline")
     private Boolean appOffline;
 
     /**
+     * Creates an instance of MSDeployCore class.
+     */
+    public MSDeployCore() {
+    }
+
+    /**
      * Get the packageUri property: Package URI.
-     *
+     * 
      * @return the packageUri value.
      */
     public String packageUri() {
@@ -73,7 +73,7 @@ public class MSDeployCore {
 
     /**
      * Set the packageUri property: Package URI.
-     *
+     * 
      * @param packageUri the packageUri value to set.
      * @return the MSDeployCore object itself.
      */
@@ -84,7 +84,7 @@ public class MSDeployCore {
 
     /**
      * Get the connectionString property: SQL Connection String.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -93,7 +93,7 @@ public class MSDeployCore {
 
     /**
      * Set the connectionString property: SQL Connection String.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MSDeployCore object itself.
      */
@@ -104,7 +104,7 @@ public class MSDeployCore {
 
     /**
      * Get the dbType property: Database Type.
-     *
+     * 
      * @return the dbType value.
      */
     public String dbType() {
@@ -113,7 +113,7 @@ public class MSDeployCore {
 
     /**
      * Set the dbType property: Database Type.
-     *
+     * 
      * @param dbType the dbType value to set.
      * @return the MSDeployCore object itself.
      */
@@ -125,7 +125,7 @@ public class MSDeployCore {
     /**
      * Get the setParametersXmlFileUri property: URI of MSDeploy Parameters file. Must not be set if SetParameters is
      * used.
-     *
+     * 
      * @return the setParametersXmlFileUri value.
      */
     public String setParametersXmlFileUri() {
@@ -135,7 +135,7 @@ public class MSDeployCore {
     /**
      * Set the setParametersXmlFileUri property: URI of MSDeploy Parameters file. Must not be set if SetParameters is
      * used.
-     *
+     * 
      * @param setParametersXmlFileUri the setParametersXmlFileUri value to set.
      * @return the MSDeployCore object itself.
      */
@@ -146,7 +146,7 @@ public class MSDeployCore {
 
     /**
      * Get the setParameters property: MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
-     *
+     * 
      * @return the setParameters value.
      */
     public Map<String, String> setParameters() {
@@ -155,7 +155,7 @@ public class MSDeployCore {
 
     /**
      * Set the setParameters property: MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
-     *
+     * 
      * @param setParameters the setParameters value to set.
      * @return the MSDeployCore object itself.
      */
@@ -165,10 +165,11 @@ public class MSDeployCore {
     }
 
     /**
-     * Get the skipAppData property: Controls whether the MSDeploy operation skips the App_Data directory. If set to
-     * &lt;code&gt;true&lt;/code&gt;, the existing App_Data directory on the destination will not be deleted, and any
-     * App_Data directory in the source will be ignored. Setting is &lt;code&gt;false&lt;/code&gt; by default.
-     *
+     * Get the skipAppData property: Controls whether the MSDeploy operation skips the App_Data directory.
+     * If set to &lt;code&gt;true&lt;/code&gt;, the existing App_Data directory on the destination
+     * will not be deleted, and any App_Data directory in the source will be ignored.
+     * Setting is &lt;code&gt;false&lt;/code&gt; by default.
+     * 
      * @return the skipAppData value.
      */
     public Boolean skipAppData() {
@@ -176,10 +177,11 @@ public class MSDeployCore {
     }
 
     /**
-     * Set the skipAppData property: Controls whether the MSDeploy operation skips the App_Data directory. If set to
-     * &lt;code&gt;true&lt;/code&gt;, the existing App_Data directory on the destination will not be deleted, and any
-     * App_Data directory in the source will be ignored. Setting is &lt;code&gt;false&lt;/code&gt; by default.
-     *
+     * Set the skipAppData property: Controls whether the MSDeploy operation skips the App_Data directory.
+     * If set to &lt;code&gt;true&lt;/code&gt;, the existing App_Data directory on the destination
+     * will not be deleted, and any App_Data directory in the source will be ignored.
+     * Setting is &lt;code&gt;false&lt;/code&gt; by default.
+     * 
      * @param skipAppData the skipAppData value to set.
      * @return the MSDeployCore object itself.
      */
@@ -189,9 +191,9 @@ public class MSDeployCore {
     }
 
     /**
-     * Get the appOffline property: Sets the AppOffline rule while the MSDeploy operation executes. Setting is
-     * &lt;code&gt;false&lt;/code&gt; by default.
-     *
+     * Get the appOffline property: Sets the AppOffline rule while the MSDeploy operation executes.
+     * Setting is &lt;code&gt;false&lt;/code&gt; by default.
+     * 
      * @return the appOffline value.
      */
     public Boolean appOffline() {
@@ -199,9 +201,9 @@ public class MSDeployCore {
     }
 
     /**
-     * Set the appOffline property: Sets the AppOffline rule while the MSDeploy operation executes. Setting is
-     * &lt;code&gt;false&lt;/code&gt; by default.
-     *
+     * Set the appOffline property: Sets the AppOffline rule while the MSDeploy operation executes.
+     * Setting is &lt;code&gt;false&lt;/code&gt; by default.
+     * 
      * @param appOffline the appOffline value to set.
      * @return the MSDeployCore object itself.
      */
@@ -212,9 +214,64 @@ public class MSDeployCore {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("packageUri", this.packageUri);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        jsonWriter.writeStringField("dbType", this.dbType);
+        jsonWriter.writeStringField("setParametersXmlFileUri", this.setParametersXmlFileUri);
+        jsonWriter.writeMapField("setParameters", this.setParameters, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("skipAppData", this.skipAppData);
+        jsonWriter.writeBooleanField("appOffline", this.appOffline);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MSDeployCore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MSDeployCore if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MSDeployCore.
+     */
+    public static MSDeployCore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MSDeployCore deserializedMSDeployCore = new MSDeployCore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("packageUri".equals(fieldName)) {
+                    deserializedMSDeployCore.packageUri = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedMSDeployCore.connectionString = reader.getString();
+                } else if ("dbType".equals(fieldName)) {
+                    deserializedMSDeployCore.dbType = reader.getString();
+                } else if ("setParametersXmlFileUri".equals(fieldName)) {
+                    deserializedMSDeployCore.setParametersXmlFileUri = reader.getString();
+                } else if ("setParameters".equals(fieldName)) {
+                    Map<String, String> setParameters = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMSDeployCore.setParameters = setParameters;
+                } else if ("skipAppData".equals(fieldName)) {
+                    deserializedMSDeployCore.skipAppData = reader.getNullable(JsonReader::getBoolean);
+                } else if ("appOffline".equals(fieldName)) {
+                    deserializedMSDeployCore.appOffline = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMSDeployCore;
+        });
     }
 }

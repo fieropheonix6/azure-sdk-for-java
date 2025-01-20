@@ -13,60 +13,56 @@ import com.azure.resourcemanager.hanaonazure.fluent.HanaInstancesClient;
 import com.azure.resourcemanager.hanaonazure.fluent.models.HanaInstanceInner;
 import com.azure.resourcemanager.hanaonazure.models.HanaInstance;
 import com.azure.resourcemanager.hanaonazure.models.HanaInstances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class HanaInstancesImpl implements HanaInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HanaInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HanaInstancesImpl.class);
 
     private final HanaInstancesClient innerClient;
 
     private final com.azure.resourcemanager.hanaonazure.HanaManager serviceManager;
 
-    public HanaInstancesImpl(
-        HanaInstancesClient innerClient, com.azure.resourcemanager.hanaonazure.HanaManager serviceManager) {
+    public HanaInstancesImpl(HanaInstancesClient innerClient,
+        com.azure.resourcemanager.hanaonazure.HanaManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<HanaInstance> list() {
         PagedIterable<HanaInstanceInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HanaInstance> list(Context context) {
         PagedIterable<HanaInstanceInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HanaInstance> listByResourceGroup(String resourceGroupName) {
         PagedIterable<HanaInstanceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
     }
 
     public PagedIterable<HanaInstance> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<HanaInstanceInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new HanaInstanceImpl(inner1, this.manager()));
+    }
+
+    public Response<HanaInstance> getByResourceGroupWithResponse(String resourceGroupName, String hanaInstanceName,
+        Context context) {
+        Response<HanaInstanceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new HanaInstanceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public HanaInstance getByResourceGroup(String resourceGroupName, String hanaInstanceName) {
         HanaInstanceInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, hanaInstanceName);
         if (inner != null) {
             return new HanaInstanceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<HanaInstance> getByResourceGroupWithResponse(
-        String resourceGroupName, String hanaInstanceName, Context context) {
-        Response<HanaInstanceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new HanaInstanceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -105,77 +101,57 @@ public final class HanaInstancesImpl implements HanaInstances {
     }
 
     public HanaInstance getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hanaInstanceName = Utils.getValueFromIdByName(id, "hanaInstances");
+        String hanaInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "hanaInstances");
         if (hanaInstanceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, Context.NONE).getValue();
     }
 
     public Response<HanaInstance> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hanaInstanceName = Utils.getValueFromIdByName(id, "hanaInstances");
+        String hanaInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "hanaInstances");
         if (hanaInstanceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, hanaInstanceName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hanaInstanceName = Utils.getValueFromIdByName(id, "hanaInstances");
+        String hanaInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "hanaInstances");
         if (hanaInstanceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
         }
         this.delete(resourceGroupName, hanaInstanceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String hanaInstanceName = Utils.getValueFromIdByName(id, "hanaInstances");
+        String hanaInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "hanaInstances");
         if (hanaInstanceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'hanaInstances'.", id)));
         }
         this.delete(resourceGroupName, hanaInstanceName, context);
     }

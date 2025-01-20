@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about the status of continuous backups. */
+/**
+ * Information about the status of continuous backups.
+ */
 @Fluent
-public final class ContinuousBackupInformation {
+public final class ContinuousBackupInformation implements JsonSerializable<ContinuousBackupInformation> {
     /*
      * The latest restorable timestamp for a resource.
      */
-    @JsonProperty(value = "latestRestorableTimestamp")
     private String latestRestorableTimestamp;
 
     /**
+     * Creates an instance of ContinuousBackupInformation class.
+     */
+    public ContinuousBackupInformation() {
+    }
+
+    /**
      * Get the latestRestorableTimestamp property: The latest restorable timestamp for a resource.
-     *
+     * 
      * @return the latestRestorableTimestamp value.
      */
     public String latestRestorableTimestamp() {
@@ -27,7 +38,7 @@ public final class ContinuousBackupInformation {
 
     /**
      * Set the latestRestorableTimestamp property: The latest restorable timestamp for a resource.
-     *
+     * 
      * @param latestRestorableTimestamp the latestRestorableTimestamp value to set.
      * @return the ContinuousBackupInformation object itself.
      */
@@ -38,9 +49,45 @@ public final class ContinuousBackupInformation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("latestRestorableTimestamp", this.latestRestorableTimestamp);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContinuousBackupInformation from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContinuousBackupInformation if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContinuousBackupInformation.
+     */
+    public static ContinuousBackupInformation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContinuousBackupInformation deserializedContinuousBackupInformation = new ContinuousBackupInformation();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("latestRestorableTimestamp".equals(fieldName)) {
+                    deserializedContinuousBackupInformation.latestRestorableTimestamp = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContinuousBackupInformation;
+        });
     }
 }

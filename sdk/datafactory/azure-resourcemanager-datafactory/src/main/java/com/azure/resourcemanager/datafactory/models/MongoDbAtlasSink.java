@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity MongoDB Atlas sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("MongoDbAtlasSink")
+/**
+ * A copy activity MongoDB Atlas sink.
+ */
 @Fluent
 public final class MongoDbAtlasSink extends CopySink {
     /*
-     * Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert).
-     * The default value is "insert". Type: string (or Expression with resultType string). Type: string (or Expression
-     * with resultType string).
+     * Copy sink type.
      */
-    @JsonProperty(value = "writeBehavior")
+    private String type = "MongoDbAtlasSink";
+
+    /*
+     * Specifies whether the document with same key to be overwritten (upsert) rather than throw exception (insert). The
+     * default value is "insert". Type: string (or Expression with resultType string). Type: string (or Expression with
+     * resultType string).
+     */
     private Object writeBehavior;
 
-    /** Creates an instance of MongoDbAtlasSink class. */
+    /**
+     * Creates an instance of MongoDbAtlasSink class.
+     */
     public MongoDbAtlasSink() {
+    }
+
+    /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
      * than throw exception (insert). The default value is "insert". Type: string (or Expression with resultType
      * string). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the writeBehavior value.
      */
     public Object writeBehavior() {
@@ -41,7 +60,7 @@ public final class MongoDbAtlasSink extends CopySink {
      * Set the writeBehavior property: Specifies whether the document with same key to be overwritten (upsert) rather
      * than throw exception (insert). The default value is "insert". Type: string (or Expression with resultType
      * string). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the MongoDbAtlasSink object itself.
      */
@@ -50,42 +69,54 @@ public final class MongoDbAtlasSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -94,11 +125,78 @@ public final class MongoDbAtlasSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDbAtlasSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDbAtlasSink if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MongoDbAtlasSink.
+     */
+    public static MongoDbAtlasSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDbAtlasSink deserializedMongoDbAtlasSink = new MongoDbAtlasSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedMongoDbAtlasSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedMongoDbAtlasSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedMongoDbAtlasSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedMongoDbAtlasSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedMongoDbAtlasSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedMongoDbAtlasSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedMongoDbAtlasSink.type = reader.getString();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedMongoDbAtlasSink.writeBehavior = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMongoDbAtlasSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedMongoDbAtlasSink;
+        });
     }
 }

@@ -4,57 +4,58 @@
 
 package com.azure.communication.rooms.implementation.models;
 
-import com.azure.communication.rooms.models.RoomJoinPolicy;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
-/** The meeting room. */
+/**
+ * The meeting room.
+ */
 @Fluent
-public final class RoomModel {
+public final class RoomModel implements JsonSerializable<RoomModel> {
     /*
      * Unique identifier of a room. This id is server generated.
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
-     * The timestamp when the room was created at the server. The timestamp is
-     * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp when the room was created at the server. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "createdDateTime")
-    private OffsetDateTime createdDateTime;
+    private OffsetDateTime createdAt;
 
     /*
-     * The timestamp from when the room is open for joining. The timestamp is
-     * in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp from when the room is open for joining. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "validFrom")
     private OffsetDateTime validFrom;
 
     /*
-     * The timestamp from when the room can no longer be joined. The timestamp
-     * is in RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * The timestamp from when the room can no longer be joined. The timestamp is in RFC3339 format:
+     * `yyyy-MM-ddTHH:mm:ssZ`.
      */
-    @JsonProperty(value = "validUntil")
     private OffsetDateTime validUntil;
 
     /*
-     * The Policy based on which Participants can join a room.
+     * Set this flag to true if, at the time of the call, dial out to a PSTN number is enabled in a particular room. By
+     * default, this flag is set to false.
      */
-    @JsonProperty(value = "roomJoinPolicy")
-    private RoomJoinPolicy roomJoinPolicy;
+    private boolean pstnDialOutEnabled;
 
-    /*
-     * Collection of room participants.
+    /**
+     * Creates an instance of RoomModel class.
      */
-    @JsonProperty(value = "participants")
-    private List<RoomParticipant> participants;
+    public RoomModel() {
+    }
 
     /**
      * Get the id property: Unique identifier of a room. This id is server generated.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -63,7 +64,7 @@ public final class RoomModel {
 
     /**
      * Set the id property: Unique identifier of a room. This id is server generated.
-     *
+     * 
      * @param id the id value to set.
      * @return the RoomModel object itself.
      */
@@ -73,31 +74,31 @@ public final class RoomModel {
     }
 
     /**
-     * Get the createdDateTime property: The timestamp when the room was created at the server. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
-     * @return the createdDateTime value.
+     * Get the createdAt property: The timestamp when the room was created at the server. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * 
+     * @return the createdAt value.
      */
-    public OffsetDateTime getCreatedDateTime() {
-        return this.createdDateTime;
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
     }
 
     /**
-     * Set the createdDateTime property: The timestamp when the room was created at the server. The timestamp is in
-     * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
-     * @param createdDateTime the createdDateTime value to set.
+     * Set the createdAt property: The timestamp when the room was created at the server. The timestamp is in RFC3339
+     * format: `yyyy-MM-ddTHH:mm:ssZ`.
+     * 
+     * @param createdAt the createdAt value to set.
      * @return the RoomModel object itself.
      */
-    public RoomModel setCreatedDateTime(OffsetDateTime createdDateTime) {
-        this.createdDateTime = createdDateTime;
+    public RoomModel setCreatedAt(OffsetDateTime createdAt) {
+        this.createdAt = createdAt;
         return this;
     }
 
     /**
      * Get the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
      * format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the validFrom value.
      */
     public OffsetDateTime getValidFrom() {
@@ -107,7 +108,7 @@ public final class RoomModel {
     /**
      * Set the validFrom property: The timestamp from when the room is open for joining. The timestamp is in RFC3339
      * format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param validFrom the validFrom value to set.
      * @return the RoomModel object itself.
      */
@@ -119,7 +120,7 @@ public final class RoomModel {
     /**
      * Get the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @return the validUntil value.
      */
     public OffsetDateTime getValidUntil() {
@@ -129,7 +130,7 @@ public final class RoomModel {
     /**
      * Set the validUntil property: The timestamp from when the room can no longer be joined. The timestamp is in
      * RFC3339 format: `yyyy-MM-ddTHH:mm:ssZ`.
-     *
+     * 
      * @param validUntil the validUntil value to set.
      * @return the RoomModel object itself.
      */
@@ -139,42 +140,76 @@ public final class RoomModel {
     }
 
     /**
-     * Get the roomJoinPolicy property: The Policy based on which Participants can join a room.
-     *
-     * @return the roomJoinPolicy value.
+     * Get the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
+     * number is enabled in a particular room. By default, this flag is set to false.
+     * 
+     * @return the pstnDialOutEnabled value.
      */
-    public RoomJoinPolicy getRoomJoinPolicy() {
-        return this.roomJoinPolicy;
+    public boolean isPstnDialOutEnabled() {
+        return this.pstnDialOutEnabled;
     }
 
     /**
-     * Set the roomJoinPolicy property: The Policy based on which Participants can join a room.
-     *
-     * @param roomJoinPolicy the roomJoinPolicy value to set.
+     * Set the pstnDialOutEnabled property: Set this flag to true if, at the time of the call, dial out to a PSTN
+     * number is enabled in a particular room. By default, this flag is set to false.
+     * 
+     * @param pstnDialOutEnabled the pstnDialOutEnabled value to set.
      * @return the RoomModel object itself.
      */
-    public RoomModel setRoomJoinPolicy(RoomJoinPolicy roomJoinPolicy) {
-        this.roomJoinPolicy = roomJoinPolicy;
+    public RoomModel setPstnDialOutEnabled(boolean pstnDialOutEnabled) {
+        this.pstnDialOutEnabled = pstnDialOutEnabled;
         return this;
     }
 
-    /**
-     * Get the participants property: Collection of room participants.
-     *
-     * @return the participants value.
-     */
-    public List<RoomParticipant> getParticipants() {
-        return this.participants;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("createdAt",
+            this.createdAt == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createdAt));
+        jsonWriter.writeStringField("validFrom",
+            this.validFrom == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validFrom));
+        jsonWriter.writeStringField("validUntil",
+            this.validUntil == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.validUntil));
+        jsonWriter.writeBooleanField("pstnDialOutEnabled", this.pstnDialOutEnabled);
+        return jsonWriter.writeEndObject();
     }
 
     /**
-     * Set the participants property: Collection of room participants.
-     *
-     * @param participants the participants value to set.
-     * @return the RoomModel object itself.
+     * Reads an instance of RoomModel from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoomModel if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoomModel.
      */
-    public RoomModel setParticipants(List<RoomParticipant> participants) {
-        this.participants = participants;
-        return this;
+    public static RoomModel fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoomModel deserializedRoomModel = new RoomModel();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRoomModel.id = reader.getString();
+                } else if ("createdAt".equals(fieldName)) {
+                    deserializedRoomModel.createdAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("validFrom".equals(fieldName)) {
+                    deserializedRoomModel.validFrom
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("validUntil".equals(fieldName)) {
+                    deserializedRoomModel.validUntil
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("pstnDialOutEnabled".equals(fieldName)) {
+                    deserializedRoomModel.pstnDialOutEnabled = reader.getBoolean();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoomModel;
+        });
     }
 }

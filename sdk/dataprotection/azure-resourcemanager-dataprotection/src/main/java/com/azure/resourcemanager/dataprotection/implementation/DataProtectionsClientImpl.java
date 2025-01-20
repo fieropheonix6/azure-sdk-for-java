@@ -22,30 +22,33 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.DataProtectionsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationResponseBaseInner;
 import com.azure.resourcemanager.dataprotection.models.FeatureValidationRequestBase;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DataProtectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataProtectionsClient.
+ */
 public final class DataProtectionsClientImpl implements DataProtectionsClient {
-    private final ClientLogger logger = new ClientLogger(DataProtectionsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DataProtectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of DataProtectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DataProtectionsClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy.create(DataProtectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DataProtectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,47 +58,39 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
-    private interface DataProtectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}"
-                + "/checkFeatureSupport")
-        @ExpectedResponses({200})
+    public interface DataProtectionsService {
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/checkFeatureSupport")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupport(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupport(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("location") String location,
             @BodyParam("application/json") FeatureValidationRequestBase parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Validates if a feature is supported.
-     *
+     * 
      * @param location The location parameter.
      * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
+     * @return base class for Backup Feature support along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupportWithResponseAsync(
-        String location, FeatureValidationRequestBase parameters) {
+    private Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupportWithResponseAsync(String location,
+        FeatureValidationRequestBase parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -107,45 +102,33 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkFeatureSupport(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkFeatureSupport(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Validates if a feature is supported.
-     *
+     * 
      * @param location The location parameter.
      * @param parameters Feature support request object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
+     * @return base class for Backup Feature support along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupportWithResponseAsync(
-        String location, FeatureValidationRequestBase parameters, Context context) {
+    private Mono<Response<FeatureValidationResponseBaseInner>> checkFeatureSupportWithResponseAsync(String location,
+        FeatureValidationRequestBase parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -157,71 +140,57 @@ public final class DataProtectionsClientImpl implements DataProtectionsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkFeatureSupport(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                parameters,
-                accept,
-                context);
+        return service.checkFeatureSupport(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, parameters, accept, context);
     }
 
     /**
      * Validates if a feature is supported.
-     *
+     * 
      * @param location The location parameter.
      * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
+     * @return base class for Backup Feature support on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FeatureValidationResponseBaseInner> checkFeatureSupportAsync(
-        String location, FeatureValidationRequestBase parameters) {
+    private Mono<FeatureValidationResponseBaseInner> checkFeatureSupportAsync(String location,
+        FeatureValidationRequestBase parameters) {
         return checkFeatureSupportWithResponseAsync(location, parameters)
-            .flatMap(
-                (Response<FeatureValidationResponseBaseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Validates if a feature is supported.
-     *
-     * @param location The location parameter.
-     * @param parameters Feature support request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for Backup Feature support.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public FeatureValidationResponseBaseInner checkFeatureSupport(
-        String location, FeatureValidationRequestBase parameters) {
-        return checkFeatureSupportAsync(location, parameters).block();
-    }
-
-    /**
-     * Validates if a feature is supported.
-     *
+     * 
      * @param location The location parameter.
      * @param parameters Feature support request object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for Backup Feature support along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(String location,
+        FeatureValidationRequestBase parameters, Context context) {
+        return checkFeatureSupportWithResponseAsync(location, parameters, context).block();
+    }
+
+    /**
+     * Validates if a feature is supported.
+     * 
+     * @param location The location parameter.
+     * @param parameters Feature support request object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for Backup Feature support.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FeatureValidationResponseBaseInner> checkFeatureSupportWithResponse(
-        String location, FeatureValidationRequestBase parameters, Context context) {
-        return checkFeatureSupportWithResponseAsync(location, parameters, context).block();
+    public FeatureValidationResponseBaseInner checkFeatureSupport(String location,
+        FeatureValidationRequestBase parameters) {
+        return checkFeatureSupportWithResponse(location, parameters, Context.NONE).getValue();
     }
 }

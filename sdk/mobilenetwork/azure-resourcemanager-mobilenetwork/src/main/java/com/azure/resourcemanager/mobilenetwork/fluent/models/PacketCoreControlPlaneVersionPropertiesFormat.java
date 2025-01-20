@@ -5,37 +5,40 @@
 package com.azure.resourcemanager.mobilenetwork.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.mobilenetwork.models.Platform;
 import com.azure.resourcemanager.mobilenetwork.models.ProvisioningState;
-import com.azure.resourcemanager.mobilenetwork.models.RecommendedVersion;
-import com.azure.resourcemanager.mobilenetwork.models.VersionState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.List;
 
-/** Packet core control plane version properties. */
+/**
+ * Packet core control plane version properties.
+ */
 @Fluent
-public final class PacketCoreControlPlaneVersionPropertiesFormat {
+public final class PacketCoreControlPlaneVersionPropertiesFormat
+    implements JsonSerializable<PacketCoreControlPlaneVersionPropertiesFormat> {
     /*
-     * The provisioning state of the packet core control plane version
-     * resource.
+     * The provisioning state of the packet core control plane version resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * The state of this packet core control plane version.
+     * Platform specific packet core control plane version properties.
      */
-    @JsonProperty(value = "versionState")
-    private VersionState versionState;
+    private List<Platform> platforms;
 
-    /*
-     * Indicates whether this is the recommended version to use for new packet
-     * core control plane deployments.
+    /**
+     * Creates an instance of PacketCoreControlPlaneVersionPropertiesFormat class.
      */
-    @JsonProperty(value = "recommendedVersion")
-    private RecommendedVersion recommendedVersion;
+    public PacketCoreControlPlaneVersionPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the packet core control plane version resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -43,52 +46,74 @@ public final class PacketCoreControlPlaneVersionPropertiesFormat {
     }
 
     /**
-     * Get the versionState property: The state of this packet core control plane version.
-     *
-     * @return the versionState value.
+     * Get the platforms property: Platform specific packet core control plane version properties.
+     * 
+     * @return the platforms value.
      */
-    public VersionState versionState() {
-        return this.versionState;
+    public List<Platform> platforms() {
+        return this.platforms;
     }
 
     /**
-     * Set the versionState property: The state of this packet core control plane version.
-     *
-     * @param versionState the versionState value to set.
+     * Set the platforms property: Platform specific packet core control plane version properties.
+     * 
+     * @param platforms the platforms value to set.
      * @return the PacketCoreControlPlaneVersionPropertiesFormat object itself.
      */
-    public PacketCoreControlPlaneVersionPropertiesFormat withVersionState(VersionState versionState) {
-        this.versionState = versionState;
-        return this;
-    }
-
-    /**
-     * Get the recommendedVersion property: Indicates whether this is the recommended version to use for new packet core
-     * control plane deployments.
-     *
-     * @return the recommendedVersion value.
-     */
-    public RecommendedVersion recommendedVersion() {
-        return this.recommendedVersion;
-    }
-
-    /**
-     * Set the recommendedVersion property: Indicates whether this is the recommended version to use for new packet core
-     * control plane deployments.
-     *
-     * @param recommendedVersion the recommendedVersion value to set.
-     * @return the PacketCoreControlPlaneVersionPropertiesFormat object itself.
-     */
-    public PacketCoreControlPlaneVersionPropertiesFormat withRecommendedVersion(RecommendedVersion recommendedVersion) {
-        this.recommendedVersion = recommendedVersion;
+    public PacketCoreControlPlaneVersionPropertiesFormat withPlatforms(List<Platform> platforms) {
+        this.platforms = platforms;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (platforms() != null) {
+            platforms().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("platforms", this.platforms, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PacketCoreControlPlaneVersionPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PacketCoreControlPlaneVersionPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PacketCoreControlPlaneVersionPropertiesFormat.
+     */
+    public static PacketCoreControlPlaneVersionPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PacketCoreControlPlaneVersionPropertiesFormat deserializedPacketCoreControlPlaneVersionPropertiesFormat
+                = new PacketCoreControlPlaneVersionPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedPacketCoreControlPlaneVersionPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("platforms".equals(fieldName)) {
+                    List<Platform> platforms = reader.readArray(reader1 -> Platform.fromJson(reader1));
+                    deserializedPacketCoreControlPlaneVersionPropertiesFormat.platforms = platforms;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPacketCoreControlPlaneVersionPropertiesFormat;
+        });
     }
 }

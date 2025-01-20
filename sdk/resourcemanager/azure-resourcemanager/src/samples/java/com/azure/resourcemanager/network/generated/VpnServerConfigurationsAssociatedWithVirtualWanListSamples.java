@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VpnServerConfigurationsAssociatedWithVirtualWan List. */
+/**
+ * Samples for VpnServerConfigurationsAssociatedWithVirtualWan List.
+ */
 public final class VpnServerConfigurationsAssociatedWithVirtualWanListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/GetVirtualWanVpnServerConfigurations.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * GetVirtualWanVpnServerConfigurations.json
      */
     /**
      * Sample code: GetVirtualWanVpnServerConfigurations.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getVirtualWanVpnServerConfigurations(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVpnServerConfigurationsAssociatedWithVirtualWans()
-            .list("rg1", "wan1", Context.NONE);
+            .list("rg1", "wan1", com.azure.core.util.Context.NONE);
     }
 }

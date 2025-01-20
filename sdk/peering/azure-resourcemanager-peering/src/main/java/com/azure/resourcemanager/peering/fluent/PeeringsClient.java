@@ -12,11 +12,29 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.peering.fluent.models.PeeringInner;
 import com.azure.resourcemanager.peering.models.ResourceTags;
 
-/** An instance of this class provides access to all the operations defined in PeeringsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PeeringsClient.
+ */
 public interface PeeringsClient {
     /**
      * Gets an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param peeringName The name of the peering.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an existing peering with the specified name under the given subscription and resource group along with
+     * {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PeeringInner> getByResourceGroupWithResponse(String resourceGroupName, String peeringName,
+        Context context);
+
+    /**
+     * Gets an existing peering with the specified name under the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,24 +46,27 @@ public interface PeeringsClient {
     PeeringInner getByResourceGroup(String resourceGroupName, String peeringName);
 
     /**
-     * Gets an existing peering with the specified name under the given subscription and resource group.
-     *
+     * Creates a new peering or updates an existing peering with the specified name under the given subscription and
+     * resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
+     * @param peering The properties needed to create or update a peering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing peering with the specified name under the given subscription and resource group.
+     * @return peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String peeringName, Context context);
+    Response<PeeringInner> createOrUpdateWithResponse(String resourceGroupName, String peeringName,
+        PeeringInner peering, Context context);
 
     /**
      * Creates a new peering or updates an existing peering with the specified name under the given subscription and
      * resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param peering The properties needed to create or update a peering.
@@ -58,25 +79,22 @@ public interface PeeringsClient {
     PeeringInner createOrUpdate(String resourceGroupName, String peeringName, PeeringInner peering);
 
     /**
-     * Creates a new peering or updates an existing peering with the specified name under the given subscription and
-     * resource group.
-     *
+     * Deletes an existing peering with the specified name under the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
-     * @param peering The properties needed to create or update a peering.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringInner> createOrUpdateWithResponse(
-        String resourceGroupName, String peeringName, PeeringInner peering, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String peeringName, Context context);
 
     /**
      * Deletes an existing peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -87,22 +105,25 @@ public interface PeeringsClient {
     void delete(String resourceGroupName, String peeringName);
 
     /**
-     * Deletes an existing peering with the specified name under the given subscription and resource group.
-     *
+     * Updates tags for a peering with the specified name under the given subscription and resource group.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
+     * @param tags The resource tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location
+     * along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String peeringName, Context context);
+    Response<PeeringInner> updateWithResponse(String resourceGroupName, String peeringName, ResourceTags tags,
+        Context context);
 
     /**
      * Updates tags for a peering with the specified name under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param peeringName The name of the peering.
      * @param tags The resource tags.
@@ -115,64 +136,48 @@ public interface PeeringsClient {
     PeeringInner update(String resourceGroupName, String peeringName, ResourceTags tags);
 
     /**
-     * Updates tags for a peering with the specified name under the given subscription and resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param peeringName The name of the peering.
-     * @param tags The resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peering is a logical representation of a set of connections to the Microsoft Cloud Edge at a location.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PeeringInner> updateWithResponse(
-        String resourceGroupName, String peeringName, ResourceTags tags, Context context);
-
-    /**
      * Lists all of the peerings under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all of the peerings under the given subscription and resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Lists all of the peerings under the given subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringInner> list();
 
     /**
      * Lists all of the peerings under the given subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated list of peerings.
+     * @return the paginated list of peerings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PeeringInner> list(Context context);

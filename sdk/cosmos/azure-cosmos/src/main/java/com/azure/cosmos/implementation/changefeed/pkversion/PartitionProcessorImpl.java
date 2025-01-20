@@ -3,7 +3,10 @@
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.changefeed.CancellationToken;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedContextClient;
 import com.azure.cosmos.implementation.changefeed.ChangeFeedObserver;
@@ -43,7 +46,6 @@ import static java.time.temporal.ChronoUnit.MILLIS;
 class PartitionProcessorImpl implements PartitionProcessor {
     private static final Logger logger = LoggerFactory.getLogger(PartitionProcessorImpl.class);
 
-    private static final int DefaultMaxItemCount = 100;
     private final ProcessorSettings settings;
     private final PartitionCheckpointer checkpointer;
     private final ChangeFeedObserver<JsonNode> observer;
@@ -53,29 +55,44 @@ class PartitionProcessorImpl implements PartitionProcessor {
     private volatile RuntimeException resultException;
 
     private volatile String lastServerContinuationToken;
-    private volatile boolean isFirstQueryForChangeFeeds;
+    private volatile boolean hasMoreResults;
+    private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
                                   ProcessorSettings settings,
-                                  PartitionCheckpointer checkpointer,
-                                  Lease lease) {
+                                  PartitionCheckpointer checkPointer,
+                                  Lease lease,
+                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
-        this.checkpointer = checkpointer;
+        this.checkpointer = checkPointer;
         this.lease = lease;
 
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
         this.options.setMaxItemCount(settings.getMaxItemCount());
+        // For pk version, merge is not support, exclude it from the capabilities header
+        ImplementationBridgeHelpers.CosmosChangeFeedRequestOptionsHelper.getCosmosChangeFeedRequestOptionsAccessor()
+            .setHeader(
+                this.options,
+                HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
+                String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
+        this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
     }
 
     @Override
     public Mono<Void> run(CancellationToken cancellationToken) {
         logger.info("Partition {}: processing task started with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
-        this.isFirstQueryForChangeFeeds = true;
+        this.hasMoreResults = true;
         this.checkpointer.setCancellationToken(cancellationToken);
+
+        // We only calculate/get the throughput control group config for the feed range at the beginning
+        // Only split/merge will impact the leases <-> partitionKeyRange mapping
+        // When split/merge happens, the processor for the current lease will be closed
+        // and a new processor will be created during load balancing stage
+        ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange = this.tryGetThroughputControlConfigForFeedRange(this.lease);
 
         return Flux.just(this)
             .flatMap( value -> {
@@ -83,8 +100,9 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     return Flux.empty();
                 }
 
-                if(this.isFirstQueryForChangeFeeds) {
-                    this.isFirstQueryForChangeFeeds = false;
+                // If there are still changes need to be processed, fetch right away
+                // If there are no changes, wait pollDelay time then try again
+                if(this.hasMoreResults && this.resultException == null) {
                     return Flux.just(value);
                 }
 
@@ -95,12 +113,16 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         Instant currentTime = Instant.now();
                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                     }).last();
-
             })
-            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(),
-                                                                                this.options, JsonNode.class)
-                .limitRequest(1)
-            )
+            .flatMap(value -> {
+                if (throughputControlGroupConfigForFeedRange != null) {
+                    this.options.setThroughputControlGroupName(throughputControlGroupConfigForFeedRange.getGroupName());
+                }
+                return this.documentClient.createDocumentChangeFeedQuery(
+                    this.settings.getCollectionSelfLink(),
+                    this.options,
+                    JsonNode.class).limitRequest(1);
+            })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
@@ -117,6 +139,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                     .getCurrentContinuationToken()
                     .getToken();
 
+                this.hasMoreResults = !ModelBridgeInternal.noChanges(documentFeedResponse);
                 if (documentFeedResponse.getResults() != null && documentFeedResponse.getResults().size() > 0) {
                     logger.info("Partition {}: processing {} feeds with owner {}.", this.lease.getLeaseToken(), documentFeedResponse.getResults().size(), this.lease.getOwner());
                     return this.dispatchChanges(documentFeedResponse, continuationState)
@@ -130,16 +153,28 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
-                }
-                this.options =
-                    CosmosChangeFeedRequestOptions
-                        .createForProcessingFromContinuation(continuationToken);
+                } else {
+                    // still need to checkpoint with the new continuation token
+                    return this.checkpointer.checkpointPartition(continuationState)
+                        .doOnError(throwable -> {
+                            logger.debug(
+                                "Failed to checkpoint partition {} from thread {}",
+                                this.lease.getLeaseToken(),
+                                Thread.currentThread().getId(),
+                                throwable);
+                        })
+                        .flatMap(lease -> {
+                            this.options =
+                                CosmosChangeFeedRequestOptions
+                                    .createForProcessingFromContinuation(continuationToken);
 
-                if (cancellationToken.isCancellationRequested()) {
-                    return Flux.error(new TaskCancelledException());
-                }
+                            if (cancellationToken.isCancellationRequested()) {
+                                return Mono.error(new TaskCancelledException());
+                            }
 
-                return Flux.empty();
+                            return Mono.empty();
+                        });
+                }
             })
             .doOnComplete(() -> {
                 if (this.options.getMaxItemCount() != this.settings.getMaxItemCount()) {
@@ -254,6 +289,14 @@ class PartitionProcessorImpl implements PartitionProcessor {
             "FeedRange must be a PkRangeId FeedRange when using Lease V1 contract.");
 
         return (FeedRangePartitionKeyRangeImpl)feedRange;
+    }
+
+    private ThroughputControlGroupConfig tryGetThroughputControlConfigForFeedRange(Lease lease) {
+        if (this.feedRangeThroughputControlConfigManager == null) {
+            return null;
+        }
+
+        return this.feedRangeThroughputControlConfigManager.getThroughputControlConfigForFeedRange(lease.getFeedRange());
     }
 
     @Override

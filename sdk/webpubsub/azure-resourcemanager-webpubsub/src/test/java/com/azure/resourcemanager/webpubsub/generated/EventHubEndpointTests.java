@@ -7,26 +7,24 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.EventHubEndpoint;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EventHubEndpointTests {
-    @Test
-    public void testDeserialize() {
-        EventHubEndpoint model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"EventHub\",\"fullyQualifiedNamespace\":\"qkvpuvksgplsakn\",\"eventHubName\":\"n\"}")
-                .toObject(EventHubEndpoint.class);
-        Assertions.assertEquals("qkvpuvksgplsakn", model.fullyQualifiedNamespace());
-        Assertions.assertEquals("n", model.eventHubName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EventHubEndpoint model = BinaryData
+            .fromString(
+                "{\"type\":\"EventHub\",\"fullyQualifiedNamespace\":\"ayzri\",\"eventHubName\":\"khyawfvjlboxqv\"}")
+            .toObject(EventHubEndpoint.class);
+        Assertions.assertEquals("ayzri", model.fullyQualifiedNamespace());
+        Assertions.assertEquals("khyawfvjlboxqv", model.eventHubName());
     }
 
-    @Test
-    public void testSerialize() {
-        EventHubEndpoint model =
-            new EventHubEndpoint().withFullyQualifiedNamespace("qkvpuvksgplsakn").withEventHubName("n");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EventHubEndpoint model
+            = new EventHubEndpoint().withFullyQualifiedNamespace("ayzri").withEventHubName("khyawfvjlboxqv");
         model = BinaryData.fromObject(model).toObject(EventHubEndpoint.class);
-        Assertions.assertEquals("qkvpuvksgplsakn", model.fullyQualifiedNamespace());
-        Assertions.assertEquals("n", model.eventHubName());
+        Assertions.assertEquals("ayzri", model.fullyQualifiedNamespace());
+        Assertions.assertEquals("khyawfvjlboxqv", model.eventHubName());
     }
 }

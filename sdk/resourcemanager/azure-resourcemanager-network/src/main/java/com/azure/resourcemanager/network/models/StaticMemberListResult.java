@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.StaticMemberInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,26 +18,26 @@ import java.util.List;
  * results.
  */
 @Fluent
-public final class StaticMemberListResult {
+public final class StaticMemberListResult implements JsonSerializable<StaticMemberListResult> {
     /*
      * Gets a page of StaticMember
      */
-    @JsonProperty(value = "value")
     private List<StaticMemberInner> value;
 
     /*
      * Gets the URL to get the next set of results.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of StaticMemberListResult class. */
+    /**
+     * Creates an instance of StaticMemberListResult class.
+     */
     public StaticMemberListResult() {
     }
 
     /**
      * Get the value property: Gets a page of StaticMember.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticMemberInner> value() {
@@ -42,7 +46,7 @@ public final class StaticMemberListResult {
 
     /**
      * Set the value property: Gets a page of StaticMember.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticMemberListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class StaticMemberListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class StaticMemberListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the StaticMemberListResult object itself.
      */
@@ -73,12 +77,52 @@ public final class StaticMemberListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StaticMemberListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StaticMemberListResult if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StaticMemberListResult.
+     */
+    public static StaticMemberListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StaticMemberListResult deserializedStaticMemberListResult = new StaticMemberListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<StaticMemberInner> value = reader.readArray(reader1 -> StaticMemberInner.fromJson(reader1));
+                    deserializedStaticMemberListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedStaticMemberListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStaticMemberListResult;
+        });
     }
 }

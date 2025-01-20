@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.logz.fluent.SubAccountsClient;
@@ -48,24 +47,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SubAccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubAccountsClient.
+ */
 public final class SubAccountsClientImpl implements SubAccountsClient {
-    private final ClientLogger logger = new ClientLogger(SubAccountsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SubAccountsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftLogzImpl client;
 
     /**
      * Initializes an instance of SubAccountsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SubAccountsClientImpl(MicrosoftLogzImpl client) {
-        this.service =
-            RestProxy.create(SubAccountsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SubAccountsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -75,218 +78,152 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftLogzSubAcco")
-    private interface SubAccountsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts")
-        @ExpectedResponses({200})
+    public interface SubAccountsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogzMonitorResourceListResponse>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LogzMonitorResourceListResponse>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("subAccountName") String subAccountName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") LogzMonitorResourceInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts/{subAccountName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LogzMonitorResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("subAccountName") String subAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") LogzMonitorResourceInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("subAccountName") String subAccountName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts/{subAccountName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogzMonitorResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("subAccountName") String subAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("subAccountName") String subAccountName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts/{subAccountName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LogzMonitorResourceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("subAccountName") String subAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts/{subAccountName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogzMonitorResourceInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("subAccountName") String subAccountName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("subAccountName") String subAccountName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") LogzMonitorResourceUpdateParameters body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts/{subAccountName}/listMonitoredResources")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/listMonitoredResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<MonitoredResourceListResponse>> listMonitoredResources(
-            @HostParam("$host") String endpoint,
+        Mono<Response<MonitoredResourceListResponse>> listMonitoredResources(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("subAccountName") String subAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("subAccountName") String subAccountName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts/{subAccountName}/vmHostPayload")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/vmHostPayload")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VMExtensionPayloadInner>> vMHostPayload(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VMExtensionPayloadInner>> vMHostPayload(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("subAccountName") String subAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("subAccountName") String subAccountName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts/{subAccountName}/vmHostUpdate")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/vmHostUpdate")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VMResourcesListResponse>> listVmHostUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VMResourcesListResponse>> listVmHostUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("subAccountName") String subAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") VMHostUpdateRequest body,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("subAccountName") String subAccountName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") VMHostUpdateRequest body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/accounts/{subAccountName}/listVMHosts")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/accounts/{subAccountName}/listVMHosts")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<VMResourcesListResponse>> listVMHosts(
-            @HostParam("$host") String endpoint,
+        Mono<Response<VMResourcesListResponse>> listVMHosts(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("subAccountName") String subAccountName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("subAccountName") String subAccountName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogzMonitorResourceListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<MonitoredResourceListResponse>> listMonitoredResourcesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VMResourcesListResponse>> listVmHostUpdateNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VMResourcesListResponse>> listVMHostsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List the sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogzMonitorResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<PagedResponse<LogzMonitorResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -297,54 +234,34 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<LogzMonitorResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<LogzMonitorResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogzMonitorResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<PagedResponse<LogzMonitorResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -356,69 +273,55 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List the sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogzMonitorResourceInner> listAsync(String resourceGroupName, String monitorName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List the sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LogzMonitorResourceInner> listAsync(
-        String resourceGroupName, String monitorName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName, context),
+    private PagedFlux<LogzMonitorResourceInner> listAsync(String resourceGroupName, String monitorName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List the sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogzMonitorResourceInner> list(String resourceGroupName, String monitorName) {
@@ -427,14 +330,14 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * List the sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogzMonitorResourceInner> list(String resourceGroupName, String monitorName, Context context) {
@@ -443,7 +346,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -451,22 +354,18 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String monitorName,
+        String subAccountName, LogzMonitorResourceInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -483,25 +382,14 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            subAccountName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, subAccountName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -510,26 +398,18 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String monitorName,
+        String subAccountName, LogzMonitorResourceInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -546,22 +426,13 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                subAccountName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, subAccountName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -569,26 +440,43 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreateAsync(
         String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, monitorName, subAccountName, body);
-        return this
-            .client
-            .<LogzMonitorResourceInner, LogzMonitorResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LogzMonitorResourceInner.class,
-                LogzMonitorResourceInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, monitorName, subAccountName, body);
+        return this.client.<LogzMonitorResourceInner, LogzMonitorResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LogzMonitorResourceInner.class, LogzMonitorResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner>
+        beginCreateAsync(String resourceGroupName, String monitorName, String subAccountName) {
+        final LogzMonitorResourceInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, monitorName, subAccountName, body);
+        return this.client.<LogzMonitorResourceInner, LogzMonitorResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LogzMonitorResourceInner.class, LogzMonitorResourceInner.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -597,112 +485,40 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceInner body,
+        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceInner body,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, monitorName, subAccountName, body, context);
-        return this
-            .client
-            .<LogzMonitorResourceInner, LogzMonitorResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LogzMonitorResourceInner.class,
-                LogzMonitorResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, monitorName, subAccountName, body, context);
+        return this.client.<LogzMonitorResourceInner, LogzMonitorResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LogzMonitorResourceInner.class, LogzMonitorResourceInner.class, context);
     }
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
-     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(
-        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceInner body) {
-        return beginCreateAsync(resourceGroupName, monitorName, subAccountName, body).getSyncPoller();
-    }
-
-    /**
-     * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceInner body,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, monitorName, subAccountName, body, context).getSyncPoller();
-    }
-
-    /**
-     * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzMonitorResourceInner> createAsync(
-        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceInner body) {
-        return beginCreateAsync(resourceGroupName, monitorName, subAccountName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzMonitorResourceInner> createAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    public SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner>
+        beginCreate(String resourceGroupName, String monitorName, String subAccountName) {
         final LogzMonitorResourceInner body = null;
-        return beginCreateAsync(resourceGroupName, monitorName, subAccountName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return this.beginCreateAsync(resourceGroupName, monitorName, subAccountName, body).getSyncPoller();
     }
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -711,23 +527,18 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzMonitorResourceInner> createAsync(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceInner body,
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LogzMonitorResourceInner>, LogzMonitorResourceInner> beginCreate(
+        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceInner body,
         Context context) {
-        return beginCreateAsync(resourceGroupName, monitorName, subAccountName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return this.beginCreateAsync(resourceGroupName, monitorName, subAccountName, body, context).getSyncPoller();
     }
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -735,17 +546,57 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogzMonitorResourceInner create(
-        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceInner body) {
-        return createAsync(resourceGroupName, monitorName, subAccountName, body).block();
+    private Mono<LogzMonitorResourceInner> createAsync(String resourceGroupName, String monitorName,
+        String subAccountName, LogzMonitorResourceInner body) {
+        return beginCreateAsync(resourceGroupName, monitorName, subAccountName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LogzMonitorResourceInner> createAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
+        final LogzMonitorResourceInner body = null;
+        return beginCreateAsync(resourceGroupName, monitorName, subAccountName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LogzMonitorResourceInner> createAsync(String resourceGroupName, String monitorName,
+        String subAccountName, LogzMonitorResourceInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, monitorName, subAccountName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -762,7 +613,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * Create sub account under a given monitor resource. This create operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -774,40 +625,33 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogzMonitorResourceInner create(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceInner body,
-        Context context) {
+    public LogzMonitorResourceInner create(String resourceGroupName, String monitorName, String subAccountName,
+        LogzMonitorResourceInner body, Context context) {
         return createAsync(resourceGroupName, monitorName, subAccountName, body, context).block();
     }
 
     /**
      * Get a sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogzMonitorResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private Mono<Response<LogzMonitorResourceInner>> getWithResponseAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -821,24 +665,14 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            subAccountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, subAccountName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -846,22 +680,19 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogzMonitorResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    private Mono<Response<LogzMonitorResourceInner>> getWithResponseAsync(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -875,46 +706,49 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                subAccountName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+            subAccountName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a sub account under a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
+     * @return a sub account under a given monitor resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzMonitorResourceInner> getAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private Mono<LogzMonitorResourceInner> getAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
         return getWithResponseAsync(resourceGroupName, monitorName, subAccountName)
-            .flatMap(
-                (Response<LogzMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get a sub account under a given monitor resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a sub account under a given monitor resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LogzMonitorResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
+        return getWithResponseAsync(resourceGroupName, monitorName, subAccountName, context).block();
+    }
+
+    /**
+     * Get a sub account under a given monitor resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -925,52 +759,30 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogzMonitorResourceInner get(String resourceGroupName, String monitorName, String subAccountName) {
-        return getAsync(resourceGroupName, monitorName, subAccountName).block();
-    }
-
-    /**
-     * Get a sub account under a given monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sub account under a given monitor resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogzMonitorResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
-        return getWithResponseAsync(resourceGroupName, monitorName, subAccountName, context).block();
+        return getWithResponse(resourceGroupName, monitorName, subAccountName, Context.NONE).getValue();
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -984,24 +796,14 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            subAccountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, subAccountName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1009,22 +811,18 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1038,41 +836,32 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                subAccountName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, subAccountName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, monitorName, subAccountName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1080,39 +869,38 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, monitorName, subAccountName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, monitorName, subAccountName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String subAccountName) {
-        return beginDeleteAsync(resourceGroupName, monitorName, subAccountName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        String subAccountName) {
+        return this.beginDeleteAsync(resourceGroupName, monitorName, subAccountName).getSyncPoller();
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1120,35 +908,34 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, subAccountName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, monitorName, subAccountName, context).getSyncPoller();
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, String subAccountName) {
-        return beginDeleteAsync(resourceGroupName, monitorName, subAccountName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, monitorName, subAccountName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1156,19 +943,18 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
-        return beginDeleteAsync(resourceGroupName, monitorName, subAccountName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String monitorName, String subAccountName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, monitorName, subAccountName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1183,7 +969,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * Delete a sub account resource. This delete operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1199,30 +985,26 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogzMonitorResourceInner>> updateWithResponseAsync(
-        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceUpdateParameters body) {
+    private Mono<Response<LogzMonitorResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String monitorName, String subAccountName, LogzMonitorResourceUpdateParameters body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1239,53 +1021,34 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            subAccountName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, subAccountName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
+     * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogzMonitorResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceUpdateParameters body,
-        Context context) {
+    private Mono<Response<LogzMonitorResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String monitorName, String subAccountName, LogzMonitorResourceUpdateParameters body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1302,74 +1065,51 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                subAccountName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, subAccountName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Update a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzMonitorResourceInner> updateAsync(
-        String resourceGroupName, String monitorName, String subAccountName, LogzMonitorResourceUpdateParameters body) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, subAccountName, body)
-            .flatMap(
-                (Response<LogzMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Update a monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzMonitorResourceInner> updateAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private Mono<LogzMonitorResourceInner> updateAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
         final LogzMonitorResourceUpdateParameters body = null;
         return updateWithResponseAsync(resourceGroupName, monitorName, subAccountName, body)
-            .flatMap(
-                (Response<LogzMonitorResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update a monitor resource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LogzMonitorResourceInner> updateWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, LogzMonitorResourceUpdateParameters body, Context context) {
+        return updateWithResponseAsync(resourceGroupName, monitorName, subAccountName, body, context).block();
+    }
+
+    /**
+     * Update a monitor resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1381,57 +1121,30 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogzMonitorResourceInner update(String resourceGroupName, String monitorName, String subAccountName) {
         final LogzMonitorResourceUpdateParameters body = null;
-        return updateAsync(resourceGroupName, monitorName, subAccountName, body).block();
-    }
-
-    /**
-     * Update a monitor resource.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param body The parameters for a PATCH request to a monitor resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogzMonitorResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        LogzMonitorResourceUpdateParameters body,
-        Context context) {
-        return updateWithResponseAsync(resourceGroupName, monitorName, subAccountName, body, context).block();
+        return updateWithResponse(resourceGroupName, monitorName, subAccountName, body, Context.NONE).getValue();
     }
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(String resourceGroupName,
+        String monitorName, String subAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1446,32 +1159,16 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listMonitoredResources(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            subAccountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<MonitoredResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listMonitoredResources(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, monitorName, subAccountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<MonitoredResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1479,22 +1176,18 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesSinglePageAsync(String resourceGroupName,
+        String monitorName, String subAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1509,40 +1202,26 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listMonitoredResources(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                subAccountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listMonitoredResources(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                monitorName, subAccountName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
         return new PagedFlux<>(
             () -> listMonitoredResourcesSinglePageAsync(resourceGroupName, monitorName, subAccountName),
             nextLink -> listMonitoredResourcesNextSinglePageAsync(nextLink));
@@ -1550,7 +1229,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1558,11 +1237,11 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    private PagedFlux<MonitoredResourceInner> listMonitoredResourcesAsync(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
         return new PagedFlux<>(
             () -> listMonitoredResourcesSinglePageAsync(resourceGroupName, monitorName, subAccountName, context),
             nextLink -> listMonitoredResourcesNextSinglePageAsync(nextLink, context));
@@ -1570,24 +1249,24 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MonitoredResourceInner> listMonitoredResources(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
+        String subAccountName) {
         return new PagedIterable<>(listMonitoredResourcesAsync(resourceGroupName, monitorName, subAccountName));
     }
 
     /**
      * List the resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1595,40 +1274,37 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MonitoredResourceInner> listMonitoredResources(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    public PagedIterable<MonitoredResourceInner> listMonitoredResources(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
         return new PagedIterable<>(
             listMonitoredResourcesAsync(resourceGroupName, monitorName, subAccountName, context));
     }
 
     /**
      * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VMExtensionPayloadInner>> vMHostPayloadWithResponseAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private Mono<Response<VMExtensionPayloadInner>> vMHostPayloadWithResponseAsync(String resourceGroupName,
+        String monitorName, String subAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1642,24 +1318,14 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .vMHostPayload(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            subAccountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.vMHostPayload(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, subAccountName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1667,22 +1333,19 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VMExtensionPayloadInner>> vMHostPayloadWithResponseAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    private Mono<Response<VMExtensionPayloadInner>> vMHostPayloadWithResponseAsync(String resourceGroupName,
+        String monitorName, String subAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1696,46 +1359,49 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .vMHostPayload(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                subAccountName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.vMHostPayload(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, subAccountName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
+     * @return response of payload to be passed while installing VM agent on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VMExtensionPayloadInner> vMHostPayloadAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private Mono<VMExtensionPayloadInner> vMHostPayloadAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
         return vMHostPayloadWithResponseAsync(resourceGroupName, monitorName, subAccountName)
-            .flatMap(
-                (Response<VMExtensionPayloadInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param subAccountName Sub Account resource name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response of payload to be passed while installing VM agent along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VMExtensionPayloadInner> vMHostPayloadWithResponse(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
+        return vMHostPayloadWithResponseAsync(resourceGroupName, monitorName, subAccountName, context).block();
+    }
+
+    /**
+     * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1746,30 +1412,12 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VMExtensionPayloadInner vMHostPayload(String resourceGroupName, String monitorName, String subAccountName) {
-        return vMHostPayloadAsync(resourceGroupName, monitorName, subAccountName).block();
-    }
-
-    /**
-     * Returns the payload that needs to be passed as a request for installing Logz.io agent on a VM.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param subAccountName Sub Account resource name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of payload to be passed while installing VM agent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VMExtensionPayloadInner> vMHostPayloadWithResponse(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
-        return vMHostPayloadWithResponseAsync(resourceGroupName, monitorName, subAccountName, context).block();
+        return vMHostPayloadWithResponse(resourceGroupName, monitorName, subAccountName, Context.NONE).getValue();
     }
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1777,22 +1425,19 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateSinglePageAsync(
-        String resourceGroupName, String monitorName, String subAccountName, VMHostUpdateRequest body) {
+    private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateSinglePageAsync(String resourceGroupName,
+        String monitorName, String subAccountName, VMHostUpdateRequest body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1809,34 +1454,16 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listVmHostUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            subAccountName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
-            .<PagedResponse<VMResourcesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listVmHostUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, subAccountName, this.client.getApiVersion(), body, accept, context))
+            .<PagedResponse<VMResourcesInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1845,26 +1472,19 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateSinglePageAsync(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        VMHostUpdateRequest body,
-        Context context) {
+    private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateSinglePageAsync(String resourceGroupName,
+        String monitorName, String subAccountName, VMHostUpdateRequest body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1882,30 +1502,15 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listVmHostUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                subAccountName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listVmHostUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                monitorName, subAccountName, this.client.getApiVersion(), body, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1913,11 +1518,11 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(
-        String resourceGroupName, String monitorName, String subAccountName, VMHostUpdateRequest body) {
+    private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(String resourceGroupName, String monitorName,
+        String subAccountName, VMHostUpdateRequest body) {
         return new PagedFlux<>(
             () -> listVmHostUpdateSinglePageAsync(resourceGroupName, monitorName, subAccountName, body),
             nextLink -> listVmHostUpdateNextSinglePageAsync(nextLink));
@@ -1925,18 +1530,18 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
         final VMHostUpdateRequest body = null;
         return new PagedFlux<>(
             () -> listVmHostUpdateSinglePageAsync(resourceGroupName, monitorName, subAccountName, body),
@@ -1945,7 +1550,7 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1954,15 +1559,11 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        VMHostUpdateRequest body,
-        Context context) {
+    private PagedFlux<VMResourcesInner> listVmHostUpdateAsync(String resourceGroupName, String monitorName,
+        String subAccountName, VMHostUpdateRequest body, Context context) {
         return new PagedFlux<>(
             () -> listVmHostUpdateSinglePageAsync(resourceGroupName, monitorName, subAccountName, body, context),
             nextLink -> listVmHostUpdateNextSinglePageAsync(nextLink, context));
@@ -1970,25 +1571,25 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VMResourcesInner> listVmHostUpdate(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    public PagedIterable<VMResourcesInner> listVmHostUpdate(String resourceGroupName, String monitorName,
+        String subAccountName) {
         final VMHostUpdateRequest body = null;
         return new PagedIterable<>(listVmHostUpdateAsync(resourceGroupName, monitorName, subAccountName, body));
     }
 
     /**
      * Sending request to update the collection when Logz.io agent has been installed on a VM for a given monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -1997,44 +1598,37 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VMResourcesInner> listVmHostUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String subAccountName,
-        VMHostUpdateRequest body,
-        Context context) {
+    public PagedIterable<VMResourcesInner> listVmHostUpdate(String resourceGroupName, String monitorName,
+        String subAccountName, VMHostUpdateRequest body, Context context) {
         return new PagedIterable<>(
             listVmHostUpdateAsync(resourceGroupName, monitorName, subAccountName, body, context));
     }
 
     /**
      * List the compute resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VMResourcesInner>> listVMHostsSinglePageAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    private Mono<PagedResponse<VMResourcesInner>> listVMHostsSinglePageAsync(String resourceGroupName,
+        String monitorName, String subAccountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2048,33 +1642,16 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listVMHosts(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            subAccountName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<VMResourcesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listVMHosts(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, subAccountName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<VMResourcesInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the compute resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -2082,22 +1659,19 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VMResourcesInner>> listVMHostsSinglePageAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    private Mono<PagedResponse<VMResourcesInner>> listVMHostsSinglePageAsync(String resourceGroupName,
+        String monitorName, String subAccountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -2112,48 +1686,33 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listVMHosts(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                subAccountName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listVMHosts(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+                subAccountName, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List the compute resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VMResourcesInner> listVMHostsAsync(
-        String resourceGroupName, String monitorName, String subAccountName) {
-        return new PagedFlux<>(
-            () -> listVMHostsSinglePageAsync(resourceGroupName, monitorName, subAccountName),
+    private PagedFlux<VMResourcesInner> listVMHostsAsync(String resourceGroupName, String monitorName,
+        String subAccountName) {
+        return new PagedFlux<>(() -> listVMHostsSinglePageAsync(resourceGroupName, monitorName, subAccountName),
             nextLink -> listVMHostsNextSinglePageAsync(nextLink));
     }
 
     /**
      * List the compute resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -2161,11 +1720,11 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VMResourcesInner> listVMHostsAsync(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    private PagedFlux<VMResourcesInner> listVMHostsAsync(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
         return new PagedFlux<>(
             () -> listVMHostsSinglePageAsync(resourceGroupName, monitorName, subAccountName, context),
             nextLink -> listVMHostsNextSinglePageAsync(nextLink, context));
@@ -2173,24 +1732,24 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
 
     /**
      * List the compute resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VMResourcesInner> listVMHosts(
-        String resourceGroupName, String monitorName, String subAccountName) {
+    public PagedIterable<VMResourcesInner> listVMHosts(String resourceGroupName, String monitorName,
+        String subAccountName) {
         return new PagedIterable<>(listVMHostsAsync(resourceGroupName, monitorName, subAccountName));
     }
 
     /**
      * List the compute resources currently being monitored by the Logz sub account resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param subAccountName Sub Account resource name.
@@ -2198,22 +1757,22 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VMResourcesInner> listVMHosts(
-        String resourceGroupName, String monitorName, String subAccountName, Context context) {
+    public PagedIterable<VMResourcesInner> listVMHosts(String resourceGroupName, String monitorName,
+        String subAccountName, Context context) {
         return new PagedIterable<>(listVMHostsAsync(resourceGroupName, monitorName, subAccountName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzMonitorResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -2221,35 +1780,25 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LogzMonitorResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<LogzMonitorResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzMonitorResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2257,34 +1806,24 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(String nextLink) {
@@ -2292,72 +1831,54 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listMonitoredResourcesNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<MonitoredResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<MonitoredResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<MonitoredResourceInner>> listMonitoredResourcesNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listMonitoredResourcesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listMonitoredResourcesNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateNextSinglePageAsync(String nextLink) {
@@ -2365,71 +1886,54 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listVmHostUpdateNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VMResourcesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VMResourcesInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<VMResourcesInner>> listVmHostUpdateNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listVmHostUpdateNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listVmHostUpdateNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVMHostsNextSinglePageAsync(String nextLink) {
@@ -2437,35 +1941,27 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listVMHostsNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<VMResourcesInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<VMResourcesInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list VM Host Update Operation.
+     * @return response of a list VM Host Update Operation along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VMResourcesInner>> listVMHostsNextSinglePageAsync(String nextLink, Context context) {
@@ -2473,23 +1969,13 @@ public final class SubAccountsClientImpl implements SubAccountsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listVMHostsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listVMHostsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

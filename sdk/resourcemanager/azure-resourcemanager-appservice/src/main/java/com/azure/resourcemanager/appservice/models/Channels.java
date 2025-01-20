@@ -4,27 +4,38 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for Channels. */
+/**
+ * List of channels that this recommendation can apply.
+ */
 public enum Channels {
-    /** Enum value Notification. */
+    /**
+     * Enum value Notification.
+     */
     NOTIFICATION("Notification"),
 
-    /** Enum value Api. */
+    /**
+     * Enum value Api.
+     */
     API("Api"),
 
-    /** Enum value Email. */
+    /**
+     * Enum value Email.
+     */
     EMAIL("Email"),
 
-    /** Enum value Webhook. */
+    /**
+     * Enum value Webhook.
+     */
     WEBHOOK("Webhook"),
 
-    /** Enum value All. */
+    /**
+     * Enum value All.
+     */
     ALL("All");
 
-    /** The actual serialized value for a Channels instance. */
+    /**
+     * The actual serialized value for a Channels instance.
+     */
     private final String value;
 
     Channels(String value) {
@@ -33,12 +44,14 @@ public enum Channels {
 
     /**
      * Parses a serialized value to a Channels instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed Channels object, or null if unable to parse.
      */
-    @JsonCreator
     public static Channels fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         Channels[] items = Channels.values();
         for (Channels item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,7 +61,9 @@ public enum Channels {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

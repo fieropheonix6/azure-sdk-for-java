@@ -7,20 +7,20 @@ import com.puppycrawl.tools.checkstyle.AbstractModuleTestSupport;
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     private Checker checker;
 
-    @Before
+    @BeforeEach
     public void prepare() throws Exception {
         checker = prepareCheckStyleChecker();
         checker.addListener(this.getBriefUtLogger());
     }
 
-    @After
+    @AfterEach
     public void cleanup() {
         checker.destroy();
     }
@@ -33,8 +33,8 @@ public class DenyListedWordsCheckTest extends AbstractModuleTestSupport {
     @Test
     public void denyListedWordsTestData() throws Exception {
         String[] expected = {
-            expectedErrorMessage(3, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "XML, HTTP, URL")),
-            expectedErrorMessage(9, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "XML, HTTP, URL"))
+            expectedErrorMessage(3, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "errorHTTPMethod", "URL, HTTP, XML")),
+            expectedErrorMessage(9, 5, String.format(DenyListedWordsCheck.ERROR_MESSAGE, "invalidXMLMethod", "URL, HTTP, XML"))
         };
         verify(checker, getPath("DenyListedWordsTestData.java"), expected);
     }

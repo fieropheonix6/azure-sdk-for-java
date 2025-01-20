@@ -5,24 +5,45 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Use custom models to classify text into multi label taxonomy. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("CustomMultiLabelClassification")
+/**
+ * Use custom models to classify text into multi label taxonomy.
+ */
 @Fluent
 public final class CustomMultiLabelClassificationLROTask extends AnalyzeTextLROTask {
     /*
+     * Enumeration of supported long-running Text Analysis tasks.
+     */
+    private AnalyzeTextLROTaskKind kind = AnalyzeTextLROTaskKind.CUSTOM_MULTI_LABEL_CLASSIFICATION;
+
+    /*
      * Supported parameters for a Custom Multi Classification task.
      */
-    @JsonProperty(value = "parameters")
     private CustomMultiLabelClassificationTaskParameters parameters;
 
     /**
+     * Creates an instance of CustomMultiLabelClassificationLROTask class.
+     */
+    public CustomMultiLabelClassificationLROTask() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported long-running Text Analysis tasks.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public AnalyzeTextLROTaskKind getKind() {
+        return this.kind;
+    }
+
+    /**
      * Get the parameters property: Supported parameters for a Custom Multi Classification task.
-     *
+     * 
      * @return the parameters value.
      */
     public CustomMultiLabelClassificationTaskParameters getParameters() {
@@ -31,20 +52,67 @@ public final class CustomMultiLabelClassificationLROTask extends AnalyzeTextLROT
 
     /**
      * Set the parameters property: Supported parameters for a Custom Multi Classification task.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the CustomMultiLabelClassificationLROTask object itself.
      */
-    public CustomMultiLabelClassificationLROTask setParameters(
-            CustomMultiLabelClassificationTaskParameters parameters) {
+    public CustomMultiLabelClassificationLROTask
+        setParameters(CustomMultiLabelClassificationTaskParameters parameters) {
         this.parameters = parameters;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomMultiLabelClassificationLROTask setTaskName(String taskName) {
         super.setTaskName(taskName);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("taskName", getTaskName());
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("parameters", this.parameters);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomMultiLabelClassificationLROTask from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomMultiLabelClassificationLROTask if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomMultiLabelClassificationLROTask.
+     */
+    public static CustomMultiLabelClassificationLROTask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomMultiLabelClassificationLROTask deserializedCustomMultiLabelClassificationLROTask
+                = new CustomMultiLabelClassificationLROTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("taskName".equals(fieldName)) {
+                    deserializedCustomMultiLabelClassificationLROTask.setTaskName(reader.getString());
+                } else if ("kind".equals(fieldName)) {
+                    deserializedCustomMultiLabelClassificationLROTask.kind
+                        = AnalyzeTextLROTaskKind.fromString(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    deserializedCustomMultiLabelClassificationLROTask.parameters
+                        = CustomMultiLabelClassificationTaskParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomMultiLabelClassificationLROTask;
+        });
     }
 }

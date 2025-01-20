@@ -4,8 +4,10 @@
 
 package com.azure.analytics.purview.scanning.implementation;
 
+import com.azure.analytics.purview.scanning.PurviewScanningServiceVersion;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
@@ -14,7 +16,12 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
@@ -23,22 +30,37 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Filters. */
+/**
+ * An instance of this class provides access to all the operations defined in Filters.
+ */
 public final class FiltersImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FiltersService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PurviewScanningClientImpl client;
 
     /**
      * Initializes an instance of FiltersImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FiltersImpl(PurviewScanningClientImpl client) {
         this.service = RestProxy.create(FiltersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewScanningServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -49,343 +71,264 @@ public final class FiltersImpl {
     @ServiceInterface(name = "PurviewScanningClien")
     public interface FiltersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
-        @ExpectedResponses({200})
-        Mono<Response<BinaryData>> get(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> get(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> getSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
 
         @Put("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
-        @ExpectedResponses({200, 201})
-        Mono<Response<BinaryData>> createOrUpdate(
-                @HostParam("Endpoint") String endpoint,
-                @PathParam("dataSourceName") String dataSourceName,
-                @PathParam("scanName") String scanName,
-                @QueryParam("api-version") String apiVersion,
-                RequestOptions requestOptions,
-                Context context);
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> createOrUpdate(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Put("/datasources/{dataSourceName}/scans/{scanName}/filters/custom")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> createOrUpdateSync(@HostParam("Endpoint") String endpoint,
+            @PathParam("dataSourceName") String dataSourceName, @PathParam("scanName") String scanName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
     }
 
     /**
      * Get a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         excludeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
-     *         includeUriPrefixes: [
-     *             String
+     *         includeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a filter along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
+    public Mono<Response<BinaryData>> getWithResponseAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
     }
 
     /**
      * Get a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         excludeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
-     *         includeUriPrefixes: [
-     *             String
+     *         includeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a filter along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return service.get(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Get a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
-     *         ]
-     *         includeUriPrefixes: [
-     *             String
-     *         ]
-     *     }
      * }
-     * }</pre>
-     *
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a filter along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return getWithResponseAsync(dataSourceName, scanName, requestOptions).block();
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * Creates or updates a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
      * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         excludeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
-     *         includeUriPrefixes: [
-     *             String
+     *         includeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         excludeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
-     *         includeUriPrefixes: [
-     *             String
+     *         includeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(),
-                                dataSourceName,
-                                scanName,
-                                this.client.getServiceVersion().getVersion(),
-                                requestOptions,
-                                context));
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            }
+        });
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), dataSourceName,
+            scanName, this.client.getServiceVersion().getVersion(), accept, requestOptionsLocal, context));
     }
 
     /**
      * Creates or updates a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
      * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         excludeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
-     *         includeUriPrefixes: [
-     *             String
+     *         includeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
+     *     id: String (Optional)
+     *     name: String (Optional)
+     *     properties (Optional): {
+     *         excludeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
-     *         includeUriPrefixes: [
-     *             String
+     *         includeUriPrefixes (Optional): [
+     *             String (Optional)
      *         ]
      *     }
      * }
-     * }</pre>
-     *
-     * @param dataSourceName The dataSourceName parameter.
-     * @param scanName The scanName parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return service.createOrUpdate(
-                this.client.getEndpoint(),
-                dataSourceName,
-                scanName,
-                this.client.getServiceVersion().getVersion(),
-                requestOptions,
-                context);
-    }
-
-    /**
-     * Creates or updates a filter.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
-     *         ]
-     *         includeUriPrefixes: [
-     *             String
-     *         ]
-     *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
-     * {
-     *     id: String
-     *     name: String
-     *     properties: {
-     *         excludeUriPrefixes: [
-     *             String
-     *         ]
-     *         includeUriPrefixes: [
-     *             String
-     *         ]
-     *     }
-     * }
-     * }</pre>
-     *
+     * </pre>
+     * 
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return createOrUpdateWithResponseAsync(dataSourceName, scanName, requestOptions).block();
+    public Response<BinaryData> createOrUpdateWithResponse(String dataSourceName, String scanName,
+        RequestOptions requestOptions) {
+        final String accept = "application/json";
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            }
+        });
+        return service.createOrUpdateSync(this.client.getEndpoint(), dataSourceName, scanName,
+            this.client.getServiceVersion().getVersion(), accept, requestOptionsLocal, Context.NONE);
     }
 }

@@ -9,32 +9,24 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DailyRetentionFor
 import com.azure.resourcemanager.recoveryservicesbackup.models.Day;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DailyRetentionFormatTests {
-    @Test
-    public void testDeserialize() {
-        DailyRetentionFormat model =
-            BinaryData
-                .fromString(
-                    "{\"daysOfTheMonth\":[{\"date\":24191265,\"isLast\":true},{\"date\":1410759489,\"isLast\":false},{\"date\":2048724944,\"isLast\":false}]}")
-                .toObject(DailyRetentionFormat.class);
-        Assertions.assertEquals(24191265, model.daysOfTheMonth().get(0).date());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DailyRetentionFormat model = BinaryData
+            .fromString(
+                "{\"daysOfTheMonth\":[{\"date\":1173398556,\"isLast\":true},{\"date\":433399705,\"isLast\":false}]}")
+            .toObject(DailyRetentionFormat.class);
+        Assertions.assertEquals(1173398556, model.daysOfTheMonth().get(0).date());
         Assertions.assertEquals(true, model.daysOfTheMonth().get(0).isLast());
     }
 
-    @Test
-    public void testSerialize() {
-        DailyRetentionFormat model =
-            new DailyRetentionFormat()
-                .withDaysOfTheMonth(
-                    Arrays
-                        .asList(
-                            new Day().withDate(24191265).withIsLast(true),
-                            new Day().withDate(1410759489).withIsLast(false),
-                            new Day().withDate(2048724944).withIsLast(false)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DailyRetentionFormat model = new DailyRetentionFormat().withDaysOfTheMonth(Arrays
+            .asList(new Day().withDate(1173398556).withIsLast(true), new Day().withDate(433399705).withIsLast(false)));
         model = BinaryData.fromObject(model).toObject(DailyRetentionFormat.class);
-        Assertions.assertEquals(24191265, model.daysOfTheMonth().get(0).date());
+        Assertions.assertEquals(1173398556, model.daysOfTheMonth().get(0).date());
         Assertions.assertEquals(true, model.daysOfTheMonth().get(0).isLast());
     }
 }

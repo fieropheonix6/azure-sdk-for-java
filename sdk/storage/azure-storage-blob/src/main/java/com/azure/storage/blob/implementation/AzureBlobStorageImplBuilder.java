@@ -36,19 +36,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the AzureBlobStorage type. */
-@ServiceClientBuilder(serviceClients = {AzureBlobStorageImpl.class})
+@ServiceClientBuilder(serviceClients = { AzureBlobStorageImpl.class })
 public final class AzureBlobStorageImplBuilder
-        implements HttpTrait<AzureBlobStorageImplBuilder>, ConfigurationTrait<AzureBlobStorageImplBuilder> {
-    @Generated private static final String SDK_NAME = "name";
+    implements HttpTrait<AzureBlobStorageImplBuilder>, ConfigurationTrait<AzureBlobStorageImplBuilder> {
+    @Generated
+    private static final String SDK_NAME = "name";
 
-    @Generated private static final String SDK_VERSION = "version";
+    @Generated
+    private static final String SDK_VERSION = "version";
 
-    @Generated private static final Map<String, String> PROPERTIES = new HashMap<>();
+    @Generated
+    private static final Map<String, String> PROPERTIES = new HashMap<>();
 
-    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
+    @Generated
+    private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the AzureBlobStorageImplBuilder. */
     @Generated
@@ -59,7 +62,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The HTTP pipeline to send requests through.
      */
-    @Generated private HttpPipeline pipeline;
+    @Generated
+    private HttpPipeline pipeline;
 
     /** {@inheritDoc}. */
     @Generated
@@ -72,7 +76,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The HTTP client used to send the request.
      */
-    @Generated private HttpClient httpClient;
+    @Generated
+    private HttpClient httpClient;
 
     /** {@inheritDoc}. */
     @Generated
@@ -85,7 +90,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The logging configuration for HTTP requests and responses.
      */
-    @Generated private HttpLogOptions httpLogOptions;
+    @Generated
+    private HttpLogOptions httpLogOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -98,7 +104,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The client options such as application ID and custom headers to set on a request.
      */
-    @Generated private ClientOptions clientOptions;
+    @Generated
+    private ClientOptions clientOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -111,7 +118,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The retry options to configure retry policy for failed requests.
      */
-    @Generated private RetryOptions retryOptions;
+    @Generated
+    private RetryOptions retryOptions;
 
     /** {@inheritDoc}. */
     @Generated
@@ -133,7 +141,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The configuration store that is used during construction of the service client.
      */
-    @Generated private Configuration configuration;
+    @Generated
+    private Configuration configuration;
 
     /** {@inheritDoc}. */
     @Generated
@@ -146,7 +155,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The URL of the service account, container, or blob that is the target of the desired operation.
      */
-    @Generated private String url;
+    @Generated
+    private String url;
 
     /**
      * Sets The URL of the service account, container, or blob that is the target of the desired operation.
@@ -163,7 +173,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * Specifies the version of the operation to use for this request.
      */
-    @Generated private String version;
+    @Generated
+    private String version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -180,7 +191,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The serializer to serialize an object into a string
      */
-    @Generated private SerializerAdapter serializerAdapter;
+    @Generated
+    private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
@@ -197,7 +209,8 @@ public final class AzureBlobStorageImplBuilder
     /*
      * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    @Generated private RetryPolicy retryPolicy;
+    @Generated
+    private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -219,18 +232,18 @@ public final class AzureBlobStorageImplBuilder
     @Generated
     public AzureBlobStorageImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        String localVersion = (version != null) ? version : "2021-04-10";
-        SerializerAdapter localSerializerAdapter =
-                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
-        AzureBlobStorageImpl client =
-                new AzureBlobStorageImpl(localPipeline, localSerializerAdapter, url, localVersion);
+        String localVersion = (version != null) ? version : "2024-08-04";
+        SerializerAdapter localSerializerAdapter
+            = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        AzureBlobStorageImpl client
+            = new AzureBlobStorageImpl(localPipeline, localSerializerAdapter, url, localVersion);
         return client;
     }
 
     @Generated
     private HttpPipeline createHttpPipeline() {
-        Configuration buildConfiguration =
-                (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
         HttpLogOptions localHttpLogOptions = this.httpLogOptions == null ? new HttpLogOptions() : this.httpLogOptions;
         ClientOptions localClientOptions = this.clientOptions == null ? new ClientOptions() : this.clientOptions;
         List<HttpPipelinePolicy> policies = new ArrayList<>();
@@ -245,26 +258,22 @@ public final class AzureBlobStorageImplBuilder
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
-        policies.addAll(
-                this.pipelinePolicies.stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+        this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
-        HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                        .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                        .httpClient(httpClient)
-                        .clientOptions(localClientOptions)
-                        .build();
+        HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(httpClient)
+            .clientOptions(localClientOptions)
+            .build();
         return httpPipeline;
     }
 }

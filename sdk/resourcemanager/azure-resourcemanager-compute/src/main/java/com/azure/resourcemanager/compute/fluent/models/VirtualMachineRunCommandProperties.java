@@ -5,89 +5,123 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
+import com.azure.resourcemanager.compute.models.RunCommandManagedIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandScriptSource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Describes the properties of a Virtual Machine run command. */
+/**
+ * Describes the properties of a Virtual Machine run command.
+ */
 @Fluent
-public final class VirtualMachineRunCommandProperties {
+public final class VirtualMachineRunCommandProperties implements JsonSerializable<VirtualMachineRunCommandProperties> {
     /*
      * The source of the run command script.
      */
-    @JsonProperty(value = "source")
     private VirtualMachineRunCommandScriptSource source;
 
     /*
      * The parameters used by the script.
      */
-    @JsonProperty(value = "parameters")
     private List<RunCommandInputParameter> parameters;
 
     /*
      * The parameters used by the script.
      */
-    @JsonProperty(value = "protectedParameters")
     private List<RunCommandInputParameter> protectedParameters;
 
     /*
-     * Optional. If set to true, provisioning will complete as soon as the script starts and will not wait for script
-     * to complete.
+     * Optional. If set to true, provisioning will complete as soon as the script starts and will not wait for script to
+     * complete.
      */
-    @JsonProperty(value = "asyncExecution")
     private Boolean asyncExecution;
 
     /*
      * Specifies the user account on the VM when executing the run command.
      */
-    @JsonProperty(value = "runAsUser")
     private String runAsUser;
 
     /*
      * Specifies the user account password on the VM when executing the run command.
      */
-    @JsonProperty(value = "runAsPassword")
     private String runAsPassword;
 
     /*
      * The timeout in seconds to execute the run command.
      */
-    @JsonProperty(value = "timeoutInSeconds")
     private Integer timeoutInSeconds;
 
     /*
-     * Specifies the Azure storage blob where script output stream will be uploaded.
+     * Specifies the Azure storage blob where script output stream will be uploaded. Use a SAS URI with read, append,
+     * create, write access OR use managed identity to provide the VM access to the blob. Refer
+     * outputBlobManagedIdentity parameter.
      */
-    @JsonProperty(value = "outputBlobUri")
     private String outputBlobUri;
 
     /*
-     * Specifies the Azure storage blob where script error stream will be uploaded.
+     * Specifies the Azure storage blob where script error stream will be uploaded. Use a SAS URI with read, append,
+     * create, write access OR use managed identity to provide the VM access to the blob. Refer errorBlobManagedIdentity
+     * parameter.
      */
-    @JsonProperty(value = "errorBlobUri")
     private String errorBlobUri;
 
     /*
-     * The provisioning state, which only appears in the response.
+     * User-assigned managed identity that has access to outputBlobUri storage blob. Use an empty object in case of
+     * system-assigned identity. Make sure managed identity has been given access to blob's container with 'Storage Blob
+     * Data Contributor' role assignment. In case of user-assigned identity, make sure you add it under VM's identity.
+     * For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and
+     * https://aka.ms/RunCommandManaged
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private RunCommandManagedIdentity outputBlobManagedIdentity;
+
+    /*
+     * User-assigned managed identity that has access to errorBlobUri storage blob. Use an empty object in case of
+     * system-assigned identity. Make sure managed identity has been given access to blob's container with 'Storage Blob
+     * Data Contributor' role assignment. In case of user-assigned identity, make sure you add it under VM's identity.
+     * For more info on managed identity and Run Command, refer https://aka.ms/ManagedIdentity and
+     * https://aka.ms/RunCommandManaged
+     */
+    private RunCommandManagedIdentity errorBlobManagedIdentity;
+
+    /*
+     * The provisioning state, which only appears in the response. If treatFailureAsDeploymentFailure set to true, any
+     * failure in the script will fail the deployment and ProvisioningState will be marked as Failed. If
+     * treatFailureAsDeploymentFailure set to false, ProvisioningState would only reflect whether the run command was
+     * run or not by the extensions platform, it would not indicate whether script failed in case of script failures.
+     * See instance view of run command in case of script failures to see executionMessage, output, error:
+     * https://aka.ms/runcommandmanaged#get-execution-status-and-results
+     */
     private String provisioningState;
 
     /*
      * The virtual machine run command instance view.
      */
-    @JsonProperty(value = "instanceView", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineRunCommandInstanceView instanceView;
 
-    /** Creates an instance of VirtualMachineRunCommandProperties class. */
+    /*
+     * Optional. If set to true, any failure in the script will fail the deployment and ProvisioningState will be marked
+     * as Failed. If set to false, ProvisioningState would only reflect whether the run command was run or not by the
+     * extensions platform, it would not indicate whether script failed in case of script failures. See instance view of
+     * run command in case of script failures to see executionMessage, output, error:
+     * https://aka.ms/runcommandmanaged#get-execution-status-and-results
+     */
+    private Boolean treatFailureAsDeploymentFailure;
+
+    /**
+     * Creates an instance of VirtualMachineRunCommandProperties class.
+     */
     public VirtualMachineRunCommandProperties() {
     }
 
     /**
      * Get the source property: The source of the run command script.
-     *
+     * 
      * @return the source value.
      */
     public VirtualMachineRunCommandScriptSource source() {
@@ -96,7 +130,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Set the source property: The source of the run command script.
-     *
+     * 
      * @param source the source value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
@@ -107,7 +141,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Get the parameters property: The parameters used by the script.
-     *
+     * 
      * @return the parameters value.
      */
     public List<RunCommandInputParameter> parameters() {
@@ -116,7 +150,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Set the parameters property: The parameters used by the script.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
@@ -127,7 +161,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Get the protectedParameters property: The parameters used by the script.
-     *
+     * 
      * @return the protectedParameters value.
      */
     public List<RunCommandInputParameter> protectedParameters() {
@@ -136,12 +170,12 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Set the protectedParameters property: The parameters used by the script.
-     *
+     * 
      * @param protectedParameters the protectedParameters value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
-    public VirtualMachineRunCommandProperties withProtectedParameters(
-        List<RunCommandInputParameter> protectedParameters) {
+    public VirtualMachineRunCommandProperties
+        withProtectedParameters(List<RunCommandInputParameter> protectedParameters) {
         this.protectedParameters = protectedParameters;
         return this;
     }
@@ -149,7 +183,7 @@ public final class VirtualMachineRunCommandProperties {
     /**
      * Get the asyncExecution property: Optional. If set to true, provisioning will complete as soon as the script
      * starts and will not wait for script to complete.
-     *
+     * 
      * @return the asyncExecution value.
      */
     public Boolean asyncExecution() {
@@ -159,7 +193,7 @@ public final class VirtualMachineRunCommandProperties {
     /**
      * Set the asyncExecution property: Optional. If set to true, provisioning will complete as soon as the script
      * starts and will not wait for script to complete.
-     *
+     * 
      * @param asyncExecution the asyncExecution value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
@@ -170,7 +204,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Get the runAsUser property: Specifies the user account on the VM when executing the run command.
-     *
+     * 
      * @return the runAsUser value.
      */
     public String runAsUser() {
@@ -179,7 +213,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Set the runAsUser property: Specifies the user account on the VM when executing the run command.
-     *
+     * 
      * @param runAsUser the runAsUser value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
@@ -190,7 +224,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Get the runAsPassword property: Specifies the user account password on the VM when executing the run command.
-     *
+     * 
      * @return the runAsPassword value.
      */
     public String runAsPassword() {
@@ -199,7 +233,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Set the runAsPassword property: Specifies the user account password on the VM when executing the run command.
-     *
+     * 
      * @param runAsPassword the runAsPassword value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
@@ -210,7 +244,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Get the timeoutInSeconds property: The timeout in seconds to execute the run command.
-     *
+     * 
      * @return the timeoutInSeconds value.
      */
     public Integer timeoutInSeconds() {
@@ -219,7 +253,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Set the timeoutInSeconds property: The timeout in seconds to execute the run command.
-     *
+     * 
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
@@ -229,8 +263,10 @@ public final class VirtualMachineRunCommandProperties {
     }
 
     /**
-     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
-     *
+     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded. Use
+     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer outputBlobManagedIdentity parameter.
+     * 
      * @return the outputBlobUri value.
      */
     public String outputBlobUri() {
@@ -238,8 +274,10 @@ public final class VirtualMachineRunCommandProperties {
     }
 
     /**
-     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
-     *
+     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded. Use
+     * a SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer outputBlobManagedIdentity parameter.
+     * 
      * @param outputBlobUri the outputBlobUri value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
@@ -249,8 +287,10 @@ public final class VirtualMachineRunCommandProperties {
     }
 
     /**
-     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded.
-     *
+     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use a
+     * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer errorBlobManagedIdentity parameter.
+     * 
      * @return the errorBlobUri value.
      */
     public String errorBlobUri() {
@@ -258,8 +298,10 @@ public final class VirtualMachineRunCommandProperties {
     }
 
     /**
-     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded.
-     *
+     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded. Use a
+     * SAS URI with read, append, create, write access OR use managed identity to provide the VM access to the blob.
+     * Refer errorBlobManagedIdentity parameter.
+     * 
      * @param errorBlobUri the errorBlobUri value to set.
      * @return the VirtualMachineRunCommandProperties object itself.
      */
@@ -269,8 +311,71 @@ public final class VirtualMachineRunCommandProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * Get the outputBlobManagedIdentity property: User-assigned managed identity that has access to outputBlobUri
+     * storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
+     * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
+     * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     * 
+     * @return the outputBlobManagedIdentity value.
+     */
+    public RunCommandManagedIdentity outputBlobManagedIdentity() {
+        return this.outputBlobManagedIdentity;
+    }
+
+    /**
+     * Set the outputBlobManagedIdentity property: User-assigned managed identity that has access to outputBlobUri
+     * storage blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given
+     * access to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned
+     * identity, make sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     * 
+     * @param outputBlobManagedIdentity the outputBlobManagedIdentity value to set.
+     * @return the VirtualMachineRunCommandProperties object itself.
+     */
+    public VirtualMachineRunCommandProperties
+        withOutputBlobManagedIdentity(RunCommandManagedIdentity outputBlobManagedIdentity) {
+        this.outputBlobManagedIdentity = outputBlobManagedIdentity;
+        return this;
+    }
+
+    /**
+     * Get the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri storage
+     * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access
+     * to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make
+     * sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     * 
+     * @return the errorBlobManagedIdentity value.
+     */
+    public RunCommandManagedIdentity errorBlobManagedIdentity() {
+        return this.errorBlobManagedIdentity;
+    }
+
+    /**
+     * Set the errorBlobManagedIdentity property: User-assigned managed identity that has access to errorBlobUri storage
+     * blob. Use an empty object in case of system-assigned identity. Make sure managed identity has been given access
+     * to blob's container with 'Storage Blob Data Contributor' role assignment. In case of user-assigned identity, make
+     * sure you add it under VM's identity. For more info on managed identity and Run Command, refer
+     * https://aka.ms/ManagedIdentity and https://aka.ms/RunCommandManaged.
+     * 
+     * @param errorBlobManagedIdentity the errorBlobManagedIdentity value to set.
+     * @return the VirtualMachineRunCommandProperties object itself.
+     */
+    public VirtualMachineRunCommandProperties
+        withErrorBlobManagedIdentity(RunCommandManagedIdentity errorBlobManagedIdentity) {
+        this.errorBlobManagedIdentity = errorBlobManagedIdentity;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state, which only appears in the response. If
+     * treatFailureAsDeploymentFailure set to true, any failure in the script will fail the deployment and
+     * ProvisioningState will be marked as Failed. If treatFailureAsDeploymentFailure set to false, ProvisioningState
+     * would only reflect whether the run command was run or not by the extensions platform, it would not indicate
+     * whether script failed in case of script failures. See instance view of run command in case of script failures to
+     * see executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -279,7 +384,7 @@ public final class VirtualMachineRunCommandProperties {
 
     /**
      * Get the instanceView property: The virtual machine run command instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public VirtualMachineRunCommandInstanceView instanceView() {
@@ -287,8 +392,37 @@ public final class VirtualMachineRunCommandProperties {
     }
 
     /**
+     * Get the treatFailureAsDeploymentFailure property: Optional. If set to true, any failure in the script will fail
+     * the deployment and ProvisioningState will be marked as Failed. If set to false, ProvisioningState would only
+     * reflect whether the run command was run or not by the extensions platform, it would not indicate whether script
+     * failed in case of script failures. See instance view of run command in case of script failures to see
+     * executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
+     * 
+     * @return the treatFailureAsDeploymentFailure value.
+     */
+    public Boolean treatFailureAsDeploymentFailure() {
+        return this.treatFailureAsDeploymentFailure;
+    }
+
+    /**
+     * Set the treatFailureAsDeploymentFailure property: Optional. If set to true, any failure in the script will fail
+     * the deployment and ProvisioningState will be marked as Failed. If set to false, ProvisioningState would only
+     * reflect whether the run command was run or not by the extensions platform, it would not indicate whether script
+     * failed in case of script failures. See instance view of run command in case of script failures to see
+     * executionMessage, output, error: https://aka.ms/runcommandmanaged#get-execution-status-and-results.
+     * 
+     * @param treatFailureAsDeploymentFailure the treatFailureAsDeploymentFailure value to set.
+     * @return the VirtualMachineRunCommandProperties object itself.
+     */
+    public VirtualMachineRunCommandProperties
+        withTreatFailureAsDeploymentFailure(Boolean treatFailureAsDeploymentFailure) {
+        this.treatFailureAsDeploymentFailure = treatFailureAsDeploymentFailure;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -301,8 +435,100 @@ public final class VirtualMachineRunCommandProperties {
         if (protectedParameters() != null) {
             protectedParameters().forEach(e -> e.validate());
         }
+        if (outputBlobManagedIdentity() != null) {
+            outputBlobManagedIdentity().validate();
+        }
+        if (errorBlobManagedIdentity() != null) {
+            errorBlobManagedIdentity().validate();
+        }
         if (instanceView() != null) {
             instanceView().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeArrayField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("protectedParameters", this.protectedParameters,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("asyncExecution", this.asyncExecution);
+        jsonWriter.writeStringField("runAsUser", this.runAsUser);
+        jsonWriter.writeStringField("runAsPassword", this.runAsPassword);
+        jsonWriter.writeNumberField("timeoutInSeconds", this.timeoutInSeconds);
+        jsonWriter.writeStringField("outputBlobUri", this.outputBlobUri);
+        jsonWriter.writeStringField("errorBlobUri", this.errorBlobUri);
+        jsonWriter.writeJsonField("outputBlobManagedIdentity", this.outputBlobManagedIdentity);
+        jsonWriter.writeJsonField("errorBlobManagedIdentity", this.errorBlobManagedIdentity);
+        jsonWriter.writeBooleanField("treatFailureAsDeploymentFailure", this.treatFailureAsDeploymentFailure);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineRunCommandProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineRunCommandProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineRunCommandProperties.
+     */
+    public static VirtualMachineRunCommandProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineRunCommandProperties deserializedVirtualMachineRunCommandProperties
+                = new VirtualMachineRunCommandProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.source
+                        = VirtualMachineRunCommandScriptSource.fromJson(reader);
+                } else if ("parameters".equals(fieldName)) {
+                    List<RunCommandInputParameter> parameters
+                        = reader.readArray(reader1 -> RunCommandInputParameter.fromJson(reader1));
+                    deserializedVirtualMachineRunCommandProperties.parameters = parameters;
+                } else if ("protectedParameters".equals(fieldName)) {
+                    List<RunCommandInputParameter> protectedParameters
+                        = reader.readArray(reader1 -> RunCommandInputParameter.fromJson(reader1));
+                    deserializedVirtualMachineRunCommandProperties.protectedParameters = protectedParameters;
+                } else if ("asyncExecution".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.asyncExecution
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("runAsUser".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.runAsUser = reader.getString();
+                } else if ("runAsPassword".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.runAsPassword = reader.getString();
+                } else if ("timeoutInSeconds".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.timeoutInSeconds
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("outputBlobUri".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.outputBlobUri = reader.getString();
+                } else if ("errorBlobUri".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.errorBlobUri = reader.getString();
+                } else if ("outputBlobManagedIdentity".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.outputBlobManagedIdentity
+                        = RunCommandManagedIdentity.fromJson(reader);
+                } else if ("errorBlobManagedIdentity".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.errorBlobManagedIdentity
+                        = RunCommandManagedIdentity.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.provisioningState = reader.getString();
+                } else if ("instanceView".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.instanceView
+                        = VirtualMachineRunCommandInstanceView.fromJson(reader);
+                } else if ("treatFailureAsDeploymentFailure".equals(fieldName)) {
+                    deserializedVirtualMachineRunCommandProperties.treatFailureAsDeploymentFailure
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineRunCommandProperties;
+        });
     }
 }

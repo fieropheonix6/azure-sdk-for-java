@@ -4,38 +4,35 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.MongoUserDefinitionCreateUpdateParameters;
 import com.azure.resourcemanager.cosmos.models.Role;
 import java.util.Arrays;
 
-/** Samples for MongoDBResources CreateUpdateMongoUserDefinition. */
+/**
+ * Samples for MongoDBResources CreateUpdateMongoUserDefinition.
+ */
 public final class MongoDBResourcesCreateUpdateMongoUserDefinitionSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBUserDefinitionCreateUpdate.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBMongoDBUserDefinitionCreateUpdate.json
      */
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionCreateUpdate.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBUserDefinitionCreateUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .createUpdateMongoUserDefinition(
-                "myMongoUserDefinitionId",
-                "myResourceGroupName",
-                "myAccountName",
-                new MongoUserDefinitionCreateUpdateParameters()
-                    .withUsername("myUserName")
-                    .withPassword("myPassword")
+            .createUpdateMongoUserDefinition("myMongoUserDefinitionId", "myResourceGroupName", "myAccountName",
+                new MongoUserDefinitionCreateUpdateParameters().withUsername("myUserName")
+                    .withPassword("fakeTokenPlaceholder")
                     .withDatabaseName("sales")
                     .withCustomData("My custom data")
                     .withRoles(Arrays.asList(new Role().withDb("sales").withRole("myReadRole")))
                     .withMechanisms("SCRAM-SHA-256"),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

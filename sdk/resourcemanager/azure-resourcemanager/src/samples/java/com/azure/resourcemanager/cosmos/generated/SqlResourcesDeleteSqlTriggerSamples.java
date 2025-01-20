@@ -4,24 +4,26 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SqlResources DeleteSqlTrigger. */
+/**
+ * Samples for SqlResources DeleteSqlTrigger.
+ */
 public final class SqlResourcesDeleteSqlTriggerSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlTriggerDelete.json
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/CosmosDBSqlTriggerDelete
+     * .json
      */
     /**
      * Sample code: CosmosDBSqlTriggerDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlTriggerDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getSqlResources()
-            .deleteSqlTrigger("rg1", "ddb1", "databaseName", "containerName", "triggerName", Context.NONE);
+            .deleteSqlTrigger("rg1", "ddb1", "databaseName", "containerName", "triggerName",
+                com.azure.core.util.Context.NONE);
     }
 }

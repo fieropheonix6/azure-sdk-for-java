@@ -5,80 +5,91 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity SQL Data Warehouse sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("SqlDWSink")
+/**
+ * A copy activity SQL Data Warehouse sink.
+ */
 @Fluent
 public final class SqlDWSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "SqlDWSink";
+
+    /*
      * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
     /*
-     * Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression
-     * with resultType boolean).
+     * Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable. Type: boolean (or Expression with
+     * resultType boolean).
      */
-    @JsonProperty(value = "allowPolyBase")
     private Object allowPolyBase;
 
     /*
      * Specifies PolyBase-related settings when allowPolyBase is true.
      */
-    @JsonProperty(value = "polyBaseSettings")
     private PolybaseSettings polyBaseSettings;
 
     /*
      * Indicates to use Copy Command to copy data into SQL Data Warehouse. Type: boolean (or Expression with resultType
      * boolean).
      */
-    @JsonProperty(value = "allowCopyCommand")
     private Object allowCopyCommand;
 
     /*
      * Specifies Copy Command related settings when allowCopyCommand is true.
      */
-    @JsonProperty(value = "copyCommandSettings")
     private DWCopyCommandSettings copyCommandSettings;
 
     /*
      * The option to handle sink table, such as autoCreate. For now only 'autoCreate' value is supported. Type: string
      * (or Expression with resultType string).
      */
-    @JsonProperty(value = "tableOption")
     private Object tableOption;
 
     /*
      * Whether to use table lock during bulk copy. Type: boolean (or Expression with resultType boolean).
      */
-    @JsonProperty(value = "sqlWriterUseTableLock")
     private Object sqlWriterUseTableLock;
 
     /*
      * Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum (or Expression with resultType
      * SqlDWWriteBehaviorEnum)
      */
-    @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
     /*
      * SQL DW upsert settings.
      */
-    @JsonProperty(value = "upsertSettings")
     private SqlDWUpsertSettings upsertSettings;
 
-    /** Creates an instance of SqlDWSink class. */
+    /**
+     * Creates an instance of SqlDWSink class.
+     */
     public SqlDWSink() {
     }
 
     /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the preCopyScript value.
      */
     public Object preCopyScript() {
@@ -87,7 +98,7 @@ public final class SqlDWSink extends CopySink {
 
     /**
      * Set the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param preCopyScript the preCopyScript value to set.
      * @return the SqlDWSink object itself.
      */
@@ -99,7 +110,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Get the allowPolyBase property: Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable.
      * Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the allowPolyBase value.
      */
     public Object allowPolyBase() {
@@ -109,7 +120,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Set the allowPolyBase property: Indicates to use PolyBase to copy data into SQL Data Warehouse when applicable.
      * Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param allowPolyBase the allowPolyBase value to set.
      * @return the SqlDWSink object itself.
      */
@@ -120,7 +131,7 @@ public final class SqlDWSink extends CopySink {
 
     /**
      * Get the polyBaseSettings property: Specifies PolyBase-related settings when allowPolyBase is true.
-     *
+     * 
      * @return the polyBaseSettings value.
      */
     public PolybaseSettings polyBaseSettings() {
@@ -129,7 +140,7 @@ public final class SqlDWSink extends CopySink {
 
     /**
      * Set the polyBaseSettings property: Specifies PolyBase-related settings when allowPolyBase is true.
-     *
+     * 
      * @param polyBaseSettings the polyBaseSettings value to set.
      * @return the SqlDWSink object itself.
      */
@@ -141,7 +152,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Get the allowCopyCommand property: Indicates to use Copy Command to copy data into SQL Data Warehouse. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the allowCopyCommand value.
      */
     public Object allowCopyCommand() {
@@ -151,7 +162,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Set the allowCopyCommand property: Indicates to use Copy Command to copy data into SQL Data Warehouse. Type:
      * boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param allowCopyCommand the allowCopyCommand value to set.
      * @return the SqlDWSink object itself.
      */
@@ -162,7 +173,7 @@ public final class SqlDWSink extends CopySink {
 
     /**
      * Get the copyCommandSettings property: Specifies Copy Command related settings when allowCopyCommand is true.
-     *
+     * 
      * @return the copyCommandSettings value.
      */
     public DWCopyCommandSettings copyCommandSettings() {
@@ -171,7 +182,7 @@ public final class SqlDWSink extends CopySink {
 
     /**
      * Set the copyCommandSettings property: Specifies Copy Command related settings when allowCopyCommand is true.
-     *
+     * 
      * @param copyCommandSettings the copyCommandSettings value to set.
      * @return the SqlDWSink object itself.
      */
@@ -183,7 +194,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Get the tableOption property: The option to handle sink table, such as autoCreate. For now only 'autoCreate'
      * value is supported. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableOption value.
      */
     public Object tableOption() {
@@ -193,7 +204,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Set the tableOption property: The option to handle sink table, such as autoCreate. For now only 'autoCreate'
      * value is supported. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableOption the tableOption value to set.
      * @return the SqlDWSink object itself.
      */
@@ -205,7 +216,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Get the sqlWriterUseTableLock property: Whether to use table lock during bulk copy. Type: boolean (or Expression
      * with resultType boolean).
-     *
+     * 
      * @return the sqlWriterUseTableLock value.
      */
     public Object sqlWriterUseTableLock() {
@@ -215,7 +226,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Set the sqlWriterUseTableLock property: Whether to use table lock during bulk copy. Type: boolean (or Expression
      * with resultType boolean).
-     *
+     * 
      * @param sqlWriterUseTableLock the sqlWriterUseTableLock value to set.
      * @return the SqlDWSink object itself.
      */
@@ -227,7 +238,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Get the writeBehavior property: Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum
      * (or Expression with resultType SqlDWWriteBehaviorEnum).
-     *
+     * 
      * @return the writeBehavior value.
      */
     public Object writeBehavior() {
@@ -237,7 +248,7 @@ public final class SqlDWSink extends CopySink {
     /**
      * Set the writeBehavior property: Write behavior when copying data into azure SQL DW. Type: SqlDWWriteBehaviorEnum
      * (or Expression with resultType SqlDWWriteBehaviorEnum).
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the SqlDWSink object itself.
      */
@@ -248,7 +259,7 @@ public final class SqlDWSink extends CopySink {
 
     /**
      * Get the upsertSettings property: SQL DW upsert settings.
-     *
+     * 
      * @return the upsertSettings value.
      */
     public SqlDWUpsertSettings upsertSettings() {
@@ -257,7 +268,7 @@ public final class SqlDWSink extends CopySink {
 
     /**
      * Set the upsertSettings property: SQL DW upsert settings.
-     *
+     * 
      * @param upsertSettings the upsertSettings value to set.
      * @return the SqlDWSink object itself.
      */
@@ -266,42 +277,54 @@ public final class SqlDWSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDWSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDWSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDWSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDWSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDWSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDWSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -310,12 +333,11 @@ public final class SqlDWSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (polyBaseSettings() != null) {
             polyBaseSettings().validate();
         }
@@ -325,5 +347,97 @@ public final class SqlDWSink extends CopySink {
         if (upsertSettings() != null) {
             upsertSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        jsonWriter.writeUntypedField("allowPolyBase", this.allowPolyBase);
+        jsonWriter.writeJsonField("polyBaseSettings", this.polyBaseSettings);
+        jsonWriter.writeUntypedField("allowCopyCommand", this.allowCopyCommand);
+        jsonWriter.writeJsonField("copyCommandSettings", this.copyCommandSettings);
+        jsonWriter.writeUntypedField("tableOption", this.tableOption);
+        jsonWriter.writeUntypedField("sqlWriterUseTableLock", this.sqlWriterUseTableLock);
+        jsonWriter.writeUntypedField("writeBehavior", this.writeBehavior);
+        jsonWriter.writeJsonField("upsertSettings", this.upsertSettings);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlDWSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlDWSink if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SqlDWSink.
+     */
+    public static SqlDWSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlDWSink deserializedSqlDWSink = new SqlDWSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedSqlDWSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedSqlDWSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedSqlDWSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedSqlDWSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedSqlDWSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedSqlDWSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedSqlDWSink.type = reader.getString();
+                } else if ("preCopyScript".equals(fieldName)) {
+                    deserializedSqlDWSink.preCopyScript = reader.readUntyped();
+                } else if ("allowPolyBase".equals(fieldName)) {
+                    deserializedSqlDWSink.allowPolyBase = reader.readUntyped();
+                } else if ("polyBaseSettings".equals(fieldName)) {
+                    deserializedSqlDWSink.polyBaseSettings = PolybaseSettings.fromJson(reader);
+                } else if ("allowCopyCommand".equals(fieldName)) {
+                    deserializedSqlDWSink.allowCopyCommand = reader.readUntyped();
+                } else if ("copyCommandSettings".equals(fieldName)) {
+                    deserializedSqlDWSink.copyCommandSettings = DWCopyCommandSettings.fromJson(reader);
+                } else if ("tableOption".equals(fieldName)) {
+                    deserializedSqlDWSink.tableOption = reader.readUntyped();
+                } else if ("sqlWriterUseTableLock".equals(fieldName)) {
+                    deserializedSqlDWSink.sqlWriterUseTableLock = reader.readUntyped();
+                } else if ("writeBehavior".equals(fieldName)) {
+                    deserializedSqlDWSink.writeBehavior = reader.readUntyped();
+                } else if ("upsertSettings".equals(fieldName)) {
+                    deserializedSqlDWSink.upsertSettings = SqlDWUpsertSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSqlDWSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedSqlDWSink;
+        });
     }
 }

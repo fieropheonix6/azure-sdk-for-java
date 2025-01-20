@@ -5,38 +5,61 @@
 package com.azure.resourcemanager.logic.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MapType. */
+/**
+ * The map type.
+ */
 public final class MapType extends ExpandableStringEnum<MapType> {
-    /** Static value NotSpecified for MapType. */
+    /**
+     * Static value NotSpecified for MapType.
+     */
     public static final MapType NOT_SPECIFIED = fromString("NotSpecified");
 
-    /** Static value Xslt for MapType. */
+    /**
+     * Static value Xslt for MapType.
+     */
     public static final MapType XSLT = fromString("Xslt");
 
-    /** Static value Xslt20 for MapType. */
+    /**
+     * Static value Xslt20 for MapType.
+     */
     public static final MapType XSLT20 = fromString("Xslt20");
 
-    /** Static value Xslt30 for MapType. */
+    /**
+     * Static value Xslt30 for MapType.
+     */
     public static final MapType XSLT30 = fromString("Xslt30");
 
-    /** Static value Liquid for MapType. */
+    /**
+     * Static value Liquid for MapType.
+     */
     public static final MapType LIQUID = fromString("Liquid");
 
     /**
+     * Creates a new instance of MapType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MapType() {
+    }
+
+    /**
      * Creates or finds a MapType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MapType.
      */
-    @JsonCreator
     public static MapType fromString(String name) {
         return fromString(name, MapType.class);
     }
 
-    /** @return known MapType values. */
+    /**
+     * Gets known MapType values.
+     * 
+     * @return known MapType values.
+     */
     public static Collection<MapType> values() {
         return values(MapType.class);
     }

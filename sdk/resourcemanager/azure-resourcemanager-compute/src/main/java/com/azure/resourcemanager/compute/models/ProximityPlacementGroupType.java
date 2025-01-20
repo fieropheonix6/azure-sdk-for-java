@@ -5,35 +5,45 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Specifies the type of the proximity placement group. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt;
- * **Standard** : Co-locate resources within an Azure region or Availability Zone. &lt;br&gt;&lt;br&gt; **Ultra** : For
- * future use.
+ * Specifies the type of the proximity placement group. Possible values are: **Standard** : Co-locate resources within
+ * an Azure region or Availability Zone. **Ultra** : For future use.
  */
 public final class ProximityPlacementGroupType extends ExpandableStringEnum<ProximityPlacementGroupType> {
-    /** Static value Standard for ProximityPlacementGroupType. */
+    /**
+     * Static value Standard for ProximityPlacementGroupType.
+     */
     public static final ProximityPlacementGroupType STANDARD = fromString("Standard");
 
-    /** Static value Ultra for ProximityPlacementGroupType. */
+    /**
+     * Static value Ultra for ProximityPlacementGroupType.
+     */
     public static final ProximityPlacementGroupType ULTRA = fromString("Ultra");
 
     /**
+     * Creates a new instance of ProximityPlacementGroupType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ProximityPlacementGroupType() {
+    }
+
+    /**
      * Creates or finds a ProximityPlacementGroupType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProximityPlacementGroupType.
      */
-    @JsonCreator
     public static ProximityPlacementGroupType fromString(String name) {
         return fromString(name, ProximityPlacementGroupType.class);
     }
 
     /**
      * Gets known ProximityPlacementGroupType values.
-     *
+     * 
      * @return known ProximityPlacementGroupType values.
      */
     public static Collection<ProximityPlacementGroupType> values() {

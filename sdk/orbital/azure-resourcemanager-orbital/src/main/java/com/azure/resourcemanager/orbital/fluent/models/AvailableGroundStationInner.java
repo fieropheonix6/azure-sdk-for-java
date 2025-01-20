@@ -5,44 +5,53 @@
 package com.azure.resourcemanager.orbital.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.orbital.models.ReleaseMode;
+import java.io.IOException;
 
-/** Ground Stations available to schedule Contacts. */
+/**
+ * Ground Stations available to schedule Contacts.
+ */
 @Fluent
-public final class AvailableGroundStationInner {
+public final class AvailableGroundStationInner implements JsonSerializable<AvailableGroundStationInner> {
     /*
      * ID of groundStation.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * Name of the ground station.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Azure region.
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * The properties bag for this resource.
      */
-    @JsonProperty(value = "properties")
-    private AvailableGroundStationProperties innerProperties;
+    private AvailableGroundStationProperties innerProperties = new AvailableGroundStationProperties();
+
+    /**
+     * Creates an instance of AvailableGroundStationInner class.
+     */
+    public AvailableGroundStationInner() {
+    }
 
     /**
      * Get the id property: ID of groundStation.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -51,7 +60,7 @@ public final class AvailableGroundStationInner {
 
     /**
      * Get the name property: Name of the ground station.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +69,7 @@ public final class AvailableGroundStationInner {
 
     /**
      * Get the location property: Azure region.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -69,7 +78,7 @@ public final class AvailableGroundStationInner {
 
     /**
      * Set the location property: Azure region.
-     *
+     * 
      * @param location the location value to set.
      * @return the AvailableGroundStationInner object itself.
      */
@@ -80,7 +89,7 @@ public final class AvailableGroundStationInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -89,7 +98,7 @@ public final class AvailableGroundStationInner {
 
     /**
      * Get the innerProperties property: The properties bag for this resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AvailableGroundStationProperties innerProperties() {
@@ -97,13 +106,204 @@ public final class AvailableGroundStationInner {
     }
 
     /**
+     * Get the city property: City of ground station.
+     * 
+     * @return the city value.
+     */
+    public String city() {
+        return this.innerProperties() == null ? null : this.innerProperties().city();
+    }
+
+    /**
+     * Set the city property: City of ground station.
+     * 
+     * @param city the city value to set.
+     * @return the AvailableGroundStationInner object itself.
+     */
+    public AvailableGroundStationInner withCity(String city) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailableGroundStationProperties();
+        }
+        this.innerProperties().withCity(city);
+        return this;
+    }
+
+    /**
+     * Get the providerName property: Ground station provider name.
+     * 
+     * @return the providerName value.
+     */
+    public String providerName() {
+        return this.innerProperties() == null ? null : this.innerProperties().providerName();
+    }
+
+    /**
+     * Set the providerName property: Ground station provider name.
+     * 
+     * @param providerName the providerName value to set.
+     * @return the AvailableGroundStationInner object itself.
+     */
+    public AvailableGroundStationInner withProviderName(String providerName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailableGroundStationProperties();
+        }
+        this.innerProperties().withProviderName(providerName);
+        return this;
+    }
+
+    /**
+     * Get the longitudeDegrees property: Longitude of the ground station in decimal degrees.
+     * 
+     * @return the longitudeDegrees value.
+     */
+    public Float longitudeDegrees() {
+        return this.innerProperties() == null ? null : this.innerProperties().longitudeDegrees();
+    }
+
+    /**
+     * Set the longitudeDegrees property: Longitude of the ground station in decimal degrees.
+     * 
+     * @param longitudeDegrees the longitudeDegrees value to set.
+     * @return the AvailableGroundStationInner object itself.
+     */
+    public AvailableGroundStationInner withLongitudeDegrees(Float longitudeDegrees) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailableGroundStationProperties();
+        }
+        this.innerProperties().withLongitudeDegrees(longitudeDegrees);
+        return this;
+    }
+
+    /**
+     * Get the latitudeDegrees property: Latitude of the ground station in decimal degrees.
+     * 
+     * @return the latitudeDegrees value.
+     */
+    public Float latitudeDegrees() {
+        return this.innerProperties() == null ? null : this.innerProperties().latitudeDegrees();
+    }
+
+    /**
+     * Set the latitudeDegrees property: Latitude of the ground station in decimal degrees.
+     * 
+     * @param latitudeDegrees the latitudeDegrees value to set.
+     * @return the AvailableGroundStationInner object itself.
+     */
+    public AvailableGroundStationInner withLatitudeDegrees(Float latitudeDegrees) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailableGroundStationProperties();
+        }
+        this.innerProperties().withLatitudeDegrees(latitudeDegrees);
+        return this;
+    }
+
+    /**
+     * Get the altitudeMeters property: Altitude of the ground station.
+     * 
+     * @return the altitudeMeters value.
+     */
+    public Float altitudeMeters() {
+        return this.innerProperties() == null ? null : this.innerProperties().altitudeMeters();
+    }
+
+    /**
+     * Set the altitudeMeters property: Altitude of the ground station.
+     * 
+     * @param altitudeMeters the altitudeMeters value to set.
+     * @return the AvailableGroundStationInner object itself.
+     */
+    public AvailableGroundStationInner withAltitudeMeters(Float altitudeMeters) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailableGroundStationProperties();
+        }
+        this.innerProperties().withAltitudeMeters(altitudeMeters);
+        return this;
+    }
+
+    /**
+     * Get the releaseMode property: Release Status of a ground station.
+     * 
+     * @return the releaseMode value.
+     */
+    public ReleaseMode releaseMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().releaseMode();
+    }
+
+    /**
+     * Set the releaseMode property: Release Status of a ground station.
+     * 
+     * @param releaseMode the releaseMode value to set.
+     * @return the AvailableGroundStationInner object itself.
+     */
+    public AvailableGroundStationInner withReleaseMode(ReleaseMode releaseMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AvailableGroundStationProperties();
+        }
+        this.innerProperties().withReleaseMode(releaseMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model AvailableGroundStationInner"));
+        } else {
             innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AvailableGroundStationInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableGroundStationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableGroundStationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AvailableGroundStationInner.
+     */
+    public static AvailableGroundStationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableGroundStationInner deserializedAvailableGroundStationInner = new AvailableGroundStationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedAvailableGroundStationInner.innerProperties
+                        = AvailableGroundStationProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedAvailableGroundStationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAvailableGroundStationInner.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedAvailableGroundStationInner.location = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAvailableGroundStationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableGroundStationInner;
+        });
     }
 }

@@ -5,115 +5,147 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
+import com.azure.resourcemanager.azurestackhci.models.ConnectivityStatus;
+import com.azure.resourcemanager.azurestackhci.models.IsolatedVmAttestationConfiguration;
+import com.azure.resourcemanager.azurestackhci.models.LogCollectionProperties;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
+import com.azure.resourcemanager.azurestackhci.models.RemoteSupportProperties;
+import com.azure.resourcemanager.azurestackhci.models.SoftwareAssuranceProperties;
 import com.azure.resourcemanager.azurestackhci.models.Status;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Cluster properties. */
+/**
+ * Cluster properties.
+ */
 @Fluent
-public final class ClusterProperties {
+public final class ClusterProperties implements JsonSerializable<ClusterProperties> {
     /*
      * Provisioning state.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Status of the cluster agent.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
+
+    /*
+     * Overall connectivity status for the cluster resource.
+     */
+    private ConnectivityStatus connectivityStatus;
 
     /*
      * Unique, immutable resource id.
      */
-    @JsonProperty(value = "cloudId", access = JsonProperty.Access.WRITE_ONLY)
     private String cloudId;
 
     /*
      * Endpoint configured for management from the Azure portal.
      */
-    @JsonProperty(value = "cloudManagementEndpoint")
     private String cloudManagementEndpoint;
 
     /*
      * App id of cluster AAD identity.
      */
-    @JsonProperty(value = "aadClientId")
     private String aadClientId;
 
     /*
      * Tenant id of cluster AAD identity.
      */
-    @JsonProperty(value = "aadTenantId")
     private String aadTenantId;
 
     /*
      * Object id of cluster AAD identity.
      */
-    @JsonProperty(value = "aadApplicationObjectId")
     private String aadApplicationObjectId;
 
     /*
      * Id of cluster identity service principal.
      */
-    @JsonProperty(value = "aadServicePrincipalObjectId")
     private String aadServicePrincipalObjectId;
+
+    /*
+     * Software Assurance properties of the cluster.
+     */
+    private SoftwareAssuranceProperties softwareAssuranceProperties;
+
+    /*
+     * Log Collection properties of the cluster.
+     */
+    private LogCollectionProperties logCollectionProperties;
+
+    /*
+     * RemoteSupport properties of the cluster.
+     */
+    private RemoteSupportProperties remoteSupportProperties;
 
     /*
      * Desired properties of the cluster.
      */
-    @JsonProperty(value = "desiredProperties")
     private ClusterDesiredProperties desiredProperties;
 
     /*
      * Properties reported by cluster agent.
      */
-    @JsonProperty(value = "reportedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private ClusterReportedProperties reportedProperties;
+
+    /*
+     * Attestation configurations for isolated VM (e.g. TVM, CVM) of the cluster.
+     */
+    private IsolatedVmAttestationConfiguration isolatedVmAttestationConfiguration;
 
     /*
      * Number of days remaining in the trial period.
      */
-    @JsonProperty(value = "trialDaysRemaining", access = JsonProperty.Access.WRITE_ONLY)
     private Float trialDaysRemaining;
 
     /*
      * Type of billing applied to the resource.
      */
-    @JsonProperty(value = "billingModel", access = JsonProperty.Access.WRITE_ONLY)
     private String billingModel;
 
     /*
      * First cluster sync timestamp.
      */
-    @JsonProperty(value = "registrationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime registrationTimestamp;
 
     /*
      * Most recent cluster sync timestamp.
      */
-    @JsonProperty(value = "lastSyncTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTimestamp;
 
     /*
      * Most recent billing meter timestamp.
      */
-    @JsonProperty(value = "lastBillingTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastBillingTimestamp;
 
     /*
      * Region specific DataPath Endpoint of the cluster.
      */
-    @JsonProperty(value = "serviceEndpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String serviceEndpoint;
+
+    /*
+     * Object id of RP Service Principal
+     */
+    private String resourceProviderObjectId;
+
+    /**
+     * Creates an instance of ClusterProperties class.
+     */
+    public ClusterProperties() {
+    }
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -122,7 +154,7 @@ public final class ClusterProperties {
 
     /**
      * Get the status property: Status of the cluster agent.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -130,8 +162,17 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the connectivityStatus property: Overall connectivity status for the cluster resource.
+     * 
+     * @return the connectivityStatus value.
+     */
+    public ConnectivityStatus connectivityStatus() {
+        return this.connectivityStatus;
+    }
+
+    /**
      * Get the cloudId property: Unique, immutable resource id.
-     *
+     * 
      * @return the cloudId value.
      */
     public String cloudId() {
@@ -140,7 +181,7 @@ public final class ClusterProperties {
 
     /**
      * Get the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
-     *
+     * 
      * @return the cloudManagementEndpoint value.
      */
     public String cloudManagementEndpoint() {
@@ -149,7 +190,7 @@ public final class ClusterProperties {
 
     /**
      * Set the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
-     *
+     * 
      * @param cloudManagementEndpoint the cloudManagementEndpoint value to set.
      * @return the ClusterProperties object itself.
      */
@@ -160,7 +201,7 @@ public final class ClusterProperties {
 
     /**
      * Get the aadClientId property: App id of cluster AAD identity.
-     *
+     * 
      * @return the aadClientId value.
      */
     public String aadClientId() {
@@ -169,7 +210,7 @@ public final class ClusterProperties {
 
     /**
      * Set the aadClientId property: App id of cluster AAD identity.
-     *
+     * 
      * @param aadClientId the aadClientId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -180,7 +221,7 @@ public final class ClusterProperties {
 
     /**
      * Get the aadTenantId property: Tenant id of cluster AAD identity.
-     *
+     * 
      * @return the aadTenantId value.
      */
     public String aadTenantId() {
@@ -189,7 +230,7 @@ public final class ClusterProperties {
 
     /**
      * Set the aadTenantId property: Tenant id of cluster AAD identity.
-     *
+     * 
      * @param aadTenantId the aadTenantId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -200,7 +241,7 @@ public final class ClusterProperties {
 
     /**
      * Get the aadApplicationObjectId property: Object id of cluster AAD identity.
-     *
+     * 
      * @return the aadApplicationObjectId value.
      */
     public String aadApplicationObjectId() {
@@ -209,7 +250,7 @@ public final class ClusterProperties {
 
     /**
      * Set the aadApplicationObjectId property: Object id of cluster AAD identity.
-     *
+     * 
      * @param aadApplicationObjectId the aadApplicationObjectId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -220,7 +261,7 @@ public final class ClusterProperties {
 
     /**
      * Get the aadServicePrincipalObjectId property: Id of cluster identity service principal.
-     *
+     * 
      * @return the aadServicePrincipalObjectId value.
      */
     public String aadServicePrincipalObjectId() {
@@ -229,7 +270,7 @@ public final class ClusterProperties {
 
     /**
      * Set the aadServicePrincipalObjectId property: Id of cluster identity service principal.
-     *
+     * 
      * @param aadServicePrincipalObjectId the aadServicePrincipalObjectId value to set.
      * @return the ClusterProperties object itself.
      */
@@ -239,8 +280,68 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the softwareAssuranceProperties property: Software Assurance properties of the cluster.
+     * 
+     * @return the softwareAssuranceProperties value.
+     */
+    public SoftwareAssuranceProperties softwareAssuranceProperties() {
+        return this.softwareAssuranceProperties;
+    }
+
+    /**
+     * Set the softwareAssuranceProperties property: Software Assurance properties of the cluster.
+     * 
+     * @param softwareAssuranceProperties the softwareAssuranceProperties value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withSoftwareAssuranceProperties(SoftwareAssuranceProperties softwareAssuranceProperties) {
+        this.softwareAssuranceProperties = softwareAssuranceProperties;
+        return this;
+    }
+
+    /**
+     * Get the logCollectionProperties property: Log Collection properties of the cluster.
+     * 
+     * @return the logCollectionProperties value.
+     */
+    public LogCollectionProperties logCollectionProperties() {
+        return this.logCollectionProperties;
+    }
+
+    /**
+     * Set the logCollectionProperties property: Log Collection properties of the cluster.
+     * 
+     * @param logCollectionProperties the logCollectionProperties value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withLogCollectionProperties(LogCollectionProperties logCollectionProperties) {
+        this.logCollectionProperties = logCollectionProperties;
+        return this;
+    }
+
+    /**
+     * Get the remoteSupportProperties property: RemoteSupport properties of the cluster.
+     * 
+     * @return the remoteSupportProperties value.
+     */
+    public RemoteSupportProperties remoteSupportProperties() {
+        return this.remoteSupportProperties;
+    }
+
+    /**
+     * Set the remoteSupportProperties property: RemoteSupport properties of the cluster.
+     * 
+     * @param remoteSupportProperties the remoteSupportProperties value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withRemoteSupportProperties(RemoteSupportProperties remoteSupportProperties) {
+        this.remoteSupportProperties = remoteSupportProperties;
+        return this;
+    }
+
+    /**
      * Get the desiredProperties property: Desired properties of the cluster.
-     *
+     * 
      * @return the desiredProperties value.
      */
     public ClusterDesiredProperties desiredProperties() {
@@ -249,7 +350,7 @@ public final class ClusterProperties {
 
     /**
      * Set the desiredProperties property: Desired properties of the cluster.
-     *
+     * 
      * @param desiredProperties the desiredProperties value to set.
      * @return the ClusterProperties object itself.
      */
@@ -260,7 +361,7 @@ public final class ClusterProperties {
 
     /**
      * Get the reportedProperties property: Properties reported by cluster agent.
-     *
+     * 
      * @return the reportedProperties value.
      */
     public ClusterReportedProperties reportedProperties() {
@@ -268,8 +369,18 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the isolatedVmAttestationConfiguration property: Attestation configurations for isolated VM (e.g. TVM, CVM)
+     * of the cluster.
+     * 
+     * @return the isolatedVmAttestationConfiguration value.
+     */
+    public IsolatedVmAttestationConfiguration isolatedVmAttestationConfiguration() {
+        return this.isolatedVmAttestationConfiguration;
+    }
+
+    /**
      * Get the trialDaysRemaining property: Number of days remaining in the trial period.
-     *
+     * 
      * @return the trialDaysRemaining value.
      */
     public Float trialDaysRemaining() {
@@ -278,7 +389,7 @@ public final class ClusterProperties {
 
     /**
      * Get the billingModel property: Type of billing applied to the resource.
-     *
+     * 
      * @return the billingModel value.
      */
     public String billingModel() {
@@ -287,7 +398,7 @@ public final class ClusterProperties {
 
     /**
      * Get the registrationTimestamp property: First cluster sync timestamp.
-     *
+     * 
      * @return the registrationTimestamp value.
      */
     public OffsetDateTime registrationTimestamp() {
@@ -296,7 +407,7 @@ public final class ClusterProperties {
 
     /**
      * Get the lastSyncTimestamp property: Most recent cluster sync timestamp.
-     *
+     * 
      * @return the lastSyncTimestamp value.
      */
     public OffsetDateTime lastSyncTimestamp() {
@@ -305,7 +416,7 @@ public final class ClusterProperties {
 
     /**
      * Get the lastBillingTimestamp property: Most recent billing meter timestamp.
-     *
+     * 
      * @return the lastBillingTimestamp value.
      */
     public OffsetDateTime lastBillingTimestamp() {
@@ -314,7 +425,7 @@ public final class ClusterProperties {
 
     /**
      * Get the serviceEndpoint property: Region specific DataPath Endpoint of the cluster.
-     *
+     * 
      * @return the serviceEndpoint value.
      */
     public String serviceEndpoint() {
@@ -322,16 +433,129 @@ public final class ClusterProperties {
     }
 
     /**
+     * Get the resourceProviderObjectId property: Object id of RP Service Principal.
+     * 
+     * @return the resourceProviderObjectId value.
+     */
+    public String resourceProviderObjectId() {
+        return this.resourceProviderObjectId;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (softwareAssuranceProperties() != null) {
+            softwareAssuranceProperties().validate();
+        }
+        if (logCollectionProperties() != null) {
+            logCollectionProperties().validate();
+        }
+        if (remoteSupportProperties() != null) {
+            remoteSupportProperties().validate();
+        }
         if (desiredProperties() != null) {
             desiredProperties().validate();
         }
         if (reportedProperties() != null) {
             reportedProperties().validate();
         }
+        if (isolatedVmAttestationConfiguration() != null) {
+            isolatedVmAttestationConfiguration().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("cloudManagementEndpoint", this.cloudManagementEndpoint);
+        jsonWriter.writeStringField("aadClientId", this.aadClientId);
+        jsonWriter.writeStringField("aadTenantId", this.aadTenantId);
+        jsonWriter.writeStringField("aadApplicationObjectId", this.aadApplicationObjectId);
+        jsonWriter.writeStringField("aadServicePrincipalObjectId", this.aadServicePrincipalObjectId);
+        jsonWriter.writeJsonField("softwareAssuranceProperties", this.softwareAssuranceProperties);
+        jsonWriter.writeJsonField("logCollectionProperties", this.logCollectionProperties);
+        jsonWriter.writeJsonField("remoteSupportProperties", this.remoteSupportProperties);
+        jsonWriter.writeJsonField("desiredProperties", this.desiredProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterProperties.
+     */
+    public static ClusterProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterProperties deserializedClusterProperties = new ClusterProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedClusterProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("status".equals(fieldName)) {
+                    deserializedClusterProperties.status = Status.fromString(reader.getString());
+                } else if ("connectivityStatus".equals(fieldName)) {
+                    deserializedClusterProperties.connectivityStatus
+                        = ConnectivityStatus.fromString(reader.getString());
+                } else if ("cloudId".equals(fieldName)) {
+                    deserializedClusterProperties.cloudId = reader.getString();
+                } else if ("cloudManagementEndpoint".equals(fieldName)) {
+                    deserializedClusterProperties.cloudManagementEndpoint = reader.getString();
+                } else if ("aadClientId".equals(fieldName)) {
+                    deserializedClusterProperties.aadClientId = reader.getString();
+                } else if ("aadTenantId".equals(fieldName)) {
+                    deserializedClusterProperties.aadTenantId = reader.getString();
+                } else if ("aadApplicationObjectId".equals(fieldName)) {
+                    deserializedClusterProperties.aadApplicationObjectId = reader.getString();
+                } else if ("aadServicePrincipalObjectId".equals(fieldName)) {
+                    deserializedClusterProperties.aadServicePrincipalObjectId = reader.getString();
+                } else if ("softwareAssuranceProperties".equals(fieldName)) {
+                    deserializedClusterProperties.softwareAssuranceProperties
+                        = SoftwareAssuranceProperties.fromJson(reader);
+                } else if ("logCollectionProperties".equals(fieldName)) {
+                    deserializedClusterProperties.logCollectionProperties = LogCollectionProperties.fromJson(reader);
+                } else if ("remoteSupportProperties".equals(fieldName)) {
+                    deserializedClusterProperties.remoteSupportProperties = RemoteSupportProperties.fromJson(reader);
+                } else if ("desiredProperties".equals(fieldName)) {
+                    deserializedClusterProperties.desiredProperties = ClusterDesiredProperties.fromJson(reader);
+                } else if ("reportedProperties".equals(fieldName)) {
+                    deserializedClusterProperties.reportedProperties = ClusterReportedProperties.fromJson(reader);
+                } else if ("isolatedVmAttestationConfiguration".equals(fieldName)) {
+                    deserializedClusterProperties.isolatedVmAttestationConfiguration
+                        = IsolatedVmAttestationConfiguration.fromJson(reader);
+                } else if ("trialDaysRemaining".equals(fieldName)) {
+                    deserializedClusterProperties.trialDaysRemaining = reader.getNullable(JsonReader::getFloat);
+                } else if ("billingModel".equals(fieldName)) {
+                    deserializedClusterProperties.billingModel = reader.getString();
+                } else if ("registrationTimestamp".equals(fieldName)) {
+                    deserializedClusterProperties.registrationTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastSyncTimestamp".equals(fieldName)) {
+                    deserializedClusterProperties.lastSyncTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastBillingTimestamp".equals(fieldName)) {
+                    deserializedClusterProperties.lastBillingTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("serviceEndpoint".equals(fieldName)) {
+                    deserializedClusterProperties.serviceEndpoint = reader.getString();
+                } else if ("resourceProviderObjectId".equals(fieldName)) {
+                    deserializedClusterProperties.resourceProviderObjectId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterProperties;
+        });
     }
 }

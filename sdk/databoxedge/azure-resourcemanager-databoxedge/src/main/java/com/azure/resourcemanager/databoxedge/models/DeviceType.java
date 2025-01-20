@@ -5,26 +5,41 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeviceType. */
+/**
+ * The type of the Data Box Edge/Gateway device.
+ */
 public final class DeviceType extends ExpandableStringEnum<DeviceType> {
-    /** Static value DataBoxEdgeDevice for DeviceType. */
+    /**
+     * Static value DataBoxEdgeDevice for DeviceType.
+     */
     public static final DeviceType DATA_BOX_EDGE_DEVICE = fromString("DataBoxEdgeDevice");
 
     /**
+     * Creates a new instance of DeviceType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DeviceType() {
+    }
+
+    /**
      * Creates or finds a DeviceType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DeviceType.
      */
-    @JsonCreator
     public static DeviceType fromString(String name) {
         return fromString(name, DeviceType.class);
     }
 
-    /** @return known DeviceType values. */
+    /**
+     * Gets known DeviceType values.
+     * 
+     * @return known DeviceType values.
+     */
     public static Collection<DeviceType> values() {
         return values(DeviceType.class);
     }

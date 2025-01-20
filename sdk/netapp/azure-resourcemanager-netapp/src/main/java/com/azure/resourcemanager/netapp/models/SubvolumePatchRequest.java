@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.fluent.models.SubvolumePatchParams;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Subvolume Patch Request properties. */
+/**
+ * Subvolume Patch Request properties.
+ */
 @Fluent
-public final class SubvolumePatchRequest {
+public final class SubvolumePatchRequest implements JsonSerializable<SubvolumePatchRequest> {
     /*
      * Subvolume Properties
      */
-    @JsonProperty(value = "properties")
     private SubvolumePatchParams innerProperties;
 
     /**
+     * Creates an instance of SubvolumePatchRequest class.
+     */
+    public SubvolumePatchRequest() {
+    }
+
+    /**
      * Get the innerProperties property: Subvolume Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubvolumePatchParams innerProperties() {
@@ -27,10 +38,8 @@ public final class SubvolumePatchRequest {
     }
 
     /**
-     * Get the size property: size
-     *
-     * <p>Truncate subvolume to the provided size in bytes.
-     *
+     * Get the size property: Truncate subvolume to the provided size in bytes.
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -38,10 +47,8 @@ public final class SubvolumePatchRequest {
     }
 
     /**
-     * Set the size property: size
-     *
-     * <p>Truncate subvolume to the provided size in bytes.
-     *
+     * Set the size property: Truncate subvolume to the provided size in bytes.
+     * 
      * @param size the size value to set.
      * @return the SubvolumePatchRequest object itself.
      */
@@ -54,10 +61,8 @@ public final class SubvolumePatchRequest {
     }
 
     /**
-     * Get the path property: path
-     *
-     * <p>path to the subvolume.
-     *
+     * Get the path property: path to the subvolume.
+     * 
      * @return the path value.
      */
     public String path() {
@@ -65,10 +70,8 @@ public final class SubvolumePatchRequest {
     }
 
     /**
-     * Set the path property: path
-     *
-     * <p>path to the subvolume.
-     *
+     * Set the path property: path to the subvolume.
+     * 
      * @param path the path value to set.
      * @return the SubvolumePatchRequest object itself.
      */
@@ -82,12 +85,48 @@ public final class SubvolumePatchRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubvolumePatchRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubvolumePatchRequest if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubvolumePatchRequest.
+     */
+    public static SubvolumePatchRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubvolumePatchRequest deserializedSubvolumePatchRequest = new SubvolumePatchRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSubvolumePatchRequest.innerProperties = SubvolumePatchParams.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubvolumePatchRequest;
+        });
     }
 }

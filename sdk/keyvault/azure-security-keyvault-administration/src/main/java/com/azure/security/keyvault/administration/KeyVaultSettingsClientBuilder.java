@@ -30,12 +30,14 @@ import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.HttpClientOptions;
+import com.azure.core.util.TracingOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.tracing.Tracer;
+import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
-import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImplBuilder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -46,27 +48,66 @@ import java.util.stream.Collectors;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
- * {@link KeyVaultSettingsAsyncClient} and {@link KeyVaultSettingsClient}, by calling
- * {@link KeyVaultSettingsClientBuilder#buildAsyncClient()} and {@link KeyVaultSettingsClientBuilder#buildImplClient()}
- * respectively. It constructs an instance of the desired client.
+ * {@link KeyVaultSettingsAsyncClient settings async client} and {@link KeyVaultSettingsClient settings client}, by
+ * calling {@link KeyVaultSettingsClientBuilder#buildAsyncClient() buildAsyncClient} and
+ * {@link KeyVaultSettingsClientBuilder#buildClient() buildClient} respectively. It constructs an instance of the
+ * desired client.
  *
- * <p> The minimal configuration options required by {@link KeyVaultSettingsClientBuilder} to build a client are
- * {@link String vaultUrl} and {@link TokenCredential credential}.</p>
+ * <p> The minimal configuration options required by {@link  KeyVaultSettingsClientBuilder} to build a
+ * {@link  KeyVaultSettingsAsyncClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation -->
+ * <pre>
+ * KeyVaultSettingsAsyncClient keyVaultSettingsAsyncClient = new KeyVaultSettingsClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation -->
+ *
+ * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
+ * {@link HttpClient http client} can be optionally configured in the {@link  KeyVaultSettingsClientBuilder}.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation.withHttpClient -->
+ * <pre>
+ * KeyVaultSettingsAsyncClient keyVaultSettingsAsyncClient = new KeyVaultSettingsClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultSettingsAsyncClient.instantiation.withHttpClient -->
+ *
+ * <p> The minimal configuration options required by {@link  KeyVaultSettingsClientBuilder} to build a
+ * {@link  KeyVaultSettingsClient} are {@link String vaultUrl} and {@link TokenCredential credential}.</p>
+ *
+ * <!-- src_embed com.azure.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
+ * <pre>
+ * KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
  *
  * @see KeyVaultSettingsClient
  * @see KeyVaultSettingsAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {KeyVaultSettingsClient.class, KeyVaultSettingsAsyncClient.class})
-public final class KeyVaultSettingsClientBuilder implements
-    TokenCredentialTrait<KeyVaultSettingsClientBuilder>,
-    HttpTrait<KeyVaultSettingsClientBuilder>,
-    ConfigurationTrait<KeyVaultSettingsClientBuilder> {
+@ServiceClientBuilder(serviceClients = { KeyVaultSettingsClient.class, KeyVaultSettingsAsyncClient.class })
+public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait<KeyVaultSettingsClientBuilder>,
+    HttpTrait<KeyVaultSettingsClientBuilder>, ConfigurationTrait<KeyVaultSettingsClientBuilder> {
 
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-    private final ClientLogger logger = new ClientLogger(KeyVaultSettingsClientBuilder.class);
-    private final KeyVaultSettingsClientImplBuilder implClientBuilder;
+
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+    private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
+
     private final List<HttpPipelinePolicy> pipelinePolicies;
     private final Map<String, String> properties;
 
@@ -89,7 +130,6 @@ public final class KeyVaultSettingsClientBuilder implements
         this.httpLogOptions = new HttpLogOptions();
         this.pipelinePolicies = new ArrayList<>();
         this.properties = CoreUtils.getProperties(AZURE_KEY_VAULT_RBAC);
-        this.implClientBuilder = new KeyVaultSettingsClientImplBuilder();
     }
 
     /**
@@ -106,15 +146,14 @@ public final class KeyVaultSettingsClientBuilder implements
      */
     public KeyVaultSettingsClientBuilder vaultUrl(String vaultUrl) {
         if (vaultUrl == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'vaultUrl' cannot be null."));
         }
 
         try {
             URL url = new URL(vaultUrl);
             this.vaultUrl = url.toString();
         } catch (MalformedURLException e) {
-            throw logger.logExceptionAsError(
-                new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("The Azure Key Vault URL is malformed.", e));
         }
 
         return this;
@@ -134,7 +173,7 @@ public final class KeyVaultSettingsClientBuilder implements
     @Override
     public KeyVaultSettingsClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.credential = credential;
@@ -279,7 +318,7 @@ public final class KeyVaultSettingsClientBuilder implements
     @Override
     public KeyVaultSettingsClientBuilder addPolicy(HttpPipelinePolicy policy) {
         if (policy == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         this.pipelinePolicies.add(policy);
@@ -357,9 +396,10 @@ public final class KeyVaultSettingsClientBuilder implements
      * @return an instance of KeyVaultSettingsClientImpl.
      */
     private KeyVaultSettingsClientImpl buildImplClient() {
-        return implClientBuilder
-            .pipeline((pipeline != null) ? pipeline : createHttpPipeline())
-            .buildClient();
+        HttpPipeline buildPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        KeyVaultAdministrationServiceVersion version
+            = (serviceVersion != null) ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
+        return new KeyVaultSettingsClientImpl(buildPipeline, version.getVersion());
     }
 
     private HttpPipeline createHttpPipeline() {
@@ -367,13 +407,12 @@ public final class KeyVaultSettingsClientBuilder implements
             return pipeline;
         }
 
-        Configuration buildConfiguration =
-            (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
         if (vaultUrl == null) {
-            throw logger.logExceptionAsError(
-                new IllegalStateException(
-                    KeyVaultErrorCodeStrings.getErrorString(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED)));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
         }
 
         serviceVersion = serviceVersion != null ? serviceVersion : KeyVaultAdministrationServiceVersion.getLatest();
@@ -385,26 +424,23 @@ public final class KeyVaultSettingsClientBuilder implements
 
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
-        String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
+        ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
+
+        String applicationId = CoreUtils.getApplicationId(localClientOptions, httpLogOptions);
 
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
 
-        if (clientOptions != null) {
-            HttpHeaders headers = new HttpHeaders();
-
-            clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
-
-            if (headers.getSize() > 0) {
-                policies.add(new AddHeadersPolicy(headers));
-            }
+        HttpHeaders headers = new HttpHeaders();
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
+        if (headers.getSize() > 0) {
+            policies.add(new AddHeadersPolicy(headers));
         }
 
-        policies.addAll(
-            this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+            .collect(Collectors.toList()));
 
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
 
@@ -412,17 +448,20 @@ public final class KeyVaultSettingsClientBuilder implements
         policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
         policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
-        policies.addAll(
-            this.pipelinePolicies.stream()
-                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                .collect(Collectors.toList()));
+        policies.addAll(this.pipelinePolicies.stream()
+            .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+            .collect(Collectors.toList()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
         policies.add(new HttpLoggingPolicy(httpLogOptions));
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        TracingOptions tracingOptions = localClientOptions.getTracingOptions();
+        Tracer tracer = TracerProvider.getDefaultProvider()
+            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
-            .clientOptions(clientOptions)
+            .clientOptions(localClientOptions)
+            .tracer(tracer)
             .build();
     }
 

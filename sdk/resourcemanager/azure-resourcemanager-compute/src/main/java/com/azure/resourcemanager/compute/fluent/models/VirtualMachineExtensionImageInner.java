@@ -6,39 +6,94 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Describes a Virtual Machine Extension Image. */
+/**
+ * Describes a Virtual Machine Extension Image.
+ */
 @Fluent
 public final class VirtualMachineExtensionImageInner extends Resource {
     /*
      * Describes the properties of a Virtual Machine Extension Image.
      */
-    @JsonProperty(value = "properties")
     private VirtualMachineExtensionImageProperties innerProperties;
 
-    /** Creates an instance of VirtualMachineExtensionImageInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VirtualMachineExtensionImageInner class.
+     */
     public VirtualMachineExtensionImageInner() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Extension Image.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineExtensionImageProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineExtensionImageInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineExtensionImageInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -47,7 +102,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Get the operatingSystem property: The operating system this extension supports.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public String operatingSystem() {
@@ -56,7 +111,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Set the operatingSystem property: The operating system this extension supports.
-     *
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -70,7 +125,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Get the computeRole property: The type of role (IaaS or PaaS) this extension supports.
-     *
+     * 
      * @return the computeRole value.
      */
     public String computeRole() {
@@ -79,7 +134,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Set the computeRole property: The type of role (IaaS or PaaS) this extension supports.
-     *
+     * 
      * @param computeRole the computeRole value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -94,7 +149,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
     /**
      * Get the handlerSchema property: The schema defined by publisher, where extension consumers should provide
      * settings in a matching schema.
-     *
+     * 
      * @return the handlerSchema value.
      */
     public String handlerSchema() {
@@ -104,7 +159,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
     /**
      * Set the handlerSchema property: The schema defined by publisher, where extension consumers should provide
      * settings in a matching schema.
-     *
+     * 
      * @param handlerSchema the handlerSchema value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -120,7 +175,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * Get the vmScaleSetEnabled property: Whether the extension can be used on xRP VMScaleSets. By default existing
      * extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the
      * extension is only enabled for CRP VMs but not VMSS.
-     *
+     * 
      * @return the vmScaleSetEnabled value.
      */
     public Boolean vmScaleSetEnabled() {
@@ -131,7 +186,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * Set the vmScaleSetEnabled property: Whether the extension can be used on xRP VMScaleSets. By default existing
      * extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the
      * extension is only enabled for CRP VMs but not VMSS.
-     *
+     * 
      * @param vmScaleSetEnabled the vmScaleSetEnabled value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -145,7 +200,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Get the supportsMultipleExtensions property: Whether the handler can support multiple extensions.
-     *
+     * 
      * @return the supportsMultipleExtensions value.
      */
     public Boolean supportsMultipleExtensions() {
@@ -154,7 +209,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Set the supportsMultipleExtensions property: Whether the handler can support multiple extensions.
-     *
+     * 
      * @param supportsMultipleExtensions the supportsMultipleExtensions value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -168,12 +223,64 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineExtensionImageInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineExtensionImageInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualMachineExtensionImageInner.
+     */
+    public static VirtualMachineExtensionImageInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineExtensionImageInner deserializedVirtualMachineExtensionImageInner
+                = new VirtualMachineExtensionImageInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedVirtualMachineExtensionImageInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineExtensionImageInner.innerProperties
+                        = VirtualMachineExtensionImageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineExtensionImageInner;
+        });
     }
 }

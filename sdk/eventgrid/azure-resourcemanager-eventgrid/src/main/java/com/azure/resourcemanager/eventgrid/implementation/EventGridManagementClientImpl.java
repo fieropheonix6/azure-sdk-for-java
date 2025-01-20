@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.eventgrid.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -22,7 +23,10 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.eventgrid.fluent.CaCertificatesClient;
 import com.azure.resourcemanager.eventgrid.fluent.ChannelsClient;
+import com.azure.resourcemanager.eventgrid.fluent.ClientGroupsClient;
+import com.azure.resourcemanager.eventgrid.fluent.ClientsClient;
 import com.azure.resourcemanager.eventgrid.fluent.DomainEventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.DomainTopicEventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.DomainTopicsClient;
@@ -30,17 +34,24 @@ import com.azure.resourcemanager.eventgrid.fluent.DomainsClient;
 import com.azure.resourcemanager.eventgrid.fluent.EventGridManagementClient;
 import com.azure.resourcemanager.eventgrid.fluent.EventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.ExtensionTopicsClient;
+import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicEventSubscriptionsClient;
+import com.azure.resourcemanager.eventgrid.fluent.NamespaceTopicsClient;
+import com.azure.resourcemanager.eventgrid.fluent.NamespacesClient;
+import com.azure.resourcemanager.eventgrid.fluent.NetworkSecurityPerimeterConfigurationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.OperationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerConfigurationsClient;
+import com.azure.resourcemanager.eventgrid.fluent.PartnerDestinationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerNamespacesClient;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerRegistrationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerTopicEventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PartnerTopicsClient;
+import com.azure.resourcemanager.eventgrid.fluent.PermissionBindingsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.eventgrid.fluent.SystemTopicEventSubscriptionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.SystemTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.TopicEventSubscriptionsClient;
+import com.azure.resourcemanager.eventgrid.fluent.TopicSpacesClient;
 import com.azure.resourcemanager.eventgrid.fluent.TopicTypesClient;
 import com.azure.resourcemanager.eventgrid.fluent.TopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.VerifiedPartnersClient;
@@ -53,7 +64,9 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the EventGridManagementClientImpl type. */
+/**
+ * Initializes a new instance of the EventGridManagementClientImpl type.
+ */
 @ServiceClient(builder = EventGridManagementClientBuilder.class)
 public final class EventGridManagementClientImpl implements EventGridManagementClient {
     /**
@@ -65,319 +78,511 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
     /**
      * Gets Subscription credentials that uniquely identify a Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The ChannelsClient object to access its operations. */
+    /**
+     * The CaCertificatesClient object to access its operations.
+     */
+    private final CaCertificatesClient caCertificates;
+
+    /**
+     * Gets the CaCertificatesClient object to access its operations.
+     * 
+     * @return the CaCertificatesClient object.
+     */
+    public CaCertificatesClient getCaCertificates() {
+        return this.caCertificates;
+    }
+
+    /**
+     * The ChannelsClient object to access its operations.
+     */
     private final ChannelsClient channels;
 
     /**
      * Gets the ChannelsClient object to access its operations.
-     *
+     * 
      * @return the ChannelsClient object.
      */
     public ChannelsClient getChannels() {
         return this.channels;
     }
 
-    /** The DomainsClient object to access its operations. */
+    /**
+     * The ClientGroupsClient object to access its operations.
+     */
+    private final ClientGroupsClient clientGroups;
+
+    /**
+     * Gets the ClientGroupsClient object to access its operations.
+     * 
+     * @return the ClientGroupsClient object.
+     */
+    public ClientGroupsClient getClientGroups() {
+        return this.clientGroups;
+    }
+
+    /**
+     * The ClientsClient object to access its operations.
+     */
+    private final ClientsClient clients;
+
+    /**
+     * Gets the ClientsClient object to access its operations.
+     * 
+     * @return the ClientsClient object.
+     */
+    public ClientsClient getClients() {
+        return this.clients;
+    }
+
+    /**
+     * The DomainsClient object to access its operations.
+     */
     private final DomainsClient domains;
 
     /**
      * Gets the DomainsClient object to access its operations.
-     *
+     * 
      * @return the DomainsClient object.
      */
     public DomainsClient getDomains() {
         return this.domains;
     }
 
-    /** The DomainTopicsClient object to access its operations. */
+    /**
+     * The DomainTopicsClient object to access its operations.
+     */
     private final DomainTopicsClient domainTopics;
 
     /**
      * Gets the DomainTopicsClient object to access its operations.
-     *
+     * 
      * @return the DomainTopicsClient object.
      */
     public DomainTopicsClient getDomainTopics() {
         return this.domainTopics;
     }
 
-    /** The TopicEventSubscriptionsClient object to access its operations. */
-    private final TopicEventSubscriptionsClient topicEventSubscriptions;
-
     /**
-     * Gets the TopicEventSubscriptionsClient object to access its operations.
-     *
-     * @return the TopicEventSubscriptionsClient object.
+     * The DomainTopicEventSubscriptionsClient object to access its operations.
      */
-    public TopicEventSubscriptionsClient getTopicEventSubscriptions() {
-        return this.topicEventSubscriptions;
-    }
-
-    /** The DomainEventSubscriptionsClient object to access its operations. */
-    private final DomainEventSubscriptionsClient domainEventSubscriptions;
-
-    /**
-     * Gets the DomainEventSubscriptionsClient object to access its operations.
-     *
-     * @return the DomainEventSubscriptionsClient object.
-     */
-    public DomainEventSubscriptionsClient getDomainEventSubscriptions() {
-        return this.domainEventSubscriptions;
-    }
-
-    /** The EventSubscriptionsClient object to access its operations. */
-    private final EventSubscriptionsClient eventSubscriptions;
-
-    /**
-     * Gets the EventSubscriptionsClient object to access its operations.
-     *
-     * @return the EventSubscriptionsClient object.
-     */
-    public EventSubscriptionsClient getEventSubscriptions() {
-        return this.eventSubscriptions;
-    }
-
-    /** The DomainTopicEventSubscriptionsClient object to access its operations. */
     private final DomainTopicEventSubscriptionsClient domainTopicEventSubscriptions;
 
     /**
      * Gets the DomainTopicEventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the DomainTopicEventSubscriptionsClient object.
      */
     public DomainTopicEventSubscriptionsClient getDomainTopicEventSubscriptions() {
         return this.domainTopicEventSubscriptions;
     }
 
-    /** The SystemTopicEventSubscriptionsClient object to access its operations. */
+    /**
+     * The TopicEventSubscriptionsClient object to access its operations.
+     */
+    private final TopicEventSubscriptionsClient topicEventSubscriptions;
+
+    /**
+     * Gets the TopicEventSubscriptionsClient object to access its operations.
+     * 
+     * @return the TopicEventSubscriptionsClient object.
+     */
+    public TopicEventSubscriptionsClient getTopicEventSubscriptions() {
+        return this.topicEventSubscriptions;
+    }
+
+    /**
+     * The DomainEventSubscriptionsClient object to access its operations.
+     */
+    private final DomainEventSubscriptionsClient domainEventSubscriptions;
+
+    /**
+     * Gets the DomainEventSubscriptionsClient object to access its operations.
+     * 
+     * @return the DomainEventSubscriptionsClient object.
+     */
+    public DomainEventSubscriptionsClient getDomainEventSubscriptions() {
+        return this.domainEventSubscriptions;
+    }
+
+    /**
+     * The EventSubscriptionsClient object to access its operations.
+     */
+    private final EventSubscriptionsClient eventSubscriptions;
+
+    /**
+     * Gets the EventSubscriptionsClient object to access its operations.
+     * 
+     * @return the EventSubscriptionsClient object.
+     */
+    public EventSubscriptionsClient getEventSubscriptions() {
+        return this.eventSubscriptions;
+    }
+
+    /**
+     * The SystemTopicEventSubscriptionsClient object to access its operations.
+     */
     private final SystemTopicEventSubscriptionsClient systemTopicEventSubscriptions;
 
     /**
      * Gets the SystemTopicEventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the SystemTopicEventSubscriptionsClient object.
      */
     public SystemTopicEventSubscriptionsClient getSystemTopicEventSubscriptions() {
         return this.systemTopicEventSubscriptions;
     }
 
-    /** The PartnerTopicEventSubscriptionsClient object to access its operations. */
+    /**
+     * The NamespaceTopicEventSubscriptionsClient object to access its operations.
+     */
+    private final NamespaceTopicEventSubscriptionsClient namespaceTopicEventSubscriptions;
+
+    /**
+     * Gets the NamespaceTopicEventSubscriptionsClient object to access its operations.
+     * 
+     * @return the NamespaceTopicEventSubscriptionsClient object.
+     */
+    public NamespaceTopicEventSubscriptionsClient getNamespaceTopicEventSubscriptions() {
+        return this.namespaceTopicEventSubscriptions;
+    }
+
+    /**
+     * The PartnerTopicEventSubscriptionsClient object to access its operations.
+     */
     private final PartnerTopicEventSubscriptionsClient partnerTopicEventSubscriptions;
 
     /**
      * Gets the PartnerTopicEventSubscriptionsClient object to access its operations.
-     *
+     * 
      * @return the PartnerTopicEventSubscriptionsClient object.
      */
     public PartnerTopicEventSubscriptionsClient getPartnerTopicEventSubscriptions() {
         return this.partnerTopicEventSubscriptions;
     }
 
-    /** The OperationsClient object to access its operations. */
+    /**
+     * The NamespacesClient object to access its operations.
+     */
+    private final NamespacesClient namespaces;
+
+    /**
+     * Gets the NamespacesClient object to access its operations.
+     * 
+     * @return the NamespacesClient object.
+     */
+    public NamespacesClient getNamespaces() {
+        return this.namespaces;
+    }
+
+    /**
+     * The NamespaceTopicsClient object to access its operations.
+     */
+    private final NamespaceTopicsClient namespaceTopics;
+
+    /**
+     * Gets the NamespaceTopicsClient object to access its operations.
+     * 
+     * @return the NamespaceTopicsClient object.
+     */
+    public NamespaceTopicsClient getNamespaceTopics() {
+        return this.namespaceTopics;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
     private final OperationsClient operations;
 
     /**
      * Gets the OperationsClient object to access its operations.
-     *
+     * 
      * @return the OperationsClient object.
      */
     public OperationsClient getOperations() {
         return this.operations;
     }
 
-    /** The TopicsClient object to access its operations. */
-    private final TopicsClient topics;
-
     /**
-     * Gets the TopicsClient object to access its operations.
-     *
-     * @return the TopicsClient object.
+     * The PartnerConfigurationsClient object to access its operations.
      */
-    public TopicsClient getTopics() {
-        return this.topics;
-    }
-
-    /** The PartnerConfigurationsClient object to access its operations. */
     private final PartnerConfigurationsClient partnerConfigurations;
 
     /**
      * Gets the PartnerConfigurationsClient object to access its operations.
-     *
+     * 
      * @return the PartnerConfigurationsClient object.
      */
     public PartnerConfigurationsClient getPartnerConfigurations() {
         return this.partnerConfigurations;
     }
 
-    /** The PartnerNamespacesClient object to access its operations. */
+    /**
+     * The PartnerDestinationsClient object to access its operations.
+     */
+    private final PartnerDestinationsClient partnerDestinations;
+
+    /**
+     * Gets the PartnerDestinationsClient object to access its operations.
+     * 
+     * @return the PartnerDestinationsClient object.
+     */
+    public PartnerDestinationsClient getPartnerDestinations() {
+        return this.partnerDestinations;
+    }
+
+    /**
+     * The PartnerNamespacesClient object to access its operations.
+     */
     private final PartnerNamespacesClient partnerNamespaces;
 
     /**
      * Gets the PartnerNamespacesClient object to access its operations.
-     *
+     * 
      * @return the PartnerNamespacesClient object.
      */
     public PartnerNamespacesClient getPartnerNamespaces() {
         return this.partnerNamespaces;
     }
 
-    /** The PartnerRegistrationsClient object to access its operations. */
+    /**
+     * The PartnerRegistrationsClient object to access its operations.
+     */
     private final PartnerRegistrationsClient partnerRegistrations;
 
     /**
      * Gets the PartnerRegistrationsClient object to access its operations.
-     *
+     * 
      * @return the PartnerRegistrationsClient object.
      */
     public PartnerRegistrationsClient getPartnerRegistrations() {
         return this.partnerRegistrations;
     }
 
-    /** The PartnerTopicsClient object to access its operations. */
+    /**
+     * The PartnerTopicsClient object to access its operations.
+     */
     private final PartnerTopicsClient partnerTopics;
 
     /**
      * Gets the PartnerTopicsClient object to access its operations.
-     *
+     * 
      * @return the PartnerTopicsClient object.
      */
     public PartnerTopicsClient getPartnerTopics() {
         return this.partnerTopics;
     }
 
-    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    /**
+     * The NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     */
+    private final NetworkSecurityPerimeterConfigurationsClient networkSecurityPerimeterConfigurations;
+
+    /**
+     * Gets the NetworkSecurityPerimeterConfigurationsClient object to access its operations.
+     * 
+     * @return the NetworkSecurityPerimeterConfigurationsClient object.
+     */
+    public NetworkSecurityPerimeterConfigurationsClient getNetworkSecurityPerimeterConfigurations() {
+        return this.networkSecurityPerimeterConfigurations;
+    }
+
+    /**
+     * The PermissionBindingsClient object to access its operations.
+     */
+    private final PermissionBindingsClient permissionBindings;
+
+    /**
+     * Gets the PermissionBindingsClient object to access its operations.
+     * 
+     * @return the PermissionBindingsClient object.
+     */
+    public PermissionBindingsClient getPermissionBindings() {
+        return this.permissionBindings;
+    }
+
+    /**
+     * The PrivateEndpointConnectionsClient object to access its operations.
+     */
     private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
      * Gets the PrivateEndpointConnectionsClient object to access its operations.
-     *
+     * 
      * @return the PrivateEndpointConnectionsClient object.
      */
     public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
         return this.privateEndpointConnections;
     }
 
-    /** The PrivateLinkResourcesClient object to access its operations. */
+    /**
+     * The PrivateLinkResourcesClient object to access its operations.
+     */
     private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
      * Gets the PrivateLinkResourcesClient object to access its operations.
-     *
+     * 
      * @return the PrivateLinkResourcesClient object.
      */
     public PrivateLinkResourcesClient getPrivateLinkResources() {
         return this.privateLinkResources;
     }
 
-    /** The SystemTopicsClient object to access its operations. */
+    /**
+     * The SystemTopicsClient object to access its operations.
+     */
     private final SystemTopicsClient systemTopics;
 
     /**
      * Gets the SystemTopicsClient object to access its operations.
-     *
+     * 
      * @return the SystemTopicsClient object.
      */
     public SystemTopicsClient getSystemTopics() {
         return this.systemTopics;
     }
 
-    /** The ExtensionTopicsClient object to access its operations. */
+    /**
+     * The TopicsClient object to access its operations.
+     */
+    private final TopicsClient topics;
+
+    /**
+     * Gets the TopicsClient object to access its operations.
+     * 
+     * @return the TopicsClient object.
+     */
+    public TopicsClient getTopics() {
+        return this.topics;
+    }
+
+    /**
+     * The ExtensionTopicsClient object to access its operations.
+     */
     private final ExtensionTopicsClient extensionTopics;
 
     /**
      * Gets the ExtensionTopicsClient object to access its operations.
-     *
+     * 
      * @return the ExtensionTopicsClient object.
      */
     public ExtensionTopicsClient getExtensionTopics() {
         return this.extensionTopics;
     }
 
-    /** The TopicTypesClient object to access its operations. */
+    /**
+     * The TopicSpacesClient object to access its operations.
+     */
+    private final TopicSpacesClient topicSpaces;
+
+    /**
+     * Gets the TopicSpacesClient object to access its operations.
+     * 
+     * @return the TopicSpacesClient object.
+     */
+    public TopicSpacesClient getTopicSpaces() {
+        return this.topicSpaces;
+    }
+
+    /**
+     * The TopicTypesClient object to access its operations.
+     */
     private final TopicTypesClient topicTypes;
 
     /**
      * Gets the TopicTypesClient object to access its operations.
-     *
+     * 
      * @return the TopicTypesClient object.
      */
     public TopicTypesClient getTopicTypes() {
         return this.topicTypes;
     }
 
-    /** The VerifiedPartnersClient object to access its operations. */
+    /**
+     * The VerifiedPartnersClient object to access its operations.
+     */
     private final VerifiedPartnersClient verifiedPartners;
 
     /**
      * Gets the VerifiedPartnersClient object to access its operations.
-     *
+     * 
      * @return the VerifiedPartnersClient object.
      */
     public VerifiedPartnersClient getVerifiedPartners() {
@@ -386,54 +591,59 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
 
     /**
      * Initializes an instance of EventGridManagementClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
      * @param environment The Azure environment.
      * @param subscriptionId Subscription credentials that uniquely identify a Microsoft Azure subscription. The
-     *     subscription ID forms part of the URI for every service call.
+     * subscription ID forms part of the URI for every service call.
      * @param endpoint server parameter.
      */
-    EventGridManagementClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    EventGridManagementClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter,
+        Duration defaultPollInterval, AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-06-15";
+        this.apiVersion = "2024-06-01-preview";
+        this.caCertificates = new CaCertificatesClientImpl(this);
         this.channels = new ChannelsClientImpl(this);
+        this.clientGroups = new ClientGroupsClientImpl(this);
+        this.clients = new ClientsClientImpl(this);
         this.domains = new DomainsClientImpl(this);
         this.domainTopics = new DomainTopicsClientImpl(this);
+        this.domainTopicEventSubscriptions = new DomainTopicEventSubscriptionsClientImpl(this);
         this.topicEventSubscriptions = new TopicEventSubscriptionsClientImpl(this);
         this.domainEventSubscriptions = new DomainEventSubscriptionsClientImpl(this);
         this.eventSubscriptions = new EventSubscriptionsClientImpl(this);
-        this.domainTopicEventSubscriptions = new DomainTopicEventSubscriptionsClientImpl(this);
         this.systemTopicEventSubscriptions = new SystemTopicEventSubscriptionsClientImpl(this);
+        this.namespaceTopicEventSubscriptions = new NamespaceTopicEventSubscriptionsClientImpl(this);
         this.partnerTopicEventSubscriptions = new PartnerTopicEventSubscriptionsClientImpl(this);
+        this.namespaces = new NamespacesClientImpl(this);
+        this.namespaceTopics = new NamespaceTopicsClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.topics = new TopicsClientImpl(this);
         this.partnerConfigurations = new PartnerConfigurationsClientImpl(this);
+        this.partnerDestinations = new PartnerDestinationsClientImpl(this);
         this.partnerNamespaces = new PartnerNamespacesClientImpl(this);
         this.partnerRegistrations = new PartnerRegistrationsClientImpl(this);
         this.partnerTopics = new PartnerTopicsClientImpl(this);
+        this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsClientImpl(this);
+        this.permissionBindings = new PermissionBindingsClientImpl(this);
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.systemTopics = new SystemTopicsClientImpl(this);
+        this.topics = new TopicsClientImpl(this);
         this.extensionTopics = new ExtensionTopicsClientImpl(this);
+        this.topicSpaces = new TopicSpacesClientImpl(this);
         this.topicTypes = new TopicTypesClientImpl(this);
         this.verifiedPartners = new VerifiedPartnersClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -442,7 +652,7 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -452,7 +662,7 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -462,26 +672,15 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -494,19 +693,16 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -547,7 +743,7 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

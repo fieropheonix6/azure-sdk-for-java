@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.redis.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PatchSchedules ListByRedisResource. */
+/**
+ * Samples for PatchSchedules ListByRedisResource.
+ */
 public final class PatchSchedulesListByRedisResourceSamples {
     /*
-     * x-ms-original-file: specification/redis/resource-manager/Microsoft.Cache/stable/2021-06-01/examples/RedisCachePatchSchedulesList.json
+     * x-ms-original-file:
+     * specification/redis/resource-manager/Microsoft.Cache/stable/2024-11-01/examples/RedisCachePatchSchedulesList.json
      */
     /**
      * Sample code: RedisCachePatchSchedulesList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void redisCachePatchSchedulesList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .redisCaches()
+        azure.redisCaches()
             .manager()
             .serviceClient()
             .getPatchSchedules()
-            .listByRedisResource("rg1", "cache1", Context.NONE);
+            .listByRedisResource("rg1", "cache1", com.azure.core.util.Context.NONE);
     }
 }

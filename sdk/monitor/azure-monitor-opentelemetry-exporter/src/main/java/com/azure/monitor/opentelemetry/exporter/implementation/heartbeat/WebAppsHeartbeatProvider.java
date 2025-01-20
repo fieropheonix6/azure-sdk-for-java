@@ -11,10 +11,8 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * <h1>WebApp Heartbeat Property Provider</h1>
- *
- * <p>This class is a concrete implementation of {@link HeartBeatPayloadProviderInterface} It
- * enables setting Web-apps Metadata to heartbeat payload.
+ * This class is a concrete implementation of {@link HeartBeatPayloadProviderInterface}. It enables
+ * setting Web-apps Metadata to heartbeat payload.
  */
 public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterface {
 
@@ -72,6 +70,7 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                 }
                                 provider.addHeartBeatProperty(fieldName, webSiteName, true);
                                 break;
+
                             case WEBSITE_HOSTNAME:
                                 String webSiteHostName = getWebsiteHostName();
                                 if (Strings.isNullOrEmpty(webSiteHostName)) {
@@ -79,6 +78,7 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                 }
                                 provider.addHeartBeatProperty(fieldName, webSiteHostName, true);
                                 break;
+
                             case WEBSITE_HOME_STAMPNAME:
                                 String websiteHomeStampName = getWebsiteHomeStampName();
                                 if (Strings.isNullOrEmpty(websiteHomeStampName)) {
@@ -86,6 +86,7 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                 }
                                 provider.addHeartBeatProperty(fieldName, websiteHomeStampName, true);
                                 break;
+
                             case WEBSITE_OWNER_NAME:
                                 String websiteOwnerName = getWebsiteOwnerName();
                                 if (Strings.isNullOrEmpty(websiteOwnerName)) {
@@ -93,6 +94,7 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                 }
                                 provider.addHeartBeatProperty(fieldName, websiteOwnerName, true);
                                 break;
+
                             case WEBSITE_RESOURCE_GROUP:
                                 String websiteResourceGroup = getWebsiteResourceGroup();
                                 if (Strings.isNullOrEmpty(websiteResourceGroup)) {
@@ -100,6 +102,7 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                 }
                                 provider.addHeartBeatProperty(fieldName, websiteResourceGroup, true);
                                 break;
+
                             case WEBSITE_SLOT_NAME:
                                 String websiteSlotName = getWebsiteSlotName();
                                 if (Strings.isNullOrEmpty(websiteSlotName)) {
@@ -107,6 +110,7 @@ public class WebAppsHeartbeatProvider implements HeartBeatPayloadProviderInterfa
                                 }
                                 provider.addHeartBeatProperty(fieldName, websiteSlotName, true);
                                 break;
+
                             default:
                                 logger.verbose("Unknown web apps property encountered");
                                 break;

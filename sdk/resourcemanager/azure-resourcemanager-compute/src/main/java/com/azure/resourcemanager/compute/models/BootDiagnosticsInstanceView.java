@@ -5,40 +5,45 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The instance view of a virtual machine boot diagnostics. */
+/**
+ * The instance view of a virtual machine boot diagnostics.
+ */
 @Immutable
-public final class BootDiagnosticsInstanceView {
+public final class BootDiagnosticsInstanceView implements JsonSerializable<BootDiagnosticsInstanceView> {
     /*
-     * The console screenshot blob URI. <br><br>NOTE: This will **not** be set if boot diagnostics is currently enabled
-     * with managed storage.
+     * The console screenshot blob URI. **Note:** This will **not** be set if boot diagnostics is currently enabled with
+     * managed storage.
      */
-    @JsonProperty(value = "consoleScreenshotBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String consoleScreenshotBlobUri;
 
     /*
-     * The serial console log blob Uri. <br><br>NOTE: This will **not** be set if boot diagnostics is currently enabled
-     * with managed storage.
+     * The serial console log blob Uri. **Note:** This will **not** be set if boot diagnostics is currently enabled with
+     * managed storage.
      */
-    @JsonProperty(value = "serialConsoleLogBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String serialConsoleLogBlobUri;
 
     /*
-     * The boot diagnostics status information for the VM. <br><br> NOTE: It will be set only if there are errors
-     * encountered in enabling boot diagnostics.
+     * The boot diagnostics status information for the VM. **Note:** It will be set only if there are errors encountered
+     * in enabling boot diagnostics.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceViewStatus status;
 
-    /** Creates an instance of BootDiagnosticsInstanceView class. */
+    /**
+     * Creates an instance of BootDiagnosticsInstanceView class.
+     */
     public BootDiagnosticsInstanceView() {
     }
 
     /**
-     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. &lt;br&gt;&lt;br&gt;NOTE: This will
-     * **not** be set if boot diagnostics is currently enabled with managed storage.
-     *
+     * Get the consoleScreenshotBlobUri property: The console screenshot blob URI. **Note:** This will **not** be set if
+     * boot diagnostics is currently enabled with managed storage.
+     * 
      * @return the consoleScreenshotBlobUri value.
      */
     public String consoleScreenshotBlobUri() {
@@ -46,9 +51,9 @@ public final class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the serialConsoleLogBlobUri property: The serial console log blob Uri. &lt;br&gt;&lt;br&gt;NOTE: This will
-     * **not** be set if boot diagnostics is currently enabled with managed storage.
-     *
+     * Get the serialConsoleLogBlobUri property: The serial console log blob Uri. **Note:** This will **not** be set if
+     * boot diagnostics is currently enabled with managed storage.
+     * 
      * @return the serialConsoleLogBlobUri value.
      */
     public String serialConsoleLogBlobUri() {
@@ -56,9 +61,9 @@ public final class BootDiagnosticsInstanceView {
     }
 
     /**
-     * Get the status property: The boot diagnostics status information for the VM. &lt;br&gt;&lt;br&gt; NOTE: It will
-     * be set only if there are errors encountered in enabling boot diagnostics.
-     *
+     * Get the status property: The boot diagnostics status information for the VM. **Note:** It will be set only if
+     * there are errors encountered in enabling boot diagnostics.
+     * 
      * @return the status value.
      */
     public InstanceViewStatus status() {
@@ -67,12 +72,51 @@ public final class BootDiagnosticsInstanceView {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (status() != null) {
             status().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BootDiagnosticsInstanceView from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BootDiagnosticsInstanceView if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BootDiagnosticsInstanceView.
+     */
+    public static BootDiagnosticsInstanceView fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BootDiagnosticsInstanceView deserializedBootDiagnosticsInstanceView = new BootDiagnosticsInstanceView();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("consoleScreenshotBlobUri".equals(fieldName)) {
+                    deserializedBootDiagnosticsInstanceView.consoleScreenshotBlobUri = reader.getString();
+                } else if ("serialConsoleLogBlobUri".equals(fieldName)) {
+                    deserializedBootDiagnosticsInstanceView.serialConsoleLogBlobUri = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedBootDiagnosticsInstanceView.status = InstanceViewStatus.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBootDiagnosticsInstanceView;
+        });
     }
 }

@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContainerNetworkProtocol. */
+/**
+ * The protocol associated with the port.
+ */
 public final class ContainerNetworkProtocol extends ExpandableStringEnum<ContainerNetworkProtocol> {
-    /** Static value TCP for ContainerNetworkProtocol. */
+    /**
+     * Static value TCP for ContainerNetworkProtocol.
+     */
     public static final ContainerNetworkProtocol TCP = fromString("TCP");
 
-    /** Static value UDP for ContainerNetworkProtocol. */
+    /**
+     * Static value UDP for ContainerNetworkProtocol.
+     */
     public static final ContainerNetworkProtocol UDP = fromString("UDP");
 
     /**
+     * Creates a new instance of ContainerNetworkProtocol value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ContainerNetworkProtocol() {
+    }
+
+    /**
      * Creates or finds a ContainerNetworkProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContainerNetworkProtocol.
      */
-    @JsonCreator
     public static ContainerNetworkProtocol fromString(String name) {
         return fromString(name, ContainerNetworkProtocol.class);
     }
 
-    /** @return known ContainerNetworkProtocol values. */
+    /**
+     * Gets known ContainerNetworkProtocol values.
+     * 
+     * @return known ContainerNetworkProtocol values.
+     */
     public static Collection<ContainerNetworkProtocol> values() {
         return values(ContainerNetworkProtocol.class);
     }

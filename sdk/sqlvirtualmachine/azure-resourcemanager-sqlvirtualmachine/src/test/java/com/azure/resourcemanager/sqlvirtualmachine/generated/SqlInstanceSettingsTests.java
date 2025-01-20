@@ -7,43 +7,38 @@ package com.azure.resourcemanager.sqlvirtualmachine.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlInstanceSettings;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SqlInstanceSettingsTests {
-    @Test
-    public void testDeserialize() {
-        SqlInstanceSettings model =
-            BinaryData
-                .fromString(
-                    "{\"collation\":\"nljky\",\"maxDop\":197436298,\"isOptimizeForAdHocWorkloadsEnabled\":true,\"minServerMemoryMB\":9347197,\"maxServerMemoryMB\":1970519416,\"isLpimEnabled\":false,\"isIfiEnabled\":false}")
-                .toObject(SqlInstanceSettings.class);
-        Assertions.assertEquals("nljky", model.collation());
-        Assertions.assertEquals(197436298, model.maxDop());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        SqlInstanceSettings model = BinaryData.fromString(
+            "{\"collation\":\"t\",\"maxDop\":738552235,\"isOptimizeForAdHocWorkloadsEnabled\":true,\"minServerMemoryMB\":1035421848,\"maxServerMemoryMB\":183805680,\"isLpimEnabled\":true,\"isIfiEnabled\":true}")
+            .toObject(SqlInstanceSettings.class);
+        Assertions.assertEquals("t", model.collation());
+        Assertions.assertEquals(738552235, model.maxDop());
         Assertions.assertEquals(true, model.isOptimizeForAdHocWorkloadsEnabled());
-        Assertions.assertEquals(9347197, model.minServerMemoryMB());
-        Assertions.assertEquals(1970519416, model.maxServerMemoryMB());
-        Assertions.assertEquals(false, model.isLpimEnabled());
-        Assertions.assertEquals(false, model.isIfiEnabled());
+        Assertions.assertEquals(1035421848, model.minServerMemoryMB());
+        Assertions.assertEquals(183805680, model.maxServerMemoryMB());
+        Assertions.assertEquals(true, model.isLpimEnabled());
+        Assertions.assertEquals(true, model.isIfiEnabled());
     }
 
-    @Test
-    public void testSerialize() {
-        SqlInstanceSettings model =
-            new SqlInstanceSettings()
-                .withCollation("nljky")
-                .withMaxDop(197436298)
-                .withIsOptimizeForAdHocWorkloadsEnabled(true)
-                .withMinServerMemoryMB(9347197)
-                .withMaxServerMemoryMB(1970519416)
-                .withIsLpimEnabled(false)
-                .withIsIfiEnabled(false);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        SqlInstanceSettings model = new SqlInstanceSettings().withCollation("t")
+            .withMaxDop(738552235)
+            .withIsOptimizeForAdHocWorkloadsEnabled(true)
+            .withMinServerMemoryMB(1035421848)
+            .withMaxServerMemoryMB(183805680)
+            .withIsLpimEnabled(true)
+            .withIsIfiEnabled(true);
         model = BinaryData.fromObject(model).toObject(SqlInstanceSettings.class);
-        Assertions.assertEquals("nljky", model.collation());
-        Assertions.assertEquals(197436298, model.maxDop());
+        Assertions.assertEquals("t", model.collation());
+        Assertions.assertEquals(738552235, model.maxDop());
         Assertions.assertEquals(true, model.isOptimizeForAdHocWorkloadsEnabled());
-        Assertions.assertEquals(9347197, model.minServerMemoryMB());
-        Assertions.assertEquals(1970519416, model.maxServerMemoryMB());
-        Assertions.assertEquals(false, model.isLpimEnabled());
-        Assertions.assertEquals(false, model.isIfiEnabled());
+        Assertions.assertEquals(1035421848, model.minServerMemoryMB());
+        Assertions.assertEquals(183805680, model.maxServerMemoryMB());
+        Assertions.assertEquals(true, model.isLpimEnabled());
+        Assertions.assertEquals(true, model.isIfiEnabled());
     }
 }

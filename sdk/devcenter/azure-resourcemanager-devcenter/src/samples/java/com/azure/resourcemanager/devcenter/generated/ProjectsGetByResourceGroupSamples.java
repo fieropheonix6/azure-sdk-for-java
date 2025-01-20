@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.devcenter.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Projects GetByResourceGroup. */
+/**
+ * Samples for Projects GetByResourceGroup.
+ */
 public final class ProjectsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-11-11-preview/examples/Projects_Get.json
+     * x-ms-original-file:
+     * specification/devcenter/resource-manager/Microsoft.DevCenter/stable/2024-02-01/examples/Projects_Get.json
      */
     /**
      * Sample code: Projects_Get.
-     *
+     * 
      * @param manager Entry point to DevCenterManager.
      */
     public static void projectsGet(com.azure.resourcemanager.devcenter.DevCenterManager manager) {
-        manager.projects().getByResourceGroupWithResponse("rg1", "DevProject", Context.NONE);
+        manager.projects().getByResourceGroupWithResponse("rg1", "DevProject", com.azure.core.util.Context.NONE);
     }
 }

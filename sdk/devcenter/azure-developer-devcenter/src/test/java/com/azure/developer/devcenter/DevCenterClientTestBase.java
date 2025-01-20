@@ -4,87 +4,73 @@
 
 package com.azure.developer.devcenter;
 
+// Based and modified from the 'generated' DevCenterClientTestBase
+
 import com.azure.core.credential.AccessToken;
-import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
-class DevCenterClientTestBase extends TestBase {
+import java.time.OffsetDateTime;
+
+public class DevCenterClientTestBase extends TestProxyTestBase {
     protected DevCenterClient devCenterClient;
 
     protected DevBoxesClient devBoxesClient;
 
-    protected EnvironmentsClient environmentsClient;
+    protected DeploymentEnvironmentsClient deploymentEnvironmentsClient;
+
+    protected String devEnvironmentName = "envName".toLowerCase();
+
+    protected String devBoxName = "myDevBox".toLowerCase();
+
+    protected String meUserId = "me";
+
+    protected String projectName = Configuration.getGlobalConfiguration().get("DEFAULT_PROJECT_NAME", "proj-sdk-tests");
+
+    protected String catalogName
+        = Configuration.getGlobalConfiguration().get("DEFAULT_CATALOG_NAME", "sdk-default-catalog");
+
+    protected String envTypeName
+        = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_TYPE_NAME", "sdk-default-environment-type");
+
+    protected String envDefinitionName
+        = Configuration.getGlobalConfiguration().get("DEFAULT_ENVIRONMENT_DEFINITION_NAME", "Sandbox");
+
+    protected String poolName = Configuration.getGlobalConfiguration().get("DEFAULT_POOL_NAME", "sdk-default-pool");
+
+    protected String endpoint = Configuration.getGlobalConfiguration()
+        .get("DEVCENTER_ENDPOINT",
+            "https://8ab2df1c-ed88-4946-a8a9-e1bbb3e4d1fd-dc-sdk-tests.centraluseuap.devcenter.azure.com/");
 
     @Override
     protected void beforeTest() {
-        DevCenterClientBuilder devCenterClientbuilder =
-                new DevCenterClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID", "00000000-0000-0000-0000-000000000000"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME", "sdk-default-dc"))
-                        .devCenterDnsSuffix(
-                                Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        DevCenterClientBuilder devCenterClientbuilder = new DevCenterClientBuilder().endpoint(endpoint)
+            .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
-            devCenterClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+            devCenterClientbuilder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
         } else if (getTestMode() == TestMode.RECORD) {
-            devCenterClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
+            devCenterClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
         } else if (getTestMode() == TestMode.LIVE) {
             devCenterClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
+
+        if (!interceptorManager.isLiveMode()) {
+            // Removes the `$..name`, `$..id`, OperationLocation and Location sanitizer from the list of common sanitizers
+            interceptorManager.removeSanitizers("AZSDK3493", "AZSDK2003", "AZSDK2030", "AZSDK3430");
+        }
+
         devCenterClient = devCenterClientbuilder.buildClient();
 
-        DevBoxesClientBuilder devBoxesClientbuilder =
-                new DevBoxesClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID", "00000000-0000-0000-0000-000000000000"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME", "sdk-default-dc"))
-                        .devCenterDnsSuffix(
-                                Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            devBoxesClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            devBoxesClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            devBoxesClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        devBoxesClient = devBoxesClientbuilder.buildClient();
+        devBoxesClient = devCenterClient.getDevBoxesClient();
 
-        EnvironmentsClientBuilder environmentsClientbuilder =
-                new EnvironmentsClientBuilder()
-                        .tenantId(Configuration.getGlobalConfiguration().get("DEVCENTER_TENANT_ID", "00000000-0000-0000-0000-000000000000"))
-                        .devCenter(Configuration.getGlobalConfiguration().get("DEFAULT_DEVCENTER_NAME", "sdk-default-dc"))
-                        .devCenterDnsSuffix(
-                                Configuration.getGlobalConfiguration().get("DEVCENTERDNSSUFFIX", "devcenter.azure.com"))
-                        .httpClient(HttpClient.createDefault())
-                        .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
-        if (getTestMode() == TestMode.PLAYBACK) {
-            environmentsClientbuilder
-                    .httpClient(interceptorManager.getPlaybackClient())
-                    .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
-        } else if (getTestMode() == TestMode.RECORD) {
-            environmentsClientbuilder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new DefaultAzureCredentialBuilder().build());
-        } else if (getTestMode() == TestMode.LIVE) {
-            environmentsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
-        }
-        environmentsClient = environmentsClientbuilder.buildClient();
+        deploymentEnvironmentsClient = devCenterClient.getDeploymentEnvironmentsClient();
     }
 }

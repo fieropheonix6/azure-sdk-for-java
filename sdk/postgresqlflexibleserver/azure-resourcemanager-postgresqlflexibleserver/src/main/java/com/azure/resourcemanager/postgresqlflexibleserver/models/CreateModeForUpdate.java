@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CreateModeForUpdate. */
+/**
+ * The mode to update a new PostgreSQL server.
+ */
 public final class CreateModeForUpdate extends ExpandableStringEnum<CreateModeForUpdate> {
-    /** Static value Default for CreateModeForUpdate. */
+    /**
+     * Static value Default for CreateModeForUpdate.
+     */
     public static final CreateModeForUpdate DEFAULT = fromString("Default");
 
-    /** Static value Update for CreateModeForUpdate. */
+    /**
+     * Static value Update for CreateModeForUpdate.
+     */
     public static final CreateModeForUpdate UPDATE = fromString("Update");
 
     /**
+     * Creates a new instance of CreateModeForUpdate value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public CreateModeForUpdate() {
+    }
+
+    /**
      * Creates or finds a CreateModeForUpdate from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CreateModeForUpdate.
      */
-    @JsonCreator
     public static CreateModeForUpdate fromString(String name) {
         return fromString(name, CreateModeForUpdate.class);
     }
 
-    /** @return known CreateModeForUpdate values. */
+    /**
+     * Gets known CreateModeForUpdate values.
+     * 
+     * @return known CreateModeForUpdate values.
+     */
     public static Collection<CreateModeForUpdate> values() {
         return values(CreateModeForUpdate.class);
     }

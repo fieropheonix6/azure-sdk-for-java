@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.logz.fluent.SingleSignOnsClient;
@@ -38,24 +37,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SingleSignOnsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SingleSignOnsClient.
+ */
 public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
-    private final ClientLogger logger = new ClientLogger(SingleSignOnsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SingleSignOnsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final MicrosoftLogzImpl client;
 
     /**
      * Initializes an instance of SingleSignOnsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SingleSignOnsClientImpl(MicrosoftLogzImpl client) {
-        this.service =
-            RestProxy.create(SingleSignOnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(SingleSignOnsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,90 +68,66 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MicrosoftLogzSingleS")
-    private interface SingleSignOnsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/singleSignOnConfigurations")
-        @ExpectedResponses({200})
+    public interface SingleSignOnsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/singleSignOnConfigurations")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogzSingleSignOnResourceListResponse>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LogzSingleSignOnResourceListResponse>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") LogzSingleSignOnResourceInner body, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/singleSignOnConfigurations/{configurationName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors/{monitorName}/singleSignOnConfigurations/{configurationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<LogzSingleSignOnResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") LogzSingleSignOnResourceInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("monitorName") String monitorName,
+            @PathParam("configurationName") String configurationName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Logz/monitors"
-                + "/{monitorName}/singleSignOnConfigurations/{configurationName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<LogzSingleSignOnResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("monitorName") String monitorName,
-            @PathParam("configurationName") String configurationName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<LogzSingleSignOnResourceListResponse>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName) {
+    private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -159,54 +138,34 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<LogzSingleSignOnResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<LogzSingleSignOnResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listSinglePageAsync(
-        String resourceGroupName, String monitorName, Context context) {
+    private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String monitorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -218,69 +177,55 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LogzSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<LogzSingleSignOnResourceInner> listAsync(
-        String resourceGroupName, String monitorName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, monitorName, context),
+    private PagedFlux<LogzSingleSignOnResourceInner> listAsync(String resourceGroupName, String monitorName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, monitorName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LogzSingleSignOnResourceInner> list(String resourceGroupName, String monitorName) {
@@ -289,24 +234,24 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
 
     /**
      * List the single sign-on configurations for a given monitor resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<LogzSingleSignOnResourceInner> list(
-        String resourceGroupName, String monitorName, Context context) {
+    public PagedIterable<LogzSingleSignOnResourceInner> list(String resourceGroupName, String monitorName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, monitorName, context));
     }
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -314,22 +259,18 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName, LogzSingleSignOnResourceInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, LogzSingleSignOnResourceInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -347,25 +288,14 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -374,26 +304,18 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        LogzSingleSignOnResourceInner body,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, LogzSingleSignOnResourceInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -411,22 +333,13 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            monitorName, configurationName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -434,82 +347,44 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
             LogzSingleSignOnResourceInner body) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
-        return this
-            .client
-            .<LogzSingleSignOnResourceInner, LogzSingleSignOnResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LogzSingleSignOnResourceInner.class,
-                LogzSingleSignOnResourceInner.class,
-                Context.NONE);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<LogzSingleSignOnResourceInner, LogzSingleSignOnResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LogzSingleSignOnResourceInner.class, LogzSingleSignOnResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String monitorName,
-            String configurationName,
-            LogzSingleSignOnResourceInner body,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
-        return this
-            .client
-            .<LogzSingleSignOnResourceInner, LogzSingleSignOnResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                LogzSingleSignOnResourceInner.class,
-                LogzSingleSignOnResourceInner.class,
-                context);
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, String configurationName) {
+        final LogzSingleSignOnResourceInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body);
+        return this.client.<LogzSingleSignOnResourceInner, LogzSingleSignOnResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LogzSingleSignOnResourceInner.class, LogzSingleSignOnResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configurationName parameter.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName, LogzSingleSignOnResourceInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).getSyncPoller();
-    }
-
-    /**
-     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -518,22 +393,62 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String monitorName, String configurationName,
+            LogzSingleSignOnResourceInner body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, monitorName, configurationName, body, context);
+        return this.client.<LogzSingleSignOnResourceInner, LogzSingleSignOnResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), LogzSingleSignOnResourceInner.class, LogzSingleSignOnResourceInner.class,
+            context);
+    }
+
+    /**
+     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configurationName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner>
+        beginCreateOrUpdate(String resourceGroupName, String monitorName, String configurationName) {
+        final LogzSingleSignOnResourceInner body = null;
+        return this.beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).getSyncPoller();
+    }
+
+    /**
+     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configurationName parameter.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LogzSingleSignOnResourceInner>, LogzSingleSignOnResourceInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        LogzSingleSignOnResourceInner body,
+        String resourceGroupName, String monitorName, String configurationName, LogzSingleSignOnResourceInner body,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
+        return this.beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
             .getSyncPoller();
     }
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -541,19 +456,57 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String monitorName, String configurationName, LogzSingleSignOnResourceInner body) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body)
-            .last()
+    private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName, LogzSingleSignOnResourceInner body) {
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configurationName parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
+        final LogzSingleSignOnResourceInner body = null;
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configurationName parameter.
+     * @param body The body parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(String resourceGroupName, String monitorName,
+        String configurationName, LogzSingleSignOnResourceInner body, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -563,17 +516,15 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    public LogzSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName) {
         final LogzSingleSignOnResourceInner body = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return createOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).block();
     }
 
     /**
      * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -585,101 +536,33 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzSingleSignOnResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        LogzSingleSignOnResourceInner body,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configurationName parameter.
-     * @param body The body parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogzSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName, LogzSingleSignOnResourceInner body) {
-        return createOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).block();
-    }
-
-    /**
-     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configurationName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogzSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName, String monitorName, String configurationName) {
-        final LogzSingleSignOnResourceInner body = null;
-        return createOrUpdateAsync(resourceGroupName, monitorName, configurationName, body).block();
-    }
-
-    /**
-     * Configures single-sign-on for this resource. This operation can take upto 10 minutes to complete.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configurationName parameter.
-     * @param body The body parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public LogzSingleSignOnResourceInner createOrUpdate(
-        String resourceGroupName,
-        String monitorName,
-        String configurationName,
-        LogzSingleSignOnResourceInner body,
-        Context context) {
+    public LogzSingleSignOnResourceInner createOrUpdate(String resourceGroupName, String monitorName,
+        String configurationName, LogzSingleSignOnResourceInner body, Context context) {
         return createOrUpdateAsync(resourceGroupName, monitorName, configurationName, body, context).block();
     }
 
     /**
      * Gets the Logz single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogzSingleSignOnResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<Response<LogzSingleSignOnResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -694,24 +577,14 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            monitorName,
-                            configurationName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, monitorName, configurationName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the Logz single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -719,22 +592,19 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<LogzSingleSignOnResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
+    private Mono<Response<LogzSingleSignOnResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String monitorName, String configurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -749,46 +619,49 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                monitorName,
-                configurationName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, monitorName,
+            configurationName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the Logz single sign-on resource for the given Monitor.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
+     * @return the Logz single sign-on resource for the given Monitor on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<LogzSingleSignOnResourceInner> getAsync(
-        String resourceGroupName, String monitorName, String configurationName) {
+    private Mono<LogzSingleSignOnResourceInner> getAsync(String resourceGroupName, String monitorName,
+        String configurationName) {
         return getWithResponseAsync(resourceGroupName, monitorName, configurationName)
-            .flatMap(
-                (Response<LogzSingleSignOnResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the Logz single sign-on resource for the given Monitor.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param monitorName Monitor resource name.
+     * @param configurationName The configurationName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Logz single sign-on resource for the given Monitor along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LogzSingleSignOnResourceInner> getWithResponse(String resourceGroupName, String monitorName,
+        String configurationName, Context context) {
+        return getWithResponseAsync(resourceGroupName, monitorName, configurationName, context).block();
+    }
+
+    /**
+     * Gets the Logz single sign-on resource for the given Monitor.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param monitorName Monitor resource name.
      * @param configurationName The configurationName parameter.
@@ -799,35 +672,17 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public LogzSingleSignOnResourceInner get(String resourceGroupName, String monitorName, String configurationName) {
-        return getAsync(resourceGroupName, monitorName, configurationName).block();
-    }
-
-    /**
-     * Gets the Logz single sign-on resource for the given Monitor.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param monitorName Monitor resource name.
-     * @param configurationName The configurationName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Logz single sign-on resource for the given Monitor.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<LogzSingleSignOnResourceInner> getWithResponse(
-        String resourceGroupName, String monitorName, String configurationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, monitorName, configurationName, context).block();
+        return getWithResponse(resourceGroupName, monitorName, configurationName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -835,60 +690,40 @@ public final class SingleSignOnsClientImpl implements SingleSignOnsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<LogzSingleSignOnResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<LogzSingleSignOnResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of a list operation.
+     * @return response of a list operation along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<LogzSingleSignOnResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

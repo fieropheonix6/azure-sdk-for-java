@@ -5,20 +5,31 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** ArcSettings properties. */
+/**
+ * ArcSettings properties.
+ */
 @Fluent
-public final class ArcSettingsPatchProperties {
+public final class ArcSettingsPatchProperties implements JsonSerializable<ArcSettingsPatchProperties> {
     /*
      * contains connectivity related configuration for ARC resources
      */
-    @JsonProperty(value = "connectivityProperties")
     private Object connectivityProperties;
 
     /**
+     * Creates an instance of ArcSettingsPatchProperties class.
+     */
+    public ArcSettingsPatchProperties() {
+    }
+
+    /**
      * Get the connectivityProperties property: contains connectivity related configuration for ARC resources.
-     *
+     * 
      * @return the connectivityProperties value.
      */
     public Object connectivityProperties() {
@@ -27,7 +38,7 @@ public final class ArcSettingsPatchProperties {
 
     /**
      * Set the connectivityProperties property: contains connectivity related configuration for ARC resources.
-     *
+     * 
      * @param connectivityProperties the connectivityProperties value to set.
      * @return the ArcSettingsPatchProperties object itself.
      */
@@ -38,9 +49,45 @@ public final class ArcSettingsPatchProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectivityProperties", this.connectivityProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArcSettingsPatchProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArcSettingsPatchProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ArcSettingsPatchProperties.
+     */
+    public static ArcSettingsPatchProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArcSettingsPatchProperties deserializedArcSettingsPatchProperties = new ArcSettingsPatchProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectivityProperties".equals(fieldName)) {
+                    deserializedArcSettingsPatchProperties.connectivityProperties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArcSettingsPatchProperties;
+        });
     }
 }

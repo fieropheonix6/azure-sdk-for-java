@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.apimanagement.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Api ListByTags. */
+/**
+ * Samples for Api ListByTags.
+ */
 public final class ApiListByTagsSamples {
     /*
-     * x-ms-original-file: specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2021-08-01/examples/ApiManagementListApisByTags.json
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * ApiManagementListApisByTags.json
      */
     /**
      * Sample code: ApiManagementListApisByTags.
-     *
+     * 
      * @param manager Entry point to ApiManagementManager.
      */
-    public static void apiManagementListApisByTags(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apis().listByTags("rg1", "apimService1", null, null, null, null, Context.NONE);
+    public static void
+        apiManagementListApisByTags(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apis().listByTags("rg1", "apimService1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }

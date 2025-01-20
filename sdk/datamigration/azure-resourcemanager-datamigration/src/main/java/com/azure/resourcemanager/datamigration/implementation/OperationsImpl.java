@@ -11,29 +11,28 @@ import com.azure.resourcemanager.datamigration.fluent.OperationsClient;
 import com.azure.resourcemanager.datamigration.fluent.models.ServiceOperationInner;
 import com.azure.resourcemanager.datamigration.models.Operations;
 import com.azure.resourcemanager.datamigration.models.ServiceOperation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
     private final com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.datamigration.DataMigrationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ServiceOperation> list() {
         PagedIterable<ServiceOperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ServiceOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ServiceOperation> list(Context context) {
         PagedIterable<ServiceOperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ServiceOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ServiceOperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

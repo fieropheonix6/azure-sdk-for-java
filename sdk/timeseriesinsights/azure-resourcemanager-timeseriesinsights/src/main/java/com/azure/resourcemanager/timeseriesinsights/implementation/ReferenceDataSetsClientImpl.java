@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.timeseriesinsights.fluent.ReferenceDataSetsClient;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetListResponseInner;
 import com.azure.resourcemanager.timeseriesinsights.fluent.models.ReferenceDataSetResourceInner;
@@ -33,24 +32,28 @@ import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetCreat
 import com.azure.resourcemanager.timeseriesinsights.models.ReferenceDataSetUpdateParameters;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReferenceDataSetsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReferenceDataSetsClient.
+ */
 public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClient {
-    private final ClientLogger logger = new ClientLogger(ReferenceDataSetsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReferenceDataSetsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final TimeSeriesInsightsClientImpl client;
 
     /**
      * Initializes an instance of ReferenceDataSetsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReferenceDataSetsClientImpl(TimeSeriesInsightsClientImpl client) {
-        this.service =
-            RestProxy.create(ReferenceDataSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ReferenceDataSetsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,119 +63,90 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "TimeSeriesInsightsCl")
-    private interface ReferenceDataSetsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
-        @ExpectedResponses({200, 201})
+    public interface ReferenceDataSetsService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReferenceDataSetResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReferenceDataSetResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
             @PathParam("referenceDataSetName") String referenceDataSetName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ReferenceDataSetCreateOrUpdateParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReferenceDataSetResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReferenceDataSetResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
             @PathParam("referenceDataSetName") String referenceDataSetName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReferenceDataSetResourceInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReferenceDataSetResourceInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
             @PathParam("referenceDataSetName") String referenceDataSetName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/referenceDataSets/{referenceDataSetName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("environmentName") String environmentName,
             @PathParam("referenceDataSetName") String referenceDataSetName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights"
-                + "/environments/{environmentName}/referenceDataSets")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.TimeSeriesInsights/environments/{environmentName}/referenceDataSets")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironment(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironment(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("environmentName") String environmentName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("environmentName") String environmentName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create or update a reference data set in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName Name of the reference data set.
      * @param parameters Parameters for creating a reference data set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters) {
+    private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -193,54 +167,38 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            referenceDataSetName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, referenceDataSetName, this.client.getApiVersion(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a reference data set in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName Name of the reference data set.
      * @param parameters Parameters for creating a reference data set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters,
+    private Mono<Response<ReferenceDataSetResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -261,124 +219,97 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, referenceDataSetName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Create or update a reference data set in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName Name of the reference data set.
      * @param parameters Parameters for creating a reference data set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReferenceDataSetResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters) {
+    private Mono<ReferenceDataSetResourceInner> createOrUpdateAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, parameters)
-            .flatMap(
-                (Response<ReferenceDataSetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create or update a reference data set in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param referenceDataSetName Name of the reference data set.
-     * @param parameters Parameters for creating a reference data set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReferenceDataSetResourceInner createOrUpdate(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters) {
-        return createOrUpdateAsync(resourceGroupName, environmentName, referenceDataSetName, parameters).block();
-    }
-
-    /**
-     * Create or update a reference data set in the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName Name of the reference data set.
      * @param parameters Parameters for creating a reference data set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String environmentName, String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, parameters,
+            context).block();
+    }
+
+    /**
+     * Create or update a reference data set in the specified environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
+     * @param referenceDataSetName Name of the reference data set.
+     * @param parameters Parameters for creating a reference data set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a reference data set provides metadata about the events in an environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetCreateOrUpdateParameters parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, environmentName, referenceDataSetName, parameters, context)
-            .block();
+    public ReferenceDataSetResourceInner createOrUpdate(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetCreateOrUpdateParameters parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, environmentName, referenceDataSetName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName) {
+    private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -394,49 +325,36 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            referenceDataSetName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, referenceDataSetName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+    private Mono<Response<ReferenceDataSetResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -452,117 +370,98 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, referenceDataSetName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReferenceDataSetResourceInner> getAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName) {
+    private Mono<ReferenceDataSetResourceInner> getAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName) {
         return getWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName)
-            .flatMap(
-                (Response<ReferenceDataSetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the reference data set with the specified name in the specified environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReferenceDataSetResourceInner get(
-        String resourceGroupName, String environmentName, String referenceDataSetName) {
-        return getAsync(resourceGroupName, environmentName, referenceDataSetName).block();
-    }
-
-    /**
-     * Gets the reference data set with the specified name in the specified environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the reference data set with the specified name in the specified environment.
+     * @return the reference data set with the specified name in the specified environment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> getWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+    public Response<ReferenceDataSetResourceInner> getWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context) {
         return getWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
     }
 
     /**
-     * Updates the reference data set with the specified name in the specified subscription, resource group, and
-     * environment.
-     *
+     * Gets the reference data set with the specified name in the specified environment.
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
-     * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return the reference data set with the specified name in the specified environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
+    public ReferenceDataSetResourceInner get(String resourceGroupName, String environmentName,
+        String referenceDataSetName) {
+        return getWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE).getValue();
+    }
+
+    /**
+     * Updates the reference data set with the specified name in the specified subscription, resource group, and
+     * environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
+     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
+     * environment.
+     * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
+     * data set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response} on
+     * successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName,
         ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -577,66 +476,48 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
                 .error(new IllegalArgumentException("Parameter referenceDataSetName is required and cannot be null."));
         }
         if (referenceDataSetUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter referenceDataSetUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter referenceDataSetUpdateParameters is required and cannot be null."));
         } else {
             referenceDataSetUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            referenceDataSetName,
-                            this.client.getApiVersion(),
-                            referenceDataSetUpdateParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, referenceDataSetName, this.client.getApiVersion(),
+                referenceDataSetUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
+     * data set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
-        Context context) {
+    private Mono<Response<ReferenceDataSetResourceInner>> updateWithResponseAsync(String resourceGroupName,
+        String environmentName, String referenceDataSetName,
+        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -651,145 +532,114 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
                 .error(new IllegalArgumentException("Parameter referenceDataSetName is required and cannot be null."));
         }
         if (referenceDataSetUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter referenceDataSetUpdateParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter referenceDataSetUpdateParameters is required and cannot be null."));
         } else {
             referenceDataSetUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                this.client.getApiVersion(),
-                referenceDataSetUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, referenceDataSetName, this.client.getApiVersion(), referenceDataSetUpdateParameters,
+            accept, context);
     }
 
     /**
      * Updates the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
+     * data set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
+     * @return a reference data set provides metadata about the events in an environment on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReferenceDataSetResourceInner> updateAsync(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters)
-            .flatMap(
-                (Response<ReferenceDataSetResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<ReferenceDataSetResourceInner> updateAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
+        return updateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName,
+            referenceDataSetUpdateParameters).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
-     * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a reference data set provides metadata about the events in an environment.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReferenceDataSetResourceInner update(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
-        return updateAsync(resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters)
-            .block();
-    }
-
-    /**
-     * Updates the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
      * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
-     *     data set.
+     * data set.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a reference data set provides metadata about the events in an environment along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReferenceDataSetResourceInner> updateWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
+        Context context) {
+        return updateWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName,
+            referenceDataSetUpdateParameters, context).block();
+    }
+
+    /**
+     * Updates the reference data set with the specified name in the specified subscription, resource group, and
+     * environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
+     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
+     * environment.
+     * @param referenceDataSetUpdateParameters Request object that contains the updated information for the reference
+     * data set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a reference data set provides metadata about the events in an environment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetResourceInner> updateWithResponse(
-        String resourceGroupName,
-        String environmentName,
-        String referenceDataSetName,
-        ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters,
-        Context context) {
-        return updateWithResponseAsync(
-                resourceGroupName, environmentName, referenceDataSetName, referenceDataSetUpdateParameters, context)
-            .block();
+    public ReferenceDataSetResourceInner update(String resourceGroupName, String environmentName,
+        String referenceDataSetName, ReferenceDataSetUpdateParameters referenceDataSetUpdateParameters) {
+        return updateWithResponse(resourceGroupName, environmentName, referenceDataSetName,
+            referenceDataSetUpdateParameters, Context.NONE).getValue();
     }
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -805,50 +655,36 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            referenceDataSetName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, environmentName, referenceDataSetName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -864,103 +700,92 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                referenceDataSetName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, referenceDataSetName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String environmentName, String referenceDataSetName) {
         return deleteWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes the reference data set with the specified name in the specified subscription, resource group, and
      * environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
+     * environment.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(String resourceGroupName, String environmentName,
+        String referenceDataSetName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
+    }
+
+    /**
+     * Deletes the reference data set with the specified name in the specified subscription, resource group, and
+     * environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
+     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
+     * environment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String environmentName, String referenceDataSetName) {
-        deleteAsync(resourceGroupName, environmentName, referenceDataSetName).block();
-    }
-
-    /**
-     * Deletes the reference data set with the specified name in the specified subscription, resource group, and
-     * environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param referenceDataSetName The name of the Time Series Insights reference data set associated with the specified
-     *     environment.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String environmentName, String referenceDataSetName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, environmentName, referenceDataSetName, context).block();
+        deleteWithResponse(resourceGroupName, environmentName, referenceDataSetName, Context.NONE);
     }
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
+     * @return the response of the List Reference Data Sets operation along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<Response<ReferenceDataSetListResponseInner>>
+        listByEnvironmentWithResponseAsync(String resourceGroupName, String environmentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -973,46 +798,35 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByEnvironment(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            environmentName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, environmentName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
+     * @return the response of the List Reference Data Sets operation along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ReferenceDataSetListResponseInner>> listByEnvironmentWithResponseAsync(
-        String resourceGroupName, String environmentName, Context context) {
+    private Mono<Response<ReferenceDataSetListResponseInner>>
+        listByEnvironmentWithResponseAsync(String resourceGroupName, String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1024,50 +838,55 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByEnvironment(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                environmentName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listByEnvironment(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            environmentName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
+     * @return the response of the List Reference Data Sets operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ReferenceDataSetListResponseInner> listByEnvironmentAsync(
-        String resourceGroupName, String environmentName) {
+    private Mono<ReferenceDataSetListResponseInner> listByEnvironmentAsync(String resourceGroupName,
+        String environmentName) {
         return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName)
-            .flatMap(
-                (Response<ReferenceDataSetListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Lists all the available reference data sets associated with the subscription and within the specified resource
      * group and environment.
-     *
+     * 
      * @param resourceGroupName Name of an Azure Resource group.
      * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
+     * group.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the List Reference Data Sets operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(String resourceGroupName,
+        String environmentName, Context context) {
+        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
+    }
+
+    /**
+     * Lists all the available reference data sets associated with the subscription and within the specified resource
+     * group and environment.
+     * 
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1075,25 +894,6 @@ public final class ReferenceDataSetsClientImpl implements ReferenceDataSetsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReferenceDataSetListResponseInner listByEnvironment(String resourceGroupName, String environmentName) {
-        return listByEnvironmentAsync(resourceGroupName, environmentName).block();
-    }
-
-    /**
-     * Lists all the available reference data sets associated with the subscription and within the specified resource
-     * group and environment.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param environmentName The name of the Time Series Insights environment associated with the specified resource
-     *     group.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the List Reference Data Sets operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReferenceDataSetListResponseInner> listByEnvironmentWithResponse(
-        String resourceGroupName, String environmentName, Context context) {
-        return listByEnvironmentWithResponseAsync(resourceGroupName, environmentName, context).block();
+        return listByEnvironmentWithResponse(resourceGroupName, environmentName, Context.NONE).getValue();
     }
 }

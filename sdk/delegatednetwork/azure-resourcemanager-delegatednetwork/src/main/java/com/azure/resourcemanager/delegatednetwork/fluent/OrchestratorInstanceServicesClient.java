@@ -14,11 +14,28 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.delegatednetwork.fluent.models.OrchestratorInner;
 import com.azure.resourcemanager.delegatednetwork.models.OrchestratorResourceUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in OrchestratorInstanceServicesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OrchestratorInstanceServicesClient.
+ */
 public interface OrchestratorInstanceServicesClient {
     /**
      * Gets details about the orchestrator instance.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the orchestrator instance along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OrchestratorInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
+
+    /**
+     * Gets details about the orchestrator instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,38 +47,23 @@ public interface OrchestratorInstanceServicesClient {
     OrchestratorInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Gets details about the orchestrator instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the orchestrator instance.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrchestratorInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
-
-    /**
      * Create a orchestrator instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters OrchestratorInstance type parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<OrchestratorInner>, OrchestratorInner> beginCreate(
-        String resourceGroupName, String resourceName, OrchestratorInner parameters);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OrchestratorInner>, OrchestratorInner> beginCreate(String resourceGroupName,
+        String resourceName, OrchestratorInner parameters);
 
     /**
      * Create a orchestrator instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters OrchestratorInstance type parameters.
@@ -69,15 +71,15 @@ public interface OrchestratorInstanceServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
+     * @return the {@link SyncPoller} for polling of represents an instance of a orchestrator.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<OrchestratorInner>, OrchestratorInner> beginCreate(
-        String resourceGroupName, String resourceName, OrchestratorInner parameters, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<OrchestratorInner>, OrchestratorInner> beginCreate(String resourceGroupName,
+        String resourceName, OrchestratorInner parameters, Context context);
 
     /**
      * Create a orchestrator instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters OrchestratorInstance type parameters.
@@ -91,7 +93,7 @@ public interface OrchestratorInstanceServicesClient {
 
     /**
      * Create a orchestrator instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters OrchestratorInstance type parameters.
@@ -102,39 +104,41 @@ public interface OrchestratorInstanceServicesClient {
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OrchestratorInner create(
-        String resourceGroupName, String resourceName, OrchestratorInner parameters, Context context);
+    OrchestratorInner create(String resourceGroupName, String resourceName, OrchestratorInner parameters,
+        Context context);
 
     /**
      * Deletes the Orchestrator Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
 
     /**
      * Deletes the Orchestrator Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Boolean forceDelete,
+        Context context);
 
     /**
      * Deletes the Orchestrator Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,20 +150,37 @@ public interface OrchestratorInstanceServicesClient {
 
     /**
      * Deletes the Orchestrator Instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param forceDelete Force delete resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName, Context context);
+    void delete(String resourceGroupName, String resourceName, Boolean forceDelete, Context context);
 
     /**
      * Update Orchestrator Instance.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
+     * @param parameters OrchestratorInstance update parameters.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an instance of a orchestrator along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<OrchestratorInner> patchWithResponse(String resourceGroupName, String resourceName,
+        OrchestratorResourceUpdateParameters parameters, Context context);
+
+    /**
+     * Update Orchestrator Instance.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
      * @param parameters OrchestratorInstance update parameters.
@@ -169,71 +190,56 @@ public interface OrchestratorInstanceServicesClient {
      * @return represents an instance of a orchestrator.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    OrchestratorInner patch(
-        String resourceGroupName, String resourceName, OrchestratorResourceUpdateParameters parameters);
-
-    /**
-     * Update Orchestrator Instance.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the resource. It must be a minimum of 3 characters, and a maximum of 63.
-     * @param parameters OrchestratorInstance update parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an instance of a orchestrator.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrchestratorInner> patchWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        OrchestratorResourceUpdateParameters parameters,
-        Context context);
+    OrchestratorInner patch(String resourceGroupName, String resourceName,
+        OrchestratorResourceUpdateParameters parameters);
 
     /**
      * Get all the orchestratorInstance resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrchestratorInner> list();
 
     /**
      * Get all the orchestratorInstance resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the orchestratorInstance resources in a subscription.
+     * @return all the orchestratorInstance resources in a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrchestratorInner> list(Context context);
 
     /**
      * Get all the OrchestratorInstances resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrchestratorInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Get all the OrchestratorInstances resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the OrchestratorInstances resources in a resource group.
+     * @return all the OrchestratorInstances resources in a resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<OrchestratorInner> listByResourceGroup(String resourceGroupName, Context context);

@@ -5,21 +5,32 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.SqlTriggerGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties of an Azure Cosmos DB trigger. */
+/**
+ * The properties of an Azure Cosmos DB trigger.
+ */
 @Fluent
-public final class SqlTriggerGetProperties {
+public final class SqlTriggerGetProperties implements JsonSerializable<SqlTriggerGetProperties> {
     /*
      * The resource property.
      */
-    @JsonProperty(value = "resource")
     private SqlTriggerGetPropertiesResource resource;
 
     /**
+     * Creates an instance of SqlTriggerGetProperties class.
+     */
+    public SqlTriggerGetProperties() {
+    }
+
+    /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlTriggerGetPropertiesResource resource() {
@@ -28,7 +39,7 @@ public final class SqlTriggerGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlTriggerGetProperties object itself.
      */
@@ -39,12 +50,48 @@ public final class SqlTriggerGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() != null) {
             resource().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlTriggerGetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlTriggerGetProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlTriggerGetProperties.
+     */
+    public static SqlTriggerGetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlTriggerGetProperties deserializedSqlTriggerGetProperties = new SqlTriggerGetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedSqlTriggerGetProperties.resource = SqlTriggerGetPropertiesResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlTriggerGetProperties;
+        });
     }
 }

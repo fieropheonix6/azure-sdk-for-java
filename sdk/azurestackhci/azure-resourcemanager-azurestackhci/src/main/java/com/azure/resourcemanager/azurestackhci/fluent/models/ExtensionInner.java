@@ -7,39 +7,55 @@ package com.azure.resourcemanager.azurestackhci.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestackhci.models.ExtensionAggregateState;
+import com.azure.resourcemanager.azurestackhci.models.ExtensionManagedBy;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeExtensionState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Details of a particular extension in HCI Cluster. */
+/**
+ * Details of a particular extension in HCI Cluster.
+ */
 @Fluent
 public final class ExtensionInner extends ProxyResource {
     /*
-     * System data of Extension resource.
+     * Describes Machine Extension Properties.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private ExtensionProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
     private SystemData systemData;
 
     /*
-     * Describes Machine Extension Properties.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties")
-    private ExtensionProperties innerProperties;
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
-     * Get the systemData property: System data of Extension resource.
-     *
-     * @return the systemData value.
+     * Creates an instance of ExtensionInner class.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public ExtensionInner() {
     }
 
     /**
      * Get the innerProperties property: Describes Machine Extension Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExtensionProperties innerProperties() {
@@ -47,8 +63,47 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the Extension proxy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -57,7 +112,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the aggregateState property: Aggregate state of Arc Extensions across the nodes in this HCI cluster.
-     *
+     * 
      * @return the aggregateState value.
      */
     public ExtensionAggregateState aggregateState() {
@@ -66,7 +121,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the perNodeExtensionDetails property: State of Arc Extension in each of the nodes.
-     *
+     * 
      * @return the perNodeExtensionDetails value.
      */
     public List<PerNodeExtensionState> perNodeExtensionDetails() {
@@ -74,9 +129,18 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
+     * Get the managedBy property: Indicates if the extension is managed by azure or the user.
+     * 
+     * @return the managedBy value.
+     */
+    public ExtensionManagedBy managedBy() {
+        return this.innerProperties() == null ? null : this.innerProperties().managedBy();
+    }
+
+    /**
      * Get the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.
-     *
+     * 
      * @return the forceUpdateTag value.
      */
     public String forceUpdateTag() {
@@ -86,7 +150,7 @@ public final class ExtensionInner extends ProxyResource {
     /**
      * Set the forceUpdateTag property: How the extension handler should be forced to update even if the extension
      * configuration has not changed.
-     *
+     * 
      * @param forceUpdateTag the forceUpdateTag value to set.
      * @return the ExtensionInner object itself.
      */
@@ -100,7 +164,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -109,7 +173,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Set the publisher property: The name of the extension handler publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ExtensionInner object itself.
      */
@@ -123,7 +187,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @return the type value.
      */
     public String typePropertiesType() {
@@ -132,7 +196,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
-     *
+     * 
      * @param type the type value to set.
      * @return the ExtensionInner object itself.
      */
@@ -145,8 +209,9 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
-     * Get the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * Get the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used if
+     * not specified.
+     * 
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -154,8 +219,9 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
-     * Set the typeHandlerVersion property: Specifies the version of the script handler.
-     *
+     * Set the typeHandlerVersion property: Specifies the version of the script handler. Latest version would be used if
+     * not specified.
+     * 
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the ExtensionInner object itself.
      */
@@ -171,7 +237,7 @@ public final class ExtensionInner extends ProxyResource {
      * Get the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @return the autoUpgradeMinorVersion value.
      */
     public Boolean autoUpgradeMinorVersion() {
@@ -182,7 +248,7 @@ public final class ExtensionInner extends ProxyResource {
      * Set the autoUpgradeMinorVersion property: Indicates whether the extension should use a newer minor version if one
      * is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless
      * redeployed, even with this property set to true.
-     *
+     * 
      * @param autoUpgradeMinorVersion the autoUpgradeMinorVersion value to set.
      * @return the ExtensionInner object itself.
      */
@@ -196,7 +262,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @return the settings value.
      */
     public Object settings() {
@@ -205,7 +271,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Set the settings property: Json formatted public settings for the extension.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the ExtensionInner object itself.
      */
@@ -219,7 +285,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Get the protectedSettings property: Protected settings (may contain secrets).
-     *
+     * 
      * @return the protectedSettings value.
      */
     public Object protectedSettings() {
@@ -228,7 +294,7 @@ public final class ExtensionInner extends ProxyResource {
 
     /**
      * Set the protectedSettings property: Protected settings (may contain secrets).
-     *
+     * 
      * @param protectedSettings the protectedSettings value to set.
      * @return the ExtensionInner object itself.
      */
@@ -241,13 +307,83 @@ public final class ExtensionInner extends ProxyResource {
     }
 
     /**
+     * Get the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     * 
+     * @return the enableAutomaticUpgrade value.
+     */
+    public Boolean enableAutomaticUpgrade() {
+        return this.innerProperties() == null ? null : this.innerProperties().enableAutomaticUpgrade();
+    }
+
+    /**
+     * Set the enableAutomaticUpgrade property: Indicates whether the extension should be automatically upgraded by the
+     * platform if there is a newer version available.
+     * 
+     * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
+     * @return the ExtensionInner object itself.
+     */
+    public ExtensionInner withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExtensionProperties();
+        }
+        this.innerProperties().withEnableAutomaticUpgrade(enableAutomaticUpgrade);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExtensionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExtensionInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExtensionInner.
+     */
+    public static ExtensionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExtensionInner deserializedExtensionInner = new ExtensionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedExtensionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedExtensionInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExtensionInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExtensionInner.innerProperties = ExtensionProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedExtensionInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExtensionInner;
+        });
     }
 }

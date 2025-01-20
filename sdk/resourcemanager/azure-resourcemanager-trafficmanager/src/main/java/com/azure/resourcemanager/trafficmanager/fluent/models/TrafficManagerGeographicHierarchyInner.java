@@ -6,44 +6,48 @@ package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.trafficmanager.models.Region;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Class representing the Geographic hierarchy used with the Geographic traffic routing method. */
+/**
+ * Class representing the Geographic hierarchy used with the Geographic traffic routing method.
+ */
 @Fluent
 public final class TrafficManagerGeographicHierarchyInner extends ProxyResource {
     /*
      * The properties of the Geographic Hierarchy resource.
      */
-    @JsonProperty(value = "properties")
     private GeographicHierarchyProperties innerProperties;
 
     /*
      * Fully qualified resource Id for the resource. Ex -
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/
+     * trafficManagerProfiles/{resourceName}
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the resource
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
      */
-    @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of TrafficManagerGeographicHierarchyInner class. */
+    /**
+     * Creates an instance of TrafficManagerGeographicHierarchyInner class.
+     */
     public TrafficManagerGeographicHierarchyInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Geographic Hierarchy resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private GeographicHierarchyProperties innerProperties() {
@@ -53,7 +57,7 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
     /**
      * Get the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -63,7 +67,7 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
     /**
      * Set the id property: Fully qualified resource Id for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/trafficManagerProfiles/{resourceName}.
-     *
+     * 
      * @param id the id value to set.
      * @return the TrafficManagerGeographicHierarchyInner object itself.
      */
@@ -74,7 +78,7 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
 
     /**
      * Get the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -83,7 +87,7 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
 
     /**
      * Set the name property: The name of the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the TrafficManagerGeographicHierarchyInner object itself.
      */
@@ -94,7 +98,7 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
 
     /**
      * Get the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -103,7 +107,7 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
 
     /**
      * Set the type property: The type of the resource. Ex- Microsoft.Network/trafficManagerProfiles.
-     *
+     * 
      * @param type the type value to set.
      * @return the TrafficManagerGeographicHierarchyInner object itself.
      */
@@ -115,7 +119,7 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
     /**
      * Get the geographicHierarchy property: The region at the root of the hierarchy from all the regions in the
      * hierarchy can be retrieved.
-     *
+     * 
      * @return the geographicHierarchy value.
      */
     public Region geographicHierarchy() {
@@ -125,7 +129,7 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
     /**
      * Set the geographicHierarchy property: The region at the root of the hierarchy from all the regions in the
      * hierarchy can be retrieved.
-     *
+     * 
      * @param geographicHierarchy the geographicHierarchy value to set.
      * @return the TrafficManagerGeographicHierarchyInner object itself.
      */
@@ -139,12 +143,60 @@ public final class TrafficManagerGeographicHierarchyInner extends ProxyResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TrafficManagerGeographicHierarchyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TrafficManagerGeographicHierarchyInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the TrafficManagerGeographicHierarchyInner.
+     */
+    public static TrafficManagerGeographicHierarchyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TrafficManagerGeographicHierarchyInner deserializedTrafficManagerGeographicHierarchyInner
+                = new TrafficManagerGeographicHierarchyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedTrafficManagerGeographicHierarchyInner.innerProperties
+                        = GeographicHierarchyProperties.fromJson(reader);
+                } else if ("id".equals(fieldName)) {
+                    deserializedTrafficManagerGeographicHierarchyInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedTrafficManagerGeographicHierarchyInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedTrafficManagerGeographicHierarchyInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTrafficManagerGeographicHierarchyInner;
+        });
     }
 }

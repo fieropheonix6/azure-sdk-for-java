@@ -4,25 +4,42 @@
 
 package com.azure.resourcemanager.hybridcompute.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the operating system settings for the hybrid machine. */
-@Immutable
-public final class OSProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OSProfile.class);
-
+/**
+ * Specifies the operating system settings for the hybrid machine.
+ */
+@Fluent
+public final class OSProfile implements JsonSerializable<OSProfile> {
     /*
      * Specifies the host OS name of the hybrid machine.
      */
-    @JsonProperty(value = "computerName", access = JsonProperty.Access.WRITE_ONLY)
     private String computerName;
+
+    /*
+     * Specifies the windows configuration for update management.
+     */
+    private OSProfileWindowsConfiguration windowsConfiguration;
+
+    /*
+     * Specifies the linux configuration for update management.
+     */
+    private OSProfileLinuxConfiguration linuxConfiguration;
+
+    /**
+     * Creates an instance of OSProfile class.
+     */
+    public OSProfile() {
+    }
 
     /**
      * Get the computerName property: Specifies the host OS name of the hybrid machine.
-     *
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -30,10 +47,97 @@ public final class OSProfile {
     }
 
     /**
+     * Get the windowsConfiguration property: Specifies the windows configuration for update management.
+     * 
+     * @return the windowsConfiguration value.
+     */
+    public OSProfileWindowsConfiguration windowsConfiguration() {
+        return this.windowsConfiguration;
+    }
+
+    /**
+     * Set the windowsConfiguration property: Specifies the windows configuration for update management.
+     * 
+     * @param windowsConfiguration the windowsConfiguration value to set.
+     * @return the OSProfile object itself.
+     */
+    public OSProfile withWindowsConfiguration(OSProfileWindowsConfiguration windowsConfiguration) {
+        this.windowsConfiguration = windowsConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the linuxConfiguration property: Specifies the linux configuration for update management.
+     * 
+     * @return the linuxConfiguration value.
+     */
+    public OSProfileLinuxConfiguration linuxConfiguration() {
+        return this.linuxConfiguration;
+    }
+
+    /**
+     * Set the linuxConfiguration property: Specifies the linux configuration for update management.
+     * 
+     * @param linuxConfiguration the linuxConfiguration value to set.
+     * @return the OSProfile object itself.
+     */
+    public OSProfile withLinuxConfiguration(OSProfileLinuxConfiguration linuxConfiguration) {
+        this.linuxConfiguration = linuxConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (windowsConfiguration() != null) {
+            windowsConfiguration().validate();
+        }
+        if (linuxConfiguration() != null) {
+            linuxConfiguration().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("windowsConfiguration", this.windowsConfiguration);
+        jsonWriter.writeJsonField("linuxConfiguration", this.linuxConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OSProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OSProfile if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the OSProfile.
+     */
+    public static OSProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OSProfile deserializedOSProfile = new OSProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("computerName".equals(fieldName)) {
+                    deserializedOSProfile.computerName = reader.getString();
+                } else if ("windowsConfiguration".equals(fieldName)) {
+                    deserializedOSProfile.windowsConfiguration = OSProfileWindowsConfiguration.fromJson(reader);
+                } else if ("linuxConfiguration".equals(fieldName)) {
+                    deserializedOSProfile.linuxConfiguration = OSProfileLinuxConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOSProfile;
+        });
     }
 }

@@ -40,6 +40,14 @@ public final class AuthorizationServerContractImpl
         return this.innerModel().displayName();
     }
 
+    public Boolean useInTestConsole() {
+        return this.innerModel().useInTestConsole();
+    }
+
+    public Boolean useInApiDocumentation() {
+        return this.innerModel().useInApiDocumentation();
+    }
+
     public String clientRegistrationEndpoint() {
         return this.innerModel().clientRegistrationEndpoint();
     }
@@ -125,6 +133,10 @@ public final class AuthorizationServerContractImpl
         return this.innerModel().resourceOwnerPassword();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AuthorizationServerContractInner innerModel() {
         return this.innerObject;
     }
@@ -152,29 +164,25 @@ public final class AuthorizationServerContractImpl
     }
 
     public AuthorizationServerContract create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationServers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, authsid, this.innerModel(), createIfMatch, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationServers()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authsid, this.innerModel(), createIfMatch,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationServerContract create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationServers()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceName, authsid, this.innerModel(), createIfMatch, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationServers()
+            .createOrUpdateWithResponse(resourceGroupName, serviceName, authsid, this.innerModel(), createIfMatch,
+                context)
+            .getValue();
         return this;
     }
 
-    AuthorizationServerContractImpl(
-        String name, com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
+    AuthorizationServerContractImpl(String name,
+        com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = new AuthorizationServerContractInner();
         this.serviceManager = serviceManager;
         this.authsid = name;
@@ -188,64 +196,53 @@ public final class AuthorizationServerContractImpl
     }
 
     public AuthorizationServerContract apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationServers()
-                .updateWithResponse(
-                    resourceGroupName, serviceName, authsid, updateIfMatch, updateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationServers()
+            .updateWithResponse(resourceGroupName, serviceName, authsid, updateIfMatch, updateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationServerContract apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationServers()
-                .updateWithResponse(resourceGroupName, serviceName, authsid, updateIfMatch, updateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationServers()
+            .updateWithResponse(resourceGroupName, serviceName, authsid, updateIfMatch, updateParameters, context)
+            .getValue();
         return this;
     }
 
-    AuthorizationServerContractImpl(
-        AuthorizationServerContractInner innerObject,
+    AuthorizationServerContractImpl(AuthorizationServerContractInner innerObject,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serviceName = Utils.getValueFromIdByName(innerObject.id(), "service");
-        this.authsid = Utils.getValueFromIdByName(innerObject.id(), "authorizationServers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serviceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "service");
+        this.authsid = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "authorizationServers");
     }
 
     public AuthorizationServerContract refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationServers()
-                .getWithResponse(resourceGroupName, serviceName, authsid, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationServers()
+            .getWithResponse(resourceGroupName, serviceName, authsid, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AuthorizationServerContract refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAuthorizationServers()
-                .getWithResponse(resourceGroupName, serviceName, authsid, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAuthorizationServers()
+            .getWithResponse(resourceGroupName, serviceName, authsid, context)
+            .getValue();
         return this;
+    }
+
+    public Response<AuthorizationServerSecretsContract> listSecretsWithResponse(Context context) {
+        return serviceManager.authorizationServers()
+            .listSecretsWithResponse(resourceGroupName, serviceName, authsid, context);
     }
 
     public AuthorizationServerSecretsContract listSecrets() {
         return serviceManager.authorizationServers().listSecrets(resourceGroupName, serviceName, authsid);
-    }
-
-    public Response<AuthorizationServerSecretsContract> listSecretsWithResponse(Context context) {
-        return serviceManager
-            .authorizationServers()
-            .listSecretsWithResponse(resourceGroupName, serviceName, authsid, context);
     }
 
     public AuthorizationServerContractImpl withDisplayName(String displayName) {
@@ -254,6 +251,26 @@ public final class AuthorizationServerContractImpl
             return this;
         } else {
             this.updateParameters.withDisplayName(displayName);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withUseInTestConsole(Boolean useInTestConsole) {
+        if (isInCreateMode()) {
+            this.innerModel().withUseInTestConsole(useInTestConsole);
+            return this;
+        } else {
+            this.updateParameters.withUseInTestConsole(useInTestConsole);
+            return this;
+        }
+    }
+
+    public AuthorizationServerContractImpl withUseInApiDocumentation(Boolean useInApiDocumentation) {
+        if (isInCreateMode()) {
+            this.innerModel().withUseInApiDocumentation(useInApiDocumentation);
+            return this;
+        } else {
+            this.updateParameters.withUseInApiDocumentation(useInApiDocumentation);
             return this;
         }
     }
@@ -328,8 +345,8 @@ public final class AuthorizationServerContractImpl
         }
     }
 
-    public AuthorizationServerContractImpl withClientAuthenticationMethod(
-        List<ClientAuthenticationMethod> clientAuthenticationMethod) {
+    public AuthorizationServerContractImpl
+        withClientAuthenticationMethod(List<ClientAuthenticationMethod> clientAuthenticationMethod) {
         if (isInCreateMode()) {
             this.innerModel().withClientAuthenticationMethod(clientAuthenticationMethod);
             return this;
@@ -339,8 +356,8 @@ public final class AuthorizationServerContractImpl
         }
     }
 
-    public AuthorizationServerContractImpl withTokenBodyParameters(
-        List<TokenBodyParameterContract> tokenBodyParameters) {
+    public AuthorizationServerContractImpl
+        withTokenBodyParameters(List<TokenBodyParameterContract> tokenBodyParameters) {
         if (isInCreateMode()) {
             this.innerModel().withTokenBodyParameters(tokenBodyParameters);
             return this;
@@ -380,8 +397,8 @@ public final class AuthorizationServerContractImpl
         }
     }
 
-    public AuthorizationServerContractImpl withBearerTokenSendingMethods(
-        List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
+    public AuthorizationServerContractImpl
+        withBearerTokenSendingMethods(List<BearerTokenSendingMethod> bearerTokenSendingMethods) {
         if (isInCreateMode()) {
             this.innerModel().withBearerTokenSendingMethods(bearerTokenSendingMethods);
             return this;

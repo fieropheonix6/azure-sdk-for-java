@@ -5,29 +5,42 @@
 package com.azure.resourcemanager.costmanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.costmanagement.models.CommonExportProperties;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.costmanagement.models.ExportDefinition;
 import com.azure.resourcemanager.costmanagement.models.ExportDeliveryInfo;
 import com.azure.resourcemanager.costmanagement.models.ExportSchedule;
 import com.azure.resourcemanager.costmanagement.models.FormatType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 
-/** The properties of the export. */
+/**
+ * The properties of the export.
+ */
 @Fluent
-public final class ExportProperties extends CommonExportProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportProperties.class);
-
+public final class ExportProperties extends CommonExportPropertiesInner {
     /*
      * Has schedule information for the export.
      */
-    @JsonProperty(value = "schedule")
     private ExportSchedule schedule;
+
+    /*
+     * If the export has an active schedule, provides an estimate of the next run time.
+     */
+    private OffsetDateTime nextRunTimeEstimate;
+
+    /**
+     * Creates an instance of ExportProperties class.
+     */
+    public ExportProperties() {
+    }
 
     /**
      * Get the schedule property: Has schedule information for the export.
-     *
+     * 
      * @return the schedule value.
      */
     public ExportSchedule schedule() {
@@ -36,7 +49,7 @@ public final class ExportProperties extends CommonExportProperties {
 
     /**
      * Set the schedule property: Has schedule information for the export.
-     *
+     * 
      * @param schedule the schedule value to set.
      * @return the ExportProperties object itself.
      */
@@ -45,21 +58,38 @@ public final class ExportProperties extends CommonExportProperties {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the nextRunTimeEstimate property: If the export has an active schedule, provides an estimate of the next run
+     * time.
+     * 
+     * @return the nextRunTimeEstimate value.
+     */
+    @Override
+    public OffsetDateTime nextRunTimeEstimate() {
+        return this.nextRunTimeEstimate;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExportProperties withFormat(FormatType format) {
         super.withFormat(format);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExportProperties withDeliveryInfo(ExportDeliveryInfo deliveryInfo) {
         super.withDeliveryInfo(deliveryInfo);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExportProperties withDefinition(ExportDefinition definition) {
         super.withDefinition(definition);
@@ -67,15 +97,104 @@ public final class ExportProperties extends CommonExportProperties {
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportProperties withRunHistory(ExportExecutionListResultInner runHistory) {
+        super.withRunHistory(runHistory);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ExportProperties withPartitionData(Boolean partitionData) {
+        super.withPartitionData(partitionData);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (schedule() != null) {
             schedule().validate();
         }
+        if (deliveryInfo() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property deliveryInfo in model ExportProperties"));
+        } else {
+            deliveryInfo().validate();
+        }
+        if (definition() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property definition in model ExportProperties"));
+        } else {
+            definition().validate();
+        }
+        if (runHistory() != null) {
+            runHistory().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExportProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("deliveryInfo", deliveryInfo());
+        jsonWriter.writeJsonField("definition", definition());
+        jsonWriter.writeStringField("format", format() == null ? null : format().toString());
+        jsonWriter.writeJsonField("runHistory", runHistory());
+        jsonWriter.writeBooleanField("partitionData", partitionData());
+        jsonWriter.writeJsonField("schedule", this.schedule);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExportProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExportProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExportProperties.
+     */
+    public static ExportProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExportProperties deserializedExportProperties = new ExportProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deliveryInfo".equals(fieldName)) {
+                    deserializedExportProperties.withDeliveryInfo(ExportDeliveryInfo.fromJson(reader));
+                } else if ("definition".equals(fieldName)) {
+                    deserializedExportProperties.withDefinition(ExportDefinition.fromJson(reader));
+                } else if ("format".equals(fieldName)) {
+                    deserializedExportProperties.withFormat(FormatType.fromString(reader.getString()));
+                } else if ("runHistory".equals(fieldName)) {
+                    deserializedExportProperties.withRunHistory(ExportExecutionListResultInner.fromJson(reader));
+                } else if ("partitionData".equals(fieldName)) {
+                    deserializedExportProperties.withPartitionData(reader.getNullable(JsonReader::getBoolean));
+                } else if ("nextRunTimeEstimate".equals(fieldName)) {
+                    deserializedExportProperties.nextRunTimeEstimate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("schedule".equals(fieldName)) {
+                    deserializedExportProperties.schedule = ExportSchedule.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExportProperties;
+        });
     }
 }

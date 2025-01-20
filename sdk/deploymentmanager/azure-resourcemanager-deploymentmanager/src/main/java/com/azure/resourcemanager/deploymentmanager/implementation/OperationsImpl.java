@@ -12,38 +12,34 @@ import com.azure.resourcemanager.deploymentmanager.fluent.OperationsClient;
 import com.azure.resourcemanager.deploymentmanager.fluent.models.OperationsListInner;
 import com.azure.resourcemanager.deploymentmanager.models.Operations;
 import com.azure.resourcemanager.deploymentmanager.models.OperationsList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
     private final com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OperationsList> listWithResponse(Context context) {
+        Response<OperationsListInner> inner = this.serviceClient().listWithResponse(context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OperationsListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OperationsList list() {
         OperationsListInner inner = this.serviceClient().list();
         if (inner != null) {
             return new OperationsListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OperationsList> listWithResponse(Context context) {
-        Response<OperationsListInner> inner = this.serviceClient().listWithResponse(context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OperationsListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

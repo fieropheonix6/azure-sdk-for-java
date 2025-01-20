@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.workloads.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ProviderInstances List. */
+/**
+ * Samples for ProviderInstances List.
+ */
 public final class ProviderInstancesListSamples {
     /*
-     * x-ms-original-file: specification/workloads/resource-manager/Microsoft.Workloads/preview/2021-12-01-preview/examples/workloadmonitor/ProviderInstances_List.json
+     * x-ms-original-file:
+     * specification/workloads/resource-manager/Microsoft.Workloads/stable/2023-04-01/examples/workloadmonitor/
+     * ProviderInstances_List.json
      */
     /**
      * Sample code: List all SAP monitors providers in a subscription.
-     *
+     * 
      * @param manager Entry point to WorkloadsManager.
      */
-    public static void listAllSAPMonitorsProvidersInASubscription(
-        com.azure.resourcemanager.workloads.WorkloadsManager manager) {
-        manager.providerInstances().list("myResourceGroup", "mySapMonitor", Context.NONE);
+    public static void
+        listAllSAPMonitorsProvidersInASubscription(com.azure.resourcemanager.workloads.WorkloadsManager manager) {
+        manager.providerInstances().list("myResourceGroup", "mySapMonitor", com.azure.core.util.Context.NONE);
     }
 }

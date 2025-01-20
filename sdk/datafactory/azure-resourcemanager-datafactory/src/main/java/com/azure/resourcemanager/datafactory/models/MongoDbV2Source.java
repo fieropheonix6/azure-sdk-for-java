@@ -5,26 +5,32 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity source for a MongoDB database. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("MongoDbV2Source")
+/**
+ * A copy activity source for a MongoDB database.
+ */
 @Fluent
 public final class MongoDbV2Source extends CopySource {
     /*
-     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter
-     * or pass an empty document ({}). Type: string (or Expression with resultType string).
+     * Copy source type.
      */
-    @JsonProperty(value = "filter")
+    private String type = "MongoDbV2Source";
+
+    /*
+     * Specifies selection filter using query operators. To return all documents in a collection, omit this parameter or
+     * pass an empty document ({}). Type: string (or Expression with resultType string).
+     */
     private Object filter;
 
     /*
      * Cursor methods for Mongodb query
      */
-    @JsonProperty(value = "cursorMethods")
     private MongoDbCursorMethodsProperties cursorMethods;
 
     /*
@@ -32,32 +38,41 @@ public final class MongoDbV2Source extends CopySource {
      * modifying the batch size will not affect the user or the application. This property's main purpose is to avoid
      * hit the limitation of response size. Type: integer (or Expression with resultType integer).
      */
-    @JsonProperty(value = "batchSize")
     private Object batchSize;
 
     /*
      * Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
-    @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
      * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
      * Expression with resultType array of objects).
      */
-    @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of MongoDbV2Source class. */
+    /**
+     * Creates an instance of MongoDbV2Source class.
+     */
     public MongoDbV2Source() {
+    }
+
+    /**
+     * Get the type property: Copy source type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the filter property: Specifies selection filter using query operators. To return all documents in a
      * collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the filter value.
      */
     public Object filter() {
@@ -68,7 +83,7 @@ public final class MongoDbV2Source extends CopySource {
      * Set the filter property: Specifies selection filter using query operators. To return all documents in a
      * collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param filter the filter value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -79,7 +94,7 @@ public final class MongoDbV2Source extends CopySource {
 
     /**
      * Get the cursorMethods property: Cursor methods for Mongodb query.
-     *
+     * 
      * @return the cursorMethods value.
      */
     public MongoDbCursorMethodsProperties cursorMethods() {
@@ -88,7 +103,7 @@ public final class MongoDbV2Source extends CopySource {
 
     /**
      * Set the cursorMethods property: Cursor methods for Mongodb query.
-     *
+     * 
      * @param cursorMethods the cursorMethods value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -102,7 +117,7 @@ public final class MongoDbV2Source extends CopySource {
      * MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This
      * property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
      * resultType integer).
-     *
+     * 
      * @return the batchSize value.
      */
     public Object batchSize() {
@@ -114,7 +129,7 @@ public final class MongoDbV2Source extends CopySource {
      * MongoDB instance. In most cases, modifying the batch size will not affect the user or the application. This
      * property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
      * resultType integer).
-     *
+     * 
      * @param batchSize the batchSize value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -126,7 +141,7 @@ public final class MongoDbV2Source extends CopySource {
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the queryTimeout value.
      */
     public Object queryTimeout() {
@@ -136,7 +151,7 @@ public final class MongoDbV2Source extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -148,7 +163,7 @@ public final class MongoDbV2Source extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object additionalColumns() {
@@ -158,7 +173,7 @@ public final class MongoDbV2Source extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the MongoDbV2Source object itself.
      */
@@ -167,28 +182,36 @@ public final class MongoDbV2Source extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2Source withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2Source withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2Source withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2Source withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -197,14 +220,87 @@ public final class MongoDbV2Source extends CopySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (cursorMethods() != null) {
             cursorMethods().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("sourceRetryCount", sourceRetryCount());
+        jsonWriter.writeUntypedField("sourceRetryWait", sourceRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("filter", this.filter);
+        jsonWriter.writeJsonField("cursorMethods", this.cursorMethods);
+        jsonWriter.writeUntypedField("batchSize", this.batchSize);
+        jsonWriter.writeUntypedField("queryTimeout", this.queryTimeout);
+        jsonWriter.writeUntypedField("additionalColumns", this.additionalColumns);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MongoDbV2Source from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MongoDbV2Source if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MongoDbV2Source.
+     */
+    public static MongoDbV2Source fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MongoDbV2Source deserializedMongoDbV2Source = new MongoDbV2Source();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sourceRetryCount".equals(fieldName)) {
+                    deserializedMongoDbV2Source.withSourceRetryCount(reader.readUntyped());
+                } else if ("sourceRetryWait".equals(fieldName)) {
+                    deserializedMongoDbV2Source.withSourceRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedMongoDbV2Source.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedMongoDbV2Source.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedMongoDbV2Source.type = reader.getString();
+                } else if ("filter".equals(fieldName)) {
+                    deserializedMongoDbV2Source.filter = reader.readUntyped();
+                } else if ("cursorMethods".equals(fieldName)) {
+                    deserializedMongoDbV2Source.cursorMethods = MongoDbCursorMethodsProperties.fromJson(reader);
+                } else if ("batchSize".equals(fieldName)) {
+                    deserializedMongoDbV2Source.batchSize = reader.readUntyped();
+                } else if ("queryTimeout".equals(fieldName)) {
+                    deserializedMongoDbV2Source.queryTimeout = reader.readUntyped();
+                } else if ("additionalColumns".equals(fieldName)) {
+                    deserializedMongoDbV2Source.additionalColumns = reader.readUntyped();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedMongoDbV2Source.withAdditionalProperties(additionalProperties);
+
+            return deserializedMongoDbV2Source;
+        });
     }
 }

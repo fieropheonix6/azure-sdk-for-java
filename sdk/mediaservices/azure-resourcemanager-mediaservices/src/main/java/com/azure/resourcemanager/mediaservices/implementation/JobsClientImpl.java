@@ -35,17 +35,23 @@ import com.azure.resourcemanager.mediaservices.fluent.models.JobInner;
 import com.azure.resourcemanager.mediaservices.models.JobCollection;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobsClient.
+ */
 public final class JobsClientImpl implements JobsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AzureMediaServicesImpl client;
 
     /**
      * Initializes an instance of JobsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobsClientImpl(AzureMediaServicesImpl client) {
@@ -59,128 +65,83 @@ public final class JobsClientImpl implements JobsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureMediaServicesJo")
-    private interface JobsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/transforms/{transformName}/jobs")
-        @ExpectedResponses({200})
+    public interface JobsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobCollection>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobCollection>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("transformName") String transformName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$orderby") String orderby,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("transformName") String transformName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$orderby") String orderby,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/transforms/{transformName}/jobs/{jobName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("transformName") String transformName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("transformName") String transformName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/transforms/{transformName}/jobs/{jobName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobInner>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobInner>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("transformName") String transformName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") JobInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("transformName") String transformName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") JobInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/transforms/{transformName}/jobs/{jobName}")
-        @ExpectedResponses({200, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("transformName") String transformName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("transformName") String transformName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/transforms/{transformName}/jobs/{jobName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<JobInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("transformName") String transformName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") JobInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("transformName") String transformName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") JobInner parameters,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices"
-                + "/{accountName}/transforms/{transformName}/jobs/{jobName}/cancelJob")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaServices/{accountName}/transforms/{transformName}/jobs/{jobName}/cancelJob")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> cancelJob(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Void>> cancelJob(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("transformName") String transformName,
-            @PathParam("jobName") String jobName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("transformName") String transformName, @PathParam("jobName") String jobName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<JobCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -192,19 +153,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a collection of Job items along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobInner>> listSinglePageAsync(
-        String resourceGroupName, String accountName, String transformName, String filter, String orderby) {
+    private Mono<PagedResponse<JobInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String transformName, String filter, String orderby) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -216,40 +173,21 @@ public final class JobsClientImpl implements JobsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            transformName,
-                            apiVersion,
-                            filter,
-                            orderby,
-                            accept,
-                            context))
-            .<PagedResponse<JobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, transformName, apiVersion, filter, orderby, accept, context))
+            .<PagedResponse<JobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -262,24 +200,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a collection of Job items along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobInner>> listSinglePageAsync(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String filter,
-        String orderby,
-        Context context) {
+    private Mono<PagedResponse<JobInner>> listSinglePageAsync(String resourceGroupName, String accountName,
+        String transformName, String filter, String orderby, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -291,37 +220,21 @@ public final class JobsClientImpl implements JobsClient {
         if (transformName == null) {
             return Mono.error(new IllegalArgumentException("Parameter transformName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                transformName,
-                apiVersion,
-                filter,
-                orderby,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                transformName, apiVersion, filter, orderby, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -333,8 +246,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a collection of Job items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobInner> listAsync(
-        String resourceGroupName, String accountName, String transformName, String filter, String orderby) {
+    private PagedFlux<JobInner> listAsync(String resourceGroupName, String accountName, String transformName,
+        String filter, String orderby) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, transformName, filter, orderby),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -342,9 +255,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -364,9 +277,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -379,13 +292,8 @@ public final class JobsClientImpl implements JobsClient {
      * @return a collection of Job items as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobInner> listAsync(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String filter,
-        String orderby,
-        Context context) {
+    private PagedFlux<JobInner> listAsync(String resourceGroupName, String accountName, String transformName,
+        String filter, String orderby, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, accountName, transformName, filter, orderby, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -393,9 +301,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -413,9 +321,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * List Jobs
-     *
-     * <p>Lists all of the Jobs for the Transform.
-     *
+     * 
+     * Lists all of the Jobs for the Transform.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -428,21 +336,16 @@ public final class JobsClientImpl implements JobsClient {
      * @return a collection of Job items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobInner> list(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String filter,
-        String orderby,
-        Context context) {
+    public PagedIterable<JobInner> list(String resourceGroupName, String accountName, String transformName,
+        String filter, String orderby, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, accountName, transformName, filter, orderby, context));
     }
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -453,19 +356,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName) {
+    private Mono<Response<JobInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -480,30 +379,19 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            transformName,
-                            jobName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, transformName, jobName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -515,19 +403,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+    private Mono<Response<JobInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -542,27 +426,18 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                transformName,
-                jobName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            transformName, jobName, apiVersion, accept, context);
     }
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -573,36 +448,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> getAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName) {
+    private Mono<JobInner> getAsync(String resourceGroupName, String accountName, String transformName,
+        String jobName) {
         return getWithResponseAsync(resourceGroupName, accountName, transformName, jobName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get Job
-     *
-     * <p>Gets a Job.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner get(String resourceGroupName, String accountName, String transformName, String jobName) {
-        return getAsync(resourceGroupName, accountName, transformName, jobName).block();
-    }
-
-    /**
-     * Get Job
-     *
-     * <p>Gets a Job.
-     *
+     * 
+     * Gets a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -614,16 +470,35 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobInner> getWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+    public Response<JobInner> getWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
     }
 
     /**
+     * Get Job
+     * 
+     * Gets a Job.
+     * 
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobInner get(String resourceGroupName, String accountName, String transformName, String jobName) {
+        return getWithResponse(resourceGroupName, accountName, transformName, jobName, Context.NONE).getValue();
+    }
+
+    /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -635,19 +510,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
+    private Mono<Response<JobInner>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName, JobInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -667,31 +538,19 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            transformName,
-                            jobName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, transformName, jobName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -704,24 +563,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> createWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String jobName,
-        JobInner parameters,
-        Context context) {
+    private Mono<Response<JobInner>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName, JobInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -741,28 +591,18 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                transformName,
-                jobName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, transformName, jobName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -774,38 +614,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> createAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
+    private Mono<JobInner> createAsync(String resourceGroupName, String accountName, String transformName,
+        String jobName, JobInner parameters) {
         return createWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Create Job
-     *
-     * <p>Creates a Job.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner create(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
-        return createAsync(resourceGroupName, accountName, transformName, jobName, parameters).block();
-    }
-
-    /**
-     * Create Job
-     *
-     * <p>Creates a Job.
-     *
+     * 
+     * Creates a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -818,22 +637,39 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String jobName,
-        JobInner parameters,
-        Context context) {
+    public Response<JobInner> createWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, JobInner parameters, Context context) {
         return createWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters, context)
             .block();
     }
 
     /**
+     * Create Job
+     * 
+     * Creates a Job.
+     * 
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Job resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobInner create(String resourceGroupName, String accountName, String transformName, String jobName,
+        JobInner parameters) {
+        return createWithResponse(resourceGroupName, accountName, transformName, jobName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -844,19 +680,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -871,30 +703,19 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            transformName,
-                            jobName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, transformName, jobName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -906,19 +727,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -933,27 +750,18 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                transformName,
-                jobName,
-                apiVersion,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, transformName, jobName, apiVersion, accept, context);
     }
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -971,27 +779,9 @@ public final class JobsClientImpl implements JobsClient {
 
     /**
      * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String accountName, String transformName, String jobName) {
-        deleteAsync(resourceGroupName, accountName, transformName, jobName).block();
-    }
-
-    /**
-     * Delete Job
-     *
-     * <p>Deletes a Job.
-     *
+     * 
+     * Deletes a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1003,17 +793,35 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
     }
 
     /**
+     * Delete Job
+     * 
+     * Deletes a Job.
+     * 
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String transformName, String jobName) {
+        deleteWithResponse(resourceGroupName, accountName, transformName, jobName, Context.NONE);
+    }
+
+    /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1025,19 +833,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
+    private Mono<Response<JobInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName, JobInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1057,32 +861,20 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            transformName,
-                            jobName,
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, transformName, jobName, apiVersion, parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1095,24 +887,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String jobName,
-        JobInner parameters,
-        Context context) {
+    private Mono<Response<JobInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName, JobInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1132,29 +915,19 @@ public final class JobsClientImpl implements JobsClient {
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                transformName,
-                jobName,
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, transformName, jobName, apiVersion, parameters, accept, context);
     }
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1166,40 +939,18 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<JobInner> updateAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
+    private Mono<JobInner> updateAsync(String resourceGroupName, String accountName, String transformName,
+        String jobName, JobInner parameters) {
         return updateWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
-     * @param parameters The request parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobInner update(
-        String resourceGroupName, String accountName, String transformName, String jobName, JobInner parameters) {
-        return updateAsync(resourceGroupName, accountName, transformName, jobName, parameters).block();
-    }
-
-    /**
-     * Update Job
-     *
-     * <p>Update is only supported for description and priority. Updating Priority will take effect when the Job state
-     * is Queued or Scheduled and depending on the timing the priority update may be ignored.
-     *
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1212,22 +963,40 @@ public final class JobsClientImpl implements JobsClient {
      * @return a Job resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String transformName,
-        String jobName,
-        JobInner parameters,
-        Context context) {
+    public Response<JobInner> updateWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, JobInner parameters, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, transformName, jobName, parameters, context)
             .block();
     }
 
     /**
+     * Update Job
+     * 
+     * Update is only supported for description and priority. Updating Priority will take effect when the Job state is
+     * Queued or Scheduled and depending on the timing the priority update may be ignored.
+     * 
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @param parameters The request parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Job resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobInner update(String resourceGroupName, String accountName, String transformName, String jobName,
+        JobInner parameters) {
+        return updateWithResponse(resourceGroupName, accountName, transformName, jobName, parameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1238,19 +1007,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelJobWithResponseAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName) {
+    private Mono<Response<Void>> cancelJobWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1265,30 +1030,19 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .cancelJob(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            transformName,
-                            jobName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.cancelJob(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, transformName, jobName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1300,19 +1054,15 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> cancelJobWithResponseAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+    private Mono<Response<Void>> cancelJobWithResponseAsync(String resourceGroupName, String accountName,
+        String transformName, String jobName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1327,27 +1077,18 @@ public final class JobsClientImpl implements JobsClient {
         if (jobName == null) {
             return Mono.error(new IllegalArgumentException("Parameter jobName is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-07-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .cancelJob(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                transformName,
-                jobName,
-                apiVersion,
-                accept,
-                context);
+        return service.cancelJob(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, transformName, jobName, apiVersion, accept, context);
     }
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1358,35 +1099,17 @@ public final class JobsClientImpl implements JobsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> cancelJobAsync(
-        String resourceGroupName, String accountName, String transformName, String jobName) {
+    private Mono<Void> cancelJobAsync(String resourceGroupName, String accountName, String transformName,
+        String jobName) {
         return cancelJobWithResponseAsync(resourceGroupName, accountName, transformName, jobName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
-     * @param resourceGroupName The name of the resource group within the Azure subscription.
-     * @param accountName The Media Services account name.
-     * @param transformName The Transform name.
-     * @param jobName The Job name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName) {
-        cancelJobAsync(resourceGroupName, accountName, transformName, jobName).block();
-    }
-
-    /**
-     * Cancel Job
-     *
-     * <p>Cancel a Job.
-     *
+     * 
+     * Cancel a Job.
+     * 
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @param transformName The Transform name.
@@ -1398,16 +1121,33 @@ public final class JobsClientImpl implements JobsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> cancelJobWithResponse(
-        String resourceGroupName, String accountName, String transformName, String jobName, Context context) {
+    public Response<Void> cancelJobWithResponse(String resourceGroupName, String accountName, String transformName,
+        String jobName, Context context) {
         return cancelJobWithResponseAsync(resourceGroupName, accountName, transformName, jobName, context).block();
     }
 
     /**
+     * Cancel Job
+     * 
+     * Cancel a Job.
+     * 
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param transformName The Transform name.
+     * @param jobName The Job name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName) {
+        cancelJobWithResponse(resourceGroupName, accountName, transformName, jobName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1419,31 +1159,20 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<JobInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().odataNextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1456,23 +1185,13 @@ public final class JobsClientImpl implements JobsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().odataNextLink(), null));
     }
 }

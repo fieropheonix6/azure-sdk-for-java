@@ -30,22 +30,28 @@ import com.azure.resourcemanager.recoveryservices.fluent.models.ReplicationUsage
 import com.azure.resourcemanager.recoveryservices.models.ReplicationUsageList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReplicationUsagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationUsagesClient.
+ */
 public final class ReplicationUsagesClientImpl implements ReplicationUsagesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReplicationUsagesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicationUsagesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReplicationUsagesClientImpl(RecoveryServicesManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ReplicationUsagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ReplicationUsagesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,27 +61,21 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesMana")
-    private interface ReplicationUsagesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices"
-                + "/vaults/{vaultName}/replicationUsages")
-        @ExpectedResponses({200})
+    public interface ReplicationUsagesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/Subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/replicationUsages")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ReplicationUsageList>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("vaultName") String vaultName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ReplicationUsageList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Fetches the replication usages of the vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -85,16 +85,12 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ReplicationUsageInner>> listSinglePageAsync(String resourceGroupName, String vaultName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -105,28 +101,17 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            resourceGroupName,
-                            vaultName,
-                            accept,
-                            context))
-            .<PagedResponse<ReplicationUsageInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, vaultName, accept, context))
+            .<PagedResponse<ReplicationUsageInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches the replication usages of the vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,19 +120,15 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
      * @return replication usages for vault along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ReplicationUsageInner>> listSinglePageAsync(
-        String resourceGroupName, String vaultName, Context context) {
+    private Mono<PagedResponse<ReplicationUsageInner>> listSinglePageAsync(String resourceGroupName, String vaultName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -159,24 +140,16 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                resourceGroupName,
-                vaultName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(),
+                resourceGroupName, vaultName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Fetches the replication usages of the vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -190,8 +163,8 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
 
     /**
      * Fetches the replication usages of the vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,8 +179,8 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
 
     /**
      * Fetches the replication usages of the vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -221,8 +194,8 @@ public final class ReplicationUsagesClientImpl implements ReplicationUsagesClien
 
     /**
      * Fetches the replication usages of the vault.
-     *
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

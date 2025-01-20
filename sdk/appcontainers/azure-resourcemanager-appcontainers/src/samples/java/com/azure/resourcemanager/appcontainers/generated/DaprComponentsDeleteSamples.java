@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.appcontainers.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DaprComponents Delete. */
+/**
+ * Samples for DaprComponents Delete.
+ */
 public final class DaprComponentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/app/resource-manager/Microsoft.App/preview/2022-06-01-preview/examples/DaprComponents_Delete.json
+     * x-ms-original-file:
+     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/DaprComponents_Delete.json
      */
     /**
      * Sample code: Delete dapr component.
-     *
+     * 
      * @param manager Entry point to ContainerAppsApiManager.
      */
     public static void deleteDaprComponent(com.azure.resourcemanager.appcontainers.ContainerAppsApiManager manager) {
-        manager.daprComponents().deleteWithResponse("examplerg", "myenvironment", "reddog", Context.NONE);
+        manager.daprComponents()
+            .deleteWithResponse("examplerg", "myenvironment", "reddog", com.azure.core.util.Context.NONE);
     }
 }

@@ -5,39 +5,47 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** A class that represents a VerificationStatus record. */
+/**
+ * A class that represents a VerificationStatus record.
+ */
 @Immutable
-public final class DnsRecord {
+public final class DnsRecord implements JsonSerializable<DnsRecord> {
     /*
      * Type of the DNS record. Example: TXT
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Name of the DNS record.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Value of the DNS record.
      */
-    @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
     /*
      * Represents an expiry time in seconds to represent how long this entry can be cached by the resolver, default =
      * 3600sec.
      */
-    @JsonProperty(value = "ttl", access = JsonProperty.Access.WRITE_ONLY)
     private Integer ttl;
 
     /**
+     * Creates an instance of DnsRecord class.
+     */
+    public DnsRecord() {
+    }
+
+    /**
      * Get the type property: Type of the DNS record. Example: TXT.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -46,7 +54,7 @@ public final class DnsRecord {
 
     /**
      * Get the name property: Name of the DNS record.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +63,7 @@ public final class DnsRecord {
 
     /**
      * Get the value property: Value of the DNS record.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -65,7 +73,7 @@ public final class DnsRecord {
     /**
      * Get the ttl property: Represents an expiry time in seconds to represent how long this entry can be cached by the
      * resolver, default = 3600sec.
-     *
+     * 
      * @return the ttl value.
      */
     public Integer ttl() {
@@ -74,9 +82,50 @@ public final class DnsRecord {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DnsRecord from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DnsRecord if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the DnsRecord.
+     */
+    public static DnsRecord fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DnsRecord deserializedDnsRecord = new DnsRecord();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDnsRecord.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDnsRecord.name = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    deserializedDnsRecord.value = reader.getString();
+                } else if ("ttl".equals(fieldName)) {
+                    deserializedDnsRecord.ttl = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDnsRecord;
+        });
     }
 }

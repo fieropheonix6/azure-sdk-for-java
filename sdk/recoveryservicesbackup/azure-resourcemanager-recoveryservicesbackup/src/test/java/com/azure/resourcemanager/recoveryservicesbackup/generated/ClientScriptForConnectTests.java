@@ -7,37 +7,32 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ClientScriptForConnect;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClientScriptForConnectTests {
-    @Test
-    public void testDeserialize() {
-        ClientScriptForConnect model =
-            BinaryData
-                .fromString(
-                    "{\"scriptContent\":\"trczzydmxzjijp\",\"scriptExtension\":\"aurkihcirlde\",\"osType\":\"rdcoxnbkkj\",\"url\":\"urnnqbnqbpiz\",\"scriptNameSuffix\":\"ltgrdogypxrxv\"}")
-                .toObject(ClientScriptForConnect.class);
-        Assertions.assertEquals("trczzydmxzjijp", model.scriptContent());
-        Assertions.assertEquals("aurkihcirlde", model.scriptExtension());
-        Assertions.assertEquals("rdcoxnbkkj", model.osType());
-        Assertions.assertEquals("urnnqbnqbpiz", model.url());
-        Assertions.assertEquals("ltgrdogypxrxv", model.scriptNameSuffix());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClientScriptForConnect model = BinaryData.fromString(
+            "{\"scriptContent\":\"qkkyihztgeqmg\",\"scriptExtension\":\"gwldo\",\"osType\":\"hillce\",\"url\":\"ehuwaoa\",\"scriptNameSuffix\":\"h\"}")
+            .toObject(ClientScriptForConnect.class);
+        Assertions.assertEquals("qkkyihztgeqmg", model.scriptContent());
+        Assertions.assertEquals("gwldo", model.scriptExtension());
+        Assertions.assertEquals("hillce", model.osType());
+        Assertions.assertEquals("ehuwaoa", model.url());
+        Assertions.assertEquals("h", model.scriptNameSuffix());
     }
 
-    @Test
-    public void testSerialize() {
-        ClientScriptForConnect model =
-            new ClientScriptForConnect()
-                .withScriptContent("trczzydmxzjijp")
-                .withScriptExtension("aurkihcirlde")
-                .withOsType("rdcoxnbkkj")
-                .withUrl("urnnqbnqbpiz")
-                .withScriptNameSuffix("ltgrdogypxrxv");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClientScriptForConnect model = new ClientScriptForConnect().withScriptContent("qkkyihztgeqmg")
+            .withScriptExtension("gwldo")
+            .withOsType("hillce")
+            .withUrl("ehuwaoa")
+            .withScriptNameSuffix("h");
         model = BinaryData.fromObject(model).toObject(ClientScriptForConnect.class);
-        Assertions.assertEquals("trczzydmxzjijp", model.scriptContent());
-        Assertions.assertEquals("aurkihcirlde", model.scriptExtension());
-        Assertions.assertEquals("rdcoxnbkkj", model.osType());
-        Assertions.assertEquals("urnnqbnqbpiz", model.url());
-        Assertions.assertEquals("ltgrdogypxrxv", model.scriptNameSuffix());
+        Assertions.assertEquals("qkkyihztgeqmg", model.scriptContent());
+        Assertions.assertEquals("gwldo", model.scriptExtension());
+        Assertions.assertEquals("hillce", model.osType());
+        Assertions.assertEquals("ehuwaoa", model.url());
+        Assertions.assertEquals("h", model.scriptNameSuffix());
     }
 }

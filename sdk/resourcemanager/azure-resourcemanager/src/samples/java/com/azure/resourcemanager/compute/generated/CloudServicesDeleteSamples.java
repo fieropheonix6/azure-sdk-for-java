@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CloudServices Delete. */
+/**
+ * Samples for CloudServices Delete.
+ */
 public final class CloudServicesDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudService_Delete.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
+     * CloudService_Delete.json
      */
     /**
      * Sample code: Delete Cloud Service.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void deleteCloudService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getCloudServices()
-            .delete("ConstosoRG", "{cs-name}", Context.NONE);
+            .delete("ConstosoRG", "{cs-name}", com.azure.core.util.Context.NONE);
     }
 }

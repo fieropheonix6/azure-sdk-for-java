@@ -5,101 +5,203 @@
 package com.azure.resourcemanager.peering.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The peering service location. */
-@JsonFlatten
+/**
+ * The peering service location.
+ */
 @Fluent
-public class PeeringServiceLocationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeeringServiceLocationInner.class);
+public final class PeeringServiceLocationInner extends ProxyResource {
+    /*
+     * The properties that define a peering service location.
+     */
+    private PeeringServiceLocationProperties innerProperties;
 
     /*
-     * Country of the customer
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.country")
-    private String country;
+    private String type;
 
     /*
-     * State of the customer
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.state")
-    private String state;
+    private String name;
 
     /*
-     * Azure region for the location
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.azureRegion")
-    private String azureRegion;
+    private String id;
+
+    /**
+     * Creates an instance of PeeringServiceLocationInner class.
+     */
+    public PeeringServiceLocationInner() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties that define a peering service location.
+     * 
+     * @return the innerProperties value.
+     */
+    private PeeringServiceLocationProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the country property: Country of the customer.
-     *
+     * 
      * @return the country value.
      */
     public String country() {
-        return this.country;
+        return this.innerProperties() == null ? null : this.innerProperties().country();
     }
 
     /**
      * Set the country property: Country of the customer.
-     *
+     * 
      * @param country the country value to set.
      * @return the PeeringServiceLocationInner object itself.
      */
     public PeeringServiceLocationInner withCountry(String country) {
-        this.country = country;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceLocationProperties();
+        }
+        this.innerProperties().withCountry(country);
         return this;
     }
 
     /**
      * Get the state property: State of the customer.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
      * Set the state property: State of the customer.
-     *
+     * 
      * @param state the state value to set.
      * @return the PeeringServiceLocationInner object itself.
      */
     public PeeringServiceLocationInner withState(String state) {
-        this.state = state;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceLocationProperties();
+        }
+        this.innerProperties().withState(state);
         return this;
     }
 
     /**
      * Get the azureRegion property: Azure region for the location.
-     *
+     * 
      * @return the azureRegion value.
      */
     public String azureRegion() {
-        return this.azureRegion;
+        return this.innerProperties() == null ? null : this.innerProperties().azureRegion();
     }
 
     /**
      * Set the azureRegion property: Azure region for the location.
-     *
+     * 
      * @param azureRegion the azureRegion value to set.
      * @return the PeeringServiceLocationInner object itself.
      */
     public PeeringServiceLocationInner withAzureRegion(String azureRegion) {
-        this.azureRegion = azureRegion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeeringServiceLocationProperties();
+        }
+        this.innerProperties().withAzureRegion(azureRegion);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeeringServiceLocationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeeringServiceLocationInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeeringServiceLocationInner.
+     */
+    public static PeeringServiceLocationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeeringServiceLocationInner deserializedPeeringServiceLocationInner = new PeeringServiceLocationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPeeringServiceLocationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPeeringServiceLocationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeeringServiceLocationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPeeringServiceLocationInner.innerProperties
+                        = PeeringServiceLocationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeeringServiceLocationInner;
+        });
     }
 }

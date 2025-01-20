@@ -18,11 +18,13 @@ import com.azure.resourcemanager.signalr.fluent.models.SkuListInner;
 import com.azure.resourcemanager.signalr.models.NameAvailabilityParameters;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
 
-/** An instance of this class provides access to all the operations defined in SignalRsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SignalRsClient.
+ */
 public interface SignalRsClient {
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -32,12 +34,12 @@ public interface SignalRsClient {
      * @return result of the request to check name availability along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(
-        String location, NameAvailabilityParameters parameters, Context context);
+    Response<NameAvailabilityInner> checkNameAvailabilityWithResponse(String location,
+        NameAvailabilityParameters parameters, Context context);
 
     /**
      * Checks that the resource name is valid and is not already in use.
-     *
+     * 
      * @param location the region.
      * @param parameters Parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,62 +52,62 @@ public interface SignalRsClient {
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SignalRResourceInner> list();
 
     /**
      * Handles requests to list all resources in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SignalRResourceInner> list(Context context);
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SignalRResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Handles requests to list all resources in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of resources and a possible link for next set as paginated response with
-     *     {@link PagedIterable}.
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SignalRResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,14 +116,14 @@ public interface SignalRsClient {
      * @return the resource and its properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SignalRResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<SignalRResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Get the resource and its properties.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -133,9 +135,9 @@ public interface SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -144,14 +146,14 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters);
+    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, SignalRResourceInner parameters);
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
      * @param context The context to associate with this operation.
@@ -161,14 +163,14 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
+    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginCreateOrUpdate(String resourceGroupName,
+        String resourceName, SignalRResourceInner parameters, Context context);
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,9 +183,9 @@ public interface SignalRsClient {
 
     /**
      * Create or update a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the create or update operation.
      * @param context The context to associate with this operation.
@@ -193,14 +195,14 @@ public interface SignalRsClient {
      * @return a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignalRResourceInner createOrUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
+    SignalRResourceInner createOrUpdate(String resourceGroupName, String resourceName, SignalRResourceInner parameters,
+        Context context);
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,9 +214,9 @@ public interface SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,9 +229,9 @@ public interface SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -240,9 +242,9 @@ public interface SignalRsClient {
 
     /**
      * Operation to delete a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -254,9 +256,9 @@ public interface SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,14 +267,14 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters);
+    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(String resourceGroupName,
+        String resourceName, SignalRResourceInner parameters);
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
      * @param context The context to associate with this operation.
@@ -282,14 +284,14 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
+    SyncPoller<PollResult<SignalRResourceInner>, SignalRResourceInner> beginUpdate(String resourceGroupName,
+        String resourceName, SignalRResourceInner parameters, Context context);
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -302,9 +304,9 @@ public interface SignalRsClient {
 
     /**
      * Operation to update an exiting resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameters for the update operation.
      * @param context The context to associate with this operation.
@@ -314,14 +316,14 @@ public interface SignalRsClient {
      * @return a class represent a resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignalRResourceInner update(
-        String resourceGroupName, String resourceName, SignalRResourceInner parameters, Context context);
+    SignalRResourceInner update(String resourceGroupName, String resourceName, SignalRResourceInner parameters,
+        Context context);
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -334,9 +336,9 @@ public interface SignalRsClient {
 
     /**
      * Get the access keys of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -348,9 +350,9 @@ public interface SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,14 +361,14 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represents the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters);
+    SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(String resourceGroupName,
+        String resourceName, RegenerateKeyParameters parameters);
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
      * @param context The context to associate with this operation.
@@ -376,14 +378,14 @@ public interface SignalRsClient {
      * @return the {@link SyncPoller} for polling of a class represents the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context);
+    SyncPoller<PollResult<SignalRKeysInner>, SignalRKeysInner> beginRegenerateKey(String resourceGroupName,
+        String resourceName, RegenerateKeyParameters parameters, Context context);
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -396,9 +398,9 @@ public interface SignalRsClient {
 
     /**
      * Regenerate the access key for the resource. PrimaryKey and SecondaryKey cannot be regenerated at the same time.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param parameters Parameter that describes the Regenerate Key Operation.
      * @param context The context to associate with this operation.
@@ -408,14 +410,14 @@ public interface SignalRsClient {
      * @return a class represents the access keys of the resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignalRKeysInner regenerateKey(
-        String resourceGroupName, String resourceName, RegenerateKeyParameters parameters, Context context);
+    SignalRKeysInner regenerateKey(String resourceGroupName, String resourceName, RegenerateKeyParameters parameters,
+        Context context);
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -427,9 +429,9 @@ public interface SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -442,9 +444,9 @@ public interface SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -455,9 +457,9 @@ public interface SignalRsClient {
 
     /**
      * Operation to restart a resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -469,9 +471,9 @@ public interface SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -484,9 +486,9 @@ public interface SignalRsClient {
 
     /**
      * List all available skus of the resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param resourceName The name of the resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

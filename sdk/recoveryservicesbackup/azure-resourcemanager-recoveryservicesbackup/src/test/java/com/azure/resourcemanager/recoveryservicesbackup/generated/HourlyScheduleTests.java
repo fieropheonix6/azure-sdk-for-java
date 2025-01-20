@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.HourlySchedule;
 import java.time.OffsetDateTime;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class HourlyScheduleTests {
-    @Test
-    public void testDeserialize() {
-        HourlySchedule model =
-            BinaryData
-                .fromString(
-                    "{\"interval\":2043467280,\"scheduleWindowStartTime\":\"2021-10-16T01:23:17Z\",\"scheduleWindowDuration\":277669482}")
-                .toObject(HourlySchedule.class);
-        Assertions.assertEquals(2043467280, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T01:23:17Z"), model.scheduleWindowStartTime());
-        Assertions.assertEquals(277669482, model.scheduleWindowDuration());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        HourlySchedule model = BinaryData.fromString(
+            "{\"interval\":2146264945,\"scheduleWindowStartTime\":\"2021-01-06T14:29:30Z\",\"scheduleWindowDuration\":2049992940}")
+            .toObject(HourlySchedule.class);
+        Assertions.assertEquals(2146264945, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T14:29:30Z"), model.scheduleWindowStartTime());
+        Assertions.assertEquals(2049992940, model.scheduleWindowDuration());
     }
 
-    @Test
-    public void testSerialize() {
-        HourlySchedule model =
-            new HourlySchedule()
-                .withInterval(2043467280)
-                .withScheduleWindowStartTime(OffsetDateTime.parse("2021-10-16T01:23:17Z"))
-                .withScheduleWindowDuration(277669482);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        HourlySchedule model = new HourlySchedule().withInterval(2146264945)
+            .withScheduleWindowStartTime(OffsetDateTime.parse("2021-01-06T14:29:30Z"))
+            .withScheduleWindowDuration(2049992940);
         model = BinaryData.fromObject(model).toObject(HourlySchedule.class);
-        Assertions.assertEquals(2043467280, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-16T01:23:17Z"), model.scheduleWindowStartTime());
-        Assertions.assertEquals(277669482, model.scheduleWindowDuration());
+        Assertions.assertEquals(2146264945, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T14:29:30Z"), model.scheduleWindowStartTime());
+        Assertions.assertEquals(2049992940, model.scheduleWindowDuration());
     }
 }

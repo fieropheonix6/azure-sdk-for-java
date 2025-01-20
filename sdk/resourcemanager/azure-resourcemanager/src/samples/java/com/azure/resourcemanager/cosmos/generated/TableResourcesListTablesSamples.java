@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for TableResources ListTables. */
+/**
+ * Samples for TableResources ListTables.
+ */
 public final class TableResourcesListTablesSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBTableList.json
+     * x-ms-original-file:
+     * specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/CosmosDBTableList.json
      */
     /**
      * Sample code: CosmosDBTableList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBTableList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getTableResources()
-            .listTables("rgName", "ddb1", Context.NONE);
+            .listTables("rgName", "ddb1", com.azure.core.util.Context.NONE);
     }
 }

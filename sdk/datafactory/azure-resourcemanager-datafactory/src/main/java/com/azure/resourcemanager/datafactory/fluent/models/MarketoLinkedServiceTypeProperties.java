@@ -6,63 +6,64 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Marketo server linked service properties. */
+/**
+ * Marketo server linked service properties.
+ */
 @Fluent
-public final class MarketoLinkedServiceTypeProperties {
+public final class MarketoLinkedServiceTypeProperties implements JsonSerializable<MarketoLinkedServiceTypeProperties> {
     /*
      * The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com)
      */
-    @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
      * The client Id of your Marketo service.
      */
-    @JsonProperty(value = "clientId", required = true)
     private Object clientId;
 
     /*
      * The client secret of your Marketo service.
      */
-    @JsonProperty(value = "clientSecret")
     private SecretBase clientSecret;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * Specifies whether to require the host name in the server's certificate to match the host name of the server when
      * connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
      * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
-    @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of MarketoLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of MarketoLinkedServiceTypeProperties class.
+     */
     public MarketoLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the endpoint property: The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object endpoint() {
@@ -71,7 +72,7 @@ public final class MarketoLinkedServiceTypeProperties {
 
     /**
      * Set the endpoint property: The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the MarketoLinkedServiceTypeProperties object itself.
      */
@@ -82,7 +83,7 @@ public final class MarketoLinkedServiceTypeProperties {
 
     /**
      * Get the clientId property: The client Id of your Marketo service.
-     *
+     * 
      * @return the clientId value.
      */
     public Object clientId() {
@@ -91,7 +92,7 @@ public final class MarketoLinkedServiceTypeProperties {
 
     /**
      * Set the clientId property: The client Id of your Marketo service.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the MarketoLinkedServiceTypeProperties object itself.
      */
@@ -102,7 +103,7 @@ public final class MarketoLinkedServiceTypeProperties {
 
     /**
      * Get the clientSecret property: The client secret of your Marketo service.
-     *
+     * 
      * @return the clientSecret value.
      */
     public SecretBase clientSecret() {
@@ -111,7 +112,7 @@ public final class MarketoLinkedServiceTypeProperties {
 
     /**
      * Set the clientSecret property: The client secret of your Marketo service.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the MarketoLinkedServiceTypeProperties object itself.
      */
@@ -123,7 +124,7 @@ public final class MarketoLinkedServiceTypeProperties {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -133,7 +134,7 @@ public final class MarketoLinkedServiceTypeProperties {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the MarketoLinkedServiceTypeProperties object itself.
      */
@@ -145,7 +146,7 @@ public final class MarketoLinkedServiceTypeProperties {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object useHostVerification() {
@@ -155,7 +156,7 @@ public final class MarketoLinkedServiceTypeProperties {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the MarketoLinkedServiceTypeProperties object itself.
      */
@@ -167,7 +168,7 @@ public final class MarketoLinkedServiceTypeProperties {
     /**
      * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @return the usePeerVerification value.
      */
     public Object usePeerVerification() {
@@ -177,7 +178,7 @@ public final class MarketoLinkedServiceTypeProperties {
     /**
      * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
      * SSL. The default value is true.
-     *
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the MarketoLinkedServiceTypeProperties object itself.
      */
@@ -188,43 +189,41 @@ public final class MarketoLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the MarketoLinkedServiceTypeProperties object itself.
      */
-    public MarketoLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public MarketoLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (endpoint() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpoint in model MarketoLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpoint in model MarketoLinkedServiceTypeProperties"));
         }
         if (clientId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property clientId in model MarketoLinkedServiceTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property clientId in model MarketoLinkedServiceTypeProperties"));
         }
         if (clientSecret() != null) {
             clientSecret().validate();
@@ -232,4 +231,60 @@ public final class MarketoLinkedServiceTypeProperties {
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(MarketoLinkedServiceTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        jsonWriter.writeUntypedField("clientId", this.clientId);
+        jsonWriter.writeJsonField("clientSecret", this.clientSecret);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeUntypedField("useHostVerification", this.useHostVerification);
+        jsonWriter.writeUntypedField("usePeerVerification", this.usePeerVerification);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MarketoLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MarketoLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MarketoLinkedServiceTypeProperties.
+     */
+    public static MarketoLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MarketoLinkedServiceTypeProperties deserializedMarketoLinkedServiceTypeProperties
+                = new MarketoLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("endpoint".equals(fieldName)) {
+                    deserializedMarketoLinkedServiceTypeProperties.endpoint = reader.readUntyped();
+                } else if ("clientId".equals(fieldName)) {
+                    deserializedMarketoLinkedServiceTypeProperties.clientId = reader.readUntyped();
+                } else if ("clientSecret".equals(fieldName)) {
+                    deserializedMarketoLinkedServiceTypeProperties.clientSecret = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedMarketoLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("useHostVerification".equals(fieldName)) {
+                    deserializedMarketoLinkedServiceTypeProperties.useHostVerification = reader.readUntyped();
+                } else if ("usePeerVerification".equals(fieldName)) {
+                    deserializedMarketoLinkedServiceTypeProperties.usePeerVerification = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedMarketoLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMarketoLinkedServiceTypeProperties;
+        });
+    }
 }

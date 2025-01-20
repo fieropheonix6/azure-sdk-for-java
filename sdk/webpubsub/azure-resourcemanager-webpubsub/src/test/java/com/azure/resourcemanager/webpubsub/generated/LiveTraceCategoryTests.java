@@ -7,22 +7,21 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.LiveTraceCategory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LiveTraceCategoryTests {
-    @Test
-    public void testDeserialize() {
-        LiveTraceCategory model =
-            BinaryData.fromString("{\"name\":\"mtxpsiebtfh\",\"enabled\":\"esap\"}").toObject(LiveTraceCategory.class);
-        Assertions.assertEquals("mtxpsiebtfh", model.name());
-        Assertions.assertEquals("esap", model.enabled());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LiveTraceCategory model = BinaryData.fromString("{\"name\":\"hrskdsnfd\",\"enabled\":\"oakgtdlmkkzev\"}")
+            .toObject(LiveTraceCategory.class);
+        Assertions.assertEquals("hrskdsnfd", model.name());
+        Assertions.assertEquals("oakgtdlmkkzev", model.enabled());
     }
 
-    @Test
-    public void testSerialize() {
-        LiveTraceCategory model = new LiveTraceCategory().withName("mtxpsiebtfh").withEnabled("esap");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LiveTraceCategory model = new LiveTraceCategory().withName("hrskdsnfd").withEnabled("oakgtdlmkkzev");
         model = BinaryData.fromObject(model).toObject(LiveTraceCategory.class);
-        Assertions.assertEquals("mtxpsiebtfh", model.name());
-        Assertions.assertEquals("esap", model.enabled());
+        Assertions.assertEquals("hrskdsnfd", model.name());
+        Assertions.assertEquals("oakgtdlmkkzev", model.enabled());
     }
 }

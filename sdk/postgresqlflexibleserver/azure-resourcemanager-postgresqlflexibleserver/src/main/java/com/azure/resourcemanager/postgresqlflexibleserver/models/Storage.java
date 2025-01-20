@@ -5,24 +5,57 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Storage properties of a server. */
+/**
+ * Storage properties of a server.
+ */
 @Fluent
-public final class Storage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Storage.class);
-
+public final class Storage implements JsonSerializable<Storage> {
     /*
      * Max storage allowed for a server.
      */
-    @JsonProperty(value = "storageSizeGB")
     private Integer storageSizeGB;
+
+    /*
+     * Flag to enable / disable Storage Auto grow for flexible server.
+     */
+    private StorageAutoGrow autoGrow;
+
+    /*
+     * Name of storage tier for IOPS.
+     */
+    private AzureManagedDiskPerformanceTiers tier;
+
+    /*
+     * Storage tier IOPS quantity. This property is required to be set for storage Type PremiumV2_LRS
+     */
+    private Integer iops;
+
+    /*
+     * Storage throughput for the server. This is required to be set for storage Type PremiumV2_LRS
+     */
+    private Integer throughput;
+
+    /*
+     * Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default is Premium_LRS if not
+     * specified
+     */
+    private StorageType type;
+
+    /**
+     * Creates an instance of Storage class.
+     */
+    public Storage() {
+    }
 
     /**
      * Get the storageSizeGB property: Max storage allowed for a server.
-     *
+     * 
      * @return the storageSizeGB value.
      */
     public Integer storageSizeGB() {
@@ -31,7 +64,7 @@ public final class Storage {
 
     /**
      * Set the storageSizeGB property: Max storage allowed for a server.
-     *
+     * 
      * @param storageSizeGB the storageSizeGB value to set.
      * @return the Storage object itself.
      */
@@ -41,10 +74,167 @@ public final class Storage {
     }
 
     /**
+     * Get the autoGrow property: Flag to enable / disable Storage Auto grow for flexible server.
+     * 
+     * @return the autoGrow value.
+     */
+    public StorageAutoGrow autoGrow() {
+        return this.autoGrow;
+    }
+
+    /**
+     * Set the autoGrow property: Flag to enable / disable Storage Auto grow for flexible server.
+     * 
+     * @param autoGrow the autoGrow value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withAutoGrow(StorageAutoGrow autoGrow) {
+        this.autoGrow = autoGrow;
+        return this;
+    }
+
+    /**
+     * Get the tier property: Name of storage tier for IOPS.
+     * 
+     * @return the tier value.
+     */
+    public AzureManagedDiskPerformanceTiers tier() {
+        return this.tier;
+    }
+
+    /**
+     * Set the tier property: Name of storage tier for IOPS.
+     * 
+     * @param tier the tier value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withTier(AzureManagedDiskPerformanceTiers tier) {
+        this.tier = tier;
+        return this;
+    }
+
+    /**
+     * Get the iops property: Storage tier IOPS quantity. This property is required to be set for storage Type
+     * PremiumV2_LRS.
+     * 
+     * @return the iops value.
+     */
+    public Integer iops() {
+        return this.iops;
+    }
+
+    /**
+     * Set the iops property: Storage tier IOPS quantity. This property is required to be set for storage Type
+     * PremiumV2_LRS.
+     * 
+     * @param iops the iops value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withIops(Integer iops) {
+        this.iops = iops;
+        return this;
+    }
+
+    /**
+     * Get the throughput property: Storage throughput for the server. This is required to be set for storage Type
+     * PremiumV2_LRS.
+     * 
+     * @return the throughput value.
+     */
+    public Integer throughput() {
+        return this.throughput;
+    }
+
+    /**
+     * Set the throughput property: Storage throughput for the server. This is required to be set for storage Type
+     * PremiumV2_LRS.
+     * 
+     * @param throughput the throughput value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withThroughput(Integer throughput) {
+        this.throughput = throughput;
+        return this;
+    }
+
+    /**
+     * Get the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default
+     * is Premium_LRS if not specified.
+     * 
+     * @return the type value.
+     */
+    public StorageType type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Storage type for the server. Allowed values are Premium_LRS and PremiumV2_LRS, and default
+     * is Premium_LRS if not specified.
+     * 
+     * @param type the type value to set.
+     * @return the Storage object itself.
+     */
+    public Storage withType(StorageType type) {
+        this.type = type;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("storageSizeGB", this.storageSizeGB);
+        jsonWriter.writeStringField("autoGrow", this.autoGrow == null ? null : this.autoGrow.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        jsonWriter.writeNumberField("iops", this.iops);
+        jsonWriter.writeNumberField("throughput", this.throughput);
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Storage from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Storage if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Storage.
+     */
+    public static Storage fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Storage deserializedStorage = new Storage();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageSizeGB".equals(fieldName)) {
+                    deserializedStorage.storageSizeGB = reader.getNullable(JsonReader::getInt);
+                } else if ("autoGrow".equals(fieldName)) {
+                    deserializedStorage.autoGrow = StorageAutoGrow.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedStorage.tier = AzureManagedDiskPerformanceTiers.fromString(reader.getString());
+                } else if ("iops".equals(fieldName)) {
+                    deserializedStorage.iops = reader.getNullable(JsonReader::getInt);
+                } else if ("throughput".equals(fieldName)) {
+                    deserializedStorage.throughput = reader.getNullable(JsonReader::getInt);
+                } else if ("type".equals(fieldName)) {
+                    deserializedStorage.type = StorageType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorage;
+        });
     }
 }

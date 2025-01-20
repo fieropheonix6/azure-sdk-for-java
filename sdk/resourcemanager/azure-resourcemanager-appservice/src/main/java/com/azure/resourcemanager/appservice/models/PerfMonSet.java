@@ -5,46 +5,55 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Metric information. */
+/**
+ * Metric information.
+ */
 @Fluent
-public final class PerfMonSet {
+public final class PerfMonSet implements JsonSerializable<PerfMonSet> {
     /*
      * Unique key name of the counter.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Start time of the period.
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * End time of the period.
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * Presented time grain.
      */
-    @JsonProperty(value = "timeGrain")
     private String timeGrain;
 
     /*
      * Collection of workers that are active during this time.
      */
-    @JsonProperty(value = "values")
     private List<PerfMonSample> values;
 
     /**
+     * Creates an instance of PerfMonSet class.
+     */
+    public PerfMonSet() {
+    }
+
+    /**
      * Get the name property: Unique key name of the counter.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -53,7 +62,7 @@ public final class PerfMonSet {
 
     /**
      * Set the name property: Unique key name of the counter.
-     *
+     * 
      * @param name the name value to set.
      * @return the PerfMonSet object itself.
      */
@@ -64,7 +73,7 @@ public final class PerfMonSet {
 
     /**
      * Get the startTime property: Start time of the period.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -73,7 +82,7 @@ public final class PerfMonSet {
 
     /**
      * Set the startTime property: Start time of the period.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the PerfMonSet object itself.
      */
@@ -84,7 +93,7 @@ public final class PerfMonSet {
 
     /**
      * Get the endTime property: End time of the period.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -93,7 +102,7 @@ public final class PerfMonSet {
 
     /**
      * Set the endTime property: End time of the period.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the PerfMonSet object itself.
      */
@@ -104,7 +113,7 @@ public final class PerfMonSet {
 
     /**
      * Get the timeGrain property: Presented time grain.
-     *
+     * 
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -113,7 +122,7 @@ public final class PerfMonSet {
 
     /**
      * Set the timeGrain property: Presented time grain.
-     *
+     * 
      * @param timeGrain the timeGrain value to set.
      * @return the PerfMonSet object itself.
      */
@@ -124,7 +133,7 @@ public final class PerfMonSet {
 
     /**
      * Get the values property: Collection of workers that are active during this time.
-     *
+     * 
      * @return the values value.
      */
     public List<PerfMonSample> values() {
@@ -133,7 +142,7 @@ public final class PerfMonSet {
 
     /**
      * Set the values property: Collection of workers that are active during this time.
-     *
+     * 
      * @param values the values value to set.
      * @return the PerfMonSet object itself.
      */
@@ -144,12 +153,65 @@ public final class PerfMonSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (values() != null) {
             values().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeGrain", this.timeGrain);
+        jsonWriter.writeArrayField("values", this.values, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PerfMonSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PerfMonSet if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the PerfMonSet.
+     */
+    public static PerfMonSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PerfMonSet deserializedPerfMonSet = new PerfMonSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPerfMonSet.name = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedPerfMonSet.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedPerfMonSet.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("timeGrain".equals(fieldName)) {
+                    deserializedPerfMonSet.timeGrain = reader.getString();
+                } else if ("values".equals(fieldName)) {
+                    List<PerfMonSample> values = reader.readArray(reader1 -> PerfMonSample.fromJson(reader1));
+                    deserializedPerfMonSet.values = values;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPerfMonSet;
+        });
     }
 }

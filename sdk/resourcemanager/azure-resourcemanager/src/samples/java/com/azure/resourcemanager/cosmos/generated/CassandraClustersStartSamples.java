@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CassandraClusters Start. */
+/**
+ * Samples for CassandraClusters Start.
+ */
 public final class CassandraClustersStartSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBManagedCassandraClusterStart.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBManagedCassandraClusterStart.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterStart.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBManagedCassandraClusterStart(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getCassandraClusters()
-            .start("cassandra-prod-rg", "cassandra-prod", Context.NONE);
+            .start("cassandra-prod-rg", "cassandra-prod", com.azure.core.util.Context.NONE);
     }
 }

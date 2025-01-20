@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkInterfaceTapConfigurations List. */
+/**
+ * Samples for NetworkInterfaceTapConfigurations List.
+ */
 public final class NetworkInterfaceTapConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/NetworkInterfaceTapConfigurationList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * NetworkInterfaceTapConfigurationList.json
      */
     /**
      * Sample code: List virtual network tap configurations.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listVirtualNetworkTapConfigurations(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getNetworkInterfaceTapConfigurations()
-            .list("rg1", "mynic", Context.NONE);
+            .list("testrg", "mynic", com.azure.core.util.Context.NONE);
     }
 }

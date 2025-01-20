@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.search.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SharedPrivateLinkResources Get. */
+/**
+ * Samples for SharedPrivateLinkResources Get.
+ */
 public final class SharedPrivateLinkResourcesGetSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2020-08-01/examples/GetSharedPrivateLinkResource.json
+     * x-ms-original-file:
+     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/GetSharedPrivateLinkResource.
+     * json
      */
     /**
      * Sample code: SharedPrivateLinkResourceGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void sharedPrivateLinkResourceGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
+        azure.searchServices()
             .manager()
             .serviceClient()
             .getSharedPrivateLinkResources()
-            .getWithResponse("rg1", "mysearchservice", "testResource", null, Context.NONE);
+            .getWithResponse("rg1", "mysearchservice", "testResource", null, com.azure.core.util.Context.NONE);
     }
 }

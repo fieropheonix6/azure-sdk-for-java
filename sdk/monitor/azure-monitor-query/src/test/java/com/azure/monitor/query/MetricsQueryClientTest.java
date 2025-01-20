@@ -3,15 +3,14 @@
 
 package com.azure.monitor.query;
 
-import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
-import com.azure.core.util.Configuration;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
-import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
@@ -26,100 +25,91 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.azure.monitor.query.MonitorQueryTestUtils.getMetricResourceUri;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Unit tests for {@link MetricsQueryClient}.
  */
-public class MetricsQueryClientTest extends TestBase {
-    public static final String RESOURCE_URI = Configuration.getGlobalConfiguration()
-            .get("AZURE_MONITOR_METRICS_RESOURCE_URI",
-                    "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.CognitiveServices/accounts/srnagara-textanalytics");
+public class MetricsQueryClientTest extends TestProxyTestBase {
     private MetricsQueryClient client;
+
+    private String resourceUri;
 
     private static Stream<Arguments> getFilterPredicate() {
         return Arrays.asList(
-                Arguments.of(AggregationType.AVERAGE,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getAverage() != null
-                                && metricValue.getCount() == null
-                                && metricValue.getTotal() == null
-                                && metricValue.getMinimum() == null
-                                && metricValue.getMaximum() == null),
-                Arguments.of(AggregationType.COUNT,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getCount() != null
-                                && metricValue.getAverage() == null
-                                && metricValue.getTotal() == null
-                                && metricValue.getMinimum() == null
-                                && metricValue.getMaximum() == null),
-                Arguments.of(AggregationType.TOTAL,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getTotal() != null
-                                && metricValue.getCount() == null
-                                && metricValue.getAverage() == null
-                                && metricValue.getMinimum() == null
-                                && metricValue.getMaximum() == null),
-                Arguments.of(AggregationType.MINIMUM,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getMinimum() != null
-                                && metricValue.getCount() == null
-                                && metricValue.getTotal() == null
-                                && metricValue.getAverage() == null
-                                && metricValue.getMaximum() == null),
-                Arguments.of(AggregationType.MAXIMUM,
-                        (Predicate<MetricValue>) metricValue -> metricValue.getMaximum() != null
-                                && metricValue.getCount() == null
-                                && metricValue.getTotal() == null
-                                && metricValue.getMinimum() == null
-                                && metricValue.getAverage() == null)
-        ).stream();
+            Arguments.of(AggregationType.AVERAGE,
+                (Predicate<MetricValue>) metricValue -> metricValue.getAverage() != null
+                    && metricValue.getCount() == null
+                    && metricValue.getTotal() == null
+                    && metricValue.getMinimum() == null
+                    && metricValue.getMaximum() == null),
+            Arguments.of(AggregationType.COUNT,
+                (Predicate<MetricValue>) metricValue -> metricValue.getCount() != null
+                    && metricValue.getAverage() == null
+                    && metricValue.getTotal() == null
+                    && metricValue.getMinimum() == null
+                    && metricValue.getMaximum() == null),
+            Arguments.of(AggregationType.TOTAL,
+                (Predicate<MetricValue>) metricValue -> metricValue.getTotal() != null
+                    && metricValue.getCount() == null
+                    && metricValue.getAverage() == null
+                    && metricValue.getMinimum() == null
+                    && metricValue.getMaximum() == null),
+            Arguments.of(AggregationType.MINIMUM,
+                (Predicate<MetricValue>) metricValue -> metricValue.getMinimum() != null
+                    && metricValue.getCount() == null
+                    && metricValue.getTotal() == null
+                    && metricValue.getAverage() == null
+                    && metricValue.getMaximum() == null),
+            Arguments.of(AggregationType.MAXIMUM,
+                (Predicate<MetricValue>) metricValue -> metricValue.getMaximum() != null
+                    && metricValue.getCount() == null
+                    && metricValue.getTotal() == null
+                    && metricValue.getMinimum() == null
+                    && metricValue.getAverage() == null))
+            .stream();
     }
 
     @BeforeEach
     public void setup() {
-        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder();
+        resourceUri = getMetricResourceUri(interceptorManager.isPlaybackMode());
+        TokenCredential credential = TestUtil.getTestTokenCredential(interceptorManager);
+
+        MetricsQueryClientBuilder clientBuilder = new MetricsQueryClientBuilder().credential(credential);
         if (getTestMode() == TestMode.PLAYBACK) {
-            clientBuilder
-                .credential(request -> Mono.just(new AccessToken("fakeToken", OffsetDateTime.now().plusDays(1))))
-                .httpClient(interceptorManager.getPlaybackClient());
+            clientBuilder.httpClient(getAssertingHttpClient(interceptorManager.getPlaybackClient()));
         } else if (getTestMode() == TestMode.RECORD) {
-            clientBuilder
-                .addPolicy(interceptorManager.getRecordPolicy())
-                .credential(getCredential());
+            clientBuilder.addPolicy(interceptorManager.getRecordPolicy());
         } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(getCredential());
+            clientBuilder.endpoint(MonitorQueryTestUtils.getMetricEndpoint());
         }
-        this.client = clientBuilder
-                .buildClient();
+        this.client = clientBuilder.buildClient();
     }
 
-    private TokenCredential getCredential() {
-        return new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET"))
-            .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
-            .build();
+    private HttpClient getAssertingHttpClient(HttpClient httpClient) {
+        return new AssertingHttpClientBuilder(httpClient).assertSync().skipRequest((request, context) -> false).build();
     }
 
     @Test
     public void testMetricsQuery() {
-        Response<MetricsQueryResult> metricsResponse = client
-            .queryResourceWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
-                new MetricsQueryOptions()
-                    .setMetricNamespace("Microsoft.CognitiveServices/accounts")
+        Response<MetricsQueryResult> metricsResponse
+            = client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
                     .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
                     .setGranularity(Duration.ofHours(1))
                     .setTop(100)
                     .setAggregations(Arrays.asList(AggregationType.COUNT, AggregationType.TOTAL,
-                            AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
+                        AggregationType.MAXIMUM, AggregationType.MINIMUM, AggregationType.AVERAGE)),
                 Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
@@ -127,7 +117,7 @@ public class MetricsQueryClientTest extends TestBase {
 
         assertEquals(1, metrics.size());
         MetricResult successfulCallsMetric = metrics.get(0);
-        assertEquals("SuccessfulCalls", successfulCallsMetric.getMetricName());
+        assertEquals("SuccessfulRequests", successfulCallsMetric.getMetricName());
         assertEquals("Microsoft.Insights/metrics", successfulCallsMetric.getResourceType());
         assertEquals(1, successfulCallsMetric.getTimeSeries().size());
 
@@ -140,55 +130,45 @@ public class MetricsQueryClientTest extends TestBase {
     @ParameterizedTest
     @MethodSource("getFilterPredicate")
     public void testAggregation(AggregationType aggregationType, Predicate<MetricValue> metricValuePredicate) {
-        Response<MetricsQueryResult> metricsResponse = client
-                .queryResourceWithResponse(RESOURCE_URI, Arrays.asList("SuccessfulCalls"),
-                        new MetricsQueryOptions()
-                                .setMetricNamespace("Microsoft.CognitiveServices/accounts")
-                                .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
-                                .setGranularity(Duration.ofHours(1))
-                                .setTop(100)
-                                .setAggregations(Arrays.asList(aggregationType)),
-                        Context.NONE);
+        Response<MetricsQueryResult> metricsResponse
+            = client.queryResourceWithResponse(resourceUri, Arrays.asList("SuccessfulRequests"),
+                new MetricsQueryOptions().setMetricNamespace("Microsoft.EventHub/namespaces")
+                    .setTimeInterval(new QueryTimeInterval(Duration.ofDays(10)))
+                    .setGranularity(Duration.ofHours(1))
+                    .setTop(100)
+                    .setAggregations(Arrays.asList(aggregationType)),
+                Context.NONE);
 
         MetricsQueryResult metricsQueryResult = metricsResponse.getValue();
         List<MetricResult> metrics = metricsQueryResult.getMetrics();
         List<MetricValue> metricValues = metrics.stream()
-                .flatMap(result -> result.getTimeSeries().stream())
-                .flatMap(tsElement -> tsElement.getValues().stream())
-                .filter(metricValuePredicate)
-                .collect(Collectors.toList());
+            .flatMap(result -> result.getTimeSeries().stream())
+            .flatMap(tsElement -> tsElement.getValues().stream())
+            .filter(metricValuePredicate)
+            .collect(Collectors.toList());
         assertTrue(metricValues.size() > 0);
     }
 
     @Test
     public void testMetricsDefinition() {
-        PagedIterable<MetricDefinition> metricsDefinitions = client
-                .listMetricDefinitions(RESOURCE_URI);
+        PagedIterable<MetricDefinition> metricsDefinitions = client.listMetricDefinitions(resourceUri);
 
-        List<String> knownMetricsDefinitions = Arrays.asList(
-                "TotalCalls",
-                "SuccessfulCalls",
-                "TotalErrors",
-                "BlockedCalls",
-                "ServerErrors",
-                "ClientErrors",
-                "DataIn",
-                "DataOut",
-                "Latency",
-                "TotalTransactions",
-                "ProcessedTextRecords",
-                "ProcessedHealthTextRecords",
-                "QuestionAnsweringTextRecords"
-        );
-        assertTrue(metricsDefinitions.stream()
-                .map(MetricDefinition::getName)
-                .collect(Collectors.toList())
-                .containsAll(knownMetricsDefinitions));
+        List<String> knownMetricsDefinitions = Arrays.asList("SuccessfulRequests", "ServerErrors", "UserErrors",
+            "QuotaExceededErrors", "ThrottledRequests", "IncomingRequests", "IncomingMessages", "OutgoingMessages",
+            "IncomingBytes", "OutgoingBytes", "ActiveConnections", "ConnectionsOpened", "ConnectionsClosed",
+            "CaptureBacklog", "CapturedMessages", "CapturedBytes", "Size", "INREQS", "SUCCREQ", "FAILREQ", "SVRBSY",
+            "INTERR", "MISCERR", "INMSGS", "EHINMSGS", "OUTMSGS", "EHOUTMSGS", "EHINMBS", "EHINBYTES", "EHOUTMBS",
+            "EHOUTBYTES", "EHABL", "EHAMSGS", "EHAMBS");
+
+        List<String> metricsDefinitionNames
+            = metricsDefinitions.stream().map(MetricDefinition::getName).collect(Collectors.toList());
+
+        assertTrue(metricsDefinitionNames.containsAll(knownMetricsDefinitions));
     }
 
     @Test
     public void testMetricsNamespaces() {
-        PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricNamespaces(RESOURCE_URI, null);
+        PagedIterable<MetricNamespace> metricsNamespaces = client.listMetricNamespaces(resourceUri, null);
         assertEquals(1, metricsNamespaces.stream().count());
     }
 }

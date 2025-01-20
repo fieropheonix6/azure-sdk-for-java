@@ -5,6 +5,10 @@
 package com.azure.resourcemanager.sqlvirtualmachine.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AssessmentSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoBackupSettings;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AutoPatchingSettings;
@@ -15,118 +19,115 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.SqlImageSku;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlManagementMode;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlServerLicenseType;
 import com.azure.resourcemanager.sqlvirtualmachine.models.StorageConfigurationSettings;
+import com.azure.resourcemanager.sqlvirtualmachine.models.TroubleshootingStatus;
 import com.azure.resourcemanager.sqlvirtualmachine.models.WsfcDomainCredentials;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The SQL virtual machine properties. */
+/**
+ * The SQL virtual machine properties.
+ */
 @Fluent
-public final class SqlVirtualMachineProperties {
+public final class SqlVirtualMachineProperties implements JsonSerializable<SqlVirtualMachineProperties> {
     /*
      * ARM Resource id of underlying virtual machine created from SQL marketplace image.
      */
-    @JsonProperty(value = "virtualMachineResourceId")
     private String virtualMachineResourceId;
 
     /*
      * Provisioning state to track the async operation status.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * SQL image offer. Examples include SQL2016-WS2016, SQL2017-WS2016.
      */
-    @JsonProperty(value = "sqlImageOffer")
     private String sqlImageOffer;
 
     /*
      * SQL Server license type.
      */
-    @JsonProperty(value = "sqlServerLicenseType")
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
      * SQL Server Management type.
      */
-    @JsonProperty(value = "sqlManagement")
     private SqlManagementMode sqlManagement;
 
     /*
      * SQL IaaS Agent least privilege mode.
      */
-    @JsonProperty(value = "leastPrivilegeMode")
     private LeastPrivilegeMode leastPrivilegeMode;
 
     /*
      * SQL Server edition type.
      */
-    @JsonProperty(value = "sqlImageSku")
     private SqlImageSku sqlImageSku;
 
     /*
      * ARM resource id of the SQL virtual machine group this SQL virtual machine is or will be part of.
      */
-    @JsonProperty(value = "sqlVirtualMachineGroupResourceId")
     private String sqlVirtualMachineGroupResourceId;
 
     /*
      * Domain credentials for setting up Windows Server Failover Cluster for SQL availability group.
      */
-    @JsonProperty(value = "wsfcDomainCredentials")
     private WsfcDomainCredentials wsfcDomainCredentials;
 
     /*
      * Domain credentials for setting up Windows Server Failover Cluster for SQL availability group.
      */
-    @JsonProperty(value = "wsfcStaticIp")
     private String wsfcStaticIp;
 
     /*
      * Auto patching settings for applying critical security updates to SQL virtual machine.
      */
-    @JsonProperty(value = "autoPatchingSettings")
     private AutoPatchingSettings autoPatchingSettings;
 
     /*
      * Auto backup settings for SQL Server.
      */
-    @JsonProperty(value = "autoBackupSettings")
     private AutoBackupSettings autoBackupSettings;
 
     /*
      * Key vault credential settings.
      */
-    @JsonProperty(value = "keyVaultCredentialSettings")
     private KeyVaultCredentialSettings keyVaultCredentialSettings;
 
     /*
      * SQL Server configuration management settings.
      */
-    @JsonProperty(value = "serverConfigurationsManagementSettings")
     private ServerConfigurationsManagementSettings serverConfigurationsManagementSettings;
 
     /*
      * Storage Configuration Settings.
      */
-    @JsonProperty(value = "storageConfigurationSettings")
     private StorageConfigurationSettings storageConfigurationSettings;
 
     /*
-     * Assessment Settings.
+     * Troubleshooting status
      */
-    @JsonProperty(value = "assessmentSettings")
+    private TroubleshootingStatus troubleshootingStatus;
+
+    /*
+     * SQL best practices Assessment Settings.
+     */
     private AssessmentSettings assessmentSettings;
 
     /*
      * Enable automatic upgrade of Sql IaaS extension Agent.
      */
-    @JsonProperty(value = "enableAutomaticUpgrade")
     private Boolean enableAutomaticUpgrade;
+
+    /**
+     * Creates an instance of SqlVirtualMachineProperties class.
+     */
+    public SqlVirtualMachineProperties() {
+    }
 
     /**
      * Get the virtualMachineResourceId property: ARM Resource id of underlying virtual machine created from SQL
      * marketplace image.
-     *
+     * 
      * @return the virtualMachineResourceId value.
      */
     public String virtualMachineResourceId() {
@@ -136,7 +137,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Set the virtualMachineResourceId property: ARM Resource id of underlying virtual machine created from SQL
      * marketplace image.
-     *
+     * 
      * @param virtualMachineResourceId the virtualMachineResourceId value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -147,7 +148,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the provisioningState property: Provisioning state to track the async operation status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -156,7 +157,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the sqlImageOffer property: SQL image offer. Examples include SQL2016-WS2016, SQL2017-WS2016.
-     *
+     * 
      * @return the sqlImageOffer value.
      */
     public String sqlImageOffer() {
@@ -165,7 +166,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the sqlImageOffer property: SQL image offer. Examples include SQL2016-WS2016, SQL2017-WS2016.
-     *
+     * 
      * @param sqlImageOffer the sqlImageOffer value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -176,7 +177,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the sqlServerLicenseType property: SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public SqlServerLicenseType sqlServerLicenseType() {
@@ -185,7 +186,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the sqlServerLicenseType property: SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -196,7 +197,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the sqlManagement property: SQL Server Management type.
-     *
+     * 
      * @return the sqlManagement value.
      */
     public SqlManagementMode sqlManagement() {
@@ -205,7 +206,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the sqlManagement property: SQL Server Management type.
-     *
+     * 
      * @param sqlManagement the sqlManagement value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -216,7 +217,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the leastPrivilegeMode property: SQL IaaS Agent least privilege mode.
-     *
+     * 
      * @return the leastPrivilegeMode value.
      */
     public LeastPrivilegeMode leastPrivilegeMode() {
@@ -225,7 +226,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the leastPrivilegeMode property: SQL IaaS Agent least privilege mode.
-     *
+     * 
      * @param leastPrivilegeMode the leastPrivilegeMode value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -236,7 +237,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the sqlImageSku property: SQL Server edition type.
-     *
+     * 
      * @return the sqlImageSku value.
      */
     public SqlImageSku sqlImageSku() {
@@ -245,7 +246,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the sqlImageSku property: SQL Server edition type.
-     *
+     * 
      * @param sqlImageSku the sqlImageSku value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -257,7 +258,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Get the sqlVirtualMachineGroupResourceId property: ARM resource id of the SQL virtual machine group this SQL
      * virtual machine is or will be part of.
-     *
+     * 
      * @return the sqlVirtualMachineGroupResourceId value.
      */
     public String sqlVirtualMachineGroupResourceId() {
@@ -267,7 +268,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Set the sqlVirtualMachineGroupResourceId property: ARM resource id of the SQL virtual machine group this SQL
      * virtual machine is or will be part of.
-     *
+     * 
      * @param sqlVirtualMachineGroupResourceId the sqlVirtualMachineGroupResourceId value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -279,7 +280,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Get the wsfcDomainCredentials property: Domain credentials for setting up Windows Server Failover Cluster for SQL
      * availability group.
-     *
+     * 
      * @return the wsfcDomainCredentials value.
      */
     public WsfcDomainCredentials wsfcDomainCredentials() {
@@ -289,7 +290,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Set the wsfcDomainCredentials property: Domain credentials for setting up Windows Server Failover Cluster for SQL
      * availability group.
-     *
+     * 
      * @param wsfcDomainCredentials the wsfcDomainCredentials value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -301,7 +302,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Get the wsfcStaticIp property: Domain credentials for setting up Windows Server Failover Cluster for SQL
      * availability group.
-     *
+     * 
      * @return the wsfcStaticIp value.
      */
     public String wsfcStaticIp() {
@@ -311,7 +312,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Set the wsfcStaticIp property: Domain credentials for setting up Windows Server Failover Cluster for SQL
      * availability group.
-     *
+     * 
      * @param wsfcStaticIp the wsfcStaticIp value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -323,7 +324,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Get the autoPatchingSettings property: Auto patching settings for applying critical security updates to SQL
      * virtual machine.
-     *
+     * 
      * @return the autoPatchingSettings value.
      */
     public AutoPatchingSettings autoPatchingSettings() {
@@ -333,7 +334,7 @@ public final class SqlVirtualMachineProperties {
     /**
      * Set the autoPatchingSettings property: Auto patching settings for applying critical security updates to SQL
      * virtual machine.
-     *
+     * 
      * @param autoPatchingSettings the autoPatchingSettings value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -344,7 +345,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the autoBackupSettings property: Auto backup settings for SQL Server.
-     *
+     * 
      * @return the autoBackupSettings value.
      */
     public AutoBackupSettings autoBackupSettings() {
@@ -353,7 +354,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the autoBackupSettings property: Auto backup settings for SQL Server.
-     *
+     * 
      * @param autoBackupSettings the autoBackupSettings value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -364,7 +365,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the keyVaultCredentialSettings property: Key vault credential settings.
-     *
+     * 
      * @return the keyVaultCredentialSettings value.
      */
     public KeyVaultCredentialSettings keyVaultCredentialSettings() {
@@ -373,19 +374,19 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the keyVaultCredentialSettings property: Key vault credential settings.
-     *
+     * 
      * @param keyVaultCredentialSettings the keyVaultCredentialSettings value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
-    public SqlVirtualMachineProperties withKeyVaultCredentialSettings(
-        KeyVaultCredentialSettings keyVaultCredentialSettings) {
+    public SqlVirtualMachineProperties
+        withKeyVaultCredentialSettings(KeyVaultCredentialSettings keyVaultCredentialSettings) {
         this.keyVaultCredentialSettings = keyVaultCredentialSettings;
         return this;
     }
 
     /**
      * Get the serverConfigurationsManagementSettings property: SQL Server configuration management settings.
-     *
+     * 
      * @return the serverConfigurationsManagementSettings value.
      */
     public ServerConfigurationsManagementSettings serverConfigurationsManagementSettings() {
@@ -394,7 +395,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the serverConfigurationsManagementSettings property: SQL Server configuration management settings.
-     *
+     * 
      * @param serverConfigurationsManagementSettings the serverConfigurationsManagementSettings value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -406,7 +407,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the storageConfigurationSettings property: Storage Configuration Settings.
-     *
+     * 
      * @return the storageConfigurationSettings value.
      */
     public StorageConfigurationSettings storageConfigurationSettings() {
@@ -415,19 +416,28 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the storageConfigurationSettings property: Storage Configuration Settings.
-     *
+     * 
      * @param storageConfigurationSettings the storageConfigurationSettings value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
-    public SqlVirtualMachineProperties withStorageConfigurationSettings(
-        StorageConfigurationSettings storageConfigurationSettings) {
+    public SqlVirtualMachineProperties
+        withStorageConfigurationSettings(StorageConfigurationSettings storageConfigurationSettings) {
         this.storageConfigurationSettings = storageConfigurationSettings;
         return this;
     }
 
     /**
-     * Get the assessmentSettings property: Assessment Settings.
-     *
+     * Get the troubleshootingStatus property: Troubleshooting status.
+     * 
+     * @return the troubleshootingStatus value.
+     */
+    public TroubleshootingStatus troubleshootingStatus() {
+        return this.troubleshootingStatus;
+    }
+
+    /**
+     * Get the assessmentSettings property: SQL best practices Assessment Settings.
+     * 
      * @return the assessmentSettings value.
      */
     public AssessmentSettings assessmentSettings() {
@@ -435,8 +445,8 @@ public final class SqlVirtualMachineProperties {
     }
 
     /**
-     * Set the assessmentSettings property: Assessment Settings.
-     *
+     * Set the assessmentSettings property: SQL best practices Assessment Settings.
+     * 
      * @param assessmentSettings the assessmentSettings value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -447,7 +457,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Get the enableAutomaticUpgrade property: Enable automatic upgrade of Sql IaaS extension Agent.
-     *
+     * 
      * @return the enableAutomaticUpgrade value.
      */
     public Boolean enableAutomaticUpgrade() {
@@ -456,7 +466,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Set the enableAutomaticUpgrade property: Enable automatic upgrade of Sql IaaS extension Agent.
-     *
+     * 
      * @param enableAutomaticUpgrade the enableAutomaticUpgrade value to set.
      * @return the SqlVirtualMachineProperties object itself.
      */
@@ -467,7 +477,7 @@ public final class SqlVirtualMachineProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -489,8 +499,109 @@ public final class SqlVirtualMachineProperties {
         if (storageConfigurationSettings() != null) {
             storageConfigurationSettings().validate();
         }
+        if (troubleshootingStatus() != null) {
+            troubleshootingStatus().validate();
+        }
         if (assessmentSettings() != null) {
             assessmentSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualMachineResourceId", this.virtualMachineResourceId);
+        jsonWriter.writeStringField("sqlImageOffer", this.sqlImageOffer);
+        jsonWriter.writeStringField("sqlServerLicenseType",
+            this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("sqlManagement", this.sqlManagement == null ? null : this.sqlManagement.toString());
+        jsonWriter.writeStringField("leastPrivilegeMode",
+            this.leastPrivilegeMode == null ? null : this.leastPrivilegeMode.toString());
+        jsonWriter.writeStringField("sqlImageSku", this.sqlImageSku == null ? null : this.sqlImageSku.toString());
+        jsonWriter.writeStringField("sqlVirtualMachineGroupResourceId", this.sqlVirtualMachineGroupResourceId);
+        jsonWriter.writeJsonField("wsfcDomainCredentials", this.wsfcDomainCredentials);
+        jsonWriter.writeStringField("wsfcStaticIp", this.wsfcStaticIp);
+        jsonWriter.writeJsonField("autoPatchingSettings", this.autoPatchingSettings);
+        jsonWriter.writeJsonField("autoBackupSettings", this.autoBackupSettings);
+        jsonWriter.writeJsonField("keyVaultCredentialSettings", this.keyVaultCredentialSettings);
+        jsonWriter.writeJsonField("serverConfigurationsManagementSettings",
+            this.serverConfigurationsManagementSettings);
+        jsonWriter.writeJsonField("storageConfigurationSettings", this.storageConfigurationSettings);
+        jsonWriter.writeJsonField("assessmentSettings", this.assessmentSettings);
+        jsonWriter.writeBooleanField("enableAutomaticUpgrade", this.enableAutomaticUpgrade);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlVirtualMachineProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlVirtualMachineProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlVirtualMachineProperties.
+     */
+    public static SqlVirtualMachineProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlVirtualMachineProperties deserializedSqlVirtualMachineProperties = new SqlVirtualMachineProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualMachineResourceId".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.virtualMachineResourceId = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.provisioningState = reader.getString();
+                } else if ("sqlImageOffer".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.sqlImageOffer = reader.getString();
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.sqlServerLicenseType
+                        = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("sqlManagement".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.sqlManagement
+                        = SqlManagementMode.fromString(reader.getString());
+                } else if ("leastPrivilegeMode".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.leastPrivilegeMode
+                        = LeastPrivilegeMode.fromString(reader.getString());
+                } else if ("sqlImageSku".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.sqlImageSku = SqlImageSku.fromString(reader.getString());
+                } else if ("sqlVirtualMachineGroupResourceId".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.sqlVirtualMachineGroupResourceId = reader.getString();
+                } else if ("wsfcDomainCredentials".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.wsfcDomainCredentials
+                        = WsfcDomainCredentials.fromJson(reader);
+                } else if ("wsfcStaticIp".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.wsfcStaticIp = reader.getString();
+                } else if ("autoPatchingSettings".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.autoPatchingSettings
+                        = AutoPatchingSettings.fromJson(reader);
+                } else if ("autoBackupSettings".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.autoBackupSettings = AutoBackupSettings.fromJson(reader);
+                } else if ("keyVaultCredentialSettings".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.keyVaultCredentialSettings
+                        = KeyVaultCredentialSettings.fromJson(reader);
+                } else if ("serverConfigurationsManagementSettings".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.serverConfigurationsManagementSettings
+                        = ServerConfigurationsManagementSettings.fromJson(reader);
+                } else if ("storageConfigurationSettings".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.storageConfigurationSettings
+                        = StorageConfigurationSettings.fromJson(reader);
+                } else if ("troubleshootingStatus".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.troubleshootingStatus
+                        = TroubleshootingStatus.fromJson(reader);
+                } else if ("assessmentSettings".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.assessmentSettings = AssessmentSettings.fromJson(reader);
+                } else if ("enableAutomaticUpgrade".equals(fieldName)) {
+                    deserializedSqlVirtualMachineProperties.enableAutomaticUpgrade
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlVirtualMachineProperties;
+        });
     }
 }

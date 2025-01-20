@@ -11,39 +11,32 @@ import com.azure.resourcemanager.webpubsub.models.UpstreamAuthSettings;
 import com.azure.resourcemanager.webpubsub.models.UpstreamAuthType;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class EventHandlerTests {
-    @Test
-    public void testDeserialize() {
-        EventHandler model =
-            BinaryData
-                .fromString(
-                    "{\"urlTemplate\":\"hxcr\",\"userEventPattern\":\"fovasr\",\"systemEvents\":[\"wbhsqfsub\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"xb\"}}}")
-                .toObject(EventHandler.class);
-        Assertions.assertEquals("hxcr", model.urlTemplate());
-        Assertions.assertEquals("fovasr", model.userEventPattern());
-        Assertions.assertEquals("wbhsqfsub", model.systemEvents().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        EventHandler model = BinaryData.fromString(
+            "{\"urlTemplate\":\"coolsttpkiwkkb\",\"userEventPattern\":\"jrywvtylbfpnc\",\"systemEvents\":[\"oiwiithtywub\",\"cbihwqk\"],\"auth\":{\"type\":\"None\",\"managedIdentity\":{\"resource\":\"jchrdgoihxumw\"}}}")
+            .toObject(EventHandler.class);
+        Assertions.assertEquals("coolsttpkiwkkb", model.urlTemplate());
+        Assertions.assertEquals("jrywvtylbfpnc", model.userEventPattern());
+        Assertions.assertEquals("oiwiithtywub", model.systemEvents().get(0));
         Assertions.assertEquals(UpstreamAuthType.NONE, model.auth().type());
-        Assertions.assertEquals("xb", model.auth().managedIdentity().resource());
+        Assertions.assertEquals("jchrdgoihxumw", model.auth().managedIdentity().resource());
     }
 
-    @Test
-    public void testSerialize() {
-        EventHandler model =
-            new EventHandler()
-                .withUrlTemplate("hxcr")
-                .withUserEventPattern("fovasr")
-                .withSystemEvents(Arrays.asList("wbhsqfsub"))
-                .withAuth(
-                    new UpstreamAuthSettings()
-                        .withType(UpstreamAuthType.NONE)
-                        .withManagedIdentity(new ManagedIdentitySettings().withResource("xb")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        EventHandler model = new EventHandler().withUrlTemplate("coolsttpkiwkkb")
+            .withUserEventPattern("jrywvtylbfpnc")
+            .withSystemEvents(Arrays.asList("oiwiithtywub", "cbihwqk"))
+            .withAuth(new UpstreamAuthSettings().withType(UpstreamAuthType.NONE)
+                .withManagedIdentity(new ManagedIdentitySettings().withResource("jchrdgoihxumw")));
         model = BinaryData.fromObject(model).toObject(EventHandler.class);
-        Assertions.assertEquals("hxcr", model.urlTemplate());
-        Assertions.assertEquals("fovasr", model.userEventPattern());
-        Assertions.assertEquals("wbhsqfsub", model.systemEvents().get(0));
+        Assertions.assertEquals("coolsttpkiwkkb", model.urlTemplate());
+        Assertions.assertEquals("jrywvtylbfpnc", model.userEventPattern());
+        Assertions.assertEquals("oiwiithtywub", model.systemEvents().get(0));
         Assertions.assertEquals(UpstreamAuthType.NONE, model.auth().type());
-        Assertions.assertEquals("xb", model.auth().managedIdentity().resource());
+        Assertions.assertEquals("jchrdgoihxumw", model.auth().managedIdentity().resource());
     }
 }

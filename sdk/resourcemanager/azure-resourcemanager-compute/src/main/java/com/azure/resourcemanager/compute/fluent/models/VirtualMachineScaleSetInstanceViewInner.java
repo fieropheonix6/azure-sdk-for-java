@@ -5,47 +5,52 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.OrchestrationServiceSummary;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetInstanceViewStatusesSummary;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMExtensionsSummary;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The instance view of a virtual machine scale set. */
+/**
+ * The instance view of a virtual machine scale set.
+ */
 @Fluent
-public final class VirtualMachineScaleSetInstanceViewInner {
+public final class VirtualMachineScaleSetInstanceViewInner
+    implements JsonSerializable<VirtualMachineScaleSetInstanceViewInner> {
     /*
      * The instance view status summary for the virtual machine scale set.
      */
-    @JsonProperty(value = "virtualMachine", access = JsonProperty.Access.WRITE_ONLY)
     private VirtualMachineScaleSetInstanceViewStatusesSummary virtualMachine;
 
     /*
      * The extensions information.
      */
-    @JsonProperty(value = "extensions", access = JsonProperty.Access.WRITE_ONLY)
     private List<VirtualMachineScaleSetVMExtensionsSummary> extensions;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses")
     private List<InstanceViewStatus> statuses;
 
     /*
      * The orchestration services information.
      */
-    @JsonProperty(value = "orchestrationServices", access = JsonProperty.Access.WRITE_ONLY)
     private List<OrchestrationServiceSummary> orchestrationServices;
 
-    /** Creates an instance of VirtualMachineScaleSetInstanceViewInner class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetInstanceViewInner class.
+     */
     public VirtualMachineScaleSetInstanceViewInner() {
     }
 
     /**
      * Get the virtualMachine property: The instance view status summary for the virtual machine scale set.
-     *
+     * 
      * @return the virtualMachine value.
      */
     public VirtualMachineScaleSetInstanceViewStatusesSummary virtualMachine() {
@@ -54,7 +59,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Get the extensions property: The extensions information.
-     *
+     * 
      * @return the extensions value.
      */
     public List<VirtualMachineScaleSetVMExtensionsSummary> extensions() {
@@ -63,7 +68,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -72,7 +77,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the VirtualMachineScaleSetInstanceViewInner object itself.
      */
@@ -83,7 +88,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Get the orchestrationServices property: The orchestration services information.
-     *
+     * 
      * @return the orchestrationServices value.
      */
     public List<OrchestrationServiceSummary> orchestrationServices() {
@@ -92,7 +97,7 @@ public final class VirtualMachineScaleSetInstanceViewInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -108,5 +113,55 @@ public final class VirtualMachineScaleSetInstanceViewInner {
         if (orchestrationServices() != null) {
             orchestrationServices().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("statuses", this.statuses, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetInstanceViewInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetInstanceViewInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetInstanceViewInner.
+     */
+    public static VirtualMachineScaleSetInstanceViewInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetInstanceViewInner deserializedVirtualMachineScaleSetInstanceViewInner
+                = new VirtualMachineScaleSetInstanceViewInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualMachine".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetInstanceViewInner.virtualMachine
+                        = VirtualMachineScaleSetInstanceViewStatusesSummary.fromJson(reader);
+                } else if ("extensions".equals(fieldName)) {
+                    List<VirtualMachineScaleSetVMExtensionsSummary> extensions
+                        = reader.readArray(reader1 -> VirtualMachineScaleSetVMExtensionsSummary.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetInstanceViewInner.extensions = extensions;
+                } else if ("statuses".equals(fieldName)) {
+                    List<InstanceViewStatus> statuses
+                        = reader.readArray(reader1 -> InstanceViewStatus.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetInstanceViewInner.statuses = statuses;
+                } else if ("orchestrationServices".equals(fieldName)) {
+                    List<OrchestrationServiceSummary> orchestrationServices
+                        = reader.readArray(reader1 -> OrchestrationServiceSummary.fromJson(reader1));
+                    deserializedVirtualMachineScaleSetInstanceViewInner.orchestrationServices = orchestrationServices;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetInstanceViewInner;
+        });
     }
 }

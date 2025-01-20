@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** A matching criteria which matches routes based on route prefix, community, and AS path. */
+/**
+ * A matching criteria which matches routes based on route prefix, community, and AS path.
+ */
 @Fluent
-public final class Criterion {
+public final class Criterion implements JsonSerializable<Criterion> {
     /*
      * List of route prefixes which this criteria matches.
      */
-    @JsonProperty(value = "routePrefix")
     private List<String> routePrefix;
 
     /*
      * List of BGP communities which this criteria matches.
      */
-    @JsonProperty(value = "community")
     private List<String> community;
 
     /*
      * List of AS paths which this criteria matches.
      */
-    @JsonProperty(value = "asPath")
     private List<String> asPath;
 
     /*
      * Match condition to apply RouteMap rules.
      */
-    @JsonProperty(value = "matchCondition")
     private RouteMapMatchCondition matchCondition;
 
-    /** Creates an instance of Criterion class. */
+    /**
+     * Creates an instance of Criterion class.
+     */
     public Criterion() {
     }
 
     /**
      * Get the routePrefix property: List of route prefixes which this criteria matches.
-     *
+     * 
      * @return the routePrefix value.
      */
     public List<String> routePrefix() {
@@ -50,7 +54,7 @@ public final class Criterion {
 
     /**
      * Set the routePrefix property: List of route prefixes which this criteria matches.
-     *
+     * 
      * @param routePrefix the routePrefix value to set.
      * @return the Criterion object itself.
      */
@@ -61,7 +65,7 @@ public final class Criterion {
 
     /**
      * Get the community property: List of BGP communities which this criteria matches.
-     *
+     * 
      * @return the community value.
      */
     public List<String> community() {
@@ -70,7 +74,7 @@ public final class Criterion {
 
     /**
      * Set the community property: List of BGP communities which this criteria matches.
-     *
+     * 
      * @param community the community value to set.
      * @return the Criterion object itself.
      */
@@ -81,7 +85,7 @@ public final class Criterion {
 
     /**
      * Get the asPath property: List of AS paths which this criteria matches.
-     *
+     * 
      * @return the asPath value.
      */
     public List<String> asPath() {
@@ -90,7 +94,7 @@ public final class Criterion {
 
     /**
      * Set the asPath property: List of AS paths which this criteria matches.
-     *
+     * 
      * @param asPath the asPath value to set.
      * @return the Criterion object itself.
      */
@@ -101,7 +105,7 @@ public final class Criterion {
 
     /**
      * Get the matchCondition property: Match condition to apply RouteMap rules.
-     *
+     * 
      * @return the matchCondition value.
      */
     public RouteMapMatchCondition matchCondition() {
@@ -110,7 +114,7 @@ public final class Criterion {
 
     /**
      * Set the matchCondition property: Match condition to apply RouteMap rules.
-     *
+     * 
      * @param matchCondition the matchCondition value to set.
      * @return the Criterion object itself.
      */
@@ -121,9 +125,58 @@ public final class Criterion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("routePrefix", this.routePrefix, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("community", this.community, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("asPath", this.asPath, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("matchCondition",
+            this.matchCondition == null ? null : this.matchCondition.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Criterion from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Criterion if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the Criterion.
+     */
+    public static Criterion fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Criterion deserializedCriterion = new Criterion();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routePrefix".equals(fieldName)) {
+                    List<String> routePrefix = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCriterion.routePrefix = routePrefix;
+                } else if ("community".equals(fieldName)) {
+                    List<String> community = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCriterion.community = community;
+                } else if ("asPath".equals(fieldName)) {
+                    List<String> asPath = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCriterion.asPath = asPath;
+                } else if ("matchCondition".equals(fieldName)) {
+                    deserializedCriterion.matchCondition = RouteMapMatchCondition.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCriterion;
+        });
     }
 }

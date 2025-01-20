@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.administration;
 
+import com.azure.analytics.purview.administration.implementation.MetadataPoliciesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -17,88 +18,87 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
-/** Initializes a new instance of the synchronous PurviewMetadataClient type. */
+/**
+ * Initializes a new instance of the synchronous PurviewMetadataClient type.
+ */
 @ServiceClient(builder = MetadataPolicyClientBuilder.class)
 public final class MetadataPolicyClient {
-    @Generated private final MetadataPolicyAsyncClient client;
+    @Generated
+    private final MetadataPoliciesImpl serviceClient;
 
     /**
      * Initializes an instance of MetadataPolicyClient class.
-     *
-     * @param client the async client.
+     * 
+     * @param serviceClient the service client implementation.
      */
     @Generated
-    MetadataPolicyClient(MetadataPolicyAsyncClient client) {
-        this.client = client;
+    MetadataPolicyClient(MetadataPoliciesImpl serviceClient) {
+        this.serviceClient = serviceClient;
     }
 
     /**
      * List or Get metadata policies.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>collectionName</td><td>String</td><td>No</td><td>The name of an existing collection for which one policy needs to be fetched.</td></tr>
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>collectionName</td><td>String</td><td>No</td><td>The name of an existing collection for which one policy
+     * needs to be fetched.</td></tr>
      * </table>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     values: [
-     *         {
-     *             name: String
-     *             id: String
-     *             version: Integer
-     *             properties: {
-     *                 description: String
-     *                 decisionRules: [
-     *                     {
-     *                         kind: String(decisionrule/attributerule)
-     *                         effect: String(Deny/Permit)
-     *                         dnfCondition: [
-     *                             [
-     *                                 {
-     *                                     attributeName: String
-     *                                     attributeValueIncludes: String
-     *                                     attributeValueIncludedIn: [
-     *                                         String
-     *                                     ]
-     *                                     attributeValueExcludes: String
-     *                                     attributeValueExcludedIn: [
-     *                                         String
-     *                                     ]
-     *                                 }
+     *     name: String (Optional)
+     *     id: String (Optional)
+     *     version: Integer (Optional)
+     *     properties (Optional): {
+     *         description: String (Optional)
+     *         decisionRules (Optional): [
+     *              (Optional){
+     *                 kind: String(decisionrule/attributerule) (Optional)
+     *                 effect: String(Deny/Permit) (Optional)
+     *                 dnfCondition (Optional): [
+     *                      (Optional)[
+     *                          (Optional){
+     *                             attributeName: String (Optional)
+     *                             attributeValueIncludes: String (Optional)
+     *                             attributeValueIncludedIn (Optional): [
+     *                                 String (Optional)
      *                             ]
-     *                         ]
-     *                     }
-     *                 ]
-     *                 attributeRules: [
-     *                     {
-     *                         kind: String(decisionrule/attributerule)
-     *                         id: String
-     *                         name: String
-     *                         dnfCondition: [
-     *                             [
-     *                                 (recursive schema, see above)
+     *                             attributeValueExcludes: String (Optional)
+     *                             attributeValueExcludedIn (Optional): [
+     *                                 String (Optional)
      *                             ]
-     *                         ]
-     *                     }
+     *                         }
+     *                     ]
      *                 ]
-     *                 collection: {
-     *                     type: String
-     *                     referenceName: String
-     *                 }
-     *                 parentCollectionName: String
      *             }
+     *         ]
+     *         attributeRules (Optional): [
+     *              (Optional){
+     *                 kind: String(decisionrule/attributerule) (Optional)
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 dnfCondition (Optional): [
+     *                      (Optional)[
+     *                         (recursive schema, see above)
+     *                     ]
+     *                 ]
+     *             }
+     *         ]
+     *         collection (Optional): {
+     *             type: String (Optional)
+     *             referenceName: String (Optional)
      *         }
-     *     ]
-     *     nextLink: String
+     *         parentCollectionName: String (Optional)
+     *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -109,114 +109,125 @@ public final class MetadataPolicyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listAll(requestOptions));
+        return this.serviceClient.listAll(requestOptions);
     }
 
     /**
      * Updates a metadata policy.
-     *
-     * <p><strong>Request Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
+     * <p><strong>Request Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     name: String
-     *     id: String
-     *     version: Integer
-     *     properties: {
-     *         description: String
-     *         decisionRules: [
-     *             {
-     *                 kind: String(decisionrule/attributerule)
-     *                 effect: String(Deny/Permit)
-     *                 dnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
+     *     name: String (Optional)
+     *     id: String (Optional)
+     *     version: Integer (Optional)
+     *     properties (Optional): {
+     *         description: String (Optional)
+     *         decisionRules (Optional): [
+     *              (Optional){
+     *                 kind: String(decisionrule/attributerule) (Optional)
+     *                 effect: String(Deny/Permit) (Optional)
+     *                 dnfCondition (Optional): [
+     *                      (Optional)[
+     *                          (Optional){
+     *                             attributeName: String (Optional)
+     *                             attributeValueIncludes: String (Optional)
+     *                             attributeValueIncludedIn (Optional): [
+     *                                 String (Optional)
      *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
+     *                             attributeValueExcludes: String (Optional)
+     *                             attributeValueExcludedIn (Optional): [
+     *                                 String (Optional)
      *                             ]
      *                         }
      *                     ]
      *                 ]
      *             }
      *         ]
-     *         attributeRules: [
-     *             {
-     *                 kind: String(decisionrule/attributerule)
-     *                 id: String
-     *                 name: String
-     *                 dnfCondition: [
-     *                     [
+     *         attributeRules (Optional): [
+     *              (Optional){
+     *                 kind: String(decisionrule/attributerule) (Optional)
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 dnfCondition (Optional): [
+     *                      (Optional)[
      *                         (recursive schema, see above)
      *                     ]
      *                 ]
      *             }
      *         ]
-     *         collection: {
-     *             type: String
-     *             referenceName: String
+     *         collection (Optional): {
+     *             type: String (Optional)
+     *             referenceName: String (Optional)
      *         }
-     *         parentCollectionName: String
+     *         parentCollectionName: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * }
+     * </pre>
+     * 
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     name: String
-     *     id: String
-     *     version: Integer
-     *     properties: {
-     *         description: String
-     *         decisionRules: [
-     *             {
-     *                 kind: String(decisionrule/attributerule)
-     *                 effect: String(Deny/Permit)
-     *                 dnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
+     *     name: String (Optional)
+     *     id: String (Optional)
+     *     version: Integer (Optional)
+     *     properties (Optional): {
+     *         description: String (Optional)
+     *         decisionRules (Optional): [
+     *              (Optional){
+     *                 kind: String(decisionrule/attributerule) (Optional)
+     *                 effect: String(Deny/Permit) (Optional)
+     *                 dnfCondition (Optional): [
+     *                      (Optional)[
+     *                          (Optional){
+     *                             attributeName: String (Optional)
+     *                             attributeValueIncludes: String (Optional)
+     *                             attributeValueIncludedIn (Optional): [
+     *                                 String (Optional)
      *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
+     *                             attributeValueExcludes: String (Optional)
+     *                             attributeValueExcludedIn (Optional): [
+     *                                 String (Optional)
      *                             ]
      *                         }
      *                     ]
      *                 ]
      *             }
      *         ]
-     *         attributeRules: [
-     *             {
-     *                 kind: String(decisionrule/attributerule)
-     *                 id: String
-     *                 name: String
-     *                 dnfCondition: [
-     *                     [
+     *         attributeRules (Optional): [
+     *              (Optional){
+     *                 kind: String(decisionrule/attributerule) (Optional)
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 dnfCondition (Optional): [
+     *                      (Optional)[
      *                         (recursive schema, see above)
      *                     ]
      *                 ]
      *             }
      *         ]
-     *         collection: {
-     *             type: String
-     *             referenceName: String
+     *         collection (Optional): {
+     *             type: String (Optional)
+     *             referenceName: String (Optional)
      *         }
-     *         parentCollectionName: String
+     *         parentCollectionName: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param policyId Unique policy id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -228,63 +239,64 @@ public final class MetadataPolicyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateWithResponse(String policyId, RequestOptions requestOptions) {
-        return this.client.updateWithResponse(policyId, requestOptions).block();
+        return this.serviceClient.updateWithResponse(policyId, requestOptions);
     }
 
     /**
      * Gets a metadata policy.
-     *
-     * <p><strong>Response Body Schema</strong>
-     *
-     * <pre>{@code
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
      * {
-     *     name: String
-     *     id: String
-     *     version: Integer
-     *     properties: {
-     *         description: String
-     *         decisionRules: [
-     *             {
-     *                 kind: String(decisionrule/attributerule)
-     *                 effect: String(Deny/Permit)
-     *                 dnfCondition: [
-     *                     [
-     *                         {
-     *                             attributeName: String
-     *                             attributeValueIncludes: String
-     *                             attributeValueIncludedIn: [
-     *                                 String
+     *     name: String (Optional)
+     *     id: String (Optional)
+     *     version: Integer (Optional)
+     *     properties (Optional): {
+     *         description: String (Optional)
+     *         decisionRules (Optional): [
+     *              (Optional){
+     *                 kind: String(decisionrule/attributerule) (Optional)
+     *                 effect: String(Deny/Permit) (Optional)
+     *                 dnfCondition (Optional): [
+     *                      (Optional)[
+     *                          (Optional){
+     *                             attributeName: String (Optional)
+     *                             attributeValueIncludes: String (Optional)
+     *                             attributeValueIncludedIn (Optional): [
+     *                                 String (Optional)
      *                             ]
-     *                             attributeValueExcludes: String
-     *                             attributeValueExcludedIn: [
-     *                                 String
+     *                             attributeValueExcludes: String (Optional)
+     *                             attributeValueExcludedIn (Optional): [
+     *                                 String (Optional)
      *                             ]
      *                         }
      *                     ]
      *                 ]
      *             }
      *         ]
-     *         attributeRules: [
-     *             {
-     *                 kind: String(decisionrule/attributerule)
-     *                 id: String
-     *                 name: String
-     *                 dnfCondition: [
-     *                     [
+     *         attributeRules (Optional): [
+     *              (Optional){
+     *                 kind: String(decisionrule/attributerule) (Optional)
+     *                 id: String (Optional)
+     *                 name: String (Optional)
+     *                 dnfCondition (Optional): [
+     *                      (Optional)[
      *                         (recursive schema, see above)
      *                     ]
      *                 ]
      *             }
      *         ]
-     *         collection: {
-     *             type: String
-     *             referenceName: String
+     *         collection (Optional): {
+     *             type: String (Optional)
+     *             referenceName: String (Optional)
      *         }
-     *         parentCollectionName: String
+     *         parentCollectionName: String (Optional)
      *     }
      * }
-     * }</pre>
-     *
+     * }
+     * </pre>
+     * 
      * @param policyId Id of an existing policy that needs to be fetched.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -296,6 +308,6 @@ public final class MetadataPolicyClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String policyId, RequestOptions requestOptions) {
-        return this.client.getWithResponse(policyId, requestOptions).block();
+        return this.serviceClient.getWithResponse(policyId, requestOptions);
     }
 }

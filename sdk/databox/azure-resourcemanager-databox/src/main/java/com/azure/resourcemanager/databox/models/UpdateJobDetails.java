@@ -5,36 +5,56 @@
 package com.azure.resourcemanager.databox.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Job details for update. */
+/**
+ * Job details for update.
+ */
 @Fluent
-public final class UpdateJobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateJobDetails.class);
-
+public final class UpdateJobDetails implements JsonSerializable<UpdateJobDetails> {
     /*
      * Contact details for notification and shipping.
      */
-    @JsonProperty(value = "contactDetails")
     private ContactDetails contactDetails;
 
     /*
      * Shipping address of the customer.
      */
-    @JsonProperty(value = "shippingAddress")
     private ShippingAddress shippingAddress;
+
+    /*
+     * Reverse Shipping Address and contact details for a job.
+     */
+    private ReverseShippingDetails reverseShippingDetails;
+
+    /*
+     * Preferences related to the order
+     */
+    private Preferences preferences;
 
     /*
      * Key encryption key for the job.
      */
-    @JsonProperty(value = "keyEncryptionKey")
     private KeyEncryptionKey keyEncryptionKey;
+
+    /*
+     * Return package details of job.
+     */
+    private PackageCarrierDetails returnToCustomerPackageDetails;
+
+    /**
+     * Creates an instance of UpdateJobDetails class.
+     */
+    public UpdateJobDetails() {
+    }
 
     /**
      * Get the contactDetails property: Contact details for notification and shipping.
-     *
+     * 
      * @return the contactDetails value.
      */
     public ContactDetails contactDetails() {
@@ -43,7 +63,7 @@ public final class UpdateJobDetails {
 
     /**
      * Set the contactDetails property: Contact details for notification and shipping.
-     *
+     * 
      * @param contactDetails the contactDetails value to set.
      * @return the UpdateJobDetails object itself.
      */
@@ -54,7 +74,7 @@ public final class UpdateJobDetails {
 
     /**
      * Get the shippingAddress property: Shipping address of the customer.
-     *
+     * 
      * @return the shippingAddress value.
      */
     public ShippingAddress shippingAddress() {
@@ -63,7 +83,7 @@ public final class UpdateJobDetails {
 
     /**
      * Set the shippingAddress property: Shipping address of the customer.
-     *
+     * 
      * @param shippingAddress the shippingAddress value to set.
      * @return the UpdateJobDetails object itself.
      */
@@ -73,8 +93,48 @@ public final class UpdateJobDetails {
     }
 
     /**
+     * Get the reverseShippingDetails property: Reverse Shipping Address and contact details for a job.
+     * 
+     * @return the reverseShippingDetails value.
+     */
+    public ReverseShippingDetails reverseShippingDetails() {
+        return this.reverseShippingDetails;
+    }
+
+    /**
+     * Set the reverseShippingDetails property: Reverse Shipping Address and contact details for a job.
+     * 
+     * @param reverseShippingDetails the reverseShippingDetails value to set.
+     * @return the UpdateJobDetails object itself.
+     */
+    public UpdateJobDetails withReverseShippingDetails(ReverseShippingDetails reverseShippingDetails) {
+        this.reverseShippingDetails = reverseShippingDetails;
+        return this;
+    }
+
+    /**
+     * Get the preferences property: Preferences related to the order.
+     * 
+     * @return the preferences value.
+     */
+    public Preferences preferences() {
+        return this.preferences;
+    }
+
+    /**
+     * Set the preferences property: Preferences related to the order.
+     * 
+     * @param preferences the preferences value to set.
+     * @return the UpdateJobDetails object itself.
+     */
+    public UpdateJobDetails withPreferences(Preferences preferences) {
+        this.preferences = preferences;
+        return this;
+    }
+
+    /**
      * Get the keyEncryptionKey property: Key encryption key for the job.
-     *
+     * 
      * @return the keyEncryptionKey value.
      */
     public KeyEncryptionKey keyEncryptionKey() {
@@ -83,7 +143,7 @@ public final class UpdateJobDetails {
 
     /**
      * Set the keyEncryptionKey property: Key encryption key for the job.
-     *
+     * 
      * @param keyEncryptionKey the keyEncryptionKey value to set.
      * @return the UpdateJobDetails object itself.
      */
@@ -93,8 +153,28 @@ public final class UpdateJobDetails {
     }
 
     /**
+     * Get the returnToCustomerPackageDetails property: Return package details of job.
+     * 
+     * @return the returnToCustomerPackageDetails value.
+     */
+    public PackageCarrierDetails returnToCustomerPackageDetails() {
+        return this.returnToCustomerPackageDetails;
+    }
+
+    /**
+     * Set the returnToCustomerPackageDetails property: Return package details of job.
+     * 
+     * @param returnToCustomerPackageDetails the returnToCustomerPackageDetails value to set.
+     * @return the UpdateJobDetails object itself.
+     */
+    public UpdateJobDetails withReturnToCustomerPackageDetails(PackageCarrierDetails returnToCustomerPackageDetails) {
+        this.returnToCustomerPackageDetails = returnToCustomerPackageDetails;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -104,8 +184,69 @@ public final class UpdateJobDetails {
         if (shippingAddress() != null) {
             shippingAddress().validate();
         }
+        if (reverseShippingDetails() != null) {
+            reverseShippingDetails().validate();
+        }
+        if (preferences() != null) {
+            preferences().validate();
+        }
         if (keyEncryptionKey() != null) {
             keyEncryptionKey().validate();
         }
+        if (returnToCustomerPackageDetails() != null) {
+            returnToCustomerPackageDetails().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("contactDetails", this.contactDetails);
+        jsonWriter.writeJsonField("shippingAddress", this.shippingAddress);
+        jsonWriter.writeJsonField("reverseShippingDetails", this.reverseShippingDetails);
+        jsonWriter.writeJsonField("preferences", this.preferences);
+        jsonWriter.writeJsonField("keyEncryptionKey", this.keyEncryptionKey);
+        jsonWriter.writeJsonField("returnToCustomerPackageDetails", this.returnToCustomerPackageDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateJobDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateJobDetails if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateJobDetails.
+     */
+    public static UpdateJobDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateJobDetails deserializedUpdateJobDetails = new UpdateJobDetails();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("contactDetails".equals(fieldName)) {
+                    deserializedUpdateJobDetails.contactDetails = ContactDetails.fromJson(reader);
+                } else if ("shippingAddress".equals(fieldName)) {
+                    deserializedUpdateJobDetails.shippingAddress = ShippingAddress.fromJson(reader);
+                } else if ("reverseShippingDetails".equals(fieldName)) {
+                    deserializedUpdateJobDetails.reverseShippingDetails = ReverseShippingDetails.fromJson(reader);
+                } else if ("preferences".equals(fieldName)) {
+                    deserializedUpdateJobDetails.preferences = Preferences.fromJson(reader);
+                } else if ("keyEncryptionKey".equals(fieldName)) {
+                    deserializedUpdateJobDetails.keyEncryptionKey = KeyEncryptionKey.fromJson(reader);
+                } else if ("returnToCustomerPackageDetails".equals(fieldName)) {
+                    deserializedUpdateJobDetails.returnToCustomerPackageDetails
+                        = PackageCarrierDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateJobDetails;
+        });
     }
 }

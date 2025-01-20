@@ -5,45 +5,50 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.TopologyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Topology of the specified resource group. */
+/**
+ * Topology of the specified resource group.
+ */
 @Fluent
-public final class TopologyInner {
+public final class TopologyInner implements JsonSerializable<TopologyInner> {
     /*
      * GUID representing the operation id.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The datetime when the topology was initially created for the resource group.
      */
-    @JsonProperty(value = "createdDateTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createdDateTime;
 
     /*
      * The datetime when the topology was last modified.
      */
-    @JsonProperty(value = "lastModified", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastModified;
 
     /*
      * A list of topology resources.
      */
-    @JsonProperty(value = "resources")
     private List<TopologyResource> resources;
 
-    /** Creates an instance of TopologyInner class. */
+    /**
+     * Creates an instance of TopologyInner class.
+     */
     public TopologyInner() {
     }
 
     /**
      * Get the id property: GUID representing the operation id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -52,7 +57,7 @@ public final class TopologyInner {
 
     /**
      * Get the createdDateTime property: The datetime when the topology was initially created for the resource group.
-     *
+     * 
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -61,7 +66,7 @@ public final class TopologyInner {
 
     /**
      * Get the lastModified property: The datetime when the topology was last modified.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -70,7 +75,7 @@ public final class TopologyInner {
 
     /**
      * Get the resources property: A list of topology resources.
-     *
+     * 
      * @return the resources value.
      */
     public List<TopologyResource> resources() {
@@ -79,7 +84,7 @@ public final class TopologyInner {
 
     /**
      * Set the resources property: A list of topology resources.
-     *
+     * 
      * @param resources the resources value to set.
      * @return the TopologyInner object itself.
      */
@@ -90,12 +95,57 @@ public final class TopologyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resources() != null) {
             resources().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("resources", this.resources, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TopologyInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TopologyInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TopologyInner.
+     */
+    public static TopologyInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TopologyInner deserializedTopologyInner = new TopologyInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedTopologyInner.id = reader.getString();
+                } else if ("createdDateTime".equals(fieldName)) {
+                    deserializedTopologyInner.createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("lastModified".equals(fieldName)) {
+                    deserializedTopologyInner.lastModified = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resources".equals(fieldName)) {
+                    List<TopologyResource> resources = reader.readArray(reader1 -> TopologyResource.fromJson(reader1));
+                    deserializedTopologyInner.resources = resources;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTopologyInner;
+        });
     }
 }

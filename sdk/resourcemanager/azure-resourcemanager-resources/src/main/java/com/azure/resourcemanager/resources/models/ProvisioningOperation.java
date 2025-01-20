@@ -4,42 +4,63 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ProvisioningOperation. */
+/**
+ * The name of the current provisioning operation.
+ */
 public enum ProvisioningOperation {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value Create. */
+    /**
+     * Enum value Create.
+     */
     CREATE("Create"),
 
-    /** Enum value Delete. */
+    /**
+     * Enum value Delete.
+     */
     DELETE("Delete"),
 
-    /** Enum value Waiting. */
+    /**
+     * Enum value Waiting.
+     */
     WAITING("Waiting"),
 
-    /** Enum value AzureAsyncOperationWaiting. */
+    /**
+     * Enum value AzureAsyncOperationWaiting.
+     */
     AZURE_ASYNC_OPERATION_WAITING("AzureAsyncOperationWaiting"),
 
-    /** Enum value ResourceCacheWaiting. */
+    /**
+     * Enum value ResourceCacheWaiting.
+     */
     RESOURCE_CACHE_WAITING("ResourceCacheWaiting"),
 
-    /** Enum value Action. */
+    /**
+     * Enum value Action.
+     */
     ACTION("Action"),
 
-    /** Enum value Read. */
+    /**
+     * Enum value Read.
+     */
     READ("Read"),
 
-    /** Enum value EvaluateDeploymentOutput. */
+    /**
+     * Enum value EvaluateDeploymentOutput.
+     */
     EVALUATE_DEPLOYMENT_OUTPUT("EvaluateDeploymentOutput"),
 
-    /** Enum value DeploymentCleanup. */
+    /**
+     * Enum value DeploymentCleanup.
+     */
     DEPLOYMENT_CLEANUP("DeploymentCleanup");
 
-    /** The actual serialized value for a ProvisioningOperation instance. */
+    /**
+     * The actual serialized value for a ProvisioningOperation instance.
+     */
     private final String value;
 
     ProvisioningOperation(String value) {
@@ -48,12 +69,14 @@ public enum ProvisioningOperation {
 
     /**
      * Parses a serialized value to a ProvisioningOperation instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningOperation object, or null if unable to parse.
      */
-    @JsonCreator
     public static ProvisioningOperation fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ProvisioningOperation[] items = ProvisioningOperation.values();
         for (ProvisioningOperation item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -63,7 +86,9 @@ public enum ProvisioningOperation {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

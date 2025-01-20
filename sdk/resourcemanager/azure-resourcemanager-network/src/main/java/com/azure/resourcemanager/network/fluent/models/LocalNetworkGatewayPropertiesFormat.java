@@ -5,57 +5,60 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** LocalNetworkGateway properties. */
+/**
+ * LocalNetworkGateway properties.
+ */
 @Fluent
-public final class LocalNetworkGatewayPropertiesFormat {
+public final class LocalNetworkGatewayPropertiesFormat
+    implements JsonSerializable<LocalNetworkGatewayPropertiesFormat> {
     /*
      * Local network site address space.
      */
-    @JsonProperty(value = "localNetworkAddressSpace")
     private AddressSpace localNetworkAddressSpace;
 
     /*
      * IP address of local network gateway.
      */
-    @JsonProperty(value = "gatewayIpAddress")
     private String gatewayIpAddress;
 
     /*
      * FQDN of local network gateway.
      */
-    @JsonProperty(value = "fqdn")
     private String fqdn;
 
     /*
      * Local network gateway's BGP speaker settings.
      */
-    @JsonProperty(value = "bgpSettings")
     private BgpSettings bgpSettings;
 
     /*
      * The resource GUID property of the local network gateway resource.
      */
-    @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
     /*
      * The provisioning state of the local network gateway resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of LocalNetworkGatewayPropertiesFormat class. */
+    /**
+     * Creates an instance of LocalNetworkGatewayPropertiesFormat class.
+     */
     public LocalNetworkGatewayPropertiesFormat() {
     }
 
     /**
      * Get the localNetworkAddressSpace property: Local network site address space.
-     *
+     * 
      * @return the localNetworkAddressSpace value.
      */
     public AddressSpace localNetworkAddressSpace() {
@@ -64,7 +67,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the localNetworkAddressSpace property: Local network site address space.
-     *
+     * 
      * @param localNetworkAddressSpace the localNetworkAddressSpace value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -75,7 +78,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the gatewayIpAddress property: IP address of local network gateway.
-     *
+     * 
      * @return the gatewayIpAddress value.
      */
     public String gatewayIpAddress() {
@@ -84,7 +87,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the gatewayIpAddress property: IP address of local network gateway.
-     *
+     * 
      * @param gatewayIpAddress the gatewayIpAddress value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -95,7 +98,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the fqdn property: FQDN of local network gateway.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -104,7 +107,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the fqdn property: FQDN of local network gateway.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -115,7 +118,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the bgpSettings property: Local network gateway's BGP speaker settings.
-     *
+     * 
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -124,7 +127,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the bgpSettings property: Local network gateway's BGP speaker settings.
-     *
+     * 
      * @param bgpSettings the bgpSettings value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -135,7 +138,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the local network gateway resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -144,7 +147,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the local network gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,7 +156,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -163,5 +166,57 @@ public final class LocalNetworkGatewayPropertiesFormat {
         if (bgpSettings() != null) {
             bgpSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("localNetworkAddressSpace", this.localNetworkAddressSpace);
+        jsonWriter.writeStringField("gatewayIpAddress", this.gatewayIpAddress);
+        jsonWriter.writeStringField("fqdn", this.fqdn);
+        jsonWriter.writeJsonField("bgpSettings", this.bgpSettings);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LocalNetworkGatewayPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LocalNetworkGatewayPropertiesFormat if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the LocalNetworkGatewayPropertiesFormat.
+     */
+    public static LocalNetworkGatewayPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LocalNetworkGatewayPropertiesFormat deserializedLocalNetworkGatewayPropertiesFormat
+                = new LocalNetworkGatewayPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("localNetworkAddressSpace".equals(fieldName)) {
+                    deserializedLocalNetworkGatewayPropertiesFormat.localNetworkAddressSpace
+                        = AddressSpace.fromJson(reader);
+                } else if ("gatewayIpAddress".equals(fieldName)) {
+                    deserializedLocalNetworkGatewayPropertiesFormat.gatewayIpAddress = reader.getString();
+                } else if ("fqdn".equals(fieldName)) {
+                    deserializedLocalNetworkGatewayPropertiesFormat.fqdn = reader.getString();
+                } else if ("bgpSettings".equals(fieldName)) {
+                    deserializedLocalNetworkGatewayPropertiesFormat.bgpSettings = BgpSettings.fromJson(reader);
+                } else if ("resourceGuid".equals(fieldName)) {
+                    deserializedLocalNetworkGatewayPropertiesFormat.resourceGuid = reader.getString();
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedLocalNetworkGatewayPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLocalNetworkGatewayPropertiesFormat;
+        });
     }
 }

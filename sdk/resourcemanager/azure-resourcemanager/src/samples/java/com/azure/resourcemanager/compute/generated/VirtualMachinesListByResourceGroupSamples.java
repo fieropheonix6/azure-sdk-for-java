@@ -4,41 +4,43 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachines ListByResourceGroup. */
+/**
+ * Samples for VirtualMachines ListByResourceGroup.
+ */
 public final class VirtualMachinesListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_List_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineExamples/VirtualMachine_List_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_List_MaximumSet_Gen.
-     *
+     * Sample code: VirtualMachine_List_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachineListMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .listByResourceGroup("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .listByResourceGroup("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_List_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineExamples/VirtualMachine_List_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachines_List_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachine_List_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachinesListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void virtualMachineListMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachines()
-            .listByResourceGroup("rgcompute", null, Context.NONE);
+            .listByResourceGroup("rgcompute", null, null, com.azure.core.util.Context.NONE);
     }
 }

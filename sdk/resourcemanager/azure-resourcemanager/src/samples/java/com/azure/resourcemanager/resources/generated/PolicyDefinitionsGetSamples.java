@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.resources.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PolicyDefinitions Get. */
+/**
+ * Samples for PolicyDefinitions Get.
+ */
 public final class PolicyDefinitionsGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyDefinition.json
+     * x-ms-original-file:
+     * specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/getPolicyDefinition.
+     * json
      */
     /**
      * Sample code: Retrieve a policy definition.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void retrieveAPolicyDefinition(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .genericResources()
+        azure.genericResources()
             .manager()
             .policyClient()
             .getPolicyDefinitions()
-            .getWithResponse("ResourceNaming", Context.NONE);
+            .getWithResponse("ResourceNaming", com.azure.core.util.Context.NONE);
     }
 }

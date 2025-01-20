@@ -3,11 +3,13 @@
 
 package com.azure.resourcemanager.appplatform;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.appplatform.models.ConfigServerProperties;
 import com.azure.resourcemanager.appplatform.models.SpringApp;
+import com.azure.resourcemanager.appplatform.models.SpringAppDeployment;
 import com.azure.resourcemanager.appplatform.models.SpringService;
-import com.azure.core.management.Region;
+import com.azure.resourcemanager.appplatform.models.UserSourceType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
@@ -20,9 +22,11 @@ public class SpringCloudTest extends AppPlatformTest {
         String serviceName = generateRandomResourceName("springsvc", 15);
         Region region = Region.US_EAST;
 
-        Assertions.assertTrue(appPlatformManager.springServices().checkNameAvailability(serviceName, region).nameAvailable());
+        Assertions
+            .assertTrue(appPlatformManager.springServices().checkNameAvailability(serviceName, region).nameAvailable());
 
-        SpringService service = appPlatformManager.springServices().define(serviceName)
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .withSku("B0")
@@ -30,12 +34,10 @@ public class SpringCloudTest extends AppPlatformTest {
             .create();
 
         Assertions.assertEquals("B0", service.sku().name());
-        Assertions.assertEquals(PIGGYMETRICS_CONFIG_URL, service.getServerProperties().configServer().gitProperty().uri());
+        Assertions.assertEquals(PIGGYMETRICS_CONFIG_URL,
+            service.getServerProperties().configServer().gitProperty().uri());
 
-        service.update()
-            .withSku("S0", 2)
-            .withoutGitConfig()
-            .apply();
+        service.update().withSku("S0", 2).withoutGitConfig().apply();
 
         Assertions.assertEquals("S0", service.sku().name());
 
@@ -46,13 +48,16 @@ public class SpringCloudTest extends AppPlatformTest {
             || serverProperties.configServer().gitProperty().uri() == null
             || serverProperties.configServer().gitProperty().uri().isEmpty());
 
-        Assertions.assertEquals(1, appPlatformManager.springServices().list().stream().filter(s -> s.name().equals(serviceName)).count());
+        Assertions.assertEquals(1,
+            appPlatformManager.springServices().list().stream().filter(s -> s.name().equals(serviceName)).count());
 
         appPlatformManager.springServices().deleteById(service.id());
         Assertions.assertEquals(404,
-            appPlatformManager.springServices().getByIdAsync(service.id()).map(o -> 200)
-                .onErrorResume(e ->
-                    Mono.just(e instanceof ManagementException ? ((ManagementException) e).getResponse().getStatusCode() : 400))
+            appPlatformManager.springServices()
+                .getByIdAsync(service.id())
+                .map(o -> 200)
+                .onErrorResume(e -> Mono.just(
+                    e instanceof ManagementException ? ((ManagementException) e).getResponse().getStatusCode() : 400))
                 .block());
     }
 
@@ -62,12 +67,14 @@ public class SpringCloudTest extends AppPlatformTest {
         String appName = "gateway";
         Region region = Region.US_EAST;
 
-        SpringService service = appPlatformManager.springServices().define(serviceName)
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
             .withRegion(region)
             .withNewResourceGroup(rgName)
             .create();
 
-        SpringApp app = service.apps().define(appName)
+        SpringApp app = service.apps()
+            .define(appName)
             .withDefaultActiveDeployment()
             .withDefaultPublicEndpoint()
             .withHttpsOnly()
@@ -86,13 +93,10 @@ public class SpringCloudTest extends AppPlatformTest {
 
         if (!isPlaybackMode()) {
             allowAllSSL();
-//            Assertions.assertTrue(requestSuccess(app.url()));
+            //            Assertions.assertTrue(requestSuccess(app.url()));
         }
 
-        app.update()
-            .withoutDefaultPublicEndpoint()
-            .withoutHttpsOnly()
-            .apply();
+        app.update().withoutDefaultPublicEndpoint().withoutHttpsOnly().apply();
 
         Assertions.assertFalse(app.isPublic());
         Assertions.assertFalse(app.isHttpsOnly());
@@ -101,9 +105,60 @@ public class SpringCloudTest extends AppPlatformTest {
 
         service.apps().deleteById(app.id());
         Assertions.assertEquals(404,
-            service.apps().getByIdAsync(app.id()).map(o -> 200)
-                .onErrorResume(
-                    e -> Mono.just((e instanceof ManagementException) ? ((ManagementException) e).getResponse().getStatusCode() : 400)
-                ).block());
+            service.apps()
+                .getByIdAsync(app.id())
+                .map(o -> 200)
+                .onErrorResume(e -> Mono.just(
+                    (e instanceof ManagementException) ? ((ManagementException) e).getResponse().getStatusCode() : 400))
+                .block());
+    }
+
+    @Test
+    public void canSetActiveDeployment() {
+        String serviceName = generateRandomResourceName("springsvc", 15);
+        String appName = "gateway";
+        String deploymentName = generateRandomResourceName("dp", 15);
+        Region region = Region.US_EAST;
+
+        SpringService service = appPlatformManager.springServices()
+            .define(serviceName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .create();
+
+        // --------------------------------
+        // create app with default active deployment
+        SpringApp app = service.apps()
+            .define(appName)
+            .withDefaultActiveDeployment()
+            .withDefaultPublicEndpoint()
+            .withHttpsOnly()
+            .create();
+
+        Assertions.assertEquals(1, app.deployments().list().stream().filter(SpringAppDeployment::isActive).count());
+
+        SpringAppDeployment deployment = app.getActiveDeployment();
+        Assertions.assertEquals("default", deployment.name());
+
+        // --------------------------------
+        // create a new active deployment
+        app.deployments()
+            .define(deploymentName)
+            .withExistingSource(UserSourceType.JAR, "<default>")
+            .withActivation()
+            .create();
+
+        // current active deployment should be the new deployment
+        Assertions.assertEquals(1, app.deployments().list().stream().filter(SpringAppDeployment::isActive).count());
+        deployment = app.getActiveDeployment();
+        Assertions.assertEquals(deploymentName, deployment.name());
+
+        // --------------------------------
+        // set active deployment back to the default one
+        app.update().withActiveDeployment("default").apply();
+
+        Assertions.assertEquals(1, app.deployments().list().stream().filter(SpringAppDeployment::isActive).count());
+        deployment = app.getActiveDeployment();
+        Assertions.assertEquals("default", deployment.name());
     }
 }

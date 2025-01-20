@@ -5,25 +5,32 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** List of session IDs. */
+/**
+ * List of session IDs.
+ */
 @Fluent
-public final class SessionIds {
+public final class SessionIds implements JsonSerializable<SessionIds> {
     /*
      * List of session IDs.
      */
-    @JsonProperty(value = "sessionIds")
     private List<String> sessionIds;
 
-    /** Creates an instance of SessionIds class. */
+    /**
+     * Creates an instance of SessionIds class.
+     */
     public SessionIds() {
     }
 
     /**
      * Get the sessionIds property: List of session IDs.
-     *
+     * 
      * @return the sessionIds value.
      */
     public List<String> sessionIds() {
@@ -32,7 +39,7 @@ public final class SessionIds {
 
     /**
      * Set the sessionIds property: List of session IDs.
-     *
+     * 
      * @param sessionIds the sessionIds value to set.
      * @return the SessionIds object itself.
      */
@@ -43,9 +50,46 @@ public final class SessionIds {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("sessionIds", this.sessionIds, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SessionIds from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SessionIds if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IOException If an error occurs while reading the SessionIds.
+     */
+    public static SessionIds fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SessionIds deserializedSessionIds = new SessionIds();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionIds".equals(fieldName)) {
+                    List<String> sessionIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedSessionIds.sessionIds = sessionIds;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSessionIds;
+        });
     }
 }

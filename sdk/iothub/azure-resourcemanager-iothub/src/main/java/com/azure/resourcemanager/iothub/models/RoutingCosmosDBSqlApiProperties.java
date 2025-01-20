@@ -6,100 +6,99 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties related to a cosmos DB sql collection endpoint. */
+/**
+ * The properties related to a cosmos DB sql container endpoint.
+ */
 @Fluent
-public final class RoutingCosmosDBSqlApiProperties {
+public final class RoutingCosmosDBSqlApiProperties implements JsonSerializable<RoutingCosmosDBSqlApiProperties> {
     /*
      * The name that identifies this endpoint. The name can only include alphanumeric characters, periods, underscores,
-     * hyphens and has a maximum length of 64 characters. The following names are reserved:  events, fileNotifications,
+     * hyphens and has a maximum length of 64 characters. The following names are reserved: events, fileNotifications,
      * $default. Endpoint names must be unique across endpoint types.
      */
-    @JsonProperty(value = "name", required = true)
     private String name;
 
     /*
-     * Id of the cosmos DB sql collection endpoint
+     * Id of the cosmos DB sql container endpoint
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The subscription identifier of the cosmos DB account.
      */
-    @JsonProperty(value = "subscriptionId")
     private String subscriptionId;
 
     /*
      * The name of the resource group of the cosmos DB account.
      */
-    @JsonProperty(value = "resourceGroup")
     private String resourceGroup;
 
     /*
      * The url of the cosmos DB account. It must include the protocol https://
      */
-    @JsonProperty(value = "endpointUri", required = true)
     private String endpointUri;
 
     /*
-     * Method used to authenticate against the cosmos DB sql collection endpoint
+     * Method used to authenticate against the cosmos DB sql container endpoint
      */
-    @JsonProperty(value = "authenticationType")
     private AuthenticationType authenticationType;
 
     /*
-     * Managed identity properties of routing cosmos DB collection endpoint.
+     * Managed identity properties of routing cosmos DB container endpoint.
      */
-    @JsonProperty(value = "identity")
     private ManagedIdentity identity;
 
     /*
      * The primary key of the cosmos DB account.
      */
-    @JsonProperty(value = "primaryKey")
     private String primaryKey;
 
     /*
      * The secondary key of the cosmos DB account.
      */
-    @JsonProperty(value = "secondaryKey")
     private String secondaryKey;
 
     /*
      * The name of the cosmos DB database in the cosmos DB account.
      */
-    @JsonProperty(value = "databaseName", required = true)
     private String databaseName;
 
     /*
-     * The name of the cosmos DB sql collection in the cosmos DB database.
+     * The name of the cosmos DB sql container in the cosmos DB database.
      */
-    @JsonProperty(value = "collectionName", required = true)
-    private String collectionName;
+    private String containerName;
 
     /*
-     * The name of the partition key associated with this cosmos DB sql collection if one exists. This is an optional
+     * The name of the partition key associated with this cosmos DB sql container if one exists. This is an optional
      * parameter.
      */
-    @JsonProperty(value = "partitionKeyName")
     private String partitionKeyName;
 
     /*
-     * The template for generating a synthetic partition key value for use with this cosmos DB sql collection. The
+     * The template for generating a synthetic partition key value for use with this cosmos DB sql container. The
      * template must include at least one of the following placeholders: {iothub}, {deviceid}, {DD}, {MM}, and {YYYY}.
      * Any one placeholder may be specified at most once, but order and non-placeholder components are arbitrary. This
      * parameter is only required if PartitionKeyName is specified.
      */
-    @JsonProperty(value = "partitionKeyTemplate")
     private String partitionKeyTemplate;
+
+    /**
+     * Creates an instance of RoutingCosmosDBSqlApiProperties class.
+     */
+    public RoutingCosmosDBSqlApiProperties() {
+    }
 
     /**
      * Get the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
      * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
      * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -110,7 +109,7 @@ public final class RoutingCosmosDBSqlApiProperties {
      * Set the name property: The name that identifies this endpoint. The name can only include alphanumeric characters,
      * periods, underscores, hyphens and has a maximum length of 64 characters. The following names are reserved:
      * events, fileNotifications, $default. Endpoint names must be unique across endpoint types.
-     *
+     * 
      * @param name the name value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -120,8 +119,8 @@ public final class RoutingCosmosDBSqlApiProperties {
     }
 
     /**
-     * Get the id property: Id of the cosmos DB sql collection endpoint.
-     *
+     * Get the id property: Id of the cosmos DB sql container endpoint.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -129,19 +128,8 @@ public final class RoutingCosmosDBSqlApiProperties {
     }
 
     /**
-     * Set the id property: Id of the cosmos DB sql collection endpoint.
-     *
-     * @param id the id value to set.
-     * @return the RoutingCosmosDBSqlApiProperties object itself.
-     */
-    public RoutingCosmosDBSqlApiProperties withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
      * Get the subscriptionId property: The subscription identifier of the cosmos DB account.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -150,7 +138,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Set the subscriptionId property: The subscription identifier of the cosmos DB account.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -161,7 +149,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Get the resourceGroup property: The name of the resource group of the cosmos DB account.
-     *
+     * 
      * @return the resourceGroup value.
      */
     public String resourceGroup() {
@@ -170,7 +158,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Set the resourceGroup property: The name of the resource group of the cosmos DB account.
-     *
+     * 
      * @param resourceGroup the resourceGroup value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -181,7 +169,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Get the endpointUri property: The url of the cosmos DB account. It must include the protocol https://.
-     *
+     * 
      * @return the endpointUri value.
      */
     public String endpointUri() {
@@ -190,7 +178,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Set the endpointUri property: The url of the cosmos DB account. It must include the protocol https://.
-     *
+     * 
      * @param endpointUri the endpointUri value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -200,8 +188,8 @@ public final class RoutingCosmosDBSqlApiProperties {
     }
 
     /**
-     * Get the authenticationType property: Method used to authenticate against the cosmos DB sql collection endpoint.
-     *
+     * Get the authenticationType property: Method used to authenticate against the cosmos DB sql container endpoint.
+     * 
      * @return the authenticationType value.
      */
     public AuthenticationType authenticationType() {
@@ -209,8 +197,8 @@ public final class RoutingCosmosDBSqlApiProperties {
     }
 
     /**
-     * Set the authenticationType property: Method used to authenticate against the cosmos DB sql collection endpoint.
-     *
+     * Set the authenticationType property: Method used to authenticate against the cosmos DB sql container endpoint.
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -220,8 +208,8 @@ public final class RoutingCosmosDBSqlApiProperties {
     }
 
     /**
-     * Get the identity property: Managed identity properties of routing cosmos DB collection endpoint.
-     *
+     * Get the identity property: Managed identity properties of routing cosmos DB container endpoint.
+     * 
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -229,8 +217,8 @@ public final class RoutingCosmosDBSqlApiProperties {
     }
 
     /**
-     * Set the identity property: Managed identity properties of routing cosmos DB collection endpoint.
-     *
+     * Set the identity property: Managed identity properties of routing cosmos DB container endpoint.
+     * 
      * @param identity the identity value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -241,7 +229,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Get the primaryKey property: The primary key of the cosmos DB account.
-     *
+     * 
      * @return the primaryKey value.
      */
     public String primaryKey() {
@@ -250,7 +238,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Set the primaryKey property: The primary key of the cosmos DB account.
-     *
+     * 
      * @param primaryKey the primaryKey value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -261,7 +249,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Get the secondaryKey property: The secondary key of the cosmos DB account.
-     *
+     * 
      * @return the secondaryKey value.
      */
     public String secondaryKey() {
@@ -270,7 +258,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Set the secondaryKey property: The secondary key of the cosmos DB account.
-     *
+     * 
      * @param secondaryKey the secondaryKey value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -281,7 +269,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Get the databaseName property: The name of the cosmos DB database in the cosmos DB account.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -290,7 +278,7 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Set the databaseName property: The name of the cosmos DB database in the cosmos DB account.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -300,29 +288,29 @@ public final class RoutingCosmosDBSqlApiProperties {
     }
 
     /**
-     * Get the collectionName property: The name of the cosmos DB sql collection in the cosmos DB database.
-     *
-     * @return the collectionName value.
+     * Get the containerName property: The name of the cosmos DB sql container in the cosmos DB database.
+     * 
+     * @return the containerName value.
      */
-    public String collectionName() {
-        return this.collectionName;
+    public String containerName() {
+        return this.containerName;
     }
 
     /**
-     * Set the collectionName property: The name of the cosmos DB sql collection in the cosmos DB database.
-     *
-     * @param collectionName the collectionName value to set.
+     * Set the containerName property: The name of the cosmos DB sql container in the cosmos DB database.
+     * 
+     * @param containerName the containerName value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
-    public RoutingCosmosDBSqlApiProperties withCollectionName(String collectionName) {
-        this.collectionName = collectionName;
+    public RoutingCosmosDBSqlApiProperties withContainerName(String containerName) {
+        this.containerName = containerName;
         return this;
     }
 
     /**
-     * Get the partitionKeyName property: The name of the partition key associated with this cosmos DB sql collection if
+     * Get the partitionKeyName property: The name of the partition key associated with this cosmos DB sql container if
      * one exists. This is an optional parameter.
-     *
+     * 
      * @return the partitionKeyName value.
      */
     public String partitionKeyName() {
@@ -330,9 +318,9 @@ public final class RoutingCosmosDBSqlApiProperties {
     }
 
     /**
-     * Set the partitionKeyName property: The name of the partition key associated with this cosmos DB sql collection if
+     * Set the partitionKeyName property: The name of the partition key associated with this cosmos DB sql container if
      * one exists. This is an optional parameter.
-     *
+     * 
      * @param partitionKeyName the partitionKeyName value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -343,10 +331,10 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Get the partitionKeyTemplate property: The template for generating a synthetic partition key value for use with
-     * this cosmos DB sql collection. The template must include at least one of the following placeholders: {iothub},
+     * this cosmos DB sql container. The template must include at least one of the following placeholders: {iothub},
      * {deviceid}, {DD}, {MM}, and {YYYY}. Any one placeholder may be specified at most once, but order and
      * non-placeholder components are arbitrary. This parameter is only required if PartitionKeyName is specified.
-     *
+     * 
      * @return the partitionKeyTemplate value.
      */
     public String partitionKeyTemplate() {
@@ -355,10 +343,10 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Set the partitionKeyTemplate property: The template for generating a synthetic partition key value for use with
-     * this cosmos DB sql collection. The template must include at least one of the following placeholders: {iothub},
+     * this cosmos DB sql container. The template must include at least one of the following placeholders: {iothub},
      * {deviceid}, {DD}, {MM}, and {YYYY}. Any one placeholder may be specified at most once, but order and
      * non-placeholder components are arbitrary. This parameter is only required if PartitionKeyName is specified.
-     *
+     * 
      * @param partitionKeyTemplate the partitionKeyTemplate value to set.
      * @return the RoutingCosmosDBSqlApiProperties object itself.
      */
@@ -369,38 +357,109 @@ public final class RoutingCosmosDBSqlApiProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model RoutingCosmosDBSqlApiProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property name in model RoutingCosmosDBSqlApiProperties"));
         }
         if (endpointUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property endpointUri in model RoutingCosmosDBSqlApiProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property endpointUri in model RoutingCosmosDBSqlApiProperties"));
         }
         if (identity() != null) {
             identity().validate();
         }
         if (databaseName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property databaseName in model RoutingCosmosDBSqlApiProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property databaseName in model RoutingCosmosDBSqlApiProperties"));
         }
-        if (collectionName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property collectionName in model RoutingCosmosDBSqlApiProperties"));
+        if (containerName() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property containerName in model RoutingCosmosDBSqlApiProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RoutingCosmosDBSqlApiProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("endpointUri", this.endpointUri);
+        jsonWriter.writeStringField("databaseName", this.databaseName);
+        jsonWriter.writeStringField("containerName", this.containerName);
+        jsonWriter.writeStringField("subscriptionId", this.subscriptionId);
+        jsonWriter.writeStringField("resourceGroup", this.resourceGroup);
+        jsonWriter.writeStringField("authenticationType",
+            this.authenticationType == null ? null : this.authenticationType.toString());
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("primaryKey", this.primaryKey);
+        jsonWriter.writeStringField("secondaryKey", this.secondaryKey);
+        jsonWriter.writeStringField("partitionKeyName", this.partitionKeyName);
+        jsonWriter.writeStringField("partitionKeyTemplate", this.partitionKeyTemplate);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RoutingCosmosDBSqlApiProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RoutingCosmosDBSqlApiProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RoutingCosmosDBSqlApiProperties.
+     */
+    public static RoutingCosmosDBSqlApiProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RoutingCosmosDBSqlApiProperties deserializedRoutingCosmosDBSqlApiProperties
+                = new RoutingCosmosDBSqlApiProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.name = reader.getString();
+                } else if ("endpointUri".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.endpointUri = reader.getString();
+                } else if ("databaseName".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.databaseName = reader.getString();
+                } else if ("containerName".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.containerName = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.id = reader.getString();
+                } else if ("subscriptionId".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.subscriptionId = reader.getString();
+                } else if ("resourceGroup".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.resourceGroup = reader.getString();
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.authenticationType
+                        = AuthenticationType.fromString(reader.getString());
+                } else if ("identity".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.identity = ManagedIdentity.fromJson(reader);
+                } else if ("primaryKey".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.primaryKey = reader.getString();
+                } else if ("secondaryKey".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.secondaryKey = reader.getString();
+                } else if ("partitionKeyName".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.partitionKeyName = reader.getString();
+                } else if ("partitionKeyTemplate".equals(fieldName)) {
+                    deserializedRoutingCosmosDBSqlApiProperties.partitionKeyTemplate = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRoutingCosmosDBSqlApiProperties;
+        });
+    }
 }

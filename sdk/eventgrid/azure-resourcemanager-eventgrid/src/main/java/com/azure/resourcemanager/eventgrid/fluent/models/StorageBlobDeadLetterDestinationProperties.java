@@ -5,29 +5,38 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the storage blob based dead letter destination. */
+/**
+ * Properties of the storage blob based dead letter destination.
+ */
 @Fluent
-public final class StorageBlobDeadLetterDestinationProperties {
+public final class StorageBlobDeadLetterDestinationProperties
+    implements JsonSerializable<StorageBlobDeadLetterDestinationProperties> {
     /*
-     * The Azure Resource ID of the storage account that is the destination of
-     * the deadletter events
+     * The Azure Resource ID of the storage account that is the destination of the deadletter events
      */
-    @JsonProperty(value = "resourceId")
     private String resourceId;
 
     /*
-     * The name of the Storage blob container that is the destination of the
-     * deadletter events
+     * The name of the Storage blob container that is the destination of the deadletter events
      */
-    @JsonProperty(value = "blobContainerName")
     private String blobContainerName;
+
+    /**
+     * Creates an instance of StorageBlobDeadLetterDestinationProperties class.
+     */
+    public StorageBlobDeadLetterDestinationProperties() {
+    }
 
     /**
      * Get the resourceId property: The Azure Resource ID of the storage account that is the destination of the
      * deadletter events.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +46,7 @@ public final class StorageBlobDeadLetterDestinationProperties {
     /**
      * Set the resourceId property: The Azure Resource ID of the storage account that is the destination of the
      * deadletter events.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the StorageBlobDeadLetterDestinationProperties object itself.
      */
@@ -49,7 +58,7 @@ public final class StorageBlobDeadLetterDestinationProperties {
     /**
      * Get the blobContainerName property: The name of the Storage blob container that is the destination of the
      * deadletter events.
-     *
+     * 
      * @return the blobContainerName value.
      */
     public String blobContainerName() {
@@ -59,7 +68,7 @@ public final class StorageBlobDeadLetterDestinationProperties {
     /**
      * Set the blobContainerName property: The name of the Storage blob container that is the destination of the
      * deadletter events.
-     *
+     * 
      * @param blobContainerName the blobContainerName value to set.
      * @return the StorageBlobDeadLetterDestinationProperties object itself.
      */
@@ -70,9 +79,49 @@ public final class StorageBlobDeadLetterDestinationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("blobContainerName", this.blobContainerName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageBlobDeadLetterDestinationProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageBlobDeadLetterDestinationProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageBlobDeadLetterDestinationProperties.
+     */
+    public static StorageBlobDeadLetterDestinationProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageBlobDeadLetterDestinationProperties deserializedStorageBlobDeadLetterDestinationProperties
+                = new StorageBlobDeadLetterDestinationProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceId".equals(fieldName)) {
+                    deserializedStorageBlobDeadLetterDestinationProperties.resourceId = reader.getString();
+                } else if ("blobContainerName".equals(fieldName)) {
+                    deserializedStorageBlobDeadLetterDestinationProperties.blobContainerName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageBlobDeadLetterDestinationProperties;
+        });
     }
 }

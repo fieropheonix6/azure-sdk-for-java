@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyExportFormat. */
+/**
+ * Defines values for PolicyExportFormat.
+ */
 public final class PolicyExportFormat extends ExpandableStringEnum<PolicyExportFormat> {
-    /** Static value xml for PolicyExportFormat. */
+    /**
+     * Static value xml for PolicyExportFormat.
+     */
     public static final PolicyExportFormat XML = fromString("xml");
 
-    /** Static value rawxml for PolicyExportFormat. */
+    /**
+     * Static value rawxml for PolicyExportFormat.
+     */
     public static final PolicyExportFormat RAWXML = fromString("rawxml");
 
     /**
+     * Creates a new instance of PolicyExportFormat value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public PolicyExportFormat() {
+    }
+
+    /**
      * Creates or finds a PolicyExportFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyExportFormat.
      */
-    @JsonCreator
     public static PolicyExportFormat fromString(String name) {
         return fromString(name, PolicyExportFormat.class);
     }
 
-    /** @return known PolicyExportFormat values. */
+    /**
+     * Gets known PolicyExportFormat values.
+     * 
+     * @return known PolicyExportFormat values.
+     */
     public static Collection<PolicyExportFormat> values() {
         return values(PolicyExportFormat.class);
     }

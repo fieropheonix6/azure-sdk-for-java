@@ -5,62 +5,64 @@
 package com.azure.resourcemanager.datamigration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datamigration.models.ServiceProvisioningState;
 import com.azure.resourcemanager.datamigration.models.ServiceSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A Database Migration Service resource. */
-@JsonFlatten
+/**
+ * A Database Migration Service resource.
+ */
 @Fluent
-public class DataMigrationServiceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataMigrationServiceInner.class);
-
+public final class DataMigrationServiceInner extends Resource {
     /*
      * HTTP strong entity tag value. Ignored if submitted
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * The resource kind. Only 'vm' (the default) is supported.
      */
-    @JsonProperty(value = "kind")
     private String kind;
+
+    /*
+     * Custom service properties
+     */
+    private DataMigrationServiceProperties innerProperties;
 
     /*
      * Service SKU
      */
-    @JsonProperty(value = "sku")
     private ServiceSku sku;
 
     /*
-     * The resource's provisioning state
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ServiceProvisioningState provisioningState;
+    private String type;
 
     /*
-     * The public key of the service, used to encrypt secrets sent to the
-     * service
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.publicKey")
-    private String publicKey;
+    private String name;
 
     /*
-     * The ID of the Microsoft.Network/virtualNetworks/subnets resource to
-     * which the service should be joined
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.virtualSubnetId")
-    private String virtualSubnetId;
+    private String id;
+
+    /**
+     * Creates an instance of DataMigrationServiceInner class.
+     */
+    public DataMigrationServiceInner() {
+    }
 
     /**
      * Get the etag property: HTTP strong entity tag value. Ignored if submitted.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -69,7 +71,7 @@ public class DataMigrationServiceInner extends Resource {
 
     /**
      * Set the etag property: HTTP strong entity tag value. Ignored if submitted.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the DataMigrationServiceInner object itself.
      */
@@ -80,7 +82,7 @@ public class DataMigrationServiceInner extends Resource {
 
     /**
      * Get the kind property: The resource kind. Only 'vm' (the default) is supported.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -89,7 +91,7 @@ public class DataMigrationServiceInner extends Resource {
 
     /**
      * Set the kind property: The resource kind. Only 'vm' (the default) is supported.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the DataMigrationServiceInner object itself.
      */
@@ -99,8 +101,17 @@ public class DataMigrationServiceInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Custom service properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private DataMigrationServiceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the sku property: Service SKU.
-     *
+     * 
      * @return the sku value.
      */
     public ServiceSku sku() {
@@ -109,7 +120,7 @@ public class DataMigrationServiceInner extends Resource {
 
     /**
      * Set the sku property: Service SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DataMigrationServiceInner object itself.
      */
@@ -119,64 +130,47 @@ public class DataMigrationServiceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The resource's provisioning state.
-     *
-     * @return the provisioningState value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public ServiceProvisioningState provisioningState() {
-        return this.provisioningState;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Get the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
-     *
-     * @return the publicKey value.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public String publicKey() {
-        return this.publicKey;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Set the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
-     *
-     * @param publicKey the publicKey value to set.
-     * @return the DataMigrationServiceInner object itself.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public DataMigrationServiceInner withPublicKey(String publicKey) {
-        this.publicKey = publicKey;
-        return this;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
-     * service should be joined.
-     *
-     * @return the virtualSubnetId value.
+     * {@inheritDoc}
      */
-    public String virtualSubnetId() {
-        return this.virtualSubnetId;
-    }
-
-    /**
-     * Set the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
-     * service should be joined.
-     *
-     * @param virtualSubnetId the virtualSubnetId value to set.
-     * @return the DataMigrationServiceInner object itself.
-     */
-    public DataMigrationServiceInner withVirtualSubnetId(String virtualSubnetId) {
-        this.virtualSubnetId = virtualSubnetId;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public DataMigrationServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataMigrationServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -184,13 +178,133 @@ public class DataMigrationServiceInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The resource's provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public ServiceProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
+     * 
+     * @return the publicKey value.
+     */
+    public String publicKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicKey();
+    }
+
+    /**
+     * Set the publicKey property: The public key of the service, used to encrypt secrets sent to the service.
+     * 
+     * @param publicKey the publicKey value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withPublicKey(String publicKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withPublicKey(publicKey);
+        return this;
+    }
+
+    /**
+     * Get the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
+     * service should be joined.
+     * 
+     * @return the virtualSubnetId value.
+     */
+    public String virtualSubnetId() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualSubnetId();
+    }
+
+    /**
+     * Set the virtualSubnetId property: The ID of the Microsoft.Network/virtualNetworks/subnets resource to which the
+     * service should be joined.
+     * 
+     * @param virtualSubnetId the virtualSubnetId value to set.
+     * @return the DataMigrationServiceInner object itself.
+     */
+    public DataMigrationServiceInner withVirtualSubnetId(String virtualSubnetId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataMigrationServiceProperties();
+        }
+        this.innerProperties().withVirtualSubnetId(virtualSubnetId);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataMigrationServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataMigrationServiceInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataMigrationServiceInner.
+     */
+    public static DataMigrationServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataMigrationServiceInner deserializedDataMigrationServiceInner = new DataMigrationServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataMigrationServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataMigrationServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataMigrationServiceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDataMigrationServiceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataMigrationServiceInner.withTags(tags);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDataMigrationServiceInner.etag = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDataMigrationServiceInner.kind = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataMigrationServiceInner.innerProperties
+                        = DataMigrationServiceProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDataMigrationServiceInner.sku = ServiceSku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataMigrationServiceInner;
+        });
     }
 }

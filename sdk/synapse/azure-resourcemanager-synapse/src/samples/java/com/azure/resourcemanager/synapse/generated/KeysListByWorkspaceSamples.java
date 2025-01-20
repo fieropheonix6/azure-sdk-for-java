@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Keys ListByWorkspace. */
+/**
+ * Samples for Keys ListByWorkspace.
+ */
 public final class KeysListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListKeysInWorkspace.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListKeysInWorkspace.json
      */
     /**
      * Sample code: List keys in workspace.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void listKeysInWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.keys().listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", Context.NONE);
+        manager.keys().listByWorkspace("ExampleResourceGroup", "ExampleWorkspace", com.azure.core.util.Context.NONE);
     }
 }

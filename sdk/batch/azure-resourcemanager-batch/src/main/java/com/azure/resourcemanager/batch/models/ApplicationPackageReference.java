@@ -6,35 +6,39 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Link to an application package inside the batch account. */
+/**
+ * Link to an application package inside the batch account.
+ */
 @Fluent
-public final class ApplicationPackageReference {
+public final class ApplicationPackageReference implements JsonSerializable<ApplicationPackageReference> {
     /*
      * The ID of the application package to install. This must be inside the same batch account as the pool. This can
      * either be a reference to a specific version or the default version if one exists.
      */
-    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
-     * The version of the application to deploy. If omitted, the default version is deployed.
-     *
      * If this is omitted, and no default version is specified for this application, the request fails with the error
      * code InvalidApplicationPackageReferences. If you are calling the REST API directly, the HTTP status code is 409.
      */
-    @JsonProperty(value = "version")
     private String version;
 
-    /** Creates an instance of ApplicationPackageReference class. */
+    /**
+     * Creates an instance of ApplicationPackageReference class.
+     */
     public ApplicationPackageReference() {
     }
 
     /**
      * Get the id property: The ID of the application package to install. This must be inside the same batch account as
      * the pool. This can either be a reference to a specific version or the default version if one exists.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class ApplicationPackageReference {
     /**
      * Set the id property: The ID of the application package to install. This must be inside the same batch account as
      * the pool. This can either be a reference to a specific version or the default version if one exists.
-     *
+     * 
      * @param id the id value to set.
      * @return the ApplicationPackageReference object itself.
      */
@@ -54,11 +58,10 @@ public final class ApplicationPackageReference {
     }
 
     /**
-     * Get the version property: The version of the application to deploy. If omitted, the default version is deployed.
-     *
-     * <p>If this is omitted, and no default version is specified for this application, the request fails with the error
-     * code InvalidApplicationPackageReferences. If you are calling the REST API directly, the HTTP status code is 409.
-     *
+     * Get the version property: If this is omitted, and no default version is specified for this application, the
+     * request fails with the error code InvalidApplicationPackageReferences. If you are calling the REST API directly,
+     * the HTTP status code is 409.
+     * 
      * @return the version value.
      */
     public String version() {
@@ -66,11 +69,10 @@ public final class ApplicationPackageReference {
     }
 
     /**
-     * Set the version property: The version of the application to deploy. If omitted, the default version is deployed.
-     *
-     * <p>If this is omitted, and no default version is specified for this application, the request fails with the error
-     * code InvalidApplicationPackageReferences. If you are calling the REST API directly, the HTTP status code is 409.
-     *
+     * Set the version property: If this is omitted, and no default version is specified for this application, the
+     * request fails with the error code InvalidApplicationPackageReferences. If you are calling the REST API directly,
+     * the HTTP status code is 409.
+     * 
      * @param version the version value to set.
      * @return the ApplicationPackageReference object itself.
      */
@@ -81,16 +83,55 @@ public final class ApplicationPackageReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model ApplicationPackageReference"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property id in model ApplicationPackageReference"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ApplicationPackageReference.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationPackageReference from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationPackageReference if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationPackageReference.
+     */
+    public static ApplicationPackageReference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationPackageReference deserializedApplicationPackageReference = new ApplicationPackageReference();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationPackageReference.id = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedApplicationPackageReference.version = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationPackageReference;
+        });
+    }
 }

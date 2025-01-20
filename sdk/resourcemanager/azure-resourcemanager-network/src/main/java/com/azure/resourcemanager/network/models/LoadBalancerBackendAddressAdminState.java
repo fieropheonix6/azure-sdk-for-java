@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -14,32 +13,43 @@ import java.util.Collection;
  */
 public final class LoadBalancerBackendAddressAdminState
     extends ExpandableStringEnum<LoadBalancerBackendAddressAdminState> {
-    /** Static value None for LoadBalancerBackendAddressAdminState. */
+    /**
+     * Static value None for LoadBalancerBackendAddressAdminState.
+     */
     public static final LoadBalancerBackendAddressAdminState NONE = fromString("None");
 
-    /** Static value Up for LoadBalancerBackendAddressAdminState. */
+    /**
+     * Static value Up for LoadBalancerBackendAddressAdminState.
+     */
     public static final LoadBalancerBackendAddressAdminState UP = fromString("Up");
 
-    /** Static value Down for LoadBalancerBackendAddressAdminState. */
+    /**
+     * Static value Down for LoadBalancerBackendAddressAdminState.
+     */
     public static final LoadBalancerBackendAddressAdminState DOWN = fromString("Down");
 
-    /** Static value Drain for LoadBalancerBackendAddressAdminState. */
-    public static final LoadBalancerBackendAddressAdminState DRAIN = fromString("Drain");
+    /**
+     * Creates a new instance of LoadBalancerBackendAddressAdminState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public LoadBalancerBackendAddressAdminState() {
+    }
 
     /**
      * Creates or finds a LoadBalancerBackendAddressAdminState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LoadBalancerBackendAddressAdminState.
      */
-    @JsonCreator
     public static LoadBalancerBackendAddressAdminState fromString(String name) {
         return fromString(name, LoadBalancerBackendAddressAdminState.class);
     }
 
     /**
      * Gets known LoadBalancerBackendAddressAdminState values.
-     *
+     * 
      * @return known LoadBalancerBackendAddressAdminState values.
      */
     public static Collection<LoadBalancerBackendAddressAdminState> values() {

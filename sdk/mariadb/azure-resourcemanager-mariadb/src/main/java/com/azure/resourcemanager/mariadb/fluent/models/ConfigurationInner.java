@@ -5,135 +5,215 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents a Configuration. */
-@JsonFlatten
+/**
+ * Represents a Configuration.
+ */
 @Fluent
-public class ConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationInner.class);
+public final class ConfigurationInner extends ProxyResource {
+    /*
+     * The properties of a configuration.
+     */
+    private ConfigurationProperties innerProperties;
 
     /*
-     * Value of the configuration.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.value")
-    private String value;
+    private String type;
 
     /*
-     * Description of the configuration.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
+    private String name;
 
     /*
-     * Default value of the configuration.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.defaultValue", access = JsonProperty.Access.WRITE_ONLY)
-    private String defaultValue;
+    private String id;
 
-    /*
-     * Data type of the configuration.
+    /**
+     * Creates an instance of ConfigurationInner class.
      */
-    @JsonProperty(value = "properties.dataType", access = JsonProperty.Access.WRITE_ONLY)
-    private String dataType;
+    public ConfigurationInner() {
+    }
 
-    /*
-     * Allowed values of the configuration.
+    /**
+     * Get the innerProperties property: The properties of a configuration.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.allowedValues", access = JsonProperty.Access.WRITE_ONLY)
-    private String allowedValues;
+    private ConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Source of the configuration.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.source")
-    private String source;
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the value property: Value of the configuration.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
-        return this.value;
+        return this.innerProperties() == null ? null : this.innerProperties().value();
     }
 
     /**
      * Set the value property: Value of the configuration.
-     *
+     * 
      * @param value the value value to set.
      * @return the ConfigurationInner object itself.
      */
     public ConfigurationInner withValue(String value) {
-        this.value = value;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationProperties();
+        }
+        this.innerProperties().withValue(value);
         return this;
     }
 
     /**
      * Get the description property: Description of the configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Get the defaultValue property: Default value of the configuration.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
-        return this.defaultValue;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultValue();
     }
 
     /**
      * Get the dataType property: Data type of the configuration.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
-        return this.dataType;
+        return this.innerProperties() == null ? null : this.innerProperties().dataType();
     }
 
     /**
      * Get the allowedValues property: Allowed values of the configuration.
-     *
+     * 
      * @return the allowedValues value.
      */
     public String allowedValues() {
-        return this.allowedValues;
+        return this.innerProperties() == null ? null : this.innerProperties().allowedValues();
     }
 
     /**
      * Get the source property: Source of the configuration.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
-        return this.source;
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
      * Set the source property: Source of the configuration.
-     *
+     * 
      * @param source the source value to set.
      * @return the ConfigurationInner object itself.
      */
     public ConfigurationInner withSource(String source) {
-        this.source = source;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationProperties();
+        }
+        this.innerProperties().withSource(source);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ConfigurationInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ConfigurationInner.
+     */
+    public static ConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ConfigurationInner deserializedConfigurationInner = new ConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedConfigurationInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedConfigurationInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedConfigurationInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedConfigurationInner.innerProperties = ConfigurationProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedConfigurationInner;
+        });
     }
 }

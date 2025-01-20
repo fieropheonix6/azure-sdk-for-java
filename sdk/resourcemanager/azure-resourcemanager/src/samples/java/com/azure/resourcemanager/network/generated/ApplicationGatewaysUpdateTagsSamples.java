@@ -4,31 +4,34 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.models.TagsObject;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for ApplicationGateways UpdateTags. */
+/**
+ * Samples for ApplicationGateways UpdateTags.
+ */
 public final class ApplicationGatewaysUpdateTagsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ApplicationGatewayUpdateTags.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/ApplicationGatewayUpdateTags.
+     * json
      */
     /**
      * Sample code: Update Application Gateway tags.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateApplicationGatewayTags(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getApplicationGateways()
-            .updateTagsWithResponse(
-                "rg1", "AppGw", new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), Context.NONE);
+            .updateTagsWithResponse("rg1", "AppGw",
+                new TagsObject().withTags(mapOf("tag1", "value1", "tag2", "value2")), com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

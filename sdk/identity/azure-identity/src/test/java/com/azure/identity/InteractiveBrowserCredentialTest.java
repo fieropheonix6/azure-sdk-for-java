@@ -9,8 +9,8 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.util.TestUtils;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import org.mockito.exceptions.misusing.InvalidUseOfMatchersException;
 import reactor.core.publisher.Mono;
@@ -43,23 +43,27 @@ public class InteractiveBrowserCredentialTest {
         int port = random.nextInt(10000) + 10000;
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-            when(identityClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
+                    .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identityClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalToken(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
             // test
-            InteractiveBrowserCredential credential =
-                new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -68,32 +72,117 @@ public class InteractiveBrowserCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
-        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null))).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
-            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
+                    .thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+                when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalTokenSync(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
             // test
-            InteractiveBrowserCredential credential = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
+        }
+    }
+
+    @Test
+    public void testValidInteractiveCAE() throws Exception {
+        Random random = new Random();
+
+        // setup
+        String token1 = "token1";
+        String token2 = "token2";
+        TokenRequestContext request1
+            = new TokenRequestContext().addScopes("https://management.azure.com").setCaeEnabled(true);
+        TokenRequestContext request2
+            = new TokenRequestContext().addScopes("https://vault.azure.net").setCaeEnabled(true);
+        OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
+        int port = random.nextInt(10000) + 10000;
+
+        // mock
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
+                    .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identityClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))
+                        && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalToken(token2, expiresAt);
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                        return Mono.error(new UnsupportedOperationException("nothing cached"));
+                    } else {
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+            })) {
+            // test
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+            StepVerifier.create(credential.getToken(request1))
+                .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            StepVerifier.create(credential.getToken(request2))
+                .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
+                    && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
+                .verifyComplete();
+            Assertions.assertNotNull(identityClientMock);
+        }
+
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
+                    .thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+                when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
+                    TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))
+                        && argument.isCaeEnabled()) {
+                        return TestUtils.getMockMsalTokenSync(token2, expiresAt);
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                        return Mono.error(new UnsupportedOperationException("nothing cached"));
+                    } else {
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
+                    }
+                });
+            })) {
+            // test
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+            AccessToken accessToken = credential.getTokenSync(request1);
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            accessToken = credential.getTokenSync(request2);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -108,23 +197,27 @@ public class InteractiveBrowserCredentialTest {
         String redirectUrl = "http://localhost:3761";
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(redirectUrl), eq(null))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-            when(identityClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(redirectUrl),
+                    eq(null))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identityClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalToken(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
             // test
-            InteractiveBrowserCredential credential =
-                new InteractiveBrowserCredentialBuilder().redirectUrl(redirectUrl).clientId(CLIENT_ID).build();
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().redirectUrl(redirectUrl).clientId(CLIENT_ID).build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -133,33 +226,37 @@ public class InteractiveBrowserCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
-        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(redirectUrl), eq(null))).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
-            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(redirectUrl),
+                    eq(null))).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+                when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalTokenSync(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
             // test
-            InteractiveBrowserCredential credential =
-                new InteractiveBrowserCredentialBuilder().redirectUrl(redirectUrl).clientId(CLIENT_ID).build();
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().redirectUrl(redirectUrl).clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
@@ -174,23 +271,27 @@ public class InteractiveBrowserCredentialTest {
         String username = "user@foo.com";
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(null), eq(username))).thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-            when(identityClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(null), eq(username)))
+                    .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+                when(identityClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalToken(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
             // test
-            InteractiveBrowserCredential credential =
-                new InteractiveBrowserCredentialBuilder().loginHint(username).clientId(CLIENT_ID).build();
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().loginHint(username).clientId(CLIENT_ID).build();
             StepVerifier.create(credential.getToken(request1))
                 .expectNextMatches(accessToken -> token1.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
@@ -199,44 +300,48 @@ public class InteractiveBrowserCredentialTest {
                 .expectNextMatches(accessToken -> token2.equals(accessToken.getToken())
                     && expiresAt.getSecond() == accessToken.getExpiresAt().getSecond())
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
 
-        try (MockedConstruction<IdentitySyncClient> identityClientMock = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
-            when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(null), eq(username))).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
-            when(identitySyncClient.authenticateWithPublicClientCache(any(), any()))
-                .thenAnswer(invocation -> {
+        try (MockedConstruction<IdentitySyncClient> identityClientMock
+            = mockConstruction(IdentitySyncClient.class, (identitySyncClient, context) -> {
+                when(identitySyncClient.authenticateWithBrowserInteraction(eq(request1), eq(null), eq(null),
+                    eq(username))).thenReturn(TestUtils.getMockMsalTokenSync(token1, expiresAt));
+                when(identitySyncClient.authenticateWithPublicClientCache(any(), any())).thenAnswer(invocation -> {
                     TokenRequestContext argument = (TokenRequestContext) invocation.getArguments()[0];
-                    if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
+                    if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request2.getScopes().get(0))) {
                         return TestUtils.getMockMsalTokenSync(token2, expiresAt);
-                    } else if (argument.getScopes().size() == 1 && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
+                    } else if (argument.getScopes().size() == 1
+                        && argument.getScopes().get(0).equals(request1.getScopes().get(0))) {
                         return Mono.error(new UnsupportedOperationException("nothing cached"));
                     } else {
-                        throw new InvalidUseOfMatchersException(String.format("Argument %s does not match", (Object) argument));
+                        throw new InvalidUseOfMatchersException(
+                            String.format("Argument %s does not match", (Object) argument));
                     }
                 });
-        })) {
+            })) {
             // test
-            InteractiveBrowserCredential credential =
-                new InteractiveBrowserCredentialBuilder().loginHint(username).clientId(CLIENT_ID).build();
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().loginHint(username).clientId(CLIENT_ID).build();
             AccessToken accessToken = credential.getTokenSync(request1);
-            Assert.assertEquals(token1, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertEquals(token1, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
             accessToken = credential.getTokenSync(request2);
-            Assert.assertEquals(token2, accessToken.getToken());
-            Assert.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertEquals(token2, accessToken.getToken());
+            Assertions.assertTrue(expiresAt.getSecond() == accessToken.getExpiresAt().getSecond());
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testCredentialDoesnWorkWIthPortAndRedirectUrlConfigured() throws Exception {
         // setup
-        new InteractiveBrowserCredentialBuilder()
-            .clientId(CLIENT_ID)
-            .port(8080)
-            .redirectUrl("http://localhost:8080")
-            .build();
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new InteractiveBrowserCredentialBuilder().clientId(CLIENT_ID)
+                .port(8080)
+                .redirectUrl("http://localhost:8080")
+                .build());
     }
 
     @Test
@@ -250,33 +355,34 @@ public class InteractiveBrowserCredentialTest {
         int port = random.nextInt(10000) + 10000;
 
         // mock
-        try (MockedConstruction<IdentityClient> identityClientMock = mockConstruction(IdentityClient.class, (identityClient, context) -> {
-            when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
-                .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
-        })) {
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithBrowserInteraction(eq(request1), eq(port), eq(null), eq(null)))
+                    .thenReturn(TestUtils.getMockMsalToken(token1, expiresAt));
+            })) {
             // test
-            InteractiveBrowserCredential credential =
-                new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
+            InteractiveBrowserCredential credential
+                = new InteractiveBrowserCredentialBuilder().port(port).clientId(CLIENT_ID).build();
             StepVerifier.create(credential.authenticate(request1))
                 .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
                     .equals("http://login.microsoftonline.com")
                     && authenticationRecord.getUsername().equals("testuser")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
-            Assert.assertNotNull(identityClientMock);
+            Assertions.assertNotNull(identityClientMock);
         }
     }
 
     @Test
     public void testInvalidMultiTenantAuth() throws Exception {
         // setup
-        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
-            .setTenantId("newTenant");
+        TokenRequestContext request
+            = new TokenRequestContext().addScopes("https://vault.azure.net/.default").setTenantId("newTenant");
 
-        InteractiveBrowserCredential credential =
-            new InteractiveBrowserCredentialBuilder().tenantId("tenant").build();
+        InteractiveBrowserCredential credential = new InteractiveBrowserCredentialBuilder().tenantId("tenant").build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(e -> e instanceof ClientAuthenticationException && (e.getMessage().startsWith("The current credential is not configured to")))
+            .expectErrorMatches(e -> e instanceof ClientAuthenticationException
+                && (e.getMessage().startsWith("The current credential is not configured to")))
             .verify();
     }
 }

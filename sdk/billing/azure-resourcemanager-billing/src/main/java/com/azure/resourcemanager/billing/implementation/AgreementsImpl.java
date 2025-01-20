@@ -13,30 +13,29 @@ import com.azure.resourcemanager.billing.fluent.AgreementsClient;
 import com.azure.resourcemanager.billing.fluent.models.AgreementInner;
 import com.azure.resourcemanager.billing.models.Agreement;
 import com.azure.resourcemanager.billing.models.Agreements;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AgreementsImpl implements Agreements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgreementsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AgreementsImpl.class);
 
     private final AgreementsClient innerClient;
 
     private final com.azure.resourcemanager.billing.BillingManager serviceManager;
 
-    public AgreementsImpl(
-        AgreementsClient innerClient, com.azure.resourcemanager.billing.BillingManager serviceManager) {
+    public AgreementsImpl(AgreementsClient innerClient,
+        com.azure.resourcemanager.billing.BillingManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<Agreement> listByBillingAccount(String billingAccountName) {
-        PagedIterable<AgreementInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
-        return Utils.mapPage(inner, inner1 -> new AgreementImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<Agreement> listByBillingAccount(String billingAccountName, String expand, Context context) {
-        PagedIterable<AgreementInner> inner =
-            this.serviceClient().listByBillingAccount(billingAccountName, expand, context);
-        return Utils.mapPage(inner, inner1 -> new AgreementImpl(inner1, this.manager()));
+    public Response<Agreement> getWithResponse(String billingAccountName, String agreementName, Context context) {
+        Response<AgreementInner> inner
+            = this.serviceClient().getWithResponse(billingAccountName, agreementName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new AgreementImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public Agreement get(String billingAccountName, String agreementName) {
@@ -48,19 +47,15 @@ public final class AgreementsImpl implements Agreements {
         }
     }
 
-    public Response<Agreement> getWithResponse(
-        String billingAccountName, String agreementName, String expand, Context context) {
-        Response<AgreementInner> inner =
-            this.serviceClient().getWithResponse(billingAccountName, agreementName, expand, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new AgreementImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public PagedIterable<Agreement> listByBillingAccount(String billingAccountName) {
+        PagedIterable<AgreementInner> inner = this.serviceClient().listByBillingAccount(billingAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AgreementImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<Agreement> listByBillingAccount(String billingAccountName, String expand, Context context) {
+        PagedIterable<AgreementInner> inner
+            = this.serviceClient().listByBillingAccount(billingAccountName, expand, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new AgreementImpl(inner1, this.manager()));
     }
 
     private AgreementsClient serviceClient() {

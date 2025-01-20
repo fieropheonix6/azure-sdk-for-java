@@ -1,7 +1,8 @@
 trigger: none
 
-stages:
-  - template: /sdk/communication/communication-tests-template.yml
-    parameters:
-      PackageName: azure-communication-identity
-      SafeName: azurecommunicationidentity
+extends:
+  template: /sdk/communication/communication-tests-template.yml
+  parameters:
+    PackageName: azure-communication-identity
+    SafeName: azurecommunicationidentity
+

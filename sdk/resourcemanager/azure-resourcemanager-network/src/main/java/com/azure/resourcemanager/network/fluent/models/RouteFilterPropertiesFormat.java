@@ -5,44 +5,48 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Route Filter Resource. */
+/**
+ * Route Filter Resource.
+ */
 @Fluent
-public final class RouteFilterPropertiesFormat {
+public final class RouteFilterPropertiesFormat implements JsonSerializable<RouteFilterPropertiesFormat> {
     /*
      * Collection of RouteFilterRules contained within a route filter.
      */
-    @JsonProperty(value = "rules")
     private List<RouteFilterRuleInner> rules;
 
     /*
      * A collection of references to express route circuit peerings.
      */
-    @JsonProperty(value = "peerings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExpressRouteCircuitPeeringInner> peerings;
 
     /*
      * A collection of references to express route circuit ipv6 peerings.
      */
-    @JsonProperty(value = "ipv6Peerings", access = JsonProperty.Access.WRITE_ONLY)
     private List<ExpressRouteCircuitPeeringInner> ipv6Peerings;
 
     /*
      * The provisioning state of the route filter resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RouteFilterPropertiesFormat class. */
+    /**
+     * Creates an instance of RouteFilterPropertiesFormat class.
+     */
     public RouteFilterPropertiesFormat() {
     }
 
     /**
      * Get the rules property: Collection of RouteFilterRules contained within a route filter.
-     *
+     * 
      * @return the rules value.
      */
     public List<RouteFilterRuleInner> rules() {
@@ -51,7 +55,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Set the rules property: Collection of RouteFilterRules contained within a route filter.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RouteFilterPropertiesFormat object itself.
      */
@@ -62,7 +66,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Get the peerings property: A collection of references to express route circuit peerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -71,7 +75,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
-     *
+     * 
      * @return the ipv6Peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> ipv6Peerings() {
@@ -80,7 +84,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the route filter resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -89,7 +93,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -102,5 +106,54 @@ public final class RouteFilterPropertiesFormat {
         if (ipv6Peerings() != null) {
             ipv6Peerings().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RouteFilterPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RouteFilterPropertiesFormat if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RouteFilterPropertiesFormat.
+     */
+    public static RouteFilterPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RouteFilterPropertiesFormat deserializedRouteFilterPropertiesFormat = new RouteFilterPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rules".equals(fieldName)) {
+                    List<RouteFilterRuleInner> rules
+                        = reader.readArray(reader1 -> RouteFilterRuleInner.fromJson(reader1));
+                    deserializedRouteFilterPropertiesFormat.rules = rules;
+                } else if ("peerings".equals(fieldName)) {
+                    List<ExpressRouteCircuitPeeringInner> peerings
+                        = reader.readArray(reader1 -> ExpressRouteCircuitPeeringInner.fromJson(reader1));
+                    deserializedRouteFilterPropertiesFormat.peerings = peerings;
+                } else if ("ipv6Peerings".equals(fieldName)) {
+                    List<ExpressRouteCircuitPeeringInner> ipv6Peerings
+                        = reader.readArray(reader1 -> ExpressRouteCircuitPeeringInner.fromJson(reader1));
+                    deserializedRouteFilterPropertiesFormat.ipv6Peerings = ipv6Peerings;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedRouteFilterPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRouteFilterPropertiesFormat;
+        });
     }
 }

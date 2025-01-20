@@ -12,15 +12,14 @@ public final class CanceledSubscriptionIdImpl implements CanceledSubscriptionId 
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    CanceledSubscriptionIdImpl(
-        CanceledSubscriptionIdInner innerObject,
+    CanceledSubscriptionIdImpl(CanceledSubscriptionIdInner innerObject,
         com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
 
-    public String value() {
-        return this.innerModel().value();
+    public String subscriptionId() {
+        return this.innerModel().subscriptionId();
     }
 
     public CanceledSubscriptionIdInner innerModel() {

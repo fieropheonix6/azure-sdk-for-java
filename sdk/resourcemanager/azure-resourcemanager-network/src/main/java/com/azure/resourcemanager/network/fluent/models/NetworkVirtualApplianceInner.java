@@ -7,48 +7,66 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.network.models.DelegationProperties;
+import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.network.models.NetworkVirtualAppliancePropertiesFormatNetworkProfile;
+import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceNicProperties;
 import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** NetworkVirtualAppliance Resource. */
+/**
+ * NetworkVirtualAppliance Resource.
+ */
 @Fluent
 public final class NetworkVirtualApplianceInner extends Resource {
     /*
      * Properties of the Network Virtual Appliance.
      */
-    @JsonProperty(value = "properties")
     private NetworkVirtualAppliancePropertiesFormat innerProperties;
 
     /*
      * The service principal that has read access to cloud-init and config blob.
      */
-    @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of NetworkVirtualApplianceInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of NetworkVirtualApplianceInner class.
+     */
     public NetworkVirtualApplianceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Network Virtual Appliance.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkVirtualAppliancePropertiesFormat innerProperties() {
@@ -57,7 +75,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the identity property: The service principal that has read access to cloud-init and config blob.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -66,7 +84,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Set the identity property: The service principal that has read access to cloud-init and config blob.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -77,7 +95,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -86,7 +104,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -95,7 +113,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -104,14 +122,38 @@ public final class NetworkVirtualApplianceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkVirtualApplianceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkVirtualApplianceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -120,7 +162,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the nvaSku property: Network Virtual Appliance SKU.
-     *
+     * 
      * @return the nvaSku value.
      */
     public VirtualApplianceSkuProperties nvaSku() {
@@ -129,7 +171,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Set the nvaSku property: Network Virtual Appliance SKU.
-     *
+     * 
      * @param nvaSku the nvaSku value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -143,7 +185,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the addressPrefix property: Address Prefix.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -152,7 +194,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the bootStrapConfigurationBlobs property: BootStrapConfigurationBlobs storage URLs.
-     *
+     * 
      * @return the bootStrapConfigurationBlobs value.
      */
     public List<String> bootStrapConfigurationBlobs() {
@@ -161,7 +203,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Set the bootStrapConfigurationBlobs property: BootStrapConfigurationBlobs storage URLs.
-     *
+     * 
      * @param bootStrapConfigurationBlobs the bootStrapConfigurationBlobs value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -175,7 +217,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the virtualHub property: The Virtual Hub where Network Virtual Appliance is being deployed.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -184,7 +226,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Set the virtualHub property: The Virtual Hub where Network Virtual Appliance is being deployed.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -198,7 +240,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the cloudInitConfigurationBlobs property: CloudInitConfigurationBlob storage URLs.
-     *
+     * 
      * @return the cloudInitConfigurationBlobs value.
      */
     public List<String> cloudInitConfigurationBlobs() {
@@ -207,7 +249,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Set the cloudInitConfigurationBlobs property: CloudInitConfigurationBlob storage URLs.
-     *
+     * 
      * @param cloudInitConfigurationBlobs the cloudInitConfigurationBlobs value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -221,7 +263,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the cloudInitConfiguration property: CloudInitConfiguration string in plain text.
-     *
+     * 
      * @return the cloudInitConfiguration value.
      */
     public String cloudInitConfiguration() {
@@ -230,7 +272,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Set the cloudInitConfiguration property: CloudInitConfiguration string in plain text.
-     *
+     * 
      * @param cloudInitConfiguration the cloudInitConfiguration value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -243,8 +285,9 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
-     * Get the virtualApplianceAsn property: VirtualAppliance ASN.
-     *
+     * Get the virtualApplianceAsn property: VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are
+     * not supported.
+     * 
      * @return the virtualApplianceAsn value.
      */
     public Long virtualApplianceAsn() {
@@ -252,8 +295,9 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
-     * Set the virtualApplianceAsn property: VirtualAppliance ASN.
-     *
+     * Set the virtualApplianceAsn property: VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are
+     * not supported.
+     * 
      * @param virtualApplianceAsn the virtualApplianceAsn value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -267,7 +311,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the sshPublicKey property: Public key for SSH login.
-     *
+     * 
      * @return the sshPublicKey value.
      */
     public String sshPublicKey() {
@@ -276,7 +320,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Set the sshPublicKey property: Public key for SSH login.
-     *
+     * 
      * @param sshPublicKey the sshPublicKey value to set.
      * @return the NetworkVirtualApplianceInner object itself.
      */
@@ -290,7 +334,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the virtualApplianceNics property: List of Virtual Appliance Network Interfaces.
-     *
+     * 
      * @return the virtualApplianceNics value.
      */
     public List<VirtualApplianceNicProperties> virtualApplianceNics() {
@@ -298,8 +342,80 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the networkProfile property: Network Profile containing configurations for Public and Private NIC.
+     * 
+     * @return the networkProfile value.
+     */
+    public NetworkVirtualAppliancePropertiesFormatNetworkProfile networkProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkProfile();
+    }
+
+    /**
+     * Set the networkProfile property: Network Profile containing configurations for Public and Private NIC.
+     * 
+     * @param networkProfile the networkProfile value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner
+        withNetworkProfile(NetworkVirtualAppliancePropertiesFormatNetworkProfile networkProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withNetworkProfile(networkProfile);
+        return this;
+    }
+
+    /**
+     * Get the additionalNics property: Details required for Additional Network Interface.
+     * 
+     * @return the additionalNics value.
+     */
+    public List<VirtualApplianceAdditionalNicProperties> additionalNics() {
+        return this.innerProperties() == null ? null : this.innerProperties().additionalNics();
+    }
+
+    /**
+     * Set the additionalNics property: Details required for Additional Network Interface.
+     * 
+     * @param additionalNics the additionalNics value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner
+        withAdditionalNics(List<VirtualApplianceAdditionalNicProperties> additionalNics) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withAdditionalNics(additionalNics);
+        return this;
+    }
+
+    /**
+     * Get the internetIngressPublicIps property: List of Resource Uri of Public IPs for Internet Ingress Scenario.
+     * 
+     * @return the internetIngressPublicIps value.
+     */
+    public List<InternetIngressPublicIpsProperties> internetIngressPublicIps() {
+        return this.innerProperties() == null ? null : this.innerProperties().internetIngressPublicIps();
+    }
+
+    /**
+     * Set the internetIngressPublicIps property: List of Resource Uri of Public IPs for Internet Ingress Scenario.
+     * 
+     * @param internetIngressPublicIps the internetIngressPublicIps value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner
+        withInternetIngressPublicIps(List<InternetIngressPublicIpsProperties> internetIngressPublicIps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withInternetIngressPublicIps(internetIngressPublicIps);
+        return this;
+    }
+
+    /**
      * Get the virtualApplianceSites property: List of references to VirtualApplianceSite.
-     *
+     * 
      * @return the virtualApplianceSites value.
      */
     public List<SubResource> virtualApplianceSites() {
@@ -307,8 +423,17 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the virtualApplianceConnections property: List of references to VirtualApplianceConnections.
+     * 
+     * @return the virtualApplianceConnections value.
+     */
+    public List<SubResource> virtualApplianceConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualApplianceConnections();
+    }
+
+    /**
      * Get the inboundSecurityRules property: List of references to InboundSecurityRules.
-     *
+     * 
      * @return the inboundSecurityRules value.
      */
     public List<SubResource> inboundSecurityRules() {
@@ -317,7 +442,7 @@ public final class NetworkVirtualApplianceInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -325,8 +450,64 @@ public final class NetworkVirtualApplianceInner extends Resource {
     }
 
     /**
+     * Get the deploymentType property: The deployment type. PartnerManaged for the SaaS NVA.
+     * 
+     * @return the deploymentType value.
+     */
+    public String deploymentType() {
+        return this.innerProperties() == null ? null : this.innerProperties().deploymentType();
+    }
+
+    /**
+     * Get the delegation property: The delegation for the Virtual Appliance.
+     * 
+     * @return the delegation value.
+     */
+    public DelegationProperties delegation() {
+        return this.innerProperties() == null ? null : this.innerProperties().delegation();
+    }
+
+    /**
+     * Set the delegation property: The delegation for the Virtual Appliance.
+     * 
+     * @param delegation the delegation value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner withDelegation(DelegationProperties delegation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withDelegation(delegation);
+        return this;
+    }
+
+    /**
+     * Get the partnerManagedResource property: The delegation for the Virtual Appliance.
+     * 
+     * @return the partnerManagedResource value.
+     */
+    public PartnerManagedResourceProperties partnerManagedResource() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerManagedResource();
+    }
+
+    /**
+     * Set the partnerManagedResource property: The delegation for the Virtual Appliance.
+     * 
+     * @param partnerManagedResource the partnerManagedResource value to set.
+     * @return the NetworkVirtualApplianceInner object itself.
+     */
+    public NetworkVirtualApplianceInner
+        withPartnerManagedResource(PartnerManagedResourceProperties partnerManagedResource) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkVirtualAppliancePropertiesFormat();
+        }
+        this.innerProperties().withPartnerManagedResource(partnerManagedResource);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -336,5 +517,62 @@ public final class NetworkVirtualApplianceInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkVirtualApplianceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkVirtualApplianceInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the NetworkVirtualApplianceInner.
+     */
+    public static NetworkVirtualApplianceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkVirtualApplianceInner deserializedNetworkVirtualApplianceInner = new NetworkVirtualApplianceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedNetworkVirtualApplianceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedNetworkVirtualApplianceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedNetworkVirtualApplianceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedNetworkVirtualApplianceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedNetworkVirtualApplianceInner.innerProperties
+                        = NetworkVirtualAppliancePropertiesFormat.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedNetworkVirtualApplianceInner.identity = ManagedServiceIdentity.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedNetworkVirtualApplianceInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedNetworkVirtualApplianceInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkVirtualApplianceInner;
+        });
     }
 }

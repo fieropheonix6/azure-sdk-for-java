@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of the Radius client root certificate of VpnServerConfiguration. */
+/**
+ * Properties of the Radius client root certificate of VpnServerConfiguration.
+ */
 @Fluent
-public final class VpnServerConfigRadiusClientRootCertificate {
+public final class VpnServerConfigRadiusClientRootCertificate
+    implements JsonSerializable<VpnServerConfigRadiusClientRootCertificate> {
     /*
      * The certificate name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The Radius client root certificate thumbprint.
      */
-    @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
-    /** Creates an instance of VpnServerConfigRadiusClientRootCertificate class. */
+    /**
+     * Creates an instance of VpnServerConfigRadiusClientRootCertificate class.
+     */
     public VpnServerConfigRadiusClientRootCertificate() {
     }
 
     /**
      * Get the name property: The certificate name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +44,7 @@ public final class VpnServerConfigRadiusClientRootCertificate {
 
     /**
      * Set the name property: The certificate name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigRadiusClientRootCertificate object itself.
      */
@@ -48,7 +55,7 @@ public final class VpnServerConfigRadiusClientRootCertificate {
 
     /**
      * Get the thumbprint property: The Radius client root certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -57,7 +64,7 @@ public final class VpnServerConfigRadiusClientRootCertificate {
 
     /**
      * Set the thumbprint property: The Radius client root certificate thumbprint.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the VpnServerConfigRadiusClientRootCertificate object itself.
      */
@@ -68,9 +75,49 @@ public final class VpnServerConfigRadiusClientRootCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("thumbprint", this.thumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VpnServerConfigRadiusClientRootCertificate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VpnServerConfigRadiusClientRootCertificate if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VpnServerConfigRadiusClientRootCertificate.
+     */
+    public static VpnServerConfigRadiusClientRootCertificate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VpnServerConfigRadiusClientRootCertificate deserializedVpnServerConfigRadiusClientRootCertificate
+                = new VpnServerConfigRadiusClientRootCertificate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedVpnServerConfigRadiusClientRootCertificate.name = reader.getString();
+                } else if ("thumbprint".equals(fieldName)) {
+                    deserializedVpnServerConfigRadiusClientRootCertificate.thumbprint = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVpnServerConfigRadiusClientRootCertificate;
+        });
     }
 }

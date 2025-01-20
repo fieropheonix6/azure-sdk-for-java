@@ -7,43 +7,46 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.DataFlow;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Data flow resource type. */
+/**
+ * Data flow resource type.
+ */
 @Fluent
 public final class DataFlowResourceInner extends SubResource {
     /*
      * Data flow properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private DataFlow properties;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Etag identifies change in the resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of DataFlowResourceInner class. */
+    /**
+     * Creates an instance of DataFlowResourceInner class.
+     */
     public DataFlowResourceInner() {
     }
 
     /**
      * Get the properties property: Data flow properties.
-     *
+     * 
      * @return the properties value.
      */
     public DataFlow properties() {
@@ -52,7 +55,7 @@ public final class DataFlowResourceInner extends SubResource {
 
     /**
      * Set the properties property: Data flow properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DataFlowResourceInner object itself.
      */
@@ -63,7 +66,7 @@ public final class DataFlowResourceInner extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -72,7 +75,7 @@ public final class DataFlowResourceInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,14 +84,16 @@ public final class DataFlowResourceInner extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataFlowResourceInner withId(String id) {
         super.withId(id);
@@ -97,19 +102,64 @@ public final class DataFlowResourceInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model DataFlowResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model DataFlowResourceInner"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataFlowResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowResourceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowResourceInner.
+     */
+    public static DataFlowResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowResourceInner deserializedDataFlowResourceInner = new DataFlowResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataFlowResourceInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataFlowResourceInner.properties = DataFlow.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataFlowResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataFlowResourceInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDataFlowResourceInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowResourceInner;
+        });
+    }
 }

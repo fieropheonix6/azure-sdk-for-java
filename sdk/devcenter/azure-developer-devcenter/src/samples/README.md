@@ -12,40 +12,36 @@ The minimum requirements to create Environment resources using this SDK are to c
 ## Setup
 Set the following environment variables for easy consumption in client code:
 
-- `AZURE_TENANT_ID`: GUID identifier for the Azure tenant
-- `DEVCENTER_NAME`: Name of the DevCenter resource
-
+- `DEVCENTER_ENDPOINT` : Endpoint of the DevCenter resource
 
 ### Creating clients
 
 The project is the top-level resource on the data plane. We'll create a dev center client first to access projects:
 
 ```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
-// Build our clients
 DevCenterClient devCenterClient =
                 new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 ```
 
 The DevBoxes client is created in essentially the same manner:
 
-```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
-
-// Build our clients
-DevCenterClient devCenterClient =
-                new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+```java com.azure.developer.devcenter.readme.createDevBoxClient
+DevBoxesClient devBoxClient =
+                new DevBoxesClientBuilder()
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
+```
+
+Or it can be instantiated using DevCenter client, sharing same endpoint and credential:
+
+```java com.azure.developer.devcenter.readme.getDevBoxClient
+DevBoxesClient devBoxClient = devCenterClient.getDevBoxesClient();
 ```
 
 ### Fetching resources
@@ -54,39 +50,49 @@ Now we'll fetch available project and pool resources.
 
 ```java com.azure.developer.devcenter.readme.getProjectsAndPools
 // Find available Projects and Pools
-PagedIterable<BinaryData> projectListResponse = devCenterClient.listProjects(null);
-for (BinaryData p: projectListResponse) {
-    System.out.println(p);
+PagedIterable<DevCenterProject> projectListResponse = devCenterClient.listProjects();
+for (DevCenterProject project: projectListResponse) {
+    System.out.println(project.getName());
 }
 
-PagedIterable<BinaryData> poolListResponse = devBoxClient.listPools("myProject", null);
-for (BinaryData p: poolListResponse) {
-    System.out.println(p);
+// Use the first project in the list
+DevCenterProject project = projectListResponse.iterator().next();
+String projectName = project.getName();
+
+PagedIterable<DevBoxPool> poolListResponse = devBoxClient.listPools(projectName);
+for (DevBoxPool pool: poolListResponse) {
+    System.out.println(pool.getName());
 }
+
+// Use the first pool in the list
+DevBoxPool pool = poolListResponse.iterator().next();
+String poolName = pool.getName();
 ```
 
 Once we've decided on an available pool, we can provision a Dev Box in the pool, then fetch our connection URL to access the Dev Box.
 
 ```java com.azure.developer.devcenter.readme.createAndConnectToDevBox
 // Provision a Dev Box
-BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"MyPool\"}");
-SyncPoller<BinaryData, BinaryData> devBoxCreateResponse =
-        devBoxClient.beginCreateDevBox("myProject", "me", "MyDevBox", devBoxBody, null);
+SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
+                devBoxClient.beginCreateDevBox(projectName, "me", new DevBox("MyDevBox", poolName));
 devBoxCreateResponse.waitForCompletion();
+DevBox devBox = devBoxCreateResponse.getFinalResult();
 
+String devBoxName = devBox.getName();
+System.out.println("DevBox " + devBoxName + "finished provisioning with status " + devBox.getProvisioningState());
 
-Response<BinaryData> remoteConnectionResponse =
-                devBoxClient.getRemoteConnectionWithResponse("myProject", "me", "MyDevBox", null);
-System.out.println(remoteConnectionResponse.getValue());
+RemoteConnection remoteConnection =
+                devBoxClient.getRemoteConnection(projectName, "me", devBoxName);
+System.out.println("Dev Box web url is " + remoteConnection.getWebUrl());
 ```
 
 And finally, tear down the Dev Box when we're finished:
 
 ```java com.azure.developer.devcenter.readme.deleteDevBox
 // Tear down the Dev Box when we're finished:
-SyncPoller<BinaryData, Void> devBoxDeleteResponse =
-                devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
-devBoxDeleteResponse.waitForCompletion();        
+SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse =
+                devBoxClient.beginDeleteDevBox(projectName, "me", devBoxName);
+devBoxDeleteResponse.waitForCompletion();
 ```
 
 ## Environment samples
@@ -94,23 +100,18 @@ devBoxDeleteResponse.waitForCompletion();
 ### Setup
 Set the following environment variables for easy consumption in client code:
 
-- `AZURE_TENANT_ID`: GUID identifier for the Azure tenant
-- `DEVCENTER_NAME`: Name of the DevCenter resource
-
+- `DEVCENTER_ENDPOINT` : Endpoint of the DevCenter resource
 
 ### Creating clients
 
 The project is the top-level resource on the data plane. We'll create a dev center client first to access projects:
 
 ```java com.azure.developer.devcenter.readme.createDevCenterClient
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
-// Build our clients
 DevCenterClient devCenterClient =
                 new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 ```
@@ -119,135 +120,192 @@ Environments clients are created in essentially the same manner:
 
 
 ```java com.azure.developer.devcenter.readme.createEnvironmentsClient
-EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
+DeploymentEnvironmentsClient environmentsClient =
+            new DeploymentEnvironmentsClientBuilder()
+                    .endpoint(endpoint)
+                    .credential(new DefaultAzureCredentialBuilder().build())
+                    .buildClient();
+```
+
+Or it can be instantiated using DevCenter client, sharing same endpoint and credential:
+
+```java com.azure.developer.devcenter.readme.getEnvironmentsClient
+DeploymentEnvironmentsClient environmentsClient = devCenterClient.getDeploymentEnvironmentsClient();
 ```
 
 ### Fetching resources
 
-Now we'll fetch available catalog item, and environment type resources.
-```java com.azure.developer.devcenter.readme.getCatalogItemsAndEnvironmentTypes
-// Fetch available catalog items and environment types
-PagedIterable<BinaryData> catalogItemListResponse = environmentsClient.listCatalogItems("myProject", null);
-for (BinaryData p: catalogItemListResponse) {
-    System.out.println(p);
+Now we'll fetch available catalogs, environment definitions, and environment type resources.
+```java com.azure.developer.devcenter.readme.getEnvironmentDefinitionsAndTypes
+// Fetch available environment definitions and environment types
+PagedIterable<DevCenterCatalog> catalogs = environmentsClient.listCatalogs(projectName);
+for (DevCenterCatalog catalog: catalogs) {
+    System.out.println(catalog.getName());
 }
 
-PagedIterable<BinaryData> environmentTypesListResponse = environmentsClient.listEnvironmentTypes("myProject", null);
-for (BinaryData p: environmentTypesListResponse) {
-    System.out.println(p);
+// Use the first catalog in the list
+String catalogName = catalogs.iterator().next().getName();
+
+PagedIterable<EnvironmentDefinition> environmentDefinitions = environmentsClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName);
+for (EnvironmentDefinition environmentDefinition: environmentDefinitions) {
+    System.out.println(environmentDefinition.getName());
 }
+
+// Use the first environment definition in the list
+String envDefinitionName = environmentDefinitions.iterator().next().getName();
+
+PagedIterable<DevCenterEnvironmentType> environmentTypes = environmentsClient.listEnvironmentTypes(projectName);
+for (DevCenterEnvironmentType envType: environmentTypes) {
+    System.out.println(envType.getName());
+}
+
+// Use the first environment type in the list
+String envTypeName = environmentTypes.iterator().next().getName();
 ```
 
-Once we've decided on which catalog item and environment type to use, we can create an environment.
+Once we've decided on which environment definition and environment type to use, we can create an environment.
 
 ```java com.azure.developer.devcenter.readme.createEnvironment
 // Create an environment
-BinaryData environmentBody = BinaryData.fromString("{\"catalogItemName\":\"MyCatalogItem\", \"environmentType\":\"MyEnvironmentType\"}");
-SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-        environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
+SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse 
+            = environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me",
+                new DevCenterEnvironment("myEnvironmentName", envTypeName, catalogName, envDefinitionName));
 environmentCreateResponse.waitForCompletion();
+DevCenterEnvironment environment = environmentCreateResponse.getFinalResult();
 ```
 
 And finally, tear down the environment when we're finished:
 ```java com.azure.developer.devcenter.readme.deleteEnvironment
 // Delete the environment when we're finished:
-SyncPoller<BinaryData, Void> environmentDeleteResponse =
-                environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
+SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
+                environmentsClient.beginDeleteEnvironment(projectName, "me", environmentName);
 environmentDeleteResponse.waitForCompletion();
+System.out.println("Done deleting environment" + environmentName);
 ```
 
 ## Full Examples
 ### Dev Boxes
 ```java com.azure.developer.devcenter.readme.devboxes
-String tenantId = Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID");
-String devCenterName = Configuration.getGlobalConfiguration().get("DEVCENTER_NAME");
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
 
 // Build our clients
 DevCenterClient devCenterClient =
                 new DevCenterClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
 
-DevBoxesClient devBoxClient =
-                new DevBoxesClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
-                        .credential(new DefaultAzureCredentialBuilder().build())
-                        .buildClient();
+DevBoxesClient devBoxClient = devCenterClient.getDevBoxesClient();
 
 // Find available Projects and Pools
-PagedIterable<BinaryData> projectListResponse = devCenterClient.listProjects(null);
-for (BinaryData p: projectListResponse) {
-    System.out.println(p);
+PagedIterable<DevCenterProject> projectListResponse = devCenterClient.listProjects();
+for (DevCenterProject project: projectListResponse) {
+    System.out.println(project.getName());
 }
 
-PagedIterable<BinaryData> poolListResponse = devBoxClient.listPools("myProject", null);
-for (BinaryData p: poolListResponse) {
-    System.out.println(p);
+// Use the first project in the list
+DevCenterProject project = projectListResponse.iterator().next();
+String projectName = project.getName();
+
+PagedIterable<DevBoxPool> poolListResponse = devBoxClient.listPools(projectName);
+for (DevBoxPool pool: poolListResponse) {
+    System.out.println(pool.getName());
 }
+
+// Use the first pool in the list
+DevBoxPool pool = poolListResponse.iterator().next();
+String poolName = pool.getName();
+
+System.out.println("Starting to create dev box in project " + projectName + " and pool " + poolName);
 
 // Provision a Dev Box
-BinaryData devBoxBody = BinaryData.fromString("{\"poolName\":\"MyPool\"}");
-SyncPoller<BinaryData, BinaryData> devBoxCreateResponse =
-        devBoxClient.beginCreateDevBox("myProject", "me", "MyDevBox", devBoxBody, null);
+SyncPoller<DevCenterOperationDetails, DevBox> devBoxCreateResponse =
+                devBoxClient.beginCreateDevBox(projectName, "me", new DevBox("MyDevBox", poolName));
 devBoxCreateResponse.waitForCompletion();
+DevBox devBox = devBoxCreateResponse.getFinalResult();
 
+String devBoxName = devBox.getName();
+System.out.println("DevBox " + devBoxName + "finished provisioning with status " + devBox.getProvisioningState());
 
-Response<BinaryData> remoteConnectionResponse =
-                devBoxClient.getRemoteConnectionWithResponse("myProject", "me", "MyDevBox", null);
-System.out.println(remoteConnectionResponse.getValue());
+RemoteConnection remoteConnection =
+                devBoxClient.getRemoteConnection(projectName, "me", devBoxName);
+System.out.println("Dev Box web url is " + remoteConnection.getWebUrl());
 
+System.out.println("Start deleting dev box");
 // Tear down the Dev Box when we're finished:
-SyncPoller<BinaryData, Void> devBoxDeleteResponse =
-                devBoxClient.beginDeleteDevBox("myProject", "me", "MyDevBox", null);
-devBoxDeleteResponse.waitForCompletion();        
+SyncPoller<DevCenterOperationDetails, Void> devBoxDeleteResponse =
+                devBoxClient.beginDeleteDevBox(projectName, "me", devBoxName);
+devBoxDeleteResponse.waitForCompletion();
+System.out.println("Done deleting dev box");
 ```
 
 ### Environments
 ```java com.azure.developer.devcenter.readme.environments
-EnvironmentsClient environmentsClient =
-                new EnvironmentsClientBuilder()
-                        .devCenter(devCenterName)
-                        .tenantId(tenantId)
+String endpoint = Configuration.getGlobalConfiguration().get("DEVCENTER_ENDPOINT");
+
+// Build our clients
+DevCenterClient devCenterClient =
+                new DevCenterClientBuilder()
+                        .endpoint(endpoint)
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .buildClient();
+       
+DeploymentEnvironmentsClient environmentsClient = devCenterClient.getDeploymentEnvironmentsClient();
 
-// Fetch available catalog items and environment types
-PagedIterable<BinaryData> catalogItemListResponse = environmentsClient.listCatalogItems("myProject", null);
-for (BinaryData p: catalogItemListResponse) {
-    System.out.println(p);
+// Find available Projects 
+PagedIterable<DevCenterProject> projectListResponse = devCenterClient.listProjects();
+for (DevCenterProject project: projectListResponse) {
+    System.out.println(project.getName());
 }
 
-PagedIterable<BinaryData> environmentTypesListResponse = environmentsClient.listEnvironmentTypes("myProject", null);
-for (BinaryData p: environmentTypesListResponse) {
-    System.out.println(p);
+// Use the first project in the list
+DevCenterProject project = projectListResponse.iterator().next();
+String projectName = project.getName();
+
+// Fetch available environment definitions and environment types
+PagedIterable<DevCenterCatalog> catalogs = environmentsClient.listCatalogs(projectName);
+for (DevCenterCatalog catalog: catalogs) {
+    System.out.println(catalog.getName());
 }
+
+// Use the first catalog in the list
+String catalogName = catalogs.iterator().next().getName();
+
+PagedIterable<EnvironmentDefinition> environmentDefinitions = environmentsClient.listEnvironmentDefinitionsByCatalog(projectName, catalogName);
+for (EnvironmentDefinition environmentDefinition: environmentDefinitions) {
+    System.out.println(environmentDefinition.getName());
+}
+
+// Use the first environment definition in the list
+String envDefinitionName = environmentDefinitions.iterator().next().getName();
+
+PagedIterable<DevCenterEnvironmentType> environmentTypes = environmentsClient.listEnvironmentTypes(projectName);
+for (DevCenterEnvironmentType envType: environmentTypes) {
+    System.out.println(envType.getName());
+}
+
+// Use the first environment type in the list
+String envTypeName = environmentTypes.iterator().next().getName();
+
+System.out.println("Starting to create environment in project " + projectName + ", with catalog " + catalogName
+    + ", environment definition " + envDefinitionName + ", environment type " + envTypeName);
 
 // Create an environment
-BinaryData environmentBody = BinaryData.fromString("{\"catalogItemName\":\"MyCatalogItem\", \"environmentType\":\"MyEnvironmentType\"}");
-SyncPoller<BinaryData, BinaryData> environmentCreateResponse =
-        environmentsClient.beginCreateOrUpdateEnvironment("myProject", "me", "TestEnvironment", environmentBody, null);
+SyncPoller<DevCenterOperationDetails, DevCenterEnvironment> environmentCreateResponse 
+            = environmentsClient.beginCreateOrUpdateEnvironment(projectName, "me",
+                new DevCenterEnvironment("myEnvironmentName", envTypeName, catalogName, envDefinitionName));
 environmentCreateResponse.waitForCompletion();
+DevCenterEnvironment environment = environmentCreateResponse.getFinalResult();
 
+String environmentName = environment.getName();
+System.out.println("Environment " + environmentName + "finished provisioning with status " + environment.getProvisioningState());
 
-// Fetch the deployment artifacts:
-PagedIterable<BinaryData> artifactListResponse = environmentsClient.listArtifactsByEnvironment("myProject", "me", "TestEnvironment", null);
-for (BinaryData p: artifactListResponse) {
-    System.out.println(p);
-}
-
-
+System.out.println("Start deleting environment " + environmentName);
 // Delete the environment when we're finished:
-SyncPoller<BinaryData, Void> environmentDeleteResponse =
-                environmentsClient.beginDeleteEnvironment("myProject", "me", "TestEnvironment", null);
+SyncPoller<DevCenterOperationDetails, Void> environmentDeleteResponse =
+                environmentsClient.beginDeleteEnvironment(projectName, "me", environmentName);
 environmentDeleteResponse.waitForCompletion();
+System.out.println("Done deleting environment" + environmentName);
 ```
 
 # Troubleshooting

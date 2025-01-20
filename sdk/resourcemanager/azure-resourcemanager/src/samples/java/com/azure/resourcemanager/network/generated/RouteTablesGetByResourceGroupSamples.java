@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for RouteTables GetByResourceGroup. */
+/**
+ * Samples for RouteTables GetByResourceGroup.
+ */
 public final class RouteTablesGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/RouteTableGet.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/RouteTableGet.json
      */
     /**
      * Sample code: Get route table.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getRouteTable(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getRouteTables()
-            .getByResourceGroupWithResponse("rg1", "testrt", null, Context.NONE);
+            .getByResourceGroupWithResponse("rg1", "testrt", null, com.azure.core.util.Context.NONE);
     }
 }

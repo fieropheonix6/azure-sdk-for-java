@@ -30,22 +30,28 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteLinkInner;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ExpressRouteLinksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ExpressRouteLinksClient.
+ */
 public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ExpressRouteLinksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of ExpressRouteLinksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ExpressRouteLinksClientImpl(NetworkManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ExpressRouteLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ExpressRouteLinksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -55,52 +61,39 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
-    private interface ExpressRouteLinksService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/ExpressRoutePorts/{expressRoutePortName}/links/{linkName}")
-        @ExpectedResponses({200})
+    public interface ExpressRouteLinksService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts/{expressRoutePortName}/links/{linkName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteLinkInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<ExpressRouteLinkInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("expressRoutePortName") String expressRoutePortName,
-            @PathParam("linkName") String linkName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("expressRoutePortName") String expressRoutePortName, @PathParam("linkName") String linkName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/ExpressRoutePorts/{expressRoutePortName}/links")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ExpressRouteLinkListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("expressRoutePortName") String expressRoutePortName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
-                + "/ExpressRoutePorts/{expressRoutePortName}/links")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ExpressRouteLinkListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("expressRoutePortName") String expressRoutePortName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ExpressRouteLinkListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -110,19 +103,15 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @return expressRouteLink along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String expressRoutePortName, String linkName) {
+    public Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(String resourceGroupName,
+        String expressRoutePortName, String linkName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -135,27 +124,17 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
         if (linkName == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            resourceGroupName,
-                            expressRoutePortName,
-                            linkName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                resourceGroupName, expressRoutePortName, linkName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -166,19 +145,15 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @return expressRouteLink along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(
-        String resourceGroupName, String expressRoutePortName, String linkName, Context context) {
+    private Mono<Response<ExpressRouteLinkInner>> getWithResponseAsync(String resourceGroupName,
+        String expressRoutePortName, String linkName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -191,24 +166,16 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
         if (linkName == null) {
             return Mono.error(new IllegalArgumentException("Parameter linkName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                apiVersion,
-                resourceGroupName,
-                expressRoutePortName,
-                linkName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, resourceGroupName,
+            expressRoutePortName, linkName, accept, context);
     }
 
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -218,15 +185,15 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @return expressRouteLink on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ExpressRouteLinkInner> getAsync(
-        String resourceGroupName, String expressRoutePortName, String linkName) {
+    public Mono<ExpressRouteLinkInner> getAsync(String resourceGroupName, String expressRoutePortName,
+        String linkName) {
         return getWithResponseAsync(resourceGroupName, expressRoutePortName, linkName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -237,14 +204,14 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @return expressRouteLink along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ExpressRouteLinkInner> getWithResponse(
-        String resourceGroupName, String expressRoutePortName, String linkName, Context context) {
+    public Response<ExpressRouteLinkInner> getWithResponse(String resourceGroupName, String expressRoutePortName,
+        String linkName, Context context) {
         return getWithResponseAsync(resourceGroupName, expressRoutePortName, linkName, context).block();
     }
 
     /**
      * Retrieves the specified ExpressRouteLink resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param linkName The name of the ExpressRouteLink resource.
@@ -260,7 +227,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,19 +236,15 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @return expressRouteLink List Result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteLinkInner>> listSinglePageAsync(
-        String resourceGroupName, String expressRoutePortName) {
+    private Mono<PagedResponse<ExpressRouteLinkInner>> listSinglePageAsync(String resourceGroupName,
+        String expressRoutePortName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -291,35 +254,19 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            resourceGroupName,
-                            expressRoutePortName,
-                            accept,
-                            context))
-            .<PagedResponse<ExpressRouteLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion,
+                resourceGroupName, expressRoutePortName, accept, context))
+            .<PagedResponse<ExpressRouteLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param context The context to associate with this operation.
@@ -329,19 +276,15 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @return expressRouteLink List Result along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ExpressRouteLinkInner>> listSinglePageAsync(
-        String resourceGroupName, String expressRoutePortName, Context context) {
+    private Mono<PagedResponse<ExpressRouteLinkInner>> listSinglePageAsync(String resourceGroupName,
+        String expressRoutePortName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -351,32 +294,19 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
             return Mono
                 .error(new IllegalArgumentException("Parameter expressRoutePortName is required and cannot be null."));
         }
-        final String apiVersion = "2022-05-01";
+        final String apiVersion = "2024-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                apiVersion,
-                resourceGroupName,
-                expressRoutePortName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), apiVersion, resourceGroupName,
+                expressRoutePortName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -386,14 +316,13 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ExpressRouteLinkInner> listAsync(String resourceGroupName, String expressRoutePortName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, expressRoutePortName),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, expressRoutePortName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param context The context to associate with this operation.
@@ -403,16 +332,15 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @return expressRouteLink List Result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ExpressRouteLinkInner> listAsync(
-        String resourceGroupName, String expressRoutePortName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceGroupName, expressRoutePortName, context),
+    private PagedFlux<ExpressRouteLinkInner> listAsync(String resourceGroupName, String expressRoutePortName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, expressRoutePortName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -427,7 +355,7 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
 
     /**
      * Retrieve the ExpressRouteLink sub-resources of the specified ExpressRoutePort resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param expressRoutePortName The name of the ExpressRoutePort resource.
      * @param context The context to associate with this operation.
@@ -437,16 +365,15 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
      * @return expressRouteLink List Result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ExpressRouteLinkInner> list(
-        String resourceGroupName, String expressRoutePortName, Context context) {
+    public PagedIterable<ExpressRouteLinkInner> list(String resourceGroupName, String expressRoutePortName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, expressRoutePortName, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -458,31 +385,20 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ExpressRouteLinkInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ExpressRouteLinkInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -495,23 +411,13 @@ public final class ExpressRouteLinksClientImpl implements ExpressRouteLinksClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

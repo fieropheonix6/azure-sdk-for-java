@@ -4,23 +4,47 @@
 package com.azure.monitor.query;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImplBuilder;
+import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatchBuilder;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImplBuilder;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImplBuilder;
 
 /**
- * Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.
+ * <p>Fluent builder for creating instances of {@link MetricsQueryClient} and {@link MetricsQueryAsyncClient}.</p>
  *
- * <p><strong>Instantiating an asynchronous Metrics query Client</strong></p>
+ * <p>
+ *     The MetricsQueryClientBuilder is responsible for authenticating a building instances of {@link MetricsQueryClient} and
+ *     {@link MetricsQueryAsyncClient}. Customizations can be applied to clients through the builder using the various options
+ *     available.
+ * </p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>
+ *     To create instances of the clients, sufficient authentication credentials are required. {@link TokenCredential} is
+ *     a common form of authentication. The resource / workspace is not required for client creation, but the authentication
+ *     credentials must have access to the resources / workspaces utilized by the client.
+ * </p>
+ *
+ * <h3>Client Builder Usage</h3>
+ *
+ * <p>
+ *     The following sample shows instantiating an asynchronous Metrics query Client using Token Credential
+ * </p>
  *
  * <!-- src_embed com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
  * <pre>
@@ -30,7 +54,9 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  * </pre>
  * <!-- end com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
  *
- * <p><strong>Instantiating a synchronous Metrics query Client</strong></p>
+ * <p>
+ *     The following sample shows instantiating a synchronous Metrics query Client using Token Credential
+ * </p>
  *
  * <!-- src_embed com.azure.monitor.query.MetricsQueryClient.instantiation -->
  * <pre>
@@ -39,29 +65,49 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
+ *
+ * <p>
+ *     For more information about the other types of credentials that can be used to authenticate your client, please see
+ *     this documentation: <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity</a>
+ * </p>
+ *
+ * @see com.azure.monitor.query
+ * @see MetricsQueryClient
+ * @see MetricsQueryAsyncClient
  */
-@ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
-public final class MetricsQueryClientBuilder {
+@ServiceClientBuilder(serviceClients = { MetricsQueryClient.class, MetricsQueryAsyncClient.class })
+public final class MetricsQueryClientBuilder
+    implements EndpointTrait<MetricsQueryClientBuilder>, HttpTrait<MetricsQueryClientBuilder>,
+    ConfigurationTrait<MetricsQueryClientBuilder>, TokenCredentialTrait<MetricsQueryClientBuilder> {
 
     private final MonitorManagementClientImplBuilder innerMetricsBuilder = new MonitorManagementClientImplBuilder();
-    private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder =
-            new MetricsDefinitionsClientImplBuilder();
-    private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder =
-            new MetricsNamespacesClientImplBuilder();
+    private final MetricsDefinitionsClientImplBuilder innerMetricsDefinitionsBuilder
+        = new MetricsDefinitionsClientImplBuilder();
+    private final MetricsNamespacesClientImplBuilder innerMetricsNamespaceBuilder
+        = new MetricsNamespacesClientImplBuilder();
+
+    private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
     private final ClientLogger logger = new ClientLogger(MetricsQueryClientBuilder.class);
-    private ClientOptions clientOptions;
     private MetricsQueryServiceVersion serviceVersion;
 
+    /**
+     * Creates an instance of MetricsQueryClientBuilder.
+     */
+    public MetricsQueryClientBuilder() {
+    }
 
     /**
      * Sets the metrics query endpoint.
      * @param endpoint the host value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder endpoint(String endpoint) {
         innerMetricsBuilder.host(endpoint);
         innerMetricsDefinitionsBuilder.host(endpoint);
         innerMetricsNamespaceBuilder.host(endpoint);
+        // TODO (srnagar): what should be the metrics batch endpoint if the customer sets the endpoint?
+        innerMetricsBatchBuilder.endpoint(endpoint);
         return this;
     }
 
@@ -70,10 +116,12 @@ public final class MetricsQueryClientBuilder {
      * @param pipeline the pipeline value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder pipeline(HttpPipeline pipeline) {
         innerMetricsBuilder.pipeline(pipeline);
         innerMetricsDefinitionsBuilder.pipeline(pipeline);
         innerMetricsNamespaceBuilder.pipeline(pipeline);
+        innerMetricsBatchBuilder.pipeline(pipeline);
         return this;
     }
 
@@ -82,10 +130,12 @@ public final class MetricsQueryClientBuilder {
      * @param httpClient the httpClient value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder httpClient(HttpClient httpClient) {
         innerMetricsBuilder.httpClient(httpClient);
         innerMetricsDefinitionsBuilder.httpClient(httpClient);
         innerMetricsNamespaceBuilder.httpClient(httpClient);
+        innerMetricsBatchBuilder.httpClient(httpClient);
         return this;
     }
 
@@ -94,10 +144,12 @@ public final class MetricsQueryClientBuilder {
      * @param configuration the configuration value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder configuration(Configuration configuration) {
         innerMetricsBuilder.configuration(configuration);
         innerMetricsDefinitionsBuilder.configuration(configuration);
         innerMetricsNamespaceBuilder.configuration(configuration);
+        innerMetricsBatchBuilder.configuration(configuration);
         return this;
     }
 
@@ -106,10 +158,12 @@ public final class MetricsQueryClientBuilder {
      * @param httpLogOptions the httpLogOptions value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerMetricsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsDefinitionsBuilder.httpLogOptions(httpLogOptions);
         innerMetricsNamespaceBuilder.httpLogOptions(httpLogOptions);
+        innerMetricsBatchBuilder.httpLogOptions(httpLogOptions);
         return this;
     }
 
@@ -122,6 +176,21 @@ public final class MetricsQueryClientBuilder {
         innerMetricsBuilder.retryPolicy(retryPolicy);
         innerMetricsDefinitionsBuilder.retryPolicy(retryPolicy);
         innerMetricsNamespaceBuilder.retryPolicy(retryPolicy);
+        innerMetricsBatchBuilder.retryPolicy(retryPolicy);
+        return this;
+    }
+
+    /**
+     * Sets the {@link RetryOptions} used for creating the client.
+     * @param retryOptions The {@link RetryOptions}.
+     * @return the updated {@link MetricsQueryClientBuilder}.
+     */
+    @Override
+    public MetricsQueryClientBuilder retryOptions(RetryOptions retryOptions) {
+        innerMetricsBuilder.retryOptions(retryOptions);
+        innerMetricsDefinitionsBuilder.retryOptions(retryOptions);
+        innerMetricsNamespaceBuilder.retryOptions(retryOptions);
+        innerMetricsBatchBuilder.retryOptions(retryOptions);
         return this;
     }
 
@@ -130,10 +199,12 @@ public final class MetricsQueryClientBuilder {
      * @param customPolicy The custom Http pipeline policy to add.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerMetricsBuilder.addPolicy(customPolicy);
         innerMetricsDefinitionsBuilder.addPolicy(customPolicy);
         innerMetricsNamespaceBuilder.addPolicy(customPolicy);
+        innerMetricsBatchBuilder.addPolicy(customPolicy);
         return this;
     }
 
@@ -142,10 +213,12 @@ public final class MetricsQueryClientBuilder {
      * @param tokenCredential the tokenCredential value.
      * @return the MetricsClientBuilder.
      */
+    @Override
     public MetricsQueryClientBuilder credential(TokenCredential tokenCredential) {
         innerMetricsBuilder.credential(tokenCredential);
         innerMetricsDefinitionsBuilder.credential(tokenCredential);
         innerMetricsNamespaceBuilder.credential(tokenCredential);
+        innerMetricsBatchBuilder.credential(tokenCredential);
         return this;
     }
 
@@ -154,8 +227,12 @@ public final class MetricsQueryClientBuilder {
      * @param clientOptions The {@link ClientOptions}.
      * @return the {@link MetricsQueryClientBuilder}
      */
+    @Override
     public MetricsQueryClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
+        innerMetricsBuilder.clientOptions(clientOptions);
+        innerMetricsDefinitionsBuilder.clientOptions(clientOptions);
+        innerMetricsNamespaceBuilder.clientOptions(clientOptions);
+        innerMetricsBatchBuilder.clientOptions(clientOptions);
         return this;
     }
 
@@ -166,6 +243,7 @@ public final class MetricsQueryClientBuilder {
      */
     public MetricsQueryClientBuilder serviceVersion(MetricsQueryServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+        // TODO(srnagar): How to set the service version for two different service?
         return this;
     }
 
@@ -174,7 +252,8 @@ public final class MetricsQueryClientBuilder {
      * @return A synchronous {@link MetricsQueryClient}.
      */
     public MetricsQueryClient buildClient() {
-        return new MetricsQueryClient(buildAsyncClient());
+        return new MetricsQueryClient(innerMetricsBuilder.buildClient(), innerMetricsNamespaceBuilder.buildClient(),
+            innerMetricsDefinitionsBuilder.buildClient());
     }
 
     /**
@@ -184,7 +263,7 @@ public final class MetricsQueryClientBuilder {
     public MetricsQueryAsyncClient buildAsyncClient() {
         logger.info("Using service version " + this.serviceVersion);
         return new MetricsQueryAsyncClient(innerMetricsBuilder.buildClient(),
-                innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
+            innerMetricsNamespaceBuilder.buildClient(), innerMetricsDefinitionsBuilder.buildClient());
     }
 
 }

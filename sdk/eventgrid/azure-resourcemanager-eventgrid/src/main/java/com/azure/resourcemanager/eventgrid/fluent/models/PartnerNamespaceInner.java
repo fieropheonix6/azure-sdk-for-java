@@ -7,32 +7,57 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.InboundIpRule;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaceProvisioningState;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicRoutingMode;
 import com.azure.resourcemanager.eventgrid.models.PublicNetworkAccess;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.eventgrid.models.TlsVersion;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** EventGrid Partner Namespace. */
+/**
+ * EventGrid Partner Namespace.
+ */
 @Fluent
 public final class PartnerNamespaceInner extends Resource {
     /*
      * Properties of the Partner Namespace.
      */
-    @JsonProperty(value = "properties")
     private PartnerNamespaceProperties innerProperties;
 
     /*
      * The system metadata relating to Partner Namespace resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PartnerNamespaceInner class.
+     */
+    public PartnerNamespaceInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Partner Namespace.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PartnerNamespaceProperties innerProperties() {
@@ -41,21 +66,55 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Get the systemData property: The system metadata relating to Partner Namespace resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartnerNamespaceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartnerNamespaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -63,8 +122,8 @@ public final class PartnerNamespaceInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: The privateEndpointConnections property.
-     *
+     * Get the privateEndpointConnections property: List of private endpoint connections.
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -73,7 +132,7 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner namespace.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PartnerNamespaceProvisioningState provisioningState() {
@@ -84,7 +143,7 @@ public final class PartnerNamespaceInner extends Resource {
      * Get the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration that
      * should be associated with this partner namespace. This takes the following format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
-     *
+     * 
      * @return the partnerRegistrationFullyQualifiedId value.
      */
     public String partnerRegistrationFullyQualifiedId() {
@@ -95,7 +154,7 @@ public final class PartnerNamespaceInner extends Resource {
      * Set the partnerRegistrationFullyQualifiedId property: The fully qualified ARM Id of the partner registration that
      * should be associated with this partner namespace. This takes the following format:
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/partnerRegistrations/{partnerRegistrationName}.
-     *
+     * 
      * @param partnerRegistrationFullyQualifiedId the partnerRegistrationFullyQualifiedId value to set.
      * @return the PartnerNamespaceInner object itself.
      */
@@ -108,8 +167,33 @@ public final class PartnerNamespaceInner extends Resource {
     }
 
     /**
+     * Get the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * partner namespace.
+     * 
+     * @return the minimumTlsVersionAllowed value.
+     */
+    public TlsVersion minimumTlsVersionAllowed() {
+        return this.innerProperties() == null ? null : this.innerProperties().minimumTlsVersionAllowed();
+    }
+
+    /**
+     * Set the minimumTlsVersionAllowed property: Minimum TLS version of the publisher allowed to publish to this
+     * partner namespace.
+     * 
+     * @param minimumTlsVersionAllowed the minimumTlsVersionAllowed value to set.
+     * @return the PartnerNamespaceInner object itself.
+     */
+    public PartnerNamespaceInner withMinimumTlsVersionAllowed(TlsVersion minimumTlsVersionAllowed) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PartnerNamespaceProperties();
+        }
+        this.innerProperties().withMinimumTlsVersionAllowed(minimumTlsVersionAllowed);
+        return this;
+    }
+
+    /**
      * Get the endpoint property: Endpoint for the partner namespace.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -118,10 +202,11 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
      * /&gt;.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -130,10 +215,11 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: This determines if traffic is allowed over public network. By default it is
-     * enabled. You can further restrict to specific IPs by configuring &lt;seealso
+     * enabled.
+     * You can further restrict to specific IPs by configuring &lt;seealso
      * cref="P:Microsoft.Azure.Events.ResourceProvider.Common.Contracts.PartnerNamespaceProperties.InboundIpRules"
      * /&gt;.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the PartnerNamespaceInner object itself.
      */
@@ -148,7 +234,7 @@ public final class PartnerNamespaceInner extends Resource {
     /**
      * Get the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
      * These are considered only if PublicNetworkAccess is enabled.
-     *
+     * 
      * @return the inboundIpRules value.
      */
     public List<InboundIpRule> inboundIpRules() {
@@ -158,7 +244,7 @@ public final class PartnerNamespaceInner extends Resource {
     /**
      * Set the inboundIpRules property: This can be used to restrict traffic from specific IPs instead of all IPs. Note:
      * These are considered only if PublicNetworkAccess is enabled.
-     *
+     * 
      * @param inboundIpRules the inboundIpRules value to set.
      * @return the PartnerNamespaceInner object itself.
      */
@@ -174,7 +260,7 @@ public final class PartnerNamespaceInner extends Resource {
      * Get the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
      * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
      * the partner namespace.
-     *
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -185,7 +271,7 @@ public final class PartnerNamespaceInner extends Resource {
      * Set the disableLocalAuth property: This boolean is used to enable or disable local auth. Default value is false.
      * When the property is set to true, only AAD token will be used to authenticate if user is allowed to publish to
      * the partner namespace.
-     *
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the PartnerNamespaceInner object itself.
      */
@@ -199,9 +285,10 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Get the partnerTopicRoutingMode property: This determines if events published to this partner namespace should
-     * use the source attribute in the event payload or use the channel name in the header when matching to the partner
-     * topic. If none is specified, source attribute routing will be used to match the partner topic.
-     *
+     * use the source attribute in the event payload
+     * or use the channel name in the header when matching to the partner topic. If none is specified, source attribute
+     * routing will be used to match the partner topic.
+     * 
      * @return the partnerTopicRoutingMode value.
      */
     public PartnerTopicRoutingMode partnerTopicRoutingMode() {
@@ -210,9 +297,10 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Set the partnerTopicRoutingMode property: This determines if events published to this partner namespace should
-     * use the source attribute in the event payload or use the channel name in the header when matching to the partner
-     * topic. If none is specified, source attribute routing will be used to match the partner topic.
-     *
+     * use the source attribute in the event payload
+     * or use the channel name in the header when matching to the partner topic. If none is specified, source attribute
+     * routing will be used to match the partner topic.
+     * 
      * @param partnerTopicRoutingMode the partnerTopicRoutingMode value to set.
      * @return the PartnerNamespaceInner object itself.
      */
@@ -226,12 +314,64 @@ public final class PartnerNamespaceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerNamespaceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerNamespaceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PartnerNamespaceInner.
+     */
+    public static PartnerNamespaceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerNamespaceInner deserializedPartnerNamespaceInner = new PartnerNamespaceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPartnerNamespaceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPartnerNamespaceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPartnerNamespaceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPartnerNamespaceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPartnerNamespaceInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPartnerNamespaceInner.innerProperties = PartnerNamespaceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPartnerNamespaceInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerNamespaceInner;
+        });
     }
 }

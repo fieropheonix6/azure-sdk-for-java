@@ -12,40 +12,36 @@ import com.azure.resourcemanager.logic.fluent.WorkflowRunOperationsClient;
 import com.azure.resourcemanager.logic.fluent.models.WorkflowRunInner;
 import com.azure.resourcemanager.logic.models.WorkflowRun;
 import com.azure.resourcemanager.logic.models.WorkflowRunOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkflowRunOperationsImpl implements WorkflowRunOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkflowRunOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkflowRunOperationsImpl.class);
 
     private final WorkflowRunOperationsClient innerClient;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public WorkflowRunOperationsImpl(
-        WorkflowRunOperationsClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public WorkflowRunOperationsImpl(WorkflowRunOperationsClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<WorkflowRun> getWithResponse(String resourceGroupName, String workflowName, String runName,
+        String operationId, Context context) {
+        Response<WorkflowRunInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workflowName, runName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new WorkflowRunImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public WorkflowRun get(String resourceGroupName, String workflowName, String runName, String operationId) {
         WorkflowRunInner inner = this.serviceClient().get(resourceGroupName, workflowName, runName, operationId);
         if (inner != null) {
             return new WorkflowRunImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<WorkflowRun> getWithResponse(
-        String resourceGroupName, String workflowName, String runName, String operationId, Context context) {
-        Response<WorkflowRunInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workflowName, runName, operationId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new WorkflowRunImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

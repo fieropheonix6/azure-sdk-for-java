@@ -5,42 +5,46 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Operation supported by the Service Fabric resource provider. */
+/**
+ * Operation supported by the Service Fabric resource provider.
+ */
 @Fluent
-public final class AvailableOperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableOperationDisplay.class);
-
+public final class AvailableOperationDisplay implements JsonSerializable<AvailableOperationDisplay> {
     /*
      * The name of the provider.
      */
-    @JsonProperty(value = "provider")
     private String provider;
 
     /*
      * The resource on which the operation is performed
      */
-    @JsonProperty(value = "resource")
     private String resource;
 
     /*
      * The operation that can be performed.
      */
-    @JsonProperty(value = "operation")
     private String operation;
 
     /*
      * Operation description
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of AvailableOperationDisplay class.
+     */
+    public AvailableOperationDisplay() {
+    }
+
+    /**
      * Get the provider property: The name of the provider.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -49,7 +53,7 @@ public final class AvailableOperationDisplay {
 
     /**
      * Set the provider property: The name of the provider.
-     *
+     * 
      * @param provider the provider value to set.
      * @return the AvailableOperationDisplay object itself.
      */
@@ -60,7 +64,7 @@ public final class AvailableOperationDisplay {
 
     /**
      * Get the resource property: The resource on which the operation is performed.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -69,7 +73,7 @@ public final class AvailableOperationDisplay {
 
     /**
      * Set the resource property: The resource on which the operation is performed.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the AvailableOperationDisplay object itself.
      */
@@ -80,7 +84,7 @@ public final class AvailableOperationDisplay {
 
     /**
      * Get the operation property: The operation that can be performed.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -89,7 +93,7 @@ public final class AvailableOperationDisplay {
 
     /**
      * Set the operation property: The operation that can be performed.
-     *
+     * 
      * @param operation the operation value to set.
      * @return the AvailableOperationDisplay object itself.
      */
@@ -100,7 +104,7 @@ public final class AvailableOperationDisplay {
 
     /**
      * Get the description property: Operation description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -109,7 +113,7 @@ public final class AvailableOperationDisplay {
 
     /**
      * Set the description property: Operation description.
-     *
+     * 
      * @param description the description value to set.
      * @return the AvailableOperationDisplay object itself.
      */
@@ -120,9 +124,54 @@ public final class AvailableOperationDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("provider", this.provider);
+        jsonWriter.writeStringField("resource", this.resource);
+        jsonWriter.writeStringField("operation", this.operation);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailableOperationDisplay from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailableOperationDisplay if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailableOperationDisplay.
+     */
+    public static AvailableOperationDisplay fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailableOperationDisplay deserializedAvailableOperationDisplay = new AvailableOperationDisplay();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provider".equals(fieldName)) {
+                    deserializedAvailableOperationDisplay.provider = reader.getString();
+                } else if ("resource".equals(fieldName)) {
+                    deserializedAvailableOperationDisplay.resource = reader.getString();
+                } else if ("operation".equals(fieldName)) {
+                    deserializedAvailableOperationDisplay.operation = reader.getString();
+                } else if ("description".equals(fieldName)) {
+                    deserializedAvailableOperationDisplay.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailableOperationDisplay;
+        });
     }
 }

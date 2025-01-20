@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.deviceupdate.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.deviceupdate.fluent.models.AccountInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** List of Accounts. */
+/**
+ * List of Accounts.
+ */
 @Fluent
-public final class AccountList {
+public final class AccountList implements JsonSerializable<AccountList> {
     /*
      * The link used to get the next page of Accounts list.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * List of Accounts.
      */
-    @JsonProperty(value = "value")
     private List<AccountInner> value;
 
     /**
+     * Creates an instance of AccountList class.
+     */
+    public AccountList() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of Accounts list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class AccountList {
 
     /**
      * Set the nextLink property: The link used to get the next page of Accounts list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the AccountList object itself.
      */
@@ -46,7 +56,7 @@ public final class AccountList {
 
     /**
      * Get the value property: List of Accounts.
-     *
+     * 
      * @return the value value.
      */
     public List<AccountInner> value() {
@@ -55,7 +65,7 @@ public final class AccountList {
 
     /**
      * Set the value property: List of Accounts.
-     *
+     * 
      * @param value the value value to set.
      * @return the AccountList object itself.
      */
@@ -66,12 +76,52 @@ public final class AccountList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AccountList from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AccountList if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AccountList.
+     */
+    public static AccountList fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AccountList deserializedAccountList = new AccountList();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedAccountList.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<AccountInner> value = reader.readArray(reader1 -> AccountInner.fromJson(reader1));
+                    deserializedAccountList.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAccountList;
+        });
     }
 }

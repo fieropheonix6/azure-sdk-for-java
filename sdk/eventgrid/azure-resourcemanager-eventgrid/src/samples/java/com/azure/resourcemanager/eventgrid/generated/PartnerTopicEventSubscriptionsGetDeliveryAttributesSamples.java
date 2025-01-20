@@ -4,23 +4,24 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PartnerTopicEventSubscriptions GetDeliveryAttributes. */
+/**
+ * Samples for PartnerTopicEventSubscriptions GetDeliveryAttributes.
+ */
 public final class PartnerTopicEventSubscriptionsGetDeliveryAttributesSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * PartnerTopicEventSubscriptions_GetDeliveryAttributes.json
      */
     /**
      * Sample code: PartnerTopicEventSubscriptions_GetDeliveryAttributes.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void partnerTopicEventSubscriptionsGetDeliveryAttributes(
         com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .partnerTopicEventSubscriptions()
-            .getDeliveryAttributesWithResponse(
-                "examplerg", "examplePartnerTopic1", "examplesubscription1", Context.NONE);
+        manager.partnerTopicEventSubscriptions()
+            .getDeliveryAttributesWithResponse("examplerg", "examplePartnerTopic1", "examplesubscription1",
+                com.azure.core.util.Context.NONE);
     }
 }

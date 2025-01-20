@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CommitmentPlans List. */
+/**
+ * Samples for CommitmentPlans List.
+ */
 public final class CommitmentPlansListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListCommitmentPlans.json
+     * x-ms-original-file:
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/
+     * ListCommitmentPlans.json
      */
     /**
      * Sample code: ListCommitmentPlans.
-     *
+     * 
      * @param manager Entry point to CognitiveServicesManager.
      */
-    public static void listCommitmentPlans(
-        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.commitmentPlans().list("resourceGroupName", "accountName", Context.NONE);
+    public static void
+        listCommitmentPlans(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.commitmentPlans().list("resourceGroupName", "accountName", com.azure.core.util.Context.NONE);
     }
 }

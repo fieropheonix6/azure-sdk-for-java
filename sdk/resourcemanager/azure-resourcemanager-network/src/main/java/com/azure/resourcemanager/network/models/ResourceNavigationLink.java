@@ -6,43 +6,46 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ResourceNavigationLinkFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** ResourceNavigationLink resource. */
+/**
+ * ResourceNavigationLink resource.
+ */
 @Fluent
 public final class ResourceNavigationLink extends SubResource {
     /*
      * Resource navigation link properties format.
      */
-    @JsonProperty(value = "properties")
     private ResourceNavigationLinkFormat innerProperties;
 
     /*
      * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ResourceNavigationLink class. */
+    /**
+     * Creates an instance of ResourceNavigationLink class.
+     */
     public ResourceNavigationLink() {
     }
 
     /**
      * Get the innerProperties property: Resource navigation link properties format.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ResourceNavigationLinkFormat innerProperties() {
@@ -52,7 +55,7 @@ public final class ResourceNavigationLink extends SubResource {
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +65,7 @@ public final class ResourceNavigationLink extends SubResource {
     /**
      * Set the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ResourceNavigationLink object itself.
      */
@@ -73,7 +76,7 @@ public final class ResourceNavigationLink extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -82,14 +85,16 @@ public final class ResourceNavigationLink extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ResourceNavigationLink withId(String id) {
         super.withId(id);
@@ -98,7 +103,7 @@ public final class ResourceNavigationLink extends SubResource {
 
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
@@ -107,7 +112,7 @@ public final class ResourceNavigationLink extends SubResource {
 
     /**
      * Set the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @param linkedResourceType the linkedResourceType value to set.
      * @return the ResourceNavigationLink object itself.
      */
@@ -121,7 +126,7 @@ public final class ResourceNavigationLink extends SubResource {
 
     /**
      * Get the link property: Link to the external resource.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -130,7 +135,7 @@ public final class ResourceNavigationLink extends SubResource {
 
     /**
      * Set the link property: Link to the external resource.
-     *
+     * 
      * @param link the link value to set.
      * @return the ResourceNavigationLink object itself.
      */
@@ -144,7 +149,7 @@ public final class ResourceNavigationLink extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource navigation link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,12 +158,58 @@ public final class ResourceNavigationLink extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceNavigationLink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceNavigationLink if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceNavigationLink.
+     */
+    public static ResourceNavigationLink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceNavigationLink deserializedResourceNavigationLink = new ResourceNavigationLink();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedResourceNavigationLink.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedResourceNavigationLink.innerProperties = ResourceNavigationLinkFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedResourceNavigationLink.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedResourceNavigationLink.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedResourceNavigationLink.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceNavigationLink;
+        });
     }
 }

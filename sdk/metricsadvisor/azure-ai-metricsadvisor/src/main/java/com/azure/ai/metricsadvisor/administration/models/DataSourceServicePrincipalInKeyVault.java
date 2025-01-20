@@ -21,9 +21,15 @@ public final class DataSourceServicePrincipalInKeyVault extends DataSourceCreden
     private String clientSecretName;
     private String tenantId;
 
+    /**
+     * Creates an instance of DataSourceServicePrincipalInKeyVault.
+     */
+    public DataSourceServicePrincipalInKeyVault() {
+    }
+
     static {
-        DataSourceServicePrincipalInKeyVaultAccessor.setAccessor(
-            new DataSourceServicePrincipalInKeyVaultAccessor.Accessor() {
+        DataSourceServicePrincipalInKeyVaultAccessor
+            .setAccessor(new DataSourceServicePrincipalInKeyVaultAccessor.Accessor() {
                 @Override
                 public void setId(DataSourceServicePrincipalInKeyVault entity, String id) {
                     entity.setId(id);
@@ -116,8 +122,7 @@ public final class DataSourceServicePrincipalInKeyVault extends DataSourceCreden
      * @return an updated object
      */
     public DataSourceServicePrincipalInKeyVault setKeyVaultForDataSourceSecrets(String keyVaultEndpoint,
-                                                                                String keyVaultClientId,
-                                                                                String keyVaultClientSecret) {
+        String keyVaultClientId, String keyVaultClientSecret) {
         this.keyVaultEndpoint = keyVaultEndpoint;
         this.keyVaultClientId = keyVaultClientId;
         this.keyVaultClientSecret = keyVaultClientSecret;

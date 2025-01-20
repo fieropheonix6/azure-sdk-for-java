@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScopeType. */
+/**
+ * Scope at which the configuration will be installed.
+ */
 public final class ScopeType extends ExpandableStringEnum<ScopeType> {
-    /** Static value cluster for ScopeType. */
+    /**
+     * Static value cluster for ScopeType.
+     */
     public static final ScopeType CLUSTER = fromString("cluster");
 
-    /** Static value namespace for ScopeType. */
+    /**
+     * Static value namespace for ScopeType.
+     */
     public static final ScopeType NAMESPACE = fromString("namespace");
 
     /**
+     * Creates a new instance of ScopeType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ScopeType() {
+    }
+
+    /**
      * Creates or finds a ScopeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScopeType.
      */
-    @JsonCreator
     public static ScopeType fromString(String name) {
         return fromString(name, ScopeType.class);
     }
 
-    /** @return known ScopeType values. */
+    /**
+     * Gets known ScopeType values.
+     * 
+     * @return known ScopeType values.
+     */
     public static Collection<ScopeType> values() {
         return values(ScopeType.class);
     }

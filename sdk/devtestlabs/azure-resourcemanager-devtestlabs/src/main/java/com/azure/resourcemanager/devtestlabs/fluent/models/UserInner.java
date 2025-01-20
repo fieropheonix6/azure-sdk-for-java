@@ -5,127 +5,98 @@
 package com.azure.resourcemanager.devtestlabs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.devtestlabs.models.UserIdentity;
 import com.azure.resourcemanager.devtestlabs.models.UserSecretStore;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Profile of a lab user. */
-@JsonFlatten
+/**
+ * Profile of a lab user.
+ */
 @Fluent
-public class UserInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
+public final class UserInner extends Resource {
+    /*
+     * The properties of the resource.
+     */
+    private UserProperties innerProperties;
 
     /*
-     * The identity of the user.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.identity")
-    private UserIdentity identity;
+    private String type;
 
     /*
-     * The secret store of the user.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.secretStore")
-    private UserSecretStore secretStore;
+    private String name;
 
     /*
-     * The creation date of the user profile.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
-
-    /*
-     * The provisioning status of the resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * The unique immutable identifier of a resource (Guid).
-     */
-    @JsonProperty(value = "properties.uniqueIdentifier", access = JsonProperty.Access.WRITE_ONLY)
-    private String uniqueIdentifier;
+    private String id;
 
     /**
-     * Get the identity property: The identity of the user.
-     *
-     * @return the identity value.
+     * Creates an instance of UserInner class.
      */
-    public UserIdentity identity() {
-        return this.identity;
+    public UserInner() {
     }
 
     /**
-     * Set the identity property: The identity of the user.
-     *
-     * @param identity the identity value to set.
-     * @return the UserInner object itself.
+     * Get the innerProperties property: The properties of the resource.
+     * 
+     * @return the innerProperties value.
      */
-    public UserInner withIdentity(UserIdentity identity) {
-        this.identity = identity;
-        return this;
+    private UserProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Get the secretStore property: The secret store of the user.
-     *
-     * @return the secretStore value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public UserSecretStore secretStore() {
-        return this.secretStore;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the secretStore property: The secret store of the user.
-     *
-     * @param secretStore the secretStore value to set.
-     * @return the UserInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public UserInner withSecretStore(UserSecretStore secretStore) {
-        this.secretStore = secretStore;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the createdDate property: The creation date of the user profile.
-     *
-     * @return the createdDate value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public OffsetDateTime createdDate() {
-        return this.createdDate;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
+     * {@inheritDoc}
      */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
-     *
-     * @return the uniqueIdentifier value.
-     */
-    public String uniqueIdentifier() {
-        return this.uniqueIdentifier;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public UserInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UserInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -133,16 +104,136 @@ public class UserInner extends Resource {
     }
 
     /**
+     * Get the identity property: The identity of the user.
+     * 
+     * @return the identity value.
+     */
+    public UserIdentity identity() {
+        return this.innerProperties() == null ? null : this.innerProperties().identity();
+    }
+
+    /**
+     * Set the identity property: The identity of the user.
+     * 
+     * @param identity the identity value to set.
+     * @return the UserInner object itself.
+     */
+    public UserInner withIdentity(UserIdentity identity) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * Get the secretStore property: The secret store of the user.
+     * 
+     * @return the secretStore value.
+     */
+    public UserSecretStore secretStore() {
+        return this.innerProperties() == null ? null : this.innerProperties().secretStore();
+    }
+
+    /**
+     * Set the secretStore property: The secret store of the user.
+     * 
+     * @param secretStore the secretStore value to set.
+     * @return the UserInner object itself.
+     */
+    public UserInner withSecretStore(UserSecretStore secretStore) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UserProperties();
+        }
+        this.innerProperties().withSecretStore(secretStore);
+        return this;
+    }
+
+    /**
+     * Get the createdDate property: The creation date of the user profile.
+     * 
+     * @return the createdDate value.
+     */
+    public OffsetDateTime createdDate() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the uniqueIdentifier property: The unique immutable identifier of a resource (Guid).
+     * 
+     * @return the uniqueIdentifier value.
+     */
+    public String uniqueIdentifier() {
+        return this.innerProperties() == null ? null : this.innerProperties().uniqueIdentifier();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (identity() != null) {
-            identity().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (secretStore() != null) {
-            secretStore().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UserInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UserInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the UserInner.
+     */
+    public static UserInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UserInner deserializedUserInner = new UserInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedUserInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedUserInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedUserInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedUserInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUserInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUserInner.innerProperties = UserProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUserInner;
+        });
     }
 }

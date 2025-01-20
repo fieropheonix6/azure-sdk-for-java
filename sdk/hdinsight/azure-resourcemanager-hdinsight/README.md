@@ -2,7 +2,7 @@
 
 Azure Resource Manager HDInsight client library for Java.
 
-This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for HDInsight Management SDK. HDInsight Management Client. Package tag package-2024-08-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-hdinsight</artifactId>
-    <version>1.0.0</version>
+    <version>1.1.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -45,15 +45,11 @@ Azure Management Libraries require a `TokenCredential` implementation for authen
 
 ### Authentication
 
-By default, Azure Active Directory token authentication depends on correct configuration of the following environment variables.
+Microsoft Entra ID token authentication relies on the [credential class][azure_identity_credentials] from [Azure Identity][azure_identity] package.
 
-- `AZURE_CLIENT_ID` for Azure client ID.
-- `AZURE_TENANT_ID` for Azure tenant ID.
-- `AZURE_CLIENT_SECRET` or `AZURE_CLIENT_CERTIFICATE_PATH` for client secret or client certificate.
+Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
 
-In addition, Azure subscription ID can be configured via `AZURE_SUBSCRIPTION_ID` environment variable.
-
-With above configuration, `azure` client can be authenticated using the following code:
+Assuming the use of the `DefaultAzureCredential` credential class, the client can be authenticated using the following code:
 
 ```java
 AzureProfile profile = new AzureProfile(AzureEnvironment.AZURE);
@@ -75,93 +71,74 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 
 ```java
-// network
-Network network = networkManager.networks().define("vn1")
-    .withRegion(REGION)
-    .withExistingResourceGroup(resourceGroupName)
-    .withAddressSpace("10.0.0.0/24")
-    .withSubnet("default", "10.0.0.0/24")
-    .create();
-Subnet subnet = network.subnets().values().iterator().next();
+com.azure.resourcemanager.storage.models.StorageAccount storageAccount =
+    storageManager.storageAccounts().define(storageName)
+        .withRegion(REGION)
+        .withExistingResourceGroup(resourceGroupName)
+        .withSku(StorageAccountSkuType.STANDARD_LRS)
+        .withMinimumTlsVersion(MinimumTlsVersion.TLS1_0)
+        .withAccessFromAzureServices()
+        .withAccessFromAllNetworks()
+        .create();
 
-// storage account
-com.azure.resourcemanager.storage.models.StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
-    .withRegion(REGION)
-    .withExistingResourceGroup(resourceGroupName)
-    .create();
-final String storageAccountKey = storageAccount.getKeys().iterator().next().value();
-
-// container
-final String containerName = "hdinsight";
-storageManager.blobContainers().defineContainer(containerName)
-    .withExistingBlobService(resourceGroupName, storageAccountName)
+BlobContainer blobContainer = storageManager.blobContainers()
+    .defineContainer(containerName)
+    .withExistingStorageAccount(storageAccount)
     .withPublicAccess(PublicAccess.NONE)
     .create();
 
-Map<String, Map<String, String>> clusterDefinition = new HashMap<>(1);
-Map<String, String> clusterProperties = new HashMap<>(3);
-clusterProperties.put("restAuthCredential.isEnabled", "true");
-clusterProperties.put("restAuthCredential.username", "admin");
-clusterProperties.put("restAuthCredential.password", "Pa$s" + randomPadding());
-clusterDefinition.put("gateway", Collections.unmodifiableMap(clusterProperties));
-
-// cluster
-Cluster cluster = manager.clusters().define("cluster" + randomPadding())
+cluster = hdInsightManager.clusters()
+    .define(clusterName)
     .withExistingResourceGroup(resourceGroupName)
     .withRegion(REGION)
-    .withProperties(new ClusterCreateProperties()
-        .withClusterVersion("3.6")
-        .withOsType(OSType.LINUX)
-        .withTier(Tier.STANDARD)
-        .withClusterDefinition(new ClusterDefinition()
-            .withKind("Spark")
-            .withConfigurations(Collections.unmodifiableMap(clusterDefinition))
-        )
-        .withComputeProfile(new ComputeProfile()
-            .withRoles(Collections.unmodifiableList(new LinkedList<>(Arrays.asList(
-                new Role().withName("headnode")
-                    .withTargetInstanceCount(2)
-                    .withHardwareProfile(new HardwareProfile()
-                        .withVmSize("Large")
-                    )
-                    .withOsProfile(new OsProfile()
-                        .withLinuxOperatingSystemProfile(
-                            new LinuxOperatingSystemProfile()
-                                .withUsername("sshuser")
-                                .withPassword("Pa$s" + randomPadding())
-                        )
-                    )
-                    .withVirtualNetworkProfile(new VirtualNetworkProfile()
-                        .withId(network.id())
-                        .withSubnet(subnet.id())
-                    ),
-                new Role().withName("workernode")
-                    .withTargetInstanceCount(3)
-                    .withHardwareProfile(new HardwareProfile()
-                        .withVmSize("Large")
-                    )
-                    .withOsProfile(new OsProfile()
-                        .withLinuxOperatingSystemProfile(
-                            new LinuxOperatingSystemProfile()
-                                .withUsername("sshuser")
-                                .withPassword("Pa$s" + randomPadding())
-                        )
-                    )
-                    .withVirtualNetworkProfile(new VirtualNetworkProfile()
-                        .withId(network.id())
-                        .withSubnet(subnet.id())
-                    )
-            ))))
-        )
-        .withStorageProfile(new StorageProfile()
-            .withStorageaccounts(Collections.unmodifiableList(Arrays.asList(
-                new StorageAccount()
-                    .withName(new URL(storageAccount.endPoints().primary().blob()).getHost())
-                    .withKey(storageAccountKey)
-                    .withContainer(containerName)
-                    .withIsDefault(true)
-            )))
-        ))
+    .withProperties(
+        new ClusterCreateProperties()
+            .withClusterVersion("4.0.3000.1")
+            .withOsType(OSType.LINUX)
+            .withClusterDefinition(
+                new ClusterDefinition()
+                    .withKind("SPARK")
+                    .withConfigurations(Collections.unmodifiableMap(clusterDefinition)))
+            .withComputeProfile(
+                new ComputeProfile()
+                    .withRoles(
+                        Arrays.asList(
+                            new Role().withName("headnode")
+                                .withTargetInstanceCount(2)
+                                .withHardwareProfile(new HardwareProfile().withVmSize("standard_e8_v3"))
+                                .withOsProfile(osProfile)
+                                .withEncryptDataDisks(false),
+                            new Role().withName("workernode")
+                                .withTargetInstanceCount(4)
+                                .withHardwareProfile(new HardwareProfile().withVmSize("standard_e8_v3"))
+                                .withOsProfile(osProfile)
+                                .withEncryptDataDisks(false),
+                            new Role().withName("zookeepernode")
+                                .withTargetInstanceCount(3)
+                                .withHardwareProfile(new HardwareProfile().withVmSize("standard_a2_v2"))
+                                .withOsProfile(osProfile)
+                                .withEncryptDataDisks(false)
+                        )))
+            .withTier(Tier.STANDARD)
+            .withEncryptionInTransitProperties(
+                new EncryptionInTransitProperties()
+                    .withIsEncryptionInTransitEnabled(false))
+            .withStorageProfile(
+                new StorageProfile()
+                    .withStorageaccounts(
+                        Arrays.asList(
+                            new StorageAccount()
+                                .withName(storageName + ".blob.core.windows.net")
+                                .withResourceId(storageAccount.id())
+                                .withContainer(blobContainer.name())
+                                .withIsDefault(true)
+                                .withKey(storageAccount.getKeys().iterator().next().value()))
+                    ))
+            .withMinSupportedTlsVersion("1.2")
+            .withComputeIsolationProperties(
+                new ComputeIsolationProperties()
+                    .withEnableComputeIsolation(false))
+    )
     .create();
 ```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/hdinsight/azure-resourcemanager-hdinsight/SAMPLE.md)
@@ -184,12 +161,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 <!-- LINKS -->
 [survey]: https://microsoft.qualtrics.com/jfe/form/SV_ehN0lIk2FKEBkwd?Q_CHL=DOCS
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/azure/developer/java/fundamentals/
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
+[azure_identity_credentials]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#credentials
 [azure_core_http_netty]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core-http-netty
 [authenticate]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/AUTH.md
 [design]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/DESIGN.md
 [cg]: https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
+
+![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fhdinsight%2Fazure-resourcemanager-hdinsight%2FREADME.png)

@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Cross tenant scopes. */
+/**
+ * Cross tenant scopes.
+ */
 @Immutable
-public final class CrossTenantScopes {
+public final class CrossTenantScopes implements JsonSerializable<CrossTenantScopes> {
     /*
      * Tenant ID.
      */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
      * List of management groups.
      */
-    @JsonProperty(value = "managementGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> managementGroups;
 
     /*
      * List of subscriptions.
      */
-    @JsonProperty(value = "subscriptions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> subscriptions;
 
-    /** Creates an instance of CrossTenantScopes class. */
+    /**
+     * Creates an instance of CrossTenantScopes class.
+     */
     public CrossTenantScopes() {
     }
 
     /**
      * Get the tenantId property: Tenant ID.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -44,7 +49,7 @@ public final class CrossTenantScopes {
 
     /**
      * Get the managementGroups property: List of management groups.
-     *
+     * 
      * @return the managementGroups value.
      */
     public List<String> managementGroups() {
@@ -53,7 +58,7 @@ public final class CrossTenantScopes {
 
     /**
      * Get the subscriptions property: List of subscriptions.
-     *
+     * 
      * @return the subscriptions value.
      */
     public List<String> subscriptions() {
@@ -62,9 +67,50 @@ public final class CrossTenantScopes {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CrossTenantScopes from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CrossTenantScopes if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CrossTenantScopes.
+     */
+    public static CrossTenantScopes fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CrossTenantScopes deserializedCrossTenantScopes = new CrossTenantScopes();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tenantId".equals(fieldName)) {
+                    deserializedCrossTenantScopes.tenantId = reader.getString();
+                } else if ("managementGroups".equals(fieldName)) {
+                    List<String> managementGroups = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCrossTenantScopes.managementGroups = managementGroups;
+                } else if ("subscriptions".equals(fieldName)) {
+                    List<String> subscriptions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCrossTenantScopes.subscriptions = subscriptions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCrossTenantScopes;
+        });
     }
 }

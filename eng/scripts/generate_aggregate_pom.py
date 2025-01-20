@@ -3,7 +3,7 @@
 
 # Python version 3.4 or higher is required to run this script.
 
-# Use case: Creates an aggregate POM which contains all modules for which aggregate JavaDoc or code coverage reports are generated. 
+# Use case: Creates an aggregate POM which contains all modules for which aggregate JavaDoc or code coverage reports are generated.
 # Note: This script must be run from the root of the azure-sdk-for-java repository
 #
 # Flags
@@ -22,10 +22,10 @@ from typing import Dict
 from pom_helper import *
 
 # azure-client-sdk-parent valid parent POMs for Track 2 libraries.
-valid_parents = ['com.azure:azure-client-sdk-parent']
+valid_parents = ['com.azure:azure-client-sdk-parent', 'io.clientcore:clientcore-parent']
 
 # List of parent POMs that should be retained as projects to create POM.
-parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent']
+parent_pom_identifiers = ['com.azure:azure-sdk-parent', 'com.azure:azure-client-sdk-parent', 'com.azure:azure-perf-test-parent', 'io.clientcore:clientcore-parent']
 
 include_groups = []
 
@@ -80,7 +80,7 @@ start_javadoc_build = '''
                         <doctitle>Azure SDK for Java Reference Documentation</doctitle>
                         <windowtitle>Azure SDK for Java Reference Documentation</windowtitle>
                         <detectJavaApiLink>false</detectJavaApiLink>
-                        <isOffline>true</isOffline>
+                        <offline>true</offline>
                         <linksource>false</linksource>
                         <failOnError>true</failOnError>
                         <failOnWarnings>true</failOnWarnings>
@@ -102,6 +102,7 @@ def create_aggregate_pom(project_list: str, groups: str, exclude_project_list: s
         include_groups.append('com.azure')
         include_groups.append('com.azure.spring')
         include_groups.append('com.azure.resourcemanager')
+        include_groups.append('io.clientcore')
     else:
         for group in groups.split(','):
             include_groups.append(group)
@@ -123,7 +124,7 @@ def create_aggregate_pom(project_list: str, groups: str, exclude_project_list: s
     projects = create_projects(project_list_identifiers, artifact_identifier_to_version)
 
     with open(file=client_aggregate_pom_path, mode='w') as aggregatePom:
-        aggregatePom.write(pom_file_start.format('azure-sdk-aggregate-report'))
+        aggregatePom.write(pom_file_start.format('sdk-aggregate-report'))
         aggregatePom.write(start_modules)
         dependencies = ''
 
@@ -167,7 +168,7 @@ def writeJavadocConfiguration(aggregatePom: TextIOWrapper):
 
         for line in config:
             stripped_line = line.strip()
-            
+
             if not stripped_line or stripped_line.startswith('#'):
                 continue
 
@@ -237,7 +238,7 @@ def create_projects(project_list_identifiers: list, artifact_identifier_to_versi
     projects: Dict[str, Project] = {}
 
     for root, _, files in os.walk(root_path):
-        # Ignore sdk/resourcemanagerhybrid, sdk/e2e, sdk/template and azure-security-test-keyvault-jca 
+        # Ignore sdk/resourcemanagerhybrid, sdk/e2e, sdk/template and azure-security-test-keyvault-jca
         if 'resourcemanagerhybrid' in root \
             or 'e2e' in root \
             or 'azure-security-test-keyvault-jca' in root \

@@ -5,50 +5,67 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The resource of an Azure Cosmos DB SQL database event. */
+/**
+ * The resource of an Azure Cosmos DB SQL database event.
+ */
 @Fluent
-public final class RestorableSqlDatabasePropertiesResource {
+public final class RestorableSqlDatabasePropertiesResource
+    implements JsonSerializable<RestorableSqlDatabasePropertiesResource> {
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * The operation type of this database event.
      */
-    @JsonProperty(value = "operationType", access = JsonProperty.Access.WRITE_ONLY)
     private OperationType operationType;
+
+    /*
+     * A state of this database to identify if this database is restorable in same account.
+     */
+    private String canUndelete;
+
+    /*
+     * The reason why this database can not be restored in same account.
+     */
+    private String canUndeleteReason;
 
     /*
      * The time when this database event happened.
      */
-    @JsonProperty(value = "eventTimestamp", access = JsonProperty.Access.WRITE_ONLY)
     private String eventTimestamp;
 
     /*
      * The name of the SQL database.
      */
-    @JsonProperty(value = "ownerId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerId;
 
     /*
      * The resource ID of the SQL database.
      */
-    @JsonProperty(value = "ownerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerResourceId;
 
     /*
      * Cosmos DB SQL database resource object
      */
-    @JsonProperty(value = "database")
     private RestorableSqlDatabasePropertiesResourceDatabase database;
 
     /**
+     * Creates an instance of RestorableSqlDatabasePropertiesResource class.
+     */
+    public RestorableSqlDatabasePropertiesResource() {
+    }
+
+    /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -57,7 +74,7 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Get the operationType property: The operation type of this database event.
-     *
+     * 
      * @return the operationType value.
      */
     public OperationType operationType() {
@@ -65,8 +82,27 @@ public final class RestorableSqlDatabasePropertiesResource {
     }
 
     /**
+     * Get the canUndelete property: A state of this database to identify if this database is restorable in same
+     * account.
+     * 
+     * @return the canUndelete value.
+     */
+    public String canUndelete() {
+        return this.canUndelete;
+    }
+
+    /**
+     * Get the canUndeleteReason property: The reason why this database can not be restored in same account.
+     * 
+     * @return the canUndeleteReason value.
+     */
+    public String canUndeleteReason() {
+        return this.canUndeleteReason;
+    }
+
+    /**
      * Get the eventTimestamp property: The time when this database event happened.
-     *
+     * 
      * @return the eventTimestamp value.
      */
     public String eventTimestamp() {
@@ -75,7 +111,7 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Get the ownerId property: The name of the SQL database.
-     *
+     * 
      * @return the ownerId value.
      */
     public String ownerId() {
@@ -84,7 +120,7 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Get the ownerResourceId property: The resource ID of the SQL database.
-     *
+     * 
      * @return the ownerResourceId value.
      */
     public String ownerResourceId() {
@@ -93,7 +129,7 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Get the database property: Cosmos DB SQL database resource object.
-     *
+     * 
      * @return the database value.
      */
     public RestorableSqlDatabasePropertiesResourceDatabase database() {
@@ -102,24 +138,77 @@ public final class RestorableSqlDatabasePropertiesResource {
 
     /**
      * Set the database property: Cosmos DB SQL database resource object.
-     *
+     * 
      * @param database the database value to set.
      * @return the RestorableSqlDatabasePropertiesResource object itself.
      */
-    public RestorableSqlDatabasePropertiesResource withDatabase(
-        RestorableSqlDatabasePropertiesResourceDatabase database) {
+    public RestorableSqlDatabasePropertiesResource
+        withDatabase(RestorableSqlDatabasePropertiesResourceDatabase database) {
         this.database = database;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (database() != null) {
             database().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("database", this.database);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableSqlDatabasePropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableSqlDatabasePropertiesResource if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableSqlDatabasePropertiesResource.
+     */
+    public static RestorableSqlDatabasePropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableSqlDatabasePropertiesResource deserializedRestorableSqlDatabasePropertiesResource
+                = new RestorableSqlDatabasePropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("_rid".equals(fieldName)) {
+                    deserializedRestorableSqlDatabasePropertiesResource.rid = reader.getString();
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedRestorableSqlDatabasePropertiesResource.operationType
+                        = OperationType.fromString(reader.getString());
+                } else if ("canUndelete".equals(fieldName)) {
+                    deserializedRestorableSqlDatabasePropertiesResource.canUndelete = reader.getString();
+                } else if ("canUndeleteReason".equals(fieldName)) {
+                    deserializedRestorableSqlDatabasePropertiesResource.canUndeleteReason = reader.getString();
+                } else if ("eventTimestamp".equals(fieldName)) {
+                    deserializedRestorableSqlDatabasePropertiesResource.eventTimestamp = reader.getString();
+                } else if ("ownerId".equals(fieldName)) {
+                    deserializedRestorableSqlDatabasePropertiesResource.ownerId = reader.getString();
+                } else if ("ownerResourceId".equals(fieldName)) {
+                    deserializedRestorableSqlDatabasePropertiesResource.ownerResourceId = reader.getString();
+                } else if ("database".equals(fieldName)) {
+                    deserializedRestorableSqlDatabasePropertiesResource.database
+                        = RestorableSqlDatabasePropertiesResourceDatabase.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableSqlDatabasePropertiesResource;
+        });
     }
 }

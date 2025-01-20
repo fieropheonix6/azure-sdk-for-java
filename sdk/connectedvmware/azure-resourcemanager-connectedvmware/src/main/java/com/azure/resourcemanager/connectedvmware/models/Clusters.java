@@ -8,27 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Clusters. */
+/**
+ * Resource collection API of Clusters.
+ */
 public interface Clusters {
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param clusterName Name of the cluster.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the cluster.
-     */
-    Cluster getByResourceGroup(String resourceGroupName, String clusterName);
-
-    /**
-     * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param context The context to associate with this operation.
@@ -40,24 +28,24 @@ public interface Clusters {
     Response<Cluster> getByResourceGroupWithResponse(String resourceGroupName, String clusterName, Context context);
 
     /**
-     * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * Gets a cluster.
+     * 
+     * Implements cluster GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the cluster.
      */
-    void delete(String resourceGroupName, String clusterName, Boolean force);
+    Cluster getByResourceGroup(String resourceGroupName, String clusterName);
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -68,9 +56,9 @@ public interface Clusters {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param clusterName Name of the cluster.
      * @param force Whether force delete was specified.
@@ -83,9 +71,9 @@ public interface Clusters {
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Clusters as paginated response with {@link PagedIterable}.
@@ -94,9 +82,9 @@ public interface Clusters {
 
     /**
      * Implements GET clusters in a subscription.
-     *
-     * <p>List of clusters in a subscription.
-     *
+     * 
+     * List of clusters in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -107,9 +95,9 @@ public interface Clusters {
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,9 +108,9 @@ public interface Clusters {
 
     /**
      * Implements GET clusters in a resource group.
-     *
-     * <p>List of clusters in a resource group.
-     *
+     * 
+     * List of clusters in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,9 +122,9 @@ public interface Clusters {
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -147,9 +135,9 @@ public interface Clusters {
 
     /**
      * Gets a cluster.
-     *
-     * <p>Implements cluster GET method.
-     *
+     * 
+     * Implements cluster GET method.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -161,9 +149,9 @@ public interface Clusters {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,9 +161,9 @@ public interface Clusters {
 
     /**
      * Deletes an cluster.
-     *
-     * <p>Implements cluster DELETE method.
-     *
+     * 
+     * Implements cluster DELETE method.
+     * 
      * @param id the resource ID.
      * @param force Whether force delete was specified.
      * @param context The context to associate with this operation.
@@ -187,7 +175,7 @@ public interface Clusters {
 
     /**
      * Begins definition for a new Cluster resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Cluster definition.
      */

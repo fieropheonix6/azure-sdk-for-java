@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.security.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Topology List. */
+/**
+ * Samples for Topology List.
+ */
 public final class TopologyListSamples {
     /*
-     * x-ms-original-file: specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/GetTopologySubscription_example.json
+     * x-ms-original-file:
+     * specification/security/resource-manager/Microsoft.Security/stable/2020-01-01/examples/Topology/
+     * GetTopologySubscription_example.json
      */
     /**
      * Sample code: Get topology on a subscription.
-     *
+     * 
      * @param manager Entry point to SecurityManager.
      */
     public static void getTopologyOnASubscription(com.azure.resourcemanager.security.SecurityManager manager) {
-        manager.topologies().list(Context.NONE);
+        manager.topologies().list(com.azure.core.util.Context.NONE);
     }
 }

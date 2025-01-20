@@ -12,46 +12,32 @@ import com.azure.resourcemanager.deviceupdate.models.UserAssignedIdentity;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AccountUpdateTests {
-    @Test
-    public void testDeserialize() {
-        AccountUpdate model =
-            BinaryData
-                .fromString(
-                    "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"gnarxzxtheo\":{},\"ivyevcciqihnhun\":{},\"jzrnf\":{},\"gispemvtzfkufubl\":{}}},\"location\":\"fxqeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"}}")
-                .toObject(AccountUpdate.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AccountUpdate model = BinaryData.fromString(
+            "{\"identity\":{\"principalId\":\"86ffd529-4a3e-4791-bdb1-7f215afbd159\",\"tenantId\":\"7e249a94-71fe-4993-b193-157130005c73\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"wjzrnfygxgisp\":{\"principalId\":\"23cf6a5d-c019-4052-9b42-ed3e65adeb7c\",\"clientId\":\"17372907-60ca-4944-a75a-651bde155eb7\"},\"tzfkufubl\":{\"principalId\":\"75d444c3-d113-427c-8a05-8eea4629815f\",\"clientId\":\"5409ec3f-22b0-4b9a-a9f3-eb49b5d2b589\"}}},\"location\":\"fxqeof\",\"tags\":{\"msmjqulngsntn\":\"qjhqjbas\"}}")
+            .toObject(AccountUpdate.class);
         Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("fxqeof", model.location());
     }
 
-    @Test
-    public void testSerialize() {
-        AccountUpdate model =
-            new AccountUpdate()
-                .withTags(mapOf("msmjqulngsntn", "qjhqjbas"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "gnarxzxtheo",
-                                new UserAssignedIdentity(),
-                                "ivyevcciqihnhun",
-                                new UserAssignedIdentity(),
-                                "jzrnf",
-                                new UserAssignedIdentity(),
-                                "gispemvtzfkufubl",
-                                new UserAssignedIdentity())))
-                .withLocation("fxqeof");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AccountUpdate model = new AccountUpdate().withTags(mapOf("msmjqulngsntn", "qjhqjbas"))
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("wjzrnfygxgisp", new UserAssignedIdentity(), "tzfkufubl", new UserAssignedIdentity())))
+            .withLocation("fxqeof");
         model = BinaryData.fromObject(model).toObject(AccountUpdate.class);
         Assertions.assertEquals("qjhqjbas", model.tags().get("msmjqulngsntn"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, model.identity().type());
+        Assertions.assertEquals(ManagedServiceIdentityType.USER_ASSIGNED, model.identity().type());
         Assertions.assertEquals("fxqeof", model.location());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

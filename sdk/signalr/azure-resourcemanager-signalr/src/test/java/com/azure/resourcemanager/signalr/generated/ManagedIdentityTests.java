@@ -11,36 +11,25 @@ import com.azure.resourcemanager.signalr.models.UserAssignedIdentityProperty;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ManagedIdentityTests {
-    @Test
-    public void testDeserialize() {
-        ManagedIdentity model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"bhsfxob\":{\"principalId\":\"cqaqtdoqmcbx\",\"clientId\":\"vxysl\"},\"shqjohxcrsbf\":{\"principalId\":\"tkblmpewww\",\"clientId\":\"krvrns\"},\"ybsrfbjfdtwss\":{\"principalId\":\"asrru\",\"clientId\":\"bhsqfsubcgjbirxb\"}},\"principalId\":\"ftpvjzbexil\",\"tenantId\":\"nfqqnvwp\"}")
-                .toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ManagedIdentity model = BinaryData.fromString(
+            "{\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"ymsgaojfmwnc\":{\"principalId\":\"pniyujviyl\",\"clientId\":\"shfssnrbgyef\"}},\"principalId\":\"mrfhirctymox\",\"tenantId\":\"tpipiwyczuhx\"}")
+            .toObject(ManagedIdentity.class);
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
-    @Test
-    public void testSerialize() {
-        ManagedIdentity model =
-            new ManagedIdentity()
-                .withType(ManagedIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "bhsfxob",
-                        new UserAssignedIdentityProperty(),
-                        "shqjohxcrsbf",
-                        new UserAssignedIdentityProperty(),
-                        "ybsrfbjfdtwss",
-                        new UserAssignedIdentityProperty()));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ManagedIdentity model = new ManagedIdentity().withType(ManagedIdentityType.SYSTEM_ASSIGNED)
+            .withUserAssignedIdentities(mapOf("ymsgaojfmwnc", new UserAssignedIdentityProperty()));
         model = BinaryData.fromObject(model).toObject(ManagedIdentity.class);
-        Assertions.assertEquals(ManagedIdentityType.USER_ASSIGNED, model.type());
+        Assertions.assertEquals(ManagedIdentityType.SYSTEM_ASSIGNED, model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

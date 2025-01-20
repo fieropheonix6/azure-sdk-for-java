@@ -6,45 +6,50 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityPartnerProviderConnectionStatus;
 import com.azure.resourcemanager.network.models.SecurityProviderName;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of the Security Partner Provider. */
+/**
+ * Properties of the Security Partner Provider.
+ */
 @Fluent
-public final class SecurityPartnerProviderPropertiesFormat {
+public final class SecurityPartnerProviderPropertiesFormat
+    implements JsonSerializable<SecurityPartnerProviderPropertiesFormat> {
     /*
      * The provisioning state of the Security Partner Provider resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * The security provider name.
      */
-    @JsonProperty(value = "securityProviderName")
     private SecurityProviderName securityProviderName;
 
     /*
      * The connection status with the Security Partner Provider.
      */
-    @JsonProperty(value = "connectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private SecurityPartnerProviderConnectionStatus connectionStatus;
 
     /*
      * The virtualHub to which the Security Partner Provider belongs.
      */
-    @JsonProperty(value = "virtualHub")
     private SubResource virtualHub;
 
-    /** Creates an instance of SecurityPartnerProviderPropertiesFormat class. */
+    /**
+     * Creates an instance of SecurityPartnerProviderPropertiesFormat class.
+     */
     public SecurityPartnerProviderPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the Security Partner Provider resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -53,7 +58,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Get the securityProviderName property: The security provider name.
-     *
+     * 
      * @return the securityProviderName value.
      */
     public SecurityProviderName securityProviderName() {
@@ -62,7 +67,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Set the securityProviderName property: The security provider name.
-     *
+     * 
      * @param securityProviderName the securityProviderName value to set.
      * @return the SecurityPartnerProviderPropertiesFormat object itself.
      */
@@ -73,7 +78,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Get the connectionStatus property: The connection status with the Security Partner Provider.
-     *
+     * 
      * @return the connectionStatus value.
      */
     public SecurityPartnerProviderConnectionStatus connectionStatus() {
@@ -82,7 +87,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Get the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -91,7 +96,7 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Set the virtualHub property: The virtualHub to which the Security Partner Provider belongs.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the SecurityPartnerProviderPropertiesFormat object itself.
      */
@@ -102,9 +107,57 @@ public final class SecurityPartnerProviderPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("securityProviderName",
+            this.securityProviderName == null ? null : this.securityProviderName.toString());
+        jsonWriter.writeJsonField("virtualHub", this.virtualHub);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SecurityPartnerProviderPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SecurityPartnerProviderPropertiesFormat if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SecurityPartnerProviderPropertiesFormat.
+     */
+    public static SecurityPartnerProviderPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SecurityPartnerProviderPropertiesFormat deserializedSecurityPartnerProviderPropertiesFormat
+                = new SecurityPartnerProviderPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedSecurityPartnerProviderPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("securityProviderName".equals(fieldName)) {
+                    deserializedSecurityPartnerProviderPropertiesFormat.securityProviderName
+                        = SecurityProviderName.fromString(reader.getString());
+                } else if ("connectionStatus".equals(fieldName)) {
+                    deserializedSecurityPartnerProviderPropertiesFormat.connectionStatus
+                        = SecurityPartnerProviderConnectionStatus.fromString(reader.getString());
+                } else if ("virtualHub".equals(fieldName)) {
+                    deserializedSecurityPartnerProviderPropertiesFormat.virtualHub = SubResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSecurityPartnerProviderPropertiesFormat;
+        });
     }
 }

@@ -25,30 +25,33 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.RecoveryPointsClient;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupRecoveryPointResourceInner;
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRecoveryPointResourceList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RecoveryPointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoveryPointsClient.
+ */
 public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
-    private final ClientLogger logger = new ClientLogger(RecoveryPointsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RecoveryPointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of RecoveryPointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RecoveryPointsClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy.create(RecoveryPointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(RecoveryPointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,87 +61,68 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
-    private interface RecoveryPointsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection"
-                + "/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/recoveryPoints")
-        @ExpectedResponses({200})
+    public interface RecoveryPointsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/recoveryPoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureBackupRecoveryPointResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<AzureBackupRecoveryPointResourceList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
+            @PathParam("backupInstanceName") String backupInstanceName, @QueryParam("$filter") String filter,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/recoveryPoints/{recoveryPointId}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AzureBackupRecoveryPointResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("vaultName") String vaultName,
             @PathParam("backupInstanceName") String backupInstanceName,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
+            @PathParam("recoveryPointId") String recoveryPointId, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataProtection"
-                + "/backupVaults/{vaultName}/backupInstances/{backupInstanceName}/recoveryPoints/{recoveryPointId}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<AzureBackupRecoveryPointResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("backupInstanceName") String backupInstanceName,
-            @PathParam("recoveryPointId") String recoveryPointId,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<AzureBackupRecoveryPointResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param filter OData filter options.
      * @param skipToken skipToken Filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBackupRecoveryPointResourceInner>> listSinglePageAsync(
-        String vaultName, String resourceGroupName, String backupInstanceName, String filter, String skipToken) {
+    private Mono<PagedResponse<AzureBackupRecoveryPointResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, String filter, String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupInstanceName == null) {
             return Mono
@@ -146,37 +130,19 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            backupInstanceName,
-                            filter,
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<AzureBackupRecoveryPointResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, filter, skipToken,
+                accept, context))
+            .<PagedResponse<AzureBackupRecoveryPointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param filter OData filter options.
      * @param skipToken skipToken Filter.
@@ -184,34 +150,26 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBackupRecoveryPointResourceInner>> listSinglePageAsync(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        String filter,
-        String skipToken,
-        Context context) {
+    private Mono<PagedResponse<AzureBackupRecoveryPointResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, String filter, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupInstanceName == null) {
             return Mono
@@ -220,75 +178,59 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                backupInstanceName,
-                filter,
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, vaultName, backupInstanceName, filter, skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param filter OData filter options.
      * @param skipToken skipToken Filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureBackupRecoveryPointResourceInner> listAsync(
-        String vaultName, String resourceGroupName, String backupInstanceName, String filter, String skipToken) {
+    private PagedFlux<AzureBackupRecoveryPointResourceInner> listAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, String filter, String skipToken) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(vaultName, resourceGroupName, backupInstanceName, filter, skipToken),
+            () -> listSinglePageAsync(resourceGroupName, vaultName, backupInstanceName, filter, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureBackupRecoveryPointResourceInner> listAsync(
-        String vaultName, String resourceGroupName, String backupInstanceName) {
+    private PagedFlux<AzureBackupRecoveryPointResourceInner> listAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         final String filter = null;
         final String skipToken = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(vaultName, resourceGroupName, backupInstanceName, filter, skipToken),
+            () -> listSinglePageAsync(resourceGroupName, vaultName, backupInstanceName, filter, skipToken),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param filter OData filter options.
      * @param skipToken skipToken Filter.
@@ -296,45 +238,40 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AzureBackupRecoveryPointResourceInner> listAsync(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        String filter,
-        String skipToken,
-        Context context) {
+    private PagedFlux<AzureBackupRecoveryPointResourceInner> listAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, String filter, String skipToken, Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(vaultName, resourceGroupName, backupInstanceName, filter, skipToken, context),
+            () -> listSinglePageAsync(resourceGroupName, vaultName, backupInstanceName, filter, skipToken, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureBackupRecoveryPointResourceInner> list(
-        String vaultName, String resourceGroupName, String backupInstanceName) {
+    public PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
         final String filter = null;
         final String skipToken = null;
-        return new PagedIterable<>(listAsync(vaultName, resourceGroupName, backupInstanceName, filter, skipToken));
+        return new PagedIterable<>(listAsync(resourceGroupName, vaultName, backupInstanceName, filter, skipToken));
     }
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param filter OData filter options.
      * @param skipToken skipToken Filter.
@@ -342,53 +279,45 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<AzureBackupRecoveryPointResourceInner> list(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        String filter,
-        String skipToken,
-        Context context) {
+    public PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String vaultName,
+        String backupInstanceName, String filter, String skipToken, Context context) {
         return new PagedIterable<>(
-            listAsync(vaultName, resourceGroupName, backupInstanceName, filter, skipToken, context));
+            listAsync(resourceGroupName, vaultName, backupInstanceName, filter, skipToken, context));
     }
 
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param recoveryPointId The recoveryPointId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Recovery Point using recoveryPointId for a Datasource.
+     * @return a Recovery Point using recoveryPointId for a Datasource along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureBackupRecoveryPointResourceInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String backupInstanceName, String recoveryPointId) {
+    private Mono<Response<AzureBackupRecoveryPointResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, String recoveryPointId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupInstanceName == null) {
             return Mono
@@ -400,60 +329,43 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            backupInstanceName,
-                            recoveryPointId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, vaultName, backupInstanceName, recoveryPointId,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param recoveryPointId The recoveryPointId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Recovery Point using recoveryPointId for a Datasource.
+     * @return a Recovery Point using recoveryPointId for a Datasource along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AzureBackupRecoveryPointResourceInner>> getWithResponseAsync(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        String recoveryPointId,
-        Context context) {
+    private Mono<Response<AzureBackupRecoveryPointResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String vaultName, String backupInstanceName, String recoveryPointId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (vaultName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        if (vaultName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
         }
         if (backupInstanceName == null) {
             return Mono
@@ -465,94 +377,76 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                backupInstanceName,
-                recoveryPointId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, vaultName, backupInstanceName, recoveryPointId, accept, context);
     }
 
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param recoveryPointId The recoveryPointId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Recovery Point using recoveryPointId for a Datasource.
+     * @return a Recovery Point using recoveryPointId for a Datasource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<AzureBackupRecoveryPointResourceInner> getAsync(
-        String vaultName, String resourceGroupName, String backupInstanceName, String recoveryPointId) {
-        return getWithResponseAsync(vaultName, resourceGroupName, backupInstanceName, recoveryPointId)
-            .flatMap(
-                (Response<AzureBackupRecoveryPointResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    private Mono<AzureBackupRecoveryPointResourceInner> getAsync(String resourceGroupName, String vaultName,
+        String backupInstanceName, String recoveryPointId) {
+        return getWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, recoveryPointId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
-     * @param backupInstanceName The name of the backup instance.
-     * @param recoveryPointId The recoveryPointId parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Recovery Point using recoveryPointId for a Datasource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureBackupRecoveryPointResourceInner get(
-        String vaultName, String resourceGroupName, String backupInstanceName, String recoveryPointId) {
-        return getAsync(vaultName, resourceGroupName, backupInstanceName, recoveryPointId).block();
-    }
-
-    /**
-     * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
-     * @param vaultName The name of the backup vault.
-     * @param resourceGroupName The name of the resource group where the backup vault is present.
      * @param backupInstanceName The name of the backup instance.
      * @param recoveryPointId The recoveryPointId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Recovery Point using recoveryPointId for a Datasource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AzureBackupRecoveryPointResourceInner> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, String recoveryPointId, Context context) {
+        return getWithResponseAsync(resourceGroupName, vaultName, backupInstanceName, recoveryPointId, context).block();
+    }
+
+    /**
+     * Gets a Recovery Point using recoveryPointId for a Datasource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vaultName The name of the backup vault.
+     * @param backupInstanceName The name of the backup instance.
+     * @param recoveryPointId The recoveryPointId parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Recovery Point using recoveryPointId for a Datasource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AzureBackupRecoveryPointResourceInner> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        String recoveryPointId,
-        Context context) {
-        return getWithResponseAsync(vaultName, resourceGroupName, backupInstanceName, recoveryPointId, context).block();
+    public AzureBackupRecoveryPointResourceInner get(String resourceGroupName, String vaultName,
+        String backupInstanceName, String recoveryPointId) {
+        return getWithResponse(resourceGroupName, vaultName, backupInstanceName, recoveryPointId, Context.NONE)
+            .getValue();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AzureBackupRecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -560,60 +454,41 @@ public final class RecoveryPointsClientImpl implements RecoveryPointsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<AzureBackupRecoveryPointResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<AzureBackupRecoveryPointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return azureBackupRecoveryPointResourceList.
+     * @return azureBackupRecoveryPointResourceList along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AzureBackupRecoveryPointResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<AzureBackupRecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

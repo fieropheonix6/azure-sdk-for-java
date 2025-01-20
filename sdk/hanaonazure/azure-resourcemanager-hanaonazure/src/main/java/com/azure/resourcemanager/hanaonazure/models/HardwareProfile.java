@@ -4,31 +4,37 @@
 
 package com.azure.resourcemanager.hanaonazure.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Specifies the hardware settings for the HANA instance. */
-@Fluent
-public final class HardwareProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
-
+/**
+ * Specifies the hardware settings for the HANA instance.
+ */
+@Immutable
+public final class HardwareProfile implements JsonSerializable<HardwareProfile> {
     /*
      * Name of the hardware type (vendor and/or their product name)
      */
-    @JsonProperty(value = "hardwareType")
     private HanaHardwareTypeNamesEnum hardwareType;
 
     /*
      * Specifies the HANA instance SKU.
      */
-    @JsonProperty(value = "hanaInstanceSize")
     private HanaInstanceSizeNamesEnum hanaInstanceSize;
 
     /**
+     * Creates an instance of HardwareProfile class.
+     */
+    public HardwareProfile() {
+    }
+
+    /**
      * Get the hardwareType property: Name of the hardware type (vendor and/or their product name).
-     *
+     * 
      * @return the hardwareType value.
      */
     public HanaHardwareTypeNamesEnum hardwareType() {
@@ -36,19 +42,8 @@ public final class HardwareProfile {
     }
 
     /**
-     * Set the hardwareType property: Name of the hardware type (vendor and/or their product name).
-     *
-     * @param hardwareType the hardwareType value to set.
-     * @return the HardwareProfile object itself.
-     */
-    public HardwareProfile withHardwareType(HanaHardwareTypeNamesEnum hardwareType) {
-        this.hardwareType = hardwareType;
-        return this;
-    }
-
-    /**
      * Get the hanaInstanceSize property: Specifies the HANA instance SKU.
-     *
+     * 
      * @return the hanaInstanceSize value.
      */
     public HanaInstanceSizeNamesEnum hanaInstanceSize() {
@@ -56,21 +51,48 @@ public final class HardwareProfile {
     }
 
     /**
-     * Set the hanaInstanceSize property: Specifies the HANA instance SKU.
-     *
-     * @param hanaInstanceSize the hanaInstanceSize value to set.
-     * @return the HardwareProfile object itself.
-     */
-    public HardwareProfile withHanaInstanceSize(HanaInstanceSizeNamesEnum hanaInstanceSize) {
-        this.hanaInstanceSize = hanaInstanceSize;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HardwareProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HardwareProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HardwareProfile.
+     */
+    public static HardwareProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HardwareProfile deserializedHardwareProfile = new HardwareProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("hardwareType".equals(fieldName)) {
+                    deserializedHardwareProfile.hardwareType = HanaHardwareTypeNamesEnum.fromString(reader.getString());
+                } else if ("hanaInstanceSize".equals(fieldName)) {
+                    deserializedHardwareProfile.hanaInstanceSize
+                        = HanaInstanceSizeNamesEnum.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHardwareProfile;
+        });
     }
 }

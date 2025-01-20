@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import java.util.List;
+
 /**
  * Used internally. Constants in the Azure Cosmos DB database service Java SDK.
  */
@@ -31,6 +33,7 @@ public final class Constants {
         public static final String COUNT = "_count";
         public static final String E_TAG = "_etag";
         public static final String VALUE = "_value";
+        public static final String TRACKING_ID = "_trackingId";
 
         public static final String CONSISTENCY_POLICY = "consistencyPolicy";
         public static final String DEFAULT_CONSISTENCY_LEVEL = "defaultConsistencyLevel";
@@ -118,6 +121,38 @@ public final class Constants {
         public static final String ORDER = "order";
         public static final String SPATIAL_INDEXES = "spatialIndexes";
         public static final String TYPES = "types";
+
+        // Full text search
+        public static final String FULL_TEXT_INDEXES = "fullTextIndexes";
+        public static final String DEFAULT_LANGUAGE = "defaultLanguage";
+        public static final String LANGUAGE = "language";
+        public static final String FULL_TEXT_POLICY = "fullTextPolicy";
+        public static final String FULL_TEXT_PATHS = "fullTextPaths";
+
+        // Hybrid Search Query
+        public static final String GLOBAL_STATISTICS_QUERY = "globalStatisticsQuery";
+        public static final String COMPONENT_QUERY_INFOS = "componentQueryInfos";
+        public static final String PROJECTION_QUERY_INFO = "projectionQueryInfo";
+        public static final String SKIP = "skip";
+        public static final String TAKE = "take";
+        public static final String REQUIRES_GLOBAL_STATISTICS = "requiresGlobalStatistics";
+        public static final String TOTAL_WORD_COUNT = "totalWordCount";
+        public static final String HIT_COUNTS = "hitCounts";
+        public static final String DOCUMENT_COUNT = "documentCount";
+        public static final String FULL_TEXT_QUERY_STATISTICS = "fullTextStatistics";
+        public static final String PAYLOAD = "payload";
+        public static final String COMPONENT_SCORES = "componentScores";
+
+        // Vector Embedding Policy
+        public static final String VECTOR_EMBEDDING_POLICY = "vectorEmbeddingPolicy";
+        public static final String VECTOR_INDEXES = "vectorIndexes";
+        public static final String VECTOR_EMBEDDINGS = "vectorEmbeddings";
+        public static final String VECTOR_INDEX_TYPE = "type";
+        public static final String VECTOR_DATA_TYPE = "dataType";
+        public static final String VECTOR_DIMENSIONS = "dimensions";
+        public static final String DISTANCE_FUNCTION = "distanceFunction";
+        public static final String VECTOR_QUANTIZATION_SIZE_IN_BYTES = "quantizationByteSize";
+        public static final String VECTOR_INDEXING_SEARCH_LIST_SIZE =  "indexingSearchListSize";
 
         // Unique index.
         public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";
@@ -229,6 +264,11 @@ public final class Constants {
         public static final String CHANGE_FEED_START_FROM_TYPE = "Type";
         public static final String CHANGE_FEED_START_FROM_POINT_IN_TIME_MS = "PointInTimeMs";
         public static final String CHANGE_FEED_START_FROM_ETAG = "Etag";
+
+        // Computed Properties
+        public static final String COMPUTED_PROPERTIES = "computedProperties";
+        public static final String COMPUTED_PROPERTIES_NAME = "name";
+        public static final String COMPUTED_PROPERTIES_QUERY = "query";
     }
 
     public static final class UrlEncodingInfo {
@@ -246,5 +286,5 @@ public final class Constants {
         public static final String INCREMENTAL_FEED_HEADER_VALUE = "Incremental feed";
     }
 
-    public static final int QUERYPLAN_CACHE_SIZE = 1000;
+    public static final int QUERYPLAN_CACHE_SIZE = 5000;
 }

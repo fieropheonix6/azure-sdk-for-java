@@ -5,34 +5,91 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.DetectorAbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.DiagnosticMetricSet;
 import com.azure.resourcemanager.appservice.models.NameValuePair;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.ResponseMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Class representing Response from Diagnostic Detectors. */
+/**
+ * Class representing Response from Diagnostic Detectors.
+ */
 @Fluent
 public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
     /*
      * DiagnosticDetectorResponse resource specific properties
      */
-    @JsonProperty(value = "properties")
     private DiagnosticDetectorResponseProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DiagnosticDetectorResponseInner class.
+     */
+    public DiagnosticDetectorResponseInner() {
+    }
 
     /**
      * Get the innerProperties property: DiagnosticDetectorResponse resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiagnosticDetectorResponseProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DiagnosticDetectorResponseInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +98,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the startTime property: Start time of the period.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -50,7 +107,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the startTime property: Start time of the period.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
@@ -64,7 +121,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the endTime property: End time of the period.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -73,7 +130,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the endTime property: End time of the period.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
@@ -87,7 +144,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the issueDetected property: Flag representing Issue was detected.
-     *
+     * 
      * @return the issueDetected value.
      */
     public Boolean issueDetected() {
@@ -96,7 +153,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the issueDetected property: Flag representing Issue was detected.
-     *
+     * 
      * @param issueDetected the issueDetected value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
@@ -110,7 +167,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the detectorDefinition property: Detector's definition.
-     *
+     * 
      * @return the detectorDefinition value.
      */
     public DetectorDefinition detectorDefinition() {
@@ -119,7 +176,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the detectorDefinition property: Detector's definition.
-     *
+     * 
      * @param detectorDefinition the detectorDefinition value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
@@ -133,7 +190,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the metrics property: Metrics provided by the detector.
-     *
+     * 
      * @return the metrics value.
      */
     public List<DiagnosticMetricSet> metrics() {
@@ -142,7 +199,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the metrics property: Metrics provided by the detector.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
@@ -156,7 +213,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the abnormalTimePeriods property: List of Correlated events found by the detector.
-     *
+     * 
      * @return the abnormalTimePeriods value.
      */
     public List<DetectorAbnormalTimePeriod> abnormalTimePeriods() {
@@ -165,12 +222,12 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the abnormalTimePeriods property: List of Correlated events found by the detector.
-     *
+     * 
      * @param abnormalTimePeriods the abnormalTimePeriods value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
-    public DiagnosticDetectorResponseInner withAbnormalTimePeriods(
-        List<DetectorAbnormalTimePeriod> abnormalTimePeriods) {
+    public DiagnosticDetectorResponseInner
+        withAbnormalTimePeriods(List<DetectorAbnormalTimePeriod> abnormalTimePeriods) {
         if (this.innerProperties() == null) {
             this.innerProperties = new DiagnosticDetectorResponseProperties();
         }
@@ -180,7 +237,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the data property: Additional Data that detector wants to send.
-     *
+     * 
      * @return the data value.
      */
     public List<List<NameValuePair>> data() {
@@ -189,7 +246,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the data property: Additional Data that detector wants to send.
-     *
+     * 
      * @param data the data value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
@@ -203,7 +260,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the responseMetadata property: Meta Data.
-     *
+     * 
      * @return the responseMetadata value.
      */
     public ResponseMetadata responseMetadata() {
@@ -212,7 +269,7 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the responseMetadata property: Meta Data.
-     *
+     * 
      * @param responseMetadata the responseMetadata value to set.
      * @return the DiagnosticDetectorResponseInner object itself.
      */
@@ -226,14 +283,61 @@ public final class DiagnosticDetectorResponseInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticDetectorResponseInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticDetectorResponseInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DiagnosticDetectorResponseInner.
+     */
+    public static DiagnosticDetectorResponseInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticDetectorResponseInner deserializedDiagnosticDetectorResponseInner
+                = new DiagnosticDetectorResponseInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDiagnosticDetectorResponseInner.innerProperties
+                        = DiagnosticDetectorResponseProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticDetectorResponseInner;
+        });
     }
 }

@@ -13,39 +13,49 @@ import com.azure.resourcemanager.logic.fluent.IntegrationAccountBatchConfigurati
 import com.azure.resourcemanager.logic.fluent.models.BatchConfigurationInner;
 import com.azure.resourcemanager.logic.models.BatchConfiguration;
 import com.azure.resourcemanager.logic.models.IntegrationAccountBatchConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountBatchConfigurationsImpl implements IntegrationAccountBatchConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountBatchConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountBatchConfigurationsImpl.class);
 
     private final IntegrationAccountBatchConfigurationsClient innerClient;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public IntegrationAccountBatchConfigurationsImpl(
-        IntegrationAccountBatchConfigurationsClient innerClient,
+    public IntegrationAccountBatchConfigurationsImpl(IntegrationAccountBatchConfigurationsClient innerClient,
         com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<BatchConfiguration> list(String resourceGroupName, String integrationAccountName) {
-        PagedIterable<BatchConfigurationInner> inner =
-            this.serviceClient().list(resourceGroupName, integrationAccountName);
-        return Utils.mapPage(inner, inner1 -> new BatchConfigurationImpl(inner1, this.manager()));
+        PagedIterable<BatchConfigurationInner> inner
+            = this.serviceClient().list(resourceGroupName, integrationAccountName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BatchConfigurationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BatchConfiguration> list(
-        String resourceGroupName, String integrationAccountName, Context context) {
-        PagedIterable<BatchConfigurationInner> inner =
-            this.serviceClient().list(resourceGroupName, integrationAccountName, context);
-        return Utils.mapPage(inner, inner1 -> new BatchConfigurationImpl(inner1, this.manager()));
+    public PagedIterable<BatchConfiguration> list(String resourceGroupName, String integrationAccountName,
+        Context context) {
+        PagedIterable<BatchConfigurationInner> inner
+            = this.serviceClient().list(resourceGroupName, integrationAccountName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BatchConfigurationImpl(inner1, this.manager()));
     }
 
-    public BatchConfiguration get(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName) {
-        BatchConfigurationInner inner =
-            this.serviceClient().get(resourceGroupName, integrationAccountName, batchConfigurationName);
+    public Response<BatchConfiguration> getWithResponse(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, Context context) {
+        Response<BatchConfigurationInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BatchConfigurationImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BatchConfiguration get(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName) {
+        BatchConfigurationInner inner
+            = this.serviceClient().get(resourceGroupName, integrationAccountName, batchConfigurationName);
         if (inner != null) {
             return new BatchConfigurationImpl(inner, this.manager());
         } else {
@@ -53,154 +63,89 @@ public final class IntegrationAccountBatchConfigurationsImpl implements Integrat
         }
     }
 
-    public Response<BatchConfiguration> getWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context) {
-        Response<BatchConfigurationInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new BatchConfigurationImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName,
+        String batchConfigurationName, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, context);
     }
 
     public void delete(String resourceGroupName, String integrationAccountName, String batchConfigurationName) {
         this.serviceClient().delete(resourceGroupName, integrationAccountName, batchConfigurationName);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String integrationAccountName, String batchConfigurationName, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, context);
-    }
-
     public BatchConfiguration getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String batchConfigurationName = Utils.getValueFromIdByName(id, "batchConfigurations");
+        String batchConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "batchConfigurations");
         if (batchConfigurationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
         }
-        return this
-            .getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE)
+        return this.getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE)
             .getValue();
     }
 
     public Response<BatchConfiguration> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String batchConfigurationName = Utils.getValueFromIdByName(id, "batchConfigurations");
+        String batchConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "batchConfigurations");
         if (batchConfigurationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
         }
         return this.getWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String batchConfigurationName = Utils.getValueFromIdByName(id, "batchConfigurations");
+        String batchConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "batchConfigurations");
         if (batchConfigurationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
         }
-        this
-            .deleteWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE)
-            .getValue();
+        this.deleteWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        String batchConfigurationName = Utils.getValueFromIdByName(id, "batchConfigurations");
+        String batchConfigurationName = ResourceManagerUtils.getValueFromIdByName(id, "batchConfigurations");
         if (batchConfigurationName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'batchConfigurations'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, integrationAccountName, batchConfigurationName, context);
     }

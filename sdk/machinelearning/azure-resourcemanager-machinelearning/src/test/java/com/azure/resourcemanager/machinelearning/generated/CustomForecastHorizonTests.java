@@ -7,20 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.CustomForecastHorizon;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CustomForecastHorizonTests {
-    @Test
-    public void testDeserialize() {
-        CustomForecastHorizon model =
-            BinaryData.fromString("{\"mode\":\"Custom\",\"value\":632851650}").toObject(CustomForecastHorizon.class);
-        Assertions.assertEquals(632851650, model.value());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CustomForecastHorizon model
+            = BinaryData.fromString("{\"mode\":\"Custom\",\"value\":521751095}").toObject(CustomForecastHorizon.class);
+        Assertions.assertEquals(521751095, model.value());
     }
 
-    @Test
-    public void testSerialize() {
-        CustomForecastHorizon model = new CustomForecastHorizon().withValue(632851650);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CustomForecastHorizon model = new CustomForecastHorizon().withValue(521751095);
         model = BinaryData.fromObject(model).toObject(CustomForecastHorizon.class);
-        Assertions.assertEquals(632851650, model.value());
+        Assertions.assertEquals(521751095, model.value());
     }
 }

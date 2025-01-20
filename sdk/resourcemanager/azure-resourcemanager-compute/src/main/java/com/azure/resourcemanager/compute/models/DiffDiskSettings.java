@@ -5,37 +5,42 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
- * Describes the parameters of ephemeral disk settings that can be specified for operating system disk.
- * &lt;br&gt;&lt;br&gt; NOTE: The ephemeral disk settings can only be specified for managed disk.
+ * Describes the parameters of ephemeral disk settings that can be specified for operating system disk. **Note:** The
+ * ephemeral disk settings can only be specified for managed disk.
  */
 @Fluent
-public final class DiffDiskSettings {
+public final class DiffDiskSettings implements JsonSerializable<DiffDiskSettings> {
     /*
      * Specifies the ephemeral disk settings for operating system disk.
      */
-    @JsonProperty(value = "option")
     private DiffDiskOptions option;
 
     /*
-     * Specifies the ephemeral disk placement for operating system disk.<br><br> Possible values are: <br><br>
-     * **CacheDisk** <br><br> **ResourceDisk** <br><br> Default: **CacheDisk** if one is configured for the VM size
-     * otherwise **ResourceDisk** is used.<br><br> Refer to VM size documentation for Windows VM at
+     * Specifies the ephemeral disk placement for operating system disk. Possible values are: **CacheDisk,**
+     * **ResourceDisk,** **NvmeDisk.** The defaulting behavior is: **CacheDisk** if one is configured for the VM size
+     * otherwise **ResourceDisk** or **NvmeDisk** is used. Refer to the VM size documentation for Windows VM at
      * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
      * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
+     * Minimum api-version for NvmeDisk: 2024-03-01.
      */
-    @JsonProperty(value = "placement")
     private DiffDiskPlacement placement;
 
-    /** Creates an instance of DiffDiskSettings class. */
+    /**
+     * Creates an instance of DiffDiskSettings class.
+     */
     public DiffDiskSettings() {
     }
 
     /**
      * Get the option property: Specifies the ephemeral disk settings for operating system disk.
-     *
+     * 
      * @return the option value.
      */
     public DiffDiskOptions option() {
@@ -44,7 +49,7 @@ public final class DiffDiskSettings {
 
     /**
      * Set the option property: Specifies the ephemeral disk settings for operating system disk.
-     *
+     * 
      * @param option the option value to set.
      * @return the DiffDiskSettings object itself.
      */
@@ -54,13 +59,13 @@ public final class DiffDiskSettings {
     }
 
     /**
-     * Get the placement property: Specifies the ephemeral disk placement for operating system disk.&lt;br&gt;&lt;br&gt;
-     * Possible values are: &lt;br&gt;&lt;br&gt; **CacheDisk** &lt;br&gt;&lt;br&gt; **ResourceDisk**
-     * &lt;br&gt;&lt;br&gt; Default: **CacheDisk** if one is configured for the VM size otherwise **ResourceDisk** is
-     * used.&lt;br&gt;&lt;br&gt; Refer to VM size documentation for Windows VM at
-     * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
+     * Get the placement property: Specifies the ephemeral disk placement for operating system disk. Possible values
+     * are: **CacheDisk,** **ResourceDisk,** **NvmeDisk.** The defaulting behavior is: **CacheDisk** if one is
+     * configured for the VM size otherwise **ResourceDisk** or **NvmeDisk** is used. Refer to the VM size documentation
+     * for Windows VM at https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
      * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
-     *
+     * Minimum api-version for NvmeDisk: 2024-03-01.
+     * 
      * @return the placement value.
      */
     public DiffDiskPlacement placement() {
@@ -68,13 +73,13 @@ public final class DiffDiskSettings {
     }
 
     /**
-     * Set the placement property: Specifies the ephemeral disk placement for operating system disk.&lt;br&gt;&lt;br&gt;
-     * Possible values are: &lt;br&gt;&lt;br&gt; **CacheDisk** &lt;br&gt;&lt;br&gt; **ResourceDisk**
-     * &lt;br&gt;&lt;br&gt; Default: **CacheDisk** if one is configured for the VM size otherwise **ResourceDisk** is
-     * used.&lt;br&gt;&lt;br&gt; Refer to VM size documentation for Windows VM at
-     * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
+     * Set the placement property: Specifies the ephemeral disk placement for operating system disk. Possible values
+     * are: **CacheDisk,** **ResourceDisk,** **NvmeDisk.** The defaulting behavior is: **CacheDisk** if one is
+     * configured for the VM size otherwise **ResourceDisk** or **NvmeDisk** is used. Refer to the VM size documentation
+     * for Windows VM at https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
      * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
-     *
+     * Minimum api-version for NvmeDisk: 2024-03-01.
+     * 
      * @param placement the placement value to set.
      * @return the DiffDiskSettings object itself.
      */
@@ -85,9 +90,48 @@ public final class DiffDiskSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("option", this.option == null ? null : this.option.toString());
+        jsonWriter.writeStringField("placement", this.placement == null ? null : this.placement.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiffDiskSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiffDiskSettings if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiffDiskSettings.
+     */
+    public static DiffDiskSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiffDiskSettings deserializedDiffDiskSettings = new DiffDiskSettings();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("option".equals(fieldName)) {
+                    deserializedDiffDiskSettings.option = DiffDiskOptions.fromString(reader.getString());
+                } else if ("placement".equals(fieldName)) {
+                    deserializedDiffDiskSettings.placement = DiffDiskPlacement.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiffDiskSettings;
+        });
     }
 }

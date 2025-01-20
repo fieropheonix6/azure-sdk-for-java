@@ -11,24 +11,26 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.resourcemover.fluent.models.UnresolvedDependencyInner;
 import com.azure.resourcemanager.resourcemover.models.DependencyLevel;
 
-/** An instance of this class provides access to all the operations defined in UnresolvedDependenciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in UnresolvedDependenciesClient.
+ */
 public interface UnresolvedDependenciesClient {
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of unresolved dependencies.
+     * @return a list of unresolved dependencies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<UnresolvedDependencyInner> get(String resourceGroupName, String moveCollectionName);
 
     /**
      * Gets a list of unresolved dependencies.
-     *
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param moveCollectionName The Move Collection Name.
      * @param dependencyLevel Defines the dependency level.
@@ -38,14 +40,9 @@ public interface UnresolvedDependenciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of unresolved dependencies.
+     * @return a list of unresolved dependencies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<UnresolvedDependencyInner> get(
-        String resourceGroupName,
-        String moveCollectionName,
-        DependencyLevel dependencyLevel,
-        String orderby,
-        String filter,
-        Context context);
+    PagedIterable<UnresolvedDependencyInner> get(String resourceGroupName, String moveCollectionName,
+        DependencyLevel dependencyLevel, String orderby, String filter, Context context);
 }

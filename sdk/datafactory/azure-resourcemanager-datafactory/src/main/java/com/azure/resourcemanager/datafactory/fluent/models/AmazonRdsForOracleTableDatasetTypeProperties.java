@@ -5,31 +5,38 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** AmazonRdsForOracle dataset properties. */
+/**
+ * AmazonRdsForOracle dataset properties.
+ */
 @Fluent
-public final class AmazonRdsForOracleTableDatasetTypeProperties {
+public final class AmazonRdsForOracleTableDatasetTypeProperties
+    implements JsonSerializable<AmazonRdsForOracleTableDatasetTypeProperties> {
     /*
      * The schema name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
     /*
      * The table name of the AmazonRdsForOracle database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
-    /** Creates an instance of AmazonRdsForOracleTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AmazonRdsForOracleTableDatasetTypeProperties class.
+     */
     public AmazonRdsForOracleTableDatasetTypeProperties() {
     }
 
     /**
      * Get the schema property: The schema name of the AmazonRdsForOracle database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -39,7 +46,7 @@ public final class AmazonRdsForOracleTableDatasetTypeProperties {
     /**
      * Set the schema property: The schema name of the AmazonRdsForOracle database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the AmazonRdsForOracleTableDatasetTypeProperties object itself.
      */
@@ -51,7 +58,7 @@ public final class AmazonRdsForOracleTableDatasetTypeProperties {
     /**
      * Get the table property: The table name of the AmazonRdsForOracle database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -61,7 +68,7 @@ public final class AmazonRdsForOracleTableDatasetTypeProperties {
     /**
      * Set the table property: The table name of the AmazonRdsForOracle database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AmazonRdsForOracleTableDatasetTypeProperties object itself.
      */
@@ -72,9 +79,49 @@ public final class AmazonRdsForOracleTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("schema", this.schema);
+        jsonWriter.writeUntypedField("table", this.table);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AmazonRdsForOracleTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AmazonRdsForOracleTableDatasetTypeProperties if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AmazonRdsForOracleTableDatasetTypeProperties.
+     */
+    public static AmazonRdsForOracleTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AmazonRdsForOracleTableDatasetTypeProperties deserializedAmazonRdsForOracleTableDatasetTypeProperties
+                = new AmazonRdsForOracleTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("schema".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleTableDatasetTypeProperties.schema = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedAmazonRdsForOracleTableDatasetTypeProperties.table = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAmazonRdsForOracleTableDatasetTypeProperties;
+        });
     }
 }

@@ -15,6 +15,7 @@ import com.azure.ai.metricsadvisor.models.MetricPeriodFeedback;
 import com.azure.ai.metricsadvisor.models.PeriodType;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Configuration;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.time.OffsetDateTime;
@@ -44,18 +45,23 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
     }
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void createAnomalyFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void createChangePointMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void createPeriodMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void createCommentMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void testListMetricFeedback(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
@@ -67,8 +73,13 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
         MetricsAdvisorServiceVersion serviceVersion);
 
     @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
     abstract void testListMetricFeedbackFilterByDimensionFilter(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion);
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/33586")
+    abstract void getMetricFeedbackValidId(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
 
     void listMetricFeedbackRunner(Consumer<List<MetricFeedback>> testRunner) {
         // create data feeds
@@ -84,11 +95,11 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
         // create data feeds
         MetricFeedback metricFeedback;
         if (ANOMALY.equals(metricFeedbackType)) {
-            metricFeedback = new MetricAnomalyFeedback(FEEDBACK_START_TIME, FEEDBACK_END_TIME,
-                AnomalyValue.NOT_ANOMALY);
+            metricFeedback
+                = new MetricAnomalyFeedback(FEEDBACK_START_TIME, FEEDBACK_END_TIME, AnomalyValue.NOT_ANOMALY);
         } else if (CHANGE_POINT.equals(metricFeedbackType)) {
-            metricFeedback = new MetricChangePointFeedback(FEEDBACK_START_TIME, FEEDBACK_END_TIME,
-                ChangePointValue.AUTO_DETECT);
+            metricFeedback
+                = new MetricChangePointFeedback(FEEDBACK_START_TIME, FEEDBACK_END_TIME, ChangePointValue.AUTO_DETECT);
         } else if (PERIOD.equals(metricFeedbackType)) {
             metricFeedback = new MetricPeriodFeedback(PeriodType.AUTO_DETECT, 3);
         } else if (COMMENT.equals(metricFeedbackType)) {
@@ -98,7 +109,6 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
         }
         testRunner.accept(metricFeedback.setDimensionFilter(new DimensionKey(DIMENSION_FILTER)));
     }
-
 
     void validateMetricFeedbackResult(MetricFeedback expectedMetricFeedback, MetricFeedback actualMetricFeedback,
         FeedbackType feedbackType) {
@@ -130,8 +140,7 @@ public abstract class FeedbackTestBase extends MetricsAdvisorClientTestBase {
         } else if (COMMENT.equals(feedbackType)) {
             MetricCommentFeedback expectedCommentFeedback = (MetricCommentFeedback) expectedMetricFeedback;
             MetricCommentFeedback actualChangePointFeedback = (MetricCommentFeedback) actualMetricFeedback;
-            assertEquals(expectedCommentFeedback.getComment(),
-                actualChangePointFeedback.getComment());
+            assertEquals(expectedCommentFeedback.getComment(), actualChangePointFeedback.getComment());
             assertEquals(expectedCommentFeedback.getStartTime(), actualChangePointFeedback.getStartTime());
             assertEquals(expectedCommentFeedback.getEndTime(), actualChangePointFeedback.getEndTime());
         } else {

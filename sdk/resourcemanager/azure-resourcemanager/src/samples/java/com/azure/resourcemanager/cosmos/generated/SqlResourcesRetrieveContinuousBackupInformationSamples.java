@@ -4,31 +4,27 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.ContinuousBackupRestoreLocation;
 
-/** Samples for SqlResources RetrieveContinuousBackupInformation. */
+/**
+ * Samples for SqlResources RetrieveContinuousBackupInformation.
+ */
 public final class SqlResourcesRetrieveContinuousBackupInformationSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlContainerBackupInformation.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBSqlContainerBackupInformation.json
      */
     /**
      * Sample code: CosmosDBSqlContainerBackupInformation.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlContainerBackupInformation(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getSqlResources()
-            .retrieveContinuousBackupInformation(
-                "rgName",
-                "ddb1",
-                "databaseName",
-                "containerName",
-                new ContinuousBackupRestoreLocation().withLocation("North Europe"),
-                Context.NONE);
+            .retrieveContinuousBackupInformation("rgName", "ddb1", "databaseName", "containerName",
+                new ContinuousBackupRestoreLocation().withLocation("North Europe"), com.azure.core.util.Context.NONE);
     }
 }

@@ -6,41 +6,57 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.fluent.models.ScheduleProperties;
-import com.azure.resourcemanager.devcenter.models.EnableStatus;
+import com.azure.resourcemanager.devcenter.models.ScheduleEnableStatus;
 import com.azure.resourcemanager.devcenter.models.ScheduledFrequency;
 import com.azure.resourcemanager.devcenter.models.ScheduledType;
+import java.util.HashMap;
+import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class SchedulePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ScheduleProperties model =
-            BinaryData
-                .fromString(
-                    "{\"provisioningState\":\"Updated\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"bjhhyx\",\"timeZone\":\"wlycoduhpkxkg\",\"state\":\"Enabled\"}")
-                .toObject(ScheduleProperties.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ScheduleProperties model = BinaryData.fromString(
+            "{\"provisioningState\":\"Updating\",\"type\":\"StopDevBox\",\"frequency\":\"Daily\",\"time\":\"zpjuohminyfl\",\"timeZone\":\"rwm\",\"state\":\"Disabled\",\"tags\":{\"xpgpq\":\"klvxwmyg\",\"daxconfozauorsuk\":\"hiszepnnbjcrxgib\"},\"location\":\"wbqpl\"}")
+            .toObject(ScheduleProperties.class);
+        Assertions.assertEquals("klvxwmyg", model.tags().get("xpgpq"));
+        Assertions.assertEquals("wbqpl", model.location());
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("bjhhyx", model.time());
-        Assertions.assertEquals("wlycoduhpkxkg", model.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("zpjuohminyfl", model.time());
+        Assertions.assertEquals("rwm", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
     }
 
-    @Test
-    public void testSerialize() {
-        ScheduleProperties model =
-            new ScheduleProperties()
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ScheduleProperties model
+            = new ScheduleProperties().withTags(mapOf("xpgpq", "klvxwmyg", "daxconfozauorsuk", "hiszepnnbjcrxgib"))
+                .withLocation("wbqpl")
                 .withType(ScheduledType.STOP_DEV_BOX)
                 .withFrequency(ScheduledFrequency.DAILY)
-                .withTime("bjhhyx")
-                .withTimeZone("wlycoduhpkxkg")
-                .withState(EnableStatus.ENABLED);
+                .withTime("zpjuohminyfl")
+                .withTimeZone("rwm")
+                .withState(ScheduleEnableStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(ScheduleProperties.class);
+        Assertions.assertEquals("klvxwmyg", model.tags().get("xpgpq"));
+        Assertions.assertEquals("wbqpl", model.location());
         Assertions.assertEquals(ScheduledType.STOP_DEV_BOX, model.type());
         Assertions.assertEquals(ScheduledFrequency.DAILY, model.frequency());
-        Assertions.assertEquals("bjhhyx", model.time());
-        Assertions.assertEquals("wlycoduhpkxkg", model.timeZone());
-        Assertions.assertEquals(EnableStatus.ENABLED, model.state());
+        Assertions.assertEquals("zpjuohminyfl", model.time());
+        Assertions.assertEquals("rwm", model.timeZone());
+        Assertions.assertEquals(ScheduleEnableStatus.DISABLED, model.state());
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }

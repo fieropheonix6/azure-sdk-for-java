@@ -4,39 +4,78 @@
 
 package com.azure.resourcemanager.databox.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for StageStatus. */
+/**
+ * Holds the device erasure completion status.
+ */
 public enum StageStatus {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value InProgress. */
+    /**
+     * Enum value InProgress.
+     */
     IN_PROGRESS("InProgress"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Cancelled. */
+    /**
+     * Enum value Cancelled.
+     */
     CANCELLED("Cancelled"),
 
-    /** Enum value Cancelling. */
+    /**
+     * Enum value Cancelling.
+     */
     CANCELLING("Cancelling"),
 
-    /** Enum value SucceededWithErrors. */
+    /**
+     * Enum value SucceededWithErrors.
+     */
     SUCCEEDED_WITH_ERRORS("SucceededWithErrors"),
 
-    /** Enum value WaitingForCustomerAction. */
+    /**
+     * Enum value WaitingForCustomerAction.
+     */
     WAITING_FOR_CUSTOMER_ACTION("WaitingForCustomerAction"),
 
-    /** Enum value SucceededWithWarnings. */
-    SUCCEEDED_WITH_WARNINGS("SucceededWithWarnings");
+    /**
+     * Enum value SucceededWithWarnings.
+     */
+    SUCCEEDED_WITH_WARNINGS("SucceededWithWarnings"),
 
-    /** The actual serialized value for a StageStatus instance. */
+    /**
+     * Enum value WaitingForCustomerActionForKek.
+     */
+    WAITING_FOR_CUSTOMER_ACTION_FOR_KEK("WaitingForCustomerActionForKek"),
+
+    /**
+     * Enum value WaitingForCustomerActionForCleanUp.
+     */
+    WAITING_FOR_CUSTOMER_ACTION_FOR_CLEAN_UP("WaitingForCustomerActionForCleanUp"),
+
+    /**
+     * Enum value CustomerActionPerformedForCleanUp.
+     */
+    CUSTOMER_ACTION_PERFORMED_FOR_CLEAN_UP("CustomerActionPerformedForCleanUp"),
+
+    /**
+     * Enum value CustomerActionPerformed.
+     */
+    CUSTOMER_ACTION_PERFORMED("CustomerActionPerformed");
+
+    /**
+     * The actual serialized value for a StageStatus instance.
+     */
     private final String value;
 
     StageStatus(String value) {
@@ -45,12 +84,14 @@ public enum StageStatus {
 
     /**
      * Parses a serialized value to a StageStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed StageStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static StageStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         StageStatus[] items = StageStatus.values();
         for (StageStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -60,7 +101,9 @@ public enum StageStatus {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

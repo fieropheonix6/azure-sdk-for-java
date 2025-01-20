@@ -5,137 +5,200 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.AlertErrorDetails;
 import com.azure.resourcemanager.databoxedge.models.AlertSeverity;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Alert on the data box edge/gateway device. */
-@JsonFlatten
+/**
+ * Alert on the data box edge/gateway device.
+ */
 @Immutable
-public class AlertInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertInner.class);
+public final class AlertInner extends ArmBaseModel {
+    /*
+     * Properties of alert.
+     */
+    private AlertProperties innerProperties;
 
     /*
-     * Alert title.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.title", access = JsonProperty.Access.WRITE_ONLY)
-    private String title;
+    private String type;
 
     /*
-     * Alert type.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.alertType", access = JsonProperty.Access.WRITE_ONLY)
-    private String alertType;
+    private String name;
 
     /*
-     * UTC time when the alert appeared.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.appearedAtDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime appearedAtDateTime;
+    private String id;
 
-    /*
-     * Alert recommendation.
+    /**
+     * Creates an instance of AlertInner class.
      */
-    @JsonProperty(value = "properties.recommendation", access = JsonProperty.Access.WRITE_ONLY)
-    private String recommendation;
+    public AlertInner() {
+    }
 
-    /*
-     * Severity of the alert.
+    /**
+     * Get the innerProperties property: Properties of alert.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.severity", access = JsonProperty.Access.WRITE_ONLY)
-    private AlertSeverity severity;
+    private AlertProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Error details of the alert.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.errorDetails", access = JsonProperty.Access.WRITE_ONLY)
-    private AlertErrorDetails errorDetails;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Alert details.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.detailedInformation", access = JsonProperty.Access.WRITE_ONLY)
-    private Map<String, String> detailedInformation;
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the title property: Alert title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
-        return this.title;
+        return this.innerProperties() == null ? null : this.innerProperties().title();
     }
 
     /**
      * Get the alertType property: Alert type.
-     *
+     * 
      * @return the alertType value.
      */
     public String alertType() {
-        return this.alertType;
+        return this.innerProperties() == null ? null : this.innerProperties().alertType();
     }
 
     /**
      * Get the appearedAtDateTime property: UTC time when the alert appeared.
-     *
+     * 
      * @return the appearedAtDateTime value.
      */
     public OffsetDateTime appearedAtDateTime() {
-        return this.appearedAtDateTime;
+        return this.innerProperties() == null ? null : this.innerProperties().appearedAtDateTime();
     }
 
     /**
      * Get the recommendation property: Alert recommendation.
-     *
+     * 
      * @return the recommendation value.
      */
     public String recommendation() {
-        return this.recommendation;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendation();
     }
 
     /**
      * Get the severity property: Severity of the alert.
-     *
+     * 
      * @return the severity value.
      */
     public AlertSeverity severity() {
-        return this.severity;
+        return this.innerProperties() == null ? null : this.innerProperties().severity();
     }
 
     /**
      * Get the errorDetails property: Error details of the alert.
-     *
+     * 
      * @return the errorDetails value.
      */
     public AlertErrorDetails errorDetails() {
-        return this.errorDetails;
+        return this.innerProperties() == null ? null : this.innerProperties().errorDetails();
     }
 
     /**
      * Get the detailedInformation property: Alert details.
-     *
+     * 
      * @return the detailedInformation value.
      */
     public Map<String, String> detailedInformation() {
-        return this.detailedInformation;
+        return this.innerProperties() == null ? null : this.innerProperties().detailedInformation();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (errorDetails() != null) {
-            errorDetails().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AlertInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AlertInner if the JsonReader was pointing to an instance of it, or null if it was pointing
+     * to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AlertInner.
+     */
+    public static AlertInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AlertInner deserializedAlertInner = new AlertInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedAlertInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedAlertInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedAlertInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedAlertInner.innerProperties = AlertProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAlertInner;
+        });
     }
 }

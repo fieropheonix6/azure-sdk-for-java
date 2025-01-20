@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.arm;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.models.Provider;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
 
@@ -156,23 +157,22 @@ public final class ResourceUtils {
      * @return the default api version to use
      */
     public static String defaultApiVersion(String id, Provider provider) {
-        String resourceType = resourceTypeFromResourceId(id).toLowerCase(Locale.ROOT);
-        // Exact match
+        if (id == null || provider == null) {
+            return null;
+        }
+        ResourceId resourceId = ResourceId.fromString(id);
+        String resourceTypeWithoutNamespace = getFullResourceTypeWithoutNamespace(resourceId);
         for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (prt.resourceType().equalsIgnoreCase(resourceType)) {
+            // There is an edge case that two resource types share the same child resource type name, so parent type name check is needed.
+            // e.g. "dnsForwardingRulesets/virtualNetworkLinks" and "privateDnsZones/virtualNetworkLinks"
+            if (prt.resourceType().equalsIgnoreCase(resourceTypeWithoutNamespace)) {
                 return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
             }
         }
-        // child resource, e.g. sites/config
-        for (ProviderResourceType prt : provider.resourceTypes()) {
-            if (prt.resourceType().toLowerCase(Locale.ROOT).contains("/" + resourceType)) {
-                return prt.defaultApiVersion() == null ? prt.apiVersions().get(0) : prt.defaultApiVersion();
-            }
-        }
-        // look for parent
-        String parentId = parentResourceIdFromResourceId(id);
-        if (parentId != null) {
-            return defaultApiVersion(parentId, provider);
+
+        ResourceId parent = resourceId.parent();
+        if (parent != null && !CoreUtils.isNullOrEmpty(parent.id())) {
+            return defaultApiVersion(parent.id(), provider);
         } else {
             // Fallback: use a random one, not guaranteed to work
             return provider.resourceTypes().get(0).apiVersions().get(0);
@@ -191,24 +191,33 @@ public final class ResourceUtils {
      *                                  if the resource is a generic resource
      * @return the resource ID string
      */
-    public static String constructResourceId(
-            final String subscriptionId,
-            final String resourceGroupName,
-            final String resourceProviderNamespace,
-            final String resourceType,
-            final String resourceName,
-            final String parentResourcePath) {
+    public static String constructResourceId(final String subscriptionId, final String resourceGroupName,
+        final String resourceProviderNamespace, final String resourceType, final String resourceName,
+        final String parentResourcePath) {
         String prefixedParentPath = parentResourcePath;
         if (parentResourcePath != null && !parentResourcePath.isEmpty()) {
             prefixedParentPath = "/" + parentResourcePath;
         }
-        return String.format(
-                "/subscriptions/%s/resourcegroups/%s/providers/%s%s/%s/%s",
-                subscriptionId,
-                resourceGroupName,
-                resourceProviderNamespace,
-                prefixedParentPath,
-                resourceType,
-                resourceName);
+        return String.format("/subscriptions/%s/resourcegroups/%s/providers/%s%s/%s/%s", subscriptionId,
+            resourceGroupName, resourceProviderNamespace, prefixedParentPath, resourceType, resourceName);
+    }
+
+    /**
+     * Ensure that the resource ID is properly encoded for path parameter.
+     *
+     * @param resourceId the resource ID, whether url-encoded or not
+     * @return properly encoded resource ID
+     */
+    public static String encodeResourceId(String resourceId) {
+        if (resourceId == null) {
+            return null;
+        }
+        return resourceId.replaceAll(" ", "%20");
+    }
+
+    private static String getFullResourceTypeWithoutNamespace(ResourceId resourceId) {
+        return resourceId.fullResourceType()
+            .substring(resourceId.fullResourceType().indexOf("/") + 1) // e.g. "Microsoft.Web/sites" will return "sites"
+            .toLowerCase(Locale.ROOT);
     }
 }

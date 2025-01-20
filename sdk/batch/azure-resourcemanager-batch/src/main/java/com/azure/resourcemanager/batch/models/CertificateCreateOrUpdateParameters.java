@@ -5,32 +5,52 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.batch.fluent.models.CertificateCreateOrUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.Map;
 
-/** Contains information about a certificate. */
+/**
+ * Contains information about a certificate.
+ */
 @Fluent
-public final class CertificateCreateOrUpdateParameters extends ProxyResource {
+public final class CertificateCreateOrUpdateParameters extends AzureProxyResource {
     /*
      * The properties associated with the certificate.
      */
-    @JsonProperty(value = "properties")
     private CertificateCreateOrUpdateProperties innerProperties;
 
     /*
      * The ETag of the resource, used for concurrency statements.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of CertificateCreateOrUpdateParameters class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of CertificateCreateOrUpdateParameters class.
+     */
     public CertificateCreateOrUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: The properties associated with the certificate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CertificateCreateOrUpdateProperties innerProperties() {
@@ -39,18 +59,56 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
 
     /**
      * Get the etag property: The ETag of the resource, used for concurrency statements.
-     *
+     * 
      * @return the etag value.
      */
+    @Override
     public String etag() {
         return this.etag;
     }
 
     /**
-     * Get the data property: The base64-encoded contents of the certificate.
-     *
-     * <p>The maximum size is 10KB.
-     *
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public CertificateCreateOrUpdateParameters withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the data property: The maximum size is 10KB.
+     * 
      * @return the data value.
      */
     public String data() {
@@ -58,10 +116,8 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Set the data property: The base64-encoded contents of the certificate.
-     *
-     * <p>The maximum size is 10KB.
-     *
+     * Set the data property: The maximum size is 10KB.
+     * 
      * @param data the data value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -74,10 +130,8 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Get the password property: The password to access the certificate's private key.
-     *
-     * <p>This must not be specified if the certificate format is Cer.
-     *
+     * Get the password property: This must not be specified if the certificate format is Cer.
+     * 
      * @return the password value.
      */
     public String password() {
@@ -85,10 +139,8 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Set the password property: The password to access the certificate's private key.
-     *
-     * <p>This must not be specified if the certificate format is Cer.
-     *
+     * Set the password property: This must not be specified if the certificate format is Cer.
+     * 
      * @param password the password value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -101,10 +153,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Get the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     *
-     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
-     *
+     * Get the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
+     * required to be 'SHA1'.
+     * 
      * @return the thumbprintAlgorithm value.
      */
     public String thumbprintAlgorithm() {
@@ -112,10 +163,9 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Set the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     *
-     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
-     *
+     * Set the thumbprintAlgorithm property: This must match the first portion of the certificate name. Currently
+     * required to be 'SHA1'.
+     * 
      * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -128,10 +178,8 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Get the thumbprint property: The thumbprint of the certificate.
-     *
-     * <p>This must match the thumbprint from the name.
-     *
+     * Get the thumbprint property: This must match the thumbprint from the name.
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -139,10 +187,8 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
     }
 
     /**
-     * Set the thumbprint property: The thumbprint of the certificate.
-     *
-     * <p>This must match the thumbprint from the name.
-     *
+     * Set the thumbprint property: This must match the thumbprint from the name.
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -156,7 +202,7 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
 
     /**
      * Get the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
+     * 
      * @return the format value.
      */
     public CertificateFormat format() {
@@ -165,7 +211,7 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
 
     /**
      * Set the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
+     * 
      * @param format the format value to set.
      * @return the CertificateCreateOrUpdateParameters object itself.
      */
@@ -179,12 +225,64 @@ public final class CertificateCreateOrUpdateParameters extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CertificateCreateOrUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CertificateCreateOrUpdateParameters if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CertificateCreateOrUpdateParameters.
+     */
+    public static CertificateCreateOrUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CertificateCreateOrUpdateParameters deserializedCertificateCreateOrUpdateParameters
+                = new CertificateCreateOrUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateParameters.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateParameters.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateParameters.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateParameters.etag = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCertificateCreateOrUpdateParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCertificateCreateOrUpdateParameters.innerProperties
+                        = CertificateCreateOrUpdateProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCertificateCreateOrUpdateParameters;
+        });
     }
 }

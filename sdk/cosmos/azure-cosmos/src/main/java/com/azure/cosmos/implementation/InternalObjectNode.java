@@ -2,14 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class InternalObjectNode extends Resource {
 
@@ -103,22 +108,55 @@ public class InternalObjectNode extends Resource {
         }
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(Object cosmosItem, ObjectMapper objectMapper) {
+    public static ByteBuffer serializeJsonToByteBuffer(
+        Object cosmosItem,
+        CosmosItemSerializer itemSerializer,
+        String trackingId,
+        boolean isIdValidationEnabled) {
+
+        checkNotNull(itemSerializer, "Argument 'itemSerializer' must not be null.");
         if (cosmosItem instanceof InternalObjectNode) {
-            return ((InternalObjectNode) cosmosItem).serializeJsonToByteBuffer();
+            InternalObjectNode internalObjectNode = ((InternalObjectNode) cosmosItem);
+            Consumer<Map<String, Object>> onAfterSerialization = null;
+            if (trackingId != null) {
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
+            }
+            return internalObjectNode.serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled);
         } else if (cosmosItem instanceof Document) {
-            return ModelBridgeInternal.serializeJsonToByteBuffer((Document) cosmosItem);
+            Document doc = (Document) cosmosItem;
+            Consumer<Map<String, Object>> onAfterSerialization = null;
+            if (trackingId != null) {
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
+            }
+            return doc.serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled);
         } else if (cosmosItem instanceof ObjectNode) {
-            return (new InternalObjectNode((ObjectNode)cosmosItem).serializeJsonToByteBuffer());
+            ObjectNode objectNode = (ObjectNode)cosmosItem;
+            Consumer<Map<String, Object>> onAfterSerialization = null;
+            if (trackingId != null) {
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
+            }
+            return (new InternalObjectNode(objectNode).serializeJsonToByteBuffer(itemSerializer, onAfterSerialization, isIdValidationEnabled));
         } else if (cosmosItem instanceof byte[]) {
+            if (trackingId != null) {
+                InternalObjectNode internalObjectNode = new InternalObjectNode((byte[]) cosmosItem);
+                return internalObjectNode.serializeJsonToByteBuffer(
+                    itemSerializer,
+                    (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId),
+                    isIdValidationEnabled);
+            }
             return ByteBuffer.wrap((byte[]) cosmosItem);
         } else {
-            return Utils.serializeJsonToByteBuffer(objectMapper, cosmosItem);
+            Consumer<Map<String, Object>> onAfterSerialization = null;
+            if (trackingId != null) {
+                onAfterSerialization = (node) -> node.put(Constants.Properties.TRACKING_ID, trackingId);
+            }
+
+            return Utils.serializeJsonToByteBuffer(itemSerializer, cosmosItem, onAfterSerialization, isIdValidationEnabled);
         }
     }
 
     static <T> List<T> getTypedResultsFromV2Results(List<Document> results, Class<T> klass) {
-        return results.stream().map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass))
+        return results.stream().map(document -> document.toObject(klass))
                       .collect(Collectors.toList());
     }
 

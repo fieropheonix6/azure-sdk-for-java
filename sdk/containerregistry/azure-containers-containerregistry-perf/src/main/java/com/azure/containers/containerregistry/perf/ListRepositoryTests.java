@@ -8,13 +8,6 @@ import com.azure.perf.test.core.PerfStressOptions;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
-import java.util.List;
-
-import static com.azure.containers.containerregistry.perf.core.Utils.REPOSITORY_NAME;
-import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG1_NAME;
-import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG2_NAME;
-import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG3_NAME;
-import static com.azure.containers.containerregistry.perf.core.Utils.TEST_PERF_TAG4_NAME;
 
 /**
  * List repository performance test.
@@ -32,8 +25,8 @@ public class ListRepositoryTests extends ServiceTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> globalSetupAsync() {
-        return super.globalSetupAsync()
-            .then(importImageAsync(REPOSITORY_NAME, Arrays.asList(TEST_PERF_TAG1_NAME, TEST_PERF_TAG2_NAME, TEST_PERF_TAG3_NAME, TEST_PERF_TAG4_NAME)));
+        return super.globalSetupAsync().then(importImageAsync(REPOSITORY_NAME,
+            Arrays.asList(TEST_PERF_TAG1_NAME, TEST_PERF_TAG2_NAME, TEST_PERF_TAG3_NAME, TEST_PERF_TAG4_NAME)));
     }
 
     @Override

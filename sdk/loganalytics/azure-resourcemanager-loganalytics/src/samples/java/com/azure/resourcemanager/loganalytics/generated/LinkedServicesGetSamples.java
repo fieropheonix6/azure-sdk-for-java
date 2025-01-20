@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.loganalytics.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for LinkedServices Get. */
+/**
+ * Samples for LinkedServices Get.
+ */
 public final class LinkedServicesGetSamples {
     /*
-     * x-ms-original-file: specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/LinkedServicesGet.json
+     * x-ms-original-file:
+     * specification/operationalinsights/resource-manager/Microsoft.OperationalInsights/stable/2020-08-01/examples/
+     * LinkedServicesGet.json
      */
     /**
      * Sample code: LinkedServicesGet.
-     *
+     * 
      * @param manager Entry point to LogAnalyticsManager.
      */
     public static void linkedServicesGet(com.azure.resourcemanager.loganalytics.LogAnalyticsManager manager) {
-        manager.linkedServices().getWithResponse("mms-eus", "TestLinkWS", "Cluster", Context.NONE);
+        manager.linkedServices().getWithResponse("mms-eus", "TestLinkWS", "Cluster", com.azure.core.util.Context.NONE);
     }
 }

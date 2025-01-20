@@ -6,42 +6,46 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Get GitHub access token request definition. */
+/**
+ * Get GitHub access token request definition.
+ */
 @Fluent
-public final class GitHubAccessTokenRequest {
+public final class GitHubAccessTokenRequest implements JsonSerializable<GitHubAccessTokenRequest> {
     /*
      * GitHub access code.
      */
-    @JsonProperty(value = "gitHubAccessCode", required = true)
     private String gitHubAccessCode;
 
     /*
      * GitHub application client ID.
      */
-    @JsonProperty(value = "gitHubClientId")
     private String gitHubClientId;
 
     /*
      * GitHub bring your own app client secret information.
      */
-    @JsonProperty(value = "gitHubClientSecret")
     private GitHubClientSecret gitHubClientSecret;
 
     /*
      * GitHub access token base URL.
      */
-    @JsonProperty(value = "gitHubAccessTokenBaseUrl", required = true)
     private String gitHubAccessTokenBaseUrl;
 
-    /** Creates an instance of GitHubAccessTokenRequest class. */
+    /**
+     * Creates an instance of GitHubAccessTokenRequest class.
+     */
     public GitHubAccessTokenRequest() {
     }
 
     /**
      * Get the gitHubAccessCode property: GitHub access code.
-     *
+     * 
      * @return the gitHubAccessCode value.
      */
     public String gitHubAccessCode() {
@@ -50,7 +54,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubAccessCode property: GitHub access code.
-     *
+     * 
      * @param gitHubAccessCode the gitHubAccessCode value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -61,7 +65,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Get the gitHubClientId property: GitHub application client ID.
-     *
+     * 
      * @return the gitHubClientId value.
      */
     public String gitHubClientId() {
@@ -70,7 +74,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubClientId property: GitHub application client ID.
-     *
+     * 
      * @param gitHubClientId the gitHubClientId value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -81,7 +85,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Get the gitHubClientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @return the gitHubClientSecret value.
      */
     public GitHubClientSecret gitHubClientSecret() {
@@ -90,7 +94,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubClientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @param gitHubClientSecret the gitHubClientSecret value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -101,7 +105,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Get the gitHubAccessTokenBaseUrl property: GitHub access token base URL.
-     *
+     * 
      * @return the gitHubAccessTokenBaseUrl value.
      */
     public String gitHubAccessTokenBaseUrl() {
@@ -110,7 +114,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubAccessTokenBaseUrl property: GitHub access token base URL.
-     *
+     * 
      * @param gitHubAccessTokenBaseUrl the gitHubAccessTokenBaseUrl value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -121,26 +125,70 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (gitHubAccessCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property gitHubAccessCode in model GitHubAccessTokenRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property gitHubAccessCode in model GitHubAccessTokenRequest"));
         }
         if (gitHubClientSecret() != null) {
             gitHubClientSecret().validate();
         }
         if (gitHubAccessTokenBaseUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property gitHubAccessTokenBaseUrl in model GitHubAccessTokenRequest"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property gitHubAccessTokenBaseUrl in model GitHubAccessTokenRequest"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(GitHubAccessTokenRequest.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("gitHubAccessCode", this.gitHubAccessCode);
+        jsonWriter.writeStringField("gitHubAccessTokenBaseUrl", this.gitHubAccessTokenBaseUrl);
+        jsonWriter.writeStringField("gitHubClientId", this.gitHubClientId);
+        jsonWriter.writeJsonField("gitHubClientSecret", this.gitHubClientSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of GitHubAccessTokenRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of GitHubAccessTokenRequest if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the GitHubAccessTokenRequest.
+     */
+    public static GitHubAccessTokenRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            GitHubAccessTokenRequest deserializedGitHubAccessTokenRequest = new GitHubAccessTokenRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("gitHubAccessCode".equals(fieldName)) {
+                    deserializedGitHubAccessTokenRequest.gitHubAccessCode = reader.getString();
+                } else if ("gitHubAccessTokenBaseUrl".equals(fieldName)) {
+                    deserializedGitHubAccessTokenRequest.gitHubAccessTokenBaseUrl = reader.getString();
+                } else if ("gitHubClientId".equals(fieldName)) {
+                    deserializedGitHubAccessTokenRequest.gitHubClientId = reader.getString();
+                } else if ("gitHubClientSecret".equals(fieldName)) {
+                    deserializedGitHubAccessTokenRequest.gitHubClientSecret = GitHubClientSecret.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedGitHubAccessTokenRequest;
+        });
+    }
 }

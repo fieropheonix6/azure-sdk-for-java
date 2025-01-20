@@ -7,22 +7,20 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.PyTorch;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PyTorchTests {
-    @Test
-    public void testDeserialize() {
-        PyTorch model =
-            BinaryData
-                .fromString("{\"distributionType\":\"PyTorch\",\"processCountPerInstance\":1314386445}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PyTorch model
+            = BinaryData.fromString("{\"distributionType\":\"PyTorch\",\"processCountPerInstance\":409553371}")
                 .toObject(PyTorch.class);
-        Assertions.assertEquals(1314386445, model.processCountPerInstance());
+        Assertions.assertEquals(409553371, model.processCountPerInstance());
     }
 
-    @Test
-    public void testSerialize() {
-        PyTorch model = new PyTorch().withProcessCountPerInstance(1314386445);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PyTorch model = new PyTorch().withProcessCountPerInstance(409553371);
         model = BinaryData.fromObject(model).toObject(PyTorch.class);
-        Assertions.assertEquals(1314386445, model.processCountPerInstance());
+        Assertions.assertEquals(409553371, model.processCountPerInstance());
     }
 }

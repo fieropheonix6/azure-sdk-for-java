@@ -5,46 +5,53 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Replication status. */
+/**
+ * Replication status.
+ */
 @Fluent
-public final class ReplicationStatusInner {
+public final class ReplicationStatusInner implements JsonSerializable<ReplicationStatusInner> {
     /*
      * Replication health check
      */
-    @JsonProperty(value = "healthy")
     private Boolean healthy;
 
     /*
      * Status of the mirror relationship
      */
-    @JsonProperty(value = "relationshipStatus")
     private RelationshipStatus relationshipStatus;
 
     /*
      * The status of the replication
      */
-    @JsonProperty(value = "mirrorState")
     private MirrorState mirrorState;
 
     /*
      * The progress of the replication
      */
-    @JsonProperty(value = "totalProgress")
     private String totalProgress;
 
     /*
      * Displays error message if the replication is in an error state
      */
-    @JsonProperty(value = "errorMessage")
     private String errorMessage;
 
     /**
+     * Creates an instance of ReplicationStatusInner class.
+     */
+    public ReplicationStatusInner() {
+    }
+
+    /**
      * Get the healthy property: Replication health check.
-     *
+     * 
      * @return the healthy value.
      */
     public Boolean healthy() {
@@ -53,7 +60,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the healthy property: Replication health check.
-     *
+     * 
      * @param healthy the healthy value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -64,7 +71,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Get the relationshipStatus property: Status of the mirror relationship.
-     *
+     * 
      * @return the relationshipStatus value.
      */
     public RelationshipStatus relationshipStatus() {
@@ -73,7 +80,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the relationshipStatus property: Status of the mirror relationship.
-     *
+     * 
      * @param relationshipStatus the relationshipStatus value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -84,7 +91,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Get the mirrorState property: The status of the replication.
-     *
+     * 
      * @return the mirrorState value.
      */
     public MirrorState mirrorState() {
@@ -93,7 +100,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the mirrorState property: The status of the replication.
-     *
+     * 
      * @param mirrorState the mirrorState value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -104,7 +111,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Get the totalProgress property: The progress of the replication.
-     *
+     * 
      * @return the totalProgress value.
      */
     public String totalProgress() {
@@ -113,7 +120,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the totalProgress property: The progress of the replication.
-     *
+     * 
      * @param totalProgress the totalProgress value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -124,7 +131,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Get the errorMessage property: Displays error message if the replication is in an error state.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -133,7 +140,7 @@ public final class ReplicationStatusInner {
 
     /**
      * Set the errorMessage property: Displays error message if the replication is in an error state.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the ReplicationStatusInner object itself.
      */
@@ -144,9 +151,59 @@ public final class ReplicationStatusInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("healthy", this.healthy);
+        jsonWriter.writeStringField("relationshipStatus",
+            this.relationshipStatus == null ? null : this.relationshipStatus.toString());
+        jsonWriter.writeStringField("mirrorState", this.mirrorState == null ? null : this.mirrorState.toString());
+        jsonWriter.writeStringField("totalProgress", this.totalProgress);
+        jsonWriter.writeStringField("errorMessage", this.errorMessage);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ReplicationStatusInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ReplicationStatusInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ReplicationStatusInner.
+     */
+    public static ReplicationStatusInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ReplicationStatusInner deserializedReplicationStatusInner = new ReplicationStatusInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("healthy".equals(fieldName)) {
+                    deserializedReplicationStatusInner.healthy = reader.getNullable(JsonReader::getBoolean);
+                } else if ("relationshipStatus".equals(fieldName)) {
+                    deserializedReplicationStatusInner.relationshipStatus
+                        = RelationshipStatus.fromString(reader.getString());
+                } else if ("mirrorState".equals(fieldName)) {
+                    deserializedReplicationStatusInner.mirrorState = MirrorState.fromString(reader.getString());
+                } else if ("totalProgress".equals(fieldName)) {
+                    deserializedReplicationStatusInner.totalProgress = reader.getString();
+                } else if ("errorMessage".equals(fieldName)) {
+                    deserializedReplicationStatusInner.errorMessage = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedReplicationStatusInner;
+        });
     }
 }

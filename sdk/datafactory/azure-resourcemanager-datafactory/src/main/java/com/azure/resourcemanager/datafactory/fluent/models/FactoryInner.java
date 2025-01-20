@@ -6,53 +6,69 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.EncryptionConfiguration;
 import com.azure.resourcemanager.datafactory.models.FactoryIdentity;
 import com.azure.resourcemanager.datafactory.models.FactoryRepoConfiguration;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.PublicNetworkAccess;
 import com.azure.resourcemanager.datafactory.models.PurviewConfiguration;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Factory resource type. */
+/**
+ * Factory resource type.
+ */
 @Fluent
 public final class FactoryInner extends Resource {
     /*
      * Managed service identity of the factory.
      */
-    @JsonProperty(value = "identity")
     private FactoryIdentity identity;
 
     /*
      * Properties of the factory.
      */
-    @JsonProperty(value = "properties")
     private FactoryProperties innerProperties;
 
     /*
      * Etag identifies change in the resource.
      */
-    @JsonProperty(value = "eTag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Factory resource type.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of FactoryInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FactoryInner class.
+     */
     public FactoryInner() {
     }
 
     /**
      * Get the identity property: Managed service identity of the factory.
-     *
+     * 
      * @return the identity value.
      */
     public FactoryIdentity identity() {
@@ -61,7 +77,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the identity property: Managed service identity of the factory.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FactoryInner object itself.
      */
@@ -72,7 +88,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the factory.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FactoryProperties innerProperties() {
@@ -81,7 +97,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -90,17 +106,16 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the additionalProperties property: Factory resource type.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Factory resource type.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the FactoryInner object itself.
      */
@@ -109,22 +124,48 @@ public final class FactoryInner extends Resource {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -133,7 +174,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the provisioningState property: Factory provisioning state, example Succeeded.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -142,7 +183,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the createTime property: Time the factory was created in ISO8601 format.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -151,7 +192,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the version property: Version of the factory.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -160,7 +201,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the purviewConfiguration property: Purview information of the factory.
-     *
+     * 
      * @return the purviewConfiguration value.
      */
     public PurviewConfiguration purviewConfiguration() {
@@ -169,7 +210,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the purviewConfiguration property: Purview information of the factory.
-     *
+     * 
      * @param purviewConfiguration the purviewConfiguration value to set.
      * @return the FactoryInner object itself.
      */
@@ -183,7 +224,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the repoConfiguration property: Git repo information of the factory.
-     *
+     * 
      * @return the repoConfiguration value.
      */
     public FactoryRepoConfiguration repoConfiguration() {
@@ -192,7 +233,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the repoConfiguration property: Git repo information of the factory.
-     *
+     * 
      * @param repoConfiguration the repoConfiguration value to set.
      * @return the FactoryInner object itself.
      */
@@ -206,7 +247,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the globalParameters property: List of parameters for factory.
-     *
+     * 
      * @return the globalParameters value.
      */
     public Map<String, GlobalParameterSpecification> globalParameters() {
@@ -215,7 +256,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the globalParameters property: List of parameters for factory.
-     *
+     * 
      * @param globalParameters the globalParameters value to set.
      * @return the FactoryInner object itself.
      */
@@ -229,7 +270,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the encryption property: Properties to enable Customer Managed Key for the factory.
-     *
+     * 
      * @return the encryption value.
      */
     public EncryptionConfiguration encryption() {
@@ -238,7 +279,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the encryption property: Properties to enable Customer Managed Key for the factory.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the FactoryInner object itself.
      */
@@ -252,7 +293,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -261,7 +302,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the data factory.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FactoryInner object itself.
      */
@@ -275,7 +316,7 @@ public final class FactoryInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -285,5 +326,71 @@ public final class FactoryInner extends Resource {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("identity", this.identity);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FactoryInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FactoryInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FactoryInner.
+     */
+    public static FactoryInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FactoryInner deserializedFactoryInner = new FactoryInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFactoryInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFactoryInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFactoryInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedFactoryInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFactoryInner.withTags(tags);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFactoryInner.identity = FactoryIdentity.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFactoryInner.innerProperties = FactoryProperties.fromJson(reader);
+                } else if ("eTag".equals(fieldName)) {
+                    deserializedFactoryInner.etag = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedFactoryInner.additionalProperties = additionalProperties;
+
+            return deserializedFactoryInner;
+        });
     }
 }

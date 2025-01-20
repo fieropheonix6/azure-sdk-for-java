@@ -7,27 +7,25 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RestoreFileSpecs;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RestoreFileSpecsTests {
-    @Test
-    public void testDeserialize() {
-        RestoreFileSpecs model =
-            BinaryData
-                .fromString("{\"path\":\"wqiok\",\"fileSpecType\":\"sx\",\"targetFolderPath\":\"jmsvpkjp\"}")
-                .toObject(RestoreFileSpecs.class);
-        Assertions.assertEquals("wqiok", model.path());
-        Assertions.assertEquals("sx", model.fileSpecType());
-        Assertions.assertEquals("jmsvpkjp", model.targetFolderPath());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RestoreFileSpecs model = BinaryData
+            .fromString("{\"path\":\"ufhyaomtbgh\",\"fileSpecType\":\"vgrvkffo\",\"targetFolderPath\":\"zh\"}")
+            .toObject(RestoreFileSpecs.class);
+        Assertions.assertEquals("ufhyaomtbgh", model.path());
+        Assertions.assertEquals("vgrvkffo", model.fileSpecType());
+        Assertions.assertEquals("zh", model.targetFolderPath());
     }
 
-    @Test
-    public void testSerialize() {
-        RestoreFileSpecs model =
-            new RestoreFileSpecs().withPath("wqiok").withFileSpecType("sx").withTargetFolderPath("jmsvpkjp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        RestoreFileSpecs model
+            = new RestoreFileSpecs().withPath("ufhyaomtbgh").withFileSpecType("vgrvkffo").withTargetFolderPath("zh");
         model = BinaryData.fromObject(model).toObject(RestoreFileSpecs.class);
-        Assertions.assertEquals("wqiok", model.path());
-        Assertions.assertEquals("sx", model.fileSpecType());
-        Assertions.assertEquals("jmsvpkjp", model.targetFolderPath());
+        Assertions.assertEquals("ufhyaomtbgh", model.path());
+        Assertions.assertEquals("vgrvkffo", model.fileSpecType());
+        Assertions.assertEquals("zh", model.targetFolderPath());
     }
 }

@@ -8,28 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.ReadOnlyFollowingDatabase;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReadOnlyFollowingDatabaseTests {
-    @Test
-    public void testDeserialize() {
-        ReadOnlyFollowingDatabase model =
-            BinaryData
-                .fromString(
-                    "{\"kind\":\"ReadOnlyFollowing\",\"properties\":{\"provisioningState\":\"Creating\",\"softDeletePeriod\":\"PT178H48M17S\",\"hotCachePeriod\":\"PT107H10M35S\",\"statistics\":{\"size\":27.504385},\"leaderClusterResourceId\":\"sj\",\"attachedDatabaseConfigurationName\":\"hszfjvfb\",\"principalsModificationKind\":\"Replace\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"a\",\"rqmq\",\"ldvriiiojnalghfk\"],\"tablesToExclude\":[\"sexso\",\"ueluqhhahhxvrhmz\",\"wpjgwws\"],\"externalTablesToInclude\":[\"hftqsxhqxujxukn\",\"xdigrjg\",\"ufzdmsyq\",\"fi\"],\"externalTablesToExclude\":[\"botzingamvppho\",\"zqzudph\",\"amvdkfwynwcvtbv\",\"ayhmtnvyqiatkz\"],\"materializedViewsToInclude\":[\"npwzcjaes\",\"vvsccyajguq\",\"hwyg\",\"lvdnkfx\"],\"materializedViewsToExclude\":[\"mdwzrmuhapfcqdps\",\"xqv\",\"svuo\",\"mgccelvezrypq\"]},\"originalDatabaseName\":\"feo\",\"databaseShareOrigin\":\"DataShare\"},\"location\":\"wkyhkobopgxe\",\"id\":\"k\",\"name\":\"wep\",\"type\":\"qpcrf\"}")
-                .toObject(ReadOnlyFollowingDatabase.class);
-        Assertions.assertEquals("wkyhkobopgxe", model.location());
-        Assertions.assertEquals(Duration.parse("PT107H10M35S"), model.hotCachePeriod());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ReadOnlyFollowingDatabase model = BinaryData.fromString(
+            "{\"kind\":\"ReadOnlyFollowing\",\"properties\":{\"provisioningState\":\"Succeeded\",\"softDeletePeriod\":\"PT189H4M16S\",\"hotCachePeriod\":\"PT238H46M6S\",\"statistics\":{\"size\":94.85628},\"leaderClusterResourceId\":\"kynscliqhzv\",\"attachedDatabaseConfigurationName\":\"nk\",\"principalsModificationKind\":\"None\",\"tableLevelSharingProperties\":{\"tablesToInclude\":[\"otppnv\"],\"tablesToExclude\":[\"xhihfrbbcevqagtl\"],\"externalTablesToInclude\":[\"lfkqojpy\",\"vgtrdcnifmzzs\",\"ymbrnysuxmpraf\"],\"externalTablesToExclude\":[\"khocxvdfffwaf\"],\"materializedViewsToInclude\":[\"udaspavehh\",\"vkbunzozudh\",\"xg\",\"moy\"],\"materializedViewsToExclude\":[\"yuibhm\",\"dnbzydvfvfcjn\"],\"functionsToInclude\":[\"isrvhm\",\"orffukiscv\",\"mzhwplefaxvxi\",\"cbtgnhnz\"],\"functionsToExclude\":[\"xtjjfzqlqhycav\",\"dggxdbeesmi\",\"knlrariaawiuagy\",\"wqfbylyrfgiagt\"]},\"originalDatabaseName\":\"jocqwogfnzjvusf\",\"databaseShareOrigin\":\"Direct\",\"suspensionDetails\":{\"suspensionStartDate\":\"2021-08-30T15:20:16Z\"}},\"location\":\"xylfsb\",\"id\":\"kadpysown\",\"name\":\"tgkbugrjqctojc\",\"type\":\"isofieypefojyqd\"}")
+            .toObject(ReadOnlyFollowingDatabase.class);
+        Assertions.assertEquals("xylfsb", model.location());
+        Assertions.assertEquals(Duration.parse("PT238H46M6S"), model.hotCachePeriod());
     }
 
-    @Test
-    public void testSerialize() {
-        ReadOnlyFollowingDatabase model =
-            new ReadOnlyFollowingDatabase()
-                .withLocation("wkyhkobopgxe")
-                .withHotCachePeriod(Duration.parse("PT107H10M35S"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ReadOnlyFollowingDatabase model
+            = new ReadOnlyFollowingDatabase().withLocation("xylfsb").withHotCachePeriod(Duration.parse("PT238H46M6S"));
         model = BinaryData.fromObject(model).toObject(ReadOnlyFollowingDatabase.class);
-        Assertions.assertEquals("wkyhkobopgxe", model.location());
-        Assertions.assertEquals(Duration.parse("PT107H10M35S"), model.hotCachePeriod());
+        Assertions.assertEquals("xylfsb", model.location());
+        Assertions.assertEquals(Duration.parse("PT238H46M6S"), model.hotCachePeriod());
     }
 }

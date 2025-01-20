@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Kind. */
+/**
+ * The kind of the peering.
+ */
 public final class Kind extends ExpandableStringEnum<Kind> {
-    /** Static value Direct for Kind. */
+    /**
+     * Static value Direct for Kind.
+     */
     public static final Kind DIRECT = fromString("Direct");
 
-    /** Static value Exchange for Kind. */
+    /**
+     * Static value Exchange for Kind.
+     */
     public static final Kind EXCHANGE = fromString("Exchange");
 
     /**
+     * Creates a new instance of Kind value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Kind() {
+    }
+
+    /**
      * Creates or finds a Kind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
-    @JsonCreator
     public static Kind fromString(String name) {
         return fromString(name, Kind.class);
     }
 
-    /** @return known Kind values. */
+    /**
+     * Gets known Kind values.
+     * 
+     * @return known Kind values.
+     */
     public static Collection<Kind> values() {
         return values(Kind.class);
     }

@@ -5,25 +5,34 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * exportPolicy
- *
- * <p>Set of export policy rules.
+ * 
+ * Set of export policy rules.
  */
 @Fluent
-public final class VolumePropertiesExportPolicy {
+public final class VolumePropertiesExportPolicy implements JsonSerializable<VolumePropertiesExportPolicy> {
     /*
      * Export policy rule
      */
-    @JsonProperty(value = "rules")
     private List<ExportPolicyRule> rules;
 
     /**
+     * Creates an instance of VolumePropertiesExportPolicy class.
+     */
+    public VolumePropertiesExportPolicy() {
+    }
+
+    /**
      * Get the rules property: Export policy rule.
-     *
+     * 
      * @return the rules value.
      */
     public List<ExportPolicyRule> rules() {
@@ -32,7 +41,7 @@ public final class VolumePropertiesExportPolicy {
 
     /**
      * Set the rules property: Export policy rule.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the VolumePropertiesExportPolicy object itself.
      */
@@ -43,12 +52,49 @@ public final class VolumePropertiesExportPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VolumePropertiesExportPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VolumePropertiesExportPolicy if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VolumePropertiesExportPolicy.
+     */
+    public static VolumePropertiesExportPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VolumePropertiesExportPolicy deserializedVolumePropertiesExportPolicy = new VolumePropertiesExportPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rules".equals(fieldName)) {
+                    List<ExportPolicyRule> rules = reader.readArray(reader1 -> ExportPolicyRule.fromJson(reader1));
+                    deserializedVolumePropertiesExportPolicy.rules = rules;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVolumePropertiesExportPolicy;
+        });
     }
 }

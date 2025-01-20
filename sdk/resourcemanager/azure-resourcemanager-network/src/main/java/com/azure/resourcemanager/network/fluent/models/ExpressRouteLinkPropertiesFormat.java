@@ -5,82 +5,77 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkMacSecConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
 /**
  * ExpressRouteLink Resource Properties
- *
- * <p>Properties specific to ExpressRouteLink resources.
+ * 
+ * Properties specific to ExpressRouteLink resources.
  */
 @Fluent
-public final class ExpressRouteLinkPropertiesFormat {
+public final class ExpressRouteLinkPropertiesFormat implements JsonSerializable<ExpressRouteLinkPropertiesFormat> {
     /*
      * Name of Azure router associated with physical port.
      */
-    @JsonProperty(value = "routerName", access = JsonProperty.Access.WRITE_ONLY)
     private String routerName;
 
     /*
      * Name of Azure router interface.
      */
-    @JsonProperty(value = "interfaceName", access = JsonProperty.Access.WRITE_ONLY)
     private String interfaceName;
 
     /*
      * Mapping between physical port to patch panel port.
      */
-    @JsonProperty(value = "patchPanelId", access = JsonProperty.Access.WRITE_ONLY)
     private String patchPanelId;
 
     /*
      * Mapping of physical patch panel to rack.
      */
-    @JsonProperty(value = "rackId", access = JsonProperty.Access.WRITE_ONLY)
     private String rackId;
 
     /*
      * Cololocation for ExpressRoute Hybrid Direct.
      */
-    @JsonProperty(value = "coloLocation", access = JsonProperty.Access.WRITE_ONLY)
     private String coloLocation;
 
     /*
      * Physical fiber port type.
      */
-    @JsonProperty(value = "connectorType", access = JsonProperty.Access.WRITE_ONLY)
     private ExpressRouteLinkConnectorType connectorType;
 
     /*
      * Administrative state of the physical port.
      */
-    @JsonProperty(value = "adminState")
     private ExpressRouteLinkAdminState adminState;
 
     /*
      * The provisioning state of the express route link resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
-     * Definition of ExpressRouteLink Mac Security configuration.
-     *
      * MacSec configuration.
      */
-    @JsonProperty(value = "macSecConfig")
     private ExpressRouteLinkMacSecConfig macSecConfig;
 
-    /** Creates an instance of ExpressRouteLinkPropertiesFormat class. */
+    /**
+     * Creates an instance of ExpressRouteLinkPropertiesFormat class.
+     */
     public ExpressRouteLinkPropertiesFormat() {
     }
 
     /**
      * Get the routerName property: Name of Azure router associated with physical port.
-     *
+     * 
      * @return the routerName value.
      */
     public String routerName() {
@@ -89,7 +84,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the interfaceName property: Name of Azure router interface.
-     *
+     * 
      * @return the interfaceName value.
      */
     public String interfaceName() {
@@ -98,7 +93,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the patchPanelId property: Mapping between physical port to patch panel port.
-     *
+     * 
      * @return the patchPanelId value.
      */
     public String patchPanelId() {
@@ -107,7 +102,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the rackId property: Mapping of physical patch panel to rack.
-     *
+     * 
      * @return the rackId value.
      */
     public String rackId() {
@@ -116,7 +111,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the coloLocation property: Cololocation for ExpressRoute Hybrid Direct.
-     *
+     * 
      * @return the coloLocation value.
      */
     public String coloLocation() {
@@ -125,7 +120,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the connectorType property: Physical fiber port type.
-     *
+     * 
      * @return the connectorType value.
      */
     public ExpressRouteLinkConnectorType connectorType() {
@@ -134,7 +129,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the adminState property: Administrative state of the physical port.
-     *
+     * 
      * @return the adminState value.
      */
     public ExpressRouteLinkAdminState adminState() {
@@ -143,7 +138,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Set the adminState property: Administrative state of the physical port.
-     *
+     * 
      * @param adminState the adminState value to set.
      * @return the ExpressRouteLinkPropertiesFormat object itself.
      */
@@ -154,7 +149,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -162,10 +157,8 @@ public final class ExpressRouteLinkPropertiesFormat {
     }
 
     /**
-     * Get the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
-     *
-     * <p>MacSec configuration.
-     *
+     * Get the macSecConfig property: MacSec configuration.
+     * 
      * @return the macSecConfig value.
      */
     public ExpressRouteLinkMacSecConfig macSecConfig() {
@@ -173,10 +166,8 @@ public final class ExpressRouteLinkPropertiesFormat {
     }
 
     /**
-     * Set the macSecConfig property: Definition of ExpressRouteLink Mac Security configuration.
-     *
-     * <p>MacSec configuration.
-     *
+     * Set the macSecConfig property: MacSec configuration.
+     * 
      * @param macSecConfig the macSecConfig value to set.
      * @return the ExpressRouteLinkPropertiesFormat object itself.
      */
@@ -187,12 +178,70 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (macSecConfig() != null) {
             macSecConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("adminState", this.adminState == null ? null : this.adminState.toString());
+        jsonWriter.writeJsonField("macSecConfig", this.macSecConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteLinkPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteLinkPropertiesFormat if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteLinkPropertiesFormat.
+     */
+    public static ExpressRouteLinkPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteLinkPropertiesFormat deserializedExpressRouteLinkPropertiesFormat
+                = new ExpressRouteLinkPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("routerName".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.routerName = reader.getString();
+                } else if ("interfaceName".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.interfaceName = reader.getString();
+                } else if ("patchPanelId".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.patchPanelId = reader.getString();
+                } else if ("rackId".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.rackId = reader.getString();
+                } else if ("coloLocation".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.coloLocation = reader.getString();
+                } else if ("connectorType".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.connectorType
+                        = ExpressRouteLinkConnectorType.fromString(reader.getString());
+                } else if ("adminState".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.adminState
+                        = ExpressRouteLinkAdminState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else if ("macSecConfig".equals(fieldName)) {
+                    deserializedExpressRouteLinkPropertiesFormat.macSecConfig
+                        = ExpressRouteLinkMacSecConfig.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteLinkPropertiesFormat;
+        });
     }
 }

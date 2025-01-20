@@ -5,90 +5,57 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleCreationParameterProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** Properties for creating a schedule. */
-@JsonFlatten
+/**
+ * Properties for creating a schedule.
+ */
 @Fluent
-public class ScheduleCreationParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleCreationParameter.class);
+public final class ScheduleCreationParameter implements JsonSerializable<ScheduleCreationParameter> {
+    /*
+     * The properties of the schedule.
+     */
+    private ScheduleCreationParameterProperties innerProperties;
 
     /*
      * The name of the virtual machine or environment
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The location of the new virtual machine or environment
      */
-    @JsonProperty(value = "location")
     private String location;
 
     /*
      * The tags of the resource.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /*
-     * The status of the schedule (i.e. Enabled, Disabled)
+    /**
+     * Creates an instance of ScheduleCreationParameter class.
      */
-    @JsonProperty(value = "properties.status")
-    private EnableStatus status;
+    public ScheduleCreationParameter() {
+    }
 
-    /*
-     * The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
+    /**
+     * Get the innerProperties property: The properties of the schedule.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.taskType")
-    private String taskType;
-
-    /*
-     * If the schedule will occur only some days of the week, specify the
-     * weekly recurrence.
-     */
-    @JsonProperty(value = "properties.weeklyRecurrence")
-    private WeekDetails weeklyRecurrence;
-
-    /*
-     * If the schedule will occur once each day of the week, specify the daily
-     * recurrence.
-     */
-    @JsonProperty(value = "properties.dailyRecurrence")
-    private DayDetails dailyRecurrence;
-
-    /*
-     * If the schedule will occur multiple times a day, specify the hourly
-     * recurrence.
-     */
-    @JsonProperty(value = "properties.hourlyRecurrence")
-    private HourDetails hourlyRecurrence;
-
-    /*
-     * The time zone ID (e.g. Pacific Standard time).
-     */
-    @JsonProperty(value = "properties.timeZoneId")
-    private String timeZoneId;
-
-    /*
-     * Notification settings.
-     */
-    @JsonProperty(value = "properties.notificationSettings")
-    private NotificationSettings notificationSettings;
-
-    /*
-     * The resource ID to which the schedule belongs
-     */
-    @JsonProperty(value = "properties.targetResourceId")
-    private String targetResourceId;
+    private ScheduleCreationParameterProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the virtual machine or environment.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -97,7 +64,7 @@ public class ScheduleCreationParameter {
 
     /**
      * Set the name property: The name of the virtual machine or environment.
-     *
+     * 
      * @param name the name value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -108,7 +75,7 @@ public class ScheduleCreationParameter {
 
     /**
      * Get the location property: The location of the new virtual machine or environment.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -116,19 +83,8 @@ public class ScheduleCreationParameter {
     }
 
     /**
-     * Set the location property: The location of the new virtual machine or environment.
-     *
-     * @param location the location value to set.
-     * @return the ScheduleCreationParameter object itself.
-     */
-    public ScheduleCreationParameter withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
      * Get the tags property: The tags of the resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -137,7 +93,7 @@ public class ScheduleCreationParameter {
 
     /**
      * Set the tags property: The tags of the resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ScheduleCreationParameter object itself.
      */
@@ -148,187 +104,254 @@ public class ScheduleCreationParameter {
 
     /**
      * Get the status property: The status of the schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @return the status value.
      */
     public EnableStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
      * Set the status property: The status of the schedule (i.e. Enabled, Disabled).
-     *
+     * 
      * @param status the status value to set.
      * @return the ScheduleCreationParameter object itself.
      */
     public ScheduleCreationParameter withStatus(EnableStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreationParameterProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
     /**
      * Get the taskType property: The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-     *
+     * 
      * @return the taskType value.
      */
     public String taskType() {
-        return this.taskType;
+        return this.innerProperties() == null ? null : this.innerProperties().taskType();
     }
 
     /**
      * Set the taskType property: The task type of the schedule (e.g. LabVmsShutdownTask, LabVmAutoStart).
-     *
+     * 
      * @param taskType the taskType value to set.
      * @return the ScheduleCreationParameter object itself.
      */
     public ScheduleCreationParameter withTaskType(String taskType) {
-        this.taskType = taskType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreationParameterProperties();
+        }
+        this.innerProperties().withTaskType(taskType);
         return this;
     }
 
     /**
      * Get the weeklyRecurrence property: If the schedule will occur only some days of the week, specify the weekly
      * recurrence.
-     *
+     * 
      * @return the weeklyRecurrence value.
      */
     public WeekDetails weeklyRecurrence() {
-        return this.weeklyRecurrence;
+        return this.innerProperties() == null ? null : this.innerProperties().weeklyRecurrence();
     }
 
     /**
      * Set the weeklyRecurrence property: If the schedule will occur only some days of the week, specify the weekly
      * recurrence.
-     *
+     * 
      * @param weeklyRecurrence the weeklyRecurrence value to set.
      * @return the ScheduleCreationParameter object itself.
      */
     public ScheduleCreationParameter withWeeklyRecurrence(WeekDetails weeklyRecurrence) {
-        this.weeklyRecurrence = weeklyRecurrence;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreationParameterProperties();
+        }
+        this.innerProperties().withWeeklyRecurrence(weeklyRecurrence);
         return this;
     }
 
     /**
      * Get the dailyRecurrence property: If the schedule will occur once each day of the week, specify the daily
      * recurrence.
-     *
+     * 
      * @return the dailyRecurrence value.
      */
     public DayDetails dailyRecurrence() {
-        return this.dailyRecurrence;
+        return this.innerProperties() == null ? null : this.innerProperties().dailyRecurrence();
     }
 
     /**
      * Set the dailyRecurrence property: If the schedule will occur once each day of the week, specify the daily
      * recurrence.
-     *
+     * 
      * @param dailyRecurrence the dailyRecurrence value to set.
      * @return the ScheduleCreationParameter object itself.
      */
     public ScheduleCreationParameter withDailyRecurrence(DayDetails dailyRecurrence) {
-        this.dailyRecurrence = dailyRecurrence;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreationParameterProperties();
+        }
+        this.innerProperties().withDailyRecurrence(dailyRecurrence);
         return this;
     }
 
     /**
      * Get the hourlyRecurrence property: If the schedule will occur multiple times a day, specify the hourly
      * recurrence.
-     *
+     * 
      * @return the hourlyRecurrence value.
      */
     public HourDetails hourlyRecurrence() {
-        return this.hourlyRecurrence;
+        return this.innerProperties() == null ? null : this.innerProperties().hourlyRecurrence();
     }
 
     /**
      * Set the hourlyRecurrence property: If the schedule will occur multiple times a day, specify the hourly
      * recurrence.
-     *
+     * 
      * @param hourlyRecurrence the hourlyRecurrence value to set.
      * @return the ScheduleCreationParameter object itself.
      */
     public ScheduleCreationParameter withHourlyRecurrence(HourDetails hourlyRecurrence) {
-        this.hourlyRecurrence = hourlyRecurrence;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreationParameterProperties();
+        }
+        this.innerProperties().withHourlyRecurrence(hourlyRecurrence);
         return this;
     }
 
     /**
-     * Get the timeZoneId property: The time zone ID (e.g. Pacific Standard time).
-     *
+     * Get the timeZoneId property: The time zone ID (e.g. China Standard Time, Greenland Standard Time, Pacific
+     * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
+     * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
+     * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
+     * 
      * @return the timeZoneId value.
      */
     public String timeZoneId() {
-        return this.timeZoneId;
+        return this.innerProperties() == null ? null : this.innerProperties().timeZoneId();
     }
 
     /**
-     * Set the timeZoneId property: The time zone ID (e.g. Pacific Standard time).
-     *
+     * Set the timeZoneId property: The time zone ID (e.g. China Standard Time, Greenland Standard Time, Pacific
+     * Standard time, etc.). The possible values for this property can be found in `IReadOnlyCollection&lt;string&gt;
+     * TimeZoneConverter.TZConvert.KnownWindowsTimeZoneIds`
+     * (https://github.com/mattjohnsonpint/TimeZoneConverter/blob/main/README.md).
+     * 
      * @param timeZoneId the timeZoneId value to set.
      * @return the ScheduleCreationParameter object itself.
      */
     public ScheduleCreationParameter withTimeZoneId(String timeZoneId) {
-        this.timeZoneId = timeZoneId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreationParameterProperties();
+        }
+        this.innerProperties().withTimeZoneId(timeZoneId);
         return this;
     }
 
     /**
      * Get the notificationSettings property: Notification settings.
-     *
+     * 
      * @return the notificationSettings value.
      */
     public NotificationSettings notificationSettings() {
-        return this.notificationSettings;
+        return this.innerProperties() == null ? null : this.innerProperties().notificationSettings();
     }
 
     /**
      * Set the notificationSettings property: Notification settings.
-     *
+     * 
      * @param notificationSettings the notificationSettings value to set.
      * @return the ScheduleCreationParameter object itself.
      */
     public ScheduleCreationParameter withNotificationSettings(NotificationSettings notificationSettings) {
-        this.notificationSettings = notificationSettings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreationParameterProperties();
+        }
+        this.innerProperties().withNotificationSettings(notificationSettings);
         return this;
     }
 
     /**
      * Get the targetResourceId property: The resource ID to which the schedule belongs.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
-        return this.targetResourceId;
+        return this.innerProperties() == null ? null : this.innerProperties().targetResourceId();
     }
 
     /**
      * Set the targetResourceId property: The resource ID to which the schedule belongs.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the ScheduleCreationParameter object itself.
      */
     public ScheduleCreationParameter withTargetResourceId(String targetResourceId) {
-        this.targetResourceId = targetResourceId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ScheduleCreationParameterProperties();
+        }
+        this.innerProperties().withTargetResourceId(targetResourceId);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (weeklyRecurrence() != null) {
-            weeklyRecurrence().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (dailyRecurrence() != null) {
-            dailyRecurrence().validate();
-        }
-        if (hourlyRecurrence() != null) {
-            hourlyRecurrence().validate();
-        }
-        if (notificationSettings() != null) {
-            notificationSettings().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScheduleCreationParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScheduleCreationParameter if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScheduleCreationParameter.
+     */
+    public static ScheduleCreationParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScheduleCreationParameter deserializedScheduleCreationParameter = new ScheduleCreationParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedScheduleCreationParameter.innerProperties
+                        = ScheduleCreationParameterProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedScheduleCreationParameter.name = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedScheduleCreationParameter.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedScheduleCreationParameter.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScheduleCreationParameter;
+        });
     }
 }

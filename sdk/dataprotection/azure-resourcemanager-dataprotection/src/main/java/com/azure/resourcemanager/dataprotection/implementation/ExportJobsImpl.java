@@ -8,17 +8,16 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dataprotection.fluent.ExportJobsClient;
 import com.azure.resourcemanager.dataprotection.models.ExportJobs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExportJobsImpl implements ExportJobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportJobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExportJobsImpl.class);
 
     private final ExportJobsClient innerClient;
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public ExportJobsImpl(
-        ExportJobsClient innerClient, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    public ExportJobsImpl(ExportJobsClient innerClient,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

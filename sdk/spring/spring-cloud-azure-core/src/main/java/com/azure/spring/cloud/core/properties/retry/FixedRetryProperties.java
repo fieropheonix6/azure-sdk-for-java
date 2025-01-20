@@ -13,11 +13,17 @@ import java.time.Duration;
 public class FixedRetryProperties implements RetryOptionsProvider.RetryOptions.FixedRetryOptions {
 
     /**
+     * Creates an instance of {@link FixedRetryProperties}.
+     */
+    public FixedRetryProperties() {
+    }
+
+    /**
      * The maximum number of attempts.
      */
     private Integer maxRetries;
     /**
-     * Amount of time to wait between retry attempts.
+     * Amount of time(Duration) to wait between retry attempts.
      */
     private Duration delay;
 

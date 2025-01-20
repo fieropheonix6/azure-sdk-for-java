@@ -8,46 +8,41 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.recoveryservicesbackup.models.AzureIaaSComputeVMContainer;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureIaaSComputeVMContainerTests {
-    @Test
-    public void testDeserialize() {
-        AzureIaaSComputeVMContainer model =
-            BinaryData
-                .fromString(
-                    "{\"containerType\":\"Microsoft.Compute/virtualMachines\",\"virtualMachineId\":\"vqecr\",\"virtualMachineVersion\":\"tmxxdtddmflhuy\",\"resourceGroup\":\"zv\",\"friendlyName\":\"napxbannovv\",\"backupManagementType\":\"AzureBackupServer\",\"registrationStatus\":\"ytprwnwvroev\",\"healthStatus\":\"lyokrrrou\",\"protectableObjectType\":\"vnsasbcrymodi\"}")
-                .toObject(AzureIaaSComputeVMContainer.class);
-        Assertions.assertEquals("napxbannovv", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
-        Assertions.assertEquals("ytprwnwvroev", model.registrationStatus());
-        Assertions.assertEquals("lyokrrrou", model.healthStatus());
-        Assertions.assertEquals("vnsasbcrymodi", model.protectableObjectType());
-        Assertions.assertEquals("vqecr", model.virtualMachineId());
-        Assertions.assertEquals("tmxxdtddmflhuy", model.virtualMachineVersion());
-        Assertions.assertEquals("zv", model.resourceGroup());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureIaaSComputeVMContainer model = BinaryData.fromString(
+            "{\"containerType\":\"Microsoft.Compute/virtualMachines\",\"virtualMachineId\":\"mlikytw\",\"virtualMachineVersion\":\"zc\",\"resourceGroup\":\"k\",\"friendlyName\":\"ve\",\"backupManagementType\":\"DefaultBackup\",\"registrationStatus\":\"vlvhbwrnfxtgd\",\"healthStatus\":\"qthe\",\"protectableObjectType\":\"mnaoy\"}")
+            .toObject(AzureIaaSComputeVMContainer.class);
+        Assertions.assertEquals("ve", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("vlvhbwrnfxtgd", model.registrationStatus());
+        Assertions.assertEquals("qthe", model.healthStatus());
+        Assertions.assertEquals("mnaoy", model.protectableObjectType());
+        Assertions.assertEquals("mlikytw", model.virtualMachineId());
+        Assertions.assertEquals("zc", model.virtualMachineVersion());
+        Assertions.assertEquals("k", model.resourceGroup());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureIaaSComputeVMContainer model =
-            new AzureIaaSComputeVMContainer()
-                .withFriendlyName("napxbannovv")
-                .withBackupManagementType(BackupManagementType.AZURE_BACKUP_SERVER)
-                .withRegistrationStatus("ytprwnwvroev")
-                .withHealthStatus("lyokrrrou")
-                .withProtectableObjectType("vnsasbcrymodi")
-                .withVirtualMachineId("vqecr")
-                .withVirtualMachineVersion("tmxxdtddmflhuy")
-                .withResourceGroup("zv");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureIaaSComputeVMContainer model = new AzureIaaSComputeVMContainer().withFriendlyName("ve")
+            .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
+            .withRegistrationStatus("vlvhbwrnfxtgd")
+            .withHealthStatus("qthe")
+            .withProtectableObjectType("mnaoy")
+            .withVirtualMachineId("mlikytw")
+            .withVirtualMachineVersion("zc")
+            .withResourceGroup("k");
         model = BinaryData.fromObject(model).toObject(AzureIaaSComputeVMContainer.class);
-        Assertions.assertEquals("napxbannovv", model.friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_BACKUP_SERVER, model.backupManagementType());
-        Assertions.assertEquals("ytprwnwvroev", model.registrationStatus());
-        Assertions.assertEquals("lyokrrrou", model.healthStatus());
-        Assertions.assertEquals("vnsasbcrymodi", model.protectableObjectType());
-        Assertions.assertEquals("vqecr", model.virtualMachineId());
-        Assertions.assertEquals("tmxxdtddmflhuy", model.virtualMachineVersion());
-        Assertions.assertEquals("zv", model.resourceGroup());
+        Assertions.assertEquals("ve", model.friendlyName());
+        Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.backupManagementType());
+        Assertions.assertEquals("vlvhbwrnfxtgd", model.registrationStatus());
+        Assertions.assertEquals("qthe", model.healthStatus());
+        Assertions.assertEquals("mnaoy", model.protectableObjectType());
+        Assertions.assertEquals("mlikytw", model.virtualMachineId());
+        Assertions.assertEquals("zc", model.virtualMachineVersion());
+        Assertions.assertEquals("k", model.resourceGroup());
     }
 }

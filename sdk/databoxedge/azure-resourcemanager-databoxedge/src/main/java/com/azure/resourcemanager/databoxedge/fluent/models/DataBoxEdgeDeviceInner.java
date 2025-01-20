@@ -5,142 +5,78 @@
 package com.azure.resourcemanager.databoxedge.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.databoxedge.models.ArmBaseModel;
 import com.azure.resourcemanager.databoxedge.models.DataBoxEdgeDeviceStatus;
 import com.azure.resourcemanager.databoxedge.models.DeviceType;
 import com.azure.resourcemanager.databoxedge.models.RoleTypes;
 import com.azure.resourcemanager.databoxedge.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The Data Box Edge/Gateway device. */
-@JsonFlatten
+/**
+ * The Data Box Edge/Gateway device.
+ */
 @Fluent
-public class DataBoxEdgeDeviceInner extends ArmBaseModel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataBoxEdgeDeviceInner.class);
-
+public final class DataBoxEdgeDeviceInner extends ArmBaseModel {
     /*
-     * The location of the device. This is a supported and registered Azure
-     * geographical region (for example, West US, East US, or Southeast Asia).
-     * The geographical region of a device cannot be changed once it is
-     * created, but if an identical geographical region is specified on update,
-     * the request will succeed.
+     * The location of the device. This is a supported and registered Azure geographical region (for example, West US,
+     * East US, or Southeast Asia). The geographical region of a device cannot be changed once it is created, but if an
+     * identical geographical region is specified on update, the request will succeed.
      */
-    @JsonProperty(value = "location", required = true)
     private String location;
 
     /*
-     * The list of tags that describe the device. These tags can be used to
-     * view and group this device (across resource groups).
+     * The list of tags that describe the device. These tags can be used to view and group this device (across resource
+     * groups).
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
     /*
      * The SKU type.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
      * The etag for the devices.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
-     * The status of the Data Box Edge/Gateway device.
+     * The properties of the Data Box Edge/Gateway device.
      */
-    @JsonProperty(value = "properties.dataBoxEdgeDeviceStatus")
-    private DataBoxEdgeDeviceStatus dataBoxEdgeDeviceStatus;
+    private DataBoxEdgeDeviceProperties innerProperties;
 
     /*
-     * The Serial Number of Data Box Edge/Gateway device.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.serialNumber", access = JsonProperty.Access.WRITE_ONLY)
-    private String serialNumber;
+    private String type;
 
     /*
-     * The Description of the Data Box Edge/Gateway device.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    private String name;
 
     /*
-     * The description of the Data Box Edge/Gateway device model.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.modelDescription")
-    private String modelDescription;
+    private String id;
 
-    /*
-     * The type of the Data Box Edge/Gateway device.
+    /**
+     * Creates an instance of DataBoxEdgeDeviceInner class.
      */
-    @JsonProperty(value = "properties.deviceType", access = JsonProperty.Access.WRITE_ONLY)
-    private DeviceType deviceType;
-
-    /*
-     * The Data Box Edge/Gateway device name.
-     */
-    @JsonProperty(value = "properties.friendlyName")
-    private String friendlyName;
-
-    /*
-     * The Data Box Edge/Gateway device culture.
-     */
-    @JsonProperty(value = "properties.culture", access = JsonProperty.Access.WRITE_ONLY)
-    private String culture;
-
-    /*
-     * The Data Box Edge/Gateway device model.
-     */
-    @JsonProperty(value = "properties.deviceModel", access = JsonProperty.Access.WRITE_ONLY)
-    private String deviceModel;
-
-    /*
-     * The Data Box Edge/Gateway device software version.
-     */
-    @JsonProperty(value = "properties.deviceSoftwareVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String deviceSoftwareVersion;
-
-    /*
-     * The Data Box Edge/Gateway device local capacity in MB.
-     */
-    @JsonProperty(value = "properties.deviceLocalCapacity", access = JsonProperty.Access.WRITE_ONLY)
-    private Long deviceLocalCapacity;
-
-    /*
-     * The Data Box Edge/Gateway device timezone.
-     */
-    @JsonProperty(value = "properties.timeZone", access = JsonProperty.Access.WRITE_ONLY)
-    private String timeZone;
-
-    /*
-     * The device software version number of the device (eg: 1.2.18105.6).
-     */
-    @JsonProperty(value = "properties.deviceHcsVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String deviceHcsVersion;
-
-    /*
-     * Type of compute roles configured.
-     */
-    @JsonProperty(value = "properties.configuredRoleTypes", access = JsonProperty.Access.WRITE_ONLY)
-    private List<RoleTypes> configuredRoleTypes;
-
-    /*
-     * The number of nodes in the cluster.
-     */
-    @JsonProperty(value = "properties.nodeCount", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer nodeCount;
+    public DataBoxEdgeDeviceInner() {
+    }
 
     /**
      * Get the location property: The location of the device. This is a supported and registered Azure geographical
      * region (for example, West US, East US, or Southeast Asia). The geographical region of a device cannot be changed
      * once it is created, but if an identical geographical region is specified on update, the request will succeed.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -151,7 +87,7 @@ public class DataBoxEdgeDeviceInner extends ArmBaseModel {
      * Set the location property: The location of the device. This is a supported and registered Azure geographical
      * region (for example, West US, East US, or Southeast Asia). The geographical region of a device cannot be changed
      * once it is created, but if an identical geographical region is specified on update, the request will succeed.
-     *
+     * 
      * @param location the location value to set.
      * @return the DataBoxEdgeDeviceInner object itself.
      */
@@ -163,7 +99,7 @@ public class DataBoxEdgeDeviceInner extends ArmBaseModel {
     /**
      * Get the tags property: The list of tags that describe the device. These tags can be used to view and group this
      * device (across resource groups).
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -173,7 +109,7 @@ public class DataBoxEdgeDeviceInner extends ArmBaseModel {
     /**
      * Set the tags property: The list of tags that describe the device. These tags can be used to view and group this
      * device (across resource groups).
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DataBoxEdgeDeviceInner object itself.
      */
@@ -184,7 +120,7 @@ public class DataBoxEdgeDeviceInner extends ArmBaseModel {
 
     /**
      * Get the sku property: The SKU type.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -193,7 +129,7 @@ public class DataBoxEdgeDeviceInner extends ArmBaseModel {
 
     /**
      * Set the sku property: The SKU type.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DataBoxEdgeDeviceInner object itself.
      */
@@ -204,7 +140,7 @@ public class DataBoxEdgeDeviceInner extends ArmBaseModel {
 
     /**
      * Get the etag property: The etag for the devices.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -213,7 +149,7 @@ public class DataBoxEdgeDeviceInner extends ArmBaseModel {
 
     /**
      * Set the etag property: The etag for the devices.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the DataBoxEdgeDeviceInner object itself.
      */
@@ -223,190 +159,301 @@ public class DataBoxEdgeDeviceInner extends ArmBaseModel {
     }
 
     /**
+     * Get the innerProperties property: The properties of the Data Box Edge/Gateway device.
+     * 
+     * @return the innerProperties value.
+     */
+    private DataBoxEdgeDeviceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the dataBoxEdgeDeviceStatus property: The status of the Data Box Edge/Gateway device.
-     *
+     * 
      * @return the dataBoxEdgeDeviceStatus value.
      */
     public DataBoxEdgeDeviceStatus dataBoxEdgeDeviceStatus() {
-        return this.dataBoxEdgeDeviceStatus;
+        return this.innerProperties() == null ? null : this.innerProperties().dataBoxEdgeDeviceStatus();
     }
 
     /**
      * Set the dataBoxEdgeDeviceStatus property: The status of the Data Box Edge/Gateway device.
-     *
+     * 
      * @param dataBoxEdgeDeviceStatus the dataBoxEdgeDeviceStatus value to set.
      * @return the DataBoxEdgeDeviceInner object itself.
      */
     public DataBoxEdgeDeviceInner withDataBoxEdgeDeviceStatus(DataBoxEdgeDeviceStatus dataBoxEdgeDeviceStatus) {
-        this.dataBoxEdgeDeviceStatus = dataBoxEdgeDeviceStatus;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataBoxEdgeDeviceProperties();
+        }
+        this.innerProperties().withDataBoxEdgeDeviceStatus(dataBoxEdgeDeviceStatus);
         return this;
     }
 
     /**
      * Get the serialNumber property: The Serial Number of Data Box Edge/Gateway device.
-     *
+     * 
      * @return the serialNumber value.
      */
     public String serialNumber() {
-        return this.serialNumber;
+        return this.innerProperties() == null ? null : this.innerProperties().serialNumber();
     }
 
     /**
      * Get the description property: The Description of the Data Box Edge/Gateway device.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: The Description of the Data Box Edge/Gateway device.
-     *
+     * 
      * @param description the description value to set.
      * @return the DataBoxEdgeDeviceInner object itself.
      */
     public DataBoxEdgeDeviceInner withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataBoxEdgeDeviceProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the modelDescription property: The description of the Data Box Edge/Gateway device model.
-     *
+     * 
      * @return the modelDescription value.
      */
     public String modelDescription() {
-        return this.modelDescription;
+        return this.innerProperties() == null ? null : this.innerProperties().modelDescription();
     }
 
     /**
      * Set the modelDescription property: The description of the Data Box Edge/Gateway device model.
-     *
+     * 
      * @param modelDescription the modelDescription value to set.
      * @return the DataBoxEdgeDeviceInner object itself.
      */
     public DataBoxEdgeDeviceInner withModelDescription(String modelDescription) {
-        this.modelDescription = modelDescription;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataBoxEdgeDeviceProperties();
+        }
+        this.innerProperties().withModelDescription(modelDescription);
         return this;
     }
 
     /**
      * Get the deviceType property: The type of the Data Box Edge/Gateway device.
-     *
+     * 
      * @return the deviceType value.
      */
     public DeviceType deviceType() {
-        return this.deviceType;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceType();
     }
 
     /**
      * Get the friendlyName property: The Data Box Edge/Gateway device name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
-        return this.friendlyName;
+        return this.innerProperties() == null ? null : this.innerProperties().friendlyName();
     }
 
     /**
      * Set the friendlyName property: The Data Box Edge/Gateway device name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the DataBoxEdgeDeviceInner object itself.
      */
     public DataBoxEdgeDeviceInner withFriendlyName(String friendlyName) {
-        this.friendlyName = friendlyName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataBoxEdgeDeviceProperties();
+        }
+        this.innerProperties().withFriendlyName(friendlyName);
         return this;
     }
 
     /**
      * Get the culture property: The Data Box Edge/Gateway device culture.
-     *
+     * 
      * @return the culture value.
      */
     public String culture() {
-        return this.culture;
+        return this.innerProperties() == null ? null : this.innerProperties().culture();
     }
 
     /**
      * Get the deviceModel property: The Data Box Edge/Gateway device model.
-     *
+     * 
      * @return the deviceModel value.
      */
     public String deviceModel() {
-        return this.deviceModel;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceModel();
     }
 
     /**
      * Get the deviceSoftwareVersion property: The Data Box Edge/Gateway device software version.
-     *
+     * 
      * @return the deviceSoftwareVersion value.
      */
     public String deviceSoftwareVersion() {
-        return this.deviceSoftwareVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceSoftwareVersion();
     }
 
     /**
      * Get the deviceLocalCapacity property: The Data Box Edge/Gateway device local capacity in MB.
-     *
+     * 
      * @return the deviceLocalCapacity value.
      */
     public Long deviceLocalCapacity() {
-        return this.deviceLocalCapacity;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceLocalCapacity();
     }
 
     /**
      * Get the timeZone property: The Data Box Edge/Gateway device timezone.
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
-        return this.timeZone;
+        return this.innerProperties() == null ? null : this.innerProperties().timeZone();
     }
 
     /**
      * Get the deviceHcsVersion property: The device software version number of the device (eg: 1.2.18105.6).
-     *
+     * 
      * @return the deviceHcsVersion value.
      */
     public String deviceHcsVersion() {
-        return this.deviceHcsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().deviceHcsVersion();
     }
 
     /**
      * Get the configuredRoleTypes property: Type of compute roles configured.
-     *
+     * 
      * @return the configuredRoleTypes value.
      */
     public List<RoleTypes> configuredRoleTypes() {
-        return this.configuredRoleTypes;
+        return this.innerProperties() == null ? null : this.innerProperties().configuredRoleTypes();
     }
 
     /**
      * Get the nodeCount property: The number of nodes in the cluster.
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
-        return this.nodeCount;
+        return this.innerProperties() == null ? null : this.innerProperties().nodeCount();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (location() == null) {
-            throw logger
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property location in model DataBoxEdgeDeviceInner"));
         }
         if (sku() != null) {
             sku().validate();
         }
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataBoxEdgeDeviceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", this.location);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataBoxEdgeDeviceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataBoxEdgeDeviceInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataBoxEdgeDeviceInner.
+     */
+    public static DataBoxEdgeDeviceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataBoxEdgeDeviceInner deserializedDataBoxEdgeDeviceInner = new DataBoxEdgeDeviceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceInner.location = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDataBoxEdgeDeviceInner.tags = tags;
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceInner.sku = Sku.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceInner.etag = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDataBoxEdgeDeviceInner.innerProperties = DataBoxEdgeDeviceProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataBoxEdgeDeviceInner;
+        });
     }
 }

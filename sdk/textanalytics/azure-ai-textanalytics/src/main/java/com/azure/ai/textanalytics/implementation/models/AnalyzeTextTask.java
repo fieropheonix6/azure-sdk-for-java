@@ -5,25 +5,105 @@
 package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonSubTypes;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AnalyzeTextTask model. */
-@JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = AnalyzeTextTask.class)
-@JsonTypeName("AnalyzeTextTask")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "EntityLinking", value = AnalyzeTextEntityLinkingInput.class),
-    @JsonSubTypes.Type(name = "EntityRecognition", value = AnalyzeTextEntityRecognitionInput.class),
-    @JsonSubTypes.Type(name = "KeyPhraseExtraction", value = AnalyzeTextKeyPhraseExtractionInput.class),
-    @JsonSubTypes.Type(name = "PiiEntityRecognition", value = AnalyzeTextPiiEntitiesRecognitionInput.class),
-    @JsonSubTypes.Type(name = "LanguageDetection", value = AnalyzeTextLanguageDetectionInput.class),
-    @JsonSubTypes.Type(name = "SentimentAnalysis", value = AnalyzeTextSentimentAnalysisInput.class),
-    @JsonSubTypes.Type(name = "DynamicClassification", value = AnalyzeTextDynamicClassificationInput.class)
-})
+/**
+ * The AnalyzeTextTask model.
+ */
 @Immutable
-public class AnalyzeTextTask {}
+public class AnalyzeTextTask implements JsonSerializable<AnalyzeTextTask> {
+    /*
+     * Enumeration of supported Text Analysis tasks.
+     */
+    private AnalyzeTextTaskKind kind = AnalyzeTextTaskKind.fromString("AnalyzeTextTask");
+
+    /**
+     * Creates an instance of AnalyzeTextTask class.
+     */
+    public AnalyzeTextTask() {
+    }
+
+    /**
+     * Get the kind property: Enumeration of supported Text Analysis tasks.
+     * 
+     * @return the kind value.
+     */
+    public AnalyzeTextTaskKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AnalyzeTextTask from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AnalyzeTextTask if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AnalyzeTextTask.
+     */
+    public static AnalyzeTextTask fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            try (JsonReader readerToUse = reader.bufferObject()) {
+                readerToUse.nextToken(); // Prepare for reading
+                while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                    String fieldName = readerToUse.getFieldName();
+                    readerToUse.nextToken();
+                    if ("kind".equals(fieldName)) {
+                        discriminatorValue = readerToUse.getString();
+                        break;
+                    } else {
+                        readerToUse.skipChildren();
+                    }
+                }
+                // Use the discriminator value to determine which subtype should be deserialized.
+                if ("EntityLinking".equals(discriminatorValue)) {
+                    return AnalyzeTextEntityLinkingInput.fromJson(readerToUse.reset());
+                } else if ("EntityRecognition".equals(discriminatorValue)) {
+                    return AnalyzeTextEntityRecognitionInput.fromJson(readerToUse.reset());
+                } else if ("KeyPhraseExtraction".equals(discriminatorValue)) {
+                    return AnalyzeTextKeyPhraseExtractionInput.fromJson(readerToUse.reset());
+                } else if ("PiiEntityRecognition".equals(discriminatorValue)) {
+                    return AnalyzeTextPiiEntitiesRecognitionInput.fromJson(readerToUse.reset());
+                } else if ("LanguageDetection".equals(discriminatorValue)) {
+                    return AnalyzeTextLanguageDetectionInput.fromJson(readerToUse.reset());
+                } else if ("SentimentAnalysis".equals(discriminatorValue)) {
+                    return AnalyzeTextSentimentAnalysisInput.fromJson(readerToUse.reset());
+                } else {
+                    return fromJsonKnownDiscriminator(readerToUse.reset());
+                }
+            }
+        });
+    }
+
+    static AnalyzeTextTask fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AnalyzeTextTask deserializedAnalyzeTextTask = new AnalyzeTextTask();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kind".equals(fieldName)) {
+                    deserializedAnalyzeTextTask.kind = AnalyzeTextTaskKind.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAnalyzeTextTask;
+        });
+    }
+}

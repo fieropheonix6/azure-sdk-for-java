@@ -6,36 +6,42 @@ package com.azure.resourcemanager.customerinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** The AssignmentPrincipal. */
+/**
+ * The AssignmentPrincipal.
+ */
 @Fluent
-public final class AssignmentPrincipal {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssignmentPrincipal.class);
-
+public final class AssignmentPrincipal implements JsonSerializable<AssignmentPrincipal> {
     /*
      * The principal id being assigned to.
      */
-    @JsonProperty(value = "principalId", required = true)
     private String principalId;
 
     /*
      * The Type of the principal ID.
      */
-    @JsonProperty(value = "principalType", required = true)
     private String principalType;
 
     /*
      * Other metadata for the principal.
      */
-    @JsonProperty(value = "principalMetadata")
     private Map<String, String> principalMetadata;
 
     /**
+     * Creates an instance of AssignmentPrincipal class.
+     */
+    public AssignmentPrincipal() {
+    }
+
+    /**
      * Get the principalId property: The principal id being assigned to.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -44,7 +50,7 @@ public final class AssignmentPrincipal {
 
     /**
      * Set the principalId property: The principal id being assigned to.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the AssignmentPrincipal object itself.
      */
@@ -55,7 +61,7 @@ public final class AssignmentPrincipal {
 
     /**
      * Get the principalType property: The Type of the principal ID.
-     *
+     * 
      * @return the principalType value.
      */
     public String principalType() {
@@ -64,7 +70,7 @@ public final class AssignmentPrincipal {
 
     /**
      * Set the principalType property: The Type of the principal ID.
-     *
+     * 
      * @param principalType the principalType value to set.
      * @return the AssignmentPrincipal object itself.
      */
@@ -75,7 +81,7 @@ public final class AssignmentPrincipal {
 
     /**
      * Get the principalMetadata property: Other metadata for the principal.
-     *
+     * 
      * @return the principalMetadata value.
      */
     public Map<String, String> principalMetadata() {
@@ -84,7 +90,7 @@ public final class AssignmentPrincipal {
 
     /**
      * Set the principalMetadata property: Other metadata for the principal.
-     *
+     * 
      * @param principalMetadata the principalMetadata value to set.
      * @return the AssignmentPrincipal object itself.
      */
@@ -95,20 +101,66 @@ public final class AssignmentPrincipal {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (principalId() == null) {
-            throw logger
-                .logExceptionAsError(
+            throw LOGGER.atError()
+                .log(
                     new IllegalArgumentException("Missing required property principalId in model AssignmentPrincipal"));
         }
         if (principalType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property principalType in model AssignmentPrincipal"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property principalType in model AssignmentPrincipal"));
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssignmentPrincipal.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("principalId", this.principalId);
+        jsonWriter.writeStringField("principalType", this.principalType);
+        jsonWriter.writeMapField("principalMetadata", this.principalMetadata,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AssignmentPrincipal from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AssignmentPrincipal if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AssignmentPrincipal.
+     */
+    public static AssignmentPrincipal fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AssignmentPrincipal deserializedAssignmentPrincipal = new AssignmentPrincipal();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("principalId".equals(fieldName)) {
+                    deserializedAssignmentPrincipal.principalId = reader.getString();
+                } else if ("principalType".equals(fieldName)) {
+                    deserializedAssignmentPrincipal.principalType = reader.getString();
+                } else if ("principalMetadata".equals(fieldName)) {
+                    Map<String, String> principalMetadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAssignmentPrincipal.principalMetadata = principalMetadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAssignmentPrincipal;
+        });
     }
 }

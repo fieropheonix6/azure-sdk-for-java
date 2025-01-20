@@ -4,23 +4,25 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AgentPool Get. */
+/**
+ * Samples for AgentPool Get.
+ */
 public final class AgentPoolGetSamples {
     /*
-     * x-ms-original-file: specification/hybridaks/resource-manager/Microsoft.HybridContainerService/preview/2022-05-01-preview/examples/GetAgentPool.json
+     * x-ms-original-file:
+     * specification/hybridaks/resource-manager/Microsoft.HybridContainerService/stable/2024-01-01/examples/GetAgentPool
+     * .json
      */
     /**
      * Sample code: GetAgentPool.
-     *
+     * 
      * @param manager Entry point to HybridContainerServiceManager.
      */
-    public static void getAgentPool(
-        com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
-        manager
-            .agentPools()
+    public static void
+        getAgentPool(com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager manager) {
+        manager.agentPools()
             .getWithResponse(
-                "test-arcappliance-resgrp", "test-hybridakscluster", "test-hybridaksnodepool", Context.NONE);
+                "subscriptions/fd3c3665-1729-4b7b-9a38-238e83b0f98b/resourceGroups/testrg/providers/Microsoft.Kubernetes/connectedClusters/test-hybridakscluster",
+                "testnodepool", com.azure.core.util.Context.NONE);
     }
 }

@@ -8,36 +8,53 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FrontendEndpoints. */
+/**
+ * Resource collection API of FrontendEndpoints.
+ */
 public interface FrontendEndpoints {
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FrontendEndpoint> listByFrontDoor(String resourceGroupName, String frontDoorName);
 
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints as paginated response with {@link PagedIterable}.
      */
     PagedIterable<FrontendEndpoint> listByFrontDoor(String resourceGroupName, String frontDoorName, Context context);
 
     /**
      * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param frontDoorName Name of the Front Door which is globally unique.
+     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Frontend endpoint with the specified name within the specified Front Door along with {@link Response}.
+     */
+    Response<FrontendEndpoint> getWithResponse(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, Context context);
+
+    /**
+     * Gets a Frontend endpoint with the specified name within the specified Front Door.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -49,23 +66,8 @@ public interface FrontendEndpoints {
     FrontendEndpoint get(String resourceGroupName, String frontDoorName, String frontendEndpointName);
 
     /**
-     * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend endpoint with the specified name within the specified Front Door.
-     */
-    Response<FrontendEndpoint> getWithResponse(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context);
-
-    /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -74,15 +76,12 @@ public interface FrontendEndpoints {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void enableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
+    void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         CustomHttpsConfiguration customHttpsConfiguration);
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -92,16 +91,12 @@ public interface FrontendEndpoints {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void enableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
-        Context context);
+    void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
+        CustomHttpsConfiguration customHttpsConfiguration, Context context);
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -113,7 +108,7 @@ public interface FrontendEndpoints {
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.

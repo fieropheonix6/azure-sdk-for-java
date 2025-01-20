@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualNetworkGatewayNatRules ListByVirtualNetworkGateway. */
+/**
+ * Samples for VirtualNetworkGatewayNatRules ListByVirtualNetworkGateway.
+ */
 public final class VirtualNetworkGatewayNatRulesListByVirtualNetworkGatewaySamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VirtualNetworkGatewayNatRuleList.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * VirtualNetworkGatewayNatRuleList.json
      */
     /**
      * Sample code: VirtualNetworkGatewayNatRuleList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualNetworkGatewayNatRuleList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getVirtualNetworkGatewayNatRules()
-            .listByVirtualNetworkGateway("rg1", "gateway1", Context.NONE);
+            .listByVirtualNetworkGateway("rg1", "gateway1", com.azure.core.util.Context.NONE);
     }
 }

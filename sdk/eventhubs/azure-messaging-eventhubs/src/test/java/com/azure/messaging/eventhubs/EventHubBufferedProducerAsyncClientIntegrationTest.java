@@ -4,10 +4,14 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
+import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.messaging.eventhubs.models.SendBatchSucceededContext;
 import com.azure.messaging.eventhubs.models.SendOptions;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -23,13 +27,16 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -41,10 +48,10 @@ import static org.junit.jupiter.api.Assertions.fail;
  */
 @Isolated
 @Tag(TestUtils.INTEGRATION)
+@Execution(ExecutionMode.SAME_THREAD)
 public class EventHubBufferedProducerAsyncClientIntegrationTest extends IntegrationTestBase {
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss")
-        .withLocale(Locale.US)
-        .withZone(ZoneId.of("America/Los_Angeles"));
+    private final DateTimeFormatter formatter
+        = DateTimeFormatter.ofPattern("HH:mm:ss").withLocale(Locale.US).withZone(ZoneId.of("America/Los_Angeles"));
     private EventHubBufferedProducerAsyncClient producer;
     private EventHubClient hubClient;
     private String[] partitionIds;
@@ -56,8 +63,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
     @Override
     protected void beforeTest() {
-        this.hubClient = new EventHubClientBuilder().connectionString(getConnectionString())
-            .buildClient();
+        this.hubClient = toClose(createBuilder().buildClient());
 
         List<String> allIds = new ArrayList<>();
         final EventHubProperties properties = hubClient.getProperties();
@@ -74,17 +80,6 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         assertFalse(partitionPropertiesMap.isEmpty(), "'partitionPropertiesMap' should have values.");
     }
 
-    @Override
-    protected void afterTest() {
-        if (hubClient != null) {
-            hubClient.close();
-        }
-
-        if (producer != null) {
-            producer.close();
-        }
-    }
-
     /**
      * Checks that we can publish round-robin.
      *
@@ -98,10 +93,11 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
         final Duration maxWaitTime = Duration.ofSeconds(5);
         final int queueSize = 10;
+        final EventHubClientBuilder builder = createBuilder();
 
-        producer = new EventHubBufferedProducerClientBuilder()
-            .connectionString(getConnectionString())
-            .retryOptions(RETRY_OPTIONS)
+        producer = toClose(new EventHubBufferedProducerClientBuilder()
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
                 fail("Exception occurred while sending messages." + failed.getThrowable());
@@ -111,7 +107,7 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
             })
             .maxEventBufferLengthPerPartition(queueSize)
             .maxWaitTime(maxWaitTime)
-            .buildAsyncClient();
+            .buildAsyncClient());
 
         // Creating 2x number of events, we expect that each partition will get at least one of these events.
         final int numberOfEvents = partitionPropertiesMap.size() * 2;
@@ -120,24 +116,18 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
             .collect(Collectors.toList());
 
         // Waiting for at least maxWaitTime because events will get published by then.
-        StepVerifier.create(producer.enqueueEvents(eventsToPublish))
-            .assertNext(integer -> {
-                assertEquals(0, integer, "Do not expect anymore events in queue.");
-            })
-            .thenAwait(maxWaitTime)
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(producer.enqueueEvents(eventsToPublish)).assertNext(integer -> {
+            assertEquals(0, integer, "Do not expect anymore events in queue.");
+        }).thenAwait(maxWaitTime).expectComplete().verify(TIMEOUT);
 
         assertTrue(countDownLatch.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS), "Did not get enough messages.");
 
         // Assert
-        final Map<String, PartitionProperties> propertiesAfterMap = producer.getEventHubProperties()
-            .flatMapMany(properties -> {
+        final Map<String, PartitionProperties> propertiesAfterMap
+            = producer.getEventHubProperties().flatMapMany(properties -> {
                 return Flux.fromIterable(properties.getPartitionIds())
                     .flatMap(id -> producer.getPartitionProperties(id));
-            })
-            .collectMap(properties -> properties.getId(), Function.identity())
-            .block(TIMEOUT);
+            }).collectMap(properties -> properties.getId(), Function.identity()).block(TIMEOUT);
 
         assertNotNull(propertiesAfterMap, "'partitionPropertiesMap' should not be null");
 
@@ -164,9 +154,10 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final Duration maxWaitTime = Duration.ofSeconds(15);
         final int queueSize = 10;
 
+        final EventHubClientBuilder builder = createBuilder();
         producer = new EventHubBufferedProducerClientBuilder()
-            .connectionString(getConnectionString())
-            .retryOptions(RETRY_OPTIONS)
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
             .onSendBatchFailed(failed -> {
                 anyFailures.set(true);
                 fail("Exception occurred while sending messages." + failed.getThrowable());
@@ -183,36 +174,38 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
         final Map<String, List<String>> expectedPartitionIdsMap = new HashMap<>();
         final PartitionResolver resolver = new PartitionResolver();
 
-        final List<Mono<Integer>> publishEventMono = IntStream.range(0, numberOfEvents)
-            .mapToObj(index -> {
-                final String partitionKey = "partition-" + index;
-                final EventData eventData = new EventData(partitionKey);
-                final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
-                final int delay = randomInterval.nextInt(20);
+        final List<Mono<Integer>> publishEventMono = IntStream.range(0, numberOfEvents).mapToObj(index -> {
+            final String partitionKey = "partition-" + index;
+            final EventData eventData = new EventData(partitionKey);
+            eventData.getRawAmqpMessage()
+                .getMessageAnnotations()
+                .put(PARTITION_KEY_ANNOTATION_NAME.getValue(), "old partition key - should not be used");
 
-                final String expectedPartitionId = resolver.assignForPartitionKey(partitionKey, partitionIds);
+            final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
+            final int delay = randomInterval.nextInt(20);
 
-                expectedPartitionIdsMap.compute(expectedPartitionId, (key, existing) -> {
-                    if (existing == null) {
-                        List<String> events = new ArrayList<>();
-                        events.add(partitionKey);
-                        return events;
-                    } else {
-                        existing.add(partitionKey);
-                        return existing;
-                    }
-                });
+            final String expectedPartitionId = resolver.assignForPartitionKey(partitionKey, partitionIds);
 
-                return Mono.delay(Duration.ofSeconds(delay)).then(producer.enqueueEvent(eventData, sendOptions)
-                    .doFinally(signal  -> {
-                        System.out.printf("\t[%s] %s Published event.%n", expectedPartitionId, formatter.format(Instant.now()));
-                    }));
-            }).collect(Collectors.toList());
+            expectedPartitionIdsMap.compute(expectedPartitionId, (key, existing) -> {
+                if (existing == null) {
+                    List<String> events = new ArrayList<>();
+                    events.add(partitionKey);
+                    return events;
+                } else {
+                    existing.add(partitionKey);
+                    return existing;
+                }
+            });
+
+            return Mono.delay(Duration.ofSeconds(delay))
+                .then(producer.enqueueEvent(eventData, sendOptions)
+                    .doFinally(
+                        signal -> logger.log(LogLevel.VERBOSE, () -> String.format("\t[%s] %s Published event.%n",
+                            expectedPartitionId, formatter.format(Instant.now())))));
+        }).collect(Collectors.toList());
 
         // Waiting for at least maxWaitTime because events will get published by then.
-        StepVerifier.create(Mono.when(publishEventMono))
-            .expectComplete()
-            .verify(TIMEOUT);
+        StepVerifier.create(Mono.when(publishEventMono)).expectComplete().verify(TIMEOUT);
 
         final boolean await = eventCountdown.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS);
 
@@ -225,18 +218,77 @@ public class EventHubBufferedProducerAsyncClientIntegrationTest extends Integrat
 
             context.getEvents().forEach(eventData -> {
                 final boolean success = expected.removeIf(key -> key.equals(eventData.getBodyAsString()));
-                assertTrue(success, "Unable to find key " + eventData.getBodyAsString()
-                    + " in partition id: " + context.getEvents());
+                assertTrue(success,
+                    "Unable to find key " + eventData.getBodyAsString() + " in partition id: " + context.getEvents());
             });
         }
 
         expectedPartitionIdsMap.forEach((key, value) -> {
-            assertTrue(value.isEmpty(), key + ": There should be no more partition keys. "
-                + String.join(",", value));
+            assertTrue(value.isEmpty(), key + ": There should be no more partition keys. " + String.join(",", value));
         });
 
         final Map<String, PartitionProperties> finalProperties = getPartitionProperties();
         assertPropertiesUpdated(partitionPropertiesMap, finalProperties);
+    }
+
+    /**
+     * Checks that sending a message with partition key propagates partition key to receiver.
+     */
+    @Test
+    public void publishAndReceiveWithPartitionKeys() throws InterruptedException {
+        // Arrange
+        final CountDownLatch eventCountdown = new CountDownLatch(1);
+        final int queueSize = 1;
+
+        final EventHubClientBuilder builder = createBuilder();
+        producer = new EventHubBufferedProducerClientBuilder()
+            .credential(builder.getFullyQualifiedNamespace(), builder.getEventHubName(), builder.getCredentials())
+            .retryOptions(builder.getRetryOptions())
+            .onSendBatchFailed(failed -> {
+                fail("Exception occurred while sending messages." + failed.getThrowable());
+            })
+            .onSendBatchSucceeded(succeeded -> {
+            })
+            .maxEventBufferLengthPerPartition(queueSize)
+            .buildAsyncClient();
+
+        final EventHubConsumerAsyncClient receiver
+            = toClose(createBuilder().consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
+                .buildAsyncConsumerClient());
+
+        final PartitionResolver resolver = new PartitionResolver();
+
+        final String partitionKey = "test-partition-key";
+        final String messageId = UUID.randomUUID().toString();
+        final EventData eventData = new EventData(partitionKey);
+        eventData.setMessageId(messageId);
+        eventData.getRawAmqpMessage()
+            .getMessageAnnotations()
+            .put(PARTITION_KEY_ANNOTATION_NAME.getValue(), "old partition key - should not be used");
+
+        final SendOptions sendOptions = new SendOptions().setPartitionKey(partitionKey);
+        final String expectedPartitionId = resolver.assignForPartitionKey(partitionKey, partitionIds);
+
+        AtomicReference<EventData> receivedEventData = new AtomicReference<>();
+        toClose(receiver.receiveFromPartition(expectedPartitionId, EventPosition.earliest()).filter(pe -> {
+            if (messageId.equals(pe.getData().getMessageId())) {
+                receivedEventData.compareAndSet(null, pe.getData());
+                eventCountdown.countDown();
+                return true;
+            }
+            return false;
+        }).subscribe());
+
+        StepVerifier.create(producer.enqueueEvent(eventData, sendOptions))
+            .expectNext(0)
+            .expectComplete()
+            .verify(TIMEOUT);
+
+        assertTrue(eventCountdown.await(TIMEOUT.toMillis(), TimeUnit.MILLISECONDS));
+
+        final EventData received = receivedEventData.get();
+        assertNotNull(received, "Did not receive the event.");
+        assertEquals(partitionKey, received.getPartitionKey());
     }
 
     private Map<String, PartitionProperties> getPartitionProperties() {

@@ -26,8 +26,6 @@ import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolEvaluateAutoScaleOptions;
 import com.microsoft.azure.batch.protocol.models.PoolExistsHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolExistsOptions;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsHeaders;
-import com.microsoft.azure.batch.protocol.models.PoolGetAllLifetimeStatisticsOptions;
 import com.microsoft.azure.batch.protocol.models.PoolGetHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolGetOptions;
 import com.microsoft.azure.batch.protocol.models.PoolListHeaders;
@@ -44,7 +42,6 @@ import com.microsoft.azure.batch.protocol.models.PoolRemoveNodesOptions;
 import com.microsoft.azure.batch.protocol.models.PoolResizeHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolResizeOptions;
 import com.microsoft.azure.batch.protocol.models.PoolResizeParameter;
-import com.microsoft.azure.batch.protocol.models.PoolStatistics;
 import com.microsoft.azure.batch.protocol.models.PoolStopResizeHeaders;
 import com.microsoft.azure.batch.protocol.models.PoolStopResizeOptions;
 import com.microsoft.azure.batch.protocol.models.PoolUpdatePropertiesHeaders;
@@ -148,87 +145,6 @@ public interface Pools {
     Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsWithServiceResponseAsync(final PoolListUsageMetricsOptions poolListUsageMetricsOptions);
 
     /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PoolStatistics object if successful.
-     */
-    PoolStatistics getAllLifetimeStatistics();
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<PoolStatistics> getAllLifetimeStatisticsAsync(final ServiceCallback<PoolStatistics> serviceCallback);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PoolStatistics object
-     */
-    Observable<PoolStatistics> getAllLifetimeStatisticsAsync();
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PoolStatistics object
-     */
-    Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync();
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws BatchErrorException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PoolStatistics object if successful.
-     */
-    PoolStatistics getAllLifetimeStatistics(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions, final ServiceCallback<PoolStatistics> serviceCallback);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PoolStatistics object
-     */
-    Observable<PoolStatistics> getAllLifetimeStatisticsAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
-
-    /**
-     * Gets lifetime summary statistics for all of the Pools in the specified Account.
-     * Statistics are aggregated across all Pools that have ever existed in the Account, from Account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
-     *
-     * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PoolStatistics object
-     */
-    Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync(PoolGetAllLifetimeStatisticsOptions poolGetAllLifetimeStatisticsOptions);
-
-    /**
      * Adds a Pool to the specified Account.
      * When naming Pools, avoid including sensitive information such as user names or secret project names. This information may appear in telemetry logs accessible to Microsoft Support engineers.
      *
@@ -316,7 +232,7 @@ public interface Pools {
     Observable<ServiceResponseWithHeaders<Void, PoolAddHeaders>> addWithServiceResponseAsync(PoolAddParameter pool, PoolAddOptions poolAddOptions);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -326,7 +242,7 @@ public interface Pools {
     PagedList<CloudPool> list();
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -335,7 +251,7 @@ public interface Pools {
     ServiceFuture<List<CloudPool>> listAsync(final ListOperationCallback<CloudPool> serviceCallback);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
@@ -343,14 +259,14 @@ public interface Pools {
     Observable<Page<CloudPool>> listAsync();
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;CloudPool&gt; object
      */
     Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listWithServiceResponseAsync();
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -361,7 +277,7 @@ public interface Pools {
     PagedList<CloudPool> list(final PoolListOptions poolListOptions);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param poolListOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -371,7 +287,7 @@ public interface Pools {
     ServiceFuture<List<CloudPool>> listAsync(final PoolListOptions poolListOptions, final ListOperationCallback<CloudPool> serviceCallback);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -380,7 +296,7 @@ public interface Pools {
     Observable<Page<CloudPool>> listAsync(final PoolListOptions poolListOptions);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -911,7 +827,7 @@ public interface Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -924,7 +840,7 @@ public interface Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -936,7 +852,7 @@ public interface Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
      */
@@ -947,7 +863,7 @@ public interface Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
      */
@@ -957,7 +873,7 @@ public interface Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -971,7 +887,7 @@ public interface Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -984,7 +900,7 @@ public interface Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
@@ -996,7 +912,7 @@ public interface Pools {
      * This API is primarily for validating an autoscale formula, as it simply returns the result without applying the formula to the Pool. The Pool must have auto scaling enabled in order to evaluate a formula.
      *
      * @param poolId The ID of the Pool on which to evaluate the automatic scaling formula.
-     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/en-us/documentation/articles/batch-automatic-scaling).
+     * @param autoScaleFormula The formula for the desired number of Compute Nodes in the Pool. The formula is validated and its results calculated, but it is not applied to the Pool. To apply the formula to the Pool, 'Enable automatic scaling on a Pool'. For more information about specifying this formula, see Automatically scale Compute Nodes in an Azure Batch Pool (https://azure.microsoft.com/documentation/articles/batch-automatic-scaling).
      * @param poolEvaluateAutoScaleOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the AutoScaleRun object
@@ -1467,7 +1383,7 @@ public interface Pools {
     Observable<ServiceResponseWithHeaders<Page<PoolUsageMetrics>, PoolListUsageMetricsHeaders>> listUsageMetricsNextWithServiceResponseAsync(final String nextPageLink, final PoolListUsageMetricsNextOptions poolListUsageMetricsNextOptions);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1478,7 +1394,7 @@ public interface Pools {
     PagedList<CloudPool> listNext(final String nextPageLink);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
@@ -1489,7 +1405,7 @@ public interface Pools {
     ServiceFuture<List<CloudPool>> listNextAsync(final String nextPageLink, final ServiceFuture<List<CloudPool>> serviceFuture, final ListOperationCallback<CloudPool> serviceCallback);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1498,7 +1414,7 @@ public interface Pools {
     Observable<Page<CloudPool>> listNextAsync(final String nextPageLink);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1506,7 +1422,7 @@ public interface Pools {
      */
     Observable<ServiceResponseWithHeaders<Page<CloudPool>, PoolListHeaders>> listNextWithServiceResponseAsync(final String nextPageLink);
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
@@ -1518,7 +1434,7 @@ public interface Pools {
     PagedList<CloudPool> listNext(final String nextPageLink, final PoolListNextOptions poolListNextOptions);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
@@ -1530,7 +1446,7 @@ public interface Pools {
     ServiceFuture<List<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions, final ServiceFuture<List<CloudPool>> serviceFuture, final ListOperationCallback<CloudPool> serviceCallback);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation
@@ -1540,7 +1456,7 @@ public interface Pools {
     Observable<Page<CloudPool>> listNextAsync(final String nextPageLink, final PoolListNextOptions poolListNextOptions);
 
     /**
-     * Lists all of the Pools in the specified Account.
+     * Lists all of the Pools which be mounted.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @param poolListNextOptions Additional parameters for the operation

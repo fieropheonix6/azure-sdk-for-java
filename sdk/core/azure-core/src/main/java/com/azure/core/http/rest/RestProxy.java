@@ -20,17 +20,23 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-
 /**
- * Type to create a proxy implementation for an interface describing REST API methods.
- * <p>
- * RestProxy can create proxy implementations for interfaces with methods that return deserialized Java objects as well
- * as asynchronous Single objects that resolve to a deserialized Java object.
+ * <p>RestProxy is a type that creates a proxy implementation for an interface describing REST API methods.
+ * It can create proxy implementations for interfaces with methods that return deserialized Java objects as well
+ * as asynchronous Single objects that resolve to a deserialized Java object.</p>
+ *
+ * <p>RestProxy uses the provided HttpPipeline and SerializerAdapter to send HTTP requests and convert response bodies
+ * to POJOs.</p>
+ *
+ * <p>It also provides methods to send the provided request asynchronously, applying any request policies provided to
+ * the HttpClient instance.</p>
+ *
+ * <p>RestProxy is useful when you want to create a proxy implementation for an interface describing REST API methods.</p>
  */
 public final class RestProxy implements InvocationHandler {
-    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    private static final boolean GLOBAL_SYNC_PROXY_ENABLE = Configuration.getGlobalConfiguration()
-        .get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", false);
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLED = "com.azure.core.http.restproxy.syncproxy.enable";
+    private static final boolean GLOBAL_SYNC_PROXY_ENABLED
+        = Configuration.getGlobalConfiguration().get("AZURE_HTTP_REST_PROXY_SYNC_PROXY_ENABLED", true);
 
     private final SwaggerInterfaceParser interfaceParser;
     private final AsyncRestProxy asyncRestProxy;
@@ -76,25 +82,23 @@ public final class RestProxy implements InvocationHandler {
 
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
-        RestProxyUtils.validateResumeOperationIsNotPresent(method);
-
         // Note: request options need to be evaluated here, as it is a public class with package private methods.
         // Evaluating here allows the package private methods to be invoked here for downstream use.
         final SwaggerMethodParser methodParser = getMethodParser(method);
         RequestOptions options = methodParser.setRequestOptions(args);
         Context context = methodParser.setContext(args);
-        boolean isReactive = methodParser.isReactive();
-        boolean syncRestProxyEnabled = (boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE)
-            .orElse(GLOBAL_SYNC_PROXY_ENABLE);
 
-
-        if (isReactive || !syncRestProxyEnabled) {
+        if (methodParser.isReactive() || isSyncDisabled(context)) {
             return asyncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-                options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
+                options != null ? options.getRequestCallback() : null, methodParser, methodParser.isReactive(), args);
         } else {
             return syncRestProxy.invoke(proxy, method, options, options != null ? options.getErrorOptions() : null,
-                options != null ? options.getRequestCallback() : null, methodParser, isReactive, args);
+                options != null ? options.getRequestCallback() : null, methodParser, false, args);
         }
+    }
+
+    private static boolean isSyncDisabled(Context context) {
+        return !(boolean) context.getData(HTTP_REST_PROXY_SYNC_PROXY_ENABLED).orElse(GLOBAL_SYNC_PROXY_ENABLED);
     }
 
     /**
@@ -134,7 +138,7 @@ public final class RestProxy implements InvocationHandler {
     public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter serializer) {
         final SwaggerInterfaceParser interfaceParser = SwaggerInterfaceParser.getInstance(swaggerInterface);
         final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
-        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[]{swaggerInterface},
+        return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class<?>[] { swaggerInterface },
             restProxy);
     }
 }

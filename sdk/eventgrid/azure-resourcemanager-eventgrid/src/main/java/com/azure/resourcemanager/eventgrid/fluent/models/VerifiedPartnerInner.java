@@ -7,29 +7,53 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.PartnerDetails;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartnerProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.UUID;
 
-/** Verified partner information. */
+/**
+ * Verified partner information.
+ */
 @Fluent
 public final class VerifiedPartnerInner extends ProxyResource {
     /*
      * Properties of the verified partner.
      */
-    @JsonProperty(value = "properties")
     private VerifiedPartnerProperties innerProperties;
 
     /*
      * The system metadata relating to Verified Partner resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of VerifiedPartnerInner class.
+     */
+    public VerifiedPartnerInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the verified partner.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VerifiedPartnerProperties innerProperties() {
@@ -38,7 +62,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to Verified Partner resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -46,8 +70,38 @@ public final class VerifiedPartnerInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the partnerRegistrationImmutableId property: ImmutableId of the corresponding partner registration.
-     *
+     * 
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -56,7 +110,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Set the partnerRegistrationImmutableId property: ImmutableId of the corresponding partner registration.
-     *
+     * 
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the VerifiedPartnerInner object itself.
      */
@@ -70,7 +124,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Get the organizationName property: Official name of the Partner.
-     *
+     * 
      * @return the organizationName value.
      */
     public String organizationName() {
@@ -79,7 +133,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Set the organizationName property: Official name of the Partner.
-     *
+     * 
      * @param organizationName the organizationName value to set.
      * @return the VerifiedPartnerInner object itself.
      */
@@ -93,7 +147,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Get the partnerDisplayName property: Display name of the verified partner.
-     *
+     * 
      * @return the partnerDisplayName value.
      */
     public String partnerDisplayName() {
@@ -102,7 +156,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Set the partnerDisplayName property: Display name of the verified partner.
-     *
+     * 
      * @param partnerDisplayName the partnerDisplayName value to set.
      * @return the VerifiedPartnerInner object itself.
      */
@@ -116,7 +170,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Get the partnerTopicDetails property: Details of the partner topic scenario.
-     *
+     * 
      * @return the partnerTopicDetails value.
      */
     public PartnerDetails partnerTopicDetails() {
@@ -125,7 +179,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Set the partnerTopicDetails property: Details of the partner topic scenario.
-     *
+     * 
      * @param partnerTopicDetails the partnerTopicDetails value to set.
      * @return the VerifiedPartnerInner object itself.
      */
@@ -138,8 +192,31 @@ public final class VerifiedPartnerInner extends ProxyResource {
     }
 
     /**
+     * Get the partnerDestinationDetails property: Details of the partner destination scenario.
+     * 
+     * @return the partnerDestinationDetails value.
+     */
+    public PartnerDetails partnerDestinationDetails() {
+        return this.innerProperties() == null ? null : this.innerProperties().partnerDestinationDetails();
+    }
+
+    /**
+     * Set the partnerDestinationDetails property: Details of the partner destination scenario.
+     * 
+     * @param partnerDestinationDetails the partnerDestinationDetails value to set.
+     * @return the VerifiedPartnerInner object itself.
+     */
+    public VerifiedPartnerInner withPartnerDestinationDetails(PartnerDetails partnerDestinationDetails) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VerifiedPartnerProperties();
+        }
+        this.innerProperties().withPartnerDestinationDetails(partnerDestinationDetails);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the verified partner.
-     *
+     * 
      * @return the provisioningState value.
      */
     public VerifiedPartnerProvisioningState provisioningState() {
@@ -148,7 +225,7 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Set the provisioningState property: Provisioning state of the verified partner.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the VerifiedPartnerInner object itself.
      */
@@ -162,12 +239,57 @@ public final class VerifiedPartnerInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VerifiedPartnerInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VerifiedPartnerInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VerifiedPartnerInner.
+     */
+    public static VerifiedPartnerInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VerifiedPartnerInner deserializedVerifiedPartnerInner = new VerifiedPartnerInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedVerifiedPartnerInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVerifiedPartnerInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVerifiedPartnerInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVerifiedPartnerInner.innerProperties = VerifiedPartnerProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVerifiedPartnerInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVerifiedPartnerInner;
+        });
     }
 }

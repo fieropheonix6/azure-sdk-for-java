@@ -7,27 +7,23 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.VirtualNetworkRule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkRuleTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkRule model =
-            BinaryData
-                .fromString("{\"id\":\"jakhmsbzjh\",\"state\":\"zevdphlx\",\"ignoreMissingVnetServiceEndpoint\":true}")
-                .toObject(VirtualNetworkRule.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkRule model = BinaryData
+            .fromString("{\"id\":\"jakhmsbzjh\",\"state\":\"zevdphlx\",\"ignoreMissingVnetServiceEndpoint\":true}")
+            .toObject(VirtualNetworkRule.class);
         Assertions.assertEquals("jakhmsbzjh", model.id());
         Assertions.assertEquals("zevdphlx", model.state());
         Assertions.assertEquals(true, model.ignoreMissingVnetServiceEndpoint());
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkRule model =
-            new VirtualNetworkRule()
-                .withId("jakhmsbzjh")
-                .withState("zevdphlx")
-                .withIgnoreMissingVnetServiceEndpoint(true);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkRule model = new VirtualNetworkRule().withId("jakhmsbzjh")
+            .withState("zevdphlx")
+            .withIgnoreMissingVnetServiceEndpoint(true);
         model = BinaryData.fromObject(model).toObject(VirtualNetworkRule.class);
         Assertions.assertEquals("jakhmsbzjh", model.id());
         Assertions.assertEquals("zevdphlx", model.state());

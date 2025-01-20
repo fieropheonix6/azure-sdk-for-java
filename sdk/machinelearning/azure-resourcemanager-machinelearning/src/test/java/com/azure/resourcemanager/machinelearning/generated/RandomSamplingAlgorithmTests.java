@@ -8,25 +8,23 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.RandomSamplingAlgorithm;
 import com.azure.resourcemanager.machinelearning.models.RandomSamplingAlgorithmRule;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class RandomSamplingAlgorithmTests {
-    @Test
-    public void testDeserialize() {
-        RandomSamplingAlgorithm model =
-            BinaryData
-                .fromString("{\"samplingAlgorithmType\":\"Random\",\"rule\":\"Random\",\"seed\":1677252615}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        RandomSamplingAlgorithm model
+            = BinaryData.fromString("{\"samplingAlgorithmType\":\"Random\",\"seed\":1840024509,\"rule\":\"Random\"}")
                 .toObject(RandomSamplingAlgorithm.class);
+        Assertions.assertEquals(1840024509, model.seed());
         Assertions.assertEquals(RandomSamplingAlgorithmRule.RANDOM, model.rule());
-        Assertions.assertEquals(1677252615, model.seed());
     }
 
-    @Test
-    public void testSerialize() {
-        RandomSamplingAlgorithm model =
-            new RandomSamplingAlgorithm().withRule(RandomSamplingAlgorithmRule.RANDOM).withSeed(1677252615);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        RandomSamplingAlgorithm model
+            = new RandomSamplingAlgorithm().withSeed(1840024509).withRule(RandomSamplingAlgorithmRule.RANDOM);
         model = BinaryData.fromObject(model).toObject(RandomSamplingAlgorithm.class);
+        Assertions.assertEquals(1840024509, model.seed());
         Assertions.assertEquals(RandomSamplingAlgorithmRule.RANDOM, model.rule());
-        Assertions.assertEquals(1677252615, model.seed());
     }
 }

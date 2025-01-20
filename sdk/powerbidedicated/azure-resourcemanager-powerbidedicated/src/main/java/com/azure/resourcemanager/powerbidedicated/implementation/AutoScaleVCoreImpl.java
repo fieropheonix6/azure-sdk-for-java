@@ -49,8 +49,8 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
         return this.innerModel().sku();
     }
 
-    public Integer capacityLimit() {
-        return this.innerModel().capacityLimit();
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String capacityObjectId() {
@@ -61,8 +61,8 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
         return this.innerModel().provisioningState();
     }
 
-    public SystemData systemData() {
-        return this.innerModel().systemData();
+    public Integer capacityLimit() {
+        return this.innerModel().capacityLimit();
     }
 
     public Region region() {
@@ -71,6 +71,10 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AutoScaleVCoreInner innerModel() {
@@ -93,22 +97,18 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
     }
 
     public AutoScaleVCore create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoScaleVCores()
-                .createWithResponse(resourceGroupName, vcoreName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutoScaleVCores()
+            .createWithResponse(resourceGroupName, vcoreName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public AutoScaleVCore create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoScaleVCores()
-                .createWithResponse(resourceGroupName, vcoreName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutoScaleVCores()
+            .createWithResponse(resourceGroupName, vcoreName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -124,51 +124,42 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
     }
 
     public AutoScaleVCore apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoScaleVCores()
-                .updateWithResponse(resourceGroupName, vcoreName, updateVCoreUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutoScaleVCores()
+            .updateWithResponse(resourceGroupName, vcoreName, updateVCoreUpdateParameters, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AutoScaleVCore apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoScaleVCores()
-                .updateWithResponse(resourceGroupName, vcoreName, updateVCoreUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutoScaleVCores()
+            .updateWithResponse(resourceGroupName, vcoreName, updateVCoreUpdateParameters, context)
+            .getValue();
         return this;
     }
 
-    AutoScaleVCoreImpl(
-        AutoScaleVCoreInner innerObject,
+    AutoScaleVCoreImpl(AutoScaleVCoreInner innerObject,
         com.azure.resourcemanager.powerbidedicated.PowerBIDedicatedManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.vcoreName = Utils.getValueFromIdByName(innerObject.id(), "autoScaleVCores");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.vcoreName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "autoScaleVCores");
     }
 
     public AutoScaleVCore refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoScaleVCores()
-                .getByResourceGroupWithResponse(resourceGroupName, vcoreName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutoScaleVCores()
+            .getByResourceGroupWithResponse(resourceGroupName, vcoreName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public AutoScaleVCore refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getAutoScaleVCores()
-                .getByResourceGroupWithResponse(resourceGroupName, vcoreName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getAutoScaleVCores()
+            .getByResourceGroupWithResponse(resourceGroupName, vcoreName, context)
+            .getValue();
         return this;
     }
 
@@ -202,6 +193,16 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
         }
     }
 
+    public AutoScaleVCoreImpl withSystemData(SystemData systemData) {
+        this.innerModel().withSystemData(systemData);
+        return this;
+    }
+
+    public AutoScaleVCoreImpl withCapacityObjectId(String capacityObjectId) {
+        this.innerModel().withCapacityObjectId(capacityObjectId);
+        return this;
+    }
+
     public AutoScaleVCoreImpl withCapacityLimit(Integer capacityLimit) {
         if (isInCreateMode()) {
             this.innerModel().withCapacityLimit(capacityLimit);
@@ -210,16 +211,6 @@ public final class AutoScaleVCoreImpl implements AutoScaleVCore, AutoScaleVCore.
             this.updateVCoreUpdateParameters.withCapacityLimit(capacityLimit);
             return this;
         }
-    }
-
-    public AutoScaleVCoreImpl withCapacityObjectId(String capacityObjectId) {
-        this.innerModel().withCapacityObjectId(capacityObjectId);
-        return this;
-    }
-
-    public AutoScaleVCoreImpl withSystemData(SystemData systemData) {
-        this.innerModel().withSystemData(systemData);
-        return this;
     }
 
     private boolean isInCreateMode() {

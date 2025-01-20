@@ -20,32 +20,28 @@ public final class OutboundNetworkDependenciesEndpointsImpl implements OutboundN
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public OutboundNetworkDependenciesEndpointsImpl(
-        OutboundNetworkDependenciesEndpointsClient innerClient,
+    public OutboundNetworkDependenciesEndpointsImpl(OutboundNetworkDependenciesEndpointsClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<OutboundEnvironmentEndpointList> listByServiceWithResponse(String resourceGroupName,
+        String serviceName, Context context) {
+        Response<OutboundEnvironmentEndpointListInner> inner
+            = this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OutboundEnvironmentEndpointListImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OutboundEnvironmentEndpointList listByService(String resourceGroupName, String serviceName) {
         OutboundEnvironmentEndpointListInner inner = this.serviceClient().listByService(resourceGroupName, serviceName);
         if (inner != null) {
             return new OutboundEnvironmentEndpointListImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<OutboundEnvironmentEndpointList> listByServiceWithResponse(
-        String resourceGroupName, String serviceName, Context context) {
-        Response<OutboundEnvironmentEndpointListInner> inner =
-            this.serviceClient().listByServiceWithResponse(resourceGroupName, serviceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OutboundEnvironmentEndpointListImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

@@ -33,22 +33,28 @@ import com.azure.resourcemanager.sql.fluent.models.JobTargetGroupInner;
 import com.azure.resourcemanager.sql.models.JobTargetGroupListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in JobTargetGroupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in JobTargetGroupsClient.
+ */
 public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final JobTargetGroupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SqlManagementClientImpl client;
 
     /**
      * Initializes an instance of JobTargetGroupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     JobTargetGroupsClientImpl(SqlManagementClientImpl client) {
-        this.service =
-            RestProxy.create(JobTargetGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(JobTargetGroupsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,90 +64,61 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
-    private interface JobTargetGroupsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/targetGroups")
-        @ExpectedResponses({200})
+    public interface JobTargetGroupsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobTargetGroupListResult>> listByAgent(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<JobTargetGroupListResult>> listByAgent(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<JobTargetGroupInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("targetGroupName") String targetGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<JobTargetGroupInner>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("targetGroupName") String targetGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") JobTargetGroupInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}")
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobTargetGroupInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("targetGroupName") String targetGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("serverName") String serverName,
+            @PathParam("jobAgentName") String jobAgentName, @PathParam("targetGroupName") String targetGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<JobTargetGroupInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("targetGroupName") String targetGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") JobTargetGroupInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
-                + "/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}")
-        @ExpectedResponses({200, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("serverName") String serverName,
-            @PathParam("jobAgentName") String jobAgentName,
-            @PathParam("targetGroupName") String targetGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobTargetGroupListResult>> listByAgentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets all target groups in an agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -150,13 +127,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return all target groups in an agent along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobTargetGroupInner>> listByAgentSinglePageAsync(
-        String resourceGroupName, String serverName, String jobAgentName) {
+    private Mono<PagedResponse<JobTargetGroupInner>> listByAgentSinglePageAsync(String resourceGroupName,
+        String serverName, String jobAgentName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -169,43 +144,23 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAgent(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<JobTargetGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAgent(this.client.getEndpoint(), resourceGroupName, serverName,
+                jobAgentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
+            .<PagedResponse<JobTargetGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all target groups in an agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param context The context to associate with this operation.
@@ -215,13 +170,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return all target groups in an agent along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<JobTargetGroupInner>> listByAgentSinglePageAsync(
-        String resourceGroupName, String serverName, String jobAgentName, Context context) {
+    private Mono<PagedResponse<JobTargetGroupInner>> listByAgentSinglePageAsync(String resourceGroupName,
+        String serverName, String jobAgentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -234,40 +187,23 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter jobAgentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAgent(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAgent(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets all target groups in an agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,18 +212,17 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return all target groups in an agent as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<JobTargetGroupInner> listByAgentAsync(
-        String resourceGroupName, String serverName, String jobAgentName) {
-        return new PagedFlux<>(
-            () -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName),
+    public PagedFlux<JobTargetGroupInner> listByAgentAsync(String resourceGroupName, String serverName,
+        String jobAgentName) {
+        return new PagedFlux<>(() -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName),
             nextLink -> listByAgentNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all target groups in an agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param context The context to associate with this operation.
@@ -297,18 +232,17 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return all target groups in an agent as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<JobTargetGroupInner> listByAgentAsync(
-        String resourceGroupName, String serverName, String jobAgentName, Context context) {
-        return new PagedFlux<>(
-            () -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName, context),
+    private PagedFlux<JobTargetGroupInner> listByAgentAsync(String resourceGroupName, String serverName,
+        String jobAgentName, Context context) {
+        return new PagedFlux<>(() -> listByAgentSinglePageAsync(resourceGroupName, serverName, jobAgentName, context),
             nextLink -> listByAgentNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all target groups in an agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,16 +251,16 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return all target groups in an agent as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobTargetGroupInner> listByAgent(
-        String resourceGroupName, String serverName, String jobAgentName) {
+    public PagedIterable<JobTargetGroupInner> listByAgent(String resourceGroupName, String serverName,
+        String jobAgentName) {
         return new PagedIterable<>(listByAgentAsync(resourceGroupName, serverName, jobAgentName));
     }
 
     /**
      * Gets all target groups in an agent.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param context The context to associate with this operation.
@@ -336,16 +270,16 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return all target groups in an agent as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<JobTargetGroupInner> listByAgent(
-        String resourceGroupName, String serverName, String jobAgentName, Context context) {
+    public PagedIterable<JobTargetGroupInner> listByAgent(String resourceGroupName, String serverName,
+        String jobAgentName, Context context) {
         return new PagedIterable<>(listByAgentAsync(resourceGroupName, serverName, jobAgentName, context));
     }
 
     /**
      * Gets a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -355,13 +289,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return a target group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobTargetGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
+    public Mono<Response<JobTargetGroupInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String targetGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -378,35 +310,21 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 .error(new IllegalArgumentException("Parameter targetGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            targetGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
+                targetGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -417,13 +335,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return a target group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobTargetGroupInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName, Context context) {
+    private Mono<Response<JobTargetGroupInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String targetGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -440,32 +356,20 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 .error(new IllegalArgumentException("Parameter targetGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                targetGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, targetGroupName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -475,36 +379,17 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return a target group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobTargetGroupInner> getAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
+    public Mono<JobTargetGroupInner> getAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String targetGroupName) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param targetGroupName The name of the target group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a target group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobTargetGroupInner get(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
-        return getAsync(resourceGroupName, serverName, jobAgentName, targetGroupName).block();
-    }
-
-    /**
-     * Gets a target group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -515,16 +400,35 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return a target group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobTargetGroupInner> getWithResponse(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName, Context context) {
+    public Response<JobTargetGroupInner> getWithResponse(String resourceGroupName, String serverName,
+        String jobAgentName, String targetGroupName, Context context) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, context).block();
     }
 
     /**
-     * Creates or updates a target group.
-     *
+     * Gets a target group.
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param targetGroupName The name of the target group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a target group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobTargetGroupInner get(String resourceGroupName, String serverName, String jobAgentName,
+        String targetGroupName) {
+        return getWithResponse(resourceGroupName, serverName, jobAgentName, targetGroupName, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates a target group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -535,17 +439,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return a group of job targets along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<JobTargetGroupInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String targetGroupName,
-        JobTargetGroupInner parameters) {
+    public Mono<Response<JobTargetGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String jobAgentName, String targetGroupName, JobTargetGroupInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -562,41 +460,27 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 .error(new IllegalArgumentException("Parameter targetGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            targetGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName,
+                jobAgentName, targetGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters,
+                accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -608,18 +492,12 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return a group of job targets along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<JobTargetGroupInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String targetGroupName,
-        JobTargetGroupInner parameters,
+    private Mono<Response<JobTargetGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serverName, String jobAgentName, String targetGroupName, JobTargetGroupInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -636,38 +514,25 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 .error(new IllegalArgumentException("Parameter targetGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2017-03-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                targetGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName,
+            targetGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -678,45 +543,17 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return a group of job targets on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobTargetGroupInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String targetGroupName,
-        JobTargetGroupInner parameters) {
+    public Mono<JobTargetGroupInner> createOrUpdateAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String targetGroupName, JobTargetGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param targetGroupName The name of the target group.
-     * @param parameters The requested state of the target group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a group of job targets.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobTargetGroupInner createOrUpdate(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String targetGroupName,
-        JobTargetGroupInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, parameters).block();
-    }
-
-    /**
-     * Creates or updates a target group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -728,23 +565,38 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return a group of job targets along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<JobTargetGroupInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serverName,
-        String jobAgentName,
-        String targetGroupName,
-        JobTargetGroupInner parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, jobAgentName, targetGroupName, parameters, context)
-            .block();
+    public Response<JobTargetGroupInner> createOrUpdateWithResponse(String resourceGroupName, String serverName,
+        String jobAgentName, String targetGroupName, JobTargetGroupInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, parameters,
+            context).block();
+    }
+
+    /**
+     * Creates or updates a target group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param targetGroupName The name of the target group.
+     * @param parameters The requested state of the target group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a group of job targets.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobTargetGroupInner createOrUpdate(String resourceGroupName, String serverName, String jobAgentName,
+        String targetGroupName, JobTargetGroupInner parameters) {
+        return createOrUpdateWithResponse(resourceGroupName, serverName, jobAgentName, targetGroupName, parameters,
+            Context.NONE).getValue();
     }
 
     /**
      * Deletes a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -754,13 +606,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String targetGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -777,33 +627,20 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 .error(new IllegalArgumentException("Parameter targetGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            serverName,
-                            jobAgentName,
-                            targetGroupName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, serverName,
+                jobAgentName, targetGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -814,13 +651,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteWithResponseAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName, Context context) {
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String serverName,
+        String jobAgentName, String targetGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -837,30 +672,19 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 .error(new IllegalArgumentException("Parameter targetGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-03-01-preview";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                serverName,
-                jobAgentName,
-                targetGroupName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, serverName, jobAgentName, targetGroupName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), context);
     }
 
     /**
      * Deletes a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -870,34 +694,17 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
+    public Mono<Void> deleteAsync(String resourceGroupName, String serverName, String jobAgentName,
+        String targetGroupName) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName)
             .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a target group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param targetGroupName The name of the target group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
-        deleteAsync(resourceGroupName, serverName, jobAgentName, targetGroupName).block();
-    }
-
-    /**
-     * Deletes a target group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
+     * from the Azure Resource Manager API or the portal.
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
@@ -908,15 +715,32 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName, Context context) {
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serverName, String jobAgentName,
+        String targetGroupName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, context).block();
     }
 
     /**
+     * Deletes a target group.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
+     * from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param jobAgentName The name of the job agent.
+     * @param targetGroupName The name of the target group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
+        deleteWithResponse(resourceGroupName, serverName, jobAgentName, targetGroupName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -928,30 +752,21 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAgentNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<JobTargetGroupInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<JobTargetGroupInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -964,23 +779,13 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAgentNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAgentNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

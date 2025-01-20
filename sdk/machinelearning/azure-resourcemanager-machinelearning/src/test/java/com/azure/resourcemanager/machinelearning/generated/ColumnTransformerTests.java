@@ -8,23 +8,22 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.ColumnTransformer;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ColumnTransformerTests {
-    @Test
-    public void testDeserialize() {
-        ColumnTransformer model =
-            BinaryData
-                .fromString("{\"fields\":[\"dsmjtgr\",\"gdgkki\"],\"parameters\":\"dataplkcsm\"}")
-                .toObject(ColumnTransformer.class);
-        Assertions.assertEquals("dsmjtgr", model.fields().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ColumnTransformer model = BinaryData.fromString(
+            "{\"fields\":[\"psdudgco\",\"zomehxlantolam\",\"bijux\",\"qllczipvwdtgckz\"],\"parameters\":\"dataiqdlratrkw\"}")
+            .toObject(ColumnTransformer.class);
+        Assertions.assertEquals("psdudgco", model.fields().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        ColumnTransformer model =
-            new ColumnTransformer().withFields(Arrays.asList("dsmjtgr", "gdgkki")).withParameters("dataplkcsm");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ColumnTransformer model = new ColumnTransformer()
+            .withFields(Arrays.asList("psdudgco", "zomehxlantolam", "bijux", "qllczipvwdtgckz"))
+            .withParameters("dataiqdlratrkw");
         model = BinaryData.fromObject(model).toObject(ColumnTransformer.class);
-        Assertions.assertEquals("dsmjtgr", model.fields().get(0));
+        Assertions.assertEquals("psdudgco", model.fields().get(0));
     }
 }

@@ -5,67 +5,66 @@
 package com.azure.resourcemanager.peering.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The properties that define an exchange peering facility. */
+/**
+ * The properties that define an exchange peering facility.
+ */
 @Fluent
-public final class ExchangePeeringFacility {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExchangePeeringFacility.class);
-
+public final class ExchangePeeringFacility implements JsonSerializable<ExchangePeeringFacility> {
     /*
      * The name of the exchange peering facility.
      */
-    @JsonProperty(value = "exchangeName")
     private String exchangeName;
 
     /*
-     * The bandwidth of the connection between Microsoft and the exchange
-     * peering facility.
+     * The bandwidth of the connection between Microsoft and the exchange peering facility.
      */
-    @JsonProperty(value = "bandwidthInMbps")
     private Integer bandwidthInMbps;
 
     /*
      * The IPv4 address of Microsoft at the exchange peering facility.
      */
-    @JsonProperty(value = "microsoftIPv4Address")
     private String microsoftIPv4Address;
 
     /*
      * The IPv6 address of Microsoft at the exchange peering facility.
      */
-    @JsonProperty(value = "microsoftIPv6Address")
     private String microsoftIPv6Address;
 
     /*
      * The IPv4 prefixes associated with the exchange peering facility.
      */
-    @JsonProperty(value = "facilityIPv4Prefix")
     private String facilityIPv4Prefix;
 
     /*
      * The IPv6 prefixes associated with the exchange peering facility.
      */
-    @JsonProperty(value = "facilityIPv6Prefix")
     private String facilityIPv6Prefix;
 
     /*
      * The PeeringDB.com ID of the facility.
      */
-    @JsonProperty(value = "peeringDBFacilityId")
     private Integer peeringDBFacilityId;
 
     /*
      * The PeeringDB.com URL of the facility.
      */
-    @JsonProperty(value = "peeringDBFacilityLink")
     private String peeringDBFacilityLink;
 
     /**
+     * Creates an instance of ExchangePeeringFacility class.
+     */
+    public ExchangePeeringFacility() {
+    }
+
+    /**
      * Get the exchangeName property: The name of the exchange peering facility.
-     *
+     * 
      * @return the exchangeName value.
      */
     public String exchangeName() {
@@ -74,7 +73,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Set the exchangeName property: The name of the exchange peering facility.
-     *
+     * 
      * @param exchangeName the exchangeName value to set.
      * @return the ExchangePeeringFacility object itself.
      */
@@ -86,7 +85,7 @@ public final class ExchangePeeringFacility {
     /**
      * Get the bandwidthInMbps property: The bandwidth of the connection between Microsoft and the exchange peering
      * facility.
-     *
+     * 
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
@@ -96,7 +95,7 @@ public final class ExchangePeeringFacility {
     /**
      * Set the bandwidthInMbps property: The bandwidth of the connection between Microsoft and the exchange peering
      * facility.
-     *
+     * 
      * @param bandwidthInMbps the bandwidthInMbps value to set.
      * @return the ExchangePeeringFacility object itself.
      */
@@ -107,7 +106,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Get the microsoftIPv4Address property: The IPv4 address of Microsoft at the exchange peering facility.
-     *
+     * 
      * @return the microsoftIPv4Address value.
      */
     public String microsoftIPv4Address() {
@@ -116,7 +115,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Set the microsoftIPv4Address property: The IPv4 address of Microsoft at the exchange peering facility.
-     *
+     * 
      * @param microsoftIPv4Address the microsoftIPv4Address value to set.
      * @return the ExchangePeeringFacility object itself.
      */
@@ -127,7 +126,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Get the microsoftIPv6Address property: The IPv6 address of Microsoft at the exchange peering facility.
-     *
+     * 
      * @return the microsoftIPv6Address value.
      */
     public String microsoftIPv6Address() {
@@ -136,7 +135,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Set the microsoftIPv6Address property: The IPv6 address of Microsoft at the exchange peering facility.
-     *
+     * 
      * @param microsoftIPv6Address the microsoftIPv6Address value to set.
      * @return the ExchangePeeringFacility object itself.
      */
@@ -147,7 +146,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Get the facilityIPv4Prefix property: The IPv4 prefixes associated with the exchange peering facility.
-     *
+     * 
      * @return the facilityIPv4Prefix value.
      */
     public String facilityIPv4Prefix() {
@@ -156,7 +155,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Set the facilityIPv4Prefix property: The IPv4 prefixes associated with the exchange peering facility.
-     *
+     * 
      * @param facilityIPv4Prefix the facilityIPv4Prefix value to set.
      * @return the ExchangePeeringFacility object itself.
      */
@@ -167,7 +166,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Get the facilityIPv6Prefix property: The IPv6 prefixes associated with the exchange peering facility.
-     *
+     * 
      * @return the facilityIPv6Prefix value.
      */
     public String facilityIPv6Prefix() {
@@ -176,7 +175,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Set the facilityIPv6Prefix property: The IPv6 prefixes associated with the exchange peering facility.
-     *
+     * 
      * @param facilityIPv6Prefix the facilityIPv6Prefix value to set.
      * @return the ExchangePeeringFacility object itself.
      */
@@ -187,7 +186,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Get the peeringDBFacilityId property: The PeeringDB.com ID of the facility.
-     *
+     * 
      * @return the peeringDBFacilityId value.
      */
     public Integer peeringDBFacilityId() {
@@ -196,7 +195,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Set the peeringDBFacilityId property: The PeeringDB.com ID of the facility.
-     *
+     * 
      * @param peeringDBFacilityId the peeringDBFacilityId value to set.
      * @return the ExchangePeeringFacility object itself.
      */
@@ -207,7 +206,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Get the peeringDBFacilityLink property: The PeeringDB.com URL of the facility.
-     *
+     * 
      * @return the peeringDBFacilityLink value.
      */
     public String peeringDBFacilityLink() {
@@ -216,7 +215,7 @@ public final class ExchangePeeringFacility {
 
     /**
      * Set the peeringDBFacilityLink property: The PeeringDB.com URL of the facility.
-     *
+     * 
      * @param peeringDBFacilityLink the peeringDBFacilityLink value to set.
      * @return the ExchangePeeringFacility object itself.
      */
@@ -227,9 +226,66 @@ public final class ExchangePeeringFacility {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("exchangeName", this.exchangeName);
+        jsonWriter.writeNumberField("bandwidthInMbps", this.bandwidthInMbps);
+        jsonWriter.writeStringField("microsoftIPv4Address", this.microsoftIPv4Address);
+        jsonWriter.writeStringField("microsoftIPv6Address", this.microsoftIPv6Address);
+        jsonWriter.writeStringField("facilityIPv4Prefix", this.facilityIPv4Prefix);
+        jsonWriter.writeStringField("facilityIPv6Prefix", this.facilityIPv6Prefix);
+        jsonWriter.writeNumberField("peeringDBFacilityId", this.peeringDBFacilityId);
+        jsonWriter.writeStringField("peeringDBFacilityLink", this.peeringDBFacilityLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExchangePeeringFacility from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExchangePeeringFacility if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExchangePeeringFacility.
+     */
+    public static ExchangePeeringFacility fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExchangePeeringFacility deserializedExchangePeeringFacility = new ExchangePeeringFacility();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("exchangeName".equals(fieldName)) {
+                    deserializedExchangePeeringFacility.exchangeName = reader.getString();
+                } else if ("bandwidthInMbps".equals(fieldName)) {
+                    deserializedExchangePeeringFacility.bandwidthInMbps = reader.getNullable(JsonReader::getInt);
+                } else if ("microsoftIPv4Address".equals(fieldName)) {
+                    deserializedExchangePeeringFacility.microsoftIPv4Address = reader.getString();
+                } else if ("microsoftIPv6Address".equals(fieldName)) {
+                    deserializedExchangePeeringFacility.microsoftIPv6Address = reader.getString();
+                } else if ("facilityIPv4Prefix".equals(fieldName)) {
+                    deserializedExchangePeeringFacility.facilityIPv4Prefix = reader.getString();
+                } else if ("facilityIPv6Prefix".equals(fieldName)) {
+                    deserializedExchangePeeringFacility.facilityIPv6Prefix = reader.getString();
+                } else if ("peeringDBFacilityId".equals(fieldName)) {
+                    deserializedExchangePeeringFacility.peeringDBFacilityId = reader.getNullable(JsonReader::getInt);
+                } else if ("peeringDBFacilityLink".equals(fieldName)) {
+                    deserializedExchangePeeringFacility.peeringDBFacilityLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExchangePeeringFacility;
+        });
     }
 }

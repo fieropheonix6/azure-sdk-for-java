@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.devtestlabs.fluent.models.ScheduleInner;
 import com.azure.resourcemanager.devtestlabs.models.ScheduleFragment;
 
-/** An instance of this class provides access to all the operations defined in ServiceFabricSchedulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ServiceFabricSchedulesClient.
+ */
 public interface ServiceFabricSchedulesClient {
     /**
      * List schedules in a given service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -26,15 +28,15 @@ public interface ServiceFabricSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> list(
-        String resourceGroupName, String labName, String username, String serviceFabricName);
+    PagedIterable<ScheduleInner> list(String resourceGroupName, String labName, String username,
+        String serviceFabricName);
 
     /**
      * List schedules in a given service fabric.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -47,23 +49,34 @@ public interface ServiceFabricSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a list operation.
+     * @return the response of a list operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ScheduleInner> list(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String expand,
-        String filter,
-        Integer top,
-        String orderby,
-        Context context);
+    PagedIterable<ScheduleInner> list(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String expand, String filter, Integer top, String orderby, Context context);
 
     /**
      * Get schedule.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param username The name of the user profile.
+     * @param serviceFabricName The name of the service fabric.
+     * @param name The name of the schedule.
+     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return schedule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ScheduleInner> getWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, String expand, Context context);
+
+    /**
+     * Get schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -78,33 +91,27 @@ public interface ServiceFabricSchedulesClient {
     ScheduleInner get(String resourceGroupName, String labName, String username, String serviceFabricName, String name);
 
     /**
-     * Get schedule.
-     *
+     * Create or replace an existing schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
-     * @param expand Specify the $expand query. Example: 'properties($select=status)'.
+     * @param schedule A schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schedule.
+     * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> getWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        String expand,
-        Context context);
+    Response<ScheduleInner> createOrUpdateWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, ScheduleInner schedule, Context context);
 
     /**
      * Create or replace an existing schedule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -117,42 +124,30 @@ public interface ServiceFabricSchedulesClient {
      * @return a schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner createOrUpdate(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule);
-
-    /**
-     * Create or replace an existing schedule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param serviceFabricName The name of the service fabric.
-     * @param name The name of the schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleInner schedule,
-        Context context);
+    ScheduleInner createOrUpdate(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name, ScheduleInner schedule);
 
     /**
      * Delete schedule.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param labName The name of the lab.
+     * @param username The name of the user profile.
+     * @param serviceFabricName The name of the service fabric.
+     * @param name The name of the schedule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<Void> deleteWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, Context context);
+
+    /**
+     * Delete schedule.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -166,31 +161,27 @@ public interface ServiceFabricSchedulesClient {
     void delete(String resourceGroupName, String labName, String username, String serviceFabricName, String name);
 
     /**
-     * Delete schedule.
-     *
+     * Allows modifying tags of schedules. All other properties will be ignored.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
      * @param serviceFabricName The name of the service fabric.
      * @param name The name of the schedule.
+     * @param schedule A schedule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return a schedule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        Context context);
+    Response<ScheduleInner> updateWithResponse(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, ScheduleFragment schedule, Context context);
 
     /**
      * Allows modifying tags of schedules. All other properties will be ignored.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -203,42 +194,12 @@ public interface ServiceFabricSchedulesClient {
      * @return a schedule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ScheduleInner update(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleFragment schedule);
-
-    /**
-     * Allows modifying tags of schedules. All other properties will be ignored.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param labName The name of the lab.
-     * @param username The name of the user profile.
-     * @param serviceFabricName The name of the service fabric.
-     * @param name The name of the schedule.
-     * @param schedule A schedule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a schedule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ScheduleInner> updateWithResponse(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        ScheduleFragment schedule,
-        Context context);
+    ScheduleInner update(String resourceGroupName, String labName, String username, String serviceFabricName,
+        String name, ScheduleFragment schedule);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -247,15 +208,15 @@ public interface ServiceFabricSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginExecute(
-        String resourceGroupName, String labName, String username, String serviceFabricName, String name);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -265,20 +226,15 @@ public interface ServiceFabricSchedulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginExecute(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
-        Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginExecute(String resourceGroupName, String labName, String username,
+        String serviceFabricName, String name, Context context);
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -293,7 +249,7 @@ public interface ServiceFabricSchedulesClient {
 
     /**
      * Execute a schedule. This operation can take a while to complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param labName The name of the lab.
      * @param username The name of the user profile.
@@ -305,11 +261,6 @@ public interface ServiceFabricSchedulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void execute(
-        String resourceGroupName,
-        String labName,
-        String username,
-        String serviceFabricName,
-        String name,
+    void execute(String resourceGroupName, String labName, String username, String serviceFabricName, String name,
         Context context);
 }

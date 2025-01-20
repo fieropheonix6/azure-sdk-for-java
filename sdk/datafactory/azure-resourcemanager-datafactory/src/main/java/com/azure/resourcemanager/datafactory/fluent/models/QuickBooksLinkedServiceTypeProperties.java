@@ -5,76 +5,76 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** QuickBooks server linked service properties. */
+/**
+ * QuickBooks server linked service properties.
+ */
 @Fluent
-public final class QuickBooksLinkedServiceTypeProperties {
+public final class QuickBooksLinkedServiceTypeProperties
+    implements JsonSerializable<QuickBooksLinkedServiceTypeProperties> {
     /*
      * Properties used to connect to QuickBooks. It is mutually exclusive with any other properties in the linked
      * service. Type: object.
      */
-    @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
 
     /*
      * The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com)
      */
-    @JsonProperty(value = "endpoint")
     private Object endpoint;
 
     /*
      * The company ID of the QuickBooks company to authorize.
      */
-    @JsonProperty(value = "companyId")
     private Object companyId;
 
     /*
      * The consumer key for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "consumerKey")
     private Object consumerKey;
 
     /*
      * The consumer secret for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "consumerSecret")
     private SecretBase consumerSecret;
 
     /*
      * The access token for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "accessToken")
     private SecretBase accessToken;
 
     /*
      * The access token secret for OAuth 1.0 authentication.
      */
-    @JsonProperty(value = "accessTokenSecret")
     private SecretBase accessTokenSecret;
 
     /*
      * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
-    @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
-     * credential manager. Type: string (or Expression with resultType string).
+     * credential manager. Type: string.
      */
-    @JsonProperty(value = "encryptedCredential")
-    private Object encryptedCredential;
+    private String encryptedCredential;
 
-    /** Creates an instance of QuickBooksLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of QuickBooksLinkedServiceTypeProperties class.
+     */
     public QuickBooksLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the connectionProperties property: Properties used to connect to QuickBooks. It is mutually exclusive with
      * any other properties in the linked service. Type: object.
-     *
+     * 
      * @return the connectionProperties value.
      */
     public Object connectionProperties() {
@@ -84,7 +84,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
     /**
      * Set the connectionProperties property: Properties used to connect to QuickBooks. It is mutually exclusive with
      * any other properties in the linked service. Type: object.
-     *
+     * 
      * @param connectionProperties the connectionProperties value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
@@ -95,7 +95,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Get the endpoint property: The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com).
-     *
+     * 
      * @return the endpoint value.
      */
     public Object endpoint() {
@@ -104,7 +104,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Set the endpoint property: The endpoint of the QuickBooks server. (i.e. quickbooks.api.intuit.com).
-     *
+     * 
      * @param endpoint the endpoint value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
@@ -115,7 +115,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Get the companyId property: The company ID of the QuickBooks company to authorize.
-     *
+     * 
      * @return the companyId value.
      */
     public Object companyId() {
@@ -124,7 +124,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Set the companyId property: The company ID of the QuickBooks company to authorize.
-     *
+     * 
      * @param companyId the companyId value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
@@ -135,7 +135,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Get the consumerKey property: The consumer key for OAuth 1.0 authentication.
-     *
+     * 
      * @return the consumerKey value.
      */
     public Object consumerKey() {
@@ -144,7 +144,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Set the consumerKey property: The consumer key for OAuth 1.0 authentication.
-     *
+     * 
      * @param consumerKey the consumerKey value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
@@ -155,7 +155,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Get the consumerSecret property: The consumer secret for OAuth 1.0 authentication.
-     *
+     * 
      * @return the consumerSecret value.
      */
     public SecretBase consumerSecret() {
@@ -164,7 +164,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Set the consumerSecret property: The consumer secret for OAuth 1.0 authentication.
-     *
+     * 
      * @param consumerSecret the consumerSecret value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
@@ -175,7 +175,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Get the accessToken property: The access token for OAuth 1.0 authentication.
-     *
+     * 
      * @return the accessToken value.
      */
     public SecretBase accessToken() {
@@ -184,7 +184,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Set the accessToken property: The access token for OAuth 1.0 authentication.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
@@ -195,7 +195,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Get the accessTokenSecret property: The access token secret for OAuth 1.0 authentication.
-     *
+     * 
      * @return the accessTokenSecret value.
      */
     public SecretBase accessTokenSecret() {
@@ -204,7 +204,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Set the accessTokenSecret property: The access token secret for OAuth 1.0 authentication.
-     *
+     * 
      * @param accessTokenSecret the accessTokenSecret value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
@@ -216,7 +216,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object useEncryptedEndpoints() {
@@ -226,7 +226,7 @@ public final class QuickBooksLinkedServiceTypeProperties {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
@@ -237,29 +237,29 @@ public final class QuickBooksLinkedServiceTypeProperties {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.encryptedCredential;
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the QuickBooksLinkedServiceTypeProperties object itself.
      */
-    public QuickBooksLinkedServiceTypeProperties withEncryptedCredential(Object encryptedCredential) {
+    public QuickBooksLinkedServiceTypeProperties withEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -272,5 +272,66 @@ public final class QuickBooksLinkedServiceTypeProperties {
         if (accessTokenSecret() != null) {
             accessTokenSecret().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("connectionProperties", this.connectionProperties);
+        jsonWriter.writeUntypedField("endpoint", this.endpoint);
+        jsonWriter.writeUntypedField("companyId", this.companyId);
+        jsonWriter.writeUntypedField("consumerKey", this.consumerKey);
+        jsonWriter.writeJsonField("consumerSecret", this.consumerSecret);
+        jsonWriter.writeJsonField("accessToken", this.accessToken);
+        jsonWriter.writeJsonField("accessTokenSecret", this.accessTokenSecret);
+        jsonWriter.writeUntypedField("useEncryptedEndpoints", this.useEncryptedEndpoints);
+        jsonWriter.writeStringField("encryptedCredential", this.encryptedCredential);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of QuickBooksLinkedServiceTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of QuickBooksLinkedServiceTypeProperties if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the QuickBooksLinkedServiceTypeProperties.
+     */
+    public static QuickBooksLinkedServiceTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            QuickBooksLinkedServiceTypeProperties deserializedQuickBooksLinkedServiceTypeProperties
+                = new QuickBooksLinkedServiceTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectionProperties".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.connectionProperties = reader.readUntyped();
+                } else if ("endpoint".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.endpoint = reader.readUntyped();
+                } else if ("companyId".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.companyId = reader.readUntyped();
+                } else if ("consumerKey".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.consumerKey = reader.readUntyped();
+                } else if ("consumerSecret".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.consumerSecret = SecretBase.fromJson(reader);
+                } else if ("accessToken".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.accessToken = SecretBase.fromJson(reader);
+                } else if ("accessTokenSecret".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.accessTokenSecret = SecretBase.fromJson(reader);
+                } else if ("useEncryptedEndpoints".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.useEncryptedEndpoints = reader.readUntyped();
+                } else if ("encryptedCredential".equals(fieldName)) {
+                    deserializedQuickBooksLinkedServiceTypeProperties.encryptedCredential = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedQuickBooksLinkedServiceTypeProperties;
+        });
     }
 }

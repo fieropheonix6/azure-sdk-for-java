@@ -5,59 +5,59 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** The recurrence schedule. */
+/**
+ * The recurrence schedule.
+ */
 @Fluent
-public final class RecurrenceSchedule {
+public final class RecurrenceSchedule implements JsonSerializable<RecurrenceSchedule> {
     /*
      * The minutes.
      */
-    @JsonProperty(value = "minutes")
     private List<Integer> minutes;
 
     /*
      * The hours.
      */
-    @JsonProperty(value = "hours")
     private List<Integer> hours;
 
     /*
      * The days of the week.
      */
-    @JsonProperty(value = "weekDays")
     private List<DaysOfWeek> weekDays;
 
     /*
      * The month days.
      */
-    @JsonProperty(value = "monthDays")
     private List<Integer> monthDays;
 
     /*
      * The monthly occurrences.
      */
-    @JsonProperty(value = "monthlyOccurrences")
     private List<RecurrenceScheduleOccurrence> monthlyOccurrences;
 
     /*
      * The recurrence schedule.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of RecurrenceSchedule class. */
+    /**
+     * Creates an instance of RecurrenceSchedule class.
+     */
     public RecurrenceSchedule() {
     }
 
     /**
      * Get the minutes property: The minutes.
-     *
+     * 
      * @return the minutes value.
      */
     public List<Integer> minutes() {
@@ -66,7 +66,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the minutes property: The minutes.
-     *
+     * 
      * @param minutes the minutes value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -77,7 +77,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the hours property: The hours.
-     *
+     * 
      * @return the hours value.
      */
     public List<Integer> hours() {
@@ -86,7 +86,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the hours property: The hours.
-     *
+     * 
      * @param hours the hours value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -97,7 +97,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the weekDays property: The days of the week.
-     *
+     * 
      * @return the weekDays value.
      */
     public List<DaysOfWeek> weekDays() {
@@ -106,7 +106,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the weekDays property: The days of the week.
-     *
+     * 
      * @param weekDays the weekDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -117,7 +117,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the monthDays property: The month days.
-     *
+     * 
      * @return the monthDays value.
      */
     public List<Integer> monthDays() {
@@ -126,7 +126,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the monthDays property: The month days.
-     *
+     * 
      * @param monthDays the monthDays value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -137,7 +137,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the monthlyOccurrences property: The monthly occurrences.
-     *
+     * 
      * @return the monthlyOccurrences value.
      */
     public List<RecurrenceScheduleOccurrence> monthlyOccurrences() {
@@ -146,7 +146,7 @@ public final class RecurrenceSchedule {
 
     /**
      * Set the monthlyOccurrences property: The monthly occurrences.
-     *
+     * 
      * @param monthlyOccurrences the monthlyOccurrences value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -157,17 +157,16 @@ public final class RecurrenceSchedule {
 
     /**
      * Get the additionalProperties property: The recurrence schedule.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: The recurrence schedule.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the RecurrenceSchedule object itself.
      */
@@ -176,22 +175,81 @@ public final class RecurrenceSchedule {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (monthlyOccurrences() != null) {
             monthlyOccurrences().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("minutes", this.minutes, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("hours", this.hours, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("weekDays", this.weekDays,
+            (writer, element) -> writer.writeString(element == null ? null : element.toString()));
+        jsonWriter.writeArrayField("monthDays", this.monthDays, (writer, element) -> writer.writeInt(element));
+        jsonWriter.writeArrayField("monthlyOccurrences", this.monthlyOccurrences,
+            (writer, element) -> writer.writeJson(element));
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RecurrenceSchedule from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RecurrenceSchedule if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RecurrenceSchedule.
+     */
+    public static RecurrenceSchedule fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RecurrenceSchedule deserializedRecurrenceSchedule = new RecurrenceSchedule();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minutes".equals(fieldName)) {
+                    List<Integer> minutes = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedRecurrenceSchedule.minutes = minutes;
+                } else if ("hours".equals(fieldName)) {
+                    List<Integer> hours = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedRecurrenceSchedule.hours = hours;
+                } else if ("weekDays".equals(fieldName)) {
+                    List<DaysOfWeek> weekDays = reader.readArray(reader1 -> DaysOfWeek.fromString(reader1.getString()));
+                    deserializedRecurrenceSchedule.weekDays = weekDays;
+                } else if ("monthDays".equals(fieldName)) {
+                    List<Integer> monthDays = reader.readArray(reader1 -> reader1.getInt());
+                    deserializedRecurrenceSchedule.monthDays = monthDays;
+                } else if ("monthlyOccurrences".equals(fieldName)) {
+                    List<RecurrenceScheduleOccurrence> monthlyOccurrences
+                        = reader.readArray(reader1 -> RecurrenceScheduleOccurrence.fromJson(reader1));
+                    deserializedRecurrenceSchedule.monthlyOccurrences = monthlyOccurrences;
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedRecurrenceSchedule.additionalProperties = additionalProperties;
+
+            return deserializedRecurrenceSchedule;
+        });
     }
 }

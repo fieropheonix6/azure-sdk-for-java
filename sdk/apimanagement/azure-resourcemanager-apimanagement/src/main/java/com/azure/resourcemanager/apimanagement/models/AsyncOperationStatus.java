@@ -4,24 +4,33 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for AsyncOperationStatus. */
+/**
+ * Status of an async operation.
+ */
 public enum AsyncOperationStatus {
-    /** Enum value Started. */
+    /**
+     * Enum value Started.
+     */
     STARTED("Started"),
 
-    /** Enum value InProgress. */
+    /**
+     * Enum value InProgress.
+     */
     IN_PROGRESS("InProgress"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed");
 
-    /** The actual serialized value for a AsyncOperationStatus instance. */
+    /**
+     * The actual serialized value for a AsyncOperationStatus instance.
+     */
     private final String value;
 
     AsyncOperationStatus(String value) {
@@ -30,12 +39,14 @@ public enum AsyncOperationStatus {
 
     /**
      * Parses a serialized value to a AsyncOperationStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed AsyncOperationStatus object, or null if unable to parse.
      */
-    @JsonCreator
     public static AsyncOperationStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         AsyncOperationStatus[] items = AsyncOperationStatus.values();
         for (AsyncOperationStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,7 +56,9 @@ public enum AsyncOperationStatus {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

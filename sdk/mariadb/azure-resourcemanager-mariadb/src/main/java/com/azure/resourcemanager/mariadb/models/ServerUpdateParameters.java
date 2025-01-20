@@ -5,76 +5,43 @@
 package com.azure.resourcemanager.mariadb.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.mariadb.fluent.models.ServerUpdateParametersProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters allowed to update for a server. */
-@JsonFlatten
+/**
+ * Parameters allowed to update for a server.
+ */
 @Fluent
-public class ServerUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUpdateParameters.class);
-
+public final class ServerUpdateParameters implements JsonSerializable<ServerUpdateParameters> {
     /*
      * The SKU (pricing tier) of the server.
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
+
+    /*
+     * The properties that can be updated for a server.
+     */
+    private ServerUpdateParametersProperties innerProperties;
 
     /*
      * Application-specific metadata in the form of key-value pairs.
      */
-    @JsonProperty(value = "tags")
     private Map<String, String> tags;
 
-    /*
-     * Storage profile of a server.
+    /**
+     * Creates an instance of ServerUpdateParameters class.
      */
-    @JsonProperty(value = "properties.storageProfile")
-    private StorageProfile storageProfile;
-
-    /*
-     * The password of the administrator login.
-     */
-    @JsonProperty(value = "properties.administratorLoginPassword")
-    private String administratorLoginPassword;
-
-    /*
-     * The version of a server.
-     */
-    @JsonProperty(value = "properties.version")
-    private ServerVersion version;
-
-    /*
-     * Enable ssl enforcement or not when connect to server.
-     */
-    @JsonProperty(value = "properties.sslEnforcement")
-    private SslEnforcementEnum sslEnforcement;
-
-    /*
-     * Enforce a minimal Tls version for the server.
-     */
-    @JsonProperty(value = "properties.minimalTlsVersion")
-    private MinimalTlsVersionEnum minimalTlsVersion;
-
-    /*
-     * Whether or not public network access is allowed for this server. Value
-     * is optional but if passed in, must be 'Enabled' or 'Disabled'
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccessEnum publicNetworkAccess;
-
-    /*
-     * The replication role of the server.
-     */
-    @JsonProperty(value = "properties.replicationRole")
-    private String replicationRole;
+    public ServerUpdateParameters() {
+    }
 
     /**
      * Get the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -83,7 +50,7 @@ public class ServerUpdateParameters {
 
     /**
      * Set the sku property: The SKU (pricing tier) of the server.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -93,8 +60,17 @@ public class ServerUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: The properties that can be updated for a server.
+     * 
+     * @return the innerProperties value.
+     */
+    private ServerUpdateParametersProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -103,7 +79,7 @@ public class ServerUpdateParameters {
 
     /**
      * Set the tags property: Application-specific metadata in the form of key-value pairs.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ServerUpdateParameters object itself.
      */
@@ -114,157 +90,222 @@ public class ServerUpdateParameters {
 
     /**
      * Get the storageProfile property: Storage profile of a server.
-     *
+     * 
      * @return the storageProfile value.
      */
     public StorageProfile storageProfile() {
-        return this.storageProfile;
+        return this.innerProperties() == null ? null : this.innerProperties().storageProfile();
     }
 
     /**
      * Set the storageProfile property: Storage profile of a server.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withStorageProfile(StorageProfile storageProfile) {
-        this.storageProfile = storageProfile;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withStorageProfile(storageProfile);
         return this;
     }
 
     /**
      * Get the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @return the administratorLoginPassword value.
      */
     public String administratorLoginPassword() {
-        return this.administratorLoginPassword;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorLoginPassword();
     }
 
     /**
      * Set the administratorLoginPassword property: The password of the administrator login.
-     *
+     * 
      * @param administratorLoginPassword the administratorLoginPassword value to set.
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withAdministratorLoginPassword(String administratorLoginPassword) {
-        this.administratorLoginPassword = administratorLoginPassword;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withAdministratorLoginPassword(administratorLoginPassword);
         return this;
     }
 
     /**
      * Get the version property: The version of a server.
-     *
+     * 
      * @return the version value.
      */
     public ServerVersion version() {
-        return this.version;
+        return this.innerProperties() == null ? null : this.innerProperties().version();
     }
 
     /**
      * Set the version property: The version of a server.
-     *
+     * 
      * @param version the version value to set.
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withVersion(ServerVersion version) {
-        this.version = version;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withVersion(version);
         return this;
     }
 
     /**
      * Get the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
+     * 
      * @return the sslEnforcement value.
      */
     public SslEnforcementEnum sslEnforcement() {
-        return this.sslEnforcement;
+        return this.innerProperties() == null ? null : this.innerProperties().sslEnforcement();
     }
 
     /**
      * Set the sslEnforcement property: Enable ssl enforcement or not when connect to server.
-     *
+     * 
      * @param sslEnforcement the sslEnforcement value to set.
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withSslEnforcement(SslEnforcementEnum sslEnforcement) {
-        this.sslEnforcement = sslEnforcement;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withSslEnforcement(sslEnforcement);
         return this;
     }
 
     /**
      * Get the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
+     * 
      * @return the minimalTlsVersion value.
      */
     public MinimalTlsVersionEnum minimalTlsVersion() {
-        return this.minimalTlsVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().minimalTlsVersion();
     }
 
     /**
      * Set the minimalTlsVersion property: Enforce a minimal Tls version for the server.
-     *
+     * 
      * @param minimalTlsVersion the minimalTlsVersion value to set.
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withMinimalTlsVersion(MinimalTlsVersionEnum minimalTlsVersion) {
-        this.minimalTlsVersion = minimalTlsVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withMinimalTlsVersion(minimalTlsVersion);
         return this;
     }
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccessEnum publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for this server. Value is
      * optional but if passed in, must be 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withPublicNetworkAccess(PublicNetworkAccessEnum publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
     /**
      * Get the replicationRole property: The replication role of the server.
-     *
+     * 
      * @return the replicationRole value.
      */
     public String replicationRole() {
-        return this.replicationRole;
+        return this.innerProperties() == null ? null : this.innerProperties().replicationRole();
     }
 
     /**
      * Set the replicationRole property: The replication role of the server.
-     *
+     * 
      * @param replicationRole the replicationRole value to set.
      * @return the ServerUpdateParameters object itself.
      */
     public ServerUpdateParameters withReplicationRole(String replicationRole) {
-        this.replicationRole = replicationRole;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ServerUpdateParametersProperties();
+        }
+        this.innerProperties().withReplicationRole(replicationRole);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() != null) {
             sku().validate();
         }
-        if (storageProfile() != null) {
-            storageProfile().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sku", this.sku);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServerUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServerUpdateParameters if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServerUpdateParameters.
+     */
+    public static ServerUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServerUpdateParameters deserializedServerUpdateParameters = new ServerUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sku".equals(fieldName)) {
+                    deserializedServerUpdateParameters.sku = Sku.fromJson(reader);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedServerUpdateParameters.innerProperties
+                        = ServerUpdateParametersProperties.fromJson(reader);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedServerUpdateParameters.tags = tags;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServerUpdateParameters;
+        });
     }
 }

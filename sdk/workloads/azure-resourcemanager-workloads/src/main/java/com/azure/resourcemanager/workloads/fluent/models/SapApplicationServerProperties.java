@@ -5,102 +5,108 @@
 package com.azure.resourcemanager.workloads.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.workloads.models.ApplicationServerVmDetails;
+import com.azure.resourcemanager.workloads.models.LoadBalancerDetails;
 import com.azure.resourcemanager.workloads.models.SapHealthState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceError;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceProvisioningState;
 import com.azure.resourcemanager.workloads.models.SapVirtualInstanceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.util.List;
 
-/** Defines the SAP Application Server properties. */
+/**
+ * Defines the SAP Application Server instance properties.
+ */
 @Immutable
-public final class SapApplicationServerProperties {
+public final class SapApplicationServerProperties implements JsonSerializable<SapApplicationServerProperties> {
     /*
-     * The application server instance id.
+     * Application server Instance Number.
      */
-    @JsonProperty(value = "instanceNo", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceNo;
 
     /*
-     * The application server subnet.
+     * Application server Subnet.
      */
-    @JsonProperty(value = "subnet", access = JsonProperty.Access.WRITE_ONLY)
     private String subnet;
 
     /*
-     * The application server SAP host name.
+     * Application server instance SAP hostname.
      */
-    @JsonProperty(value = "hostname", access = JsonProperty.Access.WRITE_ONLY)
     private String hostname;
 
     /*
-     * The application server SAP kernel version.
+     * Application server instance SAP Kernel Version.
      */
-    @JsonProperty(value = "kernelVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelVersion;
 
     /*
-     * The application server SAP kernel patch.
+     * Application server instance SAP Kernel Patch level.
      */
-    @JsonProperty(value = "kernelPatch", access = JsonProperty.Access.WRITE_ONLY)
     private String kernelPatch;
 
     /*
-     * The application server SAP IP Address.
+     * Application server instance SAP IP Address.
      */
-    @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String ipAddress;
 
     /*
-     * The application server gateway Port.
+     * Application server instance gateway Port.
      */
-    @JsonProperty(value = "gatewayPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long gatewayPort;
 
     /*
-     * The application server ICM HTTP Port.
+     * Application server instance ICM HTTP Port.
      */
-    @JsonProperty(value = "icmHttpPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long icmHttpPort;
 
     /*
-     * The application server ICM HTTPS Port.
+     * Application server instance ICM HTTPS Port.
      */
-    @JsonProperty(value = "icmHttpsPort", access = JsonProperty.Access.WRITE_ONLY)
     private Long icmHttpsPort;
 
     /*
-     * The virtual machine.
+     * The Load Balancer details such as LoadBalancer ID attached to Application Server Virtual Machines
      */
-    @JsonProperty(value = "virtualMachineId", access = JsonProperty.Access.WRITE_ONLY)
-    private String virtualMachineId;
+    private LoadBalancerDetails loadBalancerDetails;
+
+    /*
+     * The list of virtual machines.
+     */
+    private List<ApplicationServerVmDetails> vmDetails;
 
     /*
      * Defines the SAP Instance status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceStatus status;
 
     /*
-     * Defines the SAP Instance health.
+     * Defines the health of SAP Instances.
      */
-    @JsonProperty(value = "health", access = JsonProperty.Access.WRITE_ONLY)
     private SapHealthState health;
 
     /*
      * Defines the provisioning states.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceProvisioningState provisioningState;
 
     /*
      * Defines the Application Instance errors.
      */
-    @JsonProperty(value = "errors", access = JsonProperty.Access.WRITE_ONLY)
     private SapVirtualInstanceError errors;
 
     /**
-     * Get the instanceNo property: The application server instance id.
-     *
+     * Creates an instance of SapApplicationServerProperties class.
+     */
+    public SapApplicationServerProperties() {
+    }
+
+    /**
+     * Get the instanceNo property: Application server Instance Number.
+     * 
      * @return the instanceNo value.
      */
     public String instanceNo() {
@@ -108,8 +114,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the subnet property: The application server subnet.
-     *
+     * Get the subnet property: Application server Subnet.
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -117,8 +123,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the hostname property: The application server SAP host name.
-     *
+     * Get the hostname property: Application server instance SAP hostname.
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -126,8 +132,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the kernelVersion property: The application server SAP kernel version.
-     *
+     * Get the kernelVersion property: Application server instance SAP Kernel Version.
+     * 
      * @return the kernelVersion value.
      */
     public String kernelVersion() {
@@ -135,8 +141,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the kernelPatch property: The application server SAP kernel patch.
-     *
+     * Get the kernelPatch property: Application server instance SAP Kernel Patch level.
+     * 
      * @return the kernelPatch value.
      */
     public String kernelPatch() {
@@ -144,8 +150,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the ipAddress property: The application server SAP IP Address.
-     *
+     * Get the ipAddress property: Application server instance SAP IP Address.
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -153,8 +159,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the gatewayPort property: The application server gateway Port.
-     *
+     * Get the gatewayPort property: Application server instance gateway Port.
+     * 
      * @return the gatewayPort value.
      */
     public Long gatewayPort() {
@@ -162,8 +168,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the icmHttpPort property: The application server ICM HTTP Port.
-     *
+     * Get the icmHttpPort property: Application server instance ICM HTTP Port.
+     * 
      * @return the icmHttpPort value.
      */
     public Long icmHttpPort() {
@@ -171,8 +177,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the icmHttpsPort property: The application server ICM HTTPS Port.
-     *
+     * Get the icmHttpsPort property: Application server instance ICM HTTPS Port.
+     * 
      * @return the icmHttpsPort value.
      */
     public Long icmHttpsPort() {
@@ -180,17 +186,27 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the virtualMachineId property: The virtual machine.
-     *
-     * @return the virtualMachineId value.
+     * Get the loadBalancerDetails property: The Load Balancer details such as LoadBalancer ID attached to Application
+     * Server Virtual Machines.
+     * 
+     * @return the loadBalancerDetails value.
      */
-    public String virtualMachineId() {
-        return this.virtualMachineId;
+    public LoadBalancerDetails loadBalancerDetails() {
+        return this.loadBalancerDetails;
+    }
+
+    /**
+     * Get the vmDetails property: The list of virtual machines.
+     * 
+     * @return the vmDetails value.
+     */
+    public List<ApplicationServerVmDetails> vmDetails() {
+        return this.vmDetails;
     }
 
     /**
      * Get the status property: Defines the SAP Instance status.
-     *
+     * 
      * @return the status value.
      */
     public SapVirtualInstanceStatus status() {
@@ -198,8 +214,8 @@ public final class SapApplicationServerProperties {
     }
 
     /**
-     * Get the health property: Defines the SAP Instance health.
-     *
+     * Get the health property: Defines the health of SAP Instances.
+     * 
      * @return the health value.
      */
     public SapHealthState health() {
@@ -208,7 +224,7 @@ public final class SapApplicationServerProperties {
 
     /**
      * Get the provisioningState property: Defines the provisioning states.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SapVirtualInstanceProvisioningState provisioningState() {
@@ -217,7 +233,7 @@ public final class SapApplicationServerProperties {
 
     /**
      * Get the errors property: Defines the Application Instance errors.
-     *
+     * 
      * @return the errors value.
      */
     public SapVirtualInstanceError errors() {
@@ -226,12 +242,87 @@ public final class SapApplicationServerProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (loadBalancerDetails() != null) {
+            loadBalancerDetails().validate();
+        }
+        if (vmDetails() != null) {
+            vmDetails().forEach(e -> e.validate());
+        }
         if (errors() != null) {
             errors().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SapApplicationServerProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SapApplicationServerProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SapApplicationServerProperties.
+     */
+    public static SapApplicationServerProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SapApplicationServerProperties deserializedSapApplicationServerProperties
+                = new SapApplicationServerProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("instanceNo".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.instanceNo = reader.getString();
+                } else if ("subnet".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.subnet = reader.getString();
+                } else if ("hostname".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.hostname = reader.getString();
+                } else if ("kernelVersion".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.kernelVersion = reader.getString();
+                } else if ("kernelPatch".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.kernelPatch = reader.getString();
+                } else if ("ipAddress".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.ipAddress = reader.getString();
+                } else if ("gatewayPort".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.gatewayPort = reader.getNullable(JsonReader::getLong);
+                } else if ("icmHttpPort".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.icmHttpPort = reader.getNullable(JsonReader::getLong);
+                } else if ("icmHttpsPort".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.icmHttpsPort = reader.getNullable(JsonReader::getLong);
+                } else if ("loadBalancerDetails".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.loadBalancerDetails
+                        = LoadBalancerDetails.fromJson(reader);
+                } else if ("vmDetails".equals(fieldName)) {
+                    List<ApplicationServerVmDetails> vmDetails
+                        = reader.readArray(reader1 -> ApplicationServerVmDetails.fromJson(reader1));
+                    deserializedSapApplicationServerProperties.vmDetails = vmDetails;
+                } else if ("status".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.status
+                        = SapVirtualInstanceStatus.fromString(reader.getString());
+                } else if ("health".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.health = SapHealthState.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.provisioningState
+                        = SapVirtualInstanceProvisioningState.fromString(reader.getString());
+                } else if ("errors".equals(fieldName)) {
+                    deserializedSapApplicationServerProperties.errors = SapVirtualInstanceError.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSapApplicationServerProperties;
+        });
     }
 }

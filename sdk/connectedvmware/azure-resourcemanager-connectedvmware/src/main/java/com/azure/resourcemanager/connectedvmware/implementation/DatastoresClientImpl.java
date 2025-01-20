@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DatastoresClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DatastoresClient.
+ */
 public final class DatastoresClientImpl implements DatastoresClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DatastoresService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ConnectedVMwareClientImpl client;
 
     /**
      * Initializes an instance of DatastoresClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     DatastoresClientImpl(ConnectedVMwareClientImpl client) {
-        this.service =
-            RestProxy.create(DatastoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(DatastoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,121 +71,84 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "ConnectedVMwareClien")
-    private interface DatastoresService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
-        @ExpectedResponses({200, 201})
+    public interface DatastoresService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("datastoreName") String datastoreName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") DatastoreInner body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("datastoreName") String datastoreName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") DatastoreInner body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoreInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatastoreInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("datastoreName") String datastoreName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("datastoreName") String datastoreName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoreInner>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatastoreInner>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("datastoreName") String datastoreName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ResourcePatch body,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("datastoreName") String datastoreName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ResourcePatch body,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores/{datastoreName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("datastoreName") String datastoreName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("force") Boolean force,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("datastoreName") String datastoreName,
+            @QueryParam("api-version") String apiVersion, @QueryParam("force") Boolean force,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ConnectedVMwarevSphere/datastores")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoresList>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<DatastoresList>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ConnectedVMwarevSphere/datastores")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DatastoresList>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.ConnectedVMwarevSphere/datastores")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoresList>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DatastoresList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DatastoresList>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DatastoresList>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Request payload.
@@ -189,19 +158,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String datastoreName, DatastoreInner body) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String datastoreName,
+        DatastoreInner body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -215,26 +180,16 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            datastoreName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, datastoreName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Request payload.
@@ -245,19 +200,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String datastoreName, DatastoreInner body, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String datastoreName,
+        DatastoreInner body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -271,23 +222,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                datastoreName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            datastoreName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Request payload.
@@ -297,24 +240,39 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link PollerFlux} for polling of define the datastore.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatastoreInner>, DatastoreInner> beginCreateAsync(
-        String resourceGroupName, String datastoreName, DatastoreInner body) {
+    private PollerFlux<PollResult<DatastoreInner>, DatastoreInner> beginCreateAsync(String resourceGroupName,
+        String datastoreName, DatastoreInner body) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, datastoreName, body);
-        return this
-            .client
-            .<DatastoreInner, DatastoreInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DatastoreInner.class,
-                DatastoreInner.class,
-                this.client.getContext());
+        return this.client.<DatastoreInner, DatastoreInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatastoreInner.class, DatastoreInner.class, this.client.getContext());
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of define the datastore.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<DatastoreInner>, DatastoreInner> beginCreateAsync(String resourceGroupName,
+        String datastoreName) {
+        final DatastoreInner body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, datastoreName, body);
+        return this.client.<DatastoreInner, DatastoreInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatastoreInner.class, DatastoreInner.class, this.client.getContext());
+    }
+
+    /**
+     * Implements datastore PUT method.
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Request payload.
@@ -325,41 +283,39 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link PollerFlux} for polling of define the datastore.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DatastoreInner>, DatastoreInner> beginCreateAsync(
-        String resourceGroupName, String datastoreName, DatastoreInner body, Context context) {
+    private PollerFlux<PollResult<DatastoreInner>, DatastoreInner> beginCreateAsync(String resourceGroupName,
+        String datastoreName, DatastoreInner body, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, datastoreName, body, context);
-        return this
-            .client
-            .<DatastoreInner, DatastoreInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DatastoreInner.class, DatastoreInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, datastoreName, body, context);
+        return this.client.<DatastoreInner, DatastoreInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DatastoreInner.class, DatastoreInner.class, context);
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param body Request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of define the datastore.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(
-        String resourceGroupName, String datastoreName, DatastoreInner body) {
-        return beginCreateAsync(resourceGroupName, datastoreName, body).getSyncPoller();
+    public SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(String resourceGroupName,
+        String datastoreName) {
+        final DatastoreInner body = null;
+        return this.beginCreateAsync(resourceGroupName, datastoreName, body).getSyncPoller();
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Request payload.
@@ -370,16 +326,16 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link SyncPoller} for polling of define the datastore.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(
-        String resourceGroupName, String datastoreName, DatastoreInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, datastoreName, body, context).getSyncPoller();
+    public SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreate(String resourceGroupName,
+        String datastoreName, DatastoreInner body, Context context) {
+        return this.beginCreateAsync(resourceGroupName, datastoreName, body, context).getSyncPoller();
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Request payload.
@@ -390,16 +346,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatastoreInner> createAsync(String resourceGroupName, String datastoreName, DatastoreInner body) {
-        return beginCreateAsync(resourceGroupName, datastoreName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, datastoreName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -410,16 +365,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DatastoreInner> createAsync(String resourceGroupName, String datastoreName) {
         final DatastoreInner body = null;
-        return beginCreateAsync(resourceGroupName, datastoreName, body)
-            .last()
+        return beginCreateAsync(resourceGroupName, datastoreName, body).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Request payload.
@@ -430,36 +384,17 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatastoreInner> createAsync(
-        String resourceGroupName, String datastoreName, DatastoreInner body, Context context) {
-        return beginCreateAsync(resourceGroupName, datastoreName, body, context)
-            .last()
+    private Mono<DatastoreInner> createAsync(String resourceGroupName, String datastoreName, DatastoreInner body,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, datastoreName, body, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @param body Request payload.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreInner create(String resourceGroupName, String datastoreName, DatastoreInner body) {
-        return createAsync(resourceGroupName, datastoreName, body).block();
-    }
-
-    /**
-     * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -475,9 +410,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Implements datastore PUT method.
-     *
-     * <p>Create Or Update datastore.
-     *
+     * 
+     * Create Or Update datastore.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Request payload.
@@ -494,9 +429,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
+     * 
+     * Implements datastore GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -505,19 +440,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String datastoreName) {
+    private Mono<Response<DatastoreInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String datastoreName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -529,24 +460,16 @@ public final class DatastoresClientImpl implements DatastoresClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            datastoreName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, datastoreName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
+     * 
+     * Implements datastore GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
@@ -556,19 +479,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String datastoreName, Context context) {
+    private Mono<Response<DatastoreInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String datastoreName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -579,22 +498,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                datastoreName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            datastoreName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
+     * 
+     * Implements datastore GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -610,26 +522,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreInner getByResourceGroup(String resourceGroupName, String datastoreName) {
-        return getByResourceGroupAsync(resourceGroupName, datastoreName).block();
-    }
-
-    /**
-     * Gets a datastore.
-     *
-     * <p>Implements datastore GET method.
-     *
+     * 
+     * Implements datastore GET method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param context The context to associate with this operation.
@@ -639,16 +534,33 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatastoreInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String datastoreName, Context context) {
+    public Response<DatastoreInner> getByResourceGroupWithResponse(String resourceGroupName, String datastoreName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, datastoreName, context).block();
     }
 
     /**
+     * Gets a datastore.
+     * 
+     * Implements datastore GET method.
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the datastore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatastoreInner getByResourceGroup(String resourceGroupName, String datastoreName) {
+        return getByResourceGroupWithResponse(resourceGroupName, datastoreName, Context.NONE).getValue();
+    }
+
+    /**
      * Updates a datastore.
-     *
-     * <p>API to update certain properties of the datastore resource.
-     *
+     * 
+     * API to update certain properties of the datastore resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Resource properties to update.
@@ -658,19 +570,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreInner>> updateWithResponseAsync(
-        String resourceGroupName, String datastoreName, ResourcePatch body) {
+    private Mono<Response<DatastoreInner>> updateWithResponseAsync(String resourceGroupName, String datastoreName,
+        ResourcePatch body) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -684,26 +592,16 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            datastoreName,
-                            this.client.getApiVersion(),
-                            body,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, datastoreName, this.client.getApiVersion(), body, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a datastore.
-     *
-     * <p>API to update certain properties of the datastore resource.
-     *
+     * 
+     * API to update certain properties of the datastore resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Resource properties to update.
@@ -714,19 +612,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatastoreInner>> updateWithResponseAsync(
-        String resourceGroupName, String datastoreName, ResourcePatch body, Context context) {
+    private Mono<Response<DatastoreInner>> updateWithResponseAsync(String resourceGroupName, String datastoreName,
+        ResourcePatch body, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -740,42 +634,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                datastoreName,
-                this.client.getApiVersion(),
-                body,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            datastoreName, this.client.getApiVersion(), body, accept, context);
     }
 
     /**
      * Updates a datastore.
-     *
-     * <p>API to update certain properties of the datastore resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @param body Resource properties to update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DatastoreInner> updateAsync(String resourceGroupName, String datastoreName, ResourcePatch body) {
-        return updateWithResponseAsync(resourceGroupName, datastoreName, body)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
-    }
-
-    /**
-     * Updates a datastore.
-     *
-     * <p>API to update certain properties of the datastore resource.
-     *
+     * 
+     * API to update certain properties of the datastore resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -792,27 +659,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Updates a datastore.
-     *
-     * <p>API to update certain properties of the datastore resource.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return define the datastore.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DatastoreInner update(String resourceGroupName, String datastoreName) {
-        final ResourcePatch body = null;
-        return updateAsync(resourceGroupName, datastoreName, body).block();
-    }
-
-    /**
-     * Updates a datastore.
-     *
-     * <p>API to update certain properties of the datastore resource.
-     *
+     * 
+     * API to update certain properties of the datastore resource.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param body Resource properties to update.
@@ -823,16 +672,34 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return define the datastore along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DatastoreInner> updateWithResponse(
-        String resourceGroupName, String datastoreName, ResourcePatch body, Context context) {
+    public Response<DatastoreInner> updateWithResponse(String resourceGroupName, String datastoreName,
+        ResourcePatch body, Context context) {
         return updateWithResponseAsync(resourceGroupName, datastoreName, body, context).block();
     }
 
     /**
+     * Updates a datastore.
+     * 
+     * API to update certain properties of the datastore resource.
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return define the datastore.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DatastoreInner update(String resourceGroupName, String datastoreName) {
+        final ResourcePatch body = null;
+        return updateWithResponse(resourceGroupName, datastoreName, body, Context.NONE).getValue();
+    }
+
+    /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -842,19 +709,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String datastoreName, Boolean force) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String datastoreName,
+        Boolean force) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -865,26 +728,16 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            datastoreName,
-                            this.client.getApiVersion(),
-                            force,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, datastoreName, this.client.getApiVersion(), force, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -895,19 +748,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String datastoreName, Boolean force, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String datastoreName,
+        Boolean force, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -918,23 +767,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                datastoreName,
-                this.client.getApiVersion(),
-                force,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            datastoreName, this.client.getApiVersion(), force, accept, context);
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -944,20 +785,38 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String datastoreName, Boolean force) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String datastoreName,
+        Boolean force) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, datastoreName, force);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
+     * @param resourceGroupName The Resource Group Name.
+     * @param datastoreName Name of the datastore.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String datastoreName) {
+        final Boolean force = null;
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, datastoreName, force);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Deletes an datastore.
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -968,40 +827,38 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String datastoreName, Boolean force, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String datastoreName,
+        Boolean force, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, datastoreName, force, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, datastoreName, force, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
-     * @param force Whether force delete was specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String datastoreName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, datastoreName, force).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String datastoreName) {
+        final Boolean force = null;
+        return this.beginDeleteAsync(resourceGroupName, datastoreName, force).getSyncPoller();
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -1012,16 +869,16 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String datastoreName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, datastoreName, force, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String datastoreName, Boolean force,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, datastoreName, force, context).getSyncPoller();
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -1032,16 +889,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String datastoreName, Boolean force) {
-        return beginDeleteAsync(resourceGroupName, datastoreName, force)
-            .last()
+        return beginDeleteAsync(resourceGroupName, datastoreName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1052,16 +908,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String datastoreName) {
         final Boolean force = null;
-        return beginDeleteAsync(resourceGroupName, datastoreName, force)
-            .last()
+        return beginDeleteAsync(resourceGroupName, datastoreName, force).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -1073,33 +928,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String datastoreName, Boolean force, Context context) {
-        return beginDeleteAsync(resourceGroupName, datastoreName, force, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, datastoreName, force, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
-     * @param resourceGroupName The Resource Group Name.
-     * @param datastoreName Name of the datastore.
-     * @param force Whether force delete was specified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String datastoreName, Boolean force) {
-        deleteAsync(resourceGroupName, datastoreName, force).block();
-    }
-
-    /**
-     * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1114,9 +951,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Deletes an datastore.
-     *
-     * <p>Implements datastore DELETE method.
-     *
+     * 
+     * Implements datastore DELETE method.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param datastoreName Name of the datastore.
      * @param force Whether force delete was specified.
@@ -1132,9 +969,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Implements GET datastores in a subscription.
-     *
-     * <p>List of datastores in a subscription.
-     *
+     * 
+     * List of datastores in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Datastores along with {@link PagedResponse} on successful completion of {@link Mono}.
@@ -1142,45 +979,27 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatastoreInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DatastoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DatastoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements GET datastores in a subscription.
-     *
-     * <p>List of datastores in a subscription.
-     *
+     * 
+     * List of datastores in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1190,42 +1009,27 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatastoreInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                accept,
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
                 context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements GET datastores in a subscription.
-     *
-     * <p>List of datastores in a subscription.
-     *
+     * 
+     * List of datastores in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Datastores as paginated response with {@link PagedFlux}.
@@ -1237,9 +1041,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Implements GET datastores in a subscription.
-     *
-     * <p>List of datastores in a subscription.
-     *
+     * 
+     * List of datastores in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1248,15 +1052,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatastoreInner> listAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Implements GET datastores in a subscription.
-     *
-     * <p>List of datastores in a subscription.
-     *
+     * 
+     * List of datastores in a subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of Datastores as paginated response with {@link PagedIterable}.
@@ -1268,9 +1072,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Implements GET datastores in a subscription.
-     *
-     * <p>List of datastores in a subscription.
-     *
+     * 
+     * List of datastores in a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1284,9 +1088,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Implements GET datastores in a resource group.
-     *
-     * <p>List of datastores in a resource group.
-     *
+     * 
+     * List of datastores in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1296,16 +1100,12 @@ public final class DatastoresClientImpl implements DatastoresClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DatastoreInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1313,33 +1113,18 @@ public final class DatastoresClientImpl implements DatastoresClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
-            .<PagedResponse<DatastoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(),
+                this.client.getSubscriptionId(), resourceGroupName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<DatastoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Implements GET datastores in a resource group.
-     *
-     * <p>List of datastores in a resource group.
-     *
+     * 
+     * List of datastores in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1348,19 +1133,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return list of Datastores along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatastoreInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Context context) {
+    private Mono<PagedResponse<DatastoreInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1369,29 +1150,17 @@ public final class DatastoresClientImpl implements DatastoresClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Implements GET datastores in a resource group.
-     *
-     * <p>List of datastores in a resource group.
-     *
+     * 
+     * List of datastores in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1400,16 +1169,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatastoreInner> listByResourceGroupAsync(String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Implements GET datastores in a resource group.
-     *
-     * <p>List of datastores in a resource group.
-     *
+     * 
+     * List of datastores in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1419,16 +1187,15 @@ public final class DatastoresClientImpl implements DatastoresClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DatastoreInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Implements GET datastores in a resource group.
-     *
-     * <p>List of datastores in a resource group.
-     *
+     * 
+     * List of datastores in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1442,9 +1209,9 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Implements GET datastores in a resource group.
-     *
-     * <p>List of datastores in a resource group.
-     *
+     * 
+     * List of datastores in a resource group.
+     * 
      * @param resourceGroupName The Resource Group Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1459,8 +1226,8 @@ public final class DatastoresClientImpl implements DatastoresClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1472,30 +1239,20 @@ public final class DatastoresClientImpl implements DatastoresClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatastoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DatastoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1508,30 +1265,20 @@ public final class DatastoresClientImpl implements DatastoresClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1543,31 +1290,22 @@ public final class DatastoresClientImpl implements DatastoresClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DatastoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DatastoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1575,29 +1313,19 @@ public final class DatastoresClientImpl implements DatastoresClient {
      * @return list of Datastores along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatastoreInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DatastoreInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VCenters ListByResourceGroup. */
+/**
+ * Samples for VCenters ListByResourceGroup.
+ */
 public final class VCentersListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListVCentersByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListVCentersByResourceGroup.json
      */
     /**
      * Sample code: ListVCentersByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listVCentersByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.vCenters().listByResourceGroup("testrg", Context.NONE);
+    public static void
+        listVCentersByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        manager.vCenters().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

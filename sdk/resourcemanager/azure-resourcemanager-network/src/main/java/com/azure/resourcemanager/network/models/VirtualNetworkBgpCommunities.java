@@ -6,30 +6,36 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET. */
+/**
+ * Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET.
+ */
 @Fluent
-public final class VirtualNetworkBgpCommunities {
+public final class VirtualNetworkBgpCommunities implements JsonSerializable<VirtualNetworkBgpCommunities> {
     /*
      * The BGP community associated with the virtual network.
      */
-    @JsonProperty(value = "virtualNetworkCommunity", required = true)
     private String virtualNetworkCommunity;
 
     /*
      * The BGP community associated with the region of the virtual network.
      */
-    @JsonProperty(value = "regionalCommunity", access = JsonProperty.Access.WRITE_ONLY)
     private String regionalCommunity;
 
-    /** Creates an instance of VirtualNetworkBgpCommunities class. */
+    /**
+     * Creates an instance of VirtualNetworkBgpCommunities class.
+     */
     public VirtualNetworkBgpCommunities() {
     }
 
     /**
      * Get the virtualNetworkCommunity property: The BGP community associated with the virtual network.
-     *
+     * 
      * @return the virtualNetworkCommunity value.
      */
     public String virtualNetworkCommunity() {
@@ -38,7 +44,7 @@ public final class VirtualNetworkBgpCommunities {
 
     /**
      * Set the virtualNetworkCommunity property: The BGP community associated with the virtual network.
-     *
+     * 
      * @param virtualNetworkCommunity the virtualNetworkCommunity value to set.
      * @return the VirtualNetworkBgpCommunities object itself.
      */
@@ -49,7 +55,7 @@ public final class VirtualNetworkBgpCommunities {
 
     /**
      * Get the regionalCommunity property: The BGP community associated with the region of the virtual network.
-     *
+     * 
      * @return the regionalCommunity value.
      */
     public String regionalCommunity() {
@@ -58,17 +64,55 @@ public final class VirtualNetworkBgpCommunities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (virtualNetworkCommunity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualNetworkCommunity in model VirtualNetworkBgpCommunities"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualNetworkCommunity in model VirtualNetworkBgpCommunities"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkBgpCommunities.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("virtualNetworkCommunity", this.virtualNetworkCommunity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualNetworkBgpCommunities from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualNetworkBgpCommunities if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the VirtualNetworkBgpCommunities.
+     */
+    public static VirtualNetworkBgpCommunities fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualNetworkBgpCommunities deserializedVirtualNetworkBgpCommunities = new VirtualNetworkBgpCommunities();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("virtualNetworkCommunity".equals(fieldName)) {
+                    deserializedVirtualNetworkBgpCommunities.virtualNetworkCommunity = reader.getString();
+                } else if ("regionalCommunity".equals(fieldName)) {
+                    deserializedVirtualNetworkBgpCommunities.regionalCommunity = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualNetworkBgpCommunities;
+        });
+    }
 }

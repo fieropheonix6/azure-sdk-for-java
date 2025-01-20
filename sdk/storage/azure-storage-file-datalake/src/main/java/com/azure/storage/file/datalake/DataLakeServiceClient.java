@@ -6,12 +6,14 @@ package com.azure.storage.file.datalake;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobServiceProperties;
@@ -29,7 +31,7 @@ import com.azure.storage.file.datalake.options.FileSystemUndeleteOptions;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Map;
-
+import java.util.function.Consumer;
 
 /**
  * Client to a storage account. It may only be instantiated through a {@link DataLakeServiceClientBuilder}. This class
@@ -47,7 +49,13 @@ public class DataLakeServiceClient {
 
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeServiceClient.class);
     private final DataLakeServiceAsyncClient dataLakeServiceAsyncClient;
-    private final BlobServiceClient blobServiceClient;
+    final BlobServiceClient blobServiceClient;
+    private final HttpPipeline pipeline;
+    private final String url;
+    private final String accountName;
+    private final DataLakeServiceVersion serviceVersion;
+    private final AzureSasCredential sasToken;
+    private final boolean isTokenCredentialAuthenticated;
 
     /**
      * Package-private constructor for use by {@link DataLakeServiceClientBuilder}.
@@ -55,9 +63,17 @@ public class DataLakeServiceClient {
      * @param dataLakeServiceAsyncClient the async data lake service client.
      * @param blobServiceClient the sync blob service client.
      */
-    DataLakeServiceClient(DataLakeServiceAsyncClient dataLakeServiceAsyncClient, BlobServiceClient blobServiceClient) {
+    DataLakeServiceClient(DataLakeServiceAsyncClient dataLakeServiceAsyncClient, BlobServiceClient blobServiceClient,
+        HttpPipeline pipeline, String url, DataLakeServiceVersion serviceVersion, String accountName,
+        AzureSasCredential sasToken, boolean isTokenCredentialAuthenticated) {
         this.dataLakeServiceAsyncClient = dataLakeServiceAsyncClient;
         this.blobServiceClient = blobServiceClient;
+        this.pipeline = pipeline;
+        this.url = url;
+        this.serviceVersion = serviceVersion;
+        this.accountName = accountName;
+        this.sasToken = sasToken;
+        this.isTokenCredentialAuthenticated = isTokenCredentialAuthenticated;
     }
 
     /**
@@ -77,8 +93,12 @@ public class DataLakeServiceClient {
      * @return A {@link DataLakeFileSystemClient} object pointing to the specified file system
      */
     public DataLakeFileSystemClient getFileSystemClient(String fileSystemName) {
+        if (CoreUtils.isNullOrEmpty(fileSystemName)) {
+            fileSystemName = DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME;
+        }
         return new DataLakeFileSystemClient(dataLakeServiceAsyncClient.getFileSystemAsyncClient(fileSystemName),
-            blobServiceClient.getBlobContainerClient(fileSystemName));
+            blobServiceClient.getBlobContainerClient(fileSystemName), getHttpPipeline(), getAccountUrl(),
+            getServiceVersion(), getAccountName(), fileSystemName, sasToken, isTokenCredentialAuthenticated);
     }
 
     /**
@@ -87,7 +107,7 @@ public class DataLakeServiceClient {
      * @return The pipeline.
      */
     public HttpPipeline getHttpPipeline() {
-        return dataLakeServiceAsyncClient.getHttpPipeline();
+        return pipeline;
     }
 
     /**
@@ -96,7 +116,7 @@ public class DataLakeServiceClient {
      * @return the service version the client is using.
      */
     public DataLakeServiceVersion getServiceVersion() {
-        return this.dataLakeServiceAsyncClient.getServiceVersion();
+        return serviceVersion;
     }
 
     /**
@@ -215,7 +235,7 @@ public class DataLakeServiceClient {
      * @return the URL.
      */
     public String getAccountUrl() {
-        return dataLakeServiceAsyncClient.getAccountUrl();
+        return url;
     }
 
     /**
@@ -264,6 +284,7 @@ public class DataLakeServiceClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FileSystemItem> listFileSystems(ListFileSystemsOptions options, Duration timeout) {
+        // this method depends on BlobServiceAsyncClient.listContainers
         return new PagedIterable<>(dataLakeServiceAsyncClient.listFileSystemsWithOptionalTimeout(options, timeout));
     }
 
@@ -342,12 +363,17 @@ public class DataLakeServiceClient {
      *     .setLogging&#40;new DataLakeAnalyticsLogging&#40;&#41;
      *         .setWrite&#40;true&#41;
      *         .setDelete&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
      *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
      *     .setHourMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
      *     .setMinuteMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
      *
      * try &#123;
@@ -385,12 +411,17 @@ public class DataLakeServiceClient {
      *     .setLogging&#40;new DataLakeAnalyticsLogging&#40;&#41;
      *         .setWrite&#40;true&#41;
      *         .setDelete&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
      *         .setRetentionPolicy&#40;loggingRetentionPolicy&#41;&#41;
      *     .setHourMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;
      *     .setMinuteMetrics&#40;new DataLakeMetrics&#40;&#41;
      *         .setEnabled&#40;true&#41;
+     *         .setVersion&#40;&quot;1.0&quot;&#41;
+     *         .setIncludeApis&#40;true&#41;
      *         .setRetentionPolicy&#40;metricsRetentionPolicy&#41;&#41;;
      *
      * Context context = new Context&#40;&quot;Key&quot;, &quot;Value&quot;&#41;;
@@ -408,9 +439,8 @@ public class DataLakeServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setPropertiesWithResponse(DataLakeServiceProperties properties, Duration timeout,
         Context context) {
-        return DataLakeImplUtils.returnOrConvertException(() ->
-            blobServiceClient.setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties),
-                timeout, context), LOGGER);
+        return DataLakeImplUtils.returnOrConvertException(() -> blobServiceClient
+            .setPropertiesWithResponse(Transforms.toBlobServiceProperties(properties), timeout, context), LOGGER);
     }
 
     /**
@@ -458,8 +488,8 @@ public class DataLakeServiceClient {
     public Response<UserDelegationKey> getUserDelegationKeyWithResponse(OffsetDateTime start, OffsetDateTime expiry,
         Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<com.azure.storage.blob.models.UserDelegationKey> response = blobServiceClient
-                .getUserDelegationKeyWithResponse(start, expiry, timeout, context);
+            Response<com.azure.storage.blob.models.UserDelegationKey> response
+                = blobServiceClient.getUserDelegationKeyWithResponse(start, expiry, timeout, context);
             return new SimpleResponse<>(response, Transforms.toDataLakeUserDelegationKey(response.getValue()));
         }, LOGGER);
     }
@@ -470,7 +500,7 @@ public class DataLakeServiceClient {
      * @return account name associated with this storage resource.
      */
     public String getAccountName() {
-        return this.dataLakeServiceAsyncClient.getAccountName();
+        return this.accountName;
     }
 
     /**
@@ -502,7 +532,7 @@ public class DataLakeServiceClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues) {
-        return dataLakeServiceAsyncClient.generateAccountSas(accountSasSignatureValues);
+        return generateAccountSas(accountSasSignatureValues, null);
     }
 
     /**
@@ -535,7 +565,24 @@ public class DataLakeServiceClient {
      * @return A {@code String} representing the SAS query parameters.
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
-        return dataLakeServiceAsyncClient.generateAccountSas(accountSasSignatureValues, context);
+        return generateAccountSas(accountSasSignatureValues, null, context);
+    }
+
+    /**
+     * Generates an account SAS for the Azure Storage account using the specified {@link AccountSasSignatureValues}.
+     * <p>Note : The client must be authenticated via {@link StorageSharedKeyCredential}
+     * <p>See {@link AccountSasSignatureValues} for more information on how to construct an account SAS.</p>
+     *
+     * @param accountSasSignatureValues {@link AccountSasSignatureValues}
+     * @param stringToSignHandler For debugging purposes only. Returns the string to sign that was used to generate the
+     * signature.
+     * @param context Additional context that is passed through the code when generating a SAS.
+     *
+     * @return A {@code String} representing the SAS query parameters.
+     */
+    public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues,
+        Consumer<String> stringToSignHandler, Context context) {
+        return blobServiceClient.generateAccountSas(accountSasSignatureValues, stringToSignHandler, context);
     }
 
     /**
@@ -566,9 +613,10 @@ public class DataLakeServiceClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DataLakeFileSystemClient undeleteFileSystem(String deletedFileSystemName, String deletedFileSystemVersion) {
-        return this.undeleteFileSystemWithResponse(
-            new FileSystemUndeleteOptions(deletedFileSystemName, deletedFileSystemVersion), null,
-            Context.NONE).getValue();
+        return this
+            .undeleteFileSystemWithResponse(
+                new FileSystemUndeleteOptions(deletedFileSystemName, deletedFileSystemVersion), null, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -603,57 +651,57 @@ public class DataLakeServiceClient {
      * used to interact with the restored file system.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DataLakeFileSystemClient> undeleteFileSystemWithResponse(
-        FileSystemUndeleteOptions options, Duration timeout, Context context) {
+    public Response<DataLakeFileSystemClient> undeleteFileSystemWithResponse(FileSystemUndeleteOptions options,
+        Duration timeout, Context context) {
         return DataLakeImplUtils.returnOrConvertException(() -> {
-            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
-                .undeleteBlobContainerWithResponse(Transforms.toBlobContainerUndeleteOptions(options), timeout,
-                    context);
+            Response<com.azure.storage.blob.BlobContainerClient> response
+                = blobServiceClient.undeleteBlobContainerWithResponse(
+                    Transforms.toBlobContainerUndeleteOptions(options), timeout, context);
             return new SimpleResponse<>(response, getFileSystemClient(response.getValue().getBlobContainerName()));
         }, LOGGER);
     }
 
-//    /**
-//     * Renames an existing file system.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
-//     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
-//     *
-//     * @param sourceFileSystemName The current name of the file system.
-//     * @param destinationFileSystemName The new name of the file system.
-//     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public DataLakeFileSystemClient renameFileSystem(String sourceFileSystemName, String destinationFileSystemName) {
-//        return this.renameFileSystemWithResponse(sourceFileSystemName,
-//            new FileSystemRenameOptions(destinationFileSystemName), null, Context.NONE).getValue();
-//    }
-//
-//    /**
-//     * Renames an existing file system.
-//     *
-//     * <p><strong>Code Samples</strong></p>
-//     *
-//     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
-//     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
-//     *
-//     * @param sourceFileSystemName The current name of the file system.
-//     * @param options {@link FileSystemRenameOptions}
-//     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
-//     * @param context Additional context that is passed through the Http pipeline during the service call.
-//     * @return A {@link Response} whose {@link Response#getValue() value} contains a
-//     * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
-//     */
-//    @ServiceMethod(returns = ReturnType.SINGLE)
-//    public Response<DataLakeFileSystemClient> renameFileSystemWithResponse(String sourceFileSystemName,
-//        FileSystemRenameOptions options, Duration timeout, Context context) {
-//        return DataLakeImplUtils.returnOrConvertException(() -> {
-//            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
-//                .renameBlobContainerWithResponse(sourceFileSystemName,
-//                    Transforms.toBlobContainerRenameOptions(options), timeout, context);
-//            return new SimpleResponse<>(response, getFileSystemClient(options.getDestinationFileSystemName()));
-//        }, logger);
-//    }
+    //    /**
+    //     * Renames an existing file system.
+    //     *
+    //     * <p><strong>Code Samples</strong></p>
+    //     *
+    //     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
+    //     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystem#String-String -->
+    //     *
+    //     * @param sourceFileSystemName The current name of the file system.
+    //     * @param destinationFileSystemName The new name of the file system.
+    //     * @return A {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+    //     */
+    //    @ServiceMethod(returns = ReturnType.SINGLE)
+    //    public DataLakeFileSystemClient renameFileSystem(String sourceFileSystemName, String destinationFileSystemName) {
+    //        return this.renameFileSystemWithResponse(sourceFileSystemName,
+    //            new FileSystemRenameOptions(destinationFileSystemName), null, Context.NONE).getValue();
+    //    }
+    //
+    //    /**
+    //     * Renames an existing file system.
+    //     *
+    //     * <p><strong>Code Samples</strong></p>
+    //     *
+    //     * <!-- src_embed com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
+    //     * <!-- end com.azure.storage.file.datalake.DataLakeServiceClient.renameFileSystemWithResponse#String-FileSystemRenameOptions-Duration-Context -->
+    //     *
+    //     * @param sourceFileSystemName The current name of the file system.
+    //     * @param options {@link FileSystemRenameOptions}
+    //     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+    //     * @param context Additional context that is passed through the Http pipeline during the service call.
+    //     * @return A {@link Response} whose {@link Response#getValue() value} contains a
+    //     * {@link DataLakeFileSystemClient} used to interact with the renamed file system.
+    //     */
+    //    @ServiceMethod(returns = ReturnType.SINGLE)
+    //    public Response<DataLakeFileSystemClient> renameFileSystemWithResponse(String sourceFileSystemName,
+    //        FileSystemRenameOptions options, Duration timeout, Context context) {
+    //        return DataLakeImplUtils.returnOrConvertException(() -> {
+    //            Response<com.azure.storage.blob.BlobContainerClient> response = blobServiceClient
+    //                .renameBlobContainerWithResponse(sourceFileSystemName,
+    //                    Transforms.toBlobContainerRenameOptions(options), timeout, context);
+    //            return new SimpleResponse<>(response, getFileSystemClient(options.getDestinationFileSystemName()));
+    //        }, logger);
+    //    }
 }

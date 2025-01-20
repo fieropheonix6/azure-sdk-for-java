@@ -5,36 +5,41 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Network Virtual Appliance Sku Properties. */
+/**
+ * Network Virtual Appliance Sku Properties.
+ */
 @Fluent
-public final class VirtualApplianceSkuProperties {
+public final class VirtualApplianceSkuProperties implements JsonSerializable<VirtualApplianceSkuProperties> {
     /*
      * Virtual Appliance Vendor.
      */
-    @JsonProperty(value = "vendor")
     private String vendor;
 
     /*
      * Virtual Appliance Scale Unit.
      */
-    @JsonProperty(value = "bundledScaleUnit")
     private String bundledScaleUnit;
 
     /*
      * Virtual Appliance Version.
      */
-    @JsonProperty(value = "marketPlaceVersion")
     private String marketPlaceVersion;
 
-    /** Creates an instance of VirtualApplianceSkuProperties class. */
+    /**
+     * Creates an instance of VirtualApplianceSkuProperties class.
+     */
     public VirtualApplianceSkuProperties() {
     }
 
     /**
      * Get the vendor property: Virtual Appliance Vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -43,7 +48,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Set the vendor property: Virtual Appliance Vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the VirtualApplianceSkuProperties object itself.
      */
@@ -54,7 +59,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Get the bundledScaleUnit property: Virtual Appliance Scale Unit.
-     *
+     * 
      * @return the bundledScaleUnit value.
      */
     public String bundledScaleUnit() {
@@ -63,7 +68,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Set the bundledScaleUnit property: Virtual Appliance Scale Unit.
-     *
+     * 
      * @param bundledScaleUnit the bundledScaleUnit value to set.
      * @return the VirtualApplianceSkuProperties object itself.
      */
@@ -74,7 +79,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Get the marketPlaceVersion property: Virtual Appliance Version.
-     *
+     * 
      * @return the marketPlaceVersion value.
      */
     public String marketPlaceVersion() {
@@ -83,7 +88,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Set the marketPlaceVersion property: Virtual Appliance Version.
-     *
+     * 
      * @param marketPlaceVersion the marketPlaceVersion value to set.
      * @return the VirtualApplianceSkuProperties object itself.
      */
@@ -94,9 +99,52 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vendor", this.vendor);
+        jsonWriter.writeStringField("bundledScaleUnit", this.bundledScaleUnit);
+        jsonWriter.writeStringField("marketPlaceVersion", this.marketPlaceVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualApplianceSkuProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualApplianceSkuProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualApplianceSkuProperties.
+     */
+    public static VirtualApplianceSkuProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualApplianceSkuProperties deserializedVirtualApplianceSkuProperties
+                = new VirtualApplianceSkuProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("vendor".equals(fieldName)) {
+                    deserializedVirtualApplianceSkuProperties.vendor = reader.getString();
+                } else if ("bundledScaleUnit".equals(fieldName)) {
+                    deserializedVirtualApplianceSkuProperties.bundledScaleUnit = reader.getString();
+                } else if ("marketPlaceVersion".equals(fieldName)) {
+                    deserializedVirtualApplianceSkuProperties.marketPlaceVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualApplianceSkuProperties;
+        });
     }
 }

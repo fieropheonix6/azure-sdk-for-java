@@ -5,38 +5,44 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Azure PostgreSQL dataset properties. */
+/**
+ * Azure PostgreSQL dataset properties.
+ */
 @Fluent
-public final class AzurePostgreSqlTableDatasetTypeProperties {
+public final class AzurePostgreSqlTableDatasetTypeProperties
+    implements JsonSerializable<AzurePostgreSqlTableDatasetTypeProperties> {
     /*
-     * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or
-     * Expression with resultType string).
+     * The table name of the Azure PostgreSQL database which includes both schema and table. Type: string (or Expression
+     * with resultType string).
      */
-    @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
      * The table name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "table")
     private Object table;
 
     /*
      * The schema name of the Azure PostgreSQL database. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "schema")
     private Object schema;
 
-    /** Creates an instance of AzurePostgreSqlTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AzurePostgreSqlTableDatasetTypeProperties class.
+     */
     public AzurePostgreSqlTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: The table name of the Azure PostgreSQL database which includes both schema and table.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -46,7 +52,7 @@ public final class AzurePostgreSqlTableDatasetTypeProperties {
     /**
      * Set the tableName property: The table name of the Azure PostgreSQL database which includes both schema and table.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzurePostgreSqlTableDatasetTypeProperties object itself.
      */
@@ -58,7 +64,7 @@ public final class AzurePostgreSqlTableDatasetTypeProperties {
     /**
      * Get the table property: The table name of the Azure PostgreSQL database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -68,7 +74,7 @@ public final class AzurePostgreSqlTableDatasetTypeProperties {
     /**
      * Set the table property: The table name of the Azure PostgreSQL database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the AzurePostgreSqlTableDatasetTypeProperties object itself.
      */
@@ -80,7 +86,7 @@ public final class AzurePostgreSqlTableDatasetTypeProperties {
     /**
      * Get the schema property: The schema name of the Azure PostgreSQL database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schema() {
@@ -90,7 +96,7 @@ public final class AzurePostgreSqlTableDatasetTypeProperties {
     /**
      * Set the schema property: The schema name of the Azure PostgreSQL database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the AzurePostgreSqlTableDatasetTypeProperties object itself.
      */
@@ -101,9 +107,52 @@ public final class AzurePostgreSqlTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("tableName", this.tableName);
+        jsonWriter.writeUntypedField("table", this.table);
+        jsonWriter.writeUntypedField("schema", this.schema);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzurePostgreSqlTableDatasetTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzurePostgreSqlTableDatasetTypeProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzurePostgreSqlTableDatasetTypeProperties.
+     */
+    public static AzurePostgreSqlTableDatasetTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzurePostgreSqlTableDatasetTypeProperties deserializedAzurePostgreSqlTableDatasetTypeProperties
+                = new AzurePostgreSqlTableDatasetTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tableName".equals(fieldName)) {
+                    deserializedAzurePostgreSqlTableDatasetTypeProperties.tableName = reader.readUntyped();
+                } else if ("table".equals(fieldName)) {
+                    deserializedAzurePostgreSqlTableDatasetTypeProperties.table = reader.readUntyped();
+                } else if ("schema".equals(fieldName)) {
+                    deserializedAzurePostgreSqlTableDatasetTypeProperties.schema = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzurePostgreSqlTableDatasetTypeProperties;
+        });
     }
 }

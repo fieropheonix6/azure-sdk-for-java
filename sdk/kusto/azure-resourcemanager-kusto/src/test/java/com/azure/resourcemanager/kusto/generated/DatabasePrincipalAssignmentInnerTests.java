@@ -9,34 +9,29 @@ import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalAssignment
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DatabasePrincipalAssignmentInnerTests {
-    @Test
-    public void testDeserialize() {
-        DatabasePrincipalAssignmentInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"principalId\":\"misgwbnb\",\"role\":\"Viewer\",\"tenantId\":\"dawkzbali\",\"principalType\":\"Group\",\"tenantName\":\"qhakauhashsf\",\"principalName\":\"osow\",\"provisioningState\":\"Moving\",\"aadObjectId\":\"gicjooxdjeb\"},\"id\":\"pucwwfvovbvme\",\"name\":\"ecivyh\",\"type\":\"ce\"}")
-                .toObject(DatabasePrincipalAssignmentInner.class);
-        Assertions.assertEquals("misgwbnb", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, model.role());
-        Assertions.assertEquals("dawkzbali", model.tenantId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DatabasePrincipalAssignmentInner model = BinaryData.fromString(
+            "{\"properties\":{\"principalId\":\"cffgdkzzewk\",\"role\":\"User\",\"tenantId\":\"qcrailvpnppfufl\",\"principalType\":\"Group\",\"tenantName\":\"mh\",\"principalName\":\"xyjrxsagafcnih\",\"provisioningState\":\"Deleting\",\"aadObjectId\":\"pnedgf\"},\"id\":\"cvkcvqvpkeqdcv\",\"name\":\"rhvoods\",\"type\":\"tbobz\"}")
+            .toObject(DatabasePrincipalAssignmentInner.class);
+        Assertions.assertEquals("cffgdkzzewk", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.USER, model.role());
+        Assertions.assertEquals("qcrailvpnppfufl", model.tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 
-    @Test
-    public void testSerialize() {
-        DatabasePrincipalAssignmentInner model =
-            new DatabasePrincipalAssignmentInner()
-                .withPrincipalId("misgwbnb")
-                .withRole(DatabasePrincipalRole.VIEWER)
-                .withTenantId("dawkzbali")
-                .withPrincipalType(PrincipalType.GROUP);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DatabasePrincipalAssignmentInner model = new DatabasePrincipalAssignmentInner().withPrincipalId("cffgdkzzewk")
+            .withRole(DatabasePrincipalRole.USER)
+            .withTenantId("qcrailvpnppfufl")
+            .withPrincipalType(PrincipalType.GROUP);
         model = BinaryData.fromObject(model).toObject(DatabasePrincipalAssignmentInner.class);
-        Assertions.assertEquals("misgwbnb", model.principalId());
-        Assertions.assertEquals(DatabasePrincipalRole.VIEWER, model.role());
-        Assertions.assertEquals("dawkzbali", model.tenantId());
+        Assertions.assertEquals("cffgdkzzewk", model.principalId());
+        Assertions.assertEquals(DatabasePrincipalRole.USER, model.role());
+        Assertions.assertEquals("qcrailvpnppfufl", model.tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, model.principalType());
     }
 }

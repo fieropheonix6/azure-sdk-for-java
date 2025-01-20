@@ -7,39 +7,83 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
+import com.fasterxml.jackson.databind.JsonNode;
+import io.netty.buffer.ByteBufInputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 /**
  * Used internally to represents a response from the store.
  */
 public class StoreResponse {
-    final static Logger LOGGER = LoggerFactory.getLogger(StoreResponse.class);
+    private static final Logger logger = LoggerFactory.getLogger(StoreResponse.class.getSimpleName());
     final private int status;
     final private String[] responseHeaderNames;
     final private String[] responseHeaderValues;
-    final private byte[] content;
-
-    private int pendingRequestQueueSize;
     private int requestPayloadLength;
-    private int responsePayloadLength;
     private RequestTimeline requestTimeline;
     private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
-    private int rntbdChannelTaskQueueSize;
     private RntbdEndpointStatistics rntbdEndpointStatistics;
+    private RntbdChannelStatistics channelStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
-    private final List<String> replicaStatusList;
+    private final Map<String, Set<String>> replicaStatusList;
+    private String faultInjectionRuleId;
+    private List<String> faultInjectionRuleEvaluationResults;
+
+    private final JsonNodeStorePayload responsePayload;
 
     public StoreResponse(
             int status,
             Map<String, String> headerMap,
-            byte[] content) {
+            ByteBufInputStream contentStream,
+            int responsePayloadLength) {
+
+        checkArgument((contentStream == null) == (responsePayloadLength == 0),
+            "Parameter 'contentStream' must be consistent with 'responsePayloadLength'.");
+        requestTimeline = RequestTimeline.empty();
+        responseHeaderNames = new String[headerMap.size()];
+        responseHeaderValues = new String[headerMap.size()];
+
+        int i = 0;
+        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
+            responseHeaderNames[i] = headerEntry.getKey();
+            responseHeaderValues[i] = headerEntry.getValue();
+            i++;
+        }
+
+        this.status = status;
+        replicaStatusList = new HashMap<>();
+        if (contentStream != null) {
+            try {
+                this.responsePayload = new JsonNodeStorePayload(contentStream, responsePayloadLength);
+            }
+            finally {
+                try {
+                    contentStream.close();
+                } catch (IOException e) {
+                    logger.debug("Could not successfully close content stream.", e);
+                }
+            }
+        } else {
+            this.responsePayload = null;
+        }
+    }
+
+    private StoreResponse(
+        int status,
+        Map<String, String> headerMap,
+        JsonNodeStorePayload responsePayload) {
 
         requestTimeline = RequestTimeline.empty();
         responseHeaderNames = new String[headerMap.size()];
@@ -53,12 +97,8 @@ public class StoreResponse {
         }
 
         this.status = status;
-        this.content = content;
-        if (this.content != null) {
-            this.responsePayloadLength = this.content.length;
-        }
-
-        replicaStatusList = new ArrayList<>();
+        replicaStatusList = new HashMap<>();
+        this.responsePayload = responsePayload;
     }
 
     public int getStatus() {
@@ -71,22 +111,6 @@ public class StoreResponse {
 
     public String[] getResponseHeaderValues() {
         return responseHeaderValues;
-    }
-
-    public int getRntbdChannelTaskQueueSize() {
-        return rntbdChannelTaskQueueSize;
-    }
-
-    public void setRntbdChannelTaskQueueSize(int rntbdChannelTaskQueueSize) {
-        this.rntbdChannelTaskQueueSize = rntbdChannelTaskQueueSize;
-    }
-
-    public int getPendingRequestQueueSize() {
-        return this.pendingRequestQueueSize;
-    }
-
-    public void setRntbdPendingRequestSize(int pendingRequestQueueSize) {
-        this.pendingRequestQueueSize = pendingRequestQueueSize;
     }
 
     public void setRntbdRequestLength(int rntbdRequestLength) {
@@ -113,12 +137,20 @@ public class StoreResponse {
         this.requestPayloadLength = requestPayloadLength;
     }
 
-    public byte[] getResponseBody() {
-        return this.content;
+    public JsonNode getResponseBodyAsJson() {
+        if (this.responsePayload == null) {
+            return null;
+        }
+
+        return this.responsePayload.getPayload();
     }
 
     public int getResponseBodyLength() {
-        return this.responsePayloadLength;
+        if (this.responsePayload == null) {
+            return 0;
+        }
+
+        return this.responsePayload.getResponsePayloadSize();
     }
 
     public long getLSN() {
@@ -192,6 +224,14 @@ public class StoreResponse {
         return this.rntbdEndpointStatistics;
     }
 
+    public void setChannelStatistics(RntbdChannelStatistics channelStatistics) {
+        this.channelStatistics = channelStatistics;
+    }
+
+    public RntbdChannelStatistics getChannelStatistics() {
+        return this.channelStatistics;
+    }
+
     int getSubStatusCode() {
         int subStatusCode = HttpConstants.SubStatusCodes.UNKNOWN;
         String subStatusCodeString = this.getHeaderValue(WFConstants.BackendHeaders.SUB_STATUS);
@@ -205,7 +245,43 @@ public class StoreResponse {
         return subStatusCode;
     }
 
-    public List<String> getReplicaStatusList() {
+    public Map<String, Set<String>> getReplicaStatusList() {
         return this.replicaStatusList;
+    }
+
+    public String getFaultInjectionRuleId() {
+        return this.faultInjectionRuleId;
+    }
+
+    public void setFaultInjectionRuleId(String faultInjectionRuleId) {
+        this.faultInjectionRuleId = faultInjectionRuleId;
+    }
+
+    public List<String> getFaultInjectionRuleEvaluationResults() {
+        return this.faultInjectionRuleEvaluationResults;
+    }
+
+    public void setFaultInjectionRuleEvaluationResults(List<String> results) {
+        this.faultInjectionRuleEvaluationResults = results;
+    }
+
+    public StoreResponse withRemappedStatusCode(int newStatusCode, double additionalRequestCharge) {
+
+        Map<String, String> headers = new HashMap<>();
+        for (int i = 0; i < this.responseHeaderNames.length; i++) {
+            String headerName = this.responseHeaderNames[i];
+            if (headerName.equalsIgnoreCase(HttpConstants.HttpHeaders.REQUEST_CHARGE)) {
+                double currentRequestCharge = this.getRequestCharge();
+                double newRequestCharge = currentRequestCharge + additionalRequestCharge;
+                headers.put(headerName, String.valueOf(newRequestCharge));
+            } else {
+                headers.put(headerName, this.responseHeaderValues[i]);
+            }
+        }
+
+        return new StoreResponse(
+            newStatusCode,
+            headers,
+            this.responsePayload);
     }
 }

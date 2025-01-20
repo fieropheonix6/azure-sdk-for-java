@@ -16,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SuppressWarnings("deprecation")
 public class HttpHeadersTests {
     @ParameterizedTest
     @MethodSource("testAddSupplier")
@@ -37,8 +38,7 @@ public class HttpHeadersTests {
             Arguments.of(new HttpHeaders().set("a", "b"), "a", null, new String[] { "b" }),
 
             // HttpHeaders is case-insensitive.
-            Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", new String[] { "b", "c" })
-        );
+            Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", new String[] { "b", "c" }));
     }
 
     @ParameterizedTest
@@ -61,8 +61,7 @@ public class HttpHeadersTests {
             Arguments.of(new HttpHeaders().set("a", "b"), "a", null, null),
 
             // HttpHeaders is case-insensitive.
-            Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", "c")
-        );
+            Arguments.of(new HttpHeaders().set("a", "b"), "A", "c", "c"));
     }
 
     @ParameterizedTest
@@ -86,8 +85,7 @@ public class HttpHeadersTests {
             Arguments.of(new HttpHeaders().set("a", "b"), Collections.singletonMap("a", "b")),
 
             // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
-            Arguments.of(new HttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", "b,c"))
-        );
+            Arguments.of(new HttpHeaders().set("a", "b").add("a", "c"), Collections.singletonMap("a", "b,c")));
     }
 
     @ParameterizedTest
@@ -112,8 +110,7 @@ public class HttpHeadersTests {
 
             // Non-empty HttpHeaders will return comma-delimited header values if multiple are set.
             Arguments.of(new HttpHeaders().set("a", "b").add("a", "c"),
-                Collections.singletonMap("a", new String[] { "b", "c" }))
-        );
+                Collections.singletonMap("a", new String[] { "b", "c" })));
     }
 
     @Test

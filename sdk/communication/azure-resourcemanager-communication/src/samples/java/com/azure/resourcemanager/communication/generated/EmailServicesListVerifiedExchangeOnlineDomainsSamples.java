@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for EmailServices ListVerifiedExchangeOnlineDomains. */
+/**
+ * Samples for EmailServices ListVerifiedExchangeOnlineDomains.
+ */
 public final class EmailServicesListVerifiedExchangeOnlineDomainsSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2022-07-01-preview/examples/emailServices/getVerifiedExchangeOnlineDomains.json
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/stable/2023-04-01/examples/emailServices/
+     * getVerifiedExchangeOnlineDomains.json
      */
     /**
      * Sample code: Get verified Exchange Online domains.
-     *
+     * 
      * @param manager Entry point to CommunicationManager.
      */
-    public static void getVerifiedExchangeOnlineDomains(
-        com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager.emailServices().listVerifiedExchangeOnlineDomainsWithResponse(Context.NONE);
+    public static void
+        getVerifiedExchangeOnlineDomains(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.emailServices().listVerifiedExchangeOnlineDomainsWithResponse(com.azure.core.util.Context.NONE);
     }
 }

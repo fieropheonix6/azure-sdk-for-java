@@ -9,7 +9,7 @@ import com.azure.core.annotation.Immutable;
 import java.time.OffsetDateTime;
 
 /**
- * The {@link AnalyzeActionsOperationDetail} model.
+ * The {@code AnalyzeActionsOperationDetail} model.
  */
 @Immutable
 public final class AnalyzeActionsOperationDetail {
@@ -24,8 +24,8 @@ public final class AnalyzeActionsOperationDetail {
     private OffsetDateTime lastModifiedAt;
 
     static {
-        AnalyzeActionsOperationDetailPropertiesHelper.setAccessor(
-            new AnalyzeActionsOperationDetailPropertiesHelper.AnalyzeActionsOperationDetailAccessor() {
+        AnalyzeActionsOperationDetailPropertiesHelper
+            .setAccessor(new AnalyzeActionsOperationDetailPropertiesHelper.AnalyzeActionsOperationDetailAccessor() {
                 @Override
                 public void setOperationId(AnalyzeActionsOperationDetail operationDetail, String operationId) {
                     operationDetail.setOperationId(operationId);
@@ -57,14 +57,12 @@ public final class AnalyzeActionsOperationDetail {
                 }
 
                 @Override
-                public void setExpiresAt(AnalyzeActionsOperationDetail operationDetail,
-                    OffsetDateTime expiresAt) {
+                public void setExpiresAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime expiresAt) {
                     operationDetail.setExpiresAt(expiresAt);
                 }
 
                 @Override
-                public void setCreatedAt(AnalyzeActionsOperationDetail operationDetail,
-                    OffsetDateTime createdAt) {
+                public void setCreatedAt(AnalyzeActionsOperationDetail operationDetail, OffsetDateTime createdAt) {
                     operationDetail.setCreatedAt(createdAt);
                 }
 
@@ -77,18 +75,24 @@ public final class AnalyzeActionsOperationDetail {
     }
 
     /**
-     * Gets the operationId property of the {@link AnalyzeActionsOperationDetail}.
+     * Constructs a {@code AnalyzeActionsOperationDetail} model.
+     */
+    public AnalyzeActionsOperationDetail() {
+    }
+
+    /**
+     * Gets the operationId property of the {@code AnalyzeActionsOperationDetail}.
      *
-     * @return The operationId property of the {@link AnalyzeActionsOperationDetail}.
+     * @return The operationId property of the {@code AnalyzeActionsOperationDetail}.
      */
     public String getOperationId() {
         return operationId;
     }
 
     /**
-     * Gets the displayName property of the {@link AnalyzeActionsOperationDetail}.
+     * Gets the displayName property of the {@code AnalyzeActionsOperationDetail}.
      *
-     * @return The displayName property of the {@link AnalyzeActionsOperationDetail}.
+     * @return The displayName property of the {@code AnalyzeActionsOperationDetail}.
      */
     public String getDisplayName() {
         return displayName;

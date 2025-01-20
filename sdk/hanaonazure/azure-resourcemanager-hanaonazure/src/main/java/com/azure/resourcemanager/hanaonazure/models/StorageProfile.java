@@ -5,32 +5,42 @@
 package com.azure.resourcemanager.hanaonazure.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specifies the storage settings for the HANA instance disks. */
+/**
+ * Specifies the storage settings for the HANA instance disks.
+ */
 @Fluent
-public final class StorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageProfile.class);
-
+public final class StorageProfile implements JsonSerializable<StorageProfile> {
     /*
      * IP Address to connect to storage.
      */
-    @JsonProperty(value = "nfsIpAddress")
     private String nfsIpAddress;
 
     /*
-     * Specifies information about the operating system disk used by the hana
-     * instance.
+     * Specifies information about the operating system disk used by the hana instance.
      */
-    @JsonProperty(value = "osDisks")
     private List<Disk> osDisks;
+
+    /*
+     * Specifies information related to SAP system IDs for the hana instance.
+     */
+    private List<SapSystemId> hanaSids;
+
+    /**
+     * Creates an instance of StorageProfile class.
+     */
+    public StorageProfile() {
+    }
 
     /**
      * Get the nfsIpAddress property: IP Address to connect to storage.
-     *
+     * 
      * @return the nfsIpAddress value.
      */
     public String nfsIpAddress() {
@@ -38,19 +48,8 @@ public final class StorageProfile {
     }
 
     /**
-     * Set the nfsIpAddress property: IP Address to connect to storage.
-     *
-     * @param nfsIpAddress the nfsIpAddress value to set.
-     * @return the StorageProfile object itself.
-     */
-    public StorageProfile withNfsIpAddress(String nfsIpAddress) {
-        this.nfsIpAddress = nfsIpAddress;
-        return this;
-    }
-
-    /**
      * Get the osDisks property: Specifies information about the operating system disk used by the hana instance.
-     *
+     * 
      * @return the osDisks value.
      */
     public List<Disk> osDisks() {
@@ -59,7 +58,7 @@ public final class StorageProfile {
 
     /**
      * Set the osDisks property: Specifies information about the operating system disk used by the hana instance.
-     *
+     * 
      * @param osDisks the osDisks value to set.
      * @return the StorageProfile object itself.
      */
@@ -69,13 +68,79 @@ public final class StorageProfile {
     }
 
     /**
+     * Get the hanaSids property: Specifies information related to SAP system IDs for the hana instance.
+     * 
+     * @return the hanaSids value.
+     */
+    public List<SapSystemId> hanaSids() {
+        return this.hanaSids;
+    }
+
+    /**
+     * Set the hanaSids property: Specifies information related to SAP system IDs for the hana instance.
+     * 
+     * @param hanaSids the hanaSids value to set.
+     * @return the StorageProfile object itself.
+     */
+    public StorageProfile withHanaSids(List<SapSystemId> hanaSids) {
+        this.hanaSids = hanaSids;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osDisks() != null) {
             osDisks().forEach(e -> e.validate());
         }
+        if (hanaSids() != null) {
+            hanaSids().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("osDisks", this.osDisks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("hanaSids", this.hanaSids, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StorageProfile from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StorageProfile if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StorageProfile.
+     */
+    public static StorageProfile fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StorageProfile deserializedStorageProfile = new StorageProfile();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nfsIpAddress".equals(fieldName)) {
+                    deserializedStorageProfile.nfsIpAddress = reader.getString();
+                } else if ("osDisks".equals(fieldName)) {
+                    List<Disk> osDisks = reader.readArray(reader1 -> Disk.fromJson(reader1));
+                    deserializedStorageProfile.osDisks = osDisks;
+                } else if ("hanaSids".equals(fieldName)) {
+                    List<SapSystemId> hanaSids = reader.readArray(reader1 -> SapSystemId.fromJson(reader1));
+                    deserializedStorageProfile.hanaSids = hanaSids;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStorageProfile;
+        });
     }
 }

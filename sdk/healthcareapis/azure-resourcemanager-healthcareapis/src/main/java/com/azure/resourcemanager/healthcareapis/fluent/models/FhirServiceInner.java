@@ -6,12 +6,17 @@ package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SystemData;
-import com.azure.resourcemanager.healthcareapis.models.FhirServiceAccessPolicyEntry;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAcrConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceCorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceExportConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.FhirServiceImportConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceKind;
+import com.azure.resourcemanager.healthcareapis.models.ImplementationGuidesConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
@@ -19,41 +24,59 @@ import com.azure.resourcemanager.healthcareapis.models.ResourceVersionPolicyConf
 import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
 import com.azure.resourcemanager.healthcareapis.models.ServiceManagedIdentityIdentity;
 import com.azure.resourcemanager.healthcareapis.models.TaggedResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** The description of Fhir Service. */
+/**
+ * The description of Fhir Service.
+ */
 @Fluent
 public final class FhirServiceInner extends TaggedResource {
     /*
      * The kind of the service.
      */
-    @JsonProperty(value = "kind")
     private FhirServiceKind kind;
 
     /*
      * Fhir Service configuration.
      */
-    @JsonProperty(value = "properties")
     private FhirServiceProperties innerProperties;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
-     * Setting indicating whether the service has a managed identity associated
-     * with it.
+     * Setting indicating whether the service has a managed identity associated with it.
      */
-    @JsonProperty(value = "identity")
     private ServiceManagedIdentityIdentity identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of FhirServiceInner class.
+     */
+    public FhirServiceInner() {
+    }
 
     /**
      * Get the kind property: The kind of the service.
-     *
+     * 
      * @return the kind value.
      */
     public FhirServiceKind kind() {
@@ -62,7 +85,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Set the kind property: The kind of the service.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the FhirServiceInner object itself.
      */
@@ -73,7 +96,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the innerProperties property: Fhir Service configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private FhirServiceProperties innerProperties() {
@@ -82,7 +105,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -91,7 +114,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     public ServiceManagedIdentityIdentity identity() {
@@ -100,7 +123,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Set the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the FhirServiceInner object itself.
      */
@@ -109,21 +132,57 @@ public final class FhirServiceInner extends TaggedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FhirServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FhirServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FhirServiceInner withEtag(String etag) {
         super.withEtag(etag);
@@ -132,7 +191,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -140,31 +199,8 @@ public final class FhirServiceInner extends TaggedResource {
     }
 
     /**
-     * Get the accessPolicies property: Fhir Service access policies.
-     *
-     * @return the accessPolicies value.
-     */
-    public List<FhirServiceAccessPolicyEntry> accessPolicies() {
-        return this.innerProperties() == null ? null : this.innerProperties().accessPolicies();
-    }
-
-    /**
-     * Set the accessPolicies property: Fhir Service access policies.
-     *
-     * @param accessPolicies the accessPolicies value to set.
-     * @return the FhirServiceInner object itself.
-     */
-    public FhirServiceInner withAccessPolicies(List<FhirServiceAccessPolicyEntry> accessPolicies) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new FhirServiceProperties();
-        }
-        this.innerProperties().withAccessPolicies(accessPolicies);
-        return this;
-    }
-
-    /**
      * Get the acrConfiguration property: Fhir Service Azure container registry configuration.
-     *
+     * 
      * @return the acrConfiguration value.
      */
     public FhirServiceAcrConfiguration acrConfiguration() {
@@ -173,7 +209,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Set the acrConfiguration property: Fhir Service Azure container registry configuration.
-     *
+     * 
      * @param acrConfiguration the acrConfiguration value to set.
      * @return the FhirServiceInner object itself.
      */
@@ -187,7 +223,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the authenticationConfiguration property: Fhir Service authentication configuration.
-     *
+     * 
      * @return the authenticationConfiguration value.
      */
     public FhirServiceAuthenticationConfiguration authenticationConfiguration() {
@@ -196,12 +232,12 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Set the authenticationConfiguration property: Fhir Service authentication configuration.
-     *
+     * 
      * @param authenticationConfiguration the authenticationConfiguration value to set.
      * @return the FhirServiceInner object itself.
      */
-    public FhirServiceInner withAuthenticationConfiguration(
-        FhirServiceAuthenticationConfiguration authenticationConfiguration) {
+    public FhirServiceInner
+        withAuthenticationConfiguration(FhirServiceAuthenticationConfiguration authenticationConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FhirServiceProperties();
         }
@@ -211,7 +247,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the corsConfiguration property: Fhir Service Cors configuration.
-     *
+     * 
      * @return the corsConfiguration value.
      */
     public FhirServiceCorsConfiguration corsConfiguration() {
@@ -220,7 +256,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Set the corsConfiguration property: Fhir Service Cors configuration.
-     *
+     * 
      * @param corsConfiguration the corsConfiguration value to set.
      * @return the FhirServiceInner object itself.
      */
@@ -234,7 +270,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the exportConfiguration property: Fhir Service export configuration.
-     *
+     * 
      * @return the exportConfiguration value.
      */
     public FhirServiceExportConfiguration exportConfiguration() {
@@ -243,7 +279,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Set the exportConfiguration property: Fhir Service export configuration.
-     *
+     * 
      * @param exportConfiguration the exportConfiguration value to set.
      * @return the FhirServiceInner object itself.
      */
@@ -258,7 +294,7 @@ public final class FhirServiceInner extends TaggedResource {
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -268,7 +304,7 @@ public final class FhirServiceInner extends TaggedResource {
     /**
      * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
      * private endpoint is enabled.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -278,7 +314,7 @@ public final class FhirServiceInner extends TaggedResource {
     /**
      * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
      * private endpoint is enabled.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FhirServiceInner object itself.
      */
@@ -292,7 +328,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the eventState property: Fhir Service event support status.
-     *
+     * 
      * @return the eventState value.
      */
     public ServiceEventState eventState() {
@@ -301,7 +337,7 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Get the resourceVersionPolicyConfiguration property: Determines tracking of history for resources.
-     *
+     * 
      * @return the resourceVersionPolicyConfiguration value.
      */
     public ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration() {
@@ -310,12 +346,12 @@ public final class FhirServiceInner extends TaggedResource {
 
     /**
      * Set the resourceVersionPolicyConfiguration property: Determines tracking of history for resources.
-     *
+     * 
      * @param resourceVersionPolicyConfiguration the resourceVersionPolicyConfiguration value to set.
      * @return the FhirServiceInner object itself.
      */
-    public FhirServiceInner withResourceVersionPolicyConfiguration(
-        ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration) {
+    public FhirServiceInner
+        withResourceVersionPolicyConfiguration(ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new FhirServiceProperties();
         }
@@ -324,18 +360,148 @@ public final class FhirServiceInner extends TaggedResource {
     }
 
     /**
+     * Get the importConfiguration property: Fhir Service import configuration.
+     * 
+     * @return the importConfiguration value.
+     */
+    public FhirServiceImportConfiguration importConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().importConfiguration();
+    }
+
+    /**
+     * Set the importConfiguration property: Fhir Service import configuration.
+     * 
+     * @param importConfiguration the importConfiguration value to set.
+     * @return the FhirServiceInner object itself.
+     */
+    public FhirServiceInner withImportConfiguration(FhirServiceImportConfiguration importConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FhirServiceProperties();
+        }
+        this.innerProperties().withImportConfiguration(importConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the implementationGuidesConfiguration property: Implementation Guides configuration.
+     * 
+     * @return the implementationGuidesConfiguration value.
+     */
+    public ImplementationGuidesConfiguration implementationGuidesConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().implementationGuidesConfiguration();
+    }
+
+    /**
+     * Set the implementationGuidesConfiguration property: Implementation Guides configuration.
+     * 
+     * @param implementationGuidesConfiguration the implementationGuidesConfiguration value to set.
+     * @return the FhirServiceInner object itself.
+     */
+    public FhirServiceInner
+        withImplementationGuidesConfiguration(ImplementationGuidesConfiguration implementationGuidesConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FhirServiceProperties();
+        }
+        this.innerProperties().withImplementationGuidesConfiguration(implementationGuidesConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of the FHIR service.
+     * 
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of the FHIR service.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the FhirServiceInner object itself.
+     */
+    public FhirServiceInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FhirServiceProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("etag", etag());
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirServiceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirServiceInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirServiceInner.
+     */
+    public static FhirServiceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirServiceInner deserializedFhirServiceInner = new FhirServiceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFhirServiceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedFhirServiceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFhirServiceInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedFhirServiceInner.withEtag(reader.getString());
+                } else if ("location".equals(fieldName)) {
+                    deserializedFhirServiceInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedFhirServiceInner.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedFhirServiceInner.kind = FhirServiceKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFhirServiceInner.innerProperties = FhirServiceProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedFhirServiceInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedFhirServiceInner.identity = ServiceManagedIdentityIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFhirServiceInner;
+        });
     }
 }

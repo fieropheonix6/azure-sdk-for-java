@@ -6,33 +6,39 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.UsageInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List Usages operation response. */
+/**
+ * The List Usages operation response.
+ */
 @Fluent
-public final class ListUsagesResult {
+public final class ListUsagesResult implements JsonSerializable<ListUsagesResult> {
     /*
      * The list of compute resource usages.
      */
-    @JsonProperty(value = "value", required = true)
     private List<UsageInner> value;
 
     /*
-     * The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the
-     * next page of compute resource usage information.
+     * The URI to fetch the next page of compute resource usage information. Call ListNext() with this to fetch the next
+     * page of compute resource usage information.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListUsagesResult class. */
+    /**
+     * Creates an instance of ListUsagesResult class.
+     */
     public ListUsagesResult() {
     }
 
     /**
      * Get the value property: The list of compute resource usages.
-     *
+     * 
      * @return the value value.
      */
     public List<UsageInner> value() {
@@ -41,7 +47,7 @@ public final class ListUsagesResult {
 
     /**
      * Set the value property: The list of compute resource usages.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListUsagesResult object itself.
      */
@@ -53,7 +59,7 @@ public final class ListUsagesResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of compute resource usage information. Call ListNext()
      * with this to fetch the next page of compute resource usage information.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +69,7 @@ public final class ListUsagesResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of compute resource usage information. Call ListNext()
      * with this to fetch the next page of compute resource usage information.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListUsagesResult object itself.
      */
@@ -74,18 +80,58 @@ public final class ListUsagesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ListUsagesResult"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property value in model ListUsagesResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ListUsagesResult.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ListUsagesResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ListUsagesResult if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ListUsagesResult.
+     */
+    public static ListUsagesResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ListUsagesResult deserializedListUsagesResult = new ListUsagesResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<UsageInner> value = reader.readArray(reader1 -> UsageInner.fromJson(reader1));
+                    deserializedListUsagesResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedListUsagesResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedListUsagesResult;
+        });
+    }
 }

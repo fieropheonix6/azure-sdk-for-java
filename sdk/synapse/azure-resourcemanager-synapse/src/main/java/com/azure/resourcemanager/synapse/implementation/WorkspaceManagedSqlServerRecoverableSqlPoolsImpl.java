@@ -31,34 +31,31 @@ public final class WorkspaceManagedSqlServerRecoverableSqlPoolsImpl
 
     public PagedIterable<RecoverableSqlPool> list(String resourceGroupName, String workspaceName) {
         PagedIterable<RecoverableSqlPoolInner> inner = this.serviceClient().list(resourceGroupName, workspaceName);
-        return Utils.mapPage(inner, inner1 -> new RecoverableSqlPoolImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoverableSqlPoolImpl(inner1, this.manager()));
     }
 
     public PagedIterable<RecoverableSqlPool> list(String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<RecoverableSqlPoolInner> inner =
-            this.serviceClient().list(resourceGroupName, workspaceName, context);
-        return Utils.mapPage(inner, inner1 -> new RecoverableSqlPoolImpl(inner1, this.manager()));
+        PagedIterable<RecoverableSqlPoolInner> inner
+            = this.serviceClient().list(resourceGroupName, workspaceName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoverableSqlPoolImpl(inner1, this.manager()));
+    }
+
+    public Response<RecoverableSqlPool> getWithResponse(String resourceGroupName, String workspaceName,
+        String sqlPoolName, Context context) {
+        Response<RecoverableSqlPoolInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RecoverableSqlPoolImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public RecoverableSqlPool get(String resourceGroupName, String workspaceName, String sqlPoolName) {
         RecoverableSqlPoolInner inner = this.serviceClient().get(resourceGroupName, workspaceName, sqlPoolName);
         if (inner != null) {
             return new RecoverableSqlPoolImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<RecoverableSqlPool> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context) {
-        Response<RecoverableSqlPoolInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, sqlPoolName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new RecoverableSqlPoolImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

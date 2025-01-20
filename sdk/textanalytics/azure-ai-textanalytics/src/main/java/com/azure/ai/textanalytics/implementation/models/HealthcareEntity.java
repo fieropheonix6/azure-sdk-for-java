@@ -4,70 +4,74 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** The HealthcareEntity model. */
+/**
+ * The HealthcareEntity model.
+ */
 @Fluent
-public final class HealthcareEntity {
+public final class HealthcareEntity implements JsonSerializable<HealthcareEntity> {
     /*
      * Entity text as appears in the request.
      */
-    @JsonProperty(value = "text", required = true)
     private String text;
 
     /*
      * Healthcare Entity Category.
      */
-    @JsonProperty(value = "category", required = true)
     private HealthcareEntityCategory category;
 
     /*
      * (Optional) Entity sub type.
      */
-    @JsonProperty(value = "subcategory")
     private String subcategory;
 
     /*
      * Start position for the entity text. Use of different 'stringIndexType' values can affect the offset returned.
      */
-    @JsonProperty(value = "offset", required = true)
     private int offset;
 
     /*
      * Length for the entity text. Use of different 'stringIndexType' values can affect the length returned.
      */
-    @JsonProperty(value = "length", required = true)
     private int length;
 
     /*
      * Confidence score between 0 and 1 of the extracted entity.
      */
-    @JsonProperty(value = "confidenceScore", required = true)
     private double confidenceScore;
 
     /*
      * The assertion property.
      */
-    @JsonProperty(value = "assertion")
     private HealthcareAssertion assertion;
 
     /*
      * Preferred name for the entity. Example: 'histologically' would have a 'name' of 'histologic'.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Entity references in known data sources.
      */
-    @JsonProperty(value = "links")
     private List<HealthcareEntityLink> links;
 
     /**
+     * Creates an instance of HealthcareEntity class.
+     */
+    public HealthcareEntity() {
+    }
+
+    /**
      * Get the text property: Entity text as appears in the request.
-     *
+     * 
      * @return the text value.
      */
     public String getText() {
@@ -76,7 +80,7 @@ public final class HealthcareEntity {
 
     /**
      * Set the text property: Entity text as appears in the request.
-     *
+     * 
      * @param text the text value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -87,7 +91,7 @@ public final class HealthcareEntity {
 
     /**
      * Get the category property: Healthcare Entity Category.
-     *
+     * 
      * @return the category value.
      */
     public HealthcareEntityCategory getCategory() {
@@ -96,7 +100,7 @@ public final class HealthcareEntity {
 
     /**
      * Set the category property: Healthcare Entity Category.
-     *
+     * 
      * @param category the category value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -107,7 +111,7 @@ public final class HealthcareEntity {
 
     /**
      * Get the subcategory property: (Optional) Entity sub type.
-     *
+     * 
      * @return the subcategory value.
      */
     public String getSubcategory() {
@@ -116,7 +120,7 @@ public final class HealthcareEntity {
 
     /**
      * Set the subcategory property: (Optional) Entity sub type.
-     *
+     * 
      * @param subcategory the subcategory value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -128,7 +132,7 @@ public final class HealthcareEntity {
     /**
      * Get the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
      * the offset returned.
-     *
+     * 
      * @return the offset value.
      */
     public int getOffset() {
@@ -138,7 +142,7 @@ public final class HealthcareEntity {
     /**
      * Set the offset property: Start position for the entity text. Use of different 'stringIndexType' values can affect
      * the offset returned.
-     *
+     * 
      * @param offset the offset value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -150,7 +154,7 @@ public final class HealthcareEntity {
     /**
      * Get the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
      * length returned.
-     *
+     * 
      * @return the length value.
      */
     public int getLength() {
@@ -160,7 +164,7 @@ public final class HealthcareEntity {
     /**
      * Set the length property: Length for the entity text. Use of different 'stringIndexType' values can affect the
      * length returned.
-     *
+     * 
      * @param length the length value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -171,7 +175,7 @@ public final class HealthcareEntity {
 
     /**
      * Get the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
-     *
+     * 
      * @return the confidenceScore value.
      */
     public double getConfidenceScore() {
@@ -180,7 +184,7 @@ public final class HealthcareEntity {
 
     /**
      * Set the confidenceScore property: Confidence score between 0 and 1 of the extracted entity.
-     *
+     * 
      * @param confidenceScore the confidenceScore value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -191,7 +195,7 @@ public final class HealthcareEntity {
 
     /**
      * Get the assertion property: The assertion property.
-     *
+     * 
      * @return the assertion value.
      */
     public HealthcareAssertion getAssertion() {
@@ -200,7 +204,7 @@ public final class HealthcareEntity {
 
     /**
      * Set the assertion property: The assertion property.
-     *
+     * 
      * @param assertion the assertion value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -212,7 +216,7 @@ public final class HealthcareEntity {
     /**
      * Get the name property: Preferred name for the entity. Example: 'histologically' would have a 'name' of
      * 'histologic'.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -222,7 +226,7 @@ public final class HealthcareEntity {
     /**
      * Set the name property: Preferred name for the entity. Example: 'histologically' would have a 'name' of
      * 'histologic'.
-     *
+     * 
      * @param name the name value to set.
      * @return the HealthcareEntity object itself.
      */
@@ -233,7 +237,7 @@ public final class HealthcareEntity {
 
     /**
      * Get the links property: Entity references in known data sources.
-     *
+     * 
      * @return the links value.
      */
     public List<HealthcareEntityLink> getLinks() {
@@ -242,12 +246,75 @@ public final class HealthcareEntity {
 
     /**
      * Set the links property: Entity references in known data sources.
-     *
+     * 
      * @param links the links value to set.
      * @return the HealthcareEntity object itself.
      */
     public HealthcareEntity setLinks(List<HealthcareEntityLink> links) {
         this.links = links;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("category", this.category == null ? null : this.category.toString());
+        jsonWriter.writeIntField("offset", this.offset);
+        jsonWriter.writeIntField("length", this.length);
+        jsonWriter.writeDoubleField("confidenceScore", this.confidenceScore);
+        jsonWriter.writeStringField("subcategory", this.subcategory);
+        jsonWriter.writeJsonField("assertion", this.assertion);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeArrayField("links", this.links, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthcareEntity from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthcareEntity if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HealthcareEntity.
+     */
+    public static HealthcareEntity fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthcareEntity deserializedHealthcareEntity = new HealthcareEntity();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("text".equals(fieldName)) {
+                    deserializedHealthcareEntity.text = reader.getString();
+                } else if ("category".equals(fieldName)) {
+                    deserializedHealthcareEntity.category = HealthcareEntityCategory.fromString(reader.getString());
+                } else if ("offset".equals(fieldName)) {
+                    deserializedHealthcareEntity.offset = reader.getInt();
+                } else if ("length".equals(fieldName)) {
+                    deserializedHealthcareEntity.length = reader.getInt();
+                } else if ("confidenceScore".equals(fieldName)) {
+                    deserializedHealthcareEntity.confidenceScore = reader.getDouble();
+                } else if ("subcategory".equals(fieldName)) {
+                    deserializedHealthcareEntity.subcategory = reader.getString();
+                } else if ("assertion".equals(fieldName)) {
+                    deserializedHealthcareEntity.assertion = HealthcareAssertion.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedHealthcareEntity.name = reader.getString();
+                } else if ("links".equals(fieldName)) {
+                    List<HealthcareEntityLink> links
+                        = reader.readArray(reader1 -> HealthcareEntityLink.fromJson(reader1));
+                    deserializedHealthcareEntity.links = links;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthcareEntity;
+        });
     }
 }

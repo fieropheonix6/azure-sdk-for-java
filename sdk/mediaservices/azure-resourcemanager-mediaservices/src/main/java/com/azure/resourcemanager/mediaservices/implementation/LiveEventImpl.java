@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.mediaservices.implementation;
 
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
@@ -15,6 +16,9 @@ import com.azure.resourcemanager.mediaservices.models.LiveEventEncoding;
 import com.azure.resourcemanager.mediaservices.models.LiveEventInput;
 import com.azure.resourcemanager.mediaservices.models.LiveEventPreview;
 import com.azure.resourcemanager.mediaservices.models.LiveEventResourceState;
+import com.azure.resourcemanager.mediaservices.models.LiveEventStatus;
+import com.azure.resourcemanager.mediaservices.models.LiveEventStreamEvent;
+import com.azure.resourcemanager.mediaservices.models.LiveEventTrackEvent;
 import com.azure.resourcemanager.mediaservices.models.LiveEventTranscription;
 import com.azure.resourcemanager.mediaservices.models.StreamOptionsFlag;
 import java.time.OffsetDateTime;
@@ -153,21 +157,16 @@ public final class LiveEventImpl implements LiveEvent, LiveEvent.Definition, Liv
     }
 
     public LiveEvent create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLiveEvents()
-                .create(
-                    resourceGroupName, accountName, liveEventName, this.innerModel(), createAutoStart, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLiveEvents()
+            .create(resourceGroupName, accountName, liveEventName, this.innerModel(), createAutoStart, Context.NONE);
         return this;
     }
 
     public LiveEvent create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLiveEvents()
-                .create(resourceGroupName, accountName, liveEventName, this.innerModel(), createAutoStart, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLiveEvents()
+            .create(resourceGroupName, accountName, liveEventName, this.innerModel(), createAutoStart, context);
         return this;
     }
 
@@ -183,49 +182,41 @@ public final class LiveEventImpl implements LiveEvent, LiveEvent.Definition, Liv
     }
 
     public LiveEvent apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLiveEvents()
-                .update(resourceGroupName, accountName, liveEventName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getLiveEvents()
+            .update(resourceGroupName, accountName, liveEventName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public LiveEvent apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLiveEvents()
-                .update(resourceGroupName, accountName, liveEventName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getLiveEvents()
+            .update(resourceGroupName, accountName, liveEventName, this.innerModel(), context);
         return this;
     }
 
-    LiveEventImpl(
-        LiveEventInner innerObject, com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
+    LiveEventImpl(LiveEventInner innerObject,
+        com.azure.resourcemanager.mediaservices.MediaServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "mediaservices");
-        this.liveEventName = Utils.getValueFromIdByName(innerObject.id(), "liveEvents");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "mediaservices");
+        this.liveEventName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "liveEvents");
     }
 
     public LiveEvent refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLiveEvents()
-                .getWithResponse(resourceGroupName, accountName, liveEventName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLiveEvents()
+            .getWithResponse(resourceGroupName, accountName, liveEventName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public LiveEvent refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getLiveEvents()
-                .getWithResponse(resourceGroupName, accountName, liveEventName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getLiveEvents()
+            .getWithResponse(resourceGroupName, accountName, liveEventName, context)
+            .getValue();
         return this;
     }
 
@@ -259,6 +250,31 @@ public final class LiveEventImpl implements LiveEvent, LiveEvent.Definition, Liv
 
     public void reset(Context context) {
         serviceManager.liveEvents().reset(resourceGroupName, accountName, liveEventName, context);
+    }
+
+    public PagedIterable<LiveEventStatus> listGetStatus() {
+        return serviceManager.liveEvents().listGetStatus(resourceGroupName, accountName, liveEventName);
+    }
+
+    public PagedIterable<LiveEventStatus> listGetStatus(Context context) {
+        return serviceManager.liveEvents().listGetStatus(resourceGroupName, accountName, liveEventName, context);
+    }
+
+    public PagedIterable<LiveEventStreamEvent> listGetStreamEvents() {
+        return serviceManager.liveEvents().listGetStreamEvents(resourceGroupName, accountName, liveEventName);
+    }
+
+    public PagedIterable<LiveEventStreamEvent> listGetStreamEvents(Context context) {
+        return serviceManager.liveEvents().listGetStreamEvents(resourceGroupName, accountName, liveEventName, context);
+    }
+
+    public PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats() {
+        return serviceManager.liveEvents().listGetTrackIngestHeartbeats(resourceGroupName, accountName, liveEventName);
+    }
+
+    public PagedIterable<LiveEventTrackEvent> listGetTrackIngestHeartbeats(Context context) {
+        return serviceManager.liveEvents()
+            .listGetTrackIngestHeartbeats(resourceGroupName, accountName, liveEventName, context);
     }
 
     public LiveEventImpl withRegion(Region location) {

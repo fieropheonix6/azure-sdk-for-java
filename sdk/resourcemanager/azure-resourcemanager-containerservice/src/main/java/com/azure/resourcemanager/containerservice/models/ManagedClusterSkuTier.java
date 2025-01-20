@@ -5,36 +5,52 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
  * The tier of a managed cluster SKU.
- *
- * <p>If not specified, the default is 'Free'. See [uptime SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for
- * more details.
+ * 
+ * If not specified, the default is 'Free'. See [AKS Pricing
+ * Tier](https://learn.microsoft.com/azure/aks/free-standard-pricing-tiers) for more details.
  */
 public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClusterSkuTier> {
-    /** Static value Paid for ManagedClusterSkuTier. */
-    public static final ManagedClusterSkuTier PAID = fromString("Paid");
+    /**
+     * Static value Premium for ManagedClusterSkuTier.
+     */
+    public static final ManagedClusterSkuTier PREMIUM = fromString("Premium");
 
-    /** Static value Free for ManagedClusterSkuTier. */
+    /**
+     * Static value Standard for ManagedClusterSkuTier.
+     */
+    public static final ManagedClusterSkuTier STANDARD = fromString("Standard");
+
+    /**
+     * Static value Free for ManagedClusterSkuTier.
+     */
     public static final ManagedClusterSkuTier FREE = fromString("Free");
 
     /**
+     * Creates a new instance of ManagedClusterSkuTier value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ManagedClusterSkuTier() {
+    }
+
+    /**
      * Creates or finds a ManagedClusterSkuTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedClusterSkuTier.
      */
-    @JsonCreator
     public static ManagedClusterSkuTier fromString(String name) {
         return fromString(name, ManagedClusterSkuTier.class);
     }
 
     /**
      * Gets known ManagedClusterSkuTier values.
-     *
+     * 
      * @return known ManagedClusterSkuTier values.
      */
     public static Collection<ManagedClusterSkuTier> values() {

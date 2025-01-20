@@ -6,17 +6,13 @@ package com.azure.resourcemanager.deploymentmanager.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the properties of a service unit. */
 @Fluent
 public class ServiceUnitProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceUnitProperties.class);
-
     /*
-     * The Azure Resource Group to which the resources in the service unit
-     * belong to or should be deployed to.
+     * The Azure Resource Group to which the resources in the service unit belong to or should be deployed to.
      */
     @JsonProperty(value = "targetResourceGroup", required = true)
     private String targetResourceGroup;
@@ -32,6 +28,10 @@ public class ServiceUnitProperties {
      */
     @JsonProperty(value = "artifacts")
     private ServiceUnitArtifacts artifacts;
+
+    /** Creates an instance of ServiceUnitProperties class. */
+    public ServiceUnitProperties() {
+    }
 
     /**
      * Get the targetResourceGroup property: The Azure Resource Group to which the resources in the service unit belong
@@ -102,19 +102,17 @@ public class ServiceUnitProperties {
      */
     public void validate() {
         if (targetResourceGroup() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceGroup in model ServiceUnitProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetResourceGroup in model ServiceUnitProperties"));
         }
         if (deploymentMode() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property deploymentMode in model ServiceUnitProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property deploymentMode in model ServiceUnitProperties"));
         }
         if (artifacts() != null) {
             artifacts().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceUnitProperties.class);
 }

@@ -7,20 +7,19 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.DataConnectionValidationResult;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DataConnectionValidationResultTests {
-    @Test
-    public void testDeserialize() {
-        DataConnectionValidationResult model =
-            BinaryData.fromString("{\"errorMessage\":\"efkifr\"}").toObject(DataConnectionValidationResult.class);
-        Assertions.assertEquals("efkifr", model.errorMessage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DataConnectionValidationResult model = BinaryData.fromString("{\"errorMessage\":\"raufactkahzova\"}")
+            .toObject(DataConnectionValidationResult.class);
+        Assertions.assertEquals("raufactkahzova", model.errorMessage());
     }
 
-    @Test
-    public void testSerialize() {
-        DataConnectionValidationResult model = new DataConnectionValidationResult().withErrorMessage("efkifr");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DataConnectionValidationResult model = new DataConnectionValidationResult().withErrorMessage("raufactkahzova");
         model = BinaryData.fromObject(model).toObject(DataConnectionValidationResult.class);
-        Assertions.assertEquals("efkifr", model.errorMessage());
+        Assertions.assertEquals("raufactkahzova", model.errorMessage());
     }
 }

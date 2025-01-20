@@ -4,18 +4,23 @@
 
 package com.azure.resourcemanager.healthcareapis.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ServiceNameUnavailabilityReason. */
+/**
+ * The reason for unavailability.
+ */
 public enum ServiceNameUnavailabilityReason {
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid"),
 
-    /** Enum value AlreadyExists. */
+    /**
+     * Enum value AlreadyExists.
+     */
     ALREADY_EXISTS("AlreadyExists");
 
-    /** The actual serialized value for a ServiceNameUnavailabilityReason instance. */
+    /**
+     * The actual serialized value for a ServiceNameUnavailabilityReason instance.
+     */
     private final String value;
 
     ServiceNameUnavailabilityReason(String value) {
@@ -24,12 +29,14 @@ public enum ServiceNameUnavailabilityReason {
 
     /**
      * Parses a serialized value to a ServiceNameUnavailabilityReason instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ServiceNameUnavailabilityReason object, or null if unable to parse.
      */
-    @JsonCreator
     public static ServiceNameUnavailabilityReason fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ServiceNameUnavailabilityReason[] items = ServiceNameUnavailabilityReason.values();
         for (ServiceNameUnavailabilityReason item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,7 +46,9 @@ public enum ServiceNameUnavailabilityReason {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

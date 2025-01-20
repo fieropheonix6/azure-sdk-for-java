@@ -5,57 +5,67 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * An annotation describing a change in the availabilityState to Available from Unavailable with a reasonType of type
  * Unplanned.
  */
 @Fluent
-public final class AvailabilityStatusPropertiesRecentlyResolved {
+public final class AvailabilityStatusPropertiesRecentlyResolved
+    implements JsonSerializable<AvailabilityStatusPropertiesRecentlyResolved> {
     /*
      * Timestamp for when the availabilityState changed to Unavailable
      */
-    @JsonProperty(value = "unavailableOccurredTime")
-    private OffsetDateTime unavailableOccurredTime;
+    private OffsetDateTime unavailableOccuredTime;
 
     /*
      * Timestamp when the availabilityState changes to Available.
      */
-    @JsonProperty(value = "resolvedTime")
     private OffsetDateTime resolvedTime;
 
     /*
      * Brief description of cause of the resource becoming unavailable.
      */
-    @JsonProperty(value = "unavailabilitySummary")
-    private String unavailabilitySummary;
+    private String unavailableSummary;
 
     /**
-     * Get the unavailableOccurredTime property: Timestamp for when the availabilityState changed to Unavailable.
-     *
-     * @return the unavailableOccurredTime value.
+     * Creates an instance of AvailabilityStatusPropertiesRecentlyResolved class.
      */
-    public OffsetDateTime unavailableOccurredTime() {
-        return this.unavailableOccurredTime;
+    public AvailabilityStatusPropertiesRecentlyResolved() {
     }
 
     /**
-     * Set the unavailableOccurredTime property: Timestamp for when the availabilityState changed to Unavailable.
-     *
-     * @param unavailableOccurredTime the unavailableOccurredTime value to set.
+     * Get the unavailableOccuredTime property: Timestamp for when the availabilityState changed to Unavailable.
+     * 
+     * @return the unavailableOccuredTime value.
+     */
+    public OffsetDateTime unavailableOccuredTime() {
+        return this.unavailableOccuredTime;
+    }
+
+    /**
+     * Set the unavailableOccuredTime property: Timestamp for when the availabilityState changed to Unavailable.
+     * 
+     * @param unavailableOccuredTime the unavailableOccuredTime value to set.
      * @return the AvailabilityStatusPropertiesRecentlyResolved object itself.
      */
-    public AvailabilityStatusPropertiesRecentlyResolved withUnavailableOccurredTime(
-        OffsetDateTime unavailableOccurredTime) {
-        this.unavailableOccurredTime = unavailableOccurredTime;
+    public AvailabilityStatusPropertiesRecentlyResolved
+        withUnavailableOccuredTime(OffsetDateTime unavailableOccuredTime) {
+        this.unavailableOccuredTime = unavailableOccuredTime;
         return this;
     }
 
     /**
      * Get the resolvedTime property: Timestamp when the availabilityState changes to Available.
-     *
+     * 
      * @return the resolvedTime value.
      */
     public OffsetDateTime resolvedTime() {
@@ -64,7 +74,7 @@ public final class AvailabilityStatusPropertiesRecentlyResolved {
 
     /**
      * Set the resolvedTime property: Timestamp when the availabilityState changes to Available.
-     *
+     * 
      * @param resolvedTime the resolvedTime value to set.
      * @return the AvailabilityStatusPropertiesRecentlyResolved object itself.
      */
@@ -74,30 +84,79 @@ public final class AvailabilityStatusPropertiesRecentlyResolved {
     }
 
     /**
-     * Get the unavailabilitySummary property: Brief description of cause of the resource becoming unavailable.
-     *
-     * @return the unavailabilitySummary value.
+     * Get the unavailableSummary property: Brief description of cause of the resource becoming unavailable.
+     * 
+     * @return the unavailableSummary value.
      */
-    public String unavailabilitySummary() {
-        return this.unavailabilitySummary;
+    public String unavailableSummary() {
+        return this.unavailableSummary;
     }
 
     /**
-     * Set the unavailabilitySummary property: Brief description of cause of the resource becoming unavailable.
-     *
-     * @param unavailabilitySummary the unavailabilitySummary value to set.
+     * Set the unavailableSummary property: Brief description of cause of the resource becoming unavailable.
+     * 
+     * @param unavailableSummary the unavailableSummary value to set.
      * @return the AvailabilityStatusPropertiesRecentlyResolved object itself.
      */
-    public AvailabilityStatusPropertiesRecentlyResolved withUnavailabilitySummary(String unavailabilitySummary) {
-        this.unavailabilitySummary = unavailabilitySummary;
+    public AvailabilityStatusPropertiesRecentlyResolved withUnavailableSummary(String unavailableSummary) {
+        this.unavailableSummary = unavailableSummary;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("unavailableOccuredTime",
+            this.unavailableOccuredTime == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.unavailableOccuredTime));
+        jsonWriter.writeStringField("resolvedTime",
+            this.resolvedTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.resolvedTime));
+        jsonWriter.writeStringField("unavailableSummary", this.unavailableSummary);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AvailabilityStatusPropertiesRecentlyResolved from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AvailabilityStatusPropertiesRecentlyResolved if the JsonReader was pointing to an instance
+     * of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AvailabilityStatusPropertiesRecentlyResolved.
+     */
+    public static AvailabilityStatusPropertiesRecentlyResolved fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AvailabilityStatusPropertiesRecentlyResolved deserializedAvailabilityStatusPropertiesRecentlyResolved
+                = new AvailabilityStatusPropertiesRecentlyResolved();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("unavailableOccuredTime".equals(fieldName)) {
+                    deserializedAvailabilityStatusPropertiesRecentlyResolved.unavailableOccuredTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("resolvedTime".equals(fieldName)) {
+                    deserializedAvailabilityStatusPropertiesRecentlyResolved.resolvedTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("unavailableSummary".equals(fieldName)) {
+                    deserializedAvailabilityStatusPropertiesRecentlyResolved.unavailableSummary = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAvailabilityStatusPropertiesRecentlyResolved;
+        });
     }
 }

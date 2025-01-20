@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.sqlvirtualmachine.models.MultiSubnetIpConfiguration;
 import com.azure.resourcemanager.sqlvirtualmachine.models.PrivateIpAddress;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class MultiSubnetIpConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        MultiSubnetIpConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"privateIpAddress\":{\"ipAddress\":\"djpslw\",\"subnetResourceId\":\"dpvwryoqpsoaccta\"},\"sqlVirtualMachineInstance\":\"akl\"}")
-                .toObject(MultiSubnetIpConfiguration.class);
-        Assertions.assertEquals("djpslw", model.privateIpAddress().ipAddress());
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.privateIpAddress().subnetResourceId());
-        Assertions.assertEquals("akl", model.sqlVirtualMachineInstance());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        MultiSubnetIpConfiguration model = BinaryData.fromString(
+            "{\"privateIpAddress\":{\"ipAddress\":\"ufubl\",\"subnetResourceId\":\"fxqeof\"},\"sqlVirtualMachineInstance\":\"aeqjhqjbasvms\"}")
+            .toObject(MultiSubnetIpConfiguration.class);
+        Assertions.assertEquals("ufubl", model.privateIpAddress().ipAddress());
+        Assertions.assertEquals("fxqeof", model.privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("aeqjhqjbasvms", model.sqlVirtualMachineInstance());
     }
 
-    @Test
-    public void testSerialize() {
-        MultiSubnetIpConfiguration model =
-            new MultiSubnetIpConfiguration()
-                .withPrivateIpAddress(
-                    new PrivateIpAddress().withIpAddress("djpslw").withSubnetResourceId("dpvwryoqpsoaccta"))
-                .withSqlVirtualMachineInstance("akl");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        MultiSubnetIpConfiguration model = new MultiSubnetIpConfiguration()
+            .withPrivateIpAddress(new PrivateIpAddress().withIpAddress("ufubl").withSubnetResourceId("fxqeof"))
+            .withSqlVirtualMachineInstance("aeqjhqjbasvms");
         model = BinaryData.fromObject(model).toObject(MultiSubnetIpConfiguration.class);
-        Assertions.assertEquals("djpslw", model.privateIpAddress().ipAddress());
-        Assertions.assertEquals("dpvwryoqpsoaccta", model.privateIpAddress().subnetResourceId());
-        Assertions.assertEquals("akl", model.sqlVirtualMachineInstance());
+        Assertions.assertEquals("ufubl", model.privateIpAddress().ipAddress());
+        Assertions.assertEquals("fxqeof", model.privateIpAddress().subnetResourceId());
+        Assertions.assertEquals("aeqjhqjbasvms", model.sqlVirtualMachineInstance());
     }
 }

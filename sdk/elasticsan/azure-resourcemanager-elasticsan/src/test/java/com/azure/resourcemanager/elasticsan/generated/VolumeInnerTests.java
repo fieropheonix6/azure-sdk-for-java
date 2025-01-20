@@ -6,50 +6,34 @@ package com.azure.resourcemanager.elasticsan.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeInner;
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.azure.resourcemanager.elasticsan.models.SourceCreationData;
 import com.azure.resourcemanager.elasticsan.models.VolumeCreateOption;
-import java.util.HashMap;
-import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumeInnerTests {
-    @Test
-    public void testDeserialize() {
-        VolumeInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"volumeId\":\"mi\",\"creationData\":{\"createSource\":\"None\",\"sourceUri\":\"rvqdra\"},\"sizeGiB\":6644182027847311754,\"storageTarget\":{\"targetIqn\":\"gehoqfbowskany\",\"targetPortalHostname\":\"zlcuiywgqywgndrv\",\"targetPortalPort\":2138839355,\"provisioningState\":\"Pending\",\"status\":\"Updating\"}},\"tags\":{\"ofsx\":\"gyncocpecfvmmc\",\"qjqabcypmivkwl\":\"zevgb\",\"wnfnbacf\":\"uvcc\"},\"id\":\"onlebxetqgtzxdpn\",\"name\":\"bqqwxrj\",\"type\":\"eallnwsubisnj\"}")
-                .toObject(VolumeInner.class);
-        Assertions.assertEquals("gyncocpecfvmmc", model.tags().get("ofsx"));
-        Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
-        Assertions.assertEquals("rvqdra", model.creationData().sourceUri());
-        Assertions.assertEquals(6644182027847311754L, model.sizeGiB());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VolumeInner model = BinaryData.fromString(
+            "{\"properties\":{\"volumeId\":\"arbu\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"na\"},\"sizeGiB\":748849855651933727,\"storageTarget\":{\"targetIqn\":\"runmp\",\"targetPortalHostname\":\"tdbhrbnla\",\"targetPortalPort\":1373205517,\"provisioningState\":\"Canceled\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"henbtkcxywnytn\"},\"provisioningState\":\"Invalid\"},\"id\":\"lqidyby\",\"name\":\"czfc\",\"type\":\"haaxdbabphl\"}")
+            .toObject(VolumeInner.class);
+        Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, model.creationData().createSource());
+        Assertions.assertEquals("na", model.creationData().sourceId());
+        Assertions.assertEquals(748849855651933727L, model.sizeGiB());
+        Assertions.assertEquals("henbtkcxywnytn", model.managedBy().resourceId());
     }
 
-    @Test
-    public void testSerialize() {
-        VolumeInner model =
-            new VolumeInner()
-                .withTags(mapOf("ofsx", "gyncocpecfvmmc", "qjqabcypmivkwl", "zevgb", "wnfnbacf", "uvcc"))
-                .withCreationData(
-                    new SourceCreationData().withCreateSource(VolumeCreateOption.NONE).withSourceUri("rvqdra"))
-                .withSizeGiB(6644182027847311754L);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VolumeInner model = new VolumeInner()
+            .withCreationData(
+                new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_SNAPSHOT).withSourceId("na"))
+            .withSizeGiB(748849855651933727L)
+            .withManagedBy(new ManagedByInfo().withResourceId("henbtkcxywnytn"));
         model = BinaryData.fromObject(model).toObject(VolumeInner.class);
-        Assertions.assertEquals("gyncocpecfvmmc", model.tags().get("ofsx"));
-        Assertions.assertEquals(VolumeCreateOption.NONE, model.creationData().createSource());
-        Assertions.assertEquals("rvqdra", model.creationData().sourceUri());
-        Assertions.assertEquals(6644182027847311754L, model.sizeGiB());
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
-        }
-        return map;
+        Assertions.assertEquals(VolumeCreateOption.DISK_SNAPSHOT, model.creationData().createSource());
+        Assertions.assertEquals("na", model.creationData().sourceId());
+        Assertions.assertEquals(748849855651933727L, model.sizeGiB());
+        Assertions.assertEquals("henbtkcxywnytn", model.managedBy().resourceId());
     }
 }

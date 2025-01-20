@@ -4,41 +4,43 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AvailabilitySets Delete. */
+/**
+ * Samples for AvailabilitySets Delete.
+ */
 public final class AvailabilitySetsDeleteSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/availabilitySetExamples/AvailabilitySets_Delete_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * availabilitySetExamples/AvailabilitySet_Delete_MinimumSet_Gen.json
      */
     /**
-     * Sample code: AvailabilitySets_Delete_MaximumSet_Gen.
-     *
+     * Sample code: AvailabilitySet_Delete_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void availabilitySetsDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void availabilitySetDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getAvailabilitySets()
-            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", Context.NONE);
+            .deleteWithResponse("rgcompute", "aaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/availabilitySetExamples/AvailabilitySets_Delete_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * availabilitySetExamples/AvailabilitySet_Delete_MaximumSet_Gen.json
      */
     /**
-     * Sample code: AvailabilitySets_Delete_MinimumSet_Gen.
-     *
+     * Sample code: AvailabilitySet_Delete_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void availabilitySetsDeleteMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void availabilitySetDeleteMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getAvailabilitySets()
-            .deleteWithResponse("rgcompute", "aaaaaaaaaaa", Context.NONE);
+            .deleteWithResponse("rgcompute", "aaaaaaaaaaaaaaaaaaaa", com.azure.core.util.Context.NONE);
     }
 }

@@ -1,6 +1,6 @@
 ## Release History
 
-### 1.10.0-beta.1 (Unreleased)
+### 2.18.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,111 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 2.17.0 (2025-01-14)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.66.0`.
+
+### 2.16.0 (2024-11-19)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.65.0`.
+
+### 2.15.0 (2024-10-10)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.64.0`.
+
+### 2.14.1 (2024-09-10)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.3`.
+
+### 2.14.0 (2024-07-26)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.63.0`.
+
+### 2.13.0 (2024-07-02)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.62.0`.
+
+### 2.12.0 (2024-05-19)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.60.0`.
+
+### 2.11.0 (2024-04-27)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.59.0`.
+
+#### Features Added
+* Added public APIs `getCustomItemSerializer` and `setCustomItemSerializer` to allow customers to specify custom payload transformations or serialization settings. - See [PR 38997](https://github.com/Azure/azure-sdk-for-java/pull/38997)
+
+### 2.10.0 (2024-04-16)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.58.0`.
+
+### 2.9.0 (2024-03-26)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.57.0`.
+
+### 2.8.0 (2024-02-08)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.55.0`.
+
+### 2.7.0 (2023-12-01)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.53.0`.
+
+### 2.6.0 (2023-10-24)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.52.0`.
+
+### 2.5.0 (2023-09-25)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.50.0`.
+
+### 2.4.0 (2023-08-21)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.49.0`.
+
+### 2.3.0 (2023-07-18)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.48.0`.
+
+### 2.2.0 (2023-06-09)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.46.0`.
+
+### 2.1.0 (2023-05-12)
+#### Bugs Fixed
+* Fixed an issue where empty array causes `NoSuchElementException` in `EncryptionProcessor` - See [PR 34847](https://github.com/Azure/azure-sdk-for-java/pull/34847)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.45.0`.
+
+### 2.0.0 (2023-04-25)
+
+#### Features Added
+* Added support for allowing partition key path and id to be part of client encryption policy - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
+
+#### Breaking Changes
+* Adds support for ParititonKey and Id encryption, when the PolicyFormatVersion is set to 2 - See [PR 33648](https://github.com/Azure/azure-sdk-for-java/pull/33648)
+
+### 1.12.0 (2023-03-17)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.42.0`.
+
+### 1.11.0 (2023-02-17)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.41.0`.
+
+### 1.10.0 (2023-01-13)
+#### Other Changes
+* Updated `azure-cosmos` to version `4.40.0`.
 
 ### 1.9.0 (2022-11-16)
 #### Other Changes
@@ -129,5 +234,5 @@
 
 ### 1.0.0-beta.1 (2021-04-06)
 #### New Features
-* Added Azure Cosmos encryption used for encrypting data with user provided key before saving into CosmosDB and decrypting it when reading back from the database.
+* Added Azure Cosmos encryption used for encrypting data with user provided key before saving into Cosmos DB and decrypting it when reading back from the database.
 

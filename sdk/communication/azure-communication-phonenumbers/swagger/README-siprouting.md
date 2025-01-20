@@ -30,8 +30,9 @@ To update generated files for Sip Routing service, run the following command
 ### Code generation settings
 ```yaml
 title: Azure Communication Phone Numbers SIP Routing Service
-tag: package-2021-05-01-preview
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/3b84377154da23b8b5a011a7c0344f36f56ced16/specification/communication/data-plane/SipRouting/preview/2021-05-01-preview/communicationservicessiprouting.json
+tag: package-2023-03
+use: '@autorest/java@4.1.29'
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/SipRouting/readme.md
 override-client-name: SipRoutingAdminClient
 custom-types-subpackage: models
 models-subpackage: implementation.models
@@ -45,9 +46,10 @@ context-client-method-parameter: true
 add-context-parameter: true
 service-interface-as-public: true
 customization-class: src/main/java/SipRoutingCustomizations.java
+stream-style-serialization: true
 ```
 
-### Use SipConfiguration instead of SipConfigurationPatch
+### Use SipConfiguration instead of SipConfigurationUpdate
 ```yaml
 directive:
     - from: swagger-document
@@ -56,14 +58,14 @@ directive:
           $.$ref = "#/definitions/SipConfiguration";
 ```
 
-### Delete SipConfigurationPatch and TrunkPatch
+### Delete SipConfigurationUpdate and TrunkUpdate
 ```yaml
 directive:
     - from: swagger-document
       where: $.definitions
       transform: >
-          delete $.SipConfigurationPatch;
-          delete $.TrunkPatch;
+          delete $.SipConfigurationUpdate;
+          delete $.TrunkUpdate;
 ```
 
 ### Directive renaming "Trunk" model to "SipTrunk"

@@ -5,40 +5,43 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * Describes a virtual machine scale set sku. NOTE: If the new VM SKU is not supported on the hardware the scale set is
  * currently on, you need to deallocate the VMs in the scale set before you modify the SKU name.
  */
 @Fluent
-public final class Sku {
+public final class Sku implements JsonSerializable<Sku> {
     /*
      * The sku name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Specifies the tier of virtual machines in a scale set.<br /><br /> Possible Values:<br /><br /> **Standard**<br
      * /><br /> **Basic**
      */
-    @JsonProperty(value = "tier")
     private String tier;
 
     /*
      * Specifies the number of virtual machines in the scale set.
      */
-    @JsonProperty(value = "capacity")
     private Long capacity;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: The sku name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +50,7 @@ public final class Sku {
 
     /**
      * Set the name property: The sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -59,7 +62,7 @@ public final class Sku {
     /**
      * Get the tier property: Specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible
      * Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -69,7 +72,7 @@ public final class Sku {
     /**
      * Set the tier property: Specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible
      * Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -80,7 +83,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: Specifies the number of virtual machines in the scale set.
-     *
+     * 
      * @return the capacity value.
      */
     public Long capacity() {
@@ -89,7 +92,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: Specifies the number of virtual machines in the scale set.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -100,9 +103,51 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("tier", this.tier);
+        jsonWriter.writeNumberField("capacity", this.capacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of Sku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of Sku if the JsonReader was pointing to an instance of it, or null if it was pointing to
+     * JSON null.
+     * @throws IOException If an error occurs while reading the Sku.
+     */
+    public static Sku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            Sku deserializedSku = new Sku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedSku.name = reader.getString();
+                } else if ("tier".equals(fieldName)) {
+                    deserializedSku.tier = reader.getString();
+                } else if ("capacity".equals(fieldName)) {
+                    deserializedSku.capacity = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSku;
+        });
     }
 }

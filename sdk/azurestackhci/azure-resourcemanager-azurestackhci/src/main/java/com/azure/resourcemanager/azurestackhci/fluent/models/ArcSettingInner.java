@@ -7,39 +7,55 @@ package com.azure.resourcemanager.azurestackhci.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.azurestackhci.models.ArcSettingAggregateState;
+import com.azure.resourcemanager.azurestackhci.models.DefaultExtensionDetails;
 import com.azure.resourcemanager.azurestackhci.models.PerNodeState;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** ArcSetting details. */
+/**
+ * ArcSetting details.
+ */
 @Fluent
 public final class ArcSettingInner extends ProxyResource {
     /*
-     * System data of ArcSetting resource
+     * ArcSetting properties.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private ArcSettingProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
     private SystemData systemData;
 
     /*
-     * ArcSetting properties.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties")
-    private ArcSettingProperties innerProperties;
+    private String id;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
 
     /**
-     * Get the systemData property: System data of ArcSetting resource.
-     *
-     * @return the systemData value.
+     * Creates an instance of ArcSettingInner class.
      */
-    public SystemData systemData() {
-        return this.systemData;
+    public ArcSettingInner() {
     }
 
     /**
      * Get the innerProperties property: ArcSetting properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ArcSettingProperties innerProperties() {
@@ -47,8 +63,47 @@ public final class ArcSettingInner extends ProxyResource {
     }
 
     /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the ArcSetting proxy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +113,7 @@ public final class ArcSettingInner extends ProxyResource {
     /**
      * Get the arcInstanceResourceGroup property: The resource group that hosts the Arc agents, ie. Hybrid Compute
      * Machine resources.
-     *
+     * 
      * @return the arcInstanceResourceGroup value.
      */
     public String arcInstanceResourceGroup() {
@@ -68,7 +123,7 @@ public final class ArcSettingInner extends ProxyResource {
     /**
      * Set the arcInstanceResourceGroup property: The resource group that hosts the Arc agents, ie. Hybrid Compute
      * Machine resources.
-     *
+     * 
      * @param arcInstanceResourceGroup the arcInstanceResourceGroup value to set.
      * @return the ArcSettingInner object itself.
      */
@@ -82,7 +137,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Get the arcApplicationClientId property: App id of arc AAD identity.
-     *
+     * 
      * @return the arcApplicationClientId value.
      */
     public String arcApplicationClientId() {
@@ -91,7 +146,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Set the arcApplicationClientId property: App id of arc AAD identity.
-     *
+     * 
      * @param arcApplicationClientId the arcApplicationClientId value to set.
      * @return the ArcSettingInner object itself.
      */
@@ -105,7 +160,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Get the arcApplicationTenantId property: Tenant id of arc AAD identity.
-     *
+     * 
      * @return the arcApplicationTenantId value.
      */
     public String arcApplicationTenantId() {
@@ -114,7 +169,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Set the arcApplicationTenantId property: Tenant id of arc AAD identity.
-     *
+     * 
      * @param arcApplicationTenantId the arcApplicationTenantId value to set.
      * @return the ArcSettingInner object itself.
      */
@@ -128,7 +183,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Get the arcServicePrincipalObjectId property: Object id of arc AAD service principal.
-     *
+     * 
      * @return the arcServicePrincipalObjectId value.
      */
     public String arcServicePrincipalObjectId() {
@@ -137,7 +192,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Set the arcServicePrincipalObjectId property: Object id of arc AAD service principal.
-     *
+     * 
      * @param arcServicePrincipalObjectId the arcServicePrincipalObjectId value to set.
      * @return the ArcSettingInner object itself.
      */
@@ -151,7 +206,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Get the arcApplicationObjectId property: Object id of arc AAD identity.
-     *
+     * 
      * @return the arcApplicationObjectId value.
      */
     public String arcApplicationObjectId() {
@@ -160,7 +215,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Set the arcApplicationObjectId property: Object id of arc AAD identity.
-     *
+     * 
      * @param arcApplicationObjectId the arcApplicationObjectId value to set.
      * @return the ArcSettingInner object itself.
      */
@@ -174,7 +229,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Get the aggregateState property: Aggregate state of Arc agent across the nodes in this HCI cluster.
-     *
+     * 
      * @return the aggregateState value.
      */
     public ArcSettingAggregateState aggregateState() {
@@ -183,7 +238,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Get the perNodeDetails property: State of Arc agent in each of the nodes.
-     *
+     * 
      * @return the perNodeDetails value.
      */
     public List<PerNodeState> perNodeDetails() {
@@ -192,7 +247,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Get the connectivityProperties property: contains connectivity related configuration for ARC resources.
-     *
+     * 
      * @return the connectivityProperties value.
      */
     public Object connectivityProperties() {
@@ -201,7 +256,7 @@ public final class ArcSettingInner extends ProxyResource {
 
     /**
      * Set the connectivityProperties property: contains connectivity related configuration for ARC resources.
-     *
+     * 
      * @param connectivityProperties the connectivityProperties value to set.
      * @return the ArcSettingInner object itself.
      */
@@ -214,13 +269,67 @@ public final class ArcSettingInner extends ProxyResource {
     }
 
     /**
+     * Get the defaultExtensions property: Properties for each of the default extensions category.
+     * 
+     * @return the defaultExtensions value.
+     */
+    public List<DefaultExtensionDetails> defaultExtensions() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultExtensions();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ArcSettingInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ArcSettingInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ArcSettingInner.
+     */
+    public static ArcSettingInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ArcSettingInner deserializedArcSettingInner = new ArcSettingInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedArcSettingInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedArcSettingInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedArcSettingInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedArcSettingInner.innerProperties = ArcSettingProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedArcSettingInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedArcSettingInner;
+        });
     }
 }

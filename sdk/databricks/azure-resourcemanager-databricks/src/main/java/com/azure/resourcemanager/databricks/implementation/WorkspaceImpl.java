@@ -114,6 +114,14 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().storageAccountIdentity();
     }
 
+    public ManagedIdentityConfiguration managedDiskIdentity() {
+        return this.innerModel().managedDiskIdentity();
+    }
+
+    public String diskEncryptionSetId() {
+        return this.innerModel().diskEncryptionSetId();
+    }
+
     public WorkspacePropertiesEncryption encryption() {
         return this.innerModel().encryption();
     }
@@ -121,12 +129,9 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -146,6 +151,10 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public WorkspaceInner innerModel() {
@@ -168,20 +177,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Workspace create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
         return this;
     }
 
@@ -197,48 +202,40 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .update(resourceGroupName, workspaceName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .update(resourceGroupName, workspaceName, updateParameters, Context.NONE);
         return this;
     }
 
     public Workspace apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .update(resourceGroupName, workspaceName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .update(resourceGroupName, workspaceName, updateParameters, context);
         return this;
     }
 
-    WorkspaceImpl(
-        WorkspaceInner innerObject, com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
+    WorkspaceImpl(WorkspaceInner innerObject,
+        com.azure.resourcemanager.databricks.AzureDatabricksManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
     }
 
     public Workspace refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workspace refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
+            .getValue();
         return this;
     }
 
@@ -299,6 +296,11 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
 
     public WorkspaceImpl withStorageAccountIdentity(ManagedIdentityConfiguration storageAccountIdentity) {
         this.innerModel().withStorageAccountIdentity(storageAccountIdentity);
+        return this;
+    }
+
+    public WorkspaceImpl withManagedDiskIdentity(ManagedIdentityConfiguration managedDiskIdentity) {
+        this.innerModel().withManagedDiskIdentity(managedDiskIdentity);
         return this;
     }
 

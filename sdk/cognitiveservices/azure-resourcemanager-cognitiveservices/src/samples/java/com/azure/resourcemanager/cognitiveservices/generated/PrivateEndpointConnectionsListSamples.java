@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.cognitiveservices.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for PrivateEndpointConnections List. */
+/**
+ * Samples for PrivateEndpointConnections List.
+ */
 public final class PrivateEndpointConnectionsListSamples {
     /*
-     * x-ms-original-file: specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2022-10-01/examples/ListPrivateEndpointConnections.json
+     * x-ms-original-file:
+     * specification/cognitiveservices/resource-manager/Microsoft.CognitiveServices/stable/2024-10-01/examples/
+     * ListPrivateEndpointConnections.json
      */
     /**
      * Sample code: GetPrivateEndpointConnection.
-     *
+     * 
      * @param manager Entry point to CognitiveServicesManager.
      */
-    public static void getPrivateEndpointConnection(
-        com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
-        manager.privateEndpointConnections().listWithResponse("res6977", "sto2527", Context.NONE);
+    public static void
+        getPrivateEndpointConnection(com.azure.resourcemanager.cognitiveservices.CognitiveServicesManager manager) {
+        manager.privateEndpointConnections().listWithResponse("res6977", "sto2527", com.azure.core.util.Context.NONE);
     }
 }

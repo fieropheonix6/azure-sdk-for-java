@@ -6,20 +6,22 @@ package com.azure.resourcemanager.devhub.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devhub.models.WorkflowRun;
-import org.junit.jupiter.api.Test;
+import com.azure.resourcemanager.devhub.models.WorkflowRunStatus;
+import org.junit.jupiter.api.Assertions;
 
 public final class WorkflowRunTests {
-    @Test
-    public void testDeserialize() {
-        WorkflowRun model =
-            BinaryData
-                .fromString("{\"succeeded\":true,\"workflowRunURL\":\"s\",\"lastRunAt\":\"2021-09-16T11:00:54Z\"}")
-                .toObject(WorkflowRun.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        WorkflowRun model = BinaryData.fromString(
+            "{\"succeeded\":false,\"workflowRunURL\":\"xzlocxscp\",\"lastRunAt\":\"2021-01-30T19:49:48Z\",\"workflowRunStatus\":\"inprogress\"}")
+            .toObject(WorkflowRun.class);
+        Assertions.assertEquals(WorkflowRunStatus.INPROGRESS, model.workflowRunStatus());
     }
 
-    @Test
-    public void testSerialize() {
-        WorkflowRun model = new WorkflowRun();
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        WorkflowRun model = new WorkflowRun().withWorkflowRunStatus(WorkflowRunStatus.INPROGRESS);
         model = BinaryData.fromObject(model).toObject(WorkflowRun.class);
+        Assertions.assertEquals(WorkflowRunStatus.INPROGRESS, model.workflowRunStatus());
     }
 }

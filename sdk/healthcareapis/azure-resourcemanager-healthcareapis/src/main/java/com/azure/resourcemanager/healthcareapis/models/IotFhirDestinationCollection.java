@@ -5,28 +5,38 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.fluent.models.IotFhirDestinationInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** A collection of IoT Connector FHIR destinations. */
+/**
+ * A collection of IoT Connector FHIR destinations.
+ */
 @Fluent
-public final class IotFhirDestinationCollection {
+public final class IotFhirDestinationCollection implements JsonSerializable<IotFhirDestinationCollection> {
     /*
      * The link used to get the next page of IoT FHIR destinations.
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /*
      * The list of IoT Connector FHIR destinations.
      */
-    @JsonProperty(value = "value")
     private List<IotFhirDestinationInner> value;
 
     /**
+     * Creates an instance of IotFhirDestinationCollection class.
+     */
+    public IotFhirDestinationCollection() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of IoT FHIR destinations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +45,7 @@ public final class IotFhirDestinationCollection {
 
     /**
      * Set the nextLink property: The link used to get the next page of IoT FHIR destinations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IotFhirDestinationCollection object itself.
      */
@@ -46,7 +56,7 @@ public final class IotFhirDestinationCollection {
 
     /**
      * Get the value property: The list of IoT Connector FHIR destinations.
-     *
+     * 
      * @return the value value.
      */
     public List<IotFhirDestinationInner> value() {
@@ -55,7 +65,7 @@ public final class IotFhirDestinationCollection {
 
     /**
      * Set the value property: The list of IoT Connector FHIR destinations.
-     *
+     * 
      * @param value the value value to set.
      * @return the IotFhirDestinationCollection object itself.
      */
@@ -66,12 +76,53 @@ public final class IotFhirDestinationCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IotFhirDestinationCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IotFhirDestinationCollection if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IotFhirDestinationCollection.
+     */
+    public static IotFhirDestinationCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IotFhirDestinationCollection deserializedIotFhirDestinationCollection = new IotFhirDestinationCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("nextLink".equals(fieldName)) {
+                    deserializedIotFhirDestinationCollection.nextLink = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    List<IotFhirDestinationInner> value
+                        = reader.readArray(reader1 -> IotFhirDestinationInner.fromJson(reader1));
+                    deserializedIotFhirDestinationCollection.value = value;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIotFhirDestinationCollection;
+        });
     }
 }

@@ -9,38 +9,35 @@ import com.azure.resourcemanager.machinelearning.models.JobResourceConfiguration
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class JobResourceConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        JobResourceConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"dockerArgs\":\"atbnxwbj\",\"shmSize\":\"dbirkfpksokdgo\",\"instanceCount\":1548314621,\"instanceType\":\"jymrhbg\",\"properties\":{\"nfnzhhh\":\"datazkye\",\"mffjkutycyarn\":\"datao\",\"pyc\":\"dataoohguabzoghkt\"}}")
-                .toObject(JobResourceConfiguration.class);
-        Assertions.assertEquals(1548314621, model.instanceCount());
-        Assertions.assertEquals("jymrhbg", model.instanceType());
-        Assertions.assertEquals("atbnxwbj", model.dockerArgs());
-        Assertions.assertEquals("dbirkfpksokdgo", model.shmSize());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        JobResourceConfiguration model = BinaryData.fromString(
+            "{\"shmSize\":\"ocfkumcfjxoky\",\"dockerArgs\":\"syasvfnkwmygjjek\",\"instanceCount\":713077193,\"instanceType\":\"drugjqyc\",\"properties\":{\"r\":\"dataxkrdtul\",\"tcsubmzoo\":\"datajdkl\",\"hdyslbklglm\":\"datasvobchkxfp\",\"yqshwyqxridtt\":\"datankkw\"}}")
+            .toObject(JobResourceConfiguration.class);
+        Assertions.assertEquals(713077193, model.instanceCount());
+        Assertions.assertEquals("drugjqyc", model.instanceType());
+        Assertions.assertEquals("ocfkumcfjxoky", model.shmSize());
+        Assertions.assertEquals("syasvfnkwmygjjek", model.dockerArgs());
     }
 
-    @Test
-    public void testSerialize() {
-        JobResourceConfiguration model =
-            new JobResourceConfiguration()
-                .withInstanceCount(1548314621)
-                .withInstanceType("jymrhbg")
-                .withProperties(mapOf("nfnzhhh", "datazkye", "mffjkutycyarn", "datao", "pyc", "dataoohguabzoghkt"))
-                .withDockerArgs("atbnxwbj")
-                .withShmSize("dbirkfpksokdgo");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        JobResourceConfiguration model = new JobResourceConfiguration().withInstanceCount(713077193)
+            .withInstanceType("drugjqyc")
+            .withProperties(mapOf("r", "dataxkrdtul", "tcsubmzoo", "datajdkl", "hdyslbklglm", "datasvobchkxfp",
+                "yqshwyqxridtt", "datankkw"))
+            .withShmSize("ocfkumcfjxoky")
+            .withDockerArgs("syasvfnkwmygjjek");
         model = BinaryData.fromObject(model).toObject(JobResourceConfiguration.class);
-        Assertions.assertEquals(1548314621, model.instanceCount());
-        Assertions.assertEquals("jymrhbg", model.instanceType());
-        Assertions.assertEquals("atbnxwbj", model.dockerArgs());
-        Assertions.assertEquals("dbirkfpksokdgo", model.shmSize());
+        Assertions.assertEquals(713077193, model.instanceCount());
+        Assertions.assertEquals("drugjqyc", model.instanceType());
+        Assertions.assertEquals("ocfkumcfjxoky", model.shmSize());
+        Assertions.assertEquals("syasvfnkwmygjjek", model.dockerArgs());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -6,59 +6,94 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.fluent.models.HttpLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for an HTTP source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HttpServer")
+/**
+ * Linked service for an HTTP source.
+ */
 @Fluent
 public final class HttpLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "HttpServer";
+
+    /*
      * Properties specific to this linked service type.
      */
-    @JsonProperty(value = "typeProperties", required = true)
     private HttpLinkedServiceTypeProperties innerTypeProperties = new HttpLinkedServiceTypeProperties();
 
-    /** Creates an instance of HttpLinkedService class. */
+    /**
+     * Creates an instance of HttpLinkedService class.
+     */
     public HttpLinkedService() {
     }
 
     /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private HttpLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public HttpLinkedService withVersion(String version) {
+        super.withVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpLinkedService withConnectVia(IntegrationRuntimeReference connectVia) {
         super.withConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpLinkedService withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpLinkedService withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HttpLinkedService withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -68,7 +103,7 @@ public final class HttpLinkedService extends LinkedService {
     /**
      * Get the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -78,7 +113,7 @@ public final class HttpLinkedService extends LinkedService {
     /**
      * Set the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -92,7 +127,7 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Get the authenticationType property: The authentication type to be used to connect to the HTTP server.
-     *
+     * 
      * @return the authenticationType value.
      */
     public HttpAuthenticationType authenticationType() {
@@ -101,7 +136,7 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Set the authenticationType property: The authentication type to be used to connect to the HTTP server.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -116,7 +151,7 @@ public final class HttpLinkedService extends LinkedService {
     /**
      * Get the username property: User name for Basic, Digest, or Windows authentication. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -126,7 +161,7 @@ public final class HttpLinkedService extends LinkedService {
     /**
      * Set the username property: User name for Basic, Digest, or Windows authentication. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -141,7 +176,7 @@ public final class HttpLinkedService extends LinkedService {
     /**
      * Get the password property: Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData
      * authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -151,7 +186,7 @@ public final class HttpLinkedService extends LinkedService {
     /**
      * Set the password property: Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData
      * authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -165,8 +200,8 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Get the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
-     *
+     * Type: key value pairs (value should be string type).
+     * 
      * @return the authHeaders value.
      */
     public Object authHeaders() {
@@ -175,8 +210,8 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Set the authHeaders property: The additional HTTP headers in the request to RESTful API used for authorization.
-     * Type: object (or Expression with resultType object).
-     *
+     * Type: key value pairs (value should be string type).
+     * 
      * @param authHeaders the authHeaders value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -192,7 +227,7 @@ public final class HttpLinkedService extends LinkedService {
      * Get the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
      * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
      * be specified. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the embeddedCertData value.
      */
     public Object embeddedCertData() {
@@ -203,7 +238,7 @@ public final class HttpLinkedService extends LinkedService {
      * Set the embeddedCertData property: Base64 encoded certificate data for ClientCertificate authentication. For
      * on-premises copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should
      * be specified. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param embeddedCertData the embeddedCertData value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -219,7 +254,7 @@ public final class HttpLinkedService extends LinkedService {
      * Get the certThumbprint property: Thumbprint of certificate for ClientCertificate authentication. Only valid for
      * on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or
      * EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the certThumbprint value.
      */
     public Object certThumbprint() {
@@ -230,7 +265,7 @@ public final class HttpLinkedService extends LinkedService {
      * Set the certThumbprint property: Thumbprint of certificate for ClientCertificate authentication. Only valid for
      * on-premises copy. For on-premises copy with ClientCertificate authentication, either CertThumbprint or
      * EmbeddedCertData/Password should be specified. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param certThumbprint the certThumbprint value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -244,22 +279,22 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
-    public Object encryptedCredential() {
+    public String encryptedCredential() {
         return this.innerTypeProperties() == null ? null : this.innerTypeProperties().encryptedCredential();
     }
 
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HttpLinkedService object itself.
      */
-    public HttpLinkedService withEncryptedCredential(Object encryptedCredential) {
+    public HttpLinkedService withEncryptedCredential(String encryptedCredential) {
         if (this.innerTypeProperties() == null) {
             this.innerTypeProperties = new HttpLinkedServiceTypeProperties();
         }
@@ -270,7 +305,7 @@ public final class HttpLinkedService extends LinkedService {
     /**
      * Get the enableServerCertificateValidation property: If true, validate the HTTPS server SSL certificate. Default
      * value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the enableServerCertificateValidation value.
      */
     public Object enableServerCertificateValidation() {
@@ -282,7 +317,7 @@ public final class HttpLinkedService extends LinkedService {
     /**
      * Set the enableServerCertificateValidation property: If true, validate the HTTPS server SSL certificate. Default
      * value is true. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param enableServerCertificateValidation the enableServerCertificateValidation value to set.
      * @return the HttpLinkedService object itself.
      */
@@ -296,21 +331,99 @@ public final class HttpLinkedService extends LinkedService {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model HttpLinkedService"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerTypeProperties in model HttpLinkedService"));
         } else {
             innerTypeProperties().validate();
+        }
+        if (connectVia() != null) {
+            connectVia().validate();
+        }
+        if (parameters() != null) {
+            parameters().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(HttpLinkedService.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", version());
+        jsonWriter.writeJsonField("connectVia", connectVia());
+        jsonWriter.writeStringField("description", description());
+        jsonWriter.writeMapField("parameters", parameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", annotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeJsonField("typeProperties", this.innerTypeProperties);
+        jsonWriter.writeStringField("type", this.type);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HttpLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HttpLinkedService if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HttpLinkedService.
+     */
+    public static HttpLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HttpLinkedService deserializedHttpLinkedService = new HttpLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("version".equals(fieldName)) {
+                    deserializedHttpLinkedService.withVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
+                    deserializedHttpLinkedService.withConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedHttpLinkedService.withDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedHttpLinkedService.withParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHttpLinkedService.withAnnotations(annotations);
+                } else if ("typeProperties".equals(fieldName)) {
+                    deserializedHttpLinkedService.innerTypeProperties
+                        = HttpLinkedServiceTypeProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedHttpLinkedService.type = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHttpLinkedService.withAdditionalProperties(additionalProperties);
+
+            return deserializedHttpLinkedService;
+        });
+    }
 }

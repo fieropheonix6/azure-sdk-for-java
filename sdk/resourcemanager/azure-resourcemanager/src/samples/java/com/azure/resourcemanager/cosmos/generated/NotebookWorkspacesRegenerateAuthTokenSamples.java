@@ -4,26 +4,27 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.models.NotebookWorkspaceName;
 
-/** Samples for NotebookWorkspaces RegenerateAuthToken. */
+/**
+ * Samples for NotebookWorkspaces RegenerateAuthToken.
+ */
 public final class NotebookWorkspacesRegenerateAuthTokenSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBNotebookWorkspaceRegenerateAuthToken.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBNotebookWorkspaceRegenerateAuthToken.json
      */
     /**
      * Sample code: CosmosDBNotebookWorkspaceRegenerateAuthToken.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBNotebookWorkspaceRegenerateAuthToken(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+    public static void
+        cosmosDBNotebookWorkspaceRegenerateAuthToken(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getNotebookWorkspaces()
-            .regenerateAuthToken("rg1", "ddb1", NotebookWorkspaceName.DEFAULT, Context.NONE);
+            .regenerateAuthToken("rg1", "ddb1", NotebookWorkspaceName.DEFAULT, com.azure.core.util.Context.NONE);
     }
 }

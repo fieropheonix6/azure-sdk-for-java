@@ -6,32 +6,31 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
+import com.azure.resourcemanager.kusto.models.VnetState;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VirtualNetworkConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        VirtualNetworkConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"subnetId\":\"algbquxigjyjg\",\"enginePublicIpId\":\"jaoyfhrtx\",\"dataManagementPublicIpId\":\"lnerkujysvleju\"}")
-                .toObject(VirtualNetworkConfiguration.class);
-        Assertions.assertEquals("algbquxigjyjg", model.subnetId());
-        Assertions.assertEquals("jaoyfhrtx", model.enginePublicIpId());
-        Assertions.assertEquals("lnerkujysvleju", model.dataManagementPublicIpId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VirtualNetworkConfiguration model = BinaryData.fromString(
+            "{\"subnetId\":\"bcryffdfd\",\"enginePublicIpId\":\"sy\",\"dataManagementPublicIpId\":\"expa\",\"state\":\"Disabled\"}")
+            .toObject(VirtualNetworkConfiguration.class);
+        Assertions.assertEquals("bcryffdfd", model.subnetId());
+        Assertions.assertEquals("sy", model.enginePublicIpId());
+        Assertions.assertEquals("expa", model.dataManagementPublicIpId());
+        Assertions.assertEquals(VnetState.DISABLED, model.state());
     }
 
-    @Test
-    public void testSerialize() {
-        VirtualNetworkConfiguration model =
-            new VirtualNetworkConfiguration()
-                .withSubnetId("algbquxigjyjg")
-                .withEnginePublicIpId("jaoyfhrtx")
-                .withDataManagementPublicIpId("lnerkujysvleju");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VirtualNetworkConfiguration model = new VirtualNetworkConfiguration().withSubnetId("bcryffdfd")
+            .withEnginePublicIpId("sy")
+            .withDataManagementPublicIpId("expa")
+            .withState(VnetState.DISABLED);
         model = BinaryData.fromObject(model).toObject(VirtualNetworkConfiguration.class);
-        Assertions.assertEquals("algbquxigjyjg", model.subnetId());
-        Assertions.assertEquals("jaoyfhrtx", model.enginePublicIpId());
-        Assertions.assertEquals("lnerkujysvleju", model.dataManagementPublicIpId());
+        Assertions.assertEquals("bcryffdfd", model.subnetId());
+        Assertions.assertEquals("sy", model.enginePublicIpId());
+        Assertions.assertEquals("expa", model.dataManagementPublicIpId());
+        Assertions.assertEquals(VnetState.DISABLED, model.state());
     }
 }

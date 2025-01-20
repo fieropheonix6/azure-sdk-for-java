@@ -11,39 +11,32 @@ import com.azure.resourcemanager.cognitiveservices.models.PrivateEndpointService
 import com.azure.resourcemanager.cognitiveservices.models.PrivateLinkServiceConnectionState;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpointConnectionProperties model =
-            BinaryData
-                .fromString(
-                    "{\"privateEndpoint\":{\"id\":\"zgcwrw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"wrljdouskc\",\"actionsRequired\":\"kocrcjdkwtnhx\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"ksqrglssai\",\"qpjwnzlljfm\"]}")
-                .toObject(PrivateEndpointConnectionProperties.class);
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpointConnectionProperties model = BinaryData.fromString(
+            "{\"privateEndpoint\":{\"id\":\"zgcwrw\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"wrljdouskc\",\"actionsRequired\":\"kocrcjdkwtnhx\"},\"provisioningState\":\"Failed\",\"groupIds\":[\"ksqrglssai\",\"qpjwnzlljfm\"]}")
+            .toObject(PrivateEndpointConnectionProperties.class);
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("wrljdouskc", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("kocrcjdkwtnhx", model.privateLinkServiceConnectionState().actionsRequired());
         Assertions.assertEquals("ksqrglssai", model.groupIds().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpointConnectionProperties model =
-            new PrivateEndpointConnectionProperties()
-                .withPrivateEndpoint(new PrivateEndpoint())
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpointConnectionProperties model
+            = new PrivateEndpointConnectionProperties().withPrivateEndpoint(new PrivateEndpoint())
                 .withPrivateLinkServiceConnectionState(
-                    new PrivateLinkServiceConnectionState()
-                        .withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
+                    new PrivateLinkServiceConnectionState().withStatus(PrivateEndpointServiceConnectionStatus.APPROVED)
                         .withDescription("wrljdouskc")
                         .withActionsRequired("kocrcjdkwtnhx"))
                 .withGroupIds(Arrays.asList("ksqrglssai", "qpjwnzlljfm"));
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProperties.class);
-        Assertions
-            .assertEquals(
-                PrivateEndpointServiceConnectionStatus.APPROVED, model.privateLinkServiceConnectionState().status());
+        Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
+            model.privateLinkServiceConnectionState().status());
         Assertions.assertEquals("wrljdouskc", model.privateLinkServiceConnectionState().description());
         Assertions.assertEquals("kocrcjdkwtnhx", model.privateLinkServiceConnectionState().actionsRequired());
         Assertions.assertEquals("ksqrglssai", model.groupIds().get(0));

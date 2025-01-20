@@ -5,29 +5,41 @@
 package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.communication.fluent.models.UpdateDomainProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** A class that describes the PATCH request parameters of a Domains resource. */
+/**
+ * A class that describes the PATCH request parameters of a Domains resource.
+ */
 @Fluent
 public final class UpdateDomainRequestParameters extends TaggedResource {
     /*
      * A class that describes the updatable properties of a Domains resource.
      */
-    @JsonProperty(value = "properties")
     private UpdateDomainProperties innerProperties;
 
     /**
+     * Creates an instance of UpdateDomainRequestParameters class.
+     */
+    public UpdateDomainRequestParameters() {
+    }
+
+    /**
      * Get the innerProperties property: A class that describes the updatable properties of a Domains resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private UpdateDomainProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public UpdateDomainRequestParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -35,33 +47,8 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
     }
 
     /**
-     * Get the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @return the validSenderUsernames value.
-     */
-    public Map<String, String> validSenderUsernames() {
-        return this.innerProperties() == null ? null : this.innerProperties().validSenderUsernames();
-    }
-
-    /**
-     * Set the validSenderUsernames property: Collection of valid sender usernames. This is a key-value pair where
-     * key=username and value=display name.
-     *
-     * @param validSenderUsernames the validSenderUsernames value to set.
-     * @return the UpdateDomainRequestParameters object itself.
-     */
-    public UpdateDomainRequestParameters withValidSenderUsernames(Map<String, String> validSenderUsernames) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new UpdateDomainProperties();
-        }
-        this.innerProperties().withValidSenderUsernames(validSenderUsernames);
-        return this;
-    }
-
-    /**
      * Get the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @return the userEngagementTracking value.
      */
     public UserEngagementTracking userEngagementTracking() {
@@ -70,7 +57,7 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
 
     /**
      * Set the userEngagementTracking property: Describes whether user engagement tracking is enabled or disabled.
-     *
+     * 
      * @param userEngagementTracking the userEngagementTracking value to set.
      * @return the UpdateDomainRequestParameters object itself.
      */
@@ -84,14 +71,54 @@ public final class UpdateDomainRequestParameters extends TaggedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UpdateDomainRequestParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UpdateDomainRequestParameters if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UpdateDomainRequestParameters.
+     */
+    public static UpdateDomainRequestParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UpdateDomainRequestParameters deserializedUpdateDomainRequestParameters
+                = new UpdateDomainRequestParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedUpdateDomainRequestParameters.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedUpdateDomainRequestParameters.innerProperties = UpdateDomainProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUpdateDomainRequestParameters;
+        });
     }
 }

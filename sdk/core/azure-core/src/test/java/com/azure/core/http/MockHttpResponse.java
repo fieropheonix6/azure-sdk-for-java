@@ -3,15 +3,21 @@
 
 package com.azure.core.http;
 
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.core.util.serializer.JacksonAdapter;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -47,6 +53,27 @@ public class MockHttpResponse extends HttpResponse {
         this(request, statusCode, new HttpHeaders(), serialize(serializable));
     }
 
+    public MockHttpResponse(HttpRequest request, int statusCode, InputStream stream) {
+        this(request, statusCode, new HttpHeaders(), readAllBytes(stream));
+    }
+
+    public static byte[] readAllBytes(InputStream stream) {
+        try {
+            ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+            int count;
+            byte[] data = new byte[1024];
+
+            while ((count = stream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, count);
+            }
+
+            return buffer.toByteArray();
+        } catch (Exception exception) {
+            throw new RuntimeException(exception);
+        }
+    }
+
     private static byte[] serialize(Object serializable) {
         try {
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
@@ -65,8 +92,14 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
+    @Deprecated
     public String getHeaderValue(String name) {
         return headers.getValue(name);
+    }
+
+    @Override
+    public String getHeaderValue(HttpHeaderName headerName) {
+        return headers.getValue(headerName);
     }
 
     @Override
@@ -104,5 +137,30 @@ public class MockHttpResponse extends HttpResponse {
         } else {
             return Mono.just(new String(bodyBytes, charset));
         }
+    }
+
+    @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromBytes(bodyBytes);
+    }
+
+    @Override
+    public Mono<InputStream> getBodyAsInputStream() {
+        return getBodyAsByteArray().map(ByteArrayInputStream::new);
+    }
+
+    @Override
+    public HttpResponse buffer() {
+        return this;
+    }
+
+    @Override
+    public Mono<Void> writeBodyToAsync(AsynchronousByteChannel channel) {
+        return FluxUtil.writeToAsynchronousByteChannel(getBody(), channel);
+    }
+
+    @Override
+    public void writeBodyTo(WritableByteChannel channel) throws IOException {
+        FluxUtil.writeToWritableByteChannel(getBody(), channel).block();
     }
 }

@@ -11,29 +11,28 @@ import com.azure.resourcemanager.frontdoor.fluent.ManagedRuleSetsClient;
 import com.azure.resourcemanager.frontdoor.fluent.models.ManagedRuleSetDefinitionInner;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleSetDefinition;
 import com.azure.resourcemanager.frontdoor.models.ManagedRuleSets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ManagedRuleSetsImpl implements ManagedRuleSets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedRuleSetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedRuleSetsImpl.class);
 
     private final ManagedRuleSetsClient innerClient;
 
     private final com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager;
 
-    public ManagedRuleSetsImpl(
-        ManagedRuleSetsClient innerClient, com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
+    public ManagedRuleSetsImpl(ManagedRuleSetsClient innerClient,
+        com.azure.resourcemanager.frontdoor.FrontDoorManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<ManagedRuleSetDefinition> list() {
         PagedIterable<ManagedRuleSetDefinitionInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new ManagedRuleSetDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedRuleSetDefinitionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<ManagedRuleSetDefinition> list(Context context) {
         PagedIterable<ManagedRuleSetDefinitionInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new ManagedRuleSetDefinitionImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new ManagedRuleSetDefinitionImpl(inner1, this.manager()));
     }
 
     private ManagedRuleSetsClient serviceClient() {

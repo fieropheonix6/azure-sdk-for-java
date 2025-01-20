@@ -5,28 +5,85 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** ARM resource for a detector definition. */
+/**
+ * ARM resource for a detector definition.
+ */
 @Fluent
 public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
     /*
      * Core resource properties
      */
-    @JsonProperty(value = "properties")
     private DetectorDefinition innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of DetectorDefinitionResourceInner class.
+     */
+    public DetectorDefinitionResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DetectorDefinition innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DetectorDefinitionResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -35,7 +92,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the displayName property: Display name of the detector.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -44,7 +101,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the description property: Description of the detector.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -53,7 +110,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the rank property: Detector Rank.
-     *
+     * 
      * @return the rank value.
      */
     public Double rank() {
@@ -62,7 +119,7 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Get the isEnabled property: Flag representing whether detector is enabled or not.
-     *
+     * 
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -71,14 +128,60 @@ public final class DetectorDefinitionResourceInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DetectorDefinitionResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DetectorDefinitionResourceInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DetectorDefinitionResourceInner.
+     */
+    public static DetectorDefinitionResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DetectorDefinitionResourceInner deserializedDetectorDefinitionResourceInner
+                = new DetectorDefinitionResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDetectorDefinitionResourceInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDetectorDefinitionResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDetectorDefinitionResourceInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedDetectorDefinitionResourceInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDetectorDefinitionResourceInner.innerProperties = DetectorDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDetectorDefinitionResourceInner;
+        });
     }
 }

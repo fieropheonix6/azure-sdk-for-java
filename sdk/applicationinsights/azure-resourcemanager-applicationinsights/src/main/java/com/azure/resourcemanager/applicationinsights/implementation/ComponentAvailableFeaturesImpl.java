@@ -20,33 +20,29 @@ public final class ComponentAvailableFeaturesImpl implements ComponentAvailableF
 
     private final com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager;
 
-    public ComponentAvailableFeaturesImpl(
-        ComponentAvailableFeaturesClient innerClient,
+    public ComponentAvailableFeaturesImpl(ComponentAvailableFeaturesClient innerClient,
         com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public ApplicationInsightsComponentAvailableFeatures get(String resourceGroupName, String resourceName) {
-        ApplicationInsightsComponentAvailableFeaturesInner inner =
-            this.serviceClient().get(resourceGroupName, resourceName);
+    public Response<ApplicationInsightsComponentAvailableFeatures> getWithResponse(String resourceGroupName,
+        String resourceName, Context context) {
+        Response<ApplicationInsightsComponentAvailableFeaturesInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, resourceName, context);
         if (inner != null) {
-            return new ApplicationInsightsComponentAvailableFeaturesImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ApplicationInsightsComponentAvailableFeaturesImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<ApplicationInsightsComponentAvailableFeatures> getWithResponse(
-        String resourceGroupName, String resourceName, Context context) {
-        Response<ApplicationInsightsComponentAvailableFeaturesInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, resourceName, context);
+    public ApplicationInsightsComponentAvailableFeatures get(String resourceGroupName, String resourceName) {
+        ApplicationInsightsComponentAvailableFeaturesInner inner
+            = this.serviceClient().get(resourceGroupName, resourceName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ApplicationInsightsComponentAvailableFeaturesImpl(inner.getValue(), this.manager()));
+            return new ApplicationInsightsComponentAvailableFeaturesImpl(inner, this.manager());
         } else {
             return null;
         }

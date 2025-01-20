@@ -5,82 +5,78 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.HashMap;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
-/** Data flow debug session info. */
+/**
+ * Data flow debug session info.
+ */
 @Fluent
-public final class DataFlowDebugSessionInfoInner {
+public final class DataFlowDebugSessionInfoInner implements JsonSerializable<DataFlowDebugSessionInfoInner> {
     /*
      * The name of the data flow.
      */
-    @JsonProperty(value = "dataFlowName")
     private String dataFlowName;
 
     /*
      * Compute type of the cluster.
      */
-    @JsonProperty(value = "computeType")
     private String computeType;
 
     /*
      * Core count of the cluster.
      */
-    @JsonProperty(value = "coreCount")
     private Integer coreCount;
 
     /*
      * Node count of the cluster. (deprecated property)
      */
-    @JsonProperty(value = "nodeCount")
     private Integer nodeCount;
 
     /*
      * Attached integration runtime name of data flow debug session.
      */
-    @JsonProperty(value = "integrationRuntimeName")
     private String integrationRuntimeName;
 
     /*
      * The ID of data flow debug session.
      */
-    @JsonProperty(value = "sessionId")
     private String sessionId;
 
     /*
      * Start time of data flow debug session.
      */
-    @JsonProperty(value = "startTime")
     private String startTime;
 
     /*
      * Compute type of the cluster.
      */
-    @JsonProperty(value = "timeToLiveInMinutes")
     private Integer timeToLiveInMinutes;
 
     /*
      * Last activity time of data flow debug session.
      */
-    @JsonProperty(value = "lastActivityTime")
     private String lastActivityTime;
 
     /*
      * Data flow debug session info.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DataFlowDebugSessionInfoInner class. */
+    /**
+     * Creates an instance of DataFlowDebugSessionInfoInner class.
+     */
     public DataFlowDebugSessionInfoInner() {
     }
 
     /**
      * Get the dataFlowName property: The name of the data flow.
-     *
+     * 
      * @return the dataFlowName value.
      */
     public String dataFlowName() {
@@ -89,7 +85,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the dataFlowName property: The name of the data flow.
-     *
+     * 
      * @param dataFlowName the dataFlowName value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -100,7 +96,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the computeType property: Compute type of the cluster.
-     *
+     * 
      * @return the computeType value.
      */
     public String computeType() {
@@ -109,7 +105,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the computeType property: Compute type of the cluster.
-     *
+     * 
      * @param computeType the computeType value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -120,7 +116,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the coreCount property: Core count of the cluster.
-     *
+     * 
      * @return the coreCount value.
      */
     public Integer coreCount() {
@@ -129,7 +125,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the coreCount property: Core count of the cluster.
-     *
+     * 
      * @param coreCount the coreCount value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -140,7 +136,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the nodeCount property: Node count of the cluster. (deprecated property).
-     *
+     * 
      * @return the nodeCount value.
      */
     public Integer nodeCount() {
@@ -149,7 +145,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the nodeCount property: Node count of the cluster. (deprecated property).
-     *
+     * 
      * @param nodeCount the nodeCount value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -160,7 +156,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the integrationRuntimeName property: Attached integration runtime name of data flow debug session.
-     *
+     * 
      * @return the integrationRuntimeName value.
      */
     public String integrationRuntimeName() {
@@ -169,7 +165,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the integrationRuntimeName property: Attached integration runtime name of data flow debug session.
-     *
+     * 
      * @param integrationRuntimeName the integrationRuntimeName value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -180,7 +176,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -189,7 +185,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -200,7 +196,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the startTime property: Start time of data flow debug session.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -209,7 +205,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the startTime property: Start time of data flow debug session.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -220,7 +216,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the timeToLiveInMinutes property: Compute type of the cluster.
-     *
+     * 
      * @return the timeToLiveInMinutes value.
      */
     public Integer timeToLiveInMinutes() {
@@ -229,7 +225,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the timeToLiveInMinutes property: Compute type of the cluster.
-     *
+     * 
      * @param timeToLiveInMinutes the timeToLiveInMinutes value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -240,7 +236,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the lastActivityTime property: Last activity time of data flow debug session.
-     *
+     * 
      * @return the lastActivityTime value.
      */
     public String lastActivityTime() {
@@ -249,7 +245,7 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Set the lastActivityTime property: Last activity time of data flow debug session.
-     *
+     * 
      * @param lastActivityTime the lastActivityTime value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -260,17 +256,16 @@ public final class DataFlowDebugSessionInfoInner {
 
     /**
      * Get the additionalProperties property: Data flow debug session info.
-     *
+     * 
      * @return the additionalProperties value.
      */
-    @JsonAnyGetter
     public Map<String, Object> additionalProperties() {
         return this.additionalProperties;
     }
 
     /**
      * Set the additionalProperties property: Data flow debug session info.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowDebugSessionInfoInner object itself.
      */
@@ -279,19 +274,84 @@ public final class DataFlowDebugSessionInfoInner {
         return this;
     }
 
-    @JsonAnySetter
-    void withAdditionalProperties(String key, Object value) {
-        if (additionalProperties == null) {
-            additionalProperties = new HashMap<>();
-        }
-        additionalProperties.put(key, value);
-    }
-
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataFlowName", this.dataFlowName);
+        jsonWriter.writeStringField("computeType", this.computeType);
+        jsonWriter.writeNumberField("coreCount", this.coreCount);
+        jsonWriter.writeNumberField("nodeCount", this.nodeCount);
+        jsonWriter.writeStringField("integrationRuntimeName", this.integrationRuntimeName);
+        jsonWriter.writeStringField("sessionId", this.sessionId);
+        jsonWriter.writeStringField("startTime", this.startTime);
+        jsonWriter.writeNumberField("timeToLiveInMinutes", this.timeToLiveInMinutes);
+        jsonWriter.writeStringField("lastActivityTime", this.lastActivityTime);
+        if (additionalProperties != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowDebugSessionInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowDebugSessionInfoInner if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DataFlowDebugSessionInfoInner.
+     */
+    public static DataFlowDebugSessionInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowDebugSessionInfoInner deserializedDataFlowDebugSessionInfoInner
+                = new DataFlowDebugSessionInfoInner();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFlowName".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.dataFlowName = reader.getString();
+                } else if ("computeType".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.computeType = reader.getString();
+                } else if ("coreCount".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.coreCount = reader.getNullable(JsonReader::getInt);
+                } else if ("nodeCount".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.nodeCount = reader.getNullable(JsonReader::getInt);
+                } else if ("integrationRuntimeName".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.integrationRuntimeName = reader.getString();
+                } else if ("sessionId".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.sessionId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.startTime = reader.getString();
+                } else if ("timeToLiveInMinutes".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.timeToLiveInMinutes
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("lastActivityTime".equals(fieldName)) {
+                    deserializedDataFlowDebugSessionInfoInner.lastActivityTime = reader.getString();
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDataFlowDebugSessionInfoInner.additionalProperties = additionalProperties;
+
+            return deserializedDataFlowDebugSessionInfoInner;
+        });
     }
 }

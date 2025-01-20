@@ -4,25 +4,26 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DiskAccesses GetPrivateLinkResources. */
+/**
+ * Samples for DiskAccesses GetPrivateLinkResources.
+ */
 public final class DiskAccessesGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskAccessExamples/DiskAccessPrivateLinkResources_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
+     * DiskAccessPrivateLinkResources_Get.json
      */
     /**
      * Sample code: List all possible private link resources under disk access resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listAllPossiblePrivateLinkResourcesUnderDiskAccessResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .getPrivateLinkResourcesWithResponse("myResourceGroup", "myDiskAccess", Context.NONE);
+            .getPrivateLinkResourcesWithResponse("myResourceGroup", "myDiskAccess", com.azure.core.util.Context.NONE);
     }
 }

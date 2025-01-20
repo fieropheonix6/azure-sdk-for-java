@@ -9,33 +9,27 @@ import com.azure.resourcemanager.appcontainers.models.AllowedPrincipals;
 import com.azure.resourcemanager.appcontainers.models.DefaultAuthorizationPolicy;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DefaultAuthorizationPolicyTests {
-    @Test
-    public void testDeserialize() {
-        DefaultAuthorizationPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"allowedPrincipals\":{\"groups\":[\"nohjt\"],\"identities\":[\"h\",\"soifiyipjxsqw\",\"gr\"]},\"allowedApplications\":[\"norcjxvsnbyxqab\",\"mocpc\"]}")
-                .toObject(DefaultAuthorizationPolicy.class);
-        Assertions.assertEquals("nohjt", model.allowedPrincipals().groups().get(0));
-        Assertions.assertEquals("h", model.allowedPrincipals().identities().get(0));
-        Assertions.assertEquals("norcjxvsnbyxqab", model.allowedApplications().get(0));
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DefaultAuthorizationPolicy model = BinaryData.fromString(
+            "{\"allowedPrincipals\":{\"groups\":[\"pbtoqcjmkl\",\"a\",\"bqidtqaj\"],\"identities\":[\"l\",\"kudjkrlkhb\",\"hfepgzgqex\"]},\"allowedApplications\":[\"c\",\"scpai\",\"rhhbcs\",\"l\"]}")
+            .toObject(DefaultAuthorizationPolicy.class);
+        Assertions.assertEquals("pbtoqcjmkl", model.allowedPrincipals().groups().get(0));
+        Assertions.assertEquals("l", model.allowedPrincipals().identities().get(0));
+        Assertions.assertEquals("c", model.allowedApplications().get(0));
     }
 
-    @Test
-    public void testSerialize() {
-        DefaultAuthorizationPolicy model =
-            new DefaultAuthorizationPolicy()
-                .withAllowedPrincipals(
-                    new AllowedPrincipals()
-                        .withGroups(Arrays.asList("nohjt"))
-                        .withIdentities(Arrays.asList("h", "soifiyipjxsqw", "gr")))
-                .withAllowedApplications(Arrays.asList("norcjxvsnbyxqab", "mocpc"));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DefaultAuthorizationPolicy model = new DefaultAuthorizationPolicy()
+            .withAllowedPrincipals(new AllowedPrincipals().withGroups(Arrays.asList("pbtoqcjmkl", "a", "bqidtqaj"))
+                .withIdentities(Arrays.asList("l", "kudjkrlkhb", "hfepgzgqex")))
+            .withAllowedApplications(Arrays.asList("c", "scpai", "rhhbcs", "l"));
         model = BinaryData.fromObject(model).toObject(DefaultAuthorizationPolicy.class);
-        Assertions.assertEquals("nohjt", model.allowedPrincipals().groups().get(0));
-        Assertions.assertEquals("h", model.allowedPrincipals().identities().get(0));
-        Assertions.assertEquals("norcjxvsnbyxqab", model.allowedApplications().get(0));
+        Assertions.assertEquals("pbtoqcjmkl", model.allowedPrincipals().groups().get(0));
+        Assertions.assertEquals("l", model.allowedPrincipals().identities().get(0));
+        Assertions.assertEquals("c", model.allowedApplications().get(0));
     }
 }

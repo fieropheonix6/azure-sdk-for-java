@@ -7,23 +7,20 @@ package com.azure.resourcemanager.cognitiveservices.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.cognitiveservices.models.CommitmentTierListResult;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class CommitmentTierListResultTests {
-    @Test
-    public void testDeserialize() {
-        CommitmentTierListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"cnjbkcnxdhbt\",\"value\":[{\"kind\":\"ywpnvjt\",\"skuName\":\"nermcl\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"hoxus\",\"tier\":\"pabgyeps\",\"maxCount\":1974668378,\"quota\":{\"quantity\":8786442375186160656,\"unit\":\"xywpmueefjzwfqkq\"},\"cost\":{\"commitmentMeterId\":\"dsuyonobgla\",\"overageMeterId\":\"qxtccmgyudx\"}},{\"kind\":\"lmoyrx\",\"skuName\":\"fudwpznt\",\"hostingModel\":\"DisconnectedContainer\",\"planType\":\"hl\",\"tier\":\"jbhckfrlhr\",\"maxCount\":1228255689,\"quota\":{\"quantity\":1967797899884280622,\"unit\":\"ca\"},\"cost\":{\"commitmentMeterId\":\"bpzkafkuwbc\",\"overageMeterId\":\"wbme\"}}]}")
-                .toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("cnjbkcnxdhbt", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        CommitmentTierListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"ugicjooxdjebw\",\"value\":[{\"kind\":\"wfvovbv\",\"skuName\":\"uecivyhz\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"jgjrwjueiotwm\",\"tier\":\"ytdxwit\",\"maxCount\":1070997174,\"quota\":{\"quantity\":8610191053119914796,\"unit\":\"wgxhn\"},\"cost\":{\"commitmentMeterId\":\"x\",\"overageMeterId\":\"kpycgklwndnhjd\"}},{\"kind\":\"whvylw\",\"skuName\":\"tdhxujznbmpowuwp\",\"hostingModel\":\"ProvisionedWeb\",\"planType\":\"veual\",\"tier\":\"j\",\"maxCount\":1318602789,\"quota\":{\"quantity\":4407430111323762488,\"unit\":\"cswsrtjri\"},\"cost\":{\"commitmentMeterId\":\"bpbewtghfgb\",\"overageMeterId\":\"gw\"}},{\"kind\":\"vlvqhjkbegi\",\"skuName\":\"nmxiebwwaloayqc\",\"hostingModel\":\"ConnectedContainer\",\"planType\":\"zjuzgwyz\",\"tier\":\"txon\",\"maxCount\":351214213,\"quota\":{\"quantity\":5974631066556953199,\"unit\":\"bp\"},\"cost\":{\"commitmentMeterId\":\"p\",\"overageMeterId\":\"knftguvriuh\"}}]}")
+            .toObject(CommitmentTierListResult.class);
+        Assertions.assertEquals("ugicjooxdjebw", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("cnjbkcnxdhbt");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        CommitmentTierListResult model = new CommitmentTierListResult().withNextLink("ugicjooxdjebw");
         model = BinaryData.fromObject(model).toObject(CommitmentTierListResult.class);
-        Assertions.assertEquals("cnjbkcnxdhbt", model.nextLink());
+        Assertions.assertEquals("ugicjooxdjebw", model.nextLink());
     }
 }

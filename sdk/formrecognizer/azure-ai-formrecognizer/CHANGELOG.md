@@ -1,6 +1,6 @@
 # Release History
 
-## 4.1.0-beta.1 (Unreleased)
+## 4.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,243 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.1.12 (2024-11-08)
+
+### Bugs Fixed
+- Fixed an OOM error occurring due to creating a list of PageWords every line in the page instead of just once for each page.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.1` to version `1.54.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.6`.
+
+## 4.1.11 (2024-09-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.51.1` to version `1.52.0`.
+- Upgraded `azure-core-http-netty` from `1.15.3` to version `1.15.4`.
+
+## 4.1.10 (2024-08-25)
+
+### Other Changes
+
+- Removed remaining `jackson-databind` usages and dependency from the project.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.49.1` to version `1.50.0`.
+- Upgraded `azure-core-http-netty` from `1.15.1` to version `1.15.2`.
+
+## 4.1.9 (2024-06-27)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.15.0` to version `1.15.1`.
+- Upgraded `azure-core` from `1.49.0` to version `1.49.1`.
+
+
+## 4.1.8 (2024-05-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.48.0` to version `1.49.0`.
+- Upgraded `azure-core-http-netty` from `1.14.2` to version `1.15.0`.
+
+
+## 4.1.7 (2024-04-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.47.0` to version `1.48.0`.
+- Upgraded `azure-core-http-netty` from `1.14.1` to version `1.14.2`.
+
+
+## 4.1.6 (2024-03-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
+- Upgraded `azure-core-http-netty` from `1.14.0` to version `1.14.1`.
+
+
+## 4.1.5 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
+## 4.1.4 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
+## 4.1.3 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-core-http-netty` from `1.13.9` to version `1.13.10`.
+
+## 4.1.2 (2023-10-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.43.0` to version `1.44.1`.
+- Upgraded `azure-core-http-netty` from `1.13.7` to version `1.13.9`.
+
+## 4.1.1 (2023-09-13)
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.42.0` to version `1.43.0`.
+- Upgraded `azure-core-http-netty` from `1.13.6` to version `1.13.7`.
+
+## 4.1.0 (2023-08-10)
+
+### Features Added
+- Added class `DocumentAnalysisFeature`, added properties `Barcodes`, `KeyValuePairs`, and `Languages` as add-on capabilities.
+- Added class `ContentSource` as a base class to `BlobContentSource` and `BlobFileListContentSource`
+- In `DocumentModelAdministrationClient`, added a new overload to `beginBuildDocumentModel` that takes a `ContentSource` object. 
+It can be used to build a document model from alternative content sources.
+- Added property `serviceVersion` to classes `AnalyzeResult`, `DocumentModelDetails`, `DocumentModelSummary`, `OperationDetails`, and `OperationSummary`.
+
+### Breaking Changes
+- `DocumentAnalysisClient` and `DocumentModelAdministrationClient` now target service API version `2023-07-31` by default. Version `2023-02-28-preview` is not supported anymore.
+- In class `ResourceDetails`, renamed property `customNeuralDocumentModelBuilds` to `neuralDocumentModelQuota`.
+- In class `DocumentClassifierDetails`, renamed property `apiVersion` to `serviceVersion`.
+
+### Bugs Fixed
+- `DocumentStyle` now correctly returns values for `font`, `similarFontFamily`, `backgroundColor`. 
+
+## 4.0.9 (2023-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.40.0` to version `1.41.0`.
+- Upgraded `azure-core-http-netty` from `1.13.4` to version `1.13.5`.
+
+
+## 4.0.8 (2023-06-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.39.0` to version `1.40.0`.
+- Upgraded `azure-core-http-netty` from `1.13.3` to version `1.13.4`.
+
+## 4.1.0-beta.2 (2023-05-10)
+### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
+
+### Other Changes
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 4.0.7 (2023-05-10)
+
+### Bugs Fixed
+- Document Table cell now returns correct values for bounding boxes.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.38.0` to version `1.39.0`.
+- Upgraded `azure-core-http-netty` from `1.13.2` to version `1.13.3`.
+
+## 4.0.6 (2023-04-19)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+
+## 4.1.0-beta.1 (2023-04-12)
+### Features Added
+- Added support for analyzing new document types
+- Added support for AzureBlobList source type when building document models
+- Added support for building, getting, listing and deleting classifiers
+- Added support for queryFields premium feature when performing analysis operations
+- Added model `QuotaDetails` and property `customNeuralDocumentModelBuilds` on `ResourceDetails`
+- Added property `expiresOn` to `DocumentModelDetails` and `DocumentModelSummary`
+- Added properties on `DocumentStyle` : `similarFontFamily`, `fontStyle`, `fontWeight`, `color`, `backgroundColor`
+- Added property `commonName` to `DocumentKeyValuePair`.
+- Added support for ParagraphRole `formulaBlock`
+- Added support for `code` property on `CurrencyValue`
+- Added properties `unit`, `cityDistrict`, `stateDistrict`, `suburb`, `house`, and `level` to `AddressValue`
+- Added method `isValueBoolean` to model `DocumentField`
+- Added support for `DocumentFieldType.BOOLEAN`
+- Added DocumentAnalysisFeature enum with optional document analysis feature to enable
+- Added properties `annotations`, `images`, `formulas`, and `barcodes` to `DocumentPage`.
+- Added models `DocumentAnnotation`, `DocumentImage`, `DocumentFormula`, and `DocumentBarcode`
+
+### Other Changes
+#### Known Bug
+- `com.azure.core.exception.HttpResponseException: Deserialization Failed` error when using the `beginClassifyDocument` 
+method on DocumentAnalysisAsyncClient and DocumentAnalysisClient.
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.1` to version `1.13.2`.
+- Upgraded `azure-core` from `1.37.0` to version `1.38.0`.
+
+## 4.0.5 (2023-03-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.0` to version `1.13.1`.
+- Upgraded `azure-core` from `1.36.0` to version `1.37.0`.
+
+## 4.0.4 (2023-02-09)
+
+### Other Changes
+- Method `beginAnalyzeDocument` requires the document length to be specified and not null when 
+analyzing a document.
+
+#### Dependency Updates
+- Upgraded `azure-core` to version `1.36.0`.
+- Upgraded `azure-core-http-netty` to version `1.13.0`.
+
+## 4.0.3 (2023-01-09)
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.33.0` to version `1.35.0`.
+- Upgraded `azure-core-http-netty` from `1.12.7` to version `1.12.8`.
 
 ## 4.0.2 (2022-11-10)
 

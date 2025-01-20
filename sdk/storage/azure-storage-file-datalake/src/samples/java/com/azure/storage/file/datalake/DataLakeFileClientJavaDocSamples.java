@@ -8,12 +8,16 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
+import com.azure.storage.file.datalake.models.DataLakeFileOpenInputStreamResult;
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.DownloadRetryOptions;
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization;
 import com.azure.storage.file.datalake.models.FileQueryError;
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization;
+import com.azure.storage.file.datalake.models.LeaseAction;
 import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileFlushOptions;
+import com.azure.storage.file.datalake.options.DataLakeFileInputStreamOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions;
 import com.azure.storage.file.datalake.options.FileQueryOptions;
@@ -23,6 +27,7 @@ import com.azure.storage.file.datalake.models.FileRange;
 import com.azure.storage.file.datalake.models.PathHttpHeaders;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions;
+import com.azure.storage.file.datalake.options.ReadToFileOptions;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -125,14 +130,22 @@ public class DataLakeFileClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeFileClient#readToFile(String)} and
+     * {@link DataLakeFileClient#readToFile(ReadToFileOptions)} and
+     * {@link DataLakeFileClient#readToFile(String, boolean)} and
      * {@link DataLakeFileClient#readToFileWithResponse(String, FileRange, ParallelTransferOptions, DownloadRetryOptions, DataLakeRequestConditions,
-     * boolean, Set, Duration, Context)}
+     * boolean, Set, Duration, Context)} and
+     * {@link DataLakeFileClient#readToFileWithResponse(ReadToFileOptions, Duration, Context)}
      */
     public void downloadToFile() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String
         client.readToFile(file);
         System.out.println("Completed download to file");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions
+        client.readToFile(new ReadToFileOptions(file));
+        System.out.println("Completed download to file");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#ReadToFileOptions
 
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFile#String-boolean
         boolean overwrite = false; // Default value
@@ -150,6 +163,22 @@ public class DataLakeFileClientJavaDocSamples {
             downloadRetryOptions, null, false, openOptions, timeout, new Context(key2, value2));
         System.out.println("Completed download to file");
         // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#String-FileRange-ParallelTransferOptions-DownloadRetryOptions-DataLakeRequestConditions-boolean-Set-Duration-Context
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#ReadToFileOptions-Duration-Context
+        ReadToFileOptions options = new ReadToFileOptions(file);
+        options.setRange(new FileRange(1024, 2048L));
+        options.setDownloadRetryOptions(new DownloadRetryOptions().setMaxRetryRequests(5));
+        options.setOpenOptions(new HashSet<>(Arrays.asList(StandardOpenOption.CREATE_NEW,
+                StandardOpenOption.WRITE, StandardOpenOption.READ))); //Default options
+        options.setParallelTransferOptions(new ParallelTransferOptions().setBlockSizeLong(4L * Constants.MB));
+        options.setDataLakeRequestConditions(null);
+        options.setRangeGetContentMd5(false);
+
+        client.readToFileWithResponse(options, timeout, new Context(key2, value2));
+        System.out.println("Completed download to file");
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.readToFileWithResponse#ReadToFileOptions-Duration-Context
+
+
     }
 
     /**
@@ -277,7 +306,7 @@ public class DataLakeFileClientJavaDocSamples {
 
     /**
      * Code snippets for {@link DataLakeFileClient#uploadFromFileWithResponse(String, ParallelTransferOptions,
-     * PathHttpHeaders, Map, DataLakeRequestConditions, Duration)}
+     * PathHttpHeaders, Map, DataLakeRequestConditions, Duration, Context)}
      */
     public void uploadFromFileWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.uploadFromFileWithResponse#String-ParallelTransferOptions-PathHttpHeaders-Map-DataLakeRequestConditions-Duration-Context
@@ -416,6 +445,39 @@ public class DataLakeFileClientJavaDocSamples {
     }
 
     /**
+     * Code snippet for {@link DataLakeFileClient#flushWithResponse(long, DataLakeFileFlushOptions, Duration, Context)}
+     */
+    public void flushWithOptionsCodeSnippet() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-DataLakeFileFlushOptions-Duration-Context
+        FileRange range = new FileRange(1024, 2048L);
+        DownloadRetryOptions options = new DownloadRetryOptions().setMaxRetryRequests(5);
+        byte[] contentMd5 = new byte[0]; // Replace with valid md5
+        boolean retainUncommittedData = false;
+        boolean close = false;
+        PathHttpHeaders httpHeaders = new PathHttpHeaders()
+            .setContentLanguage("en-US")
+            .setContentType("binary");
+        DataLakeRequestConditions requestConditions = new DataLakeRequestConditions()
+            .setLeaseId(leaseId);
+
+        Integer leaseDuration = 15;
+
+        DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
+            .setUncommittedDataRetained(retainUncommittedData)
+            .setClose(close)
+            .setPathHttpHeaders(httpHeaders)
+            .setRequestConditions(requestConditions)
+            .setLeaseAction(LeaseAction.ACQUIRE)
+            .setLeaseDuration(leaseDuration)
+            .setProposedLeaseId(leaseId);
+
+        Response<PathInfo> response = client.flushWithResponse(position, flushOptions, timeout,
+            new Context(key1, value1));
+        System.out.printf("Flush data completed with status %d%n", response.getStatusCode());
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.flushWithResponse#long-DataLakeFileFlushOptions-Duration-Context
+    }
+
+    /**
      * Code snippet for {@link DataLakeFileClient#openQueryInputStream(String)}
      */
     public void openQueryInputStream() {
@@ -548,6 +610,29 @@ public class DataLakeFileClientJavaDocSamples {
             System.out.printf("Delete completed with status %d%n", response.getStatusCode());
         }
         // END: com.azure.storage.file.datalake.DataLakeFileClient.deleteIfExistsWithResponse#DataLakePathDeleteOptions-Duration-Context
+    }
+
+    /**
+     * Code snippets for {@link DataLakeFileClient#openInputStream()},
+     * {@link DataLakeFileClient#openInputStream(DataLakeFileInputStreamOptions)} and
+     * {@link DataLakeFileClient#openInputStream(DataLakeFileInputStreamOptions, Context)}
+     */
+    public void openInputStreamCodeSnippets() {
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.openInputStream
+        DataLakeFileOpenInputStreamResult inputStream = client.openInputStream();
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.openInputStream
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.openInputStream#DataLakeFileInputStreamOptions
+        DataLakeFileInputStreamOptions options = new DataLakeFileInputStreamOptions().setBlockSize(1024)
+            .setRequestConditions(new DataLakeRequestConditions());
+        DataLakeFileOpenInputStreamResult streamResult = client.openInputStream(options);
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.openInputStream#DataLakeFileInputStreamOptions
+
+        // BEGIN: com.azure.storage.file.datalake.DataLakeFileClient.openInputStream#DataLakeFileInputStreamOptions-Context
+        options = new DataLakeFileInputStreamOptions().setBlockSize(1024)
+            .setRequestConditions(new DataLakeRequestConditions());
+        DataLakeFileOpenInputStreamResult stream = client.openInputStream(options, new Context(key1, value1));
+        // END: com.azure.storage.file.datalake.DataLakeFileClient.openInputStream#DataLakeFileInputStreamOptions-Context
     }
 
 }

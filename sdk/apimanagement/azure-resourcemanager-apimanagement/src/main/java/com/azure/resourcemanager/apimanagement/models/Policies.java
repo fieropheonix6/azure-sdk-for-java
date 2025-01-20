@@ -8,24 +8,14 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
 
-/** Resource collection API of Policies. */
+/**
+ * Resource collection API of Policies.
+ */
 public interface Policies {
     /**
      * Lists all the Global Policy definitions of the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of the list policy operation.
-     */
-    PolicyCollection listByService(String resourceGroupName, String serviceName);
-
-    /**
-     * Lists all the Global Policy definitions of the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,9 +26,36 @@ public interface Policies {
     Response<PolicyCollection> listByServiceWithResponse(String resourceGroupName, String serviceName, Context context);
 
     /**
+     * Lists all the Global Policy definitions of the Api Management service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of the list policy operation.
+     */
+    PolicyCollection listByService(String resourceGroupName, String serviceName);
+
+    /**
      * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param policyId The identifier of the Policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the entity state (Etag) version of the Global policy definition in the Api Management service.
+     */
+    PoliciesGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName, String serviceName,
+        PolicyIdName policyId, Context context);
+
+    /**
+     * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,24 +65,25 @@ public interface Policies {
     void getEntityTag(String resourceGroupName, String serviceName, PolicyIdName policyId);
 
     /**
-     * Gets the entity state (Etag) version of the Global policy definition in the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Get the Global policy definition of the Api Management service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
+     * @param format Policy Export Format.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the Global policy definition in the Api Management service.
+     * @return the Global policy definition of the Api Management service.
      */
-    PoliciesGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, Context context);
+    Response<PolicyContract> getWithResponse(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        PolicyExportFormat format, Context context);
 
     /**
      * Get the Global policy definition of the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -76,44 +94,9 @@ public interface Policies {
     PolicyContract get(String resourceGroupName, String serviceName, PolicyIdName policyId);
 
     /**
-     * Get the Global policy definition of the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param policyId The identifier of the Policy.
-     * @param format Policy Export Format.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Global policy definition of the Api Management service.
-     */
-    Response<PolicyContract> getWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PolicyIdName policyId,
-        PolicyExportFormat format,
-        Context context);
-
-    /**
      * Creates or updates the global policy configuration of the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param serviceName The name of the API Management service.
-     * @param policyId The identifier of the Policy.
-     * @param parameters The policy contents to apply.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy Contract details.
-     */
-    PolicyContract createOrUpdate(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, PolicyContractInner parameters);
-
-    /**
-     * Creates or updates the global policy configuration of the Api Management service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param parameters The policy contents to apply.
@@ -124,42 +107,52 @@ public interface Policies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return policy Contract details.
      */
-    Response<PolicyContract> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String serviceName,
-        PolicyIdName policyId,
-        PolicyContractInner parameters,
-        String ifMatch,
-        Context context);
+    Response<PolicyContract> createOrUpdateWithResponse(String resourceGroupName, String serviceName,
+        PolicyIdName policyId, PolicyContractInner parameters, String ifMatch, Context context);
 
     /**
-     * Deletes the global policy configuration of the Api Management Service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Creates or updates the global policy configuration of the Api Management service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
-     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * @param parameters The policy contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy Contract details.
      */
-    void delete(String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch);
+    PolicyContract createOrUpdate(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        PolicyContractInner parameters);
 
     /**
      * Deletes the global policy configuration of the Api Management Service.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
      * @param policyId The identifier of the Policy.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
-     *     request or it should be * for unconditional update.
+     * request or it should be * for unconditional update.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, PolicyIdName policyId,
+        String ifMatch, Context context);
+
+    /**
+     * Deletes the global policy configuration of the Api Management Service.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param policyId The identifier of the Policy.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String resourceGroupName, String serviceName, PolicyIdName policyId, String ifMatch);
 }

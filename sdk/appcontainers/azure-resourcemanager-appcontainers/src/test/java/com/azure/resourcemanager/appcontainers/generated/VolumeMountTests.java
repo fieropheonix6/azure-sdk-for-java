@@ -7,24 +7,24 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.VolumeMount;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class VolumeMountTests {
-    @Test
-    public void testDeserialize() {
-        VolumeMount model =
-            BinaryData
-                .fromString("{\"volumeName\":\"btkuwhh\",\"mountPath\":\"ykojoxafnndlpic\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        VolumeMount model
+            = BinaryData.fromString("{\"volumeName\":\"kbwcc\",\"mountPath\":\"jvcdwxlpqekf\",\"subPath\":\"khtj\"}")
                 .toObject(VolumeMount.class);
-        Assertions.assertEquals("btkuwhh", model.volumeName());
-        Assertions.assertEquals("ykojoxafnndlpic", model.mountPath());
+        Assertions.assertEquals("kbwcc", model.volumeName());
+        Assertions.assertEquals("jvcdwxlpqekf", model.mountPath());
+        Assertions.assertEquals("khtj", model.subPath());
     }
 
-    @Test
-    public void testSerialize() {
-        VolumeMount model = new VolumeMount().withVolumeName("btkuwhh").withMountPath("ykojoxafnndlpic");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        VolumeMount model = new VolumeMount().withVolumeName("kbwcc").withMountPath("jvcdwxlpqekf").withSubPath("khtj");
         model = BinaryData.fromObject(model).toObject(VolumeMount.class);
-        Assertions.assertEquals("btkuwhh", model.volumeName());
-        Assertions.assertEquals("ykojoxafnndlpic", model.mountPath());
+        Assertions.assertEquals("kbwcc", model.volumeName());
+        Assertions.assertEquals("jvcdwxlpqekf", model.mountPath());
+        Assertions.assertEquals("khtj", model.subPath());
     }
 }

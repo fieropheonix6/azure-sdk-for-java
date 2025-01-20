@@ -5,43 +5,47 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.fluent.models.ClusterVersionDetails;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The result of the Service Fabric runtime versions. */
+/**
+ * The result of the Service Fabric runtime versions.
+ */
 @Fluent
-public final class ClusterCodeVersionsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterCodeVersionsResult.class);
-
+public final class ClusterCodeVersionsResult implements JsonSerializable<ClusterCodeVersionsResult> {
     /*
      * The identification of the result
      */
-    @JsonProperty(value = "id")
     private String id;
 
     /*
      * The name of the result
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * The result resource type
      */
-    @JsonProperty(value = "type")
     private String type;
 
     /*
      * The detail of the Service Fabric runtime version result
      */
-    @JsonProperty(value = "properties")
     private ClusterVersionDetails innerProperties;
 
     /**
+     * Creates an instance of ClusterCodeVersionsResult class.
+     */
+    public ClusterCodeVersionsResult() {
+    }
+
+    /**
      * Get the id property: The identification of the result.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the id property: The identification of the result.
-     *
+     * 
      * @param id the id value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -61,7 +65,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the name property: The name of the result.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -70,7 +74,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the name property: The name of the result.
-     *
+     * 
      * @param name the name value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -81,7 +85,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the type property: The result resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -90,7 +94,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the type property: The result resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -101,7 +105,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the innerProperties property: The detail of the Service Fabric runtime version result.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterVersionDetails innerProperties() {
@@ -110,7 +114,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the codeVersion property: The Service Fabric runtime version of the cluster.
-     *
+     * 
      * @return the codeVersion value.
      */
     public String codeVersion() {
@@ -119,7 +123,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the codeVersion property: The Service Fabric runtime version of the cluster.
-     *
+     * 
      * @param codeVersion the codeVersion value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -133,7 +137,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the supportExpiryUtc property: The date of expiry of support of the version.
-     *
+     * 
      * @return the supportExpiryUtc value.
      */
     public String supportExpiryUtc() {
@@ -142,7 +146,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the supportExpiryUtc property: The date of expiry of support of the version.
-     *
+     * 
      * @param supportExpiryUtc the supportExpiryUtc value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -156,7 +160,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Get the environment property: Indicates if this version is for Windows or Linux operating system.
-     *
+     * 
      * @return the environment value.
      */
     public ClusterEnvironment environment() {
@@ -165,7 +169,7 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Set the environment property: Indicates if this version is for Windows or Linux operating system.
-     *
+     * 
      * @param environment the environment value to set.
      * @return the ClusterCodeVersionsResult object itself.
      */
@@ -179,12 +183,57 @@ public final class ClusterCodeVersionsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
+        jsonWriter.writeStringField("name", this.name);
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterCodeVersionsResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterCodeVersionsResult if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ClusterCodeVersionsResult.
+     */
+    public static ClusterCodeVersionsResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterCodeVersionsResult deserializedClusterCodeVersionsResult = new ClusterCodeVersionsResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterCodeVersionsResult.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterCodeVersionsResult.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterCodeVersionsResult.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterCodeVersionsResult.innerProperties = ClusterVersionDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterCodeVersionsResult;
+        });
     }
 }

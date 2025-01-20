@@ -5,36 +5,54 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** Delimited text read settings. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DelimitedTextReadSettings")
+/**
+ * Delimited text read settings.
+ */
 @Fluent
 public final class DelimitedTextReadSettings extends FormatReadSettings {
+    /*
+     * The read setting type.
+     */
+    private String type = "DelimitedTextReadSettings";
+
     /*
      * Indicates the number of non-empty rows to skip when reading data from input files. Type: integer (or Expression
      * with resultType integer).
      */
-    @JsonProperty(value = "skipLineCount")
     private Object skipLineCount;
 
     /*
      * Compression settings.
      */
-    @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
 
-    /** Creates an instance of DelimitedTextReadSettings class. */
+    /**
+     * Creates an instance of DelimitedTextReadSettings class.
+     */
     public DelimitedTextReadSettings() {
+    }
+
+    /**
+     * Get the type property: The read setting type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
      * Get the skipLineCount property: Indicates the number of non-empty rows to skip when reading data from input
      * files. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the skipLineCount value.
      */
     public Object skipLineCount() {
@@ -44,7 +62,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
     /**
      * Set the skipLineCount property: Indicates the number of non-empty rows to skip when reading data from input
      * files. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param skipLineCount the skipLineCount value to set.
      * @return the DelimitedTextReadSettings object itself.
      */
@@ -55,7 +73,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
 
     /**
      * Get the compressionProperties property: Compression settings.
-     *
+     * 
      * @return the compressionProperties value.
      */
     public CompressionReadSettings compressionProperties() {
@@ -64,7 +82,7 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
 
     /**
      * Set the compressionProperties property: Compression settings.
-     *
+     * 
      * @param compressionProperties the compressionProperties value to set.
      * @return the DelimitedTextReadSettings object itself.
      */
@@ -75,14 +93,67 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (compressionProperties() != null) {
             compressionProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("skipLineCount", this.skipLineCount);
+        jsonWriter.writeJsonField("compressionProperties", this.compressionProperties);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DelimitedTextReadSettings from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DelimitedTextReadSettings if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DelimitedTextReadSettings.
+     */
+    public static DelimitedTextReadSettings fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DelimitedTextReadSettings deserializedDelimitedTextReadSettings = new DelimitedTextReadSettings();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedDelimitedTextReadSettings.type = reader.getString();
+                } else if ("skipLineCount".equals(fieldName)) {
+                    deserializedDelimitedTextReadSettings.skipLineCount = reader.readUntyped();
+                } else if ("compressionProperties".equals(fieldName)) {
+                    deserializedDelimitedTextReadSettings.compressionProperties
+                        = CompressionReadSettings.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedDelimitedTextReadSettings.withAdditionalProperties(additionalProperties);
+
+            return deserializedDelimitedTextReadSettings;
+        });
     }
 }

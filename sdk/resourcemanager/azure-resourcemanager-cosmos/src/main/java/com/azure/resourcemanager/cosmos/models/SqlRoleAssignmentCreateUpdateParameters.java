@@ -5,21 +5,33 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Parameters to create and update an Azure Cosmos DB SQL Role Assignment. */
+/**
+ * Parameters to create and update an Azure Cosmos DB SQL Role Assignment.
+ */
 @Fluent
-public final class SqlRoleAssignmentCreateUpdateParameters {
+public final class SqlRoleAssignmentCreateUpdateParameters
+    implements JsonSerializable<SqlRoleAssignmentCreateUpdateParameters> {
     /*
      * Properties to create and update an Azure Cosmos DB SQL Role Assignment.
      */
-    @JsonProperty(value = "properties")
     private SqlRoleAssignmentResource innerProperties;
 
     /**
+     * Creates an instance of SqlRoleAssignmentCreateUpdateParameters class.
+     */
+    public SqlRoleAssignmentCreateUpdateParameters() {
+    }
+
+    /**
      * Get the innerProperties property: Properties to create and update an Azure Cosmos DB SQL Role Assignment.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlRoleAssignmentResource innerProperties() {
@@ -28,7 +40,7 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
 
     /**
      * Get the roleDefinitionId property: The unique identifier for the associated Role Definition.
-     *
+     * 
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -37,7 +49,7 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
 
     /**
      * Set the roleDefinitionId property: The unique identifier for the associated Role Definition.
-     *
+     * 
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the SqlRoleAssignmentCreateUpdateParameters object itself.
      */
@@ -52,7 +64,7 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
     /**
      * Get the scope property: The data plane resource path for which access is being granted through this Role
      * Assignment.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -62,7 +74,7 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
     /**
      * Set the scope property: The data plane resource path for which access is being granted through this Role
      * Assignment.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the SqlRoleAssignmentCreateUpdateParameters object itself.
      */
@@ -78,7 +90,7 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
      * Get the principalId property: The unique identifier for the associated AAD principal in the AAD graph to which
      * access is being granted through this Role Assignment. Tenant ID for the principal is inferred using the tenant
      * associated with the subscription.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -89,7 +101,7 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
      * Set the principalId property: The unique identifier for the associated AAD principal in the AAD graph to which
      * access is being granted through this Role Assignment. Tenant ID for the principal is inferred using the tenant
      * associated with the subscription.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the SqlRoleAssignmentCreateUpdateParameters object itself.
      */
@@ -103,12 +115,50 @@ public final class SqlRoleAssignmentCreateUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlRoleAssignmentCreateUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlRoleAssignmentCreateUpdateParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SqlRoleAssignmentCreateUpdateParameters.
+     */
+    public static SqlRoleAssignmentCreateUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlRoleAssignmentCreateUpdateParameters deserializedSqlRoleAssignmentCreateUpdateParameters
+                = new SqlRoleAssignmentCreateUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedSqlRoleAssignmentCreateUpdateParameters.innerProperties
+                        = SqlRoleAssignmentResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlRoleAssignmentCreateUpdateParameters;
+        });
     }
 }

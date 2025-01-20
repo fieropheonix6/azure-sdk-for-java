@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.workloads.implementation;
 
 import com.azure.core.annotation.ServiceClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
@@ -24,15 +25,13 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.workloads.fluent.MonitorsClient;
 import com.azure.resourcemanager.workloads.fluent.OperationsClient;
-import com.azure.resourcemanager.workloads.fluent.PhpWorkloadsClient;
 import com.azure.resourcemanager.workloads.fluent.ProviderInstancesClient;
 import com.azure.resourcemanager.workloads.fluent.ResourceProvidersClient;
 import com.azure.resourcemanager.workloads.fluent.SapApplicationServerInstancesClient;
 import com.azure.resourcemanager.workloads.fluent.SapCentralInstancesClient;
 import com.azure.resourcemanager.workloads.fluent.SapDatabaseInstancesClient;
+import com.azure.resourcemanager.workloads.fluent.SapLandscapeMonitorsClient;
 import com.azure.resourcemanager.workloads.fluent.SapVirtualInstancesClient;
-import com.azure.resourcemanager.workloads.fluent.SkusClient;
-import com.azure.resourcemanager.workloads.fluent.WordpressInstancesClient;
 import com.azure.resourcemanager.workloads.fluent.WorkloadsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -43,216 +42,224 @@ import java.time.Duration;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the WorkloadsClientImpl type. */
+/**
+ * Initializes a new instance of the WorkloadsClientImpl type.
+ */
 @ServiceClient(builder = WorkloadsClientBuilder.class)
 public final class WorkloadsClientImpl implements WorkloadsClient {
-    /** The ID of the target subscription. */
+    /**
+     * The ID of the target subscription.
+     */
     private final String subscriptionId;
 
     /**
      * Gets The ID of the target subscription.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String getSubscriptionId() {
         return this.subscriptionId;
     }
 
-    /** server parameter. */
+    /**
+     * server parameter.
+     */
     private final String endpoint;
 
     /**
      * Gets server parameter.
-     *
+     * 
      * @return the endpoint value.
      */
     public String getEndpoint() {
         return this.endpoint;
     }
 
-    /** Api Version. */
+    /**
+     * Api Version.
+     */
     private final String apiVersion;
 
     /**
      * Gets Api Version.
-     *
+     * 
      * @return the apiVersion value.
      */
     public String getApiVersion() {
         return this.apiVersion;
     }
 
-    /** The HTTP pipeline to send requests through. */
+    /**
+     * The HTTP pipeline to send requests through.
+     */
     private final HttpPipeline httpPipeline;
 
     /**
      * Gets The HTTP pipeline to send requests through.
-     *
+     * 
      * @return the httpPipeline value.
      */
     public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
-    /** The serializer to serialize an object into a string. */
+    /**
+     * The serializer to serialize an object into a string.
+     */
     private final SerializerAdapter serializerAdapter;
 
     /**
      * Gets The serializer to serialize an object into a string.
-     *
+     * 
      * @return the serializerAdapter value.
      */
     SerializerAdapter getSerializerAdapter() {
         return this.serializerAdapter;
     }
 
-    /** The default poll interval for long-running operation. */
+    /**
+     * The default poll interval for long-running operation.
+     */
     private final Duration defaultPollInterval;
 
     /**
      * Gets The default poll interval for long-running operation.
-     *
+     * 
      * @return the defaultPollInterval value.
      */
     public Duration getDefaultPollInterval() {
         return this.defaultPollInterval;
     }
 
-    /** The PhpWorkloadsClient object to access its operations. */
-    private final PhpWorkloadsClient phpWorkloads;
-
     /**
-     * Gets the PhpWorkloadsClient object to access its operations.
-     *
-     * @return the PhpWorkloadsClient object.
+     * The ResourceProvidersClient object to access its operations.
      */
-    public PhpWorkloadsClient getPhpWorkloads() {
-        return this.phpWorkloads;
-    }
-
-    /** The WordpressInstancesClient object to access its operations. */
-    private final WordpressInstancesClient wordpressInstances;
-
-    /**
-     * Gets the WordpressInstancesClient object to access its operations.
-     *
-     * @return the WordpressInstancesClient object.
-     */
-    public WordpressInstancesClient getWordpressInstances() {
-        return this.wordpressInstances;
-    }
-
-    /** The ResourceProvidersClient object to access its operations. */
     private final ResourceProvidersClient resourceProviders;
 
     /**
      * Gets the ResourceProvidersClient object to access its operations.
-     *
+     * 
      * @return the ResourceProvidersClient object.
      */
     public ResourceProvidersClient getResourceProviders() {
         return this.resourceProviders;
     }
 
-    /** The SapVirtualInstancesClient object to access its operations. */
+    /**
+     * The SapVirtualInstancesClient object to access its operations.
+     */
     private final SapVirtualInstancesClient sapVirtualInstances;
 
     /**
      * Gets the SapVirtualInstancesClient object to access its operations.
-     *
+     * 
      * @return the SapVirtualInstancesClient object.
      */
     public SapVirtualInstancesClient getSapVirtualInstances() {
         return this.sapVirtualInstances;
     }
 
-    /** The SapCentralInstancesClient object to access its operations. */
+    /**
+     * The SapCentralInstancesClient object to access its operations.
+     */
     private final SapCentralInstancesClient sapCentralInstances;
 
     /**
      * Gets the SapCentralInstancesClient object to access its operations.
-     *
+     * 
      * @return the SapCentralInstancesClient object.
      */
     public SapCentralInstancesClient getSapCentralInstances() {
         return this.sapCentralInstances;
     }
 
-    /** The SapDatabaseInstancesClient object to access its operations. */
+    /**
+     * The SapDatabaseInstancesClient object to access its operations.
+     */
     private final SapDatabaseInstancesClient sapDatabaseInstances;
 
     /**
      * Gets the SapDatabaseInstancesClient object to access its operations.
-     *
+     * 
      * @return the SapDatabaseInstancesClient object.
      */
     public SapDatabaseInstancesClient getSapDatabaseInstances() {
         return this.sapDatabaseInstances;
     }
 
-    /** The SapApplicationServerInstancesClient object to access its operations. */
+    /**
+     * The SapApplicationServerInstancesClient object to access its operations.
+     */
     private final SapApplicationServerInstancesClient sapApplicationServerInstances;
 
     /**
      * Gets the SapApplicationServerInstancesClient object to access its operations.
-     *
+     * 
      * @return the SapApplicationServerInstancesClient object.
      */
     public SapApplicationServerInstancesClient getSapApplicationServerInstances() {
         return this.sapApplicationServerInstances;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
-
     /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
+     * The MonitorsClient object to access its operations.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
-    }
-
-    /** The MonitorsClient object to access its operations. */
     private final MonitorsClient monitors;
 
     /**
      * Gets the MonitorsClient object to access its operations.
-     *
+     * 
      * @return the MonitorsClient object.
      */
     public MonitorsClient getMonitors() {
         return this.monitors;
     }
 
-    /** The ProviderInstancesClient object to access its operations. */
+    /**
+     * The ProviderInstancesClient object to access its operations.
+     */
     private final ProviderInstancesClient providerInstances;
 
     /**
      * Gets the ProviderInstancesClient object to access its operations.
-     *
+     * 
      * @return the ProviderInstancesClient object.
      */
     public ProviderInstancesClient getProviderInstances() {
         return this.providerInstances;
     }
 
-    /** The SkusClient object to access its operations. */
-    private final SkusClient skus;
+    /**
+     * The SapLandscapeMonitorsClient object to access its operations.
+     */
+    private final SapLandscapeMonitorsClient sapLandscapeMonitors;
 
     /**
-     * Gets the SkusClient object to access its operations.
-     *
-     * @return the SkusClient object.
+     * Gets the SapLandscapeMonitorsClient object to access its operations.
+     * 
+     * @return the SapLandscapeMonitorsClient object.
      */
-    public SkusClient getSkus() {
-        return this.skus;
+    public SapLandscapeMonitorsClient getSapLandscapeMonitors() {
+        return this.sapLandscapeMonitors;
+    }
+
+    /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
     }
 
     /**
      * Initializes an instance of WorkloadsClient client.
-     *
+     * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param defaultPollInterval The default poll interval for long-running operation.
@@ -260,35 +267,28 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    WorkloadsClientImpl(
-        HttpPipeline httpPipeline,
-        SerializerAdapter serializerAdapter,
-        Duration defaultPollInterval,
-        AzureEnvironment environment,
-        String subscriptionId,
-        String endpoint) {
+    WorkloadsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
+        AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-12-01-preview";
-        this.phpWorkloads = new PhpWorkloadsClientImpl(this);
-        this.wordpressInstances = new WordpressInstancesClientImpl(this);
+        this.apiVersion = "2023-04-01";
         this.resourceProviders = new ResourceProvidersClientImpl(this);
         this.sapVirtualInstances = new SapVirtualInstancesClientImpl(this);
         this.sapCentralInstances = new SapCentralInstancesClientImpl(this);
         this.sapDatabaseInstances = new SapDatabaseInstancesClientImpl(this);
         this.sapApplicationServerInstances = new SapApplicationServerInstancesClientImpl(this);
-        this.operations = new OperationsClientImpl(this);
         this.monitors = new MonitorsClientImpl(this);
         this.providerInstances = new ProviderInstancesClientImpl(this);
-        this.skus = new SkusClientImpl(this);
+        this.sapLandscapeMonitors = new SapLandscapeMonitorsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
     }
 
     /**
      * Gets default client context.
-     *
+     * 
      * @return the default client context.
      */
     public Context getContext() {
@@ -297,7 +297,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
 
     /**
      * Merges default client context with provided context.
-     *
+     * 
      * @param context the context to be merged with default client context.
      * @return the merged context.
      */
@@ -307,7 +307,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
 
     /**
      * Gets long running operation result.
-     *
+     * 
      * @param activationResponse the response of activation operation.
      * @param httpPipeline the http pipeline.
      * @param pollResultType type of poll result.
@@ -317,26 +317,15 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
      * @param <U> type of final result.
      * @return poller flux for poll result and final result.
      */
-    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(
-        Mono<Response<Flux<ByteBuffer>>> activationResponse,
-        HttpPipeline httpPipeline,
-        Type pollResultType,
-        Type finalResultType,
-        Context context) {
-        return PollerFactory
-            .create(
-                serializerAdapter,
-                httpPipeline,
-                pollResultType,
-                finalResultType,
-                defaultPollInterval,
-                activationResponse,
-                context);
+    public <T, U> PollerFlux<PollResult<T>, U> getLroResult(Mono<Response<Flux<ByteBuffer>>> activationResponse,
+        HttpPipeline httpPipeline, Type pollResultType, Type finalResultType, Context context) {
+        return PollerFactory.create(serializerAdapter, httpPipeline, pollResultType, finalResultType,
+            defaultPollInterval, activationResponse, context);
     }
 
     /**
      * Gets the final result, or an error, based on last async poll response.
-     *
+     * 
      * @param response the last async poll response.
      * @param <T> type of poll result.
      * @param <U> type of final result.
@@ -349,19 +338,16 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
             HttpResponse errorResponse = null;
             PollResult.Error lroError = response.getValue().getError();
             if (lroError != null) {
-                errorResponse =
-                    new HttpResponseImpl(
-                        lroError.getResponseStatusCode(), lroError.getResponseHeaders(), lroError.getResponseBody());
+                errorResponse = new HttpResponseImpl(lroError.getResponseStatusCode(), lroError.getResponseHeaders(),
+                    lroError.getResponseBody());
 
                 errorMessage = response.getValue().getError().getMessage();
                 String errorBody = response.getValue().getError().getResponseBody();
                 if (errorBody != null) {
                     // try to deserialize error body to ManagementError
                     try {
-                        managementError =
-                            this
-                                .getSerializerAdapter()
-                                .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
+                        managementError = this.getSerializerAdapter()
+                            .deserialize(errorBody, ManagementError.class, SerializerEncoding.JSON);
                         if (managementError.getCode() == null || managementError.getMessage() == null) {
                             managementError = null;
                         }
@@ -402,7 +388,7 @@ public final class WorkloadsClientImpl implements WorkloadsClient {
         }
 
         public String getHeaderValue(String s) {
-            return httpHeaders.getValue(s);
+            return httpHeaders.getValue(HttpHeaderName.fromString(s));
         }
 
         public HttpHeaders getHeaders() {

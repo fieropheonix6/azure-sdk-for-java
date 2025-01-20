@@ -5,235 +5,211 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
-/** ProcessInfo resource specific properties. */
+/**
+ * ProcessInfo resource specific properties.
+ */
 @Fluent
-public final class ProcessInfoProperties {
+public final class ProcessInfoProperties implements JsonSerializable<ProcessInfoProperties> {
     /*
      * ARM Identifier for deployment.
      */
-    @JsonProperty(value = "identifier", access = JsonProperty.Access.WRITE_ONLY)
     private Integer identifier;
 
     /*
      * Deployment name.
      */
-    @JsonProperty(value = "deployment_name")
     private String deploymentName;
 
     /*
      * HRef URI.
      */
-    @JsonProperty(value = "href")
     private String href;
 
     /*
      * Minidump URI.
      */
-    @JsonProperty(value = "minidump")
     private String minidump;
 
     /*
      * Is profile running?
      */
-    @JsonProperty(value = "is_profile_running")
     private Boolean isProfileRunning;
 
     /*
      * Is the IIS Profile running?
      */
-    @JsonProperty(value = "is_iis_profile_running")
     private Boolean isIisProfileRunning;
 
     /*
      * IIS Profile timeout (seconds).
      */
-    @JsonProperty(value = "iis_profile_timeout_in_seconds")
     private Double iisProfileTimeoutInSeconds;
 
     /*
      * Parent process.
      */
-    @JsonProperty(value = "parent")
     private String parent;
 
     /*
      * Child process list.
      */
-    @JsonProperty(value = "children")
     private List<String> children;
 
     /*
      * Thread list.
      */
-    @JsonProperty(value = "threads")
     private List<ProcessThreadInfoInner> threads;
 
     /*
      * List of open files.
      */
-    @JsonProperty(value = "open_file_handles")
     private List<String> openFileHandles;
 
     /*
      * List of modules.
      */
-    @JsonProperty(value = "modules")
     private List<ProcessModuleInfoInner> modules;
 
     /*
      * File name of this process.
      */
-    @JsonProperty(value = "file_name")
     private String fileName;
 
     /*
      * Command line.
      */
-    @JsonProperty(value = "command_line")
     private String commandLine;
 
     /*
      * User name.
      */
-    @JsonProperty(value = "user_name")
     private String username;
 
     /*
      * Handle count.
      */
-    @JsonProperty(value = "handle_count")
     private Integer handleCount;
 
     /*
      * Module count.
      */
-    @JsonProperty(value = "module_count")
     private Integer moduleCount;
 
     /*
      * Thread count.
      */
-    @JsonProperty(value = "thread_count")
     private Integer threadCount;
 
     /*
      * Start time.
      */
-    @JsonProperty(value = "start_time")
     private OffsetDateTime startTime;
 
     /*
      * Total CPU time.
      */
-    @JsonProperty(value = "total_cpu_time")
     private String totalCpuTime;
 
     /*
      * User CPU time.
      */
-    @JsonProperty(value = "user_cpu_time")
     private String userCpuTime;
 
     /*
      * Privileged CPU time.
      */
-    @JsonProperty(value = "privileged_cpu_time")
     private String privilegedCpuTime;
 
     /*
      * Working set.
      */
-    @JsonProperty(value = "working_set")
     private Long workingSet;
 
     /*
      * Peak working set.
      */
-    @JsonProperty(value = "peak_working_set")
     private Long peakWorkingSet;
 
     /*
      * Private memory size.
      */
-    @JsonProperty(value = "private_memory")
     private Long privateMemory;
 
     /*
      * Virtual memory size.
      */
-    @JsonProperty(value = "virtual_memory")
     private Long virtualMemory;
 
     /*
      * Peak virtual memory usage.
      */
-    @JsonProperty(value = "peak_virtual_memory")
     private Long peakVirtualMemory;
 
     /*
      * Paged system memory.
      */
-    @JsonProperty(value = "paged_system_memory")
     private Long pagedSystemMemory;
 
     /*
      * Non-paged system memory.
      */
-    @JsonProperty(value = "non_paged_system_memory")
     private Long nonPagedSystemMemory;
 
     /*
      * Paged memory.
      */
-    @JsonProperty(value = "paged_memory")
     private Long pagedMemory;
 
     /*
      * Peak paged memory.
      */
-    @JsonProperty(value = "peak_paged_memory")
     private Long peakPagedMemory;
 
     /*
      * Time stamp.
      */
-    @JsonProperty(value = "time_stamp")
     private OffsetDateTime timestamp;
 
     /*
      * List of environment variables.
      */
-    @JsonProperty(value = "environment_variables")
-    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> environmentVariables;
 
     /*
      * Is this the SCM site?
      */
-    @JsonProperty(value = "is_scm_site")
     private Boolean isScmSite;
 
     /*
      * Is this a Web Job?
      */
-    @JsonProperty(value = "is_webjob")
     private Boolean isWebjob;
 
     /*
      * Description of process.
      */
-    @JsonProperty(value = "description")
     private String description;
 
     /**
+     * Creates an instance of ProcessInfoProperties class.
+     */
+    public ProcessInfoProperties() {
+    }
+
+    /**
      * Get the identifier property: ARM Identifier for deployment.
-     *
+     * 
      * @return the identifier value.
      */
     public Integer identifier() {
@@ -242,7 +218,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the deploymentName property: Deployment name.
-     *
+     * 
      * @return the deploymentName value.
      */
     public String deploymentName() {
@@ -251,7 +227,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the deploymentName property: Deployment name.
-     *
+     * 
      * @param deploymentName the deploymentName value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -262,7 +238,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the href property: HRef URI.
-     *
+     * 
      * @return the href value.
      */
     public String href() {
@@ -271,7 +247,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the href property: HRef URI.
-     *
+     * 
      * @param href the href value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -282,7 +258,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the minidump property: Minidump URI.
-     *
+     * 
      * @return the minidump value.
      */
     public String minidump() {
@@ -291,7 +267,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the minidump property: Minidump URI.
-     *
+     * 
      * @param minidump the minidump value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -302,7 +278,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the isProfileRunning property: Is profile running?.
-     *
+     * 
      * @return the isProfileRunning value.
      */
     public Boolean isProfileRunning() {
@@ -311,7 +287,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the isProfileRunning property: Is profile running?.
-     *
+     * 
      * @param isProfileRunning the isProfileRunning value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -322,7 +298,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the isIisProfileRunning property: Is the IIS Profile running?.
-     *
+     * 
      * @return the isIisProfileRunning value.
      */
     public Boolean isIisProfileRunning() {
@@ -331,7 +307,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the isIisProfileRunning property: Is the IIS Profile running?.
-     *
+     * 
      * @param isIisProfileRunning the isIisProfileRunning value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -342,7 +318,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the iisProfileTimeoutInSeconds property: IIS Profile timeout (seconds).
-     *
+     * 
      * @return the iisProfileTimeoutInSeconds value.
      */
     public Double iisProfileTimeoutInSeconds() {
@@ -351,7 +327,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the iisProfileTimeoutInSeconds property: IIS Profile timeout (seconds).
-     *
+     * 
      * @param iisProfileTimeoutInSeconds the iisProfileTimeoutInSeconds value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -362,7 +338,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the parent property: Parent process.
-     *
+     * 
      * @return the parent value.
      */
     public String parent() {
@@ -371,7 +347,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the parent property: Parent process.
-     *
+     * 
      * @param parent the parent value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -382,7 +358,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the children property: Child process list.
-     *
+     * 
      * @return the children value.
      */
     public List<String> children() {
@@ -391,7 +367,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the children property: Child process list.
-     *
+     * 
      * @param children the children value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -402,7 +378,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the threads property: Thread list.
-     *
+     * 
      * @return the threads value.
      */
     public List<ProcessThreadInfoInner> threads() {
@@ -411,7 +387,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the threads property: Thread list.
-     *
+     * 
      * @param threads the threads value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -422,7 +398,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the openFileHandles property: List of open files.
-     *
+     * 
      * @return the openFileHandles value.
      */
     public List<String> openFileHandles() {
@@ -431,7 +407,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the openFileHandles property: List of open files.
-     *
+     * 
      * @param openFileHandles the openFileHandles value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -442,7 +418,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the modules property: List of modules.
-     *
+     * 
      * @return the modules value.
      */
     public List<ProcessModuleInfoInner> modules() {
@@ -451,7 +427,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the modules property: List of modules.
-     *
+     * 
      * @param modules the modules value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -462,7 +438,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the fileName property: File name of this process.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -471,7 +447,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the fileName property: File name of this process.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -482,7 +458,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the commandLine property: Command line.
-     *
+     * 
      * @return the commandLine value.
      */
     public String commandLine() {
@@ -491,7 +467,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the commandLine property: Command line.
-     *
+     * 
      * @param commandLine the commandLine value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -502,7 +478,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the username property: User name.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -511,7 +487,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the username property: User name.
-     *
+     * 
      * @param username the username value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -522,7 +498,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the handleCount property: Handle count.
-     *
+     * 
      * @return the handleCount value.
      */
     public Integer handleCount() {
@@ -531,7 +507,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the handleCount property: Handle count.
-     *
+     * 
      * @param handleCount the handleCount value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -542,7 +518,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the moduleCount property: Module count.
-     *
+     * 
      * @return the moduleCount value.
      */
     public Integer moduleCount() {
@@ -551,7 +527,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the moduleCount property: Module count.
-     *
+     * 
      * @param moduleCount the moduleCount value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -562,7 +538,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the threadCount property: Thread count.
-     *
+     * 
      * @return the threadCount value.
      */
     public Integer threadCount() {
@@ -571,7 +547,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the threadCount property: Thread count.
-     *
+     * 
      * @param threadCount the threadCount value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -582,7 +558,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -591,7 +567,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -602,7 +578,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the totalCpuTime property: Total CPU time.
-     *
+     * 
      * @return the totalCpuTime value.
      */
     public String totalCpuTime() {
@@ -611,7 +587,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the totalCpuTime property: Total CPU time.
-     *
+     * 
      * @param totalCpuTime the totalCpuTime value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -622,7 +598,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the userCpuTime property: User CPU time.
-     *
+     * 
      * @return the userCpuTime value.
      */
     public String userCpuTime() {
@@ -631,7 +607,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the userCpuTime property: User CPU time.
-     *
+     * 
      * @param userCpuTime the userCpuTime value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -642,7 +618,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the privilegedCpuTime property: Privileged CPU time.
-     *
+     * 
      * @return the privilegedCpuTime value.
      */
     public String privilegedCpuTime() {
@@ -651,7 +627,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the privilegedCpuTime property: Privileged CPU time.
-     *
+     * 
      * @param privilegedCpuTime the privilegedCpuTime value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -662,7 +638,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the workingSet property: Working set.
-     *
+     * 
      * @return the workingSet value.
      */
     public Long workingSet() {
@@ -671,7 +647,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the workingSet property: Working set.
-     *
+     * 
      * @param workingSet the workingSet value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -682,7 +658,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the peakWorkingSet property: Peak working set.
-     *
+     * 
      * @return the peakWorkingSet value.
      */
     public Long peakWorkingSet() {
@@ -691,7 +667,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the peakWorkingSet property: Peak working set.
-     *
+     * 
      * @param peakWorkingSet the peakWorkingSet value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -702,7 +678,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the privateMemory property: Private memory size.
-     *
+     * 
      * @return the privateMemory value.
      */
     public Long privateMemory() {
@@ -711,7 +687,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the privateMemory property: Private memory size.
-     *
+     * 
      * @param privateMemory the privateMemory value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -722,7 +698,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the virtualMemory property: Virtual memory size.
-     *
+     * 
      * @return the virtualMemory value.
      */
     public Long virtualMemory() {
@@ -731,7 +707,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the virtualMemory property: Virtual memory size.
-     *
+     * 
      * @param virtualMemory the virtualMemory value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -742,7 +718,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the peakVirtualMemory property: Peak virtual memory usage.
-     *
+     * 
      * @return the peakVirtualMemory value.
      */
     public Long peakVirtualMemory() {
@@ -751,7 +727,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the peakVirtualMemory property: Peak virtual memory usage.
-     *
+     * 
      * @param peakVirtualMemory the peakVirtualMemory value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -762,7 +738,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the pagedSystemMemory property: Paged system memory.
-     *
+     * 
      * @return the pagedSystemMemory value.
      */
     public Long pagedSystemMemory() {
@@ -771,7 +747,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the pagedSystemMemory property: Paged system memory.
-     *
+     * 
      * @param pagedSystemMemory the pagedSystemMemory value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -782,7 +758,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the nonPagedSystemMemory property: Non-paged system memory.
-     *
+     * 
      * @return the nonPagedSystemMemory value.
      */
     public Long nonPagedSystemMemory() {
@@ -791,7 +767,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the nonPagedSystemMemory property: Non-paged system memory.
-     *
+     * 
      * @param nonPagedSystemMemory the nonPagedSystemMemory value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -802,7 +778,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the pagedMemory property: Paged memory.
-     *
+     * 
      * @return the pagedMemory value.
      */
     public Long pagedMemory() {
@@ -811,7 +787,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the pagedMemory property: Paged memory.
-     *
+     * 
      * @param pagedMemory the pagedMemory value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -822,7 +798,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the peakPagedMemory property: Peak paged memory.
-     *
+     * 
      * @return the peakPagedMemory value.
      */
     public Long peakPagedMemory() {
@@ -831,7 +807,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the peakPagedMemory property: Peak paged memory.
-     *
+     * 
      * @param peakPagedMemory the peakPagedMemory value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -842,7 +818,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the timestamp property: Time stamp.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -851,7 +827,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the timestamp property: Time stamp.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -862,7 +838,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the environmentVariables property: List of environment variables.
-     *
+     * 
      * @return the environmentVariables value.
      */
     public Map<String, String> environmentVariables() {
@@ -871,7 +847,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the environmentVariables property: List of environment variables.
-     *
+     * 
      * @param environmentVariables the environmentVariables value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -882,7 +858,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the isScmSite property: Is this the SCM site?.
-     *
+     * 
      * @return the isScmSite value.
      */
     public Boolean isScmSite() {
@@ -891,7 +867,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the isScmSite property: Is this the SCM site?.
-     *
+     * 
      * @param isScmSite the isScmSite value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -902,7 +878,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the isWebjob property: Is this a Web Job?.
-     *
+     * 
      * @return the isWebjob value.
      */
     public Boolean isWebjob() {
@@ -911,7 +887,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the isWebjob property: Is this a Web Job?.
-     *
+     * 
      * @param isWebjob the isWebjob value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -922,7 +898,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Get the description property: Description of process.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -931,7 +907,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Set the description property: Description of process.
-     *
+     * 
      * @param description the description value to set.
      * @return the ProcessInfoProperties object itself.
      */
@@ -942,7 +918,7 @@ public final class ProcessInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -952,5 +928,159 @@ public final class ProcessInfoProperties {
         if (modules() != null) {
             modules().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deployment_name", this.deploymentName);
+        jsonWriter.writeStringField("href", this.href);
+        jsonWriter.writeStringField("minidump", this.minidump);
+        jsonWriter.writeBooleanField("is_profile_running", this.isProfileRunning);
+        jsonWriter.writeBooleanField("is_iis_profile_running", this.isIisProfileRunning);
+        jsonWriter.writeNumberField("iis_profile_timeout_in_seconds", this.iisProfileTimeoutInSeconds);
+        jsonWriter.writeStringField("parent", this.parent);
+        jsonWriter.writeArrayField("children", this.children, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("threads", this.threads, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("open_file_handles", this.openFileHandles,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("modules", this.modules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("file_name", this.fileName);
+        jsonWriter.writeStringField("command_line", this.commandLine);
+        jsonWriter.writeStringField("user_name", this.username);
+        jsonWriter.writeNumberField("handle_count", this.handleCount);
+        jsonWriter.writeNumberField("module_count", this.moduleCount);
+        jsonWriter.writeNumberField("thread_count", this.threadCount);
+        jsonWriter.writeStringField("start_time",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("total_cpu_time", this.totalCpuTime);
+        jsonWriter.writeStringField("user_cpu_time", this.userCpuTime);
+        jsonWriter.writeStringField("privileged_cpu_time", this.privilegedCpuTime);
+        jsonWriter.writeNumberField("working_set", this.workingSet);
+        jsonWriter.writeNumberField("peak_working_set", this.peakWorkingSet);
+        jsonWriter.writeNumberField("private_memory", this.privateMemory);
+        jsonWriter.writeNumberField("virtual_memory", this.virtualMemory);
+        jsonWriter.writeNumberField("peak_virtual_memory", this.peakVirtualMemory);
+        jsonWriter.writeNumberField("paged_system_memory", this.pagedSystemMemory);
+        jsonWriter.writeNumberField("non_paged_system_memory", this.nonPagedSystemMemory);
+        jsonWriter.writeNumberField("paged_memory", this.pagedMemory);
+        jsonWriter.writeNumberField("peak_paged_memory", this.peakPagedMemory);
+        jsonWriter.writeStringField("time_stamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeMapField("environment_variables", this.environmentVariables,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("is_scm_site", this.isScmSite);
+        jsonWriter.writeBooleanField("is_webjob", this.isWebjob);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ProcessInfoProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ProcessInfoProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ProcessInfoProperties.
+     */
+    public static ProcessInfoProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ProcessInfoProperties deserializedProcessInfoProperties = new ProcessInfoProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("identifier".equals(fieldName)) {
+                    deserializedProcessInfoProperties.identifier = reader.getNullable(JsonReader::getInt);
+                } else if ("deployment_name".equals(fieldName)) {
+                    deserializedProcessInfoProperties.deploymentName = reader.getString();
+                } else if ("href".equals(fieldName)) {
+                    deserializedProcessInfoProperties.href = reader.getString();
+                } else if ("minidump".equals(fieldName)) {
+                    deserializedProcessInfoProperties.minidump = reader.getString();
+                } else if ("is_profile_running".equals(fieldName)) {
+                    deserializedProcessInfoProperties.isProfileRunning = reader.getNullable(JsonReader::getBoolean);
+                } else if ("is_iis_profile_running".equals(fieldName)) {
+                    deserializedProcessInfoProperties.isIisProfileRunning = reader.getNullable(JsonReader::getBoolean);
+                } else if ("iis_profile_timeout_in_seconds".equals(fieldName)) {
+                    deserializedProcessInfoProperties.iisProfileTimeoutInSeconds
+                        = reader.getNullable(JsonReader::getDouble);
+                } else if ("parent".equals(fieldName)) {
+                    deserializedProcessInfoProperties.parent = reader.getString();
+                } else if ("children".equals(fieldName)) {
+                    List<String> children = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProcessInfoProperties.children = children;
+                } else if ("threads".equals(fieldName)) {
+                    List<ProcessThreadInfoInner> threads
+                        = reader.readArray(reader1 -> ProcessThreadInfoInner.fromJson(reader1));
+                    deserializedProcessInfoProperties.threads = threads;
+                } else if ("open_file_handles".equals(fieldName)) {
+                    List<String> openFileHandles = reader.readArray(reader1 -> reader1.getString());
+                    deserializedProcessInfoProperties.openFileHandles = openFileHandles;
+                } else if ("modules".equals(fieldName)) {
+                    List<ProcessModuleInfoInner> modules
+                        = reader.readArray(reader1 -> ProcessModuleInfoInner.fromJson(reader1));
+                    deserializedProcessInfoProperties.modules = modules;
+                } else if ("file_name".equals(fieldName)) {
+                    deserializedProcessInfoProperties.fileName = reader.getString();
+                } else if ("command_line".equals(fieldName)) {
+                    deserializedProcessInfoProperties.commandLine = reader.getString();
+                } else if ("user_name".equals(fieldName)) {
+                    deserializedProcessInfoProperties.username = reader.getString();
+                } else if ("handle_count".equals(fieldName)) {
+                    deserializedProcessInfoProperties.handleCount = reader.getNullable(JsonReader::getInt);
+                } else if ("module_count".equals(fieldName)) {
+                    deserializedProcessInfoProperties.moduleCount = reader.getNullable(JsonReader::getInt);
+                } else if ("thread_count".equals(fieldName)) {
+                    deserializedProcessInfoProperties.threadCount = reader.getNullable(JsonReader::getInt);
+                } else if ("start_time".equals(fieldName)) {
+                    deserializedProcessInfoProperties.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("total_cpu_time".equals(fieldName)) {
+                    deserializedProcessInfoProperties.totalCpuTime = reader.getString();
+                } else if ("user_cpu_time".equals(fieldName)) {
+                    deserializedProcessInfoProperties.userCpuTime = reader.getString();
+                } else if ("privileged_cpu_time".equals(fieldName)) {
+                    deserializedProcessInfoProperties.privilegedCpuTime = reader.getString();
+                } else if ("working_set".equals(fieldName)) {
+                    deserializedProcessInfoProperties.workingSet = reader.getNullable(JsonReader::getLong);
+                } else if ("peak_working_set".equals(fieldName)) {
+                    deserializedProcessInfoProperties.peakWorkingSet = reader.getNullable(JsonReader::getLong);
+                } else if ("private_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.privateMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("virtual_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.virtualMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("peak_virtual_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.peakVirtualMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("paged_system_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.pagedSystemMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("non_paged_system_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.nonPagedSystemMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("paged_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.pagedMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("peak_paged_memory".equals(fieldName)) {
+                    deserializedProcessInfoProperties.peakPagedMemory = reader.getNullable(JsonReader::getLong);
+                } else if ("time_stamp".equals(fieldName)) {
+                    deserializedProcessInfoProperties.timestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("environment_variables".equals(fieldName)) {
+                    Map<String, String> environmentVariables = reader.readMap(reader1 -> reader1.getString());
+                    deserializedProcessInfoProperties.environmentVariables = environmentVariables;
+                } else if ("is_scm_site".equals(fieldName)) {
+                    deserializedProcessInfoProperties.isScmSite = reader.getNullable(JsonReader::getBoolean);
+                } else if ("is_webjob".equals(fieldName)) {
+                    deserializedProcessInfoProperties.isWebjob = reader.getNullable(JsonReader::getBoolean);
+                } else if ("description".equals(fieldName)) {
+                    deserializedProcessInfoProperties.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedProcessInfoProperties;
+        });
     }
 }

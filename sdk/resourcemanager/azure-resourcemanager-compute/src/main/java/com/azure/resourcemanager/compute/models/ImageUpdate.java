@@ -6,33 +6,41 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.ImageProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.Map;
 
-/** The source user image virtual hard disk. Only tags may be updated. */
+/**
+ * The source user image virtual hard disk. Only tags may be updated.
+ */
 @Fluent
 public final class ImageUpdate extends UpdateResource {
     /*
      * Describes the properties of an Image.
      */
-    @JsonProperty(value = "properties")
     private ImageProperties innerProperties;
 
-    /** Creates an instance of ImageUpdate class. */
+    /**
+     * Creates an instance of ImageUpdate class.
+     */
     public ImageUpdate() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of an Image.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImageProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -41,7 +49,7 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Get the sourceVirtualMachine property: The source virtual machine from which Image is created.
-     *
+     * 
      * @return the sourceVirtualMachine value.
      */
     public SubResource sourceVirtualMachine() {
@@ -50,7 +58,7 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Set the sourceVirtualMachine property: The source virtual machine from which Image is created.
-     *
+     * 
      * @param sourceVirtualMachine the sourceVirtualMachine value to set.
      * @return the ImageUpdate object itself.
      */
@@ -64,7 +72,7 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @return the storageProfile value.
      */
     public ImageStorageProfile storageProfile() {
@@ -73,7 +81,7 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ImageUpdate object itself.
      */
@@ -87,7 +95,7 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -99,7 +107,7 @@ public final class ImageUpdate extends UpdateResource {
      * image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if
      * the source is managed resource like disk or snapshot, we may require the user to specify the property if we
      * cannot deduce it from the source managed resource.
-     *
+     * 
      * @return the hyperVGeneration value.
      */
     public HyperVGenerationTypes hyperVGeneration() {
@@ -111,7 +119,7 @@ public final class ImageUpdate extends UpdateResource {
      * image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if
      * the source is managed resource like disk or snapshot, we may require the user to specify the property if we
      * cannot deduce it from the source managed resource.
-     *
+     * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the ImageUpdate object itself.
      */
@@ -125,14 +133,53 @@ public final class ImageUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImageUpdate from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImageUpdate if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ImageUpdate.
+     */
+    public static ImageUpdate fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ImageUpdate deserializedImageUpdate = new ImageUpdate();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedImageUpdate.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedImageUpdate.innerProperties = ImageProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedImageUpdate;
+        });
     }
 }

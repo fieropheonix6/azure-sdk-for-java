@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** An Azure Cosmos DB Mongo DB Resource. */
+/**
+ * An Azure Cosmos DB Mongo DB Resource.
+ */
 @Fluent
-public final class PrivilegeResource {
+public final class PrivilegeResource implements JsonSerializable<PrivilegeResource> {
     /*
      * The database name the role is applied.
      */
-    @JsonProperty(value = "db")
     private String db;
 
     /*
      * The collection name the role is applied.
      */
-    @JsonProperty(value = "collection")
     private String collection;
 
     /**
+     * Creates an instance of PrivilegeResource class.
+     */
+    public PrivilegeResource() {
+    }
+
+    /**
      * Get the db property: The database name the role is applied.
-     *
+     * 
      * @return the db value.
      */
     public String db() {
@@ -33,7 +43,7 @@ public final class PrivilegeResource {
 
     /**
      * Set the db property: The database name the role is applied.
-     *
+     * 
      * @param db the db value to set.
      * @return the PrivilegeResource object itself.
      */
@@ -44,7 +54,7 @@ public final class PrivilegeResource {
 
     /**
      * Get the collection property: The collection name the role is applied.
-     *
+     * 
      * @return the collection value.
      */
     public String collection() {
@@ -53,7 +63,7 @@ public final class PrivilegeResource {
 
     /**
      * Set the collection property: The collection name the role is applied.
-     *
+     * 
      * @param collection the collection value to set.
      * @return the PrivilegeResource object itself.
      */
@@ -64,9 +74,48 @@ public final class PrivilegeResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("db", this.db);
+        jsonWriter.writeStringField("collection", this.collection);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PrivilegeResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PrivilegeResource if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PrivilegeResource.
+     */
+    public static PrivilegeResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PrivilegeResource deserializedPrivilegeResource = new PrivilegeResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("db".equals(fieldName)) {
+                    deserializedPrivilegeResource.db = reader.getString();
+                } else if ("collection".equals(fieldName)) {
+                    deserializedPrivilegeResource.collection = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPrivilegeResource;
+        });
     }
 }

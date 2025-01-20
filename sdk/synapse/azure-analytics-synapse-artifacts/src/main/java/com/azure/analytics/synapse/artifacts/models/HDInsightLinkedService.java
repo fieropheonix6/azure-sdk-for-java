@@ -5,72 +5,85 @@
 package com.azure.analytics.synapse.artifacts.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/** HDInsight linked service. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("HDInsight")
-@JsonFlatten
+/**
+ * HDInsight linked service.
+ */
 @Fluent
 public class HDInsightLinkedService extends LinkedService {
     /*
+     * Type of linked service.
+     */
+    private String type = "HDInsight";
+
+    /*
      * HDInsight cluster URI. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.clusterUri", required = true)
     private Object clusterUri;
 
     /*
      * HDInsight cluster user name. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.userName")
     private Object userName;
 
     /*
      * HDInsight cluster password.
      */
-    @JsonProperty(value = "typeProperties.password")
     private SecretBase password;
 
     /*
      * The Azure Storage linked service reference.
      */
-    @JsonProperty(value = "typeProperties.linkedServiceName")
     private LinkedServiceReference linkedServiceName;
 
     /*
      * A reference to the Azure SQL linked service that points to the HCatalog database.
      */
-    @JsonProperty(value = "typeProperties.hcatalogLinkedServiceName")
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
      * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
      * credential manager. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
     /*
      * Specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
      */
-    @JsonProperty(value = "typeProperties.isEspEnabled")
     private Object isEspEnabled;
 
     /*
      * Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with
      * resultType string).
      */
-    @JsonProperty(value = "typeProperties.fileSystem")
     private Object fileSystem;
 
     /**
+     * Creates an instance of HDInsightLinkedService class.
+     */
+    public HDInsightLinkedService() {
+    }
+
+    /**
+     * Get the type property: Type of linked service.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String getType() {
+        return this.type;
+    }
+
+    /**
      * Get the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the clusterUri value.
      */
     public Object getClusterUri() {
@@ -79,7 +92,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Set the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param clusterUri the clusterUri value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -90,7 +103,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Get the userName property: HDInsight cluster user name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -99,7 +112,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Set the userName property: HDInsight cluster user name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param userName the userName value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -110,7 +123,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Get the password property: HDInsight cluster password.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -119,7 +132,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Set the password property: HDInsight cluster password.
-     *
+     * 
      * @param password the password value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -130,7 +143,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Get the linkedServiceName property: The Azure Storage linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -139,7 +152,7 @@ public class HDInsightLinkedService extends LinkedService {
 
     /**
      * Set the linkedServiceName property: The Azure Storage linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -151,7 +164,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Get the hcatalogLinkedServiceName property: A reference to the Azure SQL linked service that points to the
      * HCatalog database.
-     *
+     * 
      * @return the hcatalogLinkedServiceName value.
      */
     public LinkedServiceReference getHcatalogLinkedServiceName() {
@@ -161,7 +174,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Set the hcatalogLinkedServiceName property: A reference to the Azure SQL linked service that points to the
      * HCatalog database.
-     *
+     * 
      * @param hcatalogLinkedServiceName the hcatalogLinkedServiceName value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -173,7 +186,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -183,7 +196,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
      * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -195,7 +208,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Get the isEspEnabled property: Specify if the HDInsight is created with ESP (Enterprise Security Package). Type:
      * Boolean.
-     *
+     * 
      * @return the isEspEnabled value.
      */
     public Object getIsEspEnabled() {
@@ -205,7 +218,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Set the isEspEnabled property: Specify if the HDInsight is created with ESP (Enterprise Security Package). Type:
      * Boolean.
-     *
+     * 
      * @param isEspEnabled the isEspEnabled value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -217,7 +230,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Get the fileSystem property: Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the fileSystem value.
      */
     public Object getFileSystem() {
@@ -227,7 +240,7 @@ public class HDInsightLinkedService extends LinkedService {
     /**
      * Set the fileSystem property: Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param fileSystem the fileSystem value to set.
      * @return the HDInsightLinkedService object itself.
      */
@@ -236,31 +249,148 @@ public class HDInsightLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HDInsightLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("connectVia", getConnectVia());
+        jsonWriter.writeStringField("description", getDescription());
+        jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeStringField("type", this.type);
+        if (clusterUri != null
+            || userName != null
+            || password != null
+            || linkedServiceName != null
+            || hcatalogLinkedServiceName != null
+            || encryptedCredential != null
+            || isEspEnabled != null
+            || fileSystem != null) {
+            jsonWriter.writeStartObject("typeProperties");
+            jsonWriter.writeUntypedField("clusterUri", this.clusterUri);
+            jsonWriter.writeUntypedField("userName", this.userName);
+            jsonWriter.writeJsonField("password", this.password);
+            jsonWriter.writeJsonField("linkedServiceName", this.linkedServiceName);
+            jsonWriter.writeJsonField("hcatalogLinkedServiceName", this.hcatalogLinkedServiceName);
+            jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeUntypedField("isEspEnabled", this.isEspEnabled);
+            jsonWriter.writeUntypedField("fileSystem", this.fileSystem);
+            jsonWriter.writeEndObject();
+        }
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HDInsightLinkedService from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HDInsightLinkedService if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the HDInsightLinkedService.
+     */
+    public static HDInsightLinkedService fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HDInsightLinkedService deserializedHDInsightLinkedService = new HDInsightLinkedService();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("connectVia".equals(fieldName)) {
+                    deserializedHDInsightLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
+                } else if ("description".equals(fieldName)) {
+                    deserializedHDInsightLinkedService.setDescription(reader.getString());
+                } else if ("parameters".equals(fieldName)) {
+                    Map<String, ParameterSpecification> parameters
+                        = reader.readMap(reader1 -> ParameterSpecification.fromJson(reader1));
+                    deserializedHDInsightLinkedService.setParameters(parameters);
+                } else if ("annotations".equals(fieldName)) {
+                    List<Object> annotations = reader.readArray(reader1 -> reader1.readUntyped());
+                    deserializedHDInsightLinkedService.setAnnotations(annotations);
+                } else if ("type".equals(fieldName)) {
+                    deserializedHDInsightLinkedService.type = reader.getString();
+                } else if ("typeProperties".equals(fieldName) && reader.currentToken() == JsonToken.START_OBJECT) {
+                    while (reader.nextToken() != JsonToken.END_OBJECT) {
+                        fieldName = reader.getFieldName();
+                        reader.nextToken();
+
+                        if ("clusterUri".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.clusterUri = reader.readUntyped();
+                        } else if ("userName".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.userName = reader.readUntyped();
+                        } else if ("password".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.password = SecretBase.fromJson(reader);
+                        } else if ("linkedServiceName".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.linkedServiceName
+                                = LinkedServiceReference.fromJson(reader);
+                        } else if ("hcatalogLinkedServiceName".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.hcatalogLinkedServiceName
+                                = LinkedServiceReference.fromJson(reader);
+                        } else if ("encryptedCredential".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.encryptedCredential = reader.readUntyped();
+                        } else if ("isEspEnabled".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.isEspEnabled = reader.readUntyped();
+                        } else if ("fileSystem".equals(fieldName)) {
+                            deserializedHDInsightLinkedService.fileSystem = reader.readUntyped();
+                        } else {
+                            reader.skipChildren();
+                        }
+                    }
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedHDInsightLinkedService.setAdditionalProperties(additionalProperties);
+
+            return deserializedHDInsightLinkedService;
+        });
     }
 }

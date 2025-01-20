@@ -5,6 +5,7 @@ package com.azure.resourcemanager.containerinstance.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.containerinstance.ContainerInstanceManager;
@@ -21,9 +22,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import reactor.core.publisher.Mono;
 
 /** Implementation for ContainerGroups. */
-public class ContainerGroupsImpl
-    extends TopLevelModifiableResourcesImpl<
-        ContainerGroup, ContainerGroupImpl, ContainerGroupInner, ContainerGroupsClient, ContainerInstanceManager>
+public class ContainerGroupsImpl extends
+    TopLevelModifiableResourcesImpl<ContainerGroup, ContainerGroupImpl, ContainerGroupInner, ContainerGroupsClient, ContainerInstanceManager>
     implements ContainerGroups {
 
     public ContainerGroupsImpl(final ContainerInstanceManager manager) {
@@ -55,31 +55,30 @@ public class ContainerGroupsImpl
 
     @Override
     public String getLogContent(String resourceGroupName, String containerGroupName, String containerName) {
-        LogsInner logsInner = this.manager().serviceClient().getContainers()
+        LogsInner logsInner = this.manager()
+            .serviceClient()
+            .getContainers()
             .listLogs(resourceGroupName, containerGroupName, containerName);
 
         return logsInner != null ? logsInner.content() : null;
     }
 
     @Override
-    public String getLogContent(
-        String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
-        LogsInner logsInner =
-            this
-                .manager()
-                .serviceClient()
-                .getContainers()
-                .listLogsWithResponse(resourceGroupName, containerGroupName, containerName, tailLineCount, null,
-                    Context.NONE)
-                .getValue();
+    public String getLogContent(String resourceGroupName, String containerGroupName, String containerName,
+        int tailLineCount) {
+        LogsInner logsInner = this.manager()
+            .serviceClient()
+            .getContainers()
+            .listLogsWithResponse(resourceGroupName, containerGroupName, containerName, tailLineCount, null,
+                Context.NONE)
+            .getValue();
 
         return logsInner != null ? logsInner.content() : null;
     }
 
     @Override
     public Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName) {
-        return this
-            .manager()
+        return this.manager()
             .serviceClient()
             .getContainers()
             .listLogsAsync(resourceGroupName, containerGroupName, containerName)
@@ -87,13 +86,13 @@ public class ContainerGroupsImpl
     }
 
     @Override
-    public Mono<String> getLogContentAsync(
-        String resourceGroupName, String containerGroupName, String containerName, int tailLineCount) {
-        return this
-            .manager()
+    public Mono<String> getLogContentAsync(String resourceGroupName, String containerGroupName, String containerName,
+        int tailLineCount) {
+        return this.manager()
             .serviceClient()
             .getContainers()
-            .listLogsAsync(resourceGroupName, containerGroupName, containerName, tailLineCount, null)
+            .listLogsWithResponseAsync(resourceGroupName, containerGroupName, containerName, tailLineCount, null)
+            .map(Response::getValue)
             .map(LogsInner::content);
     }
 
@@ -138,13 +137,17 @@ public class ContainerGroupsImpl
     }
 
     @Override
-    public ContainerAttachResult attachOutputStream(String resourceGroupName, String containerGroupName, String containerName) {
+    public ContainerAttachResult attachOutputStream(String resourceGroupName, String containerGroupName,
+        String containerName) {
         return this.attachOutputStreamAsync(resourceGroupName, containerGroupName, containerName).block();
     }
 
     @Override
-    public Mono<ContainerAttachResult> attachOutputStreamAsync(String resourceGroupName, String containerGroupName, String containerName) {
-        return this.manager().serviceClient().getContainers()
+    public Mono<ContainerAttachResult> attachOutputStreamAsync(String resourceGroupName, String containerGroupName,
+        String containerName) {
+        return this.manager()
+            .serviceClient()
+            .getContainers()
             .attachAsync(resourceGroupName, containerGroupName, containerName)
             .map(ContainerAttachResultImpl::new);
     }
@@ -157,8 +160,8 @@ public class ContainerGroupsImpl
     @Override
     public PagedFlux<ContainerGroup> listByResourceGroupAsync(String resourceGroupName) {
         if (CoreUtils.isNullOrEmpty(resourceGroupName)) {
-            return new PagedFlux<>(() -> Mono.error(
-                new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
+            return new PagedFlux<>(() -> Mono
+                .error(new IllegalArgumentException("Parameter 'resourceGroupName' is required and cannot be null.")));
         }
         return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroupName));
     }

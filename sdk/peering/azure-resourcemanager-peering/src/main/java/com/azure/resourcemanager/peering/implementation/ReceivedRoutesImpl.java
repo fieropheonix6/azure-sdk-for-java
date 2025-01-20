@@ -11,49 +11,33 @@ import com.azure.resourcemanager.peering.fluent.ReceivedRoutesClient;
 import com.azure.resourcemanager.peering.fluent.models.PeeringReceivedRouteInner;
 import com.azure.resourcemanager.peering.models.PeeringReceivedRoute;
 import com.azure.resourcemanager.peering.models.ReceivedRoutes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReceivedRoutesImpl implements ReceivedRoutes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReceivedRoutesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReceivedRoutesImpl.class);
 
     private final ReceivedRoutesClient innerClient;
 
     private final com.azure.resourcemanager.peering.PeeringManager serviceManager;
 
-    public ReceivedRoutesImpl(
-        ReceivedRoutesClient innerClient, com.azure.resourcemanager.peering.PeeringManager serviceManager) {
+    public ReceivedRoutesImpl(ReceivedRoutesClient innerClient,
+        com.azure.resourcemanager.peering.PeeringManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<PeeringReceivedRoute> listByPeering(String resourceGroupName, String peeringName) {
-        PagedIterable<PeeringReceivedRouteInner> inner =
-            this.serviceClient().listByPeering(resourceGroupName, peeringName);
-        return Utils.mapPage(inner, inner1 -> new PeeringReceivedRouteImpl(inner1, this.manager()));
+        PagedIterable<PeeringReceivedRouteInner> inner
+            = this.serviceClient().listByPeering(resourceGroupName, peeringName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringReceivedRouteImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PeeringReceivedRoute> listByPeering(
-        String resourceGroupName,
-        String peeringName,
-        String prefix,
-        String asPath,
-        String originAsValidationState,
-        String rpkiValidationState,
-        String skipToken,
+    public PagedIterable<PeeringReceivedRoute> listByPeering(String resourceGroupName, String peeringName,
+        String prefix, String asPath, String originAsValidationState, String rpkiValidationState, String skipToken,
         Context context) {
-        PagedIterable<PeeringReceivedRouteInner> inner =
-            this
-                .serviceClient()
-                .listByPeering(
-                    resourceGroupName,
-                    peeringName,
-                    prefix,
-                    asPath,
-                    originAsValidationState,
-                    rpkiValidationState,
-                    skipToken,
-                    context);
-        return Utils.mapPage(inner, inner1 -> new PeeringReceivedRouteImpl(inner1, this.manager()));
+        PagedIterable<PeeringReceivedRouteInner> inner = this.serviceClient()
+            .listByPeering(resourceGroupName, peeringName, prefix, asPath, originAsValidationState, rpkiValidationState,
+                skipToken, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PeeringReceivedRouteImpl(inner1, this.manager()));
     }
 
     private ReceivedRoutesClient serviceClient() {

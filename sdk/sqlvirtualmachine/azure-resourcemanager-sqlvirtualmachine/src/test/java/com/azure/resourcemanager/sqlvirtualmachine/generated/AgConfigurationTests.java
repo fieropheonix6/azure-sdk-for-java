@@ -13,41 +13,48 @@ import com.azure.resourcemanager.sqlvirtualmachine.models.ReadableSecondary;
 import com.azure.resourcemanager.sqlvirtualmachine.models.Role;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AgConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        AgConfiguration model =
-            BinaryData
-                .fromString(
-                    "{\"replicas\":[{\"sqlVirtualMachineInstanceId\":\"bcryffdfd\",\"role\":\"SECONDARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"MANUAL\",\"readableSecondary\":\"ALL\"}]}")
-                .toObject(AgConfiguration.class);
-        Assertions.assertEquals("bcryffdfd", model.replicas().get(0).sqlVirtualMachineInstanceId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AgConfiguration model = BinaryData.fromString(
+            "{\"replicas\":[{\"sqlVirtualMachineInstanceId\":\"lngsntnbybkzgcwr\",\"role\":\"SECONDARY\",\"commit\":\"ASYNCHRONOUS_COMMIT\",\"failover\":\"MANUAL\",\"readableSecondary\":\"NO\"},{\"sqlVirtualMachineInstanceId\":\"ouskcqvkocrc\",\"role\":\"PRIMARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"MANUAL\",\"readableSecondary\":\"NO\"},{\"sqlVirtualMachineInstanceId\":\"jbiksqrglssai\",\"role\":\"PRIMARY\",\"commit\":\"ASYNCHRONOUS_COMMIT\",\"failover\":\"MANUAL\",\"readableSecondary\":\"NO\"},{\"sqlVirtualMachineInstanceId\":\"fmppe\",\"role\":\"PRIMARY\",\"commit\":\"SYNCHRONOUS_COMMIT\",\"failover\":\"MANUAL\",\"readableSecondary\":\"ALL\"}]}")
+            .toObject(AgConfiguration.class);
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.replicas().get(0).sqlVirtualMachineInstanceId());
         Assertions.assertEquals(Role.SECONDARY, model.replicas().get(0).role());
-        Assertions.assertEquals(Commit.SYNCHRONOUS_COMMIT, model.replicas().get(0).commit());
+        Assertions.assertEquals(Commit.ASYNCHRONOUS_COMMIT, model.replicas().get(0).commit());
         Assertions.assertEquals(Failover.MANUAL, model.replicas().get(0).failover());
-        Assertions.assertEquals(ReadableSecondary.ALL, model.replicas().get(0).readableSecondary());
+        Assertions.assertEquals(ReadableSecondary.NO, model.replicas().get(0).readableSecondary());
     }
 
-    @Test
-    public void testSerialize() {
-        AgConfiguration model =
-            new AgConfiguration()
-                .withReplicas(
-                    Arrays
-                        .asList(
-                            new AgReplica()
-                                .withSqlVirtualMachineInstanceId("bcryffdfd")
-                                .withRole(Role.SECONDARY)
-                                .withCommit(Commit.SYNCHRONOUS_COMMIT)
-                                .withFailover(Failover.MANUAL)
-                                .withReadableSecondary(ReadableSecondary.ALL)));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AgConfiguration model = new AgConfiguration().withReplicas(Arrays.asList(
+            new AgReplica().withSqlVirtualMachineInstanceId("lngsntnbybkzgcwr")
+                .withRole(Role.SECONDARY)
+                .withCommit(Commit.ASYNCHRONOUS_COMMIT)
+                .withFailover(Failover.MANUAL)
+                .withReadableSecondary(ReadableSecondary.NO),
+            new AgReplica().withSqlVirtualMachineInstanceId("ouskcqvkocrc")
+                .withRole(Role.PRIMARY)
+                .withCommit(Commit.SYNCHRONOUS_COMMIT)
+                .withFailover(Failover.MANUAL)
+                .withReadableSecondary(ReadableSecondary.NO),
+            new AgReplica().withSqlVirtualMachineInstanceId("jbiksqrglssai")
+                .withRole(Role.PRIMARY)
+                .withCommit(Commit.ASYNCHRONOUS_COMMIT)
+                .withFailover(Failover.MANUAL)
+                .withReadableSecondary(ReadableSecondary.NO),
+            new AgReplica().withSqlVirtualMachineInstanceId("fmppe")
+                .withRole(Role.PRIMARY)
+                .withCommit(Commit.SYNCHRONOUS_COMMIT)
+                .withFailover(Failover.MANUAL)
+                .withReadableSecondary(ReadableSecondary.ALL)));
         model = BinaryData.fromObject(model).toObject(AgConfiguration.class);
-        Assertions.assertEquals("bcryffdfd", model.replicas().get(0).sqlVirtualMachineInstanceId());
+        Assertions.assertEquals("lngsntnbybkzgcwr", model.replicas().get(0).sqlVirtualMachineInstanceId());
         Assertions.assertEquals(Role.SECONDARY, model.replicas().get(0).role());
-        Assertions.assertEquals(Commit.SYNCHRONOUS_COMMIT, model.replicas().get(0).commit());
+        Assertions.assertEquals(Commit.ASYNCHRONOUS_COMMIT, model.replicas().get(0).commit());
         Assertions.assertEquals(Failover.MANUAL, model.replicas().get(0).failover());
-        Assertions.assertEquals(ReadableSecondary.ALL, model.replicas().get(0).readableSecondary());
+        Assertions.assertEquals(ReadableSecondary.NO, model.replicas().get(0).readableSecondary());
     }
 }

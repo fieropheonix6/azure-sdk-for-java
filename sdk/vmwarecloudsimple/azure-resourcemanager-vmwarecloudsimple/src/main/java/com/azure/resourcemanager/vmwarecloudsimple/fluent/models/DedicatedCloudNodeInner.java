@@ -5,121 +5,65 @@
 package com.azure.resourcemanager.vmwarecloudsimple.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.vmwarecloudsimple.models.NodeStatus;
 import com.azure.resourcemanager.vmwarecloudsimple.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
+import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Dedicated cloud node model. */
-@JsonFlatten
+/**
+ * Dedicated cloud node model.
+ */
 @Fluent
-public class DedicatedCloudNodeInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedCloudNodeInner.class);
+public final class DedicatedCloudNodeInner extends Resource {
+    /*
+     * Dedicated Cloud Nodes properties
+     */
+    private DedicatedCloudNodeProperties innerProperties;
 
     /*
      * Dedicated Cloud Nodes SKU
      */
-    @JsonProperty(value = "sku")
     private Sku sku;
 
     /*
-     * Availability Zone id, e.g. "az1"
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.availabilityZoneId")
-    private String availabilityZoneId;
+    private String type;
 
     /*
-     * Availability Zone name, e.g. "Availability Zone 1"
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.availabilityZoneName", access = JsonProperty.Access.WRITE_ONLY)
-    private String availabilityZoneName;
+    private String name;
 
     /*
-     * VMWare Cloud Rack Name
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.cloudRackName", access = JsonProperty.Access.WRITE_ONLY)
-    private String cloudRackName;
+    private String id;
 
-    /*
-     * date time the resource was created
+    /**
+     * Creates an instance of DedicatedCloudNodeInner class.
      */
-    @JsonProperty(value = "properties.created", access = JsonProperty.Access.WRITE_ONLY)
-    private Object created;
+    public DedicatedCloudNodeInner() {
+    }
 
-    /*
-     * count of nodes to create
+    /**
+     * Get the innerProperties property: Dedicated Cloud Nodes properties.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.nodesCount")
-    private Integer nodesCount;
-
-    /*
-     * Placement Group id, e.g. "n1"
-     */
-    @JsonProperty(value = "properties.placementGroupId")
-    private String placementGroupId;
-
-    /*
-     * Placement Name, e.g. "Placement Group 1"
-     */
-    @JsonProperty(value = "properties.placementGroupName", access = JsonProperty.Access.WRITE_ONLY)
-    private String placementGroupName;
-
-    /*
-     * Private Cloud Id
-     */
-    @JsonProperty(value = "properties.privateCloudId", access = JsonProperty.Access.WRITE_ONLY)
-    private String privateCloudId;
-
-    /*
-     * Resource Pool Name
-     */
-    @JsonProperty(value = "properties.privateCloudName", access = JsonProperty.Access.WRITE_ONLY)
-    private String privateCloudName;
-
-    /*
-     * The provisioning status of the resource
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
-
-    /*
-     * purchase id
-     */
-    @JsonProperty(value = "properties.purchaseId")
-    private UUID purchaseId;
-
-    /*
-     * Node status, indicates is private cloud set up on this node or not
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private NodeStatus status;
-
-    /*
-     * VMWare Cluster Name
-     */
-    @JsonProperty(value = "properties.vmwareClusterName", access = JsonProperty.Access.WRITE_ONLY)
-    private String vmwareClusterName;
-
-    /*
-     * SKU's id
-     */
-    @JsonProperty(value = "properties.skuDescription.id")
-    private String idPropertiesSkuDescriptionId;
-
-    /*
-     * SKU's name
-     */
-    @JsonProperty(value = "properties.skuDescription.name")
-    private String namePropertiesSkuDescriptionName;
+    private DedicatedCloudNodeProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the sku property: Dedicated Cloud Nodes SKU.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -128,7 +72,7 @@ public class DedicatedCloudNodeInner extends Resource {
 
     /**
      * Set the sku property: Dedicated Cloud Nodes SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DedicatedCloudNodeInner object itself.
      */
@@ -138,214 +82,47 @@ public class DedicatedCloudNodeInner extends Resource {
     }
 
     /**
-     * Get the availabilityZoneId property: Availability Zone id, e.g. "az1".
-     *
-     * @return the availabilityZoneId value.
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    public String availabilityZoneId() {
-        return this.availabilityZoneId;
+    @Override
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the availabilityZoneId property: Availability Zone id, e.g. "az1".
-     *
-     * @param availabilityZoneId the availabilityZoneId value to set.
-     * @return the DedicatedCloudNodeInner object itself.
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    public DedicatedCloudNodeInner withAvailabilityZoneId(String availabilityZoneId) {
-        this.availabilityZoneId = availabilityZoneId;
-        return this;
+    @Override
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the availabilityZoneName property: Availability Zone name, e.g. "Availability Zone 1".
-     *
-     * @return the availabilityZoneName value.
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    public String availabilityZoneName() {
-        return this.availabilityZoneName;
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the cloudRackName property: VMWare Cloud Rack Name.
-     *
-     * @return the cloudRackName value.
+     * {@inheritDoc}
      */
-    public String cloudRackName() {
-        return this.cloudRackName;
-    }
-
-    /**
-     * Get the created property: date time the resource was created.
-     *
-     * @return the created value.
-     */
-    public Object created() {
-        return this.created;
-    }
-
-    /**
-     * Get the nodesCount property: count of nodes to create.
-     *
-     * @return the nodesCount value.
-     */
-    public Integer nodesCount() {
-        return this.nodesCount;
-    }
-
-    /**
-     * Set the nodesCount property: count of nodes to create.
-     *
-     * @param nodesCount the nodesCount value to set.
-     * @return the DedicatedCloudNodeInner object itself.
-     */
-    public DedicatedCloudNodeInner withNodesCount(Integer nodesCount) {
-        this.nodesCount = nodesCount;
-        return this;
-    }
-
-    /**
-     * Get the placementGroupId property: Placement Group id, e.g. "n1".
-     *
-     * @return the placementGroupId value.
-     */
-    public String placementGroupId() {
-        return this.placementGroupId;
-    }
-
-    /**
-     * Set the placementGroupId property: Placement Group id, e.g. "n1".
-     *
-     * @param placementGroupId the placementGroupId value to set.
-     * @return the DedicatedCloudNodeInner object itself.
-     */
-    public DedicatedCloudNodeInner withPlacementGroupId(String placementGroupId) {
-        this.placementGroupId = placementGroupId;
-        return this;
-    }
-
-    /**
-     * Get the placementGroupName property: Placement Name, e.g. "Placement Group 1".
-     *
-     * @return the placementGroupName value.
-     */
-    public String placementGroupName() {
-        return this.placementGroupName;
-    }
-
-    /**
-     * Get the privateCloudId property: Private Cloud Id.
-     *
-     * @return the privateCloudId value.
-     */
-    public String privateCloudId() {
-        return this.privateCloudId;
-    }
-
-    /**
-     * Get the privateCloudName property: Resource Pool Name.
-     *
-     * @return the privateCloudName value.
-     */
-    public String privateCloudName() {
-        return this.privateCloudName;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning status of the resource.
-     *
-     * @return the provisioningState value.
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the purchaseId property: purchase id.
-     *
-     * @return the purchaseId value.
-     */
-    public UUID purchaseId() {
-        return this.purchaseId;
-    }
-
-    /**
-     * Set the purchaseId property: purchase id.
-     *
-     * @param purchaseId the purchaseId value to set.
-     * @return the DedicatedCloudNodeInner object itself.
-     */
-    public DedicatedCloudNodeInner withPurchaseId(UUID purchaseId) {
-        this.purchaseId = purchaseId;
-        return this;
-    }
-
-    /**
-     * Get the status property: Node status, indicates is private cloud set up on this node or not.
-     *
-     * @return the status value.
-     */
-    public NodeStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the vmwareClusterName property: VMWare Cluster Name.
-     *
-     * @return the vmwareClusterName value.
-     */
-    public String vmwareClusterName() {
-        return this.vmwareClusterName;
-    }
-
-    /**
-     * Get the idPropertiesSkuDescriptionId property: SKU's id.
-     *
-     * @return the idPropertiesSkuDescriptionId value.
-     */
-    public String idPropertiesSkuDescriptionId() {
-        return this.idPropertiesSkuDescriptionId;
-    }
-
-    /**
-     * Set the idPropertiesSkuDescriptionId property: SKU's id.
-     *
-     * @param idPropertiesSkuDescriptionId the idPropertiesSkuDescriptionId value to set.
-     * @return the DedicatedCloudNodeInner object itself.
-     */
-    public DedicatedCloudNodeInner withIdPropertiesSkuDescriptionId(String idPropertiesSkuDescriptionId) {
-        this.idPropertiesSkuDescriptionId = idPropertiesSkuDescriptionId;
-        return this;
-    }
-
-    /**
-     * Get the namePropertiesSkuDescriptionName property: SKU's name.
-     *
-     * @return the namePropertiesSkuDescriptionName value.
-     */
-    public String namePropertiesSkuDescriptionName() {
-        return this.namePropertiesSkuDescriptionName;
-    }
-
-    /**
-     * Set the namePropertiesSkuDescriptionName property: SKU's name.
-     *
-     * @param namePropertiesSkuDescriptionName the namePropertiesSkuDescriptionName value to set.
-     * @return the DedicatedCloudNodeInner object itself.
-     */
-    public DedicatedCloudNodeInner withNamePropertiesSkuDescriptionName(String namePropertiesSkuDescriptionName) {
-        this.namePropertiesSkuDescriptionName = namePropertiesSkuDescriptionName;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public DedicatedCloudNodeInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedCloudNodeInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -353,13 +130,288 @@ public class DedicatedCloudNodeInner extends Resource {
     }
 
     /**
+     * Get the availabilityZoneId property: Availability Zone id, e.g. "az1".
+     * 
+     * @return the availabilityZoneId value.
+     */
+    public String availabilityZoneId() {
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityZoneId();
+    }
+
+    /**
+     * Set the availabilityZoneId property: Availability Zone id, e.g. "az1".
+     * 
+     * @param availabilityZoneId the availabilityZoneId value to set.
+     * @return the DedicatedCloudNodeInner object itself.
+     */
+    public DedicatedCloudNodeInner withAvailabilityZoneId(String availabilityZoneId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCloudNodeProperties();
+        }
+        this.innerProperties().withAvailabilityZoneId(availabilityZoneId);
+        return this;
+    }
+
+    /**
+     * Get the availabilityZoneName property: Availability Zone name, e.g. "Availability Zone 1".
+     * 
+     * @return the availabilityZoneName value.
+     */
+    public String availabilityZoneName() {
+        return this.innerProperties() == null ? null : this.innerProperties().availabilityZoneName();
+    }
+
+    /**
+     * Get the cloudRackName property: VMWare Cloud Rack Name.
+     * 
+     * @return the cloudRackName value.
+     */
+    public String cloudRackName() {
+        return this.innerProperties() == null ? null : this.innerProperties().cloudRackName();
+    }
+
+    /**
+     * Get the created property: date time the resource was created.
+     * 
+     * @return the created value.
+     */
+    public OffsetDateTime created() {
+        return this.innerProperties() == null ? null : this.innerProperties().created();
+    }
+
+    /**
+     * Get the nodesCount property: count of nodes to create.
+     * 
+     * @return the nodesCount value.
+     */
+    public Integer nodesCount() {
+        return this.innerProperties() == null ? null : this.innerProperties().nodesCount();
+    }
+
+    /**
+     * Set the nodesCount property: count of nodes to create.
+     * 
+     * @param nodesCount the nodesCount value to set.
+     * @return the DedicatedCloudNodeInner object itself.
+     */
+    public DedicatedCloudNodeInner withNodesCount(Integer nodesCount) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCloudNodeProperties();
+        }
+        this.innerProperties().withNodesCount(nodesCount);
+        return this;
+    }
+
+    /**
+     * Get the placementGroupId property: Placement Group id, e.g. "n1".
+     * 
+     * @return the placementGroupId value.
+     */
+    public String placementGroupId() {
+        return this.innerProperties() == null ? null : this.innerProperties().placementGroupId();
+    }
+
+    /**
+     * Set the placementGroupId property: Placement Group id, e.g. "n1".
+     * 
+     * @param placementGroupId the placementGroupId value to set.
+     * @return the DedicatedCloudNodeInner object itself.
+     */
+    public DedicatedCloudNodeInner withPlacementGroupId(String placementGroupId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCloudNodeProperties();
+        }
+        this.innerProperties().withPlacementGroupId(placementGroupId);
+        return this;
+    }
+
+    /**
+     * Get the placementGroupName property: Placement Name, e.g. "Placement Group 1".
+     * 
+     * @return the placementGroupName value.
+     */
+    public String placementGroupName() {
+        return this.innerProperties() == null ? null : this.innerProperties().placementGroupName();
+    }
+
+    /**
+     * Get the privateCloudId property: Private Cloud Id.
+     * 
+     * @return the privateCloudId value.
+     */
+    public String privateCloudId() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateCloudId();
+    }
+
+    /**
+     * Get the privateCloudName property: Resource Pool Name.
+     * 
+     * @return the privateCloudName value.
+     */
+    public String privateCloudName() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateCloudName();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning status of the resource.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the purchaseId property: purchase id.
+     * 
+     * @return the purchaseId value.
+     */
+    public UUID purchaseId() {
+        return this.innerProperties() == null ? null : this.innerProperties().purchaseId();
+    }
+
+    /**
+     * Set the purchaseId property: purchase id.
+     * 
+     * @param purchaseId the purchaseId value to set.
+     * @return the DedicatedCloudNodeInner object itself.
+     */
+    public DedicatedCloudNodeInner withPurchaseId(UUID purchaseId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCloudNodeProperties();
+        }
+        this.innerProperties().withPurchaseId(purchaseId);
+        return this;
+    }
+
+    /**
+     * Get the status property: Node status, indicates is private cloud set up on this node or not.
+     * 
+     * @return the status value.
+     */
+    public NodeStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the vmwareClusterName property: VMWare Cluster Name.
+     * 
+     * @return the vmwareClusterName value.
+     */
+    public String vmwareClusterName() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmwareClusterName();
+    }
+
+    /**
+     * Get the id property: SKU's id.
+     * 
+     * @return the id value.
+     */
+    public String idPropertiesId() {
+        return this.innerProperties() == null ? null : this.innerProperties().id();
+    }
+
+    /**
+     * Set the id property: SKU's id.
+     * 
+     * @param id the id value to set.
+     * @return the DedicatedCloudNodeInner object itself.
+     */
+    public DedicatedCloudNodeInner withIdPropertiesId(String id) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCloudNodeProperties();
+        }
+        this.innerProperties().withId(id);
+        return this;
+    }
+
+    /**
+     * Get the name property: SKU's name.
+     * 
+     * @return the name value.
+     */
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
+    }
+
+    /**
+     * Set the name property: SKU's name.
+     * 
+     * @param name the name value to set.
+     * @return the DedicatedCloudNodeInner object itself.
+     */
+    public DedicatedCloudNodeInner withNamePropertiesName(String name) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DedicatedCloudNodeProperties();
+        }
+        this.innerProperties().withName(name);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("sku", this.sku);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DedicatedCloudNodeInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DedicatedCloudNodeInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DedicatedCloudNodeInner.
+     */
+    public static DedicatedCloudNodeInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DedicatedCloudNodeInner deserializedDedicatedCloudNodeInner = new DedicatedCloudNodeInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedDedicatedCloudNodeInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeInner.innerProperties = DedicatedCloudNodeProperties.fromJson(reader);
+                } else if ("sku".equals(fieldName)) {
+                    deserializedDedicatedCloudNodeInner.sku = Sku.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDedicatedCloudNodeInner;
+        });
     }
 }

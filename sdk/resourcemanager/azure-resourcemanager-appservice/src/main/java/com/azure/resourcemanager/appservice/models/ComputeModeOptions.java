@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ComputeModeOptions. */
+/**
+ * Shared/dedicated workers.
+ */
 public enum ComputeModeOptions {
-    /** Enum value Shared. */
+    /**
+     * Enum value Shared.
+     */
     SHARED("Shared"),
 
-    /** Enum value Dedicated. */
+    /**
+     * Enum value Dedicated.
+     */
     DEDICATED("Dedicated"),
 
-    /** Enum value Dynamic. */
+    /**
+     * Enum value Dynamic.
+     */
     DYNAMIC("Dynamic");
 
-    /** The actual serialized value for a ComputeModeOptions instance. */
+    /**
+     * The actual serialized value for a ComputeModeOptions instance.
+     */
     private final String value;
 
     ComputeModeOptions(String value) {
@@ -27,12 +34,14 @@ public enum ComputeModeOptions {
 
     /**
      * Parses a serialized value to a ComputeModeOptions instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ComputeModeOptions object, or null if unable to parse.
      */
-    @JsonCreator
     public static ComputeModeOptions fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ComputeModeOptions[] items = ComputeModeOptions.values();
         for (ComputeModeOptions item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum ComputeModeOptions {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

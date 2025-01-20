@@ -5,80 +5,142 @@
 package com.azure.resourcemanager.databoxedge.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.databoxedge.fluent.models.PeriodicTimerProperties;
 import com.azure.resourcemanager.databoxedge.fluent.models.TriggerInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.io.IOException;
 
-/** Trigger details. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("PeriodicTimerEvent")
-@JsonFlatten
+/**
+ * Trigger details.
+ */
 @Fluent
-public class PeriodicTimerEventTrigger extends TriggerInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeriodicTimerEventTrigger.class);
+public final class PeriodicTimerEventTrigger extends TriggerInner {
+    /*
+     * Trigger Kind.
+     */
+    private TriggerEventType kind = TriggerEventType.PERIODIC_TIMER_EVENT;
 
     /*
-     * Periodic timer details.
+     * Periodic timer trigger properties.
      */
-    @JsonProperty(value = "properties.sourceInfo", required = true)
-    private PeriodicTimerSourceInfo sourceInfo;
+    private PeriodicTimerProperties innerProperties = new PeriodicTimerProperties();
 
     /*
-     * Role Sink information.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.sinkInfo", required = true)
-    private RoleSinkInfo sinkInfo;
+    private String type;
 
     /*
-     * A custom context tag typically used to correlate the trigger against its
-     * usage. For example, if a periodic timer trigger is intended for certain
-     * specific IoT modules in the device, the tag can be the name or the image
-     * URL of the module.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.customContextTag")
-    private String customContextTag;
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PeriodicTimerEventTrigger class.
+     */
+    public PeriodicTimerEventTrigger() {
+    }
+
+    /**
+     * Get the kind property: Trigger Kind.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public TriggerEventType kind() {
+        return this.kind;
+    }
+
+    /**
+     * Get the innerProperties property: Periodic timer trigger properties.
+     * 
+     * @return the innerProperties value.
+     */
+    private PeriodicTimerProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the sourceInfo property: Periodic timer details.
-     *
+     * 
      * @return the sourceInfo value.
      */
     public PeriodicTimerSourceInfo sourceInfo() {
-        return this.sourceInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().sourceInfo();
     }
 
     /**
      * Set the sourceInfo property: Periodic timer details.
-     *
+     * 
      * @param sourceInfo the sourceInfo value to set.
      * @return the PeriodicTimerEventTrigger object itself.
      */
     public PeriodicTimerEventTrigger withSourceInfo(PeriodicTimerSourceInfo sourceInfo) {
-        this.sourceInfo = sourceInfo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeriodicTimerProperties();
+        }
+        this.innerProperties().withSourceInfo(sourceInfo);
         return this;
     }
 
     /**
      * Get the sinkInfo property: Role Sink information.
-     *
+     * 
      * @return the sinkInfo value.
      */
     public RoleSinkInfo sinkInfo() {
-        return this.sinkInfo;
+        return this.innerProperties() == null ? null : this.innerProperties().sinkInfo();
     }
 
     /**
      * Set the sinkInfo property: Role Sink information.
-     *
+     * 
      * @param sinkInfo the sinkInfo value to set.
      * @return the PeriodicTimerEventTrigger object itself.
      */
     public PeriodicTimerEventTrigger withSinkInfo(RoleSinkInfo sinkInfo) {
-        this.sinkInfo = sinkInfo;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeriodicTimerProperties();
+        }
+        this.innerProperties().withSinkInfo(sinkInfo);
         return this;
     }
 
@@ -86,49 +148,90 @@ public class PeriodicTimerEventTrigger extends TriggerInner {
      * Get the customContextTag property: A custom context tag typically used to correlate the trigger against its
      * usage. For example, if a periodic timer trigger is intended for certain specific IoT modules in the device, the
      * tag can be the name or the image URL of the module.
-     *
+     * 
      * @return the customContextTag value.
      */
     public String customContextTag() {
-        return this.customContextTag;
+        return this.innerProperties() == null ? null : this.innerProperties().customContextTag();
     }
 
     /**
      * Set the customContextTag property: A custom context tag typically used to correlate the trigger against its
      * usage. For example, if a periodic timer trigger is intended for certain specific IoT modules in the device, the
      * tag can be the name or the image URL of the module.
-     *
+     * 
      * @param customContextTag the customContextTag value to set.
      * @return the PeriodicTimerEventTrigger object itself.
      */
     public PeriodicTimerEventTrigger withCustomContextTag(String customContextTag) {
-        this.customContextTag = customContextTag;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PeriodicTimerProperties();
+        }
+        this.innerProperties().withCustomContextTag(customContextTag);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (sourceInfo() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceInfo in model PeriodicTimerEventTrigger"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model PeriodicTimerEventTrigger"));
         } else {
-            sourceInfo().validate();
+            innerProperties().validate();
         }
-        if (sinkInfo() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sinkInfo in model PeriodicTimerEventTrigger"));
-        } else {
-            sinkInfo().validate();
-        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PeriodicTimerEventTrigger.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PeriodicTimerEventTrigger from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PeriodicTimerEventTrigger if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PeriodicTimerEventTrigger.
+     */
+    public static PeriodicTimerEventTrigger fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PeriodicTimerEventTrigger deserializedPeriodicTimerEventTrigger = new PeriodicTimerEventTrigger();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPeriodicTimerEventTrigger.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPeriodicTimerEventTrigger.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPeriodicTimerEventTrigger.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPeriodicTimerEventTrigger.innerProperties = PeriodicTimerProperties.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedPeriodicTimerEventTrigger.kind = TriggerEventType.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPeriodicTimerEventTrigger;
+        });
     }
 }

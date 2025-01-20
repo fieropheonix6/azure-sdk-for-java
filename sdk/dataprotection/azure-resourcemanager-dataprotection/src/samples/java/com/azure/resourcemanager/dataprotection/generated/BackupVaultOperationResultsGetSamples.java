@@ -4,25 +4,24 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for BackupVaultOperationResults Get. */
+/**
+ * Samples for BackupVaultOperationResults Get.
+ */
 public final class BackupVaultOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2021-07-01/examples/VaultCRUD/GetOperationResultPatch.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2024-04-01/examples/VaultCRUD/
+     * GetOperationResultPatch.json
      */
     /**
      * Sample code: GetOperationResult Patch.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getOperationResultPatch(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupVaultOperationResults()
-            .getWithResponse(
-                "swaggerExample",
-                "SampleResourceGroup",
+        manager.backupVaultOperationResults()
+            .getWithResponse("SampleResourceGroup", "swaggerExample",
                 "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 }

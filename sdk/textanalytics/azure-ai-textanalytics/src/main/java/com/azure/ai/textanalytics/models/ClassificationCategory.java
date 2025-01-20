@@ -15,8 +15,8 @@ public final class ClassificationCategory {
     private double confidenceScore;
 
     static {
-        ClassificationCategoryPropertiesHelper.setAccessor(
-            new ClassificationCategoryPropertiesHelper.ClassificationCategoryAccessor() {
+        ClassificationCategoryPropertiesHelper
+            .setAccessor(new ClassificationCategoryPropertiesHelper.ClassificationCategoryAccessor() {
                 @Override
                 public void setCategory(ClassificationCategory classification, String category) {
                     classification.setCategory(category);
@@ -27,6 +27,12 @@ public final class ClassificationCategory {
                     classification.setConfidenceScore(confidenceScore);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code ClassificationCategory} model.
+     */
+    public ClassificationCategory() {
     }
 
     /**

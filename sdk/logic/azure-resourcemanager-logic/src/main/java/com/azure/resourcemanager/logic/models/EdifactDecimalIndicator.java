@@ -4,21 +4,28 @@
 
 package com.azure.resourcemanager.logic.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for EdifactDecimalIndicator. */
+/**
+ * The edifact decimal indicator.
+ */
 public enum EdifactDecimalIndicator {
-    /** Enum value NotSpecified. */
+    /**
+     * Enum value NotSpecified.
+     */
     NOT_SPECIFIED("NotSpecified"),
 
-    /** Enum value Comma. */
+    /**
+     * Enum value Comma.
+     */
     COMMA("Comma"),
 
-    /** Enum value Decimal. */
+    /**
+     * Enum value Decimal.
+     */
     DECIMAL("Decimal");
 
-    /** The actual serialized value for a EdifactDecimalIndicator instance. */
+    /**
+     * The actual serialized value for a EdifactDecimalIndicator instance.
+     */
     private final String value;
 
     EdifactDecimalIndicator(String value) {
@@ -27,12 +34,14 @@ public enum EdifactDecimalIndicator {
 
     /**
      * Parses a serialized value to a EdifactDecimalIndicator instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed EdifactDecimalIndicator object, or null if unable to parse.
      */
-    @JsonCreator
     public static EdifactDecimalIndicator fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         EdifactDecimalIndicator[] items = EdifactDecimalIndicator.values();
         for (EdifactDecimalIndicator item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,7 +51,9 @@ public enum EdifactDecimalIndicator {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

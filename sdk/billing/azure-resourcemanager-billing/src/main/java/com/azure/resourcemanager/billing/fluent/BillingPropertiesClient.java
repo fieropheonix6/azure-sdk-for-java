@@ -10,12 +10,29 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.billing.fluent.models.BillingPropertyInner;
 
-/** An instance of this class provides access to all the operations defined in BillingPropertiesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BillingPropertiesClient.
+ */
 public interface BillingPropertiesClient {
     /**
-     * Get the billing properties for a subscription. This operation is not supported for billing accounts with
-     * agreement type Enterprise Agreement.
-     *
+     * Gets the billing properties for a subscription.
+     * 
+     * @param includeBillingCountry A flag that specifies whether or not to include billing country.
+     * @param includeTransitionStatus A flag that specifies whether or not to include transition status for billing
+     * accounts with agreement type Microsoft Customer Agreement.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the billing properties for a subscription along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<BillingPropertyInner> getWithResponse(Boolean includeBillingCountry, Boolean includeTransitionStatus,
+        Context context);
+
+    /**
+     * Gets the billing properties for a subscription.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the billing properties for a subscription.
@@ -24,23 +41,26 @@ public interface BillingPropertiesClient {
     BillingPropertyInner get();
 
     /**
-     * Get the billing properties for a subscription. This operation is not supported for billing accounts with
-     * agreement type Enterprise Agreement.
-     *
+     * Updates the billing property of a subscription. Currently, cost center can be updated for billing accounts with
+     * agreement type Microsoft Customer Agreement and subscription service usage address can be updated for billing
+     * accounts with agreement type Microsoft Online Service Program.
+     * 
+     * @param parameters A billing property.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the billing properties for a subscription.
+     * @return a billing property along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BillingPropertyInner> getWithResponse(Context context);
+    Response<BillingPropertyInner> updateWithResponse(BillingPropertyInner parameters, Context context);
 
     /**
-     * Updates the billing property of a subscription. Currently, cost center can be updated. The operation is supported
-     * only for billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @param parameters Request parameters that are provided to the update billing property operation.
+     * Updates the billing property of a subscription. Currently, cost center can be updated for billing accounts with
+     * agreement type Microsoft Customer Agreement and subscription service usage address can be updated for billing
+     * accounts with agreement type Microsoft Online Service Program.
+     * 
+     * @param parameters A billing property.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,18 +68,4 @@ public interface BillingPropertiesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     BillingPropertyInner update(BillingPropertyInner parameters);
-
-    /**
-     * Updates the billing property of a subscription. Currently, cost center can be updated. The operation is supported
-     * only for billing accounts with agreement type Microsoft Customer Agreement.
-     *
-     * @param parameters Request parameters that are provided to the update billing property operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a billing property.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BillingPropertyInner> updateWithResponse(BillingPropertyInner parameters, Context context);
 }

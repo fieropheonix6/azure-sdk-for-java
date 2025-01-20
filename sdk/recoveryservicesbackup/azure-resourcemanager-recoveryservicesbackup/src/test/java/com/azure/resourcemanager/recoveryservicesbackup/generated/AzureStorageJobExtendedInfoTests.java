@@ -11,37 +11,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureStorageJobExtendedInfoTests {
-    @Test
-    public void testDeserialize() {
-        AzureStorageJobExtendedInfo model =
-            BinaryData
-                .fromString(
-                    "{\"tasksList\":[{\"taskId\":\"oggculapz\",\"status\":\"rpgogtqxep\"}],\"propertyBag\":{\"uajlyj\":\"b\"},\"dynamicErrorMessage\":\"vofqzhvfc\"}")
-                .toObject(AzureStorageJobExtendedInfo.class);
-        Assertions.assertEquals("oggculapz", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("rpgogtqxep", model.tasksList().get(0).status());
-        Assertions.assertEquals("b", model.propertyBag().get("uajlyj"));
-        Assertions.assertEquals("vofqzhvfc", model.dynamicErrorMessage());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureStorageJobExtendedInfo model = BinaryData.fromString(
+            "{\"tasksList\":[{\"taskId\":\"cjdx\",\"status\":\"bzo\"}],\"propertyBag\":{\"ogtqxepnylbf\":\"ulapzwyrp\",\"cib\":\"ajlyjtlvofqzhv\",\"uxrkjp\":\"fmo\",\"wiivwzjbhyzsx\":\"dwxf\"},\"dynamicErrorMessage\":\"kambtrnegvmnvuqe\"}")
+            .toObject(AzureStorageJobExtendedInfo.class);
+        Assertions.assertEquals("cjdx", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("bzo", model.tasksList().get(0).status());
+        Assertions.assertEquals("ulapzwyrp", model.propertyBag().get("ogtqxepnylbf"));
+        Assertions.assertEquals("kambtrnegvmnvuqe", model.dynamicErrorMessage());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureStorageJobExtendedInfo model =
-            new AzureStorageJobExtendedInfo()
-                .withTasksList(
-                    Arrays.asList(new AzureStorageJobTaskDetails().withTaskId("oggculapz").withStatus("rpgogtqxep")))
-                .withPropertyBag(mapOf("uajlyj", "b"))
-                .withDynamicErrorMessage("vofqzhvfc");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureStorageJobExtendedInfo model = new AzureStorageJobExtendedInfo()
+            .withTasksList(Arrays.asList(new AzureStorageJobTaskDetails().withTaskId("cjdx").withStatus("bzo")))
+            .withPropertyBag(
+                mapOf("ogtqxepnylbf", "ulapzwyrp", "cib", "ajlyjtlvofqzhv", "uxrkjp", "fmo", "wiivwzjbhyzsx", "dwxf"))
+            .withDynamicErrorMessage("kambtrnegvmnvuqe");
         model = BinaryData.fromObject(model).toObject(AzureStorageJobExtendedInfo.class);
-        Assertions.assertEquals("oggculapz", model.tasksList().get(0).taskId());
-        Assertions.assertEquals("rpgogtqxep", model.tasksList().get(0).status());
-        Assertions.assertEquals("b", model.propertyBag().get("uajlyj"));
-        Assertions.assertEquals("vofqzhvfc", model.dynamicErrorMessage());
+        Assertions.assertEquals("cjdx", model.tasksList().get(0).taskId());
+        Assertions.assertEquals("bzo", model.tasksList().get(0).status());
+        Assertions.assertEquals("ulapzwyrp", model.propertyBag().get("ogtqxepnylbf"));
+        Assertions.assertEquals("kambtrnegvmnvuqe", model.dynamicErrorMessage());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

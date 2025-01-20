@@ -6,20 +6,17 @@ package com.azure.resourcemanager.elastic.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.elastic.fluent.models.DeploymentInfoResponseInner;
-import org.junit.jupiter.api.Test;
 
 public final class DeploymentInfoResponseInnerTests {
-    @Test
-    public void testDeserialize() {
-        DeploymentInfoResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"status\":\"Unhealthy\",\"version\":\"dtqajzyulpkudj\",\"memoryCapacity\":\"lkhbz\",\"diskCapacity\":\"epgzgqexz\"}")
-                .toObject(DeploymentInfoResponseInner.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DeploymentInfoResponseInner model = BinaryData.fromString(
+            "{\"status\":\"Healthy\",\"version\":\"ayvvtpgvdf\",\"memoryCapacity\":\"otkftutqxlngx\",\"diskCapacity\":\"fgugnxkrxdqmid\",\"elasticsearchEndPoint\":\"hzrvqd\",\"deploymentUrl\":\"bhj\",\"marketplaceSaasInfo\":{\"marketplaceSubscription\":{\"id\":\"ehoqfbowskan\"},\"marketplaceName\":\"tzlcuiywgqywgn\",\"marketplaceResourceId\":\"vynhzgpphrcg\",\"marketplaceStatus\":\"cocpecfvmmcoofsx\",\"billedAzureSubscriptionId\":\"evgbmqjq\",\"subscribed\":false}}")
+            .toObject(DeploymentInfoResponseInner.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         DeploymentInfoResponseInner model = new DeploymentInfoResponseInner();
         model = BinaryData.fromObject(model).toObject(DeploymentInfoResponseInner.class);
     }

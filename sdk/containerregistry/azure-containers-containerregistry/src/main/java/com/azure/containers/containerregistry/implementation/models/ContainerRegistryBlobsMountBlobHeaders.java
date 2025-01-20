@@ -5,32 +5,48 @@
 package com.azure.containers.containerregistry.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The ContainerRegistryBlobsMountBlobHeaders model. */
+/**
+ * The ContainerRegistryBlobsMountBlobHeaders model.
+ */
 @Fluent
 public final class ContainerRegistryBlobsMountBlobHeaders {
     /*
      * The Docker-Upload-UUID property.
      */
-    @JsonProperty(value = "Docker-Upload-UUID")
     private String dockerUploadUUID;
 
     /*
      * The Location property.
      */
-    @JsonProperty(value = "Location")
     private String location;
 
     /*
      * The Docker-Content-Digest property.
      */
-    @JsonProperty(value = "Docker-Content-Digest")
     private String dockerContentDigest;
+
+    private static final HttpHeaderName DOCKER_UPLOAD_UUID = HttpHeaderName.fromString("Docker-Upload-UUID");
+
+    private static final HttpHeaderName DOCKER_CONTENT_DIGEST = HttpHeaderName.fromString("Docker-Content-Digest");
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of ContainerRegistryBlobsMountBlobHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public ContainerRegistryBlobsMountBlobHeaders(HttpHeaders rawHeaders) {
+        this.dockerUploadUUID = rawHeaders.getValue(DOCKER_UPLOAD_UUID);
+        this.location = rawHeaders.getValue(HttpHeaderName.LOCATION);
+        this.dockerContentDigest = rawHeaders.getValue(DOCKER_CONTENT_DIGEST);
+    }
 
     /**
      * Get the dockerUploadUUID property: The Docker-Upload-UUID property.
-     *
+     * 
      * @return the dockerUploadUUID value.
      */
     public String getDockerUploadUUID() {
@@ -39,7 +55,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
 
     /**
      * Set the dockerUploadUUID property: The Docker-Upload-UUID property.
-     *
+     * 
      * @param dockerUploadUUID the dockerUploadUUID value to set.
      * @return the ContainerRegistryBlobsMountBlobHeaders object itself.
      */
@@ -50,7 +66,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String getLocation() {
@@ -59,7 +75,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the ContainerRegistryBlobsMountBlobHeaders object itself.
      */
@@ -70,7 +86,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
 
     /**
      * Get the dockerContentDigest property: The Docker-Content-Digest property.
-     *
+     * 
      * @return the dockerContentDigest value.
      */
     public String getDockerContentDigest() {
@@ -79,7 +95,7 @@ public final class ContainerRegistryBlobsMountBlobHeaders {
 
     /**
      * Set the dockerContentDigest property: The Docker-Content-Digest property.
-     *
+     * 
      * @param dockerContentDigest the dockerContentDigest value to set.
      * @return the ContainerRegistryBlobsMountBlobHeaders object itself.
      */

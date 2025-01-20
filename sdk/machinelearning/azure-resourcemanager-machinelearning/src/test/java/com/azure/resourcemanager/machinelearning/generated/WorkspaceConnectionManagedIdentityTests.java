@@ -7,25 +7,23 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionManagedIdentity;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspaceConnectionManagedIdentityTests {
-    @Test
-    public void testDeserialize() {
-        WorkspaceConnectionManagedIdentity model =
-            BinaryData
-                .fromString("{\"resourceId\":\"ivensrpmeyyvpk\",\"clientId\":\"tlbijpzg\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        WorkspaceConnectionManagedIdentity model
+            = BinaryData.fromString("{\"resourceId\":\"rvrk\",\"clientId\":\"abdu\"}")
                 .toObject(WorkspaceConnectionManagedIdentity.class);
-        Assertions.assertEquals("ivensrpmeyyvpk", model.resourceId());
-        Assertions.assertEquals("tlbijpzg", model.clientId());
+        Assertions.assertEquals("rvrk", model.resourceId());
+        Assertions.assertEquals("abdu", model.clientId());
     }
 
-    @Test
-    public void testSerialize() {
-        WorkspaceConnectionManagedIdentity model =
-            new WorkspaceConnectionManagedIdentity().withResourceId("ivensrpmeyyvpk").withClientId("tlbijpzg");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        WorkspaceConnectionManagedIdentity model
+            = new WorkspaceConnectionManagedIdentity().withResourceId("rvrk").withClientId("abdu");
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionManagedIdentity.class);
-        Assertions.assertEquals("ivensrpmeyyvpk", model.resourceId());
-        Assertions.assertEquals("tlbijpzg", model.clientId());
+        Assertions.assertEquals("rvrk", model.resourceId());
+        Assertions.assertEquals("abdu", model.clientId());
     }
 }

@@ -5,54 +5,101 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
-/** Properties of Cognitive Services account commitment plan. */
+/**
+ * Properties of Cognitive Services account commitment plan.
+ */
 @Fluent
-public final class CommitmentPlanProperties {
+public final class CommitmentPlanProperties implements JsonSerializable<CommitmentPlanProperties> {
+    /*
+     * Gets the status of the resource at the time the operation was called.
+     */
+    private CommitmentPlanProvisioningState provisioningState;
+
+    /*
+     * Commitment plan guid.
+     */
+    private String commitmentPlanGuid;
+
     /*
      * Account hosting model.
      */
-    @JsonProperty(value = "hostingModel")
     private HostingModel hostingModel;
 
     /*
      * Commitment plan type.
      */
-    @JsonProperty(value = "planType")
     private String planType;
 
     /*
      * Cognitive Services account commitment period.
      */
-    @JsonProperty(value = "current")
     private CommitmentPeriod current;
 
     /*
      * AutoRenew commitment plan.
      */
-    @JsonProperty(value = "autoRenew")
     private Boolean autoRenew;
 
     /*
      * Cognitive Services account commitment period.
      */
-    @JsonProperty(value = "next")
     private CommitmentPeriod next;
 
     /*
      * Cognitive Services account commitment period.
      */
-    @JsonProperty(value = "last", access = JsonProperty.Access.WRITE_ONLY)
     private CommitmentPeriod last;
 
-    /** Creates an instance of CommitmentPlanProperties class. */
+    /*
+     * The list of ProvisioningIssue.
+     */
+    private List<String> provisioningIssues;
+
+    /**
+     * Creates an instance of CommitmentPlanProperties class.
+     */
     public CommitmentPlanProperties() {
     }
 
     /**
+     * Get the provisioningState property: Gets the status of the resource at the time the operation was called.
+     * 
+     * @return the provisioningState value.
+     */
+    public CommitmentPlanProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the commitmentPlanGuid property: Commitment plan guid.
+     * 
+     * @return the commitmentPlanGuid value.
+     */
+    public String commitmentPlanGuid() {
+        return this.commitmentPlanGuid;
+    }
+
+    /**
+     * Set the commitmentPlanGuid property: Commitment plan guid.
+     * 
+     * @param commitmentPlanGuid the commitmentPlanGuid value to set.
+     * @return the CommitmentPlanProperties object itself.
+     */
+    public CommitmentPlanProperties withCommitmentPlanGuid(String commitmentPlanGuid) {
+        this.commitmentPlanGuid = commitmentPlanGuid;
+        return this;
+    }
+
+    /**
      * Get the hostingModel property: Account hosting model.
-     *
+     * 
      * @return the hostingModel value.
      */
     public HostingModel hostingModel() {
@@ -61,7 +108,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Set the hostingModel property: Account hosting model.
-     *
+     * 
      * @param hostingModel the hostingModel value to set.
      * @return the CommitmentPlanProperties object itself.
      */
@@ -72,7 +119,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Get the planType property: Commitment plan type.
-     *
+     * 
      * @return the planType value.
      */
     public String planType() {
@@ -81,7 +128,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Set the planType property: Commitment plan type.
-     *
+     * 
      * @param planType the planType value to set.
      * @return the CommitmentPlanProperties object itself.
      */
@@ -92,7 +139,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Get the current property: Cognitive Services account commitment period.
-     *
+     * 
      * @return the current value.
      */
     public CommitmentPeriod current() {
@@ -101,7 +148,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Set the current property: Cognitive Services account commitment period.
-     *
+     * 
      * @param current the current value to set.
      * @return the CommitmentPlanProperties object itself.
      */
@@ -112,7 +159,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Get the autoRenew property: AutoRenew commitment plan.
-     *
+     * 
      * @return the autoRenew value.
      */
     public Boolean autoRenew() {
@@ -121,7 +168,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Set the autoRenew property: AutoRenew commitment plan.
-     *
+     * 
      * @param autoRenew the autoRenew value to set.
      * @return the CommitmentPlanProperties object itself.
      */
@@ -132,7 +179,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Get the next property: Cognitive Services account commitment period.
-     *
+     * 
      * @return the next value.
      */
     public CommitmentPeriod next() {
@@ -141,7 +188,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Set the next property: Cognitive Services account commitment period.
-     *
+     * 
      * @param next the next value to set.
      * @return the CommitmentPlanProperties object itself.
      */
@@ -152,7 +199,7 @@ public final class CommitmentPlanProperties {
 
     /**
      * Get the last property: Cognitive Services account commitment period.
-     *
+     * 
      * @return the last value.
      */
     public CommitmentPeriod last() {
@@ -160,8 +207,17 @@ public final class CommitmentPlanProperties {
     }
 
     /**
+     * Get the provisioningIssues property: The list of ProvisioningIssue.
+     * 
+     * @return the provisioningIssues value.
+     */
+    public List<String> provisioningIssues() {
+        return this.provisioningIssues;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -174,5 +230,64 @@ public final class CommitmentPlanProperties {
         if (last() != null) {
             last().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("commitmentPlanGuid", this.commitmentPlanGuid);
+        jsonWriter.writeStringField("hostingModel", this.hostingModel == null ? null : this.hostingModel.toString());
+        jsonWriter.writeStringField("planType", this.planType);
+        jsonWriter.writeJsonField("current", this.current);
+        jsonWriter.writeBooleanField("autoRenew", this.autoRenew);
+        jsonWriter.writeJsonField("next", this.next);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommitmentPlanProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommitmentPlanProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CommitmentPlanProperties.
+     */
+    public static CommitmentPlanProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommitmentPlanProperties deserializedCommitmentPlanProperties = new CommitmentPlanProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisioningState".equals(fieldName)) {
+                    deserializedCommitmentPlanProperties.provisioningState
+                        = CommitmentPlanProvisioningState.fromString(reader.getString());
+                } else if ("commitmentPlanGuid".equals(fieldName)) {
+                    deserializedCommitmentPlanProperties.commitmentPlanGuid = reader.getString();
+                } else if ("hostingModel".equals(fieldName)) {
+                    deserializedCommitmentPlanProperties.hostingModel = HostingModel.fromString(reader.getString());
+                } else if ("planType".equals(fieldName)) {
+                    deserializedCommitmentPlanProperties.planType = reader.getString();
+                } else if ("current".equals(fieldName)) {
+                    deserializedCommitmentPlanProperties.current = CommitmentPeriod.fromJson(reader);
+                } else if ("autoRenew".equals(fieldName)) {
+                    deserializedCommitmentPlanProperties.autoRenew = reader.getNullable(JsonReader::getBoolean);
+                } else if ("next".equals(fieldName)) {
+                    deserializedCommitmentPlanProperties.next = CommitmentPeriod.fromJson(reader);
+                } else if ("last".equals(fieldName)) {
+                    deserializedCommitmentPlanProperties.last = CommitmentPeriod.fromJson(reader);
+                } else if ("provisioningIssues".equals(fieldName)) {
+                    List<String> provisioningIssues = reader.readArray(reader1 -> reader1.getString());
+                    deserializedCommitmentPlanProperties.provisioningIssues = provisioningIssues;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommitmentPlanProperties;
+        });
     }
 }

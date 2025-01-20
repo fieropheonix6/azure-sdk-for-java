@@ -5,33 +5,39 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.fluent.models.RestorePointCollectionInner;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** The List restore point collection operation response. */
+/**
+ * The List restore point collection operation response.
+ */
 @Fluent
-public final class RestorePointCollectionListResult {
+public final class RestorePointCollectionListResult implements JsonSerializable<RestorePointCollectionListResult> {
     /*
      * Gets the list of restore point collections.
      */
-    @JsonProperty(value = "value")
     private List<RestorePointCollectionInner> value;
 
     /*
      * The uri to fetch the next page of RestorePointCollections. Call ListNext() with this to fetch the next page of
      * RestorePointCollections
      */
-    @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RestorePointCollectionListResult class. */
+    /**
+     * Creates an instance of RestorePointCollectionListResult class.
+     */
     public RestorePointCollectionListResult() {
     }
 
     /**
      * Get the value property: Gets the list of restore point collections.
-     *
+     * 
      * @return the value value.
      */
     public List<RestorePointCollectionInner> value() {
@@ -40,7 +46,7 @@ public final class RestorePointCollectionListResult {
 
     /**
      * Set the value property: Gets the list of restore point collections.
-     *
+     * 
      * @param value the value value to set.
      * @return the RestorePointCollectionListResult object itself.
      */
@@ -52,7 +58,7 @@ public final class RestorePointCollectionListResult {
     /**
      * Get the nextLink property: The uri to fetch the next page of RestorePointCollections. Call ListNext() with this
      * to fetch the next page of RestorePointCollections.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +68,7 @@ public final class RestorePointCollectionListResult {
     /**
      * Set the nextLink property: The uri to fetch the next page of RestorePointCollections. Call ListNext() with this
      * to fetch the next page of RestorePointCollections.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RestorePointCollectionListResult object itself.
      */
@@ -73,12 +79,54 @@ public final class RestorePointCollectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointCollectionListResult from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointCollectionListResult if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorePointCollectionListResult.
+     */
+    public static RestorePointCollectionListResult fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointCollectionListResult deserializedRestorePointCollectionListResult
+                = new RestorePointCollectionListResult();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<RestorePointCollectionInner> value
+                        = reader.readArray(reader1 -> RestorePointCollectionInner.fromJson(reader1));
+                    deserializedRestorePointCollectionListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedRestorePointCollectionListResult.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointCollectionListResult;
+        });
     }
 }

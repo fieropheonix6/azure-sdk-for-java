@@ -6,43 +6,46 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** IP configuration of an application gateway. Currently 1 public and 1 private IP configuration is allowed. */
+/**
+ * IP configuration of an application gateway. Currently 1 public and 1 private IP configuration is allowed.
+ */
 @Fluent
 public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     /*
      * Properties of the application gateway IP configuration.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties;
 
     /*
      * Name of the IP configuration that is unique within an Application Gateway.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayIpConfigurationInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayIpConfigurationInner class.
+     */
     public ApplicationGatewayIpConfigurationInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway IP configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties() {
@@ -51,7 +54,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Get the name property: Name of the IP configuration that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +63,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Set the name property: Name of the IP configuration that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayIpConfigurationInner object itself.
      */
@@ -71,7 +74,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +83,16 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayIpConfigurationInner withId(String id) {
         super.withId(id);
@@ -97,7 +102,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     /**
      * Get the subnet property: Reference to the subnet resource. A subnet from where application gateway gets its
      * private address.
-     *
+     * 
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -107,7 +112,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     /**
      * Set the subnet property: Reference to the subnet resource. A subnet from where application gateway gets its
      * private address.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the ApplicationGatewayIpConfigurationInner object itself.
      */
@@ -121,7 +126,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the application gateway IP configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -130,12 +135,60 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayIpConfigurationInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayIpConfigurationInner if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayIpConfigurationInner.
+     */
+    public static ApplicationGatewayIpConfigurationInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayIpConfigurationInner deserializedApplicationGatewayIpConfigurationInner
+                = new ApplicationGatewayIpConfigurationInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayIpConfigurationInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayIpConfigurationInner.innerProperties
+                        = ApplicationGatewayIpConfigurationPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayIpConfigurationInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayIpConfigurationInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedApplicationGatewayIpConfigurationInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayIpConfigurationInner;
+        });
     }
 }

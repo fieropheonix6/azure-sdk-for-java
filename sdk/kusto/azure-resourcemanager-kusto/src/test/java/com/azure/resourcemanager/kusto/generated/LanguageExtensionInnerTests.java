@@ -6,23 +6,29 @@ package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.LanguageExtensionInner;
+import com.azure.resourcemanager.kusto.models.LanguageExtensionImageName;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionName;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class LanguageExtensionInnerTests {
-    @Test
-    public void testDeserialize() {
-        LanguageExtensionInner model =
-            BinaryData.fromString("{\"languageExtensionName\":\"PYTHON\"}").toObject(LanguageExtensionInner.class);
-        Assertions.assertEquals(LanguageExtensionName.PYTHON, model.languageExtensionName());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        LanguageExtensionInner model = BinaryData.fromString(
+            "{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"R\",\"languageExtensionCustomImageName\":\"zitonpeqfpjkjl\"}")
+            .toObject(LanguageExtensionInner.class);
+        Assertions.assertEquals(LanguageExtensionName.R, model.languageExtensionName());
+        Assertions.assertEquals(LanguageExtensionImageName.R, model.languageExtensionImageName());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.languageExtensionCustomImageName());
     }
 
-    @Test
-    public void testSerialize() {
-        LanguageExtensionInner model =
-            new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        LanguageExtensionInner model = new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R)
+            .withLanguageExtensionImageName(LanguageExtensionImageName.R)
+            .withLanguageExtensionCustomImageName("zitonpeqfpjkjl");
         model = BinaryData.fromObject(model).toObject(LanguageExtensionInner.class);
-        Assertions.assertEquals(LanguageExtensionName.PYTHON, model.languageExtensionName());
+        Assertions.assertEquals(LanguageExtensionName.R, model.languageExtensionName());
+        Assertions.assertEquals(LanguageExtensionImageName.R, model.languageExtensionImageName());
+        Assertions.assertEquals("zitonpeqfpjkjl", model.languageExtensionCustomImageName());
     }
 }

@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Error details for when validation fails. */
+/**
+ * Error details for when validation fails.
+ */
 @Fluent
-public final class ValidateResponseError {
+public final class ValidateResponseError implements JsonSerializable<ValidateResponseError> {
     /*
      * Validation error code.
      */
-    @JsonProperty(value = "code")
     private String code;
 
     /*
      * Validation error message.
      */
-    @JsonProperty(value = "message")
     private String message;
 
     /**
+     * Creates an instance of ValidateResponseError class.
+     */
+    public ValidateResponseError() {
+    }
+
+    /**
      * Get the code property: Validation error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -33,7 +43,7 @@ public final class ValidateResponseError {
 
     /**
      * Set the code property: Validation error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ValidateResponseError object itself.
      */
@@ -44,7 +54,7 @@ public final class ValidateResponseError {
 
     /**
      * Get the message property: Validation error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -53,7 +63,7 @@ public final class ValidateResponseError {
 
     /**
      * Set the message property: Validation error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ValidateResponseError object itself.
      */
@@ -64,9 +74,48 @@ public final class ValidateResponseError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("code", this.code);
+        jsonWriter.writeStringField("message", this.message);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ValidateResponseError from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ValidateResponseError if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ValidateResponseError.
+     */
+    public static ValidateResponseError fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ValidateResponseError deserializedValidateResponseError = new ValidateResponseError();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("code".equals(fieldName)) {
+                    deserializedValidateResponseError.code = reader.getString();
+                } else if ("message".equals(fieldName)) {
+                    deserializedValidateResponseError.message = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedValidateResponseError;
+        });
     }
 }

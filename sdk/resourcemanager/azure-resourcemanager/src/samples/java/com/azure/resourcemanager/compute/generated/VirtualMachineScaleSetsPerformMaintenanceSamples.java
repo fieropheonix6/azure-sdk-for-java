@@ -4,49 +4,50 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMInstanceIDs;
 import java.util.Arrays;
 
-/** Samples for VirtualMachineScaleSets PerformMaintenance. */
+/**
+ * Samples for VirtualMachineScaleSets PerformMaintenance.
+ */
 public final class VirtualMachineScaleSetsPerformMaintenanceSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PerformMaintenance_MaximumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_PerformMaintenance_MaximumSet_Gen.
-     *
+     * Sample code: VirtualMachineScaleSet_PerformMaintenance_MinimumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsPerformMaintenanceMaximumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void
+        virtualMachineScaleSetPerformMaintenanceMinimumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .performMaintenance(
-                "rgcompute",
-                "aaaaaaaaaaa",
-                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
-                Context.NONE);
+            .performMaintenance("rgcompute", "aa", null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineScaleSetExamples/VirtualMachineScaleSets_PerformMaintenance_MinimumSet_Gen.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/
+     * virtualMachineScaleSetExamples/VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.json
      */
     /**
-     * Sample code: VirtualMachineScaleSets_PerformMaintenance_MinimumSet_Gen.
-     *
+     * Sample code: VirtualMachineScaleSet_PerformMaintenance_MaximumSet_Gen.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void virtualMachineScaleSetsPerformMaintenanceMinimumSetGen(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+    public static void
+        virtualMachineScaleSetPerformMaintenanceMaximumSetGen(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSets()
-            .performMaintenance("rgcompute", "aa", null, Context.NONE);
+            .performMaintenance("rgcompute", "aaaaaaaaaaa",
+                new VirtualMachineScaleSetVMInstanceIDs().withInstanceIds(Arrays.asList("aaaaaaaaaaaaaaaaa")),
+                com.azure.core.util.Context.NONE);
     }
 }

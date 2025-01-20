@@ -5,121 +5,207 @@
 package com.azure.resourcemanager.mariadb.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Represents a log file. */
-@JsonFlatten
+/**
+ * Represents a log file.
+ */
 @Fluent
-public class LogFileInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogFileInner.class);
+public final class LogFileInner extends ProxyResource {
+    /*
+     * The properties of the log file.
+     */
+    private LogFileProperties innerProperties;
 
     /*
-     * Size of the log file.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.sizeInKB")
-    private Long sizeInKB;
+    private String type;
 
     /*
-     * Creation timestamp of the log file.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.createdTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdTime;
+    private String name;
 
     /*
-     * Last modified timestamp of the log file.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastModifiedTime;
+    private String id;
 
-    /*
-     * Type of the log file.
+    /**
+     * Creates an instance of LogFileInner class.
      */
-    @JsonProperty(value = "properties.type")
-    private String typePropertiesType;
+    public LogFileInner() {
+    }
 
-    /*
-     * The url to download the log file from.
+    /**
+     * Get the innerProperties property: The properties of the log file.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.url", access = JsonProperty.Access.WRITE_ONLY)
-    private String url;
+    private LogFileProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the sizeInKB property: Size of the log file.
-     *
+     * 
      * @return the sizeInKB value.
      */
     public Long sizeInKB() {
-        return this.sizeInKB;
+        return this.innerProperties() == null ? null : this.innerProperties().sizeInKB();
     }
 
     /**
      * Set the sizeInKB property: Size of the log file.
-     *
+     * 
      * @param sizeInKB the sizeInKB value to set.
      * @return the LogFileInner object itself.
      */
     public LogFileInner withSizeInKB(Long sizeInKB) {
-        this.sizeInKB = sizeInKB;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogFileProperties();
+        }
+        this.innerProperties().withSizeInKB(sizeInKB);
         return this;
     }
 
     /**
      * Get the createdTime property: Creation timestamp of the log file.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
-        return this.createdTime;
+        return this.innerProperties() == null ? null : this.innerProperties().createdTime();
     }
 
     /**
      * Get the lastModifiedTime property: Last modified timestamp of the log file.
-     *
+     * 
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
-        return this.lastModifiedTime;
+        return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTime();
     }
 
     /**
-     * Get the typePropertiesType property: Type of the log file.
-     *
-     * @return the typePropertiesType value.
+     * Get the type property: Type of the log file.
+     * 
+     * @return the type value.
      */
     public String typePropertiesType() {
-        return this.typePropertiesType;
+        return this.innerProperties() == null ? null : this.innerProperties().type();
     }
 
     /**
-     * Set the typePropertiesType property: Type of the log file.
-     *
-     * @param typePropertiesType the typePropertiesType value to set.
+     * Set the type property: Type of the log file.
+     * 
+     * @param type the type value to set.
      * @return the LogFileInner object itself.
      */
-    public LogFileInner withTypePropertiesType(String typePropertiesType) {
-        this.typePropertiesType = typePropertiesType;
+    public LogFileInner withTypePropertiesType(String type) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LogFileProperties();
+        }
+        this.innerProperties().withType(type);
         return this;
     }
 
     /**
      * Get the url property: The url to download the log file from.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
-        return this.url;
+        return this.innerProperties() == null ? null : this.innerProperties().url();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LogFileInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LogFileInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LogFileInner.
+     */
+    public static LogFileInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LogFileInner deserializedLogFileInner = new LogFileInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedLogFileInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedLogFileInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedLogFileInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedLogFileInner.innerProperties = LogFileProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLogFileInner;
+        });
     }
 }

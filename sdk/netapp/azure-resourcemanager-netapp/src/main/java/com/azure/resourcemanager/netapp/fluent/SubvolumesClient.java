@@ -15,14 +15,16 @@ import com.azure.resourcemanager.netapp.fluent.models.SubvolumeInfoInner;
 import com.azure.resourcemanager.netapp.fluent.models.SubvolumeModelInner;
 import com.azure.resourcemanager.netapp.models.SubvolumePatchRequest;
 
-/** An instance of this class provides access to all the operations defined in SubvolumesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SubvolumesClient.
+ */
 public interface SubvolumesClient {
     /**
      * List of all the subvolumes
-     *
-     * <p>Returns a list of the subvolumes in the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -32,15 +34,15 @@ public interface SubvolumesClient {
      * @return list of Subvolumes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubvolumeInfoInner> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    PagedIterable<SubvolumeInfoInner> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * List of all the subvolumes
-     *
-     * <p>Returns a list of the subvolumes in the volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Returns a list of the subvolumes in the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -51,34 +53,15 @@ public interface SubvolumesClient {
      * @return list of Subvolumes as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SubvolumeInfoInner> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    PagedIterable<SubvolumeInfoInner> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
 
     /**
      * Get the path associated with the subvolumeName
-     *
-     * <p>Returns the path associated with the subvolumeName provided.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param subvolumeName The name of the subvolume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subvolume Information properties.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SubvolumeInfoInner get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
-
-    /**
-     * Get the path associated with the subvolumeName
-     *
-     * <p>Returns the path associated with the subvolumeName provided.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Returns the path associated with the subvolumeName provided.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -90,20 +73,34 @@ public interface SubvolumesClient {
      * @return subvolume Information properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubvolumeInfoInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context);
+    Response<SubvolumeInfoInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context);
+
+    /**
+     * Get the path associated with the subvolumeName
+     * 
+     * Returns the path associated with the subvolumeName provided.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param subvolumeName The name of the subvolume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subvolume Information properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubvolumeInfoInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName);
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -115,20 +112,15 @@ public interface SubvolumesClient {
      * @return the {@link SyncPoller} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body);
+    SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body);
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -141,21 +133,16 @@ public interface SubvolumesClient {
      * @return the {@link SyncPoller} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body,
+    SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginCreate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumeInfoInner body,
         Context context);
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -167,20 +154,15 @@ public interface SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubvolumeInfoInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body);
+    SubvolumeInfoInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, SubvolumeInfoInner body);
 
     /**
      * Create or clone a new subvolume
-     *
-     * <p>Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Creates a subvolume in the path or clones the subvolume mentioned in the parentPath.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -193,21 +175,15 @@ public interface SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubvolumeInfoInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumeInfoInner body,
-        Context context);
+    SubvolumeInfoInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, SubvolumeInfoInner body, Context context);
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -219,20 +195,15 @@ public interface SubvolumesClient {
      * @return the {@link SyncPoller} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body);
+    SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body);
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -245,21 +216,16 @@ public interface SubvolumesClient {
      * @return the {@link SyncPoller} for polling of subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body,
+    SyncPoller<PollResult<SubvolumeInfoInner>, SubvolumeInfoInner> beginUpdate(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, SubvolumePatchRequest body,
         Context context);
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -271,20 +237,15 @@ public interface SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubvolumeInfoInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body);
+    SubvolumeInfoInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, SubvolumePatchRequest body);
 
     /**
      * Update a subvolume
-     *
-     * <p>Patch a subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Patch a subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -297,21 +258,15 @@ public interface SubvolumesClient {
      * @return subvolume Information properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubvolumeInfoInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        SubvolumePatchRequest body,
-        Context context);
+    SubvolumeInfoInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, SubvolumePatchRequest body, Context context);
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -322,15 +277,15 @@ public interface SubvolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName);
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -342,20 +297,15 @@ public interface SubvolumesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String subvolumeName, Context context);
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -369,10 +319,10 @@ public interface SubvolumesClient {
 
     /**
      * Delete a subvolume
-     *
-     * <p>Delete subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -383,20 +333,15 @@ public interface SubvolumesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
+    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName,
         Context context);
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -407,15 +352,15 @@ public interface SubvolumesClient {
      * @return the {@link SyncPoller} for polling of details of the specified subvolume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
+    SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName);
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -427,20 +372,15 @@ public interface SubvolumesClient {
      * @return the {@link SyncPoller} for polling of details of the specified subvolume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context);
+    SyncPoller<PollResult<SubvolumeModelInner>, SubvolumeModelInner> beginGetMetadata(String resourceGroupName,
+        String accountName, String poolName, String volumeName, String subvolumeName, Context context);
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -451,15 +391,15 @@ public interface SubvolumesClient {
      * @return details of the specified subvolume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubvolumeModelInner getMetadata(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String subvolumeName);
+    SubvolumeModelInner getMetadata(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName);
 
     /**
      * Describe a subvolume
-     *
-     * <p>Get details of the specified subvolume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get details of the specified subvolume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -471,11 +411,6 @@ public interface SubvolumesClient {
      * @return details of the specified subvolume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubvolumeModelInner getMetadata(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String subvolumeName,
-        Context context);
+    SubvolumeModelInner getMetadata(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String subvolumeName, Context context);
 }

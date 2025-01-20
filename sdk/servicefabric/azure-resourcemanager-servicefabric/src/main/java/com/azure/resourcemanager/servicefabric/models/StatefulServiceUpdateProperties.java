@@ -5,58 +5,72 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.servicefabric.fluent.models.ServiceResourceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** The properties of a stateful service resource for patch operations. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceKind")
-@JsonTypeName("Stateful")
+/**
+ * The properties of a stateful service resource for patch operations.
+ */
 @Fluent
 public final class StatefulServiceUpdateProperties extends ServiceResourceUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatefulServiceUpdateProperties.class);
+    /*
+     * The kind of service (Stateless or Stateful).
+     */
+    private ServiceKind serviceKind = ServiceKind.STATEFUL;
 
     /*
      * The target replica set size as a number.
      */
-    @JsonProperty(value = "targetReplicaSetSize")
     private Integer targetReplicaSetSize;
 
     /*
      * The minimum replica set size as a number.
      */
-    @JsonProperty(value = "minReplicaSetSize")
     private Integer minReplicaSetSize;
 
     /*
-     * The duration between when a replica goes down and when a new replica is
-     * created, represented in ISO 8601 format (hh:mm:ss.s).
+     * The duration between when a replica goes down and when a new replica is created, represented in ISO 8601 format
+     * (hh:mm:ss.s).
      */
-    @JsonProperty(value = "replicaRestartWaitDuration")
     private OffsetDateTime replicaRestartWaitDuration;
 
     /*
-     * The maximum duration for which a partition is allowed to be in a state
-     * of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
+     * The maximum duration for which a partition is allowed to be in a state of quorum loss, represented in ISO 8601
+     * format (hh:mm:ss.s).
      */
-    @JsonProperty(value = "quorumLossWaitDuration")
     private OffsetDateTime quorumLossWaitDuration;
 
     /*
-     * The definition on how long StandBy replicas should be maintained before
-     * being removed, represented in ISO 8601 format (hh:mm:ss.s).
+     * The definition on how long StandBy replicas should be maintained before being removed, represented in ISO 8601
+     * format (hh:mm:ss.s).
      */
-    @JsonProperty(value = "standByReplicaKeepDuration")
     private OffsetDateTime standByReplicaKeepDuration;
 
     /**
+     * Creates an instance of StatefulServiceUpdateProperties class.
+     */
+    public StatefulServiceUpdateProperties() {
+    }
+
+    /**
+     * Get the serviceKind property: The kind of service (Stateless or Stateful).
+     * 
+     * @return the serviceKind value.
+     */
+    @Override
+    public ServiceKind serviceKind() {
+        return this.serviceKind;
+    }
+
+    /**
      * Get the targetReplicaSetSize property: The target replica set size as a number.
-     *
+     * 
      * @return the targetReplicaSetSize value.
      */
     public Integer targetReplicaSetSize() {
@@ -65,7 +79,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
 
     /**
      * Set the targetReplicaSetSize property: The target replica set size as a number.
-     *
+     * 
      * @param targetReplicaSetSize the targetReplicaSetSize value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -76,7 +90,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
 
     /**
      * Get the minReplicaSetSize property: The minimum replica set size as a number.
-     *
+     * 
      * @return the minReplicaSetSize value.
      */
     public Integer minReplicaSetSize() {
@@ -85,7 +99,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
 
     /**
      * Set the minReplicaSetSize property: The minimum replica set size as a number.
-     *
+     * 
      * @param minReplicaSetSize the minReplicaSetSize value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -97,7 +111,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Get the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new replica
      * is created, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @return the replicaRestartWaitDuration value.
      */
     public OffsetDateTime replicaRestartWaitDuration() {
@@ -107,7 +121,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Set the replicaRestartWaitDuration property: The duration between when a replica goes down and when a new replica
      * is created, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @param replicaRestartWaitDuration the replicaRestartWaitDuration value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -119,7 +133,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Get the quorumLossWaitDuration property: The maximum duration for which a partition is allowed to be in a state
      * of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @return the quorumLossWaitDuration value.
      */
     public OffsetDateTime quorumLossWaitDuration() {
@@ -129,7 +143,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Set the quorumLossWaitDuration property: The maximum duration for which a partition is allowed to be in a state
      * of quorum loss, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @param quorumLossWaitDuration the quorumLossWaitDuration value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -141,7 +155,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Get the standByReplicaKeepDuration property: The definition on how long StandBy replicas should be maintained
      * before being removed, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @return the standByReplicaKeepDuration value.
      */
     public OffsetDateTime standByReplicaKeepDuration() {
@@ -151,7 +165,7 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
     /**
      * Set the standByReplicaKeepDuration property: The definition on how long StandBy replicas should be maintained
      * before being removed, represented in ISO 8601 format (hh:mm:ss.s).
-     *
+     * 
      * @param standByReplicaKeepDuration the standByReplicaKeepDuration value to set.
      * @return the StatefulServiceUpdateProperties object itself.
      */
@@ -160,38 +174,48 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatefulServiceUpdateProperties withPlacementConstraints(String placementConstraints) {
         super.withPlacementConstraints(placementConstraints);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatefulServiceUpdateProperties withCorrelationScheme(
-        List<ServiceCorrelationDescription> correlationScheme) {
+    public StatefulServiceUpdateProperties
+        withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
         super.withCorrelationScheme(correlationScheme);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatefulServiceUpdateProperties withServiceLoadMetrics(
-        List<ServiceLoadMetricDescription> serviceLoadMetrics) {
+    public StatefulServiceUpdateProperties
+        withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
         super.withServiceLoadMetrics(serviceLoadMetrics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public StatefulServiceUpdateProperties withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
+    public StatefulServiceUpdateProperties
+        withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
         super.withServicePlacementPolicies(servicePlacementPolicies);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StatefulServiceUpdateProperties withDefaultMoveCost(MoveCost defaultMoveCost) {
         super.withDefaultMoveCost(defaultMoveCost);
@@ -200,11 +224,111 @@ public final class StatefulServiceUpdateProperties extends ServiceResourceUpdate
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (correlationScheme() != null) {
+            correlationScheme().forEach(e -> e.validate());
+        }
+        if (serviceLoadMetrics() != null) {
+            serviceLoadMetrics().forEach(e -> e.validate());
+        }
+        if (servicePlacementPolicies() != null) {
+            servicePlacementPolicies().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("placementConstraints", placementConstraints());
+        jsonWriter.writeArrayField("correlationScheme", correlationScheme(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("serviceLoadMetrics", serviceLoadMetrics(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("servicePlacementPolicies", servicePlacementPolicies(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("defaultMoveCost", defaultMoveCost() == null ? null : defaultMoveCost().toString());
+        jsonWriter.writeStringField("serviceKind", this.serviceKind == null ? null : this.serviceKind.toString());
+        jsonWriter.writeNumberField("targetReplicaSetSize", this.targetReplicaSetSize);
+        jsonWriter.writeNumberField("minReplicaSetSize", this.minReplicaSetSize);
+        jsonWriter.writeStringField("replicaRestartWaitDuration",
+            this.replicaRestartWaitDuration == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.replicaRestartWaitDuration));
+        jsonWriter.writeStringField("quorumLossWaitDuration",
+            this.quorumLossWaitDuration == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.quorumLossWaitDuration));
+        jsonWriter.writeStringField("standByReplicaKeepDuration",
+            this.standByReplicaKeepDuration == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.standByReplicaKeepDuration));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of StatefulServiceUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of StatefulServiceUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the StatefulServiceUpdateProperties.
+     */
+    public static StatefulServiceUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            StatefulServiceUpdateProperties deserializedStatefulServiceUpdateProperties
+                = new StatefulServiceUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("placementConstraints".equals(fieldName)) {
+                    deserializedStatefulServiceUpdateProperties.withPlacementConstraints(reader.getString());
+                } else if ("correlationScheme".equals(fieldName)) {
+                    List<ServiceCorrelationDescription> correlationScheme
+                        = reader.readArray(reader1 -> ServiceCorrelationDescription.fromJson(reader1));
+                    deserializedStatefulServiceUpdateProperties.withCorrelationScheme(correlationScheme);
+                } else if ("serviceLoadMetrics".equals(fieldName)) {
+                    List<ServiceLoadMetricDescription> serviceLoadMetrics
+                        = reader.readArray(reader1 -> ServiceLoadMetricDescription.fromJson(reader1));
+                    deserializedStatefulServiceUpdateProperties.withServiceLoadMetrics(serviceLoadMetrics);
+                } else if ("servicePlacementPolicies".equals(fieldName)) {
+                    List<ServicePlacementPolicyDescription> servicePlacementPolicies
+                        = reader.readArray(reader1 -> ServicePlacementPolicyDescription.fromJson(reader1));
+                    deserializedStatefulServiceUpdateProperties.withServicePlacementPolicies(servicePlacementPolicies);
+                } else if ("defaultMoveCost".equals(fieldName)) {
+                    deserializedStatefulServiceUpdateProperties
+                        .withDefaultMoveCost(MoveCost.fromString(reader.getString()));
+                } else if ("serviceKind".equals(fieldName)) {
+                    deserializedStatefulServiceUpdateProperties.serviceKind
+                        = ServiceKind.fromString(reader.getString());
+                } else if ("targetReplicaSetSize".equals(fieldName)) {
+                    deserializedStatefulServiceUpdateProperties.targetReplicaSetSize
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("minReplicaSetSize".equals(fieldName)) {
+                    deserializedStatefulServiceUpdateProperties.minReplicaSetSize
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("replicaRestartWaitDuration".equals(fieldName)) {
+                    deserializedStatefulServiceUpdateProperties.replicaRestartWaitDuration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("quorumLossWaitDuration".equals(fieldName)) {
+                    deserializedStatefulServiceUpdateProperties.quorumLossWaitDuration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("standByReplicaKeepDuration".equals(fieldName)) {
+                    deserializedStatefulServiceUpdateProperties.standByReplicaKeepDuration = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedStatefulServiceUpdateProperties;
+        });
     }
 }

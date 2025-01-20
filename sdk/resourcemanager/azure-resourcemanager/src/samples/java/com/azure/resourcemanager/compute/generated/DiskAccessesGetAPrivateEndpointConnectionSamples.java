@@ -4,26 +4,27 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for DiskAccesses GetAPrivateEndpointConnection. */
+/**
+ * Samples for DiskAccesses GetAPrivateEndpointConnection.
+ */
 public final class DiskAccessesGetAPrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2022-07-02/examples/diskAccessExamples/DiskAccessPrivateEndpointConnection_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/DiskRP/stable/2024-03-02/examples/diskAccessExamples/
+     * DiskAccessPrivateEndpointConnection_Get.json
      */
     /**
      * Sample code: Get information about a private endpoint connection under a disk access resource.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getInformationAboutAPrivateEndpointConnectionUnderADiskAccessResource(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getDiskAccesses()
-            .getAPrivateEndpointConnectionWithResponse(
-                "myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection", Context.NONE);
+            .getAPrivateEndpointConnectionWithResponse("myResourceGroup", "myDiskAccess", "myPrivateEndpointConnection",
+                com.azure.core.util.Context.NONE);
     }
 }

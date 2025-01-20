@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Method. */
+/**
+ * The HTTP method to be used.
+ */
 public final class Method extends ExpandableStringEnum<Method> {
-    /** Static value GET for Method. */
+    /**
+     * Static value GET for Method.
+     */
     public static final Method GET = fromString("GET");
 
-    /** Static value POST for Method. */
+    /**
+     * Static value POST for Method.
+     */
     public static final Method POST = fromString("POST");
 
     /**
+     * Creates a new instance of Method value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Method() {
+    }
+
+    /**
      * Creates or finds a Method from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Method.
      */
-    @JsonCreator
     public static Method fromString(String name) {
         return fromString(name, Method.class);
     }
 
-    /** @return known Method values. */
+    /**
+     * Gets known Method values.
+     * 
+     * @return known Method values.
+     */
     public static Collection<Method> values() {
         return values(Method.class);
     }

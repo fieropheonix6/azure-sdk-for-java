@@ -11,7 +11,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -38,7 +37,7 @@ final class BlobBatchOperationInfo {
      */
     BlobBatchOperationInfo() {
         this.contentId = new AtomicInteger();
-        this.batchBoundary = "batch_" + UUID.randomUUID();
+        this.batchBoundary = "batch_" + CoreUtils.randomUuid();
         this.contentType = "multipart/mixed; boundary=" + batchBoundary;
         this.batchOperations = new ConcurrentLinkedQueue<>();
         this.batchOperationResponseMap = new ConcurrentHashMap<>();
@@ -100,7 +99,8 @@ final class BlobBatchOperationInfo {
          * 'x-ms-version' used in the batch request. This header is illegal and will fail the batch request if present
          * in any operation.
          */
-        request.getHeaders().stream()
+        request.getHeaders()
+            .stream()
             .filter(header -> !X_MS_VERSION.equalsIgnoreCase(header.getName()))
             .forEach(header -> appendWithNewline(batchRequestBuilder, header.getName() + ": " + header.getValue()));
 
@@ -114,8 +114,8 @@ final class BlobBatchOperationInfo {
      * Completes the batch by adding the final boundary identifier to the request body.
      */
     void finalizeBatchOperations() {
-        batchOperations.add(ByteBuffer.wrap(
-            ("--" + batchBoundary + "--" + BlobBatchHelper.HTTP_NEWLINE).getBytes(StandardCharsets.UTF_8)));
+        batchOperations.add(ByteBuffer
+            .wrap(("--" + batchBoundary + "--" + BlobBatchHelper.HTTP_NEWLINE).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*

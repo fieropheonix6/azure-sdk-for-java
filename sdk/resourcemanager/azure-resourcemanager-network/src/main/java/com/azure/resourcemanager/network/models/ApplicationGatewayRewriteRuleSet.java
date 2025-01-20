@@ -6,38 +6,42 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRewriteRuleSetPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Rewrite rule set of an application gateway. */
+/**
+ * Rewrite rule set of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     /*
      * Properties of the application gateway rewrite rule set.
      */
-    @JsonProperty(value = "properties")
     private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties;
 
     /*
      * Name of the rewrite rule set that is unique within an Application Gateway.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of ApplicationGatewayRewriteRuleSet class. */
+    /**
+     * Creates an instance of ApplicationGatewayRewriteRuleSet class.
+     */
     public ApplicationGatewayRewriteRuleSet() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway rewrite rule set.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties() {
@@ -46,7 +50,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Get the name property: Name of the rewrite rule set that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +59,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Set the name property: Name of the rewrite rule set that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayRewriteRuleSet object itself.
      */
@@ -66,14 +70,16 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayRewriteRuleSet withId(String id) {
         super.withId(id);
@@ -82,7 +88,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Get the rewriteRules property: Rewrite rules in the rewrite rule set.
-     *
+     * 
      * @return the rewriteRules value.
      */
     public List<ApplicationGatewayRewriteRule> rewriteRules() {
@@ -91,7 +97,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Set the rewriteRules property: Rewrite rules in the rewrite rule set.
-     *
+     * 
      * @param rewriteRules the rewriteRules value to set.
      * @return the ApplicationGatewayRewriteRuleSet object itself.
      */
@@ -105,7 +111,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the rewrite rule set resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -114,12 +120,58 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayRewriteRuleSet from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayRewriteRuleSet if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayRewriteRuleSet.
+     */
+    public static ApplicationGatewayRewriteRuleSet fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayRewriteRuleSet deserializedApplicationGatewayRewriteRuleSet
+                = new ApplicationGatewayRewriteRuleSet();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleSet.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleSet.innerProperties
+                        = ApplicationGatewayRewriteRuleSetPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleSet.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedApplicationGatewayRewriteRuleSet.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayRewriteRuleSet;
+        });
     }
 }

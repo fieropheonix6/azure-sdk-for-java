@@ -4,41 +4,61 @@
 
 package com.azure.resourcemanager.containerinstance.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ContainerGroups GetByResourceGroup. */
+/**
+ * Samples for ContainerGroups GetByResourceGroup.
+ */
 public final class ContainerGroupsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsGet_Succeeded.json
+     * x-ms-original-file:
+     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/
+     * ContainerGroupsGetPriority.json
      */
     /**
-     * Sample code: ContainerGroupsGet_Succeeded.
-     *
+     * Sample code: ContainerGroupsGetWithPriority.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void containerGroupsGetSucceeded(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerGroups()
+    public static void containerGroupsGetWithPriority(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerGroups()
             .manager()
             .serviceClient()
             .getContainerGroups()
-            .getByResourceGroupWithResponse("demo", "demo1", Context.NONE);
+            .getByResourceGroupWithResponse("demo", "demo1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsGet_Failed.json
+     * x-ms-original-file:
+     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/
+     * ContainerGroupsGet_Succeeded.json
      */
     /**
-     * Sample code: ContainerGroupsGet_Failed.
-     *
+     * Sample code: ContainerGroupsGet_Succeeded.
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void containerGroupsGetFailed(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .containerGroups()
+    public static void containerGroupsGetSucceeded(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerGroups()
             .manager()
             .serviceClient()
             .getContainerGroups()
-            .getByResourceGroupWithResponse("demo", "demo1", Context.NONE);
+            .getByResourceGroupWithResponse("demo", "demo1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2023-05-01/examples/
+     * ContainerGroupsGet_Failed.json
+     */
+    /**
+     * Sample code: ContainerGroupsGet_Failed.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void containerGroupsGetFailed(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.containerGroups()
+            .manager()
+            .serviceClient()
+            .getContainerGroups()
+            .getByResourceGroupWithResponse("demo", "demo1", com.azure.core.util.Context.NONE);
     }
 }

@@ -6,47 +6,51 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.GatewayLoadBalancerTunnelInterface;
 import com.azure.resourcemanager.network.models.LoadBalancerBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.network.models.SyncMode;
+import java.io.IOException;
 import java.util.List;
 
-/** Pool of backend IP addresses. */
+/**
+ * Pool of backend IP addresses.
+ */
 @Fluent
 public final class BackendAddressPoolInner extends SubResource {
     /*
      * Properties of load balancer backend address pool.
      */
-    @JsonProperty(value = "properties")
     private BackendAddressPoolPropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within the set of backend address pools used by the load balancer. This
      * name can be used to access the resource.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Type of the resource.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of BackendAddressPoolInner class. */
+    /**
+     * Creates an instance of BackendAddressPoolInner class.
+     */
     public BackendAddressPoolInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of load balancer backend address pool.
-     *
+     * 
      * @return the innerProperties value.
      */
     private BackendAddressPoolPropertiesFormat innerProperties() {
@@ -56,7 +60,7 @@ public final class BackendAddressPoolInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within the set of backend address pools used by
      * the load balancer. This name can be used to access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -66,7 +70,7 @@ public final class BackendAddressPoolInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within the set of backend address pools used by
      * the load balancer. This name can be used to access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the BackendAddressPoolInner object itself.
      */
@@ -77,7 +81,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -86,14 +90,16 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackendAddressPoolInner withId(String id) {
         super.withId(id);
@@ -102,7 +108,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the location property: The location of the backend address pool.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -111,7 +117,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Set the location property: The location of the backend address pool.
-     *
+     * 
      * @param location the location value to set.
      * @return the BackendAddressPoolInner object itself.
      */
@@ -125,7 +131,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
-     *
+     * 
      * @return the tunnelInterfaces value.
      */
     public List<GatewayLoadBalancerTunnelInterface> tunnelInterfaces() {
@@ -134,7 +140,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Set the tunnelInterfaces property: An array of gateway load balancer tunnel interfaces.
-     *
+     * 
      * @param tunnelInterfaces the tunnelInterfaces value to set.
      * @return the BackendAddressPoolInner object itself.
      */
@@ -148,7 +154,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the loadBalancerBackendAddresses property: An array of backend addresses.
-     *
+     * 
      * @return the loadBalancerBackendAddresses value.
      */
     public List<LoadBalancerBackendAddress> loadBalancerBackendAddresses() {
@@ -157,12 +163,12 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Set the loadBalancerBackendAddresses property: An array of backend addresses.
-     *
+     * 
      * @param loadBalancerBackendAddresses the loadBalancerBackendAddresses value to set.
      * @return the BackendAddressPoolInner object itself.
      */
-    public BackendAddressPoolInner withLoadBalancerBackendAddresses(
-        List<LoadBalancerBackendAddress> loadBalancerBackendAddresses) {
+    public BackendAddressPoolInner
+        withLoadBalancerBackendAddresses(List<LoadBalancerBackendAddress> loadBalancerBackendAddresses) {
         if (this.innerProperties() == null) {
             this.innerProperties = new BackendAddressPoolPropertiesFormat();
         }
@@ -172,7 +178,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the backendIpConfigurations property: An array of references to IP addresses defined in network interfaces.
-     *
+     * 
      * @return the backendIpConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
@@ -182,7 +188,7 @@ public final class BackendAddressPoolInner extends SubResource {
     /**
      * Get the loadBalancingRules property: An array of references to load balancing rules that use this backend address
      * pool.
-     *
+     * 
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -191,7 +197,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the outboundRule property: A reference to an outbound rule that uses this backend address pool.
-     *
+     * 
      * @return the outboundRule value.
      */
     public SubResource outboundRule() {
@@ -200,7 +206,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the outboundRules property: An array of references to outbound rules that use this backend address pool.
-     *
+     * 
      * @return the outboundRules value.
      */
     public List<SubResource> outboundRules() {
@@ -209,7 +215,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address pool.
-     *
+     * 
      * @return the inboundNatRules value.
      */
     public List<SubResource> inboundNatRules() {
@@ -218,7 +224,7 @@ public final class BackendAddressPoolInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the backend address pool resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -228,7 +234,7 @@ public final class BackendAddressPoolInner extends SubResource {
     /**
      * Get the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
      * and backend address.
-     *
+     * 
      * @return the drainPeriodInSeconds value.
      */
     public Integer drainPeriodInSeconds() {
@@ -238,7 +244,7 @@ public final class BackendAddressPoolInner extends SubResource {
     /**
      * Set the drainPeriodInSeconds property: Amount of seconds Load Balancer waits for before sending RESET to client
      * and backend address.
-     *
+     * 
      * @param drainPeriodInSeconds the drainPeriodInSeconds value to set.
      * @return the BackendAddressPoolInner object itself.
      */
@@ -251,13 +257,106 @@ public final class BackendAddressPoolInner extends SubResource {
     }
 
     /**
+     * Get the virtualNetwork property: A reference to a virtual network.
+     * 
+     * @return the virtualNetwork value.
+     */
+    public SubResource virtualNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetwork();
+    }
+
+    /**
+     * Set the virtualNetwork property: A reference to a virtual network.
+     * 
+     * @param virtualNetwork the virtualNetwork value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withVirtualNetwork(SubResource virtualNetwork) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetwork(virtualNetwork);
+        return this;
+    }
+
+    /**
+     * Get the syncMode property: Backend address synchronous mode for the backend pool.
+     * 
+     * @return the syncMode value.
+     */
+    public SyncMode syncMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().syncMode();
+    }
+
+    /**
+     * Set the syncMode property: Backend address synchronous mode for the backend pool.
+     * 
+     * @param syncMode the syncMode value to set.
+     * @return the BackendAddressPoolInner object itself.
+     */
+    public BackendAddressPoolInner withSyncMode(SyncMode syncMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackendAddressPoolPropertiesFormat();
+        }
+        this.innerProperties().withSyncMode(syncMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackendAddressPoolInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackendAddressPoolInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackendAddressPoolInner.
+     */
+    public static BackendAddressPoolInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackendAddressPoolInner deserializedBackendAddressPoolInner = new BackendAddressPoolInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.innerProperties
+                        = BackendAddressPoolPropertiesFormat.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.name = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.etag = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedBackendAddressPoolInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackendAddressPoolInner;
+        });
     }
 }

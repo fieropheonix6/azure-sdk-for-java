@@ -5,8 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.EffectiveConnectivityConfiguration;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,27 +18,28 @@ import java.util.List;
  * skiptoken to get the next set of results.
  */
 @Fluent
-public final class NetworkManagerEffectiveConnectivityConfigurationListResultInner {
+public final class NetworkManagerEffectiveConnectivityConfigurationListResultInner
+    implements JsonSerializable<NetworkManagerEffectiveConnectivityConfigurationListResultInner> {
     /*
      * Gets a page of NetworkManagerEffectiveConnectivityConfiguration
      */
-    @JsonProperty(value = "value")
     private List<EffectiveConnectivityConfiguration> value;
 
     /*
-     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used
-     * in the current request) to retrieve the next page of data.
+     * When present, the value can be passed to a subsequent query call (together with the same query and scopes used in
+     * the current request) to retrieve the next page of data.
      */
-    @JsonProperty(value = "skipToken")
     private String skipToken;
 
-    /** Creates an instance of NetworkManagerEffectiveConnectivityConfigurationListResultInner class. */
+    /**
+     * Creates an instance of NetworkManagerEffectiveConnectivityConfigurationListResultInner class.
+     */
     public NetworkManagerEffectiveConnectivityConfigurationListResultInner() {
     }
 
     /**
      * Get the value property: Gets a page of NetworkManagerEffectiveConnectivityConfiguration.
-     *
+     * 
      * @return the value value.
      */
     public List<EffectiveConnectivityConfiguration> value() {
@@ -43,12 +48,12 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
 
     /**
      * Set the value property: Gets a page of NetworkManagerEffectiveConnectivityConfiguration.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkManagerEffectiveConnectivityConfigurationListResultInner object itself.
      */
-    public NetworkManagerEffectiveConnectivityConfigurationListResultInner withValue(
-        List<EffectiveConnectivityConfiguration> value) {
+    public NetworkManagerEffectiveConnectivityConfigurationListResultInner
+        withValue(List<EffectiveConnectivityConfiguration> value) {
         this.value = value;
         return this;
     }
@@ -56,7 +61,7 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -66,7 +71,7 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the NetworkManagerEffectiveConnectivityConfigurationListResultInner object itself.
      */
@@ -77,12 +82,57 @@ public final class NetworkManagerEffectiveConnectivityConfigurationListResultInn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() != null) {
             value().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("skipToken", this.skipToken);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of NetworkManagerEffectiveConnectivityConfigurationListResultInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of NetworkManagerEffectiveConnectivityConfigurationListResultInner if the JsonReader was
+     * pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the
+     * NetworkManagerEffectiveConnectivityConfigurationListResultInner.
+     */
+    public static NetworkManagerEffectiveConnectivityConfigurationListResultInner fromJson(JsonReader jsonReader)
+        throws IOException {
+        return jsonReader.readObject(reader -> {
+            NetworkManagerEffectiveConnectivityConfigurationListResultInner deserializedNetworkManagerEffectiveConnectivityConfigurationListResultInner
+                = new NetworkManagerEffectiveConnectivityConfigurationListResultInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<EffectiveConnectivityConfiguration> value
+                        = reader.readArray(reader1 -> EffectiveConnectivityConfiguration.fromJson(reader1));
+                    deserializedNetworkManagerEffectiveConnectivityConfigurationListResultInner.value = value;
+                } else if ("skipToken".equals(fieldName)) {
+                    deserializedNetworkManagerEffectiveConnectivityConfigurationListResultInner.skipToken
+                        = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedNetworkManagerEffectiveConnectivityConfigurationListResultInner;
+        });
     }
 }

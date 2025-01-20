@@ -6,64 +6,66 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties of the express route circuit connection. */
+/**
+ * Properties of the express route circuit connection.
+ */
 @Fluent
-public final class ExpressRouteCircuitConnectionPropertiesFormat {
+public final class ExpressRouteCircuitConnectionPropertiesFormat
+    implements JsonSerializable<ExpressRouteCircuitConnectionPropertiesFormat> {
     /*
      * Reference to Express Route Circuit Private Peering Resource of the circuit initiating connection.
      */
-    @JsonProperty(value = "expressRouteCircuitPeering")
     private SubResource expressRouteCircuitPeering;
 
     /*
      * Reference to Express Route Circuit Private Peering Resource of the peered circuit.
      */
-    @JsonProperty(value = "peerExpressRouteCircuitPeering")
     private SubResource peerExpressRouteCircuitPeering;
 
     /*
      * /29 IP address space to carve out Customer addresses for tunnels.
      */
-    @JsonProperty(value = "addressPrefix")
     private String addressPrefix;
 
     /*
      * The authorization key.
      */
-    @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
 
     /*
      * IPv6 Address PrefixProperties of the express route circuit connection.
      */
-    @JsonProperty(value = "ipv6CircuitConnectionConfig")
     private Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig;
 
     /*
      * Express Route Circuit connection state.
      */
-    @JsonProperty(value = "circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CircuitConnectionStatus circuitConnectionStatus;
 
     /*
      * The provisioning state of the express route circuit connection resource.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ExpressRouteCircuitConnectionPropertiesFormat class. */
+    /**
+     * Creates an instance of ExpressRouteCircuitConnectionPropertiesFormat class.
+     */
     public ExpressRouteCircuitConnectionPropertiesFormat() {
     }
 
     /**
      * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
      * circuit initiating connection.
-     *
+     * 
      * @return the expressRouteCircuitPeering value.
      */
     public SubResource expressRouteCircuitPeering() {
@@ -73,12 +75,12 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Set the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
      * circuit initiating connection.
-     *
+     * 
      * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitConnectionPropertiesFormat withExpressRouteCircuitPeering(
-        SubResource expressRouteCircuitPeering) {
+    public ExpressRouteCircuitConnectionPropertiesFormat
+        withExpressRouteCircuitPeering(SubResource expressRouteCircuitPeering) {
         this.expressRouteCircuitPeering = expressRouteCircuitPeering;
         return this;
     }
@@ -86,7 +88,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Get the peerExpressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of
      * the peered circuit.
-     *
+     * 
      * @return the peerExpressRouteCircuitPeering value.
      */
     public SubResource peerExpressRouteCircuitPeering() {
@@ -96,19 +98,19 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Set the peerExpressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of
      * the peered circuit.
-     *
+     * 
      * @param peerExpressRouteCircuitPeering the peerExpressRouteCircuitPeering value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitConnectionPropertiesFormat withPeerExpressRouteCircuitPeering(
-        SubResource peerExpressRouteCircuitPeering) {
+    public ExpressRouteCircuitConnectionPropertiesFormat
+        withPeerExpressRouteCircuitPeering(SubResource peerExpressRouteCircuitPeering) {
         this.peerExpressRouteCircuitPeering = peerExpressRouteCircuitPeering;
         return this;
     }
 
     /**
      * Get the addressPrefix property: /29 IP address space to carve out Customer addresses for tunnels.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -117,7 +119,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Set the addressPrefix property: /29 IP address space to carve out Customer addresses for tunnels.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
@@ -128,7 +130,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Get the authorizationKey property: The authorization key.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -137,7 +139,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Set the authorizationKey property: The authorization key.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
@@ -149,7 +151,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Get the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
      * connection.
-     *
+     * 
      * @return the ipv6CircuitConnectionConfig value.
      */
     public Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig() {
@@ -159,19 +161,19 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
     /**
      * Set the ipv6CircuitConnectionConfig property: IPv6 Address PrefixProperties of the express route circuit
      * connection.
-     *
+     * 
      * @param ipv6CircuitConnectionConfig the ipv6CircuitConnectionConfig value to set.
      * @return the ExpressRouteCircuitConnectionPropertiesFormat object itself.
      */
-    public ExpressRouteCircuitConnectionPropertiesFormat withIpv6CircuitConnectionConfig(
-        Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
+    public ExpressRouteCircuitConnectionPropertiesFormat
+        withIpv6CircuitConnectionConfig(Ipv6CircuitConnectionConfig ipv6CircuitConnectionConfig) {
         this.ipv6CircuitConnectionConfig = ipv6CircuitConnectionConfig;
         return this;
     }
 
     /**
      * Get the circuitConnectionStatus property: Express Route Circuit connection state.
-     *
+     * 
      * @return the circuitConnectionStatus value.
      */
     public CircuitConnectionStatus circuitConnectionStatus() {
@@ -180,7 +182,7 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route circuit connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -189,12 +191,70 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipv6CircuitConnectionConfig() != null) {
             ipv6CircuitConnectionConfig().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("expressRouteCircuitPeering", this.expressRouteCircuitPeering);
+        jsonWriter.writeJsonField("peerExpressRouteCircuitPeering", this.peerExpressRouteCircuitPeering);
+        jsonWriter.writeStringField("addressPrefix", this.addressPrefix);
+        jsonWriter.writeStringField("authorizationKey", this.authorizationKey);
+        jsonWriter.writeJsonField("ipv6CircuitConnectionConfig", this.ipv6CircuitConnectionConfig);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteCircuitConnectionPropertiesFormat from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteCircuitConnectionPropertiesFormat if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ExpressRouteCircuitConnectionPropertiesFormat.
+     */
+    public static ExpressRouteCircuitConnectionPropertiesFormat fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteCircuitConnectionPropertiesFormat deserializedExpressRouteCircuitConnectionPropertiesFormat
+                = new ExpressRouteCircuitConnectionPropertiesFormat();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("expressRouteCircuitPeering".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.expressRouteCircuitPeering
+                        = SubResource.fromJson(reader);
+                } else if ("peerExpressRouteCircuitPeering".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.peerExpressRouteCircuitPeering
+                        = SubResource.fromJson(reader);
+                } else if ("addressPrefix".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.addressPrefix = reader.getString();
+                } else if ("authorizationKey".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.authorizationKey = reader.getString();
+                } else if ("ipv6CircuitConnectionConfig".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.ipv6CircuitConnectionConfig
+                        = Ipv6CircuitConnectionConfig.fromJson(reader);
+                } else if ("circuitConnectionStatus".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.circuitConnectionStatus
+                        = CircuitConnectionStatus.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedExpressRouteCircuitConnectionPropertiesFormat.provisioningState
+                        = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteCircuitConnectionPropertiesFormat;
+        });
     }
 }

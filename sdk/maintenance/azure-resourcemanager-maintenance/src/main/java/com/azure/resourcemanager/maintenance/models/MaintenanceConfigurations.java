@@ -8,11 +8,27 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of MaintenanceConfigurations. */
+/**
+ * Resource collection API of MaintenanceConfigurations.
+ */
 public interface MaintenanceConfigurations {
     /**
      * Get Configuration record.
-     *
+     * 
+     * @param resourceGroupName Resource Group Name.
+     * @param resourceName Maintenance Configuration Name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return configuration record along with {@link Response}.
+     */
+    Response<MaintenanceConfiguration> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
+
+    /**
+     * Get Configuration record.
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -23,22 +39,22 @@ public interface MaintenanceConfigurations {
     MaintenanceConfiguration getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Get Configuration record.
-     *
+     * Delete Configuration record.
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
+     * @return maintenance configuration record type along with {@link Response}.
      */
-    Response<MaintenanceConfiguration> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
+    Response<MaintenanceConfiguration> deleteByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
 
     /**
      * Delete Configuration record.
-     *
+     * 
      * @param resourceGroupName Resource Group Name.
      * @param resourceName Maintenance Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,88 +65,74 @@ public interface MaintenanceConfigurations {
     MaintenanceConfiguration deleteByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Delete Configuration record.
-     *
-     * @param resourceGroupName Resource Group Name.
-     * @param resourceName Maintenance Configuration Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
-     */
-    Response<MaintenanceConfiguration> deleteWithResponse(
-        String resourceGroupName, String resourceName, Context context);
-
-    /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MaintenanceConfiguration> list();
 
     /**
      * Get Configuration records within a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration records within a subscription.
+     * @return configuration records within a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<MaintenanceConfiguration> list(Context context);
 
     /**
      * Get Configuration record.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
+     * @return configuration record along with {@link Response}.
      */
     MaintenanceConfiguration getById(String id);
 
     /**
      * Get Configuration record.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration record.
+     * @return configuration record along with {@link Response}.
      */
     Response<MaintenanceConfiguration> getByIdWithResponse(String id, Context context);
 
     /**
      * Delete Configuration record.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response}.
      */
     MaintenanceConfiguration deleteById(String id);
 
     /**
      * Delete Configuration record.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return maintenance configuration record type.
+     * @return maintenance configuration record type along with {@link Response}.
      */
     Response<MaintenanceConfiguration> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new MaintenanceConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new MaintenanceConfiguration definition.
      */

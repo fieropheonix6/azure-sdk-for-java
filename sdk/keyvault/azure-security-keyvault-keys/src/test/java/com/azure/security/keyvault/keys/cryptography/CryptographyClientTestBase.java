@@ -4,31 +4,29 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.core.http.policy.HttpLoggingPolicy;
-import com.azure.core.http.policy.HttpPipelinePolicy;
-import com.azure.core.http.policy.HttpPolicyProviders;
-import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
-import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.test.TestBase;
-import com.azure.core.test.TestMode;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.BodilessMatcher;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.keys.KeyClientBuilder;
+import com.azure.security.keyvault.keys.KeyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.cryptography.models.SignatureAlgorithm;
 import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.keys.models.CreateOkpKeyOptions;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
@@ -45,9 +43,8 @@ import java.security.spec.KeySpec;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.time.Duration;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,79 +52,97 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
 
-public abstract class CryptographyClientTestBase extends TestBase {
-    private static final String SDK_NAME = "client_name";
-    private static final String SDK_VERSION = "client_version";
+public abstract class CryptographyClientTestBase extends TestProxyTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientTestBase.class);
+
     protected boolean isHsmEnabled = false;
     protected boolean runManagedHsmTest = false;
 
-    @Override
-    protected String getTestName() {
-        return "";
-    }
+    private static final int MAX_RETRIES = 5;
+    private static final RetryOptions LIVE_RETRY_OPTIONS
+        = new RetryOptions(new ExponentialBackoffOptions().setMaxRetries(MAX_RETRIES)
+            .setBaseDelay(Duration.ofSeconds(2))
+            .setMaxDelay(Duration.ofSeconds(16)));
+
+    private static final RetryOptions PLAYBACK_RETRY_OPTIONS
+        = new RetryOptions(new FixedDelayOptions(MAX_RETRIES, Duration.ofMillis(1)));
 
     void beforeTestSetup() {
+        KeyVaultCredentialPolicy.clearCache();
     }
 
-    HttpPipeline getHttpPipeline(HttpClient httpClient)   {
-        TokenCredential credential = null;
+    KeyClientBuilder getKeyClientBuilder(HttpClient httpClient, String endpoint, KeyServiceVersion serviceVersion) {
+        TokenCredential credential;
 
-        if (!interceptorManager.isPlaybackMode()) {
-            String clientId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_ID");
-            String clientKey = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_CLIENT_SECRET");
-            String tenantId = Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_TENANT_ID");
+        if (interceptorManager.isLiveMode()) {
+            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else if (interceptorManager.isRecordMode()) {
+            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else {
+            credential = new MockTokenCredential();
 
-            Objects.requireNonNull(clientId, "The client id cannot be null");
-            Objects.requireNonNull(clientKey, "The client key cannot be null");
-            Objects.requireNonNull(tenantId, "The tenant id cannot be null");
-
-            credential = new ClientSecretCredentialBuilder()
-                .clientSecret(clientKey)
-                .clientId(clientId)
-                .tenantId(tenantId)
-                .additionallyAllowedTenants("*")
-                .build();
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
         }
 
-        // Closest to API goes first, closest to wire goes last.
-        final List<HttpPipelinePolicy> policies = new ArrayList<>();
+        KeyClientBuilder builder = new KeyClientBuilder().vaultUrl(endpoint)
+            .serviceVersion(serviceVersion)
+            .credential(credential)
+            .httpClient(httpClient);
 
-        policies.add(new UserAgentPolicy(null, SDK_NAME, SDK_VERSION, Configuration.getGlobalConfiguration().clone()));
-        HttpPolicyProviders.addBeforeRetryPolicies(policies);
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
 
-        RetryStrategy strategy = new ExponentialBackoff(5, Duration.ofSeconds(2), Duration.ofSeconds(16));
-        policies.add(new RetryPolicy(strategy));
+            return interceptorManager.isRecordMode()
+                ? builder.addPolicy(interceptorManager.getRecordPolicy())
+                : builder;
+        }
+    }
 
-        if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential, false));
+    CryptographyClientBuilder getCryptographyClientBuilder(HttpClient httpClient,
+        CryptographyServiceVersion serviceVersion) {
+        TokenCredential credential;
+
+        if (interceptorManager.isLiveMode()) {
+            credential = new AzurePowerShellCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else if (interceptorManager.isRecordMode()) {
+            credential = new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build();
+        } else {
+            credential = new MockTokenCredential();
+
+            List<TestProxyRequestMatcher> customMatchers = new ArrayList<>();
+            customMatchers.add(new BodilessMatcher());
+            customMatchers.add(new CustomMatcher().setExcludedHeaders(Collections.singletonList("Authorization")));
+            interceptorManager.addMatchers(customMatchers);
         }
 
-        HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS)));
+        CryptographyClientBuilder builder = new CryptographyClientBuilder().serviceVersion(serviceVersion)
+            .credential(credential)
+            .httpClient(httpClient);
 
-        if (getTestMode() == TestMode.RECORD) {
-            policies.add(interceptorManager.getRecordPolicy());
+        if (interceptorManager.isPlaybackMode()) {
+            return builder.retryOptions(PLAYBACK_RETRY_OPTIONS);
+        } else {
+            builder.retryOptions(LIVE_RETRY_OPTIONS);
+
+            return interceptorManager.isRecordMode()
+                ? builder.addPolicy(interceptorManager.getRecordPolicy())
+                : builder;
         }
-
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
-            .build();
-
-        return pipeline;
     }
 
     static CryptographyClient initializeCryptographyClient(JsonWebKey key) {
-        return new CryptographyClientBuilder()
-            .jsonWebKey(key)
-            .buildClient();
+        return new CryptographyClientBuilder().jsonWebKey(key).buildClient();
     }
 
     @Test
-    public abstract void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+    public abstract void encryptDecryptRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion)
+        throws Exception;
 
     @Test
     public abstract void encryptDecryptRsaLocal() throws Exception;
@@ -155,49 +170,115 @@ public abstract class CryptographyClientTestBase extends TestBase {
     public abstract void encryptDecryptAes256CbcPadLocal() throws Exception;
 
     @Test
-    public abstract void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+    public abstract void signVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion)
+        throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
 
     @Test
-    public abstract void signVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+    public abstract void signDataVerifyEc(HttpClient httpClient, CryptographyServiceVersion serviceVersion)
+        throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+
+    void signVerifyEcRunner(Consumer<SignVerifyEcData> testRunner) {
+        Map<KeyCurveName, SignatureAlgorithm> curveToSignature = new HashMap<>();
+
+        curveToSignature.put(KeyCurveName.P_256, SignatureAlgorithm.ES256);
+        curveToSignature.put(KeyCurveName.P_384, SignatureAlgorithm.ES384);
+        curveToSignature.put(KeyCurveName.P_521, SignatureAlgorithm.ES512);
+        curveToSignature.put(KeyCurveName.P_256K, SignatureAlgorithm.ES256K);
+
+        Map<KeyCurveName, String> curveToSpec = new HashMap<>();
+
+        curveToSpec.put(KeyCurveName.P_256, "secp256r1");
+        curveToSpec.put(KeyCurveName.P_384, "secp384r1");
+        curveToSpec.put(KeyCurveName.P_521, "secp521r1");
+        curveToSpec.put(KeyCurveName.P_256K, "secp256k1");
+
+        Map<KeyCurveName, String> messageDigestAlgorithm = new HashMap<>();
+
+        messageDigestAlgorithm.put(KeyCurveName.P_256, "SHA-256");
+        messageDigestAlgorithm.put(KeyCurveName.P_384, "SHA-384");
+        messageDigestAlgorithm.put(KeyCurveName.P_521, "SHA-512");
+        messageDigestAlgorithm.put(KeyCurveName.P_256K, "SHA-256");
+
+        List<KeyCurveName> curveList = new ArrayList<>();
+
+        curveList.add(KeyCurveName.P_256);
+        curveList.add(KeyCurveName.P_384);
+        curveList.add(KeyCurveName.P_521);
+        curveList.add(KeyCurveName.P_256K);
+
+        for (KeyCurveName curve : curveList) {
+            testRunner.accept(new SignVerifyEcData(curve, curveToSignature, curveToSpec, messageDigestAlgorithm));
+        }
+    }
+
+    protected static class SignVerifyEcData {
+        private final KeyCurveName curve;
+        private final Map<KeyCurveName, SignatureAlgorithm> curveToSignature;
+        private final Map<KeyCurveName, String> curveToSpec;
+        private final Map<KeyCurveName, String> messageDigestAlgorithm;
+
+        public SignVerifyEcData(KeyCurveName curve, Map<KeyCurveName, SignatureAlgorithm> curveToSignature,
+            Map<KeyCurveName, String> curveToSpec, Map<KeyCurveName, String> messageDigestAlgorithm) {
+            this.curve = curve;
+            this.curveToSignature = curveToSignature;
+            this.curveToSpec = curveToSpec;
+            this.messageDigestAlgorithm = messageDigestAlgorithm;
+        }
+
+        public KeyCurveName getCurve() {
+            return curve;
+        }
+
+        public Map<KeyCurveName, SignatureAlgorithm> getCurveToSignature() {
+            return curveToSignature;
+        }
+
+        public Map<KeyCurveName, String> getCurveToSpec() {
+            return curveToSpec;
+        }
+
+        public Map<KeyCurveName, String> getMessageDigestAlgorithm() {
+            return messageDigestAlgorithm;
+        }
+    }
 
     @Test
-    public abstract void wrapUnwrapRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+    public abstract void signDataVerifyEcLocal() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException;
+
+    @Test
+    public abstract void wrapUnwrapRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion)
+        throws Exception;
 
     @Test
     public abstract void wrapUnwrapRsaLocal() throws Exception;
 
     @Test
-    public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
+    public abstract void signVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion)
+        throws Exception;
 
     @Test
-    public abstract void signVerifyOkp(HttpClient httpClient, CryptographyServiceVersion serviceVersion) throws Exception;
-
-    void encryptDecryptOkpRunner(Consumer<CreateOkpKeyOptions> testRunner) throws Exception {
-        String keyName = testResourceNamer.randomName("testOkpKeySignVerify", 25);
-        final Map<String, String> tags = new HashMap<>();
-
-        tags.put("foo", "baz");
-
-        CreateOkpKeyOptions okpKeyOptions = new CreateOkpKeyOptions(testResourceNamer.randomName(keyName, 20))
-            .setExpiresOn(OffsetDateTime.of(2050, 1, 30, 0, 0, 0, 0, ZoneOffset.UTC))
-            .setNotBefore(OffsetDateTime.of(2000, 1, 30, 12, 59, 59, 0, ZoneOffset.UTC))
-            .setTags(tags)
-            .setCurveName(KeyCurveName.ED25519);
-
-        testRunner.accept(okpKeyOptions);
-    }
+    public abstract void signDataVerifyRsa(HttpClient httpClient, CryptographyServiceVersion serviceVersion)
+        throws Exception;
 
     private static KeyPair getWellKnownKey() throws Exception {
-        BigInteger modulus = new BigInteger("27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");
+        BigInteger modulus = new BigInteger(
+            "27266783713040163753473734334021230592631652450892850648620119914958066181400432364213298181846462385257448168605902438305568194683691563208578540343969522651422088760509452879461613852042845039552547834002168737350264189810815735922734447830725099163869215360401162450008673869707774119785881115044406101346450911054819448375712432746968301739007624952483347278954755460152795801894283389540036131881712321193750961817346255102052653789197325341350920441746054233522546543768770643593655942246891652634114922277138937273034902434321431672058220631825053788262810480543541597284376261438324665363067125951152574540779");
         BigInteger publicExponent = new BigInteger("65537");
-        BigInteger privateExponent = new BigInteger("10466613941269075477152428927796086150095892102279802916937552172064636326433780566497000814207416485739683286961848843255766652023400959086290344987308562817062506476465756840999981989957456897020361717197805192876094362315496459535960304928171129585813477132331538577519084006595335055487028872410579127692209642938724850603554885478763205394868103298473476811627231543504190652483290944218004086457805431824328448422034887148115990501701345535825110962804471270499590234116100216841170344686381902328362376624405803648588830575558058257742073963036264273582756620469659464278207233345784355220317478103481872995809");
-        BigInteger primeP = new BigInteger("175002941104568842715096339107566771592009112128184231961529953978142750732317724951747797764638217287618769007295505214923187971350518217670604044004381362495186864051394404165602744235299100790551775147322153206730562450301874236875459336154569893255570576967036237661594595803204808064127845257496057219227");
-        BigInteger primeQ = new BigInteger("155807574095269324897144428622185380283967159190626345335083690114147315509962698765044950001909553861571493035240542031420213144237033208612132704562174772894369053916729901982420535940939821673277140180113593951522522222348910536202664252481405241042414183668723338300649954708432681241621374644926879028977");
-        BigInteger primeExponentP = new BigInteger("79745606804504995938838168837578376593737280079895233277372027184693457251170125851946171360348440134236338520742068873132216695552312068793428432338173016914968041076503997528137698610601222912385953171485249299873377130717231063522112968474603281996190849604705284061306758152904594168593526874435238915345");
-        BigInteger primeExponentQ = new BigInteger("80619964983821018303966686284189517841976445905569830731617605558094658227540855971763115484608005874540349730961777634427740786642996065386667564038755340092176159839025706183161615488856833433976243963682074011475658804676349317075370362785860401437192843468423594688700132964854367053490737073471709030801");
-        BigInteger crtCoefficient = new BigInteger("2157818511040667226980891229484210846757728661751992467240662009652654684725325675037512595031058612950802328971801913498711880111052682274056041470625863586779333188842602381844572406517251106159327934511268610438516820278066686225397795046020275055545005189953702783748235257613991379770525910232674719428");
+        BigInteger privateExponent = new BigInteger(
+            "10466613941269075477152428927796086150095892102279802916937552172064636326433780566497000814207416485739683286961848843255766652023400959086290344987308562817062506476465756840999981989957456897020361717197805192876094362315496459535960304928171129585813477132331538577519084006595335055487028872410579127692209642938724850603554885478763205394868103298473476811627231543504190652483290944218004086457805431824328448422034887148115990501701345535825110962804471270499590234116100216841170344686381902328362376624405803648588830575558058257742073963036264273582756620469659464278207233345784355220317478103481872995809");
+        BigInteger primeP = new BigInteger(
+            "175002941104568842715096339107566771592009112128184231961529953978142750732317724951747797764638217287618769007295505214923187971350518217670604044004381362495186864051394404165602744235299100790551775147322153206730562450301874236875459336154569893255570576967036237661594595803204808064127845257496057219227");
+        BigInteger primeQ = new BigInteger(
+            "155807574095269324897144428622185380283967159190626345335083690114147315509962698765044950001909553861571493035240542031420213144237033208612132704562174772894369053916729901982420535940939821673277140180113593951522522222348910536202664252481405241042414183668723338300649954708432681241621374644926879028977");
+        BigInteger primeExponentP = new BigInteger(
+            "79745606804504995938838168837578376593737280079895233277372027184693457251170125851946171360348440134236338520742068873132216695552312068793428432338173016914968041076503997528137698610601222912385953171485249299873377130717231063522112968474603281996190849604705284061306758152904594168593526874435238915345");
+        BigInteger primeExponentQ = new BigInteger(
+            "80619964983821018303966686284189517841976445905569830731617605558094658227540855971763115484608005874540349730961777634427740786642996065386667564038755340092176159839025706183161615488856833433976243963682074011475658804676349317075370362785860401437192843468423594688700132964854367053490737073471709030801");
+        BigInteger crtCoefficient = new BigInteger(
+            "2157818511040667226980891229484210846757728661751992467240662009652654684725325675037512595031058612950802328971801913498711880111052682274056041470625863586779333188842602381844572406517251106159327934511268610438516820278066686225397795046020275055545005189953702783748235257613991379770525910232674719428");
         KeySpec publicKeySpec = new RSAPublicKeySpec(modulus, publicExponent);
-        KeySpec privateKeySpec = new RSAPrivateCrtKeySpec(modulus, publicExponent, privateExponent, primeP, primeQ, primeExponentP, primeExponentQ, crtCoefficient);
+        KeySpec privateKeySpec = new RSAPrivateCrtKeySpec(modulus, publicExponent, privateExponent, primeP, primeQ,
+            primeExponentP, primeExponentQ, crtCoefficient);
         KeyFactory keyFactory = KeyFactory.getInstance("RSA");
 
         return new KeyPair(keyFactory.generatePublic(publicKeySpec), keyFactory.generatePrivate(privateKeySpec));
@@ -246,76 +327,15 @@ public abstract class CryptographyClientTestBase extends TestBase {
 
     public String getEndpoint() {
         final String endpoint = runManagedHsmTest
-            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "http://localhost:8080")
-            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "http://localhost:8080");
+            ? Configuration.getGlobalConfiguration().get("AZURE_MANAGEDHSM_ENDPOINT", "https://localhost:8080")
+            : Configuration.getGlobalConfiguration().get("AZURE_KEYVAULT_ENDPOINT", "https://localhost:8080");
 
         Objects.requireNonNull(endpoint);
 
         return endpoint;
     }
 
-    static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
-    }
-
-    static void assertRestException(Runnable exceptionThrower,
-                                    Class<? extends HttpResponseException> expectedExceptionType,
-                                    int expectedStatusCode) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Throwable ex) {
-            assertRestException(ex, expectedExceptionType, expectedStatusCode);
-        }
-    }
-
-    /**
-     * Helper method to verify the error was a HttpRequestException and it has a specific HTTP response code.
-     *
-     * @param exception Expected error thrown during the test.
-     * @param expectedStatusCode Expected HTTP status code contained in the error response.
-     */
-    static void assertRestException(Throwable exception, int expectedStatusCode) {
-        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
-    }
-
-    static void assertRestException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType,
-                                    int expectedStatusCode) {
-        assertEquals(expectedExceptionType, exception.getClass());
-        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
-    }
-
-    /**
-     * Helper method to verify that a command throws an IllegalArgumentException.
-     *
-     * @param exceptionThrower Command that should throw the exception
-     */
-    static <T> void assertRunnableThrowsException(Runnable exceptionThrower, Class<T> exception) {
-        try {
-            exceptionThrower.run();
-            fail();
-        } catch (Exception ex) {
-            assertEquals(exception, ex.getClass());
-        }
-    }
-
-    public void sleepInRecordMode(long millis) {
-        if (interceptorManager.isPlaybackMode()) {
-            return;
-        }
-
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
     public void sleep(long millis) {
-        try {
-            Thread.sleep(millis);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        sleepIfRunningAgainstService(millis);
     }
 }

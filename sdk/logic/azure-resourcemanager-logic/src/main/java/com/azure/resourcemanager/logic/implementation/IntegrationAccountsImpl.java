@@ -21,46 +21,57 @@ import com.azure.resourcemanager.logic.models.KeyVaultKey;
 import com.azure.resourcemanager.logic.models.ListKeyVaultKeysDefinition;
 import com.azure.resourcemanager.logic.models.RegenerateActionParameter;
 import com.azure.resourcemanager.logic.models.TrackingEventsDefinition;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationAccountsImpl implements IntegrationAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationAccountsImpl.class);
 
     private final IntegrationAccountsClient innerClient;
 
     private final com.azure.resourcemanager.logic.LogicManager serviceManager;
 
-    public IntegrationAccountsImpl(
-        IntegrationAccountsClient innerClient, com.azure.resourcemanager.logic.LogicManager serviceManager) {
+    public IntegrationAccountsImpl(IntegrationAccountsClient innerClient,
+        com.azure.resourcemanager.logic.LogicManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<IntegrationAccount> list() {
         PagedIterable<IntegrationAccountInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IntegrationAccount> list(Integer top, Context context) {
         PagedIterable<IntegrationAccountInner> inner = this.serviceClient().list(top, context);
-        return Utils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
     }
 
     public PagedIterable<IntegrationAccount> listByResourceGroup(String resourceGroupName) {
         PagedIterable<IntegrationAccountInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IntegrationAccount> listByResourceGroup(
-        String resourceGroupName, Integer top, Context context) {
-        PagedIterable<IntegrationAccountInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, top, context);
-        return Utils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
+    public PagedIterable<IntegrationAccount> listByResourceGroup(String resourceGroupName, Integer top,
+        Context context) {
+        PagedIterable<IntegrationAccountInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, top, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new IntegrationAccountImpl(inner1, this.manager()));
+    }
+
+    public Response<IntegrationAccount> getByResourceGroupWithResponse(String resourceGroupName,
+        String integrationAccountName, Context context) {
+        Response<IntegrationAccountInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, integrationAccountName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IntegrationAccountImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public IntegrationAccount getByResourceGroup(String resourceGroupName, String integrationAccountName) {
-        IntegrationAccountInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, integrationAccountName);
+        IntegrationAccountInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, integrationAccountName);
         if (inner != null) {
             return new IntegrationAccountImpl(inner, this.manager());
         } else {
@@ -68,33 +79,31 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
     }
 
-    public Response<IntegrationAccount> getByResourceGroupWithResponse(
-        String resourceGroupName, String integrationAccountName, Context context) {
-        Response<IntegrationAccountInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, integrationAccountName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new IntegrationAccountImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String integrationAccountName,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, integrationAccountName, context);
     }
 
     public void deleteByResourceGroup(String resourceGroupName, String integrationAccountName) {
         this.serviceClient().delete(resourceGroupName, integrationAccountName);
     }
 
-    public Response<Void> deleteWithResponse(String resourceGroupName, String integrationAccountName, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, integrationAccountName, context);
+    public Response<CallbackUrl> listCallbackUrlWithResponse(String resourceGroupName, String integrationAccountName,
+        GetCallbackUrlParameters parameters, Context context) {
+        Response<CallbackUrlInner> inner = this.serviceClient()
+            .listCallbackUrlWithResponse(resourceGroupName, integrationAccountName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CallbackUrlImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
-    public CallbackUrl listCallbackUrl(
-        String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters) {
-        CallbackUrlInner inner =
-            this.serviceClient().listCallbackUrl(resourceGroupName, integrationAccountName, parameters);
+    public CallbackUrl listCallbackUrl(String resourceGroupName, String integrationAccountName,
+        GetCallbackUrlParameters parameters) {
+        CallbackUrlInner inner
+            = this.serviceClient().listCallbackUrl(resourceGroupName, integrationAccountName, parameters);
         if (inner != null) {
             return new CallbackUrlImpl(inner, this.manager());
         } else {
@@ -102,59 +111,47 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
     }
 
-    public Response<CallbackUrl> listCallbackUrlWithResponse(
-        String resourceGroupName, String integrationAccountName, GetCallbackUrlParameters parameters, Context context) {
-        Response<CallbackUrlInner> inner =
-            this
-                .serviceClient()
-                .listCallbackUrlWithResponse(resourceGroupName, integrationAccountName, parameters, context);
+    public PagedIterable<KeyVaultKey> listKeyVaultKeys(String resourceGroupName, String integrationAccountName,
+        ListKeyVaultKeysDefinition listKeyVaultKeys) {
+        PagedIterable<KeyVaultKeyInner> inner
+            = this.serviceClient().listKeyVaultKeys(resourceGroupName, integrationAccountName, listKeyVaultKeys);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new KeyVaultKeyImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<KeyVaultKey> listKeyVaultKeys(String resourceGroupName, String integrationAccountName,
+        ListKeyVaultKeysDefinition listKeyVaultKeys, Context context) {
+        PagedIterable<KeyVaultKeyInner> inner = this.serviceClient()
+            .listKeyVaultKeys(resourceGroupName, integrationAccountName, listKeyVaultKeys, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new KeyVaultKeyImpl(inner1, this.manager()));
+    }
+
+    public Response<Void> logTrackingEventsWithResponse(String resourceGroupName, String integrationAccountName,
+        TrackingEventsDefinition logTrackingEvents, Context context) {
+        return this.serviceClient()
+            .logTrackingEventsWithResponse(resourceGroupName, integrationAccountName, logTrackingEvents, context);
+    }
+
+    public void logTrackingEvents(String resourceGroupName, String integrationAccountName,
+        TrackingEventsDefinition logTrackingEvents) {
+        this.serviceClient().logTrackingEvents(resourceGroupName, integrationAccountName, logTrackingEvents);
+    }
+
+    public Response<IntegrationAccount> regenerateAccessKeyWithResponse(String resourceGroupName,
+        String integrationAccountName, RegenerateActionParameter regenerateAccessKey, Context context) {
+        Response<IntegrationAccountInner> inner = this.serviceClient()
+            .regenerateAccessKeyWithResponse(resourceGroupName, integrationAccountName, regenerateAccessKey, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CallbackUrlImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IntegrationAccountImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PagedIterable<KeyVaultKey> listKeyVaultKeys(
-        String resourceGroupName, String integrationAccountName, ListKeyVaultKeysDefinition listKeyVaultKeys) {
-        PagedIterable<KeyVaultKeyInner> inner =
-            this.serviceClient().listKeyVaultKeys(resourceGroupName, integrationAccountName, listKeyVaultKeys);
-        return Utils.mapPage(inner, inner1 -> new KeyVaultKeyImpl(inner1, this.manager()));
-    }
-
-    public PagedIterable<KeyVaultKey> listKeyVaultKeys(
-        String resourceGroupName,
-        String integrationAccountName,
-        ListKeyVaultKeysDefinition listKeyVaultKeys,
-        Context context) {
-        PagedIterable<KeyVaultKeyInner> inner =
-            this.serviceClient().listKeyVaultKeys(resourceGroupName, integrationAccountName, listKeyVaultKeys, context);
-        return Utils.mapPage(inner, inner1 -> new KeyVaultKeyImpl(inner1, this.manager()));
-    }
-
-    public void logTrackingEvents(
-        String resourceGroupName, String integrationAccountName, TrackingEventsDefinition logTrackingEvents) {
-        this.serviceClient().logTrackingEvents(resourceGroupName, integrationAccountName, logTrackingEvents);
-    }
-
-    public Response<Void> logTrackingEventsWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        TrackingEventsDefinition logTrackingEvents,
-        Context context) {
-        return this
-            .serviceClient()
-            .logTrackingEventsWithResponse(resourceGroupName, integrationAccountName, logTrackingEvents, context);
-    }
-
-    public IntegrationAccount regenerateAccessKey(
-        String resourceGroupName, String integrationAccountName, RegenerateActionParameter regenerateAccessKey) {
-        IntegrationAccountInner inner =
-            this.serviceClient().regenerateAccessKey(resourceGroupName, integrationAccountName, regenerateAccessKey);
+    public IntegrationAccount regenerateAccessKey(String resourceGroupName, String integrationAccountName,
+        RegenerateActionParameter regenerateAccessKey) {
+        IntegrationAccountInner inner
+            = this.serviceClient().regenerateAccessKey(resourceGroupName, integrationAccountName, regenerateAccessKey);
         if (inner != null) {
             return new IntegrationAccountImpl(inner, this.manager());
         } else {
@@ -162,109 +159,60 @@ public final class IntegrationAccountsImpl implements IntegrationAccounts {
         }
     }
 
-    public Response<IntegrationAccount> regenerateAccessKeyWithResponse(
-        String resourceGroupName,
-        String integrationAccountName,
-        RegenerateActionParameter regenerateAccessKey,
-        Context context) {
-        Response<IntegrationAccountInner> inner =
-            this
-                .serviceClient()
-                .regenerateAccessKeyWithResponse(
-                    resourceGroupName, integrationAccountName, regenerateAccessKey, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new IntegrationAccountImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public IntegrationAccount getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, integrationAccountName, Context.NONE).getValue();
     }
 
     public Response<IntegrationAccount> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, integrationAccountName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, integrationAccountName, Context.NONE).getValue();
+        this.deleteByResourceGroupWithResponse(resourceGroupName, integrationAccountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String integrationAccountName = Utils.getValueFromIdByName(id, "integrationAccounts");
+        String integrationAccountName = ResourceManagerUtils.getValueFromIdByName(id, "integrationAccounts");
         if (integrationAccountName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'integrationAccounts'.", id)));
         }
-        return this.deleteWithResponse(resourceGroupName, integrationAccountName, context);
+        return this.deleteByResourceGroupWithResponse(resourceGroupName, integrationAccountName, context);
     }
 
     private IntegrationAccountsClient serviceClient() {

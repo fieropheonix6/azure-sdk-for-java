@@ -7,43 +7,46 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpoint;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Managed private endpoint resource type. */
+/**
+ * Managed private endpoint resource type.
+ */
 @Fluent
 public final class ManagedPrivateEndpointResourceInner extends SubResource {
     /*
      * Managed private endpoint properties.
      */
-    @JsonProperty(value = "properties", required = true)
     private ManagedPrivateEndpoint properties;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /*
      * Etag identifies change in the resource.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of ManagedPrivateEndpointResourceInner class. */
+    /**
+     * Creates an instance of ManagedPrivateEndpointResourceInner class.
+     */
     public ManagedPrivateEndpointResourceInner() {
     }
 
     /**
      * Get the properties property: Managed private endpoint properties.
-     *
+     * 
      * @return the properties value.
      */
     public ManagedPrivateEndpoint properties() {
@@ -52,7 +55,7 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Set the properties property: Managed private endpoint properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ManagedPrivateEndpointResourceInner object itself.
      */
@@ -63,7 +66,7 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -72,7 +75,7 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,14 +84,16 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ManagedPrivateEndpointResourceInner withId(String id) {
         super.withId(id);
@@ -97,19 +102,66 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ManagedPrivateEndpointResourceInner"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property properties in model ManagedPrivateEndpointResourceInner"));
         } else {
             properties().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ManagedPrivateEndpointResourceInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ManagedPrivateEndpointResourceInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ManagedPrivateEndpointResourceInner if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ManagedPrivateEndpointResourceInner.
+     */
+    public static ManagedPrivateEndpointResourceInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ManagedPrivateEndpointResourceInner deserializedManagedPrivateEndpointResourceInner
+                = new ManagedPrivateEndpointResourceInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointResourceInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointResourceInner.properties
+                        = ManagedPrivateEndpoint.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointResourceInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointResourceInner.type = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedManagedPrivateEndpointResourceInner.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedManagedPrivateEndpointResourceInner;
+        });
+    }
 }

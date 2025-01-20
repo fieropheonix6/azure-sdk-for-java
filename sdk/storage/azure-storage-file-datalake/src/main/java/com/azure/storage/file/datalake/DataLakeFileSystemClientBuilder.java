@@ -27,12 +27,14 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobContainerClientBuilder;
 import com.azure.storage.blob.BlobUrlParts;
+import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.datalake.implementation.util.BuilderHelper;
 import com.azure.storage.file.datalake.implementation.util.DataLakeImplUtils;
 import com.azure.storage.file.datalake.implementation.util.TransformUtils;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
+import com.azure.storage.file.datalake.models.DataLakeAudience;
 import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions;
 
 import java.net.MalformedURLException;
@@ -57,14 +59,11 @@ import java.util.Objects;
  * accessible.
  * </ul>
  */
-@ServiceClientBuilder(serviceClients = {DataLakeFileSystemClient.class, DataLakeFileSystemAsyncClient.class})
-public class DataLakeFileSystemClientBuilder implements
-    TokenCredentialTrait<DataLakeFileSystemClientBuilder>,
+@ServiceClientBuilder(serviceClients = { DataLakeFileSystemClient.class, DataLakeFileSystemAsyncClient.class })
+public class DataLakeFileSystemClientBuilder implements TokenCredentialTrait<DataLakeFileSystemClientBuilder>,
     AzureNamedKeyCredentialTrait<DataLakeFileSystemClientBuilder>,
-    AzureSasCredentialTrait<DataLakeFileSystemClientBuilder>,
-    HttpTrait<DataLakeFileSystemClientBuilder>,
-    ConfigurationTrait<DataLakeFileSystemClientBuilder>,
-    EndpointTrait<DataLakeFileSystemClientBuilder> {
+    AzureSasCredentialTrait<DataLakeFileSystemClientBuilder>, HttpTrait<DataLakeFileSystemClientBuilder>,
+    ConfigurationTrait<DataLakeFileSystemClientBuilder>, EndpointTrait<DataLakeFileSystemClientBuilder> {
     private static final ClientLogger LOGGER = new ClientLogger(DataLakeFileSystemClientBuilder.class);
 
     private final BlobContainerClientBuilder blobContainerClientBuilder;
@@ -88,6 +87,7 @@ public class DataLakeFileSystemClientBuilder implements
     private ClientOptions clientOptions = new ClientOptions();
     private Configuration configuration;
     private DataLakeServiceVersion version;
+    private DataLakeAudience audience;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link DataLakeFileSystemClient
@@ -98,6 +98,18 @@ public class DataLakeFileSystemClientBuilder implements
         logOptions = getDefaultHttpLogOptions();
         blobContainerClientBuilder = new BlobContainerClientBuilder();
         blobContainerClientBuilder.addPolicy(BuilderHelper.getBlobUserAgentModificationPolicy());
+    }
+
+    private DataLakeServiceVersion getServiceVersion() {
+        return version != null ? version : DataLakeServiceVersion.getLatest();
+    }
+
+    private HttpPipeline constructPipeline() {
+        return (httpPipeline != null)
+            ? httpPipeline
+            : BuilderHelper.buildPipeline(storageSharedKeyCredential, tokenCredential, azureSasCredential, endpoint,
+                retryOptions, coreRetryOptions, logOptions, clientOptions, httpClient, perCallPolicies,
+                perRetryPolicies, configuration, audience, LOGGER);
     }
 
     /**
@@ -118,8 +130,16 @@ public class DataLakeFileSystemClientBuilder implements
      * and {@link #retryOptions(RequestRetryOptions)} have been set.
      */
     public DataLakeFileSystemClient buildClient() {
-        return new DataLakeFileSystemClient(buildAsyncClient(),
-            blobContainerClientBuilder.buildClient());
+        /*
+        Implicit and explicit root file system access are functionally equivalent, but explicit references are easier
+        to read and debug.
+         */
+        DataLakeFileSystemAsyncClient asyncClient = buildAsyncClient();
+        String dataLakeFileSystemName
+            = CoreUtils.isNullOrEmpty(fileSystemName) ? DataLakeFileSystemClient.ROOT_FILESYSTEM_NAME : fileSystemName;
+        return new DataLakeFileSystemClient(asyncClient, blobContainerClientBuilder.buildClient(),
+            asyncClient.getHttpPipeline(), endpoint, getServiceVersion(), accountName, dataLakeFileSystemName,
+            azureSasCredential, tokenCredential != null);
     }
 
     /**
@@ -148,15 +168,9 @@ public class DataLakeFileSystemClientBuilder implements
             ? DataLakeFileSystemAsyncClient.ROOT_FILESYSTEM_NAME
             : fileSystemName;
 
-        DataLakeServiceVersion serviceVersion = version != null ? version : DataLakeServiceVersion.getLatest();
-
-        HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
-            storageSharedKeyCredential, tokenCredential, azureSasCredential,
-            endpoint, retryOptions, coreRetryOptions, logOptions,
-            clientOptions, httpClient, perCallPolicies, perRetryPolicies, configuration, LOGGER);
-
-        return new DataLakeFileSystemAsyncClient(pipeline, endpoint, serviceVersion, accountName, dataLakeFileSystemName,
-            blobContainerClientBuilder.buildAsyncClient(), azureSasCredential);
+        return new DataLakeFileSystemAsyncClient(constructPipeline(), endpoint, getServiceVersion(), accountName,
+            dataLakeFileSystemName, blobContainerClientBuilder.buildAsyncClient(), azureSasCredential,
+            tokenCredential != null);
     }
 
     /**
@@ -176,8 +190,8 @@ public class DataLakeFileSystemClientBuilder implements
             BlobUrlParts parts = BlobUrlParts.parse(url);
 
             this.accountName = parts.getAccountName();
-            this.fileSystemName = parts.getBlobContainerName() == null ? this.fileSystemName
-                : parts.getBlobContainerName();
+            this.fileSystemName
+                = parts.getBlobContainerName() == null ? this.fileSystemName : parts.getBlobContainerName();
             this.endpoint = BuilderHelper.getEndpoint(parts);
 
             String sasToken = parts.getCommonSasQueryParameters().encode();
@@ -248,8 +262,8 @@ public class DataLakeFileSystemClientBuilder implements
      */
     public DataLakeFileSystemClientBuilder sasToken(String sasToken) {
         blobContainerClientBuilder.sasToken(sasToken);
-        this.azureSasCredential = new AzureSasCredential(Objects.requireNonNull(sasToken,
-            "'sasToken' cannot be null."));
+        this.azureSasCredential
+            = new AzureSasCredential(Objects.requireNonNull(sasToken, "'sasToken' cannot be null."));
         this.storageSharedKeyCredential = null;
         this.tokenCredential = null;
         return this;
@@ -265,8 +279,7 @@ public class DataLakeFileSystemClientBuilder implements
     @Override
     public DataLakeFileSystemClientBuilder credential(AzureSasCredential credential) {
         blobContainerClientBuilder.credential(credential);
-        this.azureSasCredential = Objects.requireNonNull(credential,
-            "'credential' cannot be null.");
+        this.azureSasCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
         return this;
     }
 
@@ -292,8 +305,8 @@ public class DataLakeFileSystemClientBuilder implements
      * @param fileSystemEncryptionScopeOptions Encryption scope containing the encryption key information.
      * @return the updated DataLakeFileSystemClientBuilder object
      */
-    public DataLakeFileSystemClientBuilder fileSystemEncryptionScopeOptions(
-        FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
+    public DataLakeFileSystemClientBuilder
+        fileSystemEncryptionScopeOptions(FileSystemEncryptionScopeOptions fileSystemEncryptionScopeOptions) {
         blobContainerClientBuilder
             .blobContainerEncryptionScope(Transforms.toBlobContainerEncryptionScope(fileSystemEncryptionScopeOptions));
         return this;
@@ -527,6 +540,20 @@ public class DataLakeFileSystemClientBuilder implements
             blobContainerClientBuilder.customerProvidedKey(Transforms.toBlobCustomerProvidedKey(customerProvidedKey));
         }
 
+        return this;
+    }
+
+    /**
+     * Sets the Audience to use for authentication with Azure Active Directory (AAD). The audience is not considered
+     * when using a shared key.
+     * @param audience {@link DataLakeAudience} to be used when requesting a token from Azure Active Directory (AAD).
+     * @return the updated DataLakeFileSystemClientBuilder object
+     */
+    public DataLakeFileSystemClientBuilder audience(DataLakeAudience audience) {
+        this.audience = audience;
+        if (audience != null) {
+            blobContainerClientBuilder.audience(BlobAudience.fromString(audience.toString()));
+        }
         return this;
     }
 }

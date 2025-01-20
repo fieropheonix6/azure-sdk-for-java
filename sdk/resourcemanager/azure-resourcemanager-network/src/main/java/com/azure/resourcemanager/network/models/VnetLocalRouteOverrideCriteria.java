@@ -5,31 +5,44 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Parameter determining whether NVA in spoke vnet is bypassed for traffic with destination in spoke vnet. */
+/**
+ * Parameter determining whether NVA in spoke vnet is bypassed for traffic with destination in spoke vnet.
+ */
 public final class VnetLocalRouteOverrideCriteria extends ExpandableStringEnum<VnetLocalRouteOverrideCriteria> {
-    /** Static value Contains for VnetLocalRouteOverrideCriteria. */
+    /**
+     * Static value Contains for VnetLocalRouteOverrideCriteria.
+     */
     public static final VnetLocalRouteOverrideCriteria CONTAINS = fromString("Contains");
 
-    /** Static value Equal for VnetLocalRouteOverrideCriteria. */
+    /**
+     * Static value Equal for VnetLocalRouteOverrideCriteria.
+     */
     public static final VnetLocalRouteOverrideCriteria EQUAL = fromString("Equal");
 
     /**
+     * Creates a new instance of VnetLocalRouteOverrideCriteria value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public VnetLocalRouteOverrideCriteria() {
+    }
+
+    /**
      * Creates or finds a VnetLocalRouteOverrideCriteria from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VnetLocalRouteOverrideCriteria.
      */
-    @JsonCreator
     public static VnetLocalRouteOverrideCriteria fromString(String name) {
         return fromString(name, VnetLocalRouteOverrideCriteria.class);
     }
 
     /**
      * Gets known VnetLocalRouteOverrideCriteria values.
-     *
+     * 
      * @return known VnetLocalRouteOverrideCriteria values.
      */
     public static Collection<VnetLocalRouteOverrideCriteria> values() {

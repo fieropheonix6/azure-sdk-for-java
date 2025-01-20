@@ -39,11 +39,15 @@ public class ApacheAvroSerializerProvider implements AvroSerializerProvider {
         addPrimitiveSchema(Schema.create(Schema.Type.BYTES), byte[].class);
     }
 
+    /**
+     * Creates an instance of {@link ApacheAvroSerializerProvider}.
+     */
+    public ApacheAvroSerializerProvider() {
+    }
+
     @Override
     public AvroSerializer createInstance(String schema) {
-        return new ApacheAvroSerializerBuilder()
-            .schema(schema)
-            .build();
+        return new ApacheAvroSerializerBuilder().schema(schema).build();
     }
 
     @Override

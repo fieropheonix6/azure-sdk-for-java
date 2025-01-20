@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.HealthcareEntityAssertionProper
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link HealthcareEntityAssertion} model.
+ * The {@code HealthcareEntityAssertion} model.
  */
 @Immutable
 public final class HealthcareEntityAssertion {
@@ -28,8 +28,8 @@ public final class HealthcareEntityAssertion {
     private EntityAssociation association;
 
     static {
-        HealthcareEntityAssertionPropertiesHelper.setAccessor(
-            new HealthcareEntityAssertionPropertiesHelper.HealthcareEntityAssertionAccessor() {
+        HealthcareEntityAssertionPropertiesHelper
+            .setAccessor(new HealthcareEntityAssertionPropertiesHelper.HealthcareEntityAssertionAccessor() {
                 @Override
                 public void setAssociation(HealthcareEntityAssertion assertion, EntityAssociation entityAssociation) {
                     assertion.setAssociation(entityAssociation);
@@ -49,6 +49,12 @@ public final class HealthcareEntityAssertion {
     }
 
     /**
+     * Constructs a {@code HealthcareEntityAssertion} model.
+     */
+    public HealthcareEntityAssertion() {
+    }
+
+    /**
      * Gets the conditionality property: Describes any conditionality on the entity.
      *
      * @return The conditionality value.
@@ -56,7 +62,6 @@ public final class HealthcareEntityAssertion {
     public EntityConditionality getConditionality() {
         return this.conditionality;
     }
-
 
     /**
      * Gets the certainty property: Describes the entities certainty and polarity.

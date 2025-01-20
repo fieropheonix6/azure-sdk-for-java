@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VpnServerConfigurations List. */
+/**
+ * Samples for VpnServerConfigurations List.
+ */
 public final class VpnServerConfigurationsListSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/VpnServerConfigurationList.json
+     * x-ms-original-file:
+     * specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/VpnServerConfigurationList.
+     * json
      */
     /**
      * Sample code: VpnServerConfigurationList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void vpnServerConfigurationList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.networks().manager().serviceClient().getVpnServerConfigurations().list(Context.NONE);
+        azure.networks().manager().serviceClient().getVpnServerConfigurations().list(com.azure.core.util.Context.NONE);
     }
 }

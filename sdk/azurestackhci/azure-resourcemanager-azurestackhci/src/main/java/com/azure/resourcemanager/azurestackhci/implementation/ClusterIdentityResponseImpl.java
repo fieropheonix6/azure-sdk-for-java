@@ -12,8 +12,7 @@ public final class ClusterIdentityResponseImpl implements ClusterIdentityRespons
 
     private final com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager;
 
-    ClusterIdentityResponseImpl(
-        ClusterIdentityResponseInner innerObject,
+    ClusterIdentityResponseImpl(ClusterIdentityResponseInner innerObject,
         com.azure.resourcemanager.azurestackhci.AzureStackHciManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

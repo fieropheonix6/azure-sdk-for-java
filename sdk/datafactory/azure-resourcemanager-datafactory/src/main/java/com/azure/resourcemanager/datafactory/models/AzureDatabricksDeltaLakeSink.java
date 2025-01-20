@@ -5,34 +5,52 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
-/** A copy activity Azure Databricks Delta Lake sink. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureDatabricksDeltaLakeSink")
+/**
+ * A copy activity Azure Databricks Delta Lake sink.
+ */
 @Fluent
 public final class AzureDatabricksDeltaLakeSink extends CopySink {
     /*
+     * Copy sink type.
+     */
+    private String type = "AzureDatabricksDeltaLakeSink";
+
+    /*
      * SQL pre-copy script. Type: string (or Expression with resultType string).
      */
-    @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
 
     /*
      * Azure Databricks Delta Lake import settings.
      */
-    @JsonProperty(value = "importSettings")
     private AzureDatabricksDeltaLakeImportCommand importSettings;
 
-    /** Creates an instance of AzureDatabricksDeltaLakeSink class. */
+    /**
+     * Creates an instance of AzureDatabricksDeltaLakeSink class.
+     */
     public AzureDatabricksDeltaLakeSink() {
     }
 
     /**
+     * Get the type property: Copy sink type.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
      * Get the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the preCopyScript value.
      */
     public Object preCopyScript() {
@@ -41,7 +59,7 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
 
     /**
      * Set the preCopyScript property: SQL pre-copy script. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param preCopyScript the preCopyScript value to set.
      * @return the AzureDatabricksDeltaLakeSink object itself.
      */
@@ -52,7 +70,7 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
 
     /**
      * Get the importSettings property: Azure Databricks Delta Lake import settings.
-     *
+     * 
      * @return the importSettings value.
      */
     public AzureDatabricksDeltaLakeImportCommand importSettings() {
@@ -61,7 +79,7 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
 
     /**
      * Set the importSettings property: Azure Databricks Delta Lake import settings.
-     *
+     * 
      * @param importSettings the importSettings value to set.
      * @return the AzureDatabricksDeltaLakeSink object itself.
      */
@@ -70,42 +88,54 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -114,14 +144,85 @@ public final class AzureDatabricksDeltaLakeSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (importSettings() != null) {
             importSettings().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("writeBatchSize", writeBatchSize());
+        jsonWriter.writeUntypedField("writeBatchTimeout", writeBatchTimeout());
+        jsonWriter.writeUntypedField("sinkRetryCount", sinkRetryCount());
+        jsonWriter.writeUntypedField("sinkRetryWait", sinkRetryWait());
+        jsonWriter.writeUntypedField("maxConcurrentConnections", maxConcurrentConnections());
+        jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
+        jsonWriter.writeStringField("type", this.type);
+        jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        jsonWriter.writeJsonField("importSettings", this.importSettings);
+        if (additionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureDatabricksDeltaLakeSink from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureDatabricksDeltaLakeSink if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureDatabricksDeltaLakeSink.
+     */
+    public static AzureDatabricksDeltaLakeSink fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureDatabricksDeltaLakeSink deserializedAzureDatabricksDeltaLakeSink = new AzureDatabricksDeltaLakeSink();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("writeBatchSize".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.withWriteBatchSize(reader.readUntyped());
+                } else if ("writeBatchTimeout".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.withWriteBatchTimeout(reader.readUntyped());
+                } else if ("sinkRetryCount".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.withSinkRetryCount(reader.readUntyped());
+                } else if ("sinkRetryWait".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.withSinkRetryWait(reader.readUntyped());
+                } else if ("maxConcurrentConnections".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.withMaxConcurrentConnections(reader.readUntyped());
+                } else if ("disableMetricsCollection".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.withDisableMetricsCollection(reader.readUntyped());
+                } else if ("type".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.type = reader.getString();
+                } else if ("preCopyScript".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.preCopyScript = reader.readUntyped();
+                } else if ("importSettings".equals(fieldName)) {
+                    deserializedAzureDatabricksDeltaLakeSink.importSettings
+                        = AzureDatabricksDeltaLakeImportCommand.fromJson(reader);
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedAzureDatabricksDeltaLakeSink.withAdditionalProperties(additionalProperties);
+
+            return deserializedAzureDatabricksDeltaLakeSink;
+        });
     }
 }

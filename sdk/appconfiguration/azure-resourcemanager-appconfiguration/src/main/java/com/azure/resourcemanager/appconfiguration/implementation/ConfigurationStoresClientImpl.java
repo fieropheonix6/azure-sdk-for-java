@@ -46,22 +46,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConfigurationStoresClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConfigurationStoresClient.
+ */
 public final class ConfigurationStoresClientImpl implements ConfigurationStoresClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ConfigurationStoresService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final AppConfigurationManagementClientImpl client;
 
     /**
      * Initializes an instance of ConfigurationStoresClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ConfigurationStoresClientImpl(AppConfigurationManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ConfigurationStoresService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ConfigurationStoresService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -71,314 +77,214 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @Host("{$host}")
     @ServiceInterface(name = "AppConfigurationMana")
-    private interface ConfigurationStoresService {
-        @Headers({"Content-Type: application/json"})
+    public interface ConfigurationStoresService {
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/configurationStores")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationStoreListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ConfigurationStoreListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationStoreListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ConfigurationStoreListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConfigurationStoreInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ConfigurationStoreInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ConfigurationStoreInner configStoreCreationParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ConfigurationStoreUpdateParameters configStoreUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}/listKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/listKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiKeyListResult>> listKeys(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApiKeyListResult>> listKeys(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$skipToken") String skipToken,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$skipToken") String skipToken, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration"
-                + "/configurationStores/{configStoreName}/regenerateKey")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AppConfiguration/configurationStores/{configStoreName}/regenerateKey")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiKeyInner>> regenerateKey(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApiKeyInner>> regenerateKey(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("configStoreName") String configStoreName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("configStoreName") String configStoreName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") RegenerateKeyParameters regenerateKeyParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/deletedConfigurationStores")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedConfigurationStoreListResult>> listDeleted(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedConfigurationStoreListResult>> listDeleted(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}"
-                + "/deletedConfigurationStores/{configStoreName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/deletedConfigurationStores/{configStoreName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DeletedConfigurationStoreInner>> getDeleted(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("configStoreName") String configStoreName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DeletedConfigurationStoreInner>> getDeleted(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("configStoreName") String configStoreName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}"
-                + "/deletedConfigurationStores/{configStoreName}/purge")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.AppConfiguration/locations/{location}/deletedConfigurationStores/{configStoreName}/purge")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> purgeDeleted(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("configStoreName") String configStoreName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> purgeDeleted(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("configStoreName") String configStoreName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationStoreListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConfigurationStoreListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApiKeyListResult>> listKeysNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<ApiKeyListResult>> listKeysNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<DeletedConfigurationStoreListResult>> listDeletedNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationStoreInner>> listSinglePageAsync(String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<ConfigurationStoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<ConfigurationStoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationStoreInner>> listSinglePageAsync(String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), skipToken,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -391,7 +297,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores as paginated response with {@link PagedFlux}.
@@ -404,10 +310,10 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -416,13 +322,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationStoreInner> listAsync(String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(skipToken, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listSinglePageAsync(skipToken, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores as paginated response with {@link PagedIterable}.
@@ -435,10 +341,10 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Lists the configuration stores for a given subscription.
-     *
+     * 
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -452,31 +358,27 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationStoreInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String skipToken) {
+    private Mono<PagedResponse<ConfigurationStoreInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -485,56 +387,37 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<ConfigurationStoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<ConfigurationStoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationStoreInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String skipToken, Context context) {
+    private Mono<PagedResponse<ConfigurationStoreInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -543,32 +426,19 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -576,14 +446,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationStoreInner> listByResourceGroupAsync(String resourceGroupName, String skipToken) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -593,18 +462,17 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationStoreInner> listByResourceGroupAsync(String resourceGroupName) {
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -612,16 +480,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the result of a request to list configuration stores as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ConfigurationStoreInner> listByResourceGroupAsync(
-        String resourceGroupName, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken, context),
+    private PagedFlux<ConfigurationStoreInner> listByResourceGroupAsync(String resourceGroupName, String skipToken,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, skipToken, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -636,11 +503,11 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Lists the configuration stores for a given resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,36 +515,32 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the result of a request to list configuration stores as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConfigurationStoreInner> listByResourceGroup(
-        String resourceGroupName, String skipToken, Context context) {
+    public PagedIterable<ConfigurationStoreInner> listByResourceGroup(String resourceGroupName, String skipToken,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, skipToken, context));
     }
 
     /**
      * Gets the properties of the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified configuration store along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationStoreInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String configStoreName) {
+    private Mono<Response<ConfigurationStoreInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String configStoreName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -690,22 +553,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, configStoreName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -713,22 +568,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified configuration store along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ConfigurationStoreInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String configStoreName, Context context) {
+    private Mono<Response<ConfigurationStoreInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String configStoreName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -740,20 +591,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets the properties of the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -769,22 +613,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Gets the properties of the specified configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationStoreInner getByResourceGroup(String resourceGroupName, String configStoreName) {
-        return getByResourceGroupAsync(resourceGroupName, configStoreName).block();
-    }
-
-    /**
-     * Gets the properties of the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -794,14 +623,29 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the properties of the specified configuration store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ConfigurationStoreInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String configStoreName, Context context) {
+    public Response<ConfigurationStoreInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String configStoreName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, configStoreName, context).block();
     }
 
     /**
+     * Gets the properties of the specified configuration store.
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified configuration store.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ConfigurationStoreInner getByResourceGroup(String resourceGroupName, String configStoreName) {
+        return getByResourceGroupWithResponse(resourceGroupName, configStoreName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -809,22 +653,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configuration store along with all resource properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String configStoreName,
+        ConfigurationStoreInner configStoreCreationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -835,33 +675,22 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
                 .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (configStoreCreationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configStoreCreationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter configStoreCreationParameters is required and cannot be null."));
         } else {
             configStoreCreationParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            configStoreCreationParameters,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    configStoreName, this.client.getApiVersion(), configStoreCreationParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -870,25 +699,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configuration store along with all resource properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreInner configStoreCreationParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String configStoreName,
+        ConfigurationStoreInner configStoreCreationParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -899,30 +721,20 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
                 .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (configStoreCreationParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configStoreCreationParameters is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter configStoreCreationParameters is required and cannot be null."));
         } else {
             configStoreCreationParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                configStoreCreationParameters,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), configStoreCreationParameters, accept, context);
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -934,21 +746,16 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreateAsync(
         String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, configStoreName, configStoreCreationParameters);
-        return this
-            .client
-            .<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigurationStoreInner.class,
-                ConfigurationStoreInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, configStoreName, configStoreCreationParameters);
+        return this.client.<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfigurationStoreInner.class, ConfigurationStoreInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -960,26 +767,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreateAsync(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreInner configStoreCreationParameters,
+        String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context);
-        return this
-            .client
-            .<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigurationStoreInner.class,
-                ConfigurationStoreInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context);
+        return this.client.<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfigurationStoreInner.class, ConfigurationStoreInner.class, context);
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -991,12 +790,12 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(
         String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters) {
-        return beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters).getSyncPoller();
+        return this.beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters).getSyncPoller();
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -1008,17 +807,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginCreate(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreInner configStoreCreationParameters,
+        String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters,
         Context context) {
-        return beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context)
+        return this.beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -1028,16 +825,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the configuration store along with all resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationStoreInner> createAsync(
-        String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters) {
-        return beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters)
-            .last()
+    private Mono<ConfigurationStoreInner> createAsync(String resourceGroupName, String configStoreName,
+        ConfigurationStoreInner configStoreCreationParameters) {
+        return beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -1048,19 +844,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the configuration store along with all resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationStoreInner> createAsync(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreInner configStoreCreationParameters,
-        Context context) {
-        return beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context)
-            .last()
+    private Mono<ConfigurationStoreInner> createAsync(String resourceGroupName, String configStoreName,
+        ConfigurationStoreInner configStoreCreationParameters, Context context) {
+        return beginCreateAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -1070,14 +862,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationStoreInner create(
-        String resourceGroupName, String configStoreName, ConfigurationStoreInner configStoreCreationParameters) {
+    public ConfigurationStoreInner create(String resourceGroupName, String configStoreName,
+        ConfigurationStoreInner configStoreCreationParameters) {
         return createAsync(resourceGroupName, configStoreName, configStoreCreationParameters).block();
     }
 
     /**
      * Creates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreCreationParameters The parameters for creating a configuration store.
@@ -1088,17 +880,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationStoreInner create(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreInner configStoreCreationParameters,
-        Context context) {
+    public ConfigurationStoreInner create(String resourceGroupName, String configStoreName,
+        ConfigurationStoreInner configStoreCreationParameters, Context context) {
         return createAsync(resourceGroupName, configStoreName, configStoreCreationParameters, context).block();
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1109,16 +898,12 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1130,23 +915,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -1156,19 +932,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String configStoreName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String configStoreName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1180,20 +952,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1204,15 +969,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, configStoreName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -1222,18 +985,17 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String configStoreName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String configStoreName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, configStoreName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1243,12 +1005,12 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName) {
-        return beginDeleteAsync(resourceGroupName, configStoreName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, configStoreName).getSyncPoller();
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -1258,14 +1020,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String configStoreName, Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String configStoreName,
+        Context context) {
+        return this.beginDeleteAsync(resourceGroupName, configStoreName, context).getSyncPoller();
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1275,14 +1037,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName) {
-        return beginDeleteAsync(resourceGroupName, configStoreName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, configStoreName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -1293,14 +1054,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String configStoreName, Context context) {
-        return beginDeleteAsync(resourceGroupName, configStoreName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, configStoreName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1314,7 +1074,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Deletes a configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -1329,7 +1089,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1337,24 +1097,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configuration store along with all resource properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1365,33 +1119,22 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
                 .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (configStoreUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configStoreUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configStoreUpdateParameters is required and cannot be null."));
         } else {
             configStoreUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            configStoreUpdateParameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    configStoreName, this.client.getApiVersion(), configStoreUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1400,25 +1143,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the configuration store along with all resource properties along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreUpdateParameters configStoreUpdateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String configStoreName,
+        ConfigurationStoreUpdateParameters configStoreUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1429,30 +1165,20 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
                 .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (configStoreUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter configStoreUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter configStoreUpdateParameters is required and cannot be null."));
         } else {
             configStoreUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                configStoreUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), configStoreUpdateParameters, accept, context);
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1463,24 +1189,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdateAsync(
-        String resourceGroupName,
-        String configStoreName,
+        String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, configStoreName, configStoreUpdateParameters);
-        return this
-            .client
-            .<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigurationStoreInner.class,
-                ConfigurationStoreInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, configStoreName, configStoreUpdateParameters);
+        return this.client.<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfigurationStoreInner.class, ConfigurationStoreInner.class,
+            this.client.getContext());
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1492,26 +1212,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdateAsync(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreUpdateParameters configStoreUpdateParameters,
-        Context context) {
+        String resourceGroupName, String configStoreName,
+        ConfigurationStoreUpdateParameters configStoreUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context);
-        return this
-            .client
-            .<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                ConfigurationStoreInner.class,
-                ConfigurationStoreInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context);
+        return this.client.<ConfigurationStoreInner, ConfigurationStoreInner>getLroResult(mono,
+            this.client.getHttpPipeline(), ConfigurationStoreInner.class, ConfigurationStoreInner.class, context);
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1522,15 +1234,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdate(
-        String resourceGroupName,
-        String configStoreName,
+        String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters).getSyncPoller();
+        return this.beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters).getSyncPoller();
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1542,17 +1253,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ConfigurationStoreInner>, ConfigurationStoreInner> beginUpdate(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreUpdateParameters configStoreUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context)
+        String resourceGroupName, String configStoreName,
+        ConfigurationStoreUpdateParameters configStoreUpdateParameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1562,18 +1271,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the configuration store along with all resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationStoreInner> updateAsync(
-        String resourceGroupName,
-        String configStoreName,
+    private Mono<ConfigurationStoreInner> updateAsync(String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters)
-            .last()
+        return beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1584,19 +1290,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the configuration store along with all resource properties on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ConfigurationStoreInner> updateAsync(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreUpdateParameters configStoreUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context)
-            .last()
+    private Mono<ConfigurationStoreInner> updateAsync(String resourceGroupName, String configStoreName,
+        ConfigurationStoreUpdateParameters configStoreUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1606,16 +1308,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationStoreInner update(
-        String resourceGroupName,
-        String configStoreName,
+    public ConfigurationStoreInner update(String resourceGroupName, String configStoreName,
         ConfigurationStoreUpdateParameters configStoreUpdateParameters) {
         return updateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters).block();
     }
 
     /**
      * Updates a configuration store with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param configStoreUpdateParameters The parameters for updating a configuration store.
@@ -1626,42 +1326,35 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the configuration store along with all resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ConfigurationStoreInner update(
-        String resourceGroupName,
-        String configStoreName,
-        ConfigurationStoreUpdateParameters configStoreUpdateParameters,
-        Context context) {
+    public ConfigurationStoreInner update(String resourceGroupName, String configStoreName,
+        ConfigurationStoreUpdateParameters configStoreUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, configStoreName, configStoreUpdateParameters, context).block();
     }
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list API keys along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiKeyInner>> listKeysSinglePageAsync(
-        String resourceGroupName, String configStoreName, String skipToken) {
+    private Mono<PagedResponse<ApiKeyInner>> listKeysSinglePageAsync(String resourceGroupName, String configStoreName,
+        String skipToken) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1673,59 +1366,38 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listKeys(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            skipToken,
-                            accept,
-                            context))
-            .<PagedResponse<ApiKeyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), skipToken, accept, context))
+            .<PagedResponse<ApiKeyInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list API keys along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApiKeyInner>> listKeysSinglePageAsync(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
+    private Mono<PagedResponse<ApiKeyInner>> listKeysSinglePageAsync(String resourceGroupName, String configStoreName,
+        String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1738,34 +1410,20 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listKeys(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                skipToken,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listKeys(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, configStoreName,
+                this.client.getApiVersion(), skipToken, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1773,14 +1431,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApiKeyInner> listKeysAsync(String resourceGroupName, String configStoreName, String skipToken) {
-        return new PagedFlux<>(
-            () -> listKeysSinglePageAsync(resourceGroupName, configStoreName, skipToken),
+        return new PagedFlux<>(() -> listKeysSinglePageAsync(resourceGroupName, configStoreName, skipToken),
             nextLink -> listKeysNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1791,19 +1448,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ApiKeyInner> listKeysAsync(String resourceGroupName, String configStoreName) {
         final String skipToken = null;
-        return new PagedFlux<>(
-            () -> listKeysSinglePageAsync(resourceGroupName, configStoreName, skipToken),
+        return new PagedFlux<>(() -> listKeysSinglePageAsync(resourceGroupName, configStoreName, skipToken),
             nextLink -> listKeysNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1811,16 +1467,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the result of a request to list API keys as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ApiKeyInner> listKeysAsync(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
-        return new PagedFlux<>(
-            () -> listKeysSinglePageAsync(resourceGroupName, configStoreName, skipToken, context),
+    private PagedFlux<ApiKeyInner> listKeysAsync(String resourceGroupName, String configStoreName, String skipToken,
+        Context context) {
+        return new PagedFlux<>(() -> listKeysSinglePageAsync(resourceGroupName, configStoreName, skipToken, context),
             nextLink -> listKeysNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1836,12 +1491,12 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Lists the access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param skipToken A skip token is used to continue retrieving items after an operation returns a partial result.
-     *     If a previous response contains a nextLink element, the value of the nextLink element will include a
-     *     skipToken parameter that specifies a starting point to use for subsequent calls.
+     * If a previous response contains a nextLink element, the value of the nextLink element will include a skipToken
+     * parameter that specifies a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1849,14 +1504,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the result of a request to list API keys as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ApiKeyInner> listKeys(
-        String resourceGroupName, String configStoreName, String skipToken, Context context) {
+    public PagedIterable<ApiKeyInner> listKeys(String resourceGroupName, String configStoreName, String skipToken,
+        Context context) {
         return new PagedIterable<>(listKeysAsync(resourceGroupName, configStoreName, skipToken, context));
     }
 
     /**
      * Regenerates an access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param regenerateKeyParameters The parameters for regenerating an access key.
@@ -1864,22 +1519,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an API key used for authenticating with a configuration store endpoint along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiKeyInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
+    private Mono<Response<ApiKeyInner>> regenerateKeyWithResponseAsync(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1890,32 +1541,22 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
                 .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (regenerateKeyParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter regenerateKeyParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter regenerateKeyParameters is required and cannot be null."));
         } else {
             regenerateKeyParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKey(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            configStoreName,
-                            this.client.getApiVersion(),
-                            regenerateKeyParameters,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, configStoreName, this.client.getApiVersion(), regenerateKeyParameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerates an access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param regenerateKeyParameters The parameters for regenerating an access key.
@@ -1924,25 +1565,18 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an API key used for authenticating with a configuration store endpoint along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApiKeyInner>> regenerateKeyWithResponseAsync(
-        String resourceGroupName,
-        String configStoreName,
-        RegenerateKeyParameters regenerateKeyParameters,
-        Context context) {
+    private Mono<Response<ApiKeyInner>> regenerateKeyWithResponseAsync(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1953,65 +1587,39 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
                 .error(new IllegalArgumentException("Parameter configStoreName is required and cannot be null."));
         }
         if (regenerateKeyParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter regenerateKeyParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter regenerateKeyParameters is required and cannot be null."));
         } else {
             regenerateKeyParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateKey(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                configStoreName,
-                this.client.getApiVersion(),
-                regenerateKeyParameters,
-                accept,
-                context);
+        return service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            configStoreName, this.client.getApiVersion(), regenerateKeyParameters, accept, context);
     }
 
     /**
      * Regenerates an access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param regenerateKeyParameters The parameters for regenerating an access key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an API key used for authenticating with a configuration store endpoint on successful completion of {@link
-     *     Mono}.
+     * @return an API key used for authenticating with a configuration store endpoint on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApiKeyInner> regenerateKeyAsync(
-        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
+    private Mono<ApiKeyInner> regenerateKeyAsync(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters) {
         return regenerateKeyWithResponseAsync(resourceGroupName, configStoreName, regenerateKeyParameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Regenerates an access key for the specified configuration store.
-     *
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param configStoreName The name of the configuration store.
-     * @param regenerateKeyParameters The parameters for regenerating an access key.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an API key used for authenticating with a configuration store endpoint.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApiKeyInner regenerateKey(
-        String resourceGroupName, String configStoreName, RegenerateKeyParameters regenerateKeyParameters) {
-        return regenerateKeyAsync(resourceGroupName, configStoreName, regenerateKeyParameters).block();
-    }
-
-    /**
-     * Regenerates an access key for the specified configuration store.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param configStoreName The name of the configuration store.
      * @param regenerateKeyParameters The parameters for regenerating an access key.
@@ -2022,141 +1630,123 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return an API key used for authenticating with a configuration store endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApiKeyInner> regenerateKeyWithResponse(
-        String resourceGroupName,
-        String configStoreName,
-        RegenerateKeyParameters regenerateKeyParameters,
-        Context context) {
+    public Response<ApiKeyInner> regenerateKeyWithResponse(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters, Context context) {
         return regenerateKeyWithResponseAsync(resourceGroupName, configStoreName, regenerateKeyParameters, context)
             .block();
     }
 
     /**
+     * Regenerates an access key for the specified configuration store.
+     * 
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param configStoreName The name of the configuration store.
+     * @param regenerateKeyParameters The parameters for regenerating an access key.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an API key used for authenticating with a configuration store endpoint.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ApiKeyInner regenerateKey(String resourceGroupName, String configStoreName,
+        RegenerateKeyParameters regenerateKeyParameters) {
+        return regenerateKeyWithResponse(resourceGroupName, configStoreName, regenerateKeyParameters, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Gets information about the deleted configuration stores in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the deleted configuration stores in a subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedConfigurationStoreInner>> listDeletedSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listDeleted(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DeletedConfigurationStoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DeletedConfigurationStoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the deleted configuration stores in a subscription along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedConfigurationStoreInner>> listDeletedSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listDeleted(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listDeleted(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the deleted configuration stores in a subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return information about the deleted configuration stores in a subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeletedConfigurationStoreInner> listDeletedAsync() {
-        return new PagedFlux<>(
-            () -> listDeletedSinglePageAsync(), nextLink -> listDeletedNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listDeletedSinglePageAsync(),
+            nextLink -> listDeletedNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the deleted configuration stores in a subscription as paginated response with {@link
-     *     PagedFlux}.
+     * @return information about the deleted configuration stores in a subscription as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeletedConfigurationStoreInner> listDeletedAsync(Context context) {
-        return new PagedFlux<>(
-            () -> listDeletedSinglePageAsync(context), nextLink -> listDeletedNextSinglePageAsync(nextLink, context));
+        return new PagedFlux<>(() -> listDeletedSinglePageAsync(context),
+            nextLink -> listDeletedNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
-     *
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the deleted configuration stores in a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return information about the deleted configuration stores in a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedConfigurationStoreInner> listDeleted() {
@@ -2165,13 +1755,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Gets information about the deleted configuration stores in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the deleted configuration stores in a subscription as paginated response with {@link
-     *     PagedIterable}.
+     * @return information about the deleted configuration stores in a subscription as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedConfigurationStoreInner> listDeleted(Context context) {
@@ -2180,29 +1770,25 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Gets a deleted Azure app configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted Azure app configuration store along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a deleted Azure app configuration store along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeletedConfigurationStoreInner>> getDeletedWithResponseAsync(
-        String location, String configStoreName) {
+    private Mono<Response<DeletedConfigurationStoreInner>> getDeletedWithResponseAsync(String location,
+        String configStoreName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -2213,46 +1799,33 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getDeleted(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            configStoreName,
-                            accept,
-                            context))
+            .withContext(context -> service.getDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, configStoreName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a deleted Azure app configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted Azure app configuration store along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a deleted Azure app configuration store along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DeletedConfigurationStoreInner>> getDeletedWithResponseAsync(
-        String location, String configStoreName, Context context) {
+    private Mono<Response<DeletedConfigurationStoreInner>> getDeletedWithResponseAsync(String location,
+        String configStoreName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -2263,20 +1836,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getDeleted(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                configStoreName,
-                accept,
-                context);
+        return service.getDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, configStoreName, accept, context);
     }
 
     /**
      * Gets a deleted Azure app configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2291,22 +1857,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Gets a deleted Azure app configuration store.
-     *
-     * @param location The location in which uniqueness will be verified.
-     * @param configStoreName The name of the configuration store.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted Azure app configuration store.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DeletedConfigurationStoreInner getDeleted(String location, String configStoreName) {
-        return getDeletedAsync(location, configStoreName).block();
-    }
-
-    /**
-     * Gets a deleted Azure app configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -2316,14 +1867,29 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return a deleted Azure app configuration store along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedConfigurationStoreInner> getDeletedWithResponse(
-        String location, String configStoreName, Context context) {
+    public Response<DeletedConfigurationStoreInner> getDeletedWithResponse(String location, String configStoreName,
+        Context context) {
         return getDeletedWithResponseAsync(location, configStoreName, context).block();
     }
 
     /**
+     * Gets a deleted Azure app configuration store.
+     * 
+     * @param location The location in which uniqueness will be verified.
+     * @param configStoreName The name of the configuration store.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a deleted Azure app configuration store.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DeletedConfigurationStoreInner getDeleted(String location, String configStoreName) {
+        return getDeletedWithResponse(location, configStoreName, Context.NONE).getValue();
+    }
+
+    /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2334,16 +1900,12 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String location, String configStoreName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -2354,23 +1916,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .purgeDeleted(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            configStoreName,
-                            accept,
-                            context))
+            .withContext(context -> service.purgeDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, configStoreName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -2380,19 +1933,15 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(
-        String location, String configStoreName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> purgeDeletedWithResponseAsync(String location, String configStoreName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -2403,20 +1952,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .purgeDeleted(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                configStoreName,
-                accept,
-                context);
+        return service.purgeDeleted(this.client.getEndpoint(), this.client.getApiVersion(),
+            this.client.getSubscriptionId(), location, configStoreName, accept, context);
     }
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2427,15 +1969,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String location, String configStoreName) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(location, configStoreName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -2445,18 +1985,17 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(
-        String location, String configStoreName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginPurgeDeletedAsync(String location, String configStoreName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = purgeDeletedWithResponseAsync(location, configStoreName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2466,12 +2005,12 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String configStoreName) {
-        return beginPurgeDeletedAsync(location, configStoreName).getSyncPoller();
+        return this.beginPurgeDeletedAsync(location, configStoreName).getSyncPoller();
     }
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -2481,14 +2020,14 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(
-        String location, String configStoreName, Context context) {
-        return beginPurgeDeletedAsync(location, configStoreName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginPurgeDeleted(String location, String configStoreName,
+        Context context) {
+        return this.beginPurgeDeletedAsync(location, configStoreName, context).getSyncPoller();
     }
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2503,7 +2042,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -2514,14 +2053,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> purgeDeletedAsync(String location, String configStoreName, Context context) {
-        return beginPurgeDeletedAsync(location, configStoreName, context)
-            .last()
+        return beginPurgeDeletedAsync(location, configStoreName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2535,7 +2073,7 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Permanently deletes the specified configuration store.
-     *
+     * 
      * @param location The location in which uniqueness will be verified.
      * @param configStoreName The name of the configuration store.
      * @param context The context to associate with this operation.
@@ -2550,13 +2088,13 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationStoreInner>> listNextSinglePageAsync(String nextLink) {
@@ -2564,36 +2102,26 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConfigurationStoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ConfigurationStoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationStoreInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2601,35 +2129,25 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationStoreInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2637,74 +2155,55 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ConfigurationStoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ConfigurationStoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list configuration stores along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ConfigurationStoreInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<ConfigurationStoreInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list API keys along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiKeyInner>> listKeysNextSinglePageAsync(String nextLink) {
@@ -2712,36 +2211,27 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listKeysNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ApiKeyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<ApiKeyInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the result of a request to list API keys along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApiKeyInner>> listKeysNextSinglePageAsync(String nextLink, Context context) {
@@ -2749,35 +2239,25 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listKeysNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listKeysNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deleted configuration stores along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of deleted configuration stores along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DeletedConfigurationStoreInner>> listDeletedNextSinglePageAsync(String nextLink) {
@@ -2785,61 +2265,42 @@ public final class ConfigurationStoresClientImpl implements ConfigurationStoresC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listDeletedNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DeletedConfigurationStoreInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DeletedConfigurationStoreInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of deleted configuration stores along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of deleted configuration stores along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DeletedConfigurationStoreInner>> listDeletedNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DeletedConfigurationStoreInner>> listDeletedNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listDeletedNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listDeletedNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

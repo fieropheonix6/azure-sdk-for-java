@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Auth Secrets for Container App Scale Rule. */
+/**
+ * Auth Secrets for Container App Scale Rule.
+ */
 @Fluent
-public final class ScaleRuleAuth {
+public final class ScaleRuleAuth implements JsonSerializable<ScaleRuleAuth> {
     /*
      * Name of the Container App secret from which to pull the auth params.
      */
-    @JsonProperty(value = "secretRef")
     private String secretRef;
 
     /*
      * Trigger Parameter that uses the secret
      */
-    @JsonProperty(value = "triggerParameter")
     private String triggerParameter;
 
     /**
+     * Creates an instance of ScaleRuleAuth class.
+     */
+    public ScaleRuleAuth() {
+    }
+
+    /**
      * Get the secretRef property: Name of the Container App secret from which to pull the auth params.
-     *
+     * 
      * @return the secretRef value.
      */
     public String secretRef() {
@@ -33,7 +43,7 @@ public final class ScaleRuleAuth {
 
     /**
      * Set the secretRef property: Name of the Container App secret from which to pull the auth params.
-     *
+     * 
      * @param secretRef the secretRef value to set.
      * @return the ScaleRuleAuth object itself.
      */
@@ -44,7 +54,7 @@ public final class ScaleRuleAuth {
 
     /**
      * Get the triggerParameter property: Trigger Parameter that uses the secret.
-     *
+     * 
      * @return the triggerParameter value.
      */
     public String triggerParameter() {
@@ -53,7 +63,7 @@ public final class ScaleRuleAuth {
 
     /**
      * Set the triggerParameter property: Trigger Parameter that uses the secret.
-     *
+     * 
      * @param triggerParameter the triggerParameter value to set.
      * @return the ScaleRuleAuth object itself.
      */
@@ -64,9 +74,48 @@ public final class ScaleRuleAuth {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("secretRef", this.secretRef);
+        jsonWriter.writeStringField("triggerParameter", this.triggerParameter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ScaleRuleAuth from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ScaleRuleAuth if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ScaleRuleAuth.
+     */
+    public static ScaleRuleAuth fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ScaleRuleAuth deserializedScaleRuleAuth = new ScaleRuleAuth();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("secretRef".equals(fieldName)) {
+                    deserializedScaleRuleAuth.secretRef = reader.getString();
+                } else if ("triggerParameter".equals(fieldName)) {
+                    deserializedScaleRuleAuth.triggerParameter = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedScaleRuleAuth;
+        });
     }
 }

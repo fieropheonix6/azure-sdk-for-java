@@ -5,24 +5,49 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
-/** The AzureTableDataFeedPatch model. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "dataSourceType")
-@JsonTypeName("AzureTable")
+/**
+ * The AzureTableDataFeedPatch model.
+ */
 @Fluent
 public final class AzureTableDataFeedPatch extends DataFeedDetailPatch {
     /*
+     * data source type
+     */
+    private DataSourceType dataSourceType = DataSourceType.AZURE_TABLE;
+
+    /*
      * The dataSourceParameter property.
      */
-    @JsonProperty(value = "dataSourceParameter")
     private AzureTableParameterPatch dataSourceParameter;
 
     /**
+     * Creates an instance of AzureTableDataFeedPatch class.
+     */
+    public AzureTableDataFeedPatch() {
+    }
+
+    /**
+     * Get the dataSourceType property: data source type.
+     * 
+     * @return the dataSourceType value.
+     */
+    @Override
+    public DataSourceType getDataSourceType() {
+        return this.dataSourceType;
+    }
+
+    /**
      * Get the dataSourceParameter property: The dataSourceParameter property.
-     *
+     * 
      * @return the dataSourceParameter value.
      */
     public AzureTableParameterPatch getDataSourceParameter() {
@@ -31,12 +56,318 @@ public final class AzureTableDataFeedPatch extends DataFeedDetailPatch {
 
     /**
      * Set the dataSourceParameter property: The dataSourceParameter property.
-     *
+     * 
      * @param dataSourceParameter the dataSourceParameter value to set.
      * @return the AzureTableDataFeedPatch object itself.
      */
     public AzureTableDataFeedPatch setDataSourceParameter(AzureTableParameterPatch dataSourceParameter) {
         this.dataSourceParameter = dataSourceParameter;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setDataFeedName(String dataFeedName) {
+        super.setDataFeedName(dataFeedName);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setDataFeedDescription(String dataFeedDescription) {
+        super.setDataFeedDescription(dataFeedDescription);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setTimestampColumn(String timestampColumn) {
+        super.setTimestampColumn(timestampColumn);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setDataStartFrom(OffsetDateTime dataStartFrom) {
+        super.setDataStartFrom(dataStartFrom);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setStartOffsetInSeconds(Long startOffsetInSeconds) {
+        super.setStartOffsetInSeconds(startOffsetInSeconds);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setMaxConcurrency(Integer maxConcurrency) {
+        super.setMaxConcurrency(maxConcurrency);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setMinRetryIntervalInSeconds(Long minRetryIntervalInSeconds) {
+        super.setMinRetryIntervalInSeconds(minRetryIntervalInSeconds);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setStopRetryAfterInSeconds(Long stopRetryAfterInSeconds) {
+        super.setStopRetryAfterInSeconds(stopRetryAfterInSeconds);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setNeedRollup(NeedRollupEnum needRollup) {
+        super.setNeedRollup(needRollup);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setRollUpMethod(RollUpMethod rollUpMethod) {
+        super.setRollUpMethod(rollUpMethod);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setRollUpColumns(List<String> rollUpColumns) {
+        super.setRollUpColumns(rollUpColumns);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setAllUpIdentification(String allUpIdentification) {
+        super.setAllUpIdentification(allUpIdentification);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setFillMissingPointType(FillMissingPointType fillMissingPointType) {
+        super.setFillMissingPointType(fillMissingPointType);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setFillMissingPointValue(Double fillMissingPointValue) {
+        super.setFillMissingPointValue(fillMissingPointValue);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setViewMode(ViewMode viewMode) {
+        super.setViewMode(viewMode);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setAdmins(List<String> admins) {
+        super.setAdmins(admins);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setViewers(List<String> viewers) {
+        super.setViewers(viewers);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setStatus(EntityStatus status) {
+        super.setStatus(status);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setActionLinkTemplate(String actionLinkTemplate) {
+        super.setActionLinkTemplate(actionLinkTemplate);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setAuthenticationType(AuthenticationTypeEnum authenticationType) {
+        super.setAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureTableDataFeedPatch setCredentialId(String credentialId) {
+        super.setCredentialId(credentialId);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("dataFeedName", getDataFeedName());
+        jsonWriter.writeStringField("dataFeedDescription", getDataFeedDescription());
+        jsonWriter.writeStringField("timestampColumn", getTimestampColumn());
+        jsonWriter.writeStringField("dataStartFrom",
+            getDataStartFrom() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getDataStartFrom()));
+        jsonWriter.writeNumberField("startOffsetInSeconds", getStartOffsetInSeconds());
+        jsonWriter.writeNumberField("maxConcurrency", getMaxConcurrency());
+        jsonWriter.writeNumberField("minRetryIntervalInSeconds", getMinRetryIntervalInSeconds());
+        jsonWriter.writeNumberField("stopRetryAfterInSeconds", getStopRetryAfterInSeconds());
+        jsonWriter.writeStringField("needRollup", getNeedRollup() == null ? null : getNeedRollup().toString());
+        jsonWriter.writeStringField("rollUpMethod", getRollUpMethod() == null ? null : getRollUpMethod().toString());
+        jsonWriter.writeArrayField("rollUpColumns", getRollUpColumns(),
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("allUpIdentification", getAllUpIdentification());
+        jsonWriter.writeStringField("fillMissingPointType",
+            getFillMissingPointType() == null ? null : getFillMissingPointType().toString());
+        jsonWriter.writeNumberField("fillMissingPointValue", getFillMissingPointValue());
+        jsonWriter.writeStringField("viewMode", getViewMode() == null ? null : getViewMode().toString());
+        jsonWriter.writeArrayField("admins", getAdmins(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("viewers", getViewers(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
+        jsonWriter.writeStringField("actionLinkTemplate", getActionLinkTemplate());
+        jsonWriter.writeStringField("authenticationType",
+            getAuthenticationType() == null ? null : getAuthenticationType().toString());
+        jsonWriter.writeStringField("credentialId", getCredentialId());
+        jsonWriter.writeStringField("dataSourceType",
+            this.dataSourceType == null ? null : this.dataSourceType.toString());
+        jsonWriter.writeJsonField("dataSourceParameter", this.dataSourceParameter);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureTableDataFeedPatch from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureTableDataFeedPatch if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AzureTableDataFeedPatch.
+     */
+    public static AzureTableDataFeedPatch fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureTableDataFeedPatch deserializedAzureTableDataFeedPatch = new AzureTableDataFeedPatch();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("dataFeedName".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setDataFeedName(reader.getString());
+                } else if ("dataFeedDescription".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setDataFeedDescription(reader.getString());
+                } else if ("timestampColumn".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setTimestampColumn(reader.getString());
+                } else if ("dataStartFrom".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setDataStartFrom(reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
+                } else if ("startOffsetInSeconds".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch
+                        .setStartOffsetInSeconds(reader.getNullable(JsonReader::getLong));
+                } else if ("maxConcurrency".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setMaxConcurrency(reader.getNullable(JsonReader::getInt));
+                } else if ("minRetryIntervalInSeconds".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch
+                        .setMinRetryIntervalInSeconds(reader.getNullable(JsonReader::getLong));
+                } else if ("stopRetryAfterInSeconds".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch
+                        .setStopRetryAfterInSeconds(reader.getNullable(JsonReader::getLong));
+                } else if ("needRollup".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setNeedRollup(NeedRollupEnum.fromString(reader.getString()));
+                } else if ("rollUpMethod".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setRollUpMethod(RollUpMethod.fromString(reader.getString()));
+                } else if ("rollUpColumns".equals(fieldName)) {
+                    List<String> rollUpColumns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureTableDataFeedPatch.setRollUpColumns(rollUpColumns);
+                } else if ("allUpIdentification".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setAllUpIdentification(reader.getString());
+                } else if ("fillMissingPointType".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch
+                        .setFillMissingPointType(FillMissingPointType.fromString(reader.getString()));
+                } else if ("fillMissingPointValue".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch
+                        .setFillMissingPointValue(reader.getNullable(JsonReader::getDouble));
+                } else if ("viewMode".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setViewMode(ViewMode.fromString(reader.getString()));
+                } else if ("admins".equals(fieldName)) {
+                    List<String> admins = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureTableDataFeedPatch.setAdmins(admins);
+                } else if ("viewers".equals(fieldName)) {
+                    List<String> viewers = reader.readArray(reader1 -> reader1.getString());
+                    deserializedAzureTableDataFeedPatch.setViewers(viewers);
+                } else if ("status".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setStatus(EntityStatus.fromString(reader.getString()));
+                } else if ("actionLinkTemplate".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setActionLinkTemplate(reader.getString());
+                } else if ("authenticationType".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch
+                        .setAuthenticationType(AuthenticationTypeEnum.fromString(reader.getString()));
+                } else if ("credentialId".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.setCredentialId(reader.getString());
+                } else if ("dataSourceType".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.dataSourceType = DataSourceType.fromString(reader.getString());
+                } else if ("dataSourceParameter".equals(fieldName)) {
+                    deserializedAzureTableDataFeedPatch.dataSourceParameter = AzureTableParameterPatch.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureTableDataFeedPatch;
+        });
     }
 }

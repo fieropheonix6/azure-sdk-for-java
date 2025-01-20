@@ -5,30 +5,37 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Application Gateway autoscale configuration. */
+/**
+ * Application Gateway autoscale configuration.
+ */
 @Fluent
-public final class ApplicationGatewayAutoscaleConfiguration {
+public final class ApplicationGatewayAutoscaleConfiguration
+    implements JsonSerializable<ApplicationGatewayAutoscaleConfiguration> {
     /*
      * Lower bound on number of Application Gateway capacity.
      */
-    @JsonProperty(value = "minCapacity", required = true)
     private int minCapacity;
 
     /*
      * Upper bound on number of Application Gateway capacity.
      */
-    @JsonProperty(value = "maxCapacity")
     private Integer maxCapacity;
 
-    /** Creates an instance of ApplicationGatewayAutoscaleConfiguration class. */
+    /**
+     * Creates an instance of ApplicationGatewayAutoscaleConfiguration class.
+     */
     public ApplicationGatewayAutoscaleConfiguration() {
     }
 
     /**
      * Get the minCapacity property: Lower bound on number of Application Gateway capacity.
-     *
+     * 
      * @return the minCapacity value.
      */
     public int minCapacity() {
@@ -37,7 +44,7 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Set the minCapacity property: Lower bound on number of Application Gateway capacity.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the ApplicationGatewayAutoscaleConfiguration object itself.
      */
@@ -48,7 +55,7 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Get the maxCapacity property: Upper bound on number of Application Gateway capacity.
-     *
+     * 
      * @return the maxCapacity value.
      */
     public Integer maxCapacity() {
@@ -57,7 +64,7 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Set the maxCapacity property: Upper bound on number of Application Gateway capacity.
-     *
+     * 
      * @param maxCapacity the maxCapacity value to set.
      * @return the ApplicationGatewayAutoscaleConfiguration object itself.
      */
@@ -68,9 +75,51 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeIntField("minCapacity", this.minCapacity);
+        jsonWriter.writeNumberField("maxCapacity", this.maxCapacity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApplicationGatewayAutoscaleConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApplicationGatewayAutoscaleConfiguration if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ApplicationGatewayAutoscaleConfiguration.
+     */
+    public static ApplicationGatewayAutoscaleConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApplicationGatewayAutoscaleConfiguration deserializedApplicationGatewayAutoscaleConfiguration
+                = new ApplicationGatewayAutoscaleConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("minCapacity".equals(fieldName)) {
+                    deserializedApplicationGatewayAutoscaleConfiguration.minCapacity = reader.getInt();
+                } else if ("maxCapacity".equals(fieldName)) {
+                    deserializedApplicationGatewayAutoscaleConfiguration.maxCapacity
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApplicationGatewayAutoscaleConfiguration;
+        });
     }
 }

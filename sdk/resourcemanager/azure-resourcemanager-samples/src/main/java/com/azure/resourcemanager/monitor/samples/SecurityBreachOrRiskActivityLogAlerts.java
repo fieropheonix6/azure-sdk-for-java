@@ -21,6 +21,7 @@ import com.azure.resourcemanager.storage.models.StorageAccount;
 
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * This sample shows examples of configuring Activity Log Alerts for potential security breach or risk notifications.
@@ -46,47 +47,50 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
             // Create a storage account
             System.out.println("Creating a Storage Account");
 
-            StorageAccount storageAccount = azureResourceManager.storageAccounts().define(storageAccountName)
-                    .withRegion(Region.US_EAST)
-                    .withNewResourceGroup(rgName)
-                    .withBlobStorageAccountKind()
-                    .withAccessTier(AccessTier.COOL)
-                    .create();
+            StorageAccount storageAccount = azureResourceManager.storageAccounts()
+                .define(storageAccountName)
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withBlobStorageAccountKind()
+                .withAccessTier(AccessTier.COOL)
+                .create();
 
             System.out.println("Created a Storage Account:");
             Utils.print(storageAccount);
 
             // ============================================================
             // Create an action group to send notifications in case activity log alert condition will be triggered
-            ActionGroup ag = azureResourceManager.actionGroups().define("securityBreachActionGroup")
-                    .withExistingResourceGroup(rgName)
-                    .defineReceiver("tierOne")
-                        .withPushNotification("security_on_duty@securecorporation.com")
-                        .withEmail("security_guards@securecorporation.com")
-                        .withSms("1", "4255655665")
-                        .withVoice("1", "2062066050")
-                        .withWebhook("https://www.weseemstobehacked.securecorporation.com")
-                    .attach()
-                    .defineReceiver("tierTwo")
-                        .withEmail("ceo@securecorporation.com")
-                        .attach()
-                    .create();
+            ActionGroup ag = azureResourceManager.actionGroups()
+                .define("securityBreachActionGroup")
+                .withExistingResourceGroup(rgName)
+                .defineReceiver("tierOne")
+                .withPushNotification("security_on_duty@securecorporation.com")
+                .withEmail("security_guards@securecorporation.com")
+                .withSms("1", "4255655665")
+                .withVoice("1", "2062066050")
+                .withWebhook("https://www.weseemstobehacked.securecorporation.com")
+                .attach()
+                .defineReceiver("tierTwo")
+                .withEmail("ceo@securecorporation.com")
+                .attach()
+                .create();
             Utils.print(ag);
 
             // ============================================================
             // Set a trigger to fire each time
-            ActivityLogAlert ala = azureResourceManager.alertRules().activityLogAlerts()
-                    .define("Potential security breach alert")
-                    .withExistingResourceGroup(rgName)
-                    .withTargetSubscription(azureResourceManager.subscriptionId())
-                    .withDescription("Security StorageAccounts ListAccountKeys trigger")
-                    .withRuleEnabled()
-                    .withActionGroups(ag.id())
-                    // fire an alert when all the conditions below will be true
-                    .withEqualsCondition("category", "Security")
-                    .withEqualsCondition("resourceId", storageAccount.id())
-                    .withEqualsCondition("operationName", "Microsoft.Storage/storageAccounts/listkeys/action")
-                    .create();
+            ActivityLogAlert ala = azureResourceManager.alertRules()
+                .activityLogAlerts()
+                .define("Potential security breach alert")
+                .withExistingResourceGroup(rgName)
+                .withTargetSubscription(azureResourceManager.subscriptionId())
+                .withDescription("Security StorageAccounts ListAccountKeys trigger")
+                .withRuleEnabled()
+                .withActionGroups(ag.id())
+                // fire an alert when all the conditions below will be true
+                .withEqualsCondition("category", "Security")
+                .withEqualsCondition("resourceId", storageAccount.id())
+                .withEqualsCondition("operationName", "Microsoft.Storage/storageAccounts/listkeys/action")
+                .create();
             Utils.print(ala);
 
             // this should trigger an action
@@ -97,14 +101,15 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
             // for near real time monitoring.
             ResourceManagerUtils.sleep(Duration.ofMinutes(6));
 
-            OffsetDateTime recordDateTime = OffsetDateTime.parse("2020-08-03T16:34:27.009944500+08:00");
+            OffsetDateTime recordDateTime = OffsetDateTime.now().truncatedTo(ChronoUnit.DAYS);
             // get activity logs for the same period.
-            PagedIterable<EventData> logs = azureResourceManager.activityLogs().defineQuery()
-                    .startingFrom(recordDateTime.minusDays(7))
-                    .endsBefore(recordDateTime)
-                    .withAllPropertiesInResponse()
-                    .filterByResource(ala.id())
-                    .execute();
+            PagedIterable<EventData> logs = azureResourceManager.activityLogs()
+                .defineQuery()
+                .startingFrom(recordDateTime.minusDays(7))
+                .endsBefore(recordDateTime)
+                .withAllPropertiesInResponse()
+                .filterByResource(ala.id())
+                .execute();
 
             System.out.println("Activity logs for the Storage Account:");
 
@@ -147,8 +152,7 @@ public final class SecurityBreachOrRiskActivityLogAlerts {
                 .authorityHost(profile.getEnvironment().getActiveDirectoryEndpoint())
                 .build();
 
-            AzureResourceManager azureResourceManager = AzureResourceManager
-                .configure()
+            AzureResourceManager azureResourceManager = AzureResourceManager.configure()
                 .withLogLevel(HttpLogDetailLevel.BASIC)
                 .authenticate(credential, profile)
                 .withDefaultSubscription();

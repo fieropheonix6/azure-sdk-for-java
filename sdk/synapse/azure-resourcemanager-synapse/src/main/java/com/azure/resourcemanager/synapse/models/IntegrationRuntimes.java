@@ -8,11 +8,34 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IntegrationRuntimes. */
+/**
+ * Resource collection API of IntegrationRuntimes.
+ */
 public interface IntegrationRuntimes {
     /**
+     * Get integration runtime
+     * 
      * Get an integration runtime.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @param ifNoneMatch ETag of the integration runtime entity. Should only be specified for get. If the ETag matches
+     * the existing entity tag, or if * was provided, then no content will be returned.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an integration runtime along with {@link Response}.
+     */
+    Response<IntegrationRuntimeResource> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, String ifNoneMatch, Context context);
+
+    /**
+     * Get integration runtime
+     * 
+     * Get an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -24,29 +47,10 @@ public interface IntegrationRuntimes {
     IntegrationRuntimeResource get(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
-     * Get an integration runtime.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @param ifNoneMatch ETag of the integration runtime entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an integration runtime along with {@link Response}.
-     */
-    Response<IntegrationRuntimeResource> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String integrationRuntimeName,
-        String ifNoneMatch,
-        Context context);
-
-    /**
+     * Delete integration runtime
+     * 
      * Delete an integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -57,8 +61,10 @@ public interface IntegrationRuntimes {
     void delete(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
+     * Delete integration runtime
+     * 
      * Delete an integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -70,8 +76,27 @@ public interface IntegrationRuntimes {
     void delete(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
     /**
+     * Upgrade integration runtime
+     * 
      * Upgrade an integration runtime.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> upgradeWithResponse(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
+
+    /**
+     * Upgrade integration runtime
+     * 
+     * Upgrade an integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -82,23 +107,10 @@ public interface IntegrationRuntimes {
     void upgrade(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
-     * Upgrade an integration runtime.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
-     */
-    Response<Void> upgradeWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
-
-    /**
+     * List integration runtimes
+     * 
      * List all integration runtimes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,8 +121,10 @@ public interface IntegrationRuntimes {
     PagedIterable<IntegrationRuntimeResource> listByWorkspace(String resourceGroupName, String workspaceName);
 
     /**
+     * List integration runtimes
+     * 
      * List all integration runtimes.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param context The context to associate with this operation.
@@ -119,12 +133,14 @@ public interface IntegrationRuntimes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of integration runtime resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IntegrationRuntimeResource> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<IntegrationRuntimeResource> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context);
 
     /**
+     * Start integration runtime
+     * 
      * Start an integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -133,12 +149,14 @@ public interface IntegrationRuntimes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    IntegrationRuntimeStatusResponse start(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName);
+    IntegrationRuntimeStatusResponse start(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName);
 
     /**
+     * Start integration runtime
+     * 
      * Start an integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -148,12 +166,14 @@ public interface IntegrationRuntimes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return integration runtime status response.
      */
-    IntegrationRuntimeStatusResponse start(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    IntegrationRuntimeStatusResponse start(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context);
 
     /**
+     * Stop integration runtime
+     * 
      * Stop an integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -164,8 +184,10 @@ public interface IntegrationRuntimes {
     void stop(String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
+     * Stop integration runtime
+     * 
      * Stop an integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -177,8 +199,29 @@ public interface IntegrationRuntimes {
     void stop(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
 
     /**
+     * Gets list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * 
      * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param integrationRuntimeName Integration runtime name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with
+     * {@link Response}.
+     */
+    Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
+        listOutboundNetworkDependenciesEndpointsWithResponse(String resourceGroupName, String workspaceName,
+            String integrationRuntimeName, Context context);
+
+    /**
+     * Gets list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * 
+     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -191,25 +234,8 @@ public interface IntegrationRuntimes {
         String resourceGroupName, String workspaceName, String integrationRuntimeName);
 
     /**
-     * Gets the list of outbound network dependencies for a given Azure-SSIS integration runtime.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param integrationRuntimeName Integration runtime name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of outbound network dependencies for a given Azure-SSIS integration runtime along with {@link
-     *     Response}.
-     */
-    Response<IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse>
-        listOutboundNetworkDependenciesEndpointsWithResponse(
-            String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
-
-    /**
      * Enable interactive query in integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -221,7 +247,7 @@ public interface IntegrationRuntimes {
 
     /**
      * Enable interactive query in integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -230,12 +256,12 @@ public interface IntegrationRuntimes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void enableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    void enableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
      * Disable interactive query in integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -247,7 +273,7 @@ public interface IntegrationRuntimes {
 
     /**
      * Disable interactive query in integration runtime.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param integrationRuntimeName Integration runtime name.
@@ -256,12 +282,14 @@ public interface IntegrationRuntimes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void disableInteractiveQuery(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context);
+    void disableInteractiveQuery(String resourceGroupName, String workspaceName, String integrationRuntimeName,
+        Context context);
 
     /**
+     * Get integration runtime
+     * 
      * Get an integration runtime.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -271,11 +299,13 @@ public interface IntegrationRuntimes {
     IntegrationRuntimeResource getById(String id);
 
     /**
+     * Get integration runtime
+     * 
      * Get an integration runtime.
-     *
+     * 
      * @param id the resource ID.
      * @param ifNoneMatch ETag of the integration runtime entity. Should only be specified for get. If the ETag matches
-     *     the existing entity tag, or if * was provided, then no content will be returned.
+     * the existing entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -285,8 +315,10 @@ public interface IntegrationRuntimes {
     Response<IntegrationRuntimeResource> getByIdWithResponse(String id, String ifNoneMatch, Context context);
 
     /**
+     * Delete integration runtime
+     * 
      * Delete an integration runtime.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -295,8 +327,10 @@ public interface IntegrationRuntimes {
     void deleteById(String id);
 
     /**
+     * Delete integration runtime
+     * 
      * Delete an integration runtime.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,7 +341,7 @@ public interface IntegrationRuntimes {
 
     /**
      * Begins definition for a new IntegrationRuntimeResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IntegrationRuntimeResource definition.
      */

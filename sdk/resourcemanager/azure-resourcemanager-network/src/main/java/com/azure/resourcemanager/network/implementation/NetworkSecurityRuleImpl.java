@@ -25,10 +25,8 @@ import java.util.stream.Collectors;
 /** Implementation for {@link NetworkSecurityRule} and its create and update interfaces. */
 class NetworkSecurityRuleImpl
     extends ChildResourceImpl<SecurityRuleInner, NetworkSecurityGroupImpl, NetworkSecurityGroup>
-    implements NetworkSecurityRule,
-        NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,
-        NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>,
-        NetworkSecurityRule.Update {
+    implements NetworkSecurityRule, NetworkSecurityRule.Definition<NetworkSecurityGroup.DefinitionStages.WithCreate>,
+    NetworkSecurityRule.UpdateDefinition<NetworkSecurityGroup.Update>, NetworkSecurityRule.Update {
     private Map<String, ApplicationSecurityGroupInner> sourceAsgs = new HashMap<>();
     private Map<String, ApplicationSecurityGroupInner> destinationAsgs = new HashMap<>();
     private final ClientLogger logger = new ClientLogger(getClass());
@@ -162,6 +160,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefix(cidr);
         this.innerModel().withSourceAddressPrefixes(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -170,6 +171,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefix("*");
         this.innerModel().withSourceAddressPrefixes(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -178,6 +182,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withSourceAddressPrefixes(Arrays.asList(addresses));
         this.innerModel().withSourceAddressPrefix(null);
         this.innerModel().withSourceApplicationSecurityGroups(null);
+        if (this.sourceAsgs != null) {
+            this.sourceAsgs.clear();
+        }
         return this;
     }
 
@@ -214,6 +221,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefix(cidr);
         this.innerModel().withDestinationAddressPrefixes(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 
@@ -222,6 +232,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefixes(Arrays.asList(addresses));
         this.innerModel().withDestinationAddressPrefix(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 
@@ -230,6 +243,9 @@ class NetworkSecurityRuleImpl
         this.innerModel().withDestinationAddressPrefix("*");
         this.innerModel().withDestinationAddressPrefixes(null);
         this.innerModel().withDestinationApplicationSecurityGroups(null);
+        if (this.destinationAsgs != null) {
+            this.destinationAsgs.clear();
+        }
         return this;
     }
 
@@ -264,10 +280,8 @@ class NetworkSecurityRuleImpl
     @Override
     public NetworkSecurityRuleImpl withPriority(int priority) {
         if (priority < 100 || priority > 4096) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "The priority number of a network security rule must be between 100 and 4096."));
+            throw logger.logExceptionAsError(new IllegalArgumentException(
+                "The priority number of a network security rule must be between 100 and 4096."));
         }
 
         this.innerModel().withPriority(priority);

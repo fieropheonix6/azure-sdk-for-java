@@ -4,43 +4,43 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Diagnostics GetSiteDetectorSlot. */
+/**
+ * Samples for Diagnostics GetSiteDetectorSlot.
+ */
 public final class DiagnosticsGetSiteDetectorSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteDetector.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDetector.json
      */
     /**
      * Sample code: Get App Detector.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppDetector(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+        azure.webApps()
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .getSiteDetectorSlotWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes", "Production", Context.NONE);
+            .getSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes",
+                "Production", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteDetectorSlot.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/Diagnostics_GetSiteDetectorSlot.json
      */
     /**
      * Sample code: Get App Slot Detector.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAppSlotDetector(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+        azure.webApps()
             .manager()
             .serviceClient()
             .getDiagnostics()
-            .getSiteDetectorSlotWithResponse(
-                "Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes", "staging", Context.NONE);
+            .getSiteDetectorSlotWithResponse("Sample-WestUSResourceGroup", "SampleApp", "availability", "sitecrashes",
+                "staging", com.azure.core.util.Context.NONE);
     }
 }

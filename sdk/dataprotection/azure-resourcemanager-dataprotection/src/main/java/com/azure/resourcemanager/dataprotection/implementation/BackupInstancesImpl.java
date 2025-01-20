@@ -16,39 +16,54 @@ import com.azure.resourcemanager.dataprotection.models.AzureBackupRehydrationReq
 import com.azure.resourcemanager.dataprotection.models.AzureBackupRestoreRequest;
 import com.azure.resourcemanager.dataprotection.models.BackupInstanceResource;
 import com.azure.resourcemanager.dataprotection.models.BackupInstances;
+import com.azure.resourcemanager.dataprotection.models.CrossRegionRestoreRequestObject;
 import com.azure.resourcemanager.dataprotection.models.OperationJobExtendedInfo;
+import com.azure.resourcemanager.dataprotection.models.StopProtectionRequest;
+import com.azure.resourcemanager.dataprotection.models.SuspendBackupRequest;
+import com.azure.resourcemanager.dataprotection.models.SyncBackupInstanceRequest;
 import com.azure.resourcemanager.dataprotection.models.TriggerBackupRequest;
+import com.azure.resourcemanager.dataprotection.models.ValidateCrossRegionRestoreRequestObject;
 import com.azure.resourcemanager.dataprotection.models.ValidateForBackupRequest;
 import com.azure.resourcemanager.dataprotection.models.ValidateRestoreRequestObject;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupInstancesImpl implements BackupInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupInstancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupInstancesImpl.class);
 
     private final BackupInstancesClient innerClient;
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public BackupInstancesImpl(
-        BackupInstancesClient innerClient,
+    public BackupInstancesImpl(BackupInstancesClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<BackupInstanceResource> list(String vaultName, String resourceGroupName) {
-        PagedIterable<BackupInstanceResourceInner> inner = this.serviceClient().list(vaultName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new BackupInstanceResourceImpl(inner1, this.manager()));
+    public PagedIterable<BackupInstanceResource> list(String resourceGroupName, String vaultName) {
+        PagedIterable<BackupInstanceResourceInner> inner = this.serviceClient().list(resourceGroupName, vaultName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BackupInstanceResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<BackupInstanceResource> list(String vaultName, String resourceGroupName, Context context) {
-        PagedIterable<BackupInstanceResourceInner> inner =
-            this.serviceClient().list(vaultName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new BackupInstanceResourceImpl(inner1, this.manager()));
+    public PagedIterable<BackupInstanceResource> list(String resourceGroupName, String vaultName, Context context) {
+        PagedIterable<BackupInstanceResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new BackupInstanceResourceImpl(inner1, this.manager()));
     }
 
-    public BackupInstanceResource get(String vaultName, String resourceGroupName, String backupInstanceName) {
-        BackupInstanceResourceInner inner = this.serviceClient().get(vaultName, resourceGroupName, backupInstanceName);
+    public Response<BackupInstanceResource> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context) {
+        Response<BackupInstanceResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, backupInstanceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new BackupInstanceResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public BackupInstanceResource get(String resourceGroupName, String vaultName, String backupInstanceName) {
+        BackupInstanceResourceInner inner = this.serviceClient().get(resourceGroupName, vaultName, backupInstanceName);
         if (inner != null) {
             return new BackupInstanceResourceImpl(inner, this.manager());
         } else {
@@ -56,33 +71,86 @@ public final class BackupInstancesImpl implements BackupInstances {
         }
     }
 
-    public Response<BackupInstanceResource> getWithResponse(
-        String vaultName, String resourceGroupName, String backupInstanceName, Context context) {
-        Response<BackupInstanceResourceInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, backupInstanceName, context);
+    public void delete(String resourceGroupName, String vaultName, String backupInstanceName) {
+        this.serviceClient().delete(resourceGroupName, vaultName, backupInstanceName);
+    }
+
+    public void delete(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+        this.serviceClient().delete(resourceGroupName, vaultName, backupInstanceName, context);
+    }
+
+    public OperationJobExtendedInfo adhocBackup(String resourceGroupName, String vaultName, String backupInstanceName,
+        TriggerBackupRequest parameters) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().adhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new OperationJobExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationJobExtendedInfo adhocBackup(String resourceGroupName, String vaultName, String backupInstanceName,
+        TriggerBackupRequest parameters, Context context) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().adhocBackup(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        if (inner != null) {
+            return new OperationJobExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationJobExtendedInfo validateForBackup(String resourceGroupName, String vaultName,
+        ValidateForBackupRequest parameters) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().validateForBackup(resourceGroupName, vaultName, parameters);
+        if (inner != null) {
+            return new OperationJobExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public OperationJobExtendedInfo validateForBackup(String resourceGroupName, String vaultName,
+        ValidateForBackupRequest parameters, Context context) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().validateForBackup(resourceGroupName, vaultName, parameters, context);
+        if (inner != null) {
+            return new OperationJobExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<BackupInstanceResource> getBackupInstanceOperationResultWithResponse(String resourceGroupName,
+        String vaultName, String backupInstanceName, String operationId, Context context) {
+        Response<BackupInstanceResourceInner> inner = this.serviceClient()
+            .getBackupInstanceOperationResultWithResponse(resourceGroupName, vaultName, backupInstanceName, operationId,
+                context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BackupInstanceResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public void delete(String vaultName, String resourceGroupName, String backupInstanceName) {
-        this.serviceClient().delete(vaultName, resourceGroupName, backupInstanceName);
+    public BackupInstanceResource getBackupInstanceOperationResult(String resourceGroupName, String vaultName,
+        String backupInstanceName, String operationId) {
+        BackupInstanceResourceInner inner = this.serviceClient()
+            .getBackupInstanceOperationResult(resourceGroupName, vaultName, backupInstanceName, operationId);
+        if (inner != null) {
+            return new BackupInstanceResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
-    public void delete(String vaultName, String resourceGroupName, String backupInstanceName, Context context) {
-        this.serviceClient().delete(vaultName, resourceGroupName, backupInstanceName, context);
-    }
-
-    public OperationJobExtendedInfo adhocBackup(
-        String vaultName, String resourceGroupName, String backupInstanceName, TriggerBackupRequest parameters) {
-        OperationJobExtendedInfoInner inner =
-            this.serviceClient().adhocBackup(vaultName, resourceGroupName, backupInstanceName, parameters);
+    public OperationJobExtendedInfo triggerCrossRegionRestore(String resourceGroupName, String location,
+        CrossRegionRestoreRequestObject parameters) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().triggerCrossRegionRestore(resourceGroupName, location, parameters);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
         } else {
@@ -90,14 +158,10 @@ public final class BackupInstancesImpl implements BackupInstances {
         }
     }
 
-    public OperationJobExtendedInfo adhocBackup(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        TriggerBackupRequest parameters,
-        Context context) {
-        OperationJobExtendedInfoInner inner =
-            this.serviceClient().adhocBackup(vaultName, resourceGroupName, backupInstanceName, parameters, context);
+    public OperationJobExtendedInfo triggerCrossRegionRestore(String resourceGroupName, String location,
+        CrossRegionRestoreRequestObject parameters, Context context) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().triggerCrossRegionRestore(resourceGroupName, location, parameters, context);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
         } else {
@@ -105,10 +169,10 @@ public final class BackupInstancesImpl implements BackupInstances {
         }
     }
 
-    public OperationJobExtendedInfo validateForBackup(
-        String vaultName, String resourceGroupName, ValidateForBackupRequest parameters) {
-        OperationJobExtendedInfoInner inner =
-            this.serviceClient().validateForBackup(vaultName, resourceGroupName, parameters);
+    public OperationJobExtendedInfo validateCrossRegionRestore(String resourceGroupName, String location,
+        ValidateCrossRegionRestoreRequestObject parameters) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().validateCrossRegionRestore(resourceGroupName, location, parameters);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
         } else {
@@ -116,10 +180,10 @@ public final class BackupInstancesImpl implements BackupInstances {
         }
     }
 
-    public OperationJobExtendedInfo validateForBackup(
-        String vaultName, String resourceGroupName, ValidateForBackupRequest parameters, Context context) {
-        OperationJobExtendedInfoInner inner =
-            this.serviceClient().validateForBackup(vaultName, resourceGroupName, parameters, context);
+    public OperationJobExtendedInfo validateCrossRegionRestore(String resourceGroupName, String location,
+        ValidateCrossRegionRestoreRequestObject parameters, Context context) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().validateCrossRegionRestore(resourceGroupName, location, parameters, context);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
         } else {
@@ -127,27 +191,20 @@ public final class BackupInstancesImpl implements BackupInstances {
         }
     }
 
-    public void triggerRehydrate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
+    public void triggerRehydrate(String resourceGroupName, String vaultName, String backupInstanceName,
         AzureBackupRehydrationRequest parameters) {
         this.serviceClient().triggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters);
     }
 
-    public void triggerRehydrate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters,
-        Context context) {
+    public void triggerRehydrate(String resourceGroupName, String vaultName, String backupInstanceName,
+        AzureBackupRehydrationRequest parameters, Context context) {
         this.serviceClient().triggerRehydrate(resourceGroupName, vaultName, backupInstanceName, parameters, context);
     }
 
-    public OperationJobExtendedInfo triggerRestore(
-        String vaultName, String resourceGroupName, String backupInstanceName, AzureBackupRestoreRequest parameters) {
-        OperationJobExtendedInfoInner inner =
-            this.serviceClient().triggerRestore(vaultName, resourceGroupName, backupInstanceName, parameters);
+    public OperationJobExtendedInfo triggerRestore(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().triggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
         } else {
@@ -155,14 +212,66 @@ public final class BackupInstancesImpl implements BackupInstances {
         }
     }
 
-    public OperationJobExtendedInfo triggerRestore(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        AzureBackupRestoreRequest parameters,
+    public OperationJobExtendedInfo triggerRestore(String resourceGroupName, String vaultName,
+        String backupInstanceName, AzureBackupRestoreRequest parameters, Context context) {
+        OperationJobExtendedInfoInner inner = this.serviceClient()
+            .triggerRestore(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+        if (inner != null) {
+            return new OperationJobExtendedInfoImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public void resumeBackups(String resourceGroupName, String vaultName, String backupInstanceName) {
+        this.serviceClient().resumeBackups(resourceGroupName, vaultName, backupInstanceName);
+    }
+
+    public void resumeBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context) {
+        this.serviceClient().resumeBackups(resourceGroupName, vaultName, backupInstanceName, context);
+    }
+
+    public void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName) {
+        this.serviceClient().resumeProtection(resourceGroupName, vaultName, backupInstanceName);
+    }
+
+    public void resumeProtection(String resourceGroupName, String vaultName, String backupInstanceName,
         Context context) {
-        OperationJobExtendedInfoInner inner =
-            this.serviceClient().triggerRestore(vaultName, resourceGroupName, backupInstanceName, parameters, context);
+        this.serviceClient().resumeProtection(resourceGroupName, vaultName, backupInstanceName, context);
+    }
+
+    public void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName) {
+        this.serviceClient().stopProtection(resourceGroupName, vaultName, backupInstanceName);
+    }
+
+    public void stopProtection(String resourceGroupName, String vaultName, String backupInstanceName,
+        StopProtectionRequest parameters, Context context) {
+        this.serviceClient().stopProtection(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+    }
+
+    public void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName) {
+        this.serviceClient().suspendBackups(resourceGroupName, vaultName, backupInstanceName);
+    }
+
+    public void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName,
+        SuspendBackupRequest parameters, Context context) {
+        this.serviceClient().suspendBackups(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+    }
+
+    public void syncBackupInstance(String resourceGroupName, String vaultName, String backupInstanceName,
+        SyncBackupInstanceRequest parameters) {
+        this.serviceClient().syncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters);
+    }
+
+    public void syncBackupInstance(String resourceGroupName, String vaultName, String backupInstanceName,
+        SyncBackupInstanceRequest parameters, Context context) {
+        this.serviceClient().syncBackupInstance(resourceGroupName, vaultName, backupInstanceName, parameters, context);
+    }
+
+    public OperationJobExtendedInfo validateForRestore(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateRestoreRequestObject parameters) {
+        OperationJobExtendedInfoInner inner
+            = this.serviceClient().validateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
         } else {
@@ -170,30 +279,10 @@ public final class BackupInstancesImpl implements BackupInstances {
         }
     }
 
-    public OperationJobExtendedInfo validateForRestore(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters) {
-        OperationJobExtendedInfoInner inner =
-            this.serviceClient().validateForRestore(vaultName, resourceGroupName, backupInstanceName, parameters);
-        if (inner != null) {
-            return new OperationJobExtendedInfoImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public OperationJobExtendedInfo validateForRestore(
-        String vaultName,
-        String resourceGroupName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters,
-        Context context) {
-        OperationJobExtendedInfoInner inner =
-            this
-                .serviceClient()
-                .validateForRestore(vaultName, resourceGroupName, backupInstanceName, parameters, context);
+    public OperationJobExtendedInfo validateForRestore(String resourceGroupName, String vaultName,
+        String backupInstanceName, ValidateRestoreRequestObject parameters, Context context) {
+        OperationJobExtendedInfoInner inner = this.serviceClient()
+            .validateForRestore(resourceGroupName, vaultName, backupInstanceName, parameters, context);
         if (inner != null) {
             return new OperationJobExtendedInfoImpl(inner, this.manager());
         } else {
@@ -202,111 +291,79 @@ public final class BackupInstancesImpl implements BackupInstances {
     }
 
     public BackupInstanceResource getById(String id) {
-        String vaultName = Utils.getValueFromIdByName(id, "backupVaults");
-        if (vaultName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String backupInstanceName = Utils.getValueFromIdByName(id, "backupInstances");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
+        if (vaultName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
+        }
+        String backupInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "backupInstances");
         if (backupInstanceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'backupInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupInstances'.", id)));
         }
-        return this.getWithResponse(vaultName, resourceGroupName, backupInstanceName, Context.NONE).getValue();
+        return this.getWithResponse(resourceGroupName, vaultName, backupInstanceName, Context.NONE).getValue();
     }
 
     public Response<BackupInstanceResource> getByIdWithResponse(String id, Context context) {
-        String vaultName = Utils.getValueFromIdByName(id, "backupVaults");
-        if (vaultName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String backupInstanceName = Utils.getValueFromIdByName(id, "backupInstances");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
+        if (vaultName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
+        }
+        String backupInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "backupInstances");
         if (backupInstanceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'backupInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupInstances'.", id)));
         }
-        return this.getWithResponse(vaultName, resourceGroupName, backupInstanceName, context);
+        return this.getWithResponse(resourceGroupName, vaultName, backupInstanceName, context);
     }
 
     public void deleteById(String id) {
-        String vaultName = Utils.getValueFromIdByName(id, "backupVaults");
-        if (vaultName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String backupInstanceName = Utils.getValueFromIdByName(id, "backupInstances");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
+        if (vaultName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
+        }
+        String backupInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "backupInstances");
         if (backupInstanceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'backupInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupInstances'.", id)));
         }
-        this.delete(vaultName, resourceGroupName, backupInstanceName, Context.NONE);
+        this.delete(resourceGroupName, vaultName, backupInstanceName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String vaultName = Utils.getValueFromIdByName(id, "backupVaults");
-        if (vaultName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
-        }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String backupInstanceName = Utils.getValueFromIdByName(id, "backupInstances");
+        String vaultName = ResourceManagerUtils.getValueFromIdByName(id, "backupVaults");
+        if (vaultName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupVaults'.", id)));
+        }
+        String backupInstanceName = ResourceManagerUtils.getValueFromIdByName(id, "backupInstances");
         if (backupInstanceName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'backupInstances'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'backupInstances'.", id)));
         }
-        this.delete(vaultName, resourceGroupName, backupInstanceName, context);
+        this.delete(resourceGroupName, vaultName, backupInstanceName, context);
     }
 
     private BackupInstancesClient serviceClient() {

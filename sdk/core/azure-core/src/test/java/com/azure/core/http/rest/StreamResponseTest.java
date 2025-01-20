@@ -24,19 +24,17 @@ import java.nio.channels.Channels;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Random;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static com.azure.core.CoreTestUtils.assertArraysEqual;
+import static com.azure.core.CoreTestUtils.fillArray;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StreamResponseTest {
-
-    private static final Random RANDOM = new Random();
     private static final int RESPONSE_CODE = 206;
 
     private final AtomicInteger closeCalls = new AtomicInteger();
@@ -48,7 +46,7 @@ public class StreamResponseTest {
     @BeforeEach
     public void setup() {
         responseValue = new byte[128];
-        RANDOM.nextBytes(responseValue);
+        fillArray(responseValue);
         response = new MockHttpResponse(request, RESPONSE_CODE, headers, responseValue) {
             @Override
             public void close() {
@@ -80,7 +78,8 @@ public class StreamResponseTest {
     @Test
     public void closeDisposesFlux() {
         AtomicBoolean wasRead = new AtomicBoolean(false);
-        Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> wasRead.set(true));
+        Flux<ByteBuffer> value
+            = Flux.using(() -> wasRead, ignored -> Flux.just(ByteBuffer.wrap(responseValue)), read -> read.set(true));
         StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.close();
@@ -92,7 +91,8 @@ public class StreamResponseTest {
     @Test
     public void closeDisposesOnce() {
         AtomicInteger numberOfReads = new AtomicInteger();
-        Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> numberOfReads.incrementAndGet());
+        Flux<ByteBuffer> value = Flux.using(() -> numberOfReads, ignored -> Flux.just(ByteBuffer.wrap(responseValue)),
+            AtomicInteger::incrementAndGet);
         StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.close();
@@ -105,7 +105,8 @@ public class StreamResponseTest {
     @Test
     public void valueConsumptionDisposes() {
         AtomicInteger numberOfReads = new AtomicInteger();
-        Flux<ByteBuffer> value = Flux.just(ByteBuffer.wrap(responseValue)).doFinally(ignore -> numberOfReads.incrementAndGet());
+        Flux<ByteBuffer> value = Flux.using(() -> numberOfReads, ignored -> Flux.just(ByteBuffer.wrap(responseValue)),
+            AtomicInteger::incrementAndGet);
         StreamResponse streamResponse = new StreamResponse(request, RESPONSE_CODE, headers, value);
 
         streamResponse.getValue().then().block(); // This marks StreamResponse as consumed and increments numberOfReads
@@ -150,19 +151,18 @@ public class StreamResponseTest {
                 Path tempFile = Files.createTempFile("streamresponsetest", null);
                 tempFile.toFile().deleteOnExit();
 
-                StepVerifier.create(Mono.using(() ->
-                        IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
-                        streamResponse::writeValueToAsync,
-                        channel -> {
-                            try {
-                                channel.close();
-                            } catch (IOException e) {
-                                throw Exceptions.propagate(e);
-                            }
-                        })
-                ).verifyComplete();
+                StepVerifier.create(Mono.using(
+                    () -> IOUtils
+                        .toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
+                    streamResponse::writeValueToAsync, channel -> {
+                        try {
+                            channel.close();
+                        } catch (IOException e) {
+                            throw Exceptions.propagate(e);
+                        }
+                    })).verifyComplete();
 
-                assertArrayEquals(responseValue, Files.readAllBytes(tempFile));
+                assertArraysEqual(responseValue, Files.readAllBytes(tempFile));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -176,14 +176,13 @@ public class StreamResponseTest {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             streamResponse.writeValueTo(Channels.newChannel(bos));
 
-            assertArrayEquals(responseValue, bos.toByteArray());
+            assertArraysEqual(responseValue, bos.toByteArray());
         });
     }
 
     @SuppressWarnings("deprecation")
     public Stream<StreamResponse> createStreamResponses() {
-        return Stream.of(
-            new StreamResponse(request, RESPONSE_CODE, headers, Flux.just(ByteBuffer.wrap(responseValue))),
+        return Stream.of(new StreamResponse(request, RESPONSE_CODE, headers, Flux.just(ByteBuffer.wrap(responseValue))),
             new StreamResponse(response));
     }
 }

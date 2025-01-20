@@ -5,71 +5,69 @@
 package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
 
-/** The FilesGetRangeListHeaders model. */
-@JacksonXmlRootElement(localName = "null")
+/**
+ * The FilesGetRangeListHeaders model.
+ */
 @Fluent
 public final class FilesGetRangeListHeaders {
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The ETag property.
      */
-    @JsonProperty(value = "ETag")
     private String eTag;
 
     /*
      * The x-ms-content-length property.
      */
-    @JsonProperty(value = "x-ms-content-length")
     private Long xMsContentLength;
 
     /*
      * The Last-Modified property.
      */
-    @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The Date property.
      */
-    @JsonProperty(value = "Date")
     private DateTimeRfc1123 date;
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_CONTENT_LENGTH = HttpHeaderName.fromString("x-ms-content-length");
 
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of FilesGetRangeListHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public FilesGetRangeListHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.eTag = rawHeaders.getValue("ETag");
-        String xMsContentLength = rawHeaders.getValue("x-ms-content-length");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.eTag = rawHeaders.getValue(HttpHeaderName.ETAG);
+        String xMsContentLength = rawHeaders.getValue(X_MS_CONTENT_LENGTH);
         if (xMsContentLength != null) {
             this.xMsContentLength = Long.parseLong(xMsContentLength);
         }
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        String lastModified = rawHeaders.getValue(HttpHeaderName.LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
+        String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
@@ -77,7 +75,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @return the xMsVersion value.
      */
     public String getXMsVersion() {
@@ -86,7 +84,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Set the xMsVersion property: The x-ms-version property.
-     *
+     * 
      * @param xMsVersion the xMsVersion value to set.
      * @return the FilesGetRangeListHeaders object itself.
      */
@@ -97,7 +95,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Get the eTag property: The ETag property.
-     *
+     * 
      * @return the eTag value.
      */
     public String getETag() {
@@ -106,7 +104,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Set the eTag property: The ETag property.
-     *
+     * 
      * @param eTag the eTag value to set.
      * @return the FilesGetRangeListHeaders object itself.
      */
@@ -117,7 +115,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Get the xMsContentLength property: The x-ms-content-length property.
-     *
+     * 
      * @return the xMsContentLength value.
      */
     public Long getXMsContentLength() {
@@ -126,7 +124,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Set the xMsContentLength property: The x-ms-content-length property.
-     *
+     * 
      * @param xMsContentLength the xMsContentLength value to set.
      * @return the FilesGetRangeListHeaders object itself.
      */
@@ -137,7 +135,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Get the lastModified property: The Last-Modified property.
-     *
+     * 
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
@@ -149,7 +147,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Set the lastModified property: The Last-Modified property.
-     *
+     * 
      * @param lastModified the lastModified value to set.
      * @return the FilesGetRangeListHeaders object itself.
      */
@@ -164,7 +162,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Get the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @return the xMsRequestId value.
      */
     public String getXMsRequestId() {
@@ -173,7 +171,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Set the xMsRequestId property: The x-ms-request-id property.
-     *
+     * 
      * @param xMsRequestId the xMsRequestId value to set.
      * @return the FilesGetRangeListHeaders object itself.
      */
@@ -184,7 +182,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Get the date property: The Date property.
-     *
+     * 
      * @return the date value.
      */
     public OffsetDateTime getDate() {
@@ -196,7 +194,7 @@ public final class FilesGetRangeListHeaders {
 
     /**
      * Set the date property: The Date property.
-     *
+     * 
      * @param date the date value to set.
      * @return the FilesGetRangeListHeaders object itself.
      */

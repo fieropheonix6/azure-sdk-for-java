@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for MongoDBResources ListMongoUserDefinitions. */
+/**
+ * Samples for MongoDBResources ListMongoUserDefinitions.
+ */
 public final class MongoDBResourcesListMongoUserDefinitionsSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBMongoDBUserDefinitionList.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBMongoDBUserDefinitionList.json
      */
     /**
      * Sample code: CosmosDBMongoDBUserDefinitionList.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBMongoDBUserDefinitionList(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getMongoDBResources()
-            .listMongoUserDefinitions("myResourceGroupName", "myAccountName", Context.NONE);
+            .listMongoUserDefinitions("myResourceGroupName", "myAccountName", com.azure.core.util.Context.NONE);
     }
 }

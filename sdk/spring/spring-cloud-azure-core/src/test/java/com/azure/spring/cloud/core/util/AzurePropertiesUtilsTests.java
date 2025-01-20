@@ -31,6 +31,7 @@ import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMod
 import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMode.FIXED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class AzurePropertiesUtilsTests {
@@ -166,7 +167,8 @@ class AzurePropertiesUtilsTests {
         assertNull(target.proxy.getPort());
         assertNull(target.proxy.getUsername());
         assertNull(target.proxy.getPassword());
-        assertEquals(EXPONENTIAL, target.retry.getMode());
+        assertNull(target.proxy.getPassword());
+        assertNull(target.retry.getMode());
         assertEquals(13, target.retry.getExponential().getMaxRetries());
         assertNull(target.retry.getExponential().getBaseDelay());
         assertEquals(Duration.ofSeconds(14), target.retry.getExponential().getMaxDelay());
@@ -238,6 +240,7 @@ class AzurePropertiesUtilsTests {
         source.profile.setTenantId("profile-tenant-id-A");
         source.profile.getEnvironment().setActiveDirectoryEndpoint("aad-endpoint-A");
         source.proxy.setHostname("proxy-hostname-A");
+        source.retry.setMode(EXPONENTIAL);
         source.retry.getExponential().setMaxRetries(13);
         source.retry.getFixed().setMaxRetries(17);
         source.credential.setClientId("credential-client-id-A");
@@ -328,6 +331,7 @@ class AzurePropertiesUtilsTests {
         propertiesToOverride.profile.setTenantId("profile-tenant-id-A");
         propertiesToOverride.profile.getEnvironment().setActiveDirectoryEndpoint("aad-endpoint-A");
         propertiesToOverride.proxy.setHostname("proxy-hostname-A");
+        propertiesToOverride.retry.setMode(EXPONENTIAL);
         propertiesToOverride.retry.getExponential().setMaxRetries(13);
         propertiesToOverride.retry.getFixed().setMaxRetries(17);
         propertiesToOverride.credential.setClientId("credential-client-id-A");
@@ -401,6 +405,8 @@ class AzurePropertiesUtilsTests {
     void testCopyPropertiesSourceNotChanged() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.credential.setClientId("client-id-A");
+        source.credential.setManagedIdentityEnabled(true);
+        source.credential.setTokenCredentialBeanName("my-token-credential");
         source.getProfile().setCloudType(AZURE);
 
         AzurePropertiesB target = new AzurePropertiesB();
@@ -408,6 +414,8 @@ class AzurePropertiesUtilsTests {
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         assertEquals("client-id-A", target.credential.getClientId());
+        assertEquals("my-token-credential", target.credential.getTokenCredentialBeanName());
+        assertTrue(target.credential.isManagedIdentityEnabled());
 
         // Update target will not affect source
         target.retry.getExponential().setBaseDelay(Duration.ofSeconds(2));

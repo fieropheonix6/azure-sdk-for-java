@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.frontdoor.fluent.FrontendEndpointsClient;
@@ -39,24 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FrontendEndpointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FrontendEndpointsClient.
+ */
 public final class FrontendEndpointsClientImpl implements FrontendEndpointsClient {
-    private final ClientLogger logger = new ClientLogger(FrontendEndpointsClientImpl.class);
-
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FrontendEndpointsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final FrontDoorManagementClientImpl client;
 
     /**
      * Initializes an instance of FrontendEndpointsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FrontendEndpointsClientImpl(FrontDoorManagementClientImpl client) {
-        this.service =
-            RestProxy.create(FrontendEndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(FrontendEndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -66,106 +69,78 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      */
     @Host("{$host}")
     @ServiceInterface(name = "FrontDoorManagementC")
-    private interface FrontendEndpointsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/frontendEndpoints")
-        @ExpectedResponses({200})
+    public interface FrontendEndpointsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FrontendEndpointsListResult>> listByFrontDoor(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FrontendEndpointsListResult>> listByFrontDoor(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("frontDoorName") String frontDoorName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("frontDoorName") String frontDoorName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/frontendEndpoints/{frontendEndpointName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FrontendEndpointInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<FrontendEndpointInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("frontDoorName") String frontDoorName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("frontDoorName") String frontDoorName,
             @PathParam("frontendEndpointName") String frontendEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/enableHttps")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> enableHttps(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> enableHttps(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("frontDoorName") String frontDoorName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("frontDoorName") String frontDoorName,
             @PathParam("frontendEndpointName") String frontendEndpointName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") CustomHttpsConfiguration customHttpsConfiguration,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors"
-                + "/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/frontDoors/{frontDoorName}/frontendEndpoints/{frontendEndpointName}/disableHttps")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> disableHttps(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> disableHttps(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("frontDoorName") String frontDoorName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("frontDoorName") String frontDoorName,
             @PathParam("frontendEndpointName") String frontendEndpointName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FrontendEndpointsListResult>> listByFrontDoorNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FrontendEndpointInner>> listByFrontDoorSinglePageAsync(
-        String resourceGroupName, String frontDoorName) {
+    private Mono<PagedResponse<FrontendEndpointInner>> listByFrontDoorSinglePageAsync(String resourceGroupName,
+        String frontDoorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -174,57 +149,38 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByFrontDoor(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            frontDoorName,
-                            apiVersion,
-                            accept,
-                            context))
-            .<PagedResponse<FrontendEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByFrontDoor(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, frontDoorName, apiVersion, accept, context))
+            .<PagedResponse<FrontendEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FrontendEndpointInner>> listByFrontDoorSinglePageAsync(
-        String resourceGroupName, String frontDoorName, Context context) {
+    private Mono<PagedResponse<FrontendEndpointInner>> listByFrontDoorSinglePageAsync(String resourceGroupName,
+        String frontDoorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -233,74 +189,59 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
         if (frontDoorName == null) {
             return Mono.error(new IllegalArgumentException("Parameter frontDoorName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByFrontDoor(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                frontDoorName,
-                apiVersion,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByFrontDoor(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                frontDoorName, apiVersion, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FrontendEndpointInner> listByFrontDoorAsync(String resourceGroupName, String frontDoorName) {
-        return new PagedFlux<>(
-            () -> listByFrontDoorSinglePageAsync(resourceGroupName, frontDoorName),
+        return new PagedFlux<>(() -> listByFrontDoorSinglePageAsync(resourceGroupName, frontDoorName),
             nextLink -> listByFrontDoorNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<FrontendEndpointInner> listByFrontDoorAsync(
-        String resourceGroupName, String frontDoorName, Context context) {
-        return new PagedFlux<>(
-            () -> listByFrontDoorSinglePageAsync(resourceGroupName, frontDoorName, context),
+    private PagedFlux<FrontendEndpointInner> listByFrontDoorAsync(String resourceGroupName, String frontDoorName,
+        Context context) {
+        return new PagedFlux<>(() -> listByFrontDoorSinglePageAsync(resourceGroupName, frontDoorName, context),
             nextLink -> listByFrontDoorNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FrontendEndpointInner> listByFrontDoor(String resourceGroupName, String frontDoorName) {
@@ -309,46 +250,43 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
 
     /**
      * Lists all of the frontend endpoints within a Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<FrontendEndpointInner> listByFrontDoor(
-        String resourceGroupName, String frontDoorName, Context context) {
+    public PagedIterable<FrontendEndpointInner> listByFrontDoor(String resourceGroupName, String frontDoorName,
+        Context context) {
         return new PagedIterable<>(listByFrontDoorAsync(resourceGroupName, frontDoorName, context));
     }
 
     /**
      * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend endpoint with the specified name within the specified Front Door.
+     * @return a Frontend endpoint with the specified name within the specified Front Door along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FrontendEndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName) {
+    private Mono<Response<FrontendEndpointInner>> getWithResponseAsync(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -361,27 +299,17 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            frontDoorName,
-                            frontendEndpointName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, frontDoorName, frontendEndpointName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -389,22 +317,19 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend endpoint with the specified name within the specified Front Door.
+     * @return a Frontend endpoint with the specified name within the specified Front Door along with {@link Response}
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FrontendEndpointInner>> getWithResponseAsync(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
+    private Mono<Response<FrontendEndpointInner>> getWithResponseAsync(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -417,49 +342,53 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                frontDoorName,
-                frontendEndpointName,
-                apiVersion,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, frontDoorName,
+            frontendEndpointName, apiVersion, accept, context);
     }
 
     /**
      * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend endpoint with the specified name within the specified Front Door.
+     * @return a Frontend endpoint with the specified name within the specified Front Door on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FrontendEndpointInner> getAsync(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName) {
+    private Mono<FrontendEndpointInner> getAsync(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName) {
         return getWithResponseAsync(resourceGroupName, frontDoorName, frontendEndpointName)
-            .flatMap(
-                (Response<FrontendEndpointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param frontDoorName Name of the Front Door which is globally unique.
+     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Frontend endpoint with the specified name within the specified Front Door along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<FrontendEndpointInner> getWithResponse(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, Context context) {
+        return getWithResponseAsync(resourceGroupName, frontDoorName, frontendEndpointName, context).block();
+    }
+
+    /**
+     * Gets a Frontend endpoint with the specified name within the specified Front Door.
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -470,30 +399,12 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FrontendEndpointInner get(String resourceGroupName, String frontDoorName, String frontendEndpointName) {
-        return getAsync(resourceGroupName, frontDoorName, frontendEndpointName).block();
-    }
-
-    /**
-     * Gets a Frontend endpoint with the specified name within the specified Front Door.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Frontend endpoint with the specified name within the specified Front Door.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FrontendEndpointInner> getWithResponse(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
-        return getWithResponseAsync(resourceGroupName, frontDoorName, frontendEndpointName, context).block();
+        return getWithResponse(resourceGroupName, frontDoorName, frontendEndpointName, Context.NONE).getValue();
     }
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -501,25 +412,18 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableHttpsWithResponseAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration) {
+    private Mono<Response<Flux<ByteBuffer>>> enableHttpsWithResponseAsync(String resourceGroupName,
+        String frontDoorName, String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -533,34 +437,23 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
         if (customHttpsConfiguration == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customHttpsConfiguration is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customHttpsConfiguration is required and cannot be null."));
         } else {
             customHttpsConfiguration.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .enableHttps(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            frontDoorName,
-                            frontendEndpointName,
-                            apiVersion,
-                            customHttpsConfiguration,
-                            accept,
-                            context))
+            .withContext(context -> service.enableHttps(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, frontDoorName, frontendEndpointName, apiVersion, customHttpsConfiguration, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -569,26 +462,19 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> enableHttpsWithResponseAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
+    private Mono<Response<Flux<ByteBuffer>>> enableHttpsWithResponseAsync(String resourceGroupName,
+        String frontDoorName, String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -602,31 +488,21 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
         if (customHttpsConfiguration == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException("Parameter customHttpsConfiguration is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter customHttpsConfiguration is required and cannot be null."));
         } else {
             customHttpsConfiguration.validate();
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .enableHttps(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                frontDoorName,
-                frontendEndpointName,
-                apiVersion,
-                customHttpsConfiguration,
-                accept,
-                context);
+        return service.enableHttps(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            frontDoorName, frontendEndpointName, apiVersion, customHttpsConfiguration, accept, context);
     }
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -634,25 +510,20 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginEnableHttpsAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            enableHttpsWithResponseAsync(
-                resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginEnableHttpsAsync(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration) {
+        Mono<Response<Flux<ByteBuffer>>> mono = enableHttpsWithResponseAsync(resourceGroupName, frontDoorName,
+            frontendEndpointName, customHttpsConfiguration);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -661,49 +532,41 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginEnableHttpsAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
-        Context context) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginEnableHttpsAsync(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            enableHttpsWithResponseAsync(
-                resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = enableHttpsWithResponseAsync(resourceGroupName, frontDoorName,
+            frontendEndpointName, customHttpsConfiguration, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Enables a frontendEndpoint for HTTPS traffic.
+     * 
+     * @param resourceGroupName Name of the Resource group within the Azure subscription.
+     * @param frontDoorName Name of the Front Door which is globally unique.
+     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
+     * @param customHttpsConfiguration The configuration specifying how to enable HTTPS.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginEnableHttps(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration) {
         return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
-    }
-
-    /**
-     * Enables a frontendEndpoint for HTTPS traffic.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param frontDoorName Name of the Front Door which is globally unique.
-     * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
-     * @param customHttpsConfiguration The configuration specifying how to enable HTTPS.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginEnableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration) {
-        return beginEnableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration)
+            .beginEnableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration)
             .getSyncPoller();
     }
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -712,23 +575,20 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginEnableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
-        Context context) {
-        return beginEnableHttpsAsync(
-                resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration, context)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginEnableHttps(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, CustomHttpsConfiguration customHttpsConfiguration, Context context) {
+        return this
+            .beginEnableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration,
+                context)
             .getSyncPoller();
     }
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -736,13 +596,10 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableHttpsAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
+    private Mono<Void> enableHttpsAsync(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         CustomHttpsConfiguration customHttpsConfiguration) {
         return beginEnableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration)
             .last()
@@ -751,7 +608,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -760,24 +617,18 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> enableHttpsAsync(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
-        Context context) {
-        return beginEnableHttpsAsync(
-                resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> enableHttpsAsync(String resourceGroupName, String frontDoorName, String frontendEndpointName,
+        CustomHttpsConfiguration customHttpsConfiguration, Context context) {
+        return beginEnableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -787,17 +638,14 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
+    public void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
         CustomHttpsConfiguration customHttpsConfiguration) {
         enableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration).block();
     }
 
     /**
      * Enables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -808,41 +656,33 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void enableHttps(
-        String resourceGroupName,
-        String frontDoorName,
-        String frontendEndpointName,
-        CustomHttpsConfiguration customHttpsConfiguration,
-        Context context) {
+    public void enableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
+        CustomHttpsConfiguration customHttpsConfiguration, Context context) {
         enableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, customHttpsConfiguration, context)
             .block();
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableHttpsWithResponseAsync(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName) {
+    private Mono<Response<Flux<ByteBuffer>>> disableHttpsWithResponseAsync(String resourceGroupName,
+        String frontDoorName, String frontendEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -855,27 +695,17 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .disableHttps(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            frontDoorName,
-                            frontendEndpointName,
-                            apiVersion,
-                            accept,
-                            context))
+            .withContext(context -> service.disableHttps(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, frontDoorName, frontendEndpointName, apiVersion, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -883,22 +713,18 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> disableHttpsWithResponseAsync(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> disableHttpsWithResponseAsync(String resourceGroupName,
+        String frontDoorName, String frontendEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -911,45 +737,36 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono
                 .error(new IllegalArgumentException("Parameter frontendEndpointName is required and cannot be null."));
         }
-        final String apiVersion = "2020-05-01";
+        final String apiVersion = "2021-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .disableHttps(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                frontDoorName,
-                frontendEndpointName,
-                apiVersion,
-                accept,
-                context);
+        return service.disableHttps(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            frontDoorName, frontendEndpointName, apiVersion, accept, context);
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDisableHttpsAsync(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableHttpsWithResponseAsync(resourceGroupName, frontDoorName, frontendEndpointName);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDisableHttpsAsync(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = disableHttpsWithResponseAsync(resourceGroupName, frontDoorName, frontendEndpointName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -957,39 +774,38 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDisableHttpsAsync(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDisableHttpsAsync(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            disableHttpsWithResponseAsync(resourceGroupName, frontDoorName, frontendEndpointName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = disableHttpsWithResponseAsync(resourceGroupName, frontDoorName, frontendEndpointName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDisableHttps(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName) {
-        return beginDisableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDisableHttps(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName) {
+        return this.beginDisableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName).getSyncPoller();
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -997,35 +813,35 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDisableHttps(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
-        return beginDisableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, context).getSyncPoller();
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDisableHttps(String resourceGroupName, String frontDoorName,
+        String frontendEndpointName, Context context) {
+        return this.beginDisableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, context)
+            .getSyncPoller();
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> disableHttpsAsync(String resourceGroupName, String frontDoorName, String frontendEndpointName) {
-        return beginDisableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName)
-            .last()
+        return beginDisableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -1033,19 +849,18 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> disableHttpsAsync(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
-        return beginDisableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, context)
-            .last()
+    private Mono<Void> disableHttpsAsync(String resourceGroupName, String frontDoorName, String frontendEndpointName,
+        Context context) {
+        return beginDisableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -1060,7 +875,7 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
 
     /**
      * Disables a frontendEndpoint for HTTPS traffic.
-     *
+     * 
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
      * @param frontDoorName Name of the Front Door which is globally unique.
      * @param frontendEndpointName Name of the Frontend endpoint which is unique within the Front Door.
@@ -1070,19 +885,20 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void disableHttps(
-        String resourceGroupName, String frontDoorName, String frontendEndpointName, Context context) {
+    public void disableHttps(String resourceGroupName, String frontDoorName, String frontendEndpointName,
+        Context context) {
         disableHttpsAsync(resourceGroupName, frontDoorName, frontendEndpointName, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FrontendEndpointInner>> listByFrontDoorNextSinglePageAsync(String nextLink) {
@@ -1090,60 +906,42 @@ public final class FrontendEndpointsClientImpl implements FrontendEndpointsClien
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByFrontDoorNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FrontendEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<FrontendEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list frontend endpoints.
+     * @return result of the request to list frontend endpoints along with {@link PagedResponse} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FrontendEndpointInner>> listByFrontDoorNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<FrontendEndpointInner>> listByFrontDoorNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByFrontDoorNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByFrontDoorNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

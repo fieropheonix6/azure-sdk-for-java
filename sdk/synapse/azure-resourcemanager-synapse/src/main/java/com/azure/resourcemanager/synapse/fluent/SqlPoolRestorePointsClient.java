@@ -14,11 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.synapse.fluent.models.RestorePointInner;
 import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinition;
 
-/** An instance of this class provides access to all the operations defined in SqlPoolRestorePointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SqlPoolRestorePointsClient.
+ */
 public interface SqlPoolRestorePointsClient {
     /**
+     * Get SQL pool backup
+     * 
      * Get SQL pool backup information.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -31,8 +35,10 @@ public interface SqlPoolRestorePointsClient {
     PagedIterable<RestorePointInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
 
     /**
+     * Get SQL pool backup
+     * 
      * Get SQL pool backup information.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -43,12 +49,12 @@ public interface SqlPoolRestorePointsClient {
      * @return sQL pool backup information as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<RestorePointInner> list(
-        String resourceGroupName, String workspaceName, String sqlPoolName, Context context);
+    PagedIterable<RestorePointInner> list(String resourceGroupName, String workspaceName, String sqlPoolName,
+        Context context);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -59,15 +65,12 @@ public interface SqlPoolRestorePointsClient {
      * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters);
+    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -79,16 +82,12 @@ public interface SqlPoolRestorePointsClient {
      * @return the {@link SyncPoller} for polling of database restore points.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context);
+    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String workspaceName, String sqlPoolName, CreateSqlPoolRestorePointDefinition parameters, Context context);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -99,15 +98,12 @@ public interface SqlPoolRestorePointsClient {
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
+    RestorePointInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
         CreateSqlPoolRestorePointDefinition parameters);
 
     /**
      * Creates a restore point for a data warehouse.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -119,16 +115,29 @@ public interface SqlPoolRestorePointsClient {
      * @return database restore points.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner create(
-        String resourceGroupName,
-        String workspaceName,
-        String sqlPoolName,
-        CreateSqlPoolRestorePointDefinition parameters,
-        Context context);
+    RestorePointInner create(String resourceGroupName, String workspaceName, String sqlPoolName,
+        CreateSqlPoolRestorePointDefinition parameters, Context context);
 
     /**
      * Gets a restore point.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param restorePointName The name of the restore point.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a restore point along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<RestorePointInner> getWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context);
+
+    /**
+     * Gets a restore point.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -142,39 +151,8 @@ public interface SqlPoolRestorePointsClient {
     RestorePointInner get(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
 
     /**
-     * Gets a restore point.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param restorePointName The name of the restore point.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a restore point along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RestorePointInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
-
-    /**
      * Deletes a restore point.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param workspaceName The name of the workspace.
-     * @param sqlPoolName SQL pool name.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
-
-    /**
-     * Deletes a restore point.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
      * @param sqlPoolName SQL pool name.
@@ -186,6 +164,20 @@ public interface SqlPoolRestorePointsClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String workspaceName, String sqlPoolName,
+        String restorePointName, Context context);
+
+    /**
+     * Deletes a restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param workspaceName The name of the workspace.
+     * @param sqlPoolName SQL pool name.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String workspaceName, String sqlPoolName, String restorePointName);
 }

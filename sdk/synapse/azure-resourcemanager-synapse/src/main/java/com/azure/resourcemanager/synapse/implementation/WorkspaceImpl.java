@@ -8,7 +8,6 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.synapse.fluent.models.WorkspaceInner;
-import com.azure.resourcemanager.synapse.models.CspWorkspaceAdminProperties;
 import com.azure.resourcemanager.synapse.models.DataLakeStorageAccountDetails;
 import com.azure.resourcemanager.synapse.models.EncryptionDetails;
 import com.azure.resourcemanager.synapse.models.ManagedIdentity;
@@ -100,12 +99,9 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     public List<PrivateEndpointConnection> privateEndpointConnections() {
         List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                .collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }
@@ -148,33 +144,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this.innerModel().publicNetworkAccess();
     }
 
-    public CspWorkspaceAdminProperties cspWorkspaceAdminProperties() {
-        return this.innerModel().cspWorkspaceAdminProperties();
-    }
-
-    public Map<String, Object> settings() {
-        Map<String, Object> inner = this.innerModel().settings();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
-        }
-    }
-
-    public Boolean azureADOnlyAuthentication() {
-        return this.innerModel().azureADOnlyAuthentication();
-    }
-
-    public Boolean trustedServiceBypassEnabled() {
-        return this.innerModel().trustedServiceBypassEnabled();
-    }
-
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public WorkspaceInner innerModel() {
@@ -197,20 +176,16 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Workspace create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .createOrUpdate(resourceGroupName, workspaceName, this.innerModel(), context);
         return this;
     }
 
@@ -226,47 +201,39 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
     }
 
     public Workspace apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .update(resourceGroupName, workspaceName, updateWorkspacePatchInfo, Context.NONE);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .update(resourceGroupName, workspaceName, updateWorkspacePatchInfo, Context.NONE);
         return this;
     }
 
     public Workspace apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .update(resourceGroupName, workspaceName, updateWorkspacePatchInfo, context);
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .update(resourceGroupName, workspaceName, updateWorkspacePatchInfo, context);
         return this;
     }
 
     WorkspaceImpl(WorkspaceInner innerObject, com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.workspaceName = Utils.getValueFromIdByName(innerObject.id(), "workspaces");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.workspaceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "workspaces");
     }
 
     public Workspace refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Workspace refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getWorkspaces()
-                .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getWorkspaces()
+            .getByResourceGroupWithResponse(resourceGroupName, workspaceName, context)
+            .getValue();
         return this;
     }
 
@@ -340,8 +307,8 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         return this;
     }
 
-    public WorkspaceImpl withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public WorkspaceImpl
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.innerModel().withPrivateEndpointConnections(privateEndpointConnections);
         return this;
     }
@@ -356,8 +323,8 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         }
     }
 
-    public WorkspaceImpl withManagedVirtualNetworkSettings(
-        ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
+    public WorkspaceImpl
+        withManagedVirtualNetworkSettings(ManagedVirtualNetworkSettings managedVirtualNetworkSettings) {
         if (isInCreateMode()) {
             this.innerModel().withManagedVirtualNetworkSettings(managedVirtualNetworkSettings);
             return this;
@@ -367,8 +334,8 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
         }
     }
 
-    public WorkspaceImpl withWorkspaceRepositoryConfiguration(
-        WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
+    public WorkspaceImpl
+        withWorkspaceRepositoryConfiguration(WorkspaceRepositoryConfiguration workspaceRepositoryConfiguration) {
         if (isInCreateMode()) {
             this.innerModel().withWorkspaceRepositoryConfiguration(workspaceRepositoryConfiguration);
             return this;
@@ -396,21 +363,6 @@ public final class WorkspaceImpl implements Workspace, Workspace.Definition, Wor
             this.updateWorkspacePatchInfo.withPublicNetworkAccess(publicNetworkAccess);
             return this;
         }
-    }
-
-    public WorkspaceImpl withCspWorkspaceAdminProperties(CspWorkspaceAdminProperties cspWorkspaceAdminProperties) {
-        this.innerModel().withCspWorkspaceAdminProperties(cspWorkspaceAdminProperties);
-        return this;
-    }
-
-    public WorkspaceImpl withAzureADOnlyAuthentication(Boolean azureADOnlyAuthentication) {
-        this.innerModel().withAzureADOnlyAuthentication(azureADOnlyAuthentication);
-        return this;
-    }
-
-    public WorkspaceImpl withTrustedServiceBypassEnabled(Boolean trustedServiceBypassEnabled) {
-        this.innerModel().withTrustedServiceBypassEnabled(trustedServiceBypassEnabled);
-        return this;
     }
 
     private boolean isInCreateMode() {

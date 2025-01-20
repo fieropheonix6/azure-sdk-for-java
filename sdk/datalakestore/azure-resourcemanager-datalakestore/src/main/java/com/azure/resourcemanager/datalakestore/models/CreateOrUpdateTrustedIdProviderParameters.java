@@ -5,54 +5,117 @@
 package com.azure.resourcemanager.datalakestore.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datalakestore.fluent.models.CreateOrUpdateTrustedIdProviderProperties;
+import java.io.IOException;
 
-/** The parameters used to create a new trusted identity provider. */
-@JsonFlatten
+/**
+ * The parameters used to create a new trusted identity provider.
+ */
 @Fluent
-public class CreateOrUpdateTrustedIdProviderParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateOrUpdateTrustedIdProviderParameters.class);
-
+public final class CreateOrUpdateTrustedIdProviderParameters
+    implements JsonSerializable<CreateOrUpdateTrustedIdProviderParameters> {
     /*
-     * The URL of this trusted identity provider.
+     * The trusted identity provider properties to use when creating a new trusted identity provider.
      */
-    @JsonProperty(value = "properties.idProvider", required = true)
-    private String idProvider;
+    private CreateOrUpdateTrustedIdProviderProperties innerProperties = new CreateOrUpdateTrustedIdProviderProperties();
+
+    /**
+     * Creates an instance of CreateOrUpdateTrustedIdProviderParameters class.
+     */
+    public CreateOrUpdateTrustedIdProviderParameters() {
+    }
+
+    /**
+     * Get the innerProperties property: The trusted identity provider properties to use when creating a new trusted
+     * identity provider.
+     * 
+     * @return the innerProperties value.
+     */
+    private CreateOrUpdateTrustedIdProviderProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the idProvider property: The URL of this trusted identity provider.
-     *
+     * 
      * @return the idProvider value.
      */
     public String idProvider() {
-        return this.idProvider;
+        return this.innerProperties() == null ? null : this.innerProperties().idProvider();
     }
 
     /**
      * Set the idProvider property: The URL of this trusted identity provider.
-     *
+     * 
      * @param idProvider the idProvider value to set.
      * @return the CreateOrUpdateTrustedIdProviderParameters object itself.
      */
     public CreateOrUpdateTrustedIdProviderParameters withIdProvider(String idProvider) {
-        this.idProvider = idProvider;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CreateOrUpdateTrustedIdProviderProperties();
+        }
+        this.innerProperties().withIdProvider(idProvider);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (idProvider() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property idProvider in model CreateOrUpdateTrustedIdProviderParameters"));
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CreateOrUpdateTrustedIdProviderParameters"));
+        } else {
+            innerProperties().validate();
         }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreateOrUpdateTrustedIdProviderParameters.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CreateOrUpdateTrustedIdProviderParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CreateOrUpdateTrustedIdProviderParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CreateOrUpdateTrustedIdProviderParameters.
+     */
+    public static CreateOrUpdateTrustedIdProviderParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CreateOrUpdateTrustedIdProviderParameters deserializedCreateOrUpdateTrustedIdProviderParameters
+                = new CreateOrUpdateTrustedIdProviderParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("properties".equals(fieldName)) {
+                    deserializedCreateOrUpdateTrustedIdProviderParameters.innerProperties
+                        = CreateOrUpdateTrustedIdProviderProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCreateOrUpdateTrustedIdProviderParameters;
+        });
     }
 }

@@ -7,24 +7,21 @@ package com.azure.resourcemanager.webpubsub.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.webpubsub.models.ResourceLogCategory;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ResourceLogCategoryTests {
-    @Test
-    public void testDeserialize() {
-        ResourceLogCategory model =
-            BinaryData
-                .fromString("{\"name\":\"vjtoqnermclfp\",\"enabled\":\"hoxus\"}")
-                .toObject(ResourceLogCategory.class);
-        Assertions.assertEquals("vjtoqnermclfp", model.name());
-        Assertions.assertEquals("hoxus", model.enabled());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ResourceLogCategory model = BinaryData.fromString("{\"name\":\"l\",\"enabled\":\"qhoftrmaequiah\"}")
+            .toObject(ResourceLogCategory.class);
+        Assertions.assertEquals("l", model.name());
+        Assertions.assertEquals("qhoftrmaequiah", model.enabled());
     }
 
-    @Test
-    public void testSerialize() {
-        ResourceLogCategory model = new ResourceLogCategory().withName("vjtoqnermclfp").withEnabled("hoxus");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ResourceLogCategory model = new ResourceLogCategory().withName("l").withEnabled("qhoftrmaequiah");
         model = BinaryData.fromObject(model).toObject(ResourceLogCategory.class);
-        Assertions.assertEquals("vjtoqnermclfp", model.name());
-        Assertions.assertEquals("hoxus", model.enabled());
+        Assertions.assertEquals("l", model.name());
+        Assertions.assertEquals("qhoftrmaequiah", model.enabled());
     }
 }

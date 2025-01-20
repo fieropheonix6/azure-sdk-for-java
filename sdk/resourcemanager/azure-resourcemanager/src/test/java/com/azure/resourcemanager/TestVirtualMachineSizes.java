@@ -8,6 +8,7 @@ import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachine;
 import com.azure.resourcemanager.compute.models.VirtualMachineSize;
 import com.azure.resourcemanager.compute.models.VirtualMachines;
+import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
 import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import org.junit.jupiter.api.Assertions;
@@ -19,20 +20,19 @@ public class TestVirtualMachineSizes extends TestTemplate<VirtualMachine, Virtua
         Assertions.assertTrue(TestUtilities.getSize(availableSizes) > 0);
         VirtualMachineSize availableSize = availableSizes.iterator().next();
         System.out.println("VM Sizes: " + availableSizes);
-        final String vmName = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
-        VirtualMachine vm =
-            virtualMachines
-                .define(vmName)
-                .withRegion(Region.US_EAST)
-                .withNewResourceGroup()
-                .withNewPrimaryNetwork("10.0.0.0/28")
-                .withPrimaryPrivateIPAddressDynamic()
-                .withoutPrimaryPublicIPAddress()
-                .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-                .withAdminUsername("testuser")
-                .withAdminPassword("fakePasswordPlaceholder")
-                .withSize(availableSize.name()) // Use the first size
-                .create();
+        final String vmName
+            = virtualMachines.manager().resourceManager().internalContext().randomResourceName("vm", 10);
+        VirtualMachine vm = virtualMachines.define(vmName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup()
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("testuser")
+            .withAdminPassword(ResourceManagerTestProxyTestBase.password())
+            .withSize(availableSize.name()) // Use the first size
+            .create();
 
         Assertions.assertTrue(vm.size().toString().equalsIgnoreCase(availableSize.name()));
         return vm;

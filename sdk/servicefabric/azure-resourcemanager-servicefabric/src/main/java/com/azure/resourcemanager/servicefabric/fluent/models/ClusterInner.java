@@ -7,7 +7,9 @@ package com.azure.resourcemanager.servicefabric.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.servicefabric.models.AddOnFeatures;
 import com.azure.resourcemanager.servicefabric.models.ApplicationTypeVersionsCleanupPolicy;
 import com.azure.resourcemanager.servicefabric.models.AzureActiveDirectory;
@@ -27,38 +29,55 @@ import com.azure.resourcemanager.servicefabric.models.SettingsSectionDescription
 import com.azure.resourcemanager.servicefabric.models.SfZonalUpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.UpgradeMode;
 import com.azure.resourcemanager.servicefabric.models.VmssZonalUpgradeMode;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The cluster resource. */
+/**
+ * The cluster resource.
+ */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
      * The cluster resource properties
      */
-    @JsonProperty(value = "properties")
     private ClusterProperties innerProperties;
 
     /*
      * Azure resource etag.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Metadata pertaining to creation and last modification of the resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of ClusterInner class.
+     */
+    public ClusterInner() {
+    }
 
     /**
      * Get the innerProperties property: The cluster resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
@@ -67,7 +86,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the etag property: Azure resource etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -76,21 +95,55 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -99,7 +152,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the addOnFeatures property: The list of add-on features to enable in the cluster.
-     *
+     * 
      * @return the addOnFeatures value.
      */
     public List<AddOnFeatures> addOnFeatures() {
@@ -108,7 +161,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the addOnFeatures property: The list of add-on features to enable in the cluster.
-     *
+     * 
      * @param addOnFeatures the addOnFeatures value to set.
      * @return the ClusterInner object itself.
      */
@@ -122,7 +175,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the availableClusterVersions property: The Service Fabric runtime versions available for this cluster.
-     *
+     * 
      * @return the availableClusterVersions value.
      */
     public List<ClusterVersionDetails> availableClusterVersions() {
@@ -131,7 +184,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the azureActiveDirectory property: The AAD authentication settings of the cluster.
-     *
+     * 
      * @return the azureActiveDirectory value.
      */
     public AzureActiveDirectory azureActiveDirectory() {
@@ -140,7 +193,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the azureActiveDirectory property: The AAD authentication settings of the cluster.
-     *
+     * 
      * @param azureActiveDirectory the azureActiveDirectory value to set.
      * @return the ClusterInner object itself.
      */
@@ -156,7 +209,7 @@ public final class ClusterInner extends Resource {
      * Get the certificate property: The certificate to use for securing the cluster. The certificate provided will be
      * used for node to node security within the cluster, SSL certificate for cluster management endpoint and default
      * admin client.
-     *
+     * 
      * @return the certificate value.
      */
     public CertificateDescription certificate() {
@@ -167,7 +220,7 @@ public final class ClusterInner extends Resource {
      * Set the certificate property: The certificate to use for securing the cluster. The certificate provided will be
      * used for node to node security within the cluster, SSL certificate for cluster management endpoint and default
      * admin client.
-     *
+     * 
      * @param certificate the certificate value to set.
      * @return the ClusterInner object itself.
      */
@@ -182,7 +235,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the certificateCommonNames property: Describes a list of server certificates referenced by common name that
      * are used to secure the cluster.
-     *
+     * 
      * @return the certificateCommonNames value.
      */
     public ServerCertificateCommonNames certificateCommonNames() {
@@ -192,7 +245,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the certificateCommonNames property: Describes a list of server certificates referenced by common name that
      * are used to secure the cluster.
-     *
+     * 
      * @param certificateCommonNames the certificateCommonNames value to set.
      * @return the ClusterInner object itself.
      */
@@ -207,7 +260,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
      * allowed to manage the cluster.
-     *
+     * 
      * @return the clientCertificateCommonNames value.
      */
     public List<ClientCertificateCommonName> clientCertificateCommonNames() {
@@ -217,12 +270,12 @@ public final class ClusterInner extends Resource {
     /**
      * Set the clientCertificateCommonNames property: The list of client certificates referenced by common name that are
      * allowed to manage the cluster.
-     *
+     * 
      * @param clientCertificateCommonNames the clientCertificateCommonNames value to set.
      * @return the ClusterInner object itself.
      */
-    public ClusterInner withClientCertificateCommonNames(
-        List<ClientCertificateCommonName> clientCertificateCommonNames) {
+    public ClusterInner
+        withClientCertificateCommonNames(List<ClientCertificateCommonName> clientCertificateCommonNames) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterProperties();
         }
@@ -233,7 +286,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the clientCertificateThumbprints property: The list of client certificates referenced by thumbprint that are
      * allowed to manage the cluster.
-     *
+     * 
      * @return the clientCertificateThumbprints value.
      */
     public List<ClientCertificateThumbprint> clientCertificateThumbprints() {
@@ -243,12 +296,12 @@ public final class ClusterInner extends Resource {
     /**
      * Set the clientCertificateThumbprints property: The list of client certificates referenced by thumbprint that are
      * allowed to manage the cluster.
-     *
+     * 
      * @param clientCertificateThumbprints the clientCertificateThumbprints value to set.
      * @return the ClusterInner object itself.
      */
-    public ClusterInner withClientCertificateThumbprints(
-        List<ClientCertificateThumbprint> clientCertificateThumbprints) {
+    public ClusterInner
+        withClientCertificateThumbprints(List<ClientCertificateThumbprint> clientCertificateThumbprints) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterProperties();
         }
@@ -259,9 +312,9 @@ public final class ClusterInner extends Resource {
     /**
      * Get the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
      * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
-     * clusters use [ClusterVersion API](./ClusterVersion.md). To get the list of available version for existing
-     * clusters use **availableClusterVersions**.
-     *
+     * clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To
+     * get the list of available version for existing clusters use **availableClusterVersions**.
+     * 
      * @return the clusterCodeVersion value.
      */
     public String clusterCodeVersion() {
@@ -271,9 +324,9 @@ public final class ClusterInner extends Resource {
     /**
      * Set the clusterCodeVersion property: The Service Fabric runtime version of the cluster. This property can only by
      * set the user when **upgradeMode** is set to 'Manual'. To get list of available Service Fabric versions for new
-     * clusters use [ClusterVersion API](./ClusterVersion.md). To get the list of available version for existing
-     * clusters use **availableClusterVersions**.
-     *
+     * clusters use [ClusterVersion API](https://learn.microsoft.com/rest/api/servicefabric/cluster-versions/list). To
+     * get the list of available version for existing clusters use **availableClusterVersions**.
+     * 
      * @param clusterCodeVersion the clusterCodeVersion value to set.
      * @return the ClusterInner object itself.
      */
@@ -288,7 +341,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the clusterEndpoint property: The Azure Resource Provider endpoint. A system service in the cluster connects
      * to this endpoint.
-     *
+     * 
      * @return the clusterEndpoint value.
      */
     public String clusterEndpoint() {
@@ -297,7 +350,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the clusterId property: A service generated unique identifier for the cluster resource.
-     *
+     * 
      * @return the clusterId value.
      */
     public String clusterId() {
@@ -306,21 +359,24 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the clusterState property: The current state of the cluster.
-     *
-     * <p>- WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for
-     * Service Fabric VM extension to boot up and report to it. - Deploying - Indicates that the Service Fabric runtime
-     * is being installed on the VMs. Cluster resource will be in this state until the cluster boots up and system
-     * services are up. - BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version.
-     * This upgrade is automatically initiated when the cluster boots up for the first time. - UpdatingUserConfiguration
-     * - Indicates that the cluster is being upgraded with the user provided configuration. - UpdatingUserCertificate -
-     * Indicates that the cluster is being upgraded with the user provided certificate. - UpdatingInfrastructure -
-     * Indicates that the cluster is being upgraded with the latest Service Fabric runtime version. This happens only
-     * when the **upgradeMode** is set to 'Automatic'. - EnforcingClusterVersion - Indicates that cluster is on a
-     * different version than expected and the cluster is being upgraded to the expected version. -
-     * UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource
-     * Provider. Clusters in this state cannot be managed by the Resource Provider. - AutoScale - Indicates that the
-     * ReliabilityLevel of the cluster is being adjusted. - Ready - Indicates that the cluster is in a stable state.
-     *
+     * 
+     * - WaitingForNodes - Indicates that the cluster resource is created and the resource provider is waiting for
+     * Service Fabric VM extension to boot up and report to it.
+     * - Deploying - Indicates that the Service Fabric runtime is being installed on the VMs. Cluster resource will be
+     * in this state until the cluster boots up and system services are up.
+     * - BaselineUpgrade - Indicates that the cluster is upgrading to establishes the cluster version. This upgrade is
+     * automatically initiated when the cluster boots up for the first time.
+     * - UpdatingUserConfiguration - Indicates that the cluster is being upgraded with the user provided configuration.
+     * - UpdatingUserCertificate - Indicates that the cluster is being upgraded with the user provided certificate.
+     * - UpdatingInfrastructure - Indicates that the cluster is being upgraded with the latest Service Fabric runtime
+     * version. This happens only when the **upgradeMode** is set to 'Automatic'.
+     * - EnforcingClusterVersion - Indicates that cluster is on a different version than expected and the cluster is
+     * being upgraded to the expected version.
+     * - UpgradeServiceUnreachable - Indicates that the system service in the cluster is no longer polling the Resource
+     * Provider. Clusters in this state cannot be managed by the Resource Provider.
+     * - AutoScale - Indicates that the ReliabilityLevel of the cluster is being adjusted.
+     * - Ready - Indicates that the cluster is in a stable state.
+     * 
      * @return the clusterState value.
      */
     public ClusterState clusterState() {
@@ -330,7 +386,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the diagnosticsStorageAccountConfig property: The storage account information for storing Service Fabric
      * diagnostic logs.
-     *
+     * 
      * @return the diagnosticsStorageAccountConfig value.
      */
     public DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig() {
@@ -340,12 +396,12 @@ public final class ClusterInner extends Resource {
     /**
      * Set the diagnosticsStorageAccountConfig property: The storage account information for storing Service Fabric
      * diagnostic logs.
-     *
+     * 
      * @param diagnosticsStorageAccountConfig the diagnosticsStorageAccountConfig value to set.
      * @return the ClusterInner object itself.
      */
-    public ClusterInner withDiagnosticsStorageAccountConfig(
-        DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig) {
+    public ClusterInner
+        withDiagnosticsStorageAccountConfig(DiagnosticsStorageAccountConfig diagnosticsStorageAccountConfig) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterProperties();
         }
@@ -355,7 +411,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the eventStoreServiceEnabled property: Indicates if the event store service is enabled.
-     *
+     * 
      * @return the eventStoreServiceEnabled value.
      */
     public Boolean eventStoreServiceEnabled() {
@@ -364,7 +420,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the eventStoreServiceEnabled property: Indicates if the event store service is enabled.
-     *
+     * 
      * @param eventStoreServiceEnabled the eventStoreServiceEnabled value to set.
      * @return the ClusterInner object itself.
      */
@@ -378,7 +434,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the fabricSettings property: The list of custom fabric settings to configure the cluster.
-     *
+     * 
      * @return the fabricSettings value.
      */
     public List<SettingsSectionDescription> fabricSettings() {
@@ -387,7 +443,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the fabricSettings property: The list of custom fabric settings to configure the cluster.
-     *
+     * 
      * @param fabricSettings the fabricSettings value to set.
      * @return the ClusterInner object itself.
      */
@@ -401,7 +457,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the managementEndpoint property: The http management endpoint of the cluster.
-     *
+     * 
      * @return the managementEndpoint value.
      */
     public String managementEndpoint() {
@@ -410,7 +466,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the managementEndpoint property: The http management endpoint of the cluster.
-     *
+     * 
      * @param managementEndpoint the managementEndpoint value to set.
      * @return the ClusterInner object itself.
      */
@@ -424,7 +480,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the nodeTypes property: The list of node types in the cluster.
-     *
+     * 
      * @return the nodeTypes value.
      */
     public List<NodeTypeDescription> nodeTypes() {
@@ -433,7 +489,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the nodeTypes property: The list of node types in the cluster.
-     *
+     * 
      * @param nodeTypes the nodeTypes value to set.
      * @return the ClusterInner object itself.
      */
@@ -447,7 +503,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the cluster resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -457,13 +513,15 @@ public final class ClusterInner extends Resource {
     /**
      * Get the reliabilityLevel property: The reliability level sets the replica set size of system services. Learn
      * about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
-     *
-     * <p>- None - Run the System services with a target replica set count of 1. This should only be used for test
-     * clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for
-     * test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System
-     * services with a target replica set count of 7. - Platinum - Run the System services with a target replica set
-     * count of 9.
-     *
+     * 
+     * - None - Run the System services with a target replica set count of 1. This should only be used for test
+     * clusters.
+     * - Bronze - Run the System services with a target replica set count of 3. This should only be used for test
+     * clusters.
+     * - Silver - Run the System services with a target replica set count of 5.
+     * - Gold - Run the System services with a target replica set count of 7.
+     * - Platinum - Run the System services with a target replica set count of 9.
+     * 
      * @return the reliabilityLevel value.
      */
     public ReliabilityLevel reliabilityLevel() {
@@ -473,13 +531,15 @@ public final class ClusterInner extends Resource {
     /**
      * Set the reliabilityLevel property: The reliability level sets the replica set size of system services. Learn
      * about [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
-     *
-     * <p>- None - Run the System services with a target replica set count of 1. This should only be used for test
-     * clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for
-     * test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System
-     * services with a target replica set count of 7. - Platinum - Run the System services with a target replica set
-     * count of 9.
-     *
+     * 
+     * - None - Run the System services with a target replica set count of 1. This should only be used for test
+     * clusters.
+     * - Bronze - Run the System services with a target replica set count of 3. This should only be used for test
+     * clusters.
+     * - Silver - Run the System services with a target replica set count of 5.
+     * - Gold - Run the System services with a target replica set count of 7.
+     * - Platinum - Run the System services with a target replica set count of 9.
+     * 
      * @param reliabilityLevel the reliabilityLevel value to set.
      * @return the ClusterInner object itself.
      */
@@ -493,7 +553,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the reverseProxyCertificate property: The server certificate used by reverse proxy.
-     *
+     * 
      * @return the reverseProxyCertificate value.
      */
     public CertificateDescription reverseProxyCertificate() {
@@ -502,7 +562,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the reverseProxyCertificate property: The server certificate used by reverse proxy.
-     *
+     * 
      * @param reverseProxyCertificate the reverseProxyCertificate value to set.
      * @return the ClusterInner object itself.
      */
@@ -517,7 +577,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by common
      * name that are used to secure the cluster.
-     *
+     * 
      * @return the reverseProxyCertificateCommonNames value.
      */
     public ServerCertificateCommonNames reverseProxyCertificateCommonNames() {
@@ -527,12 +587,12 @@ public final class ClusterInner extends Resource {
     /**
      * Set the reverseProxyCertificateCommonNames property: Describes a list of server certificates referenced by common
      * name that are used to secure the cluster.
-     *
+     * 
      * @param reverseProxyCertificateCommonNames the reverseProxyCertificateCommonNames value to set.
      * @return the ClusterInner object itself.
      */
-    public ClusterInner withReverseProxyCertificateCommonNames(
-        ServerCertificateCommonNames reverseProxyCertificateCommonNames) {
+    public ClusterInner
+        withReverseProxyCertificateCommonNames(ServerCertificateCommonNames reverseProxyCertificateCommonNames) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ClusterProperties();
         }
@@ -542,7 +602,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the upgradeDescription property: The policy to use when upgrading the cluster.
-     *
+     * 
      * @return the upgradeDescription value.
      */
     public ClusterUpgradePolicy upgradeDescription() {
@@ -551,7 +611,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the upgradeDescription property: The policy to use when upgrading the cluster.
-     *
+     * 
      * @param upgradeDescription the upgradeDescription value to set.
      * @return the ClusterInner object itself.
      */
@@ -566,7 +626,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
-     *
+     * 
      * @return the upgradeMode value.
      */
     public UpgradeMode upgradeMode() {
@@ -576,7 +636,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the upgradeMode property: The upgrade mode of the cluster when new Service Fabric runtime version is
      * available.
-     *
+     * 
      * @param upgradeMode the upgradeMode value to set.
      * @return the ClusterInner object itself.
      */
@@ -590,7 +650,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
-     *
+     * 
      * @return the applicationTypeVersionsCleanupPolicy value.
      */
     public ApplicationTypeVersionsCleanupPolicy applicationTypeVersionsCleanupPolicy() {
@@ -599,7 +659,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the applicationTypeVersionsCleanupPolicy property: The policy used to clean up unused versions.
-     *
+     * 
      * @param applicationTypeVersionsCleanupPolicy the applicationTypeVersionsCleanupPolicy value to set.
      * @return the ClusterInner object itself.
      */
@@ -615,7 +675,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the vmImage property: The VM image VMSS has been configured with. Generic names such as Windows or Linux can
      * be used.
-     *
+     * 
      * @return the vmImage value.
      */
     public String vmImage() {
@@ -625,7 +685,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the vmImage property: The VM image VMSS has been configured with. Generic names such as Windows or Linux can
      * be used.
-     *
+     * 
      * @param vmImage the vmImage value to set.
      * @return the ClusterInner object itself.
      */
@@ -641,7 +701,7 @@ public final class ClusterInner extends Resource {
      * Get the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
      * This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
-     *
+     * 
      * @return the sfZonalUpgradeMode value.
      */
     public SfZonalUpgradeMode sfZonalUpgradeMode() {
@@ -652,7 +712,7 @@ public final class ClusterInner extends Resource {
      * Set the sfZonalUpgradeMode property: This property controls the logical grouping of VMs in upgrade domains (UDs).
      * This property can't be modified if a node type with multiple Availability Zones is already present in the
      * cluster.
-     *
+     * 
      * @param sfZonalUpgradeMode the sfZonalUpgradeMode value to set.
      * @return the ClusterInner object itself.
      */
@@ -667,7 +727,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
      * it is mandatory if a node type with multiple Availability Zones is added.
-     *
+     * 
      * @return the vmssZonalUpgradeMode value.
      */
     public VmssZonalUpgradeMode vmssZonalUpgradeMode() {
@@ -677,7 +737,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the vmssZonalUpgradeMode property: This property defines the upgrade mode for the virtual machine scale set,
      * it is mandatory if a node type with multiple Availability Zones is added.
-     *
+     * 
      * @param vmssZonalUpgradeMode the vmssZonalUpgradeMode value to set.
      * @return the ClusterInner object itself.
      */
@@ -691,7 +751,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
-     *
+     * 
      * @return the infrastructureServiceManager value.
      */
     public Boolean infrastructureServiceManager() {
@@ -700,7 +760,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the infrastructureServiceManager property: Indicates if infrastructure service manager is enabled.
-     *
+     * 
      * @param infrastructureServiceManager the infrastructureServiceManager value to set.
      * @return the ClusterInner object itself.
      */
@@ -715,7 +775,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
      * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
-     *
+     * 
      * @return the upgradeWave value.
      */
     public ClusterUpgradeCadence upgradeWave() {
@@ -725,7 +785,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the upgradeWave property: Indicates when new cluster runtime version upgrades will be applied after they are
      * released. By default is Wave0. Only applies when **upgradeMode** is set to 'Automatic'.
-     *
+     * 
      * @param upgradeWave the upgradeWave value to set.
      * @return the ClusterInner object itself.
      */
@@ -740,7 +800,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the upgradePauseStartTimestampUtc property: Indicates the start date and time to pause automatic runtime
      * version upgrades on the cluster for an specific period of time on the cluster (UTC).
-     *
+     * 
      * @return the upgradePauseStartTimestampUtc value.
      */
     public OffsetDateTime upgradePauseStartTimestampUtc() {
@@ -750,7 +810,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the upgradePauseStartTimestampUtc property: Indicates the start date and time to pause automatic runtime
      * version upgrades on the cluster for an specific period of time on the cluster (UTC).
-     *
+     * 
      * @param upgradePauseStartTimestampUtc the upgradePauseStartTimestampUtc value to set.
      * @return the ClusterInner object itself.
      */
@@ -765,7 +825,7 @@ public final class ClusterInner extends Resource {
     /**
      * Get the upgradePauseEndTimestampUtc property: Indicates the end date and time to pause automatic runtime version
      * upgrades on the cluster for an specific period of time on the cluster (UTC).
-     *
+     * 
      * @return the upgradePauseEndTimestampUtc value.
      */
     public OffsetDateTime upgradePauseEndTimestampUtc() {
@@ -775,7 +835,7 @@ public final class ClusterInner extends Resource {
     /**
      * Set the upgradePauseEndTimestampUtc property: Indicates the end date and time to pause automatic runtime version
      * upgrades on the cluster for an specific period of time on the cluster (UTC).
-     *
+     * 
      * @param upgradePauseEndTimestampUtc the upgradePauseEndTimestampUtc value to set.
      * @return the ClusterInner object itself.
      */
@@ -789,7 +849,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
-     *
+     * 
      * @return the waveUpgradePaused value.
      */
     public Boolean waveUpgradePaused() {
@@ -798,7 +858,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the waveUpgradePaused property: Boolean to pause automatic runtime version upgrades to the cluster.
-     *
+     * 
      * @param waveUpgradePaused the waveUpgradePaused value to set.
      * @return the ClusterInner object itself.
      */
@@ -812,7 +872,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the notifications property: Indicates a list of notification channels for cluster events.
-     *
+     * 
      * @return the notifications value.
      */
     public List<Notification> notifications() {
@@ -821,7 +881,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the notifications property: Indicates a list of notification channels for cluster events.
-     *
+     * 
      * @param notifications the notifications value to set.
      * @return the ClusterInner object itself.
      */
@@ -835,12 +895,66 @@ public final class ClusterInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ClusterInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ClusterInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ClusterInner.
+     */
+    public static ClusterInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ClusterInner deserializedClusterInner = new ClusterInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedClusterInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedClusterInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedClusterInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedClusterInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedClusterInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedClusterInner.innerProperties = ClusterProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedClusterInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedClusterInner.systemData = SystemData.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedClusterInner;
+        });
     }
 }

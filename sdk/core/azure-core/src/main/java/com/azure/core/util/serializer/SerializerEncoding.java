@@ -5,10 +5,9 @@ package com.azure.core.util.serializer;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-
-import java.util.Map;
-import java.util.TreeMap;
+import com.azure.core.util.logging.LogLevel;
 
 /**
  * Supported serialization encoding formats.
@@ -22,26 +21,14 @@ public enum SerializerEncoding {
     /**
      * Extensible Markup Language.
      */
-    XML;
+    XML,
+
+    /**
+     * Text.
+     */
+    TEXT;
 
     private static final ClientLogger LOGGER = new ClientLogger(SerializerEncoding.class);
-    private static final String CONTENT_TYPE = "Content-Type";
-    private static final Map<String, SerializerEncoding> SUPPORTED_MIME_TYPES;
-    private static final TreeMap<String, SerializerEncoding> SUPPORTED_SUFFIXES;
-    private static final SerializerEncoding DEFAULT_ENCODING = JSON;
-
-
-    static {
-        // Encodings and suffixes from: https://tools.ietf.org/html/rfc6838
-        SUPPORTED_MIME_TYPES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        SUPPORTED_MIME_TYPES.put("text/xml", XML);
-        SUPPORTED_MIME_TYPES.put("application/xml", XML);
-        SUPPORTED_MIME_TYPES.put("application/json", JSON);
-
-        SUPPORTED_SUFFIXES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
-        SUPPORTED_SUFFIXES.put("xml", XML);
-        SUPPORTED_SUFFIXES.put("json", JSON);
-    }
 
     /**
      * Determines the serializer encoding to use based on the Content-Type header.
@@ -52,40 +39,84 @@ public enum SerializerEncoding {
      */
     public static SerializerEncoding fromHeaders(HttpHeaders headers) {
         final String mimeContentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
-        if (mimeContentType == null || mimeContentType.isEmpty()) {
-            LOGGER.warning("'{}' not found. Returning default encoding: {}", CONTENT_TYPE, DEFAULT_ENCODING);
-            return DEFAULT_ENCODING;
+        if (CoreUtils.isNullOrEmpty(mimeContentType)) {
+            LOGGER.verbose("'Content-Type' not found. Returning default encoding: JSON");
+            return JSON;
         }
 
-        final String[] parts = mimeContentType.split(";");
-        final SerializerEncoding encoding = SUPPORTED_MIME_TYPES.get(parts[0]);
+        int contentTypeEnd = mimeContentType.indexOf(';');
+        String contentType = (contentTypeEnd == -1) ? mimeContentType : mimeContentType.substring(0, contentTypeEnd);
+        SerializerEncoding encoding = checkForKnownEncoding(contentType);
         if (encoding != null) {
             return encoding;
         }
 
-        final String[] mimeTypeParts = parts[0].split("/");
-        if (mimeTypeParts.length != 2) {
-            LOGGER.warning("Content-Type '{}' does not match mime-type formatting 'type'/'subtype'. "
-                + "Returning default: {}", parts[0], DEFAULT_ENCODING);
-            return DEFAULT_ENCODING;
+        int contentTypeTypeSplit = contentType.indexOf('/');
+        if (contentTypeTypeSplit == -1) {
+            LOGGER.log(LogLevel.VERBOSE, () -> "Content-Type '" + contentType + "' does not match mime-type formatting "
+                + "'type'/'subtype'. Returning default: JSON");
+            return JSON;
         }
 
         // Check the suffix if it does not match the full types.
-        final String subtype = mimeTypeParts[1];
-        final int lastIndex = subtype.lastIndexOf("+");
+        // Suffixes are defined by the Structured Syntax Suffix Registry
+        // https://www.rfc-editor.org/rfc/rfc6839
+        final String subtype = contentType.substring(contentTypeTypeSplit + 1);
+        final int lastIndex = subtype.lastIndexOf('+');
         if (lastIndex == -1) {
-            return DEFAULT_ENCODING;
+            return JSON;
         }
 
+        // Only XML and JSON are supported suffixes, there is no suffix for TEXT.
         final String mimeTypeSuffix = subtype.substring(lastIndex + 1);
-        final SerializerEncoding serializerEncoding = SUPPORTED_SUFFIXES.get(mimeTypeSuffix);
-        if (serializerEncoding != null) {
-            return serializerEncoding;
+        if ("xml".equalsIgnoreCase(mimeTypeSuffix)) {
+            return XML;
+        } else if ("json".equalsIgnoreCase(mimeTypeSuffix)) {
+            return JSON;
         }
 
-        LOGGER.warning("Content-Type '{}' does not match any supported one. Returning default: {}",
-            mimeContentType, DEFAULT_ENCODING);
+        LOGGER.log(LogLevel.VERBOSE,
+            () -> "Content-Type '" + mimeTypeSuffix + "' does not match any supported one. Returning default: JSON");
 
-        return DEFAULT_ENCODING;
+        return JSON;
+    }
+
+    /*
+     * There is a limited set of serialization encodings that are known ahead of time. Instead of using a TreeMap with
+     * a case-insensitive comparator, use an optimized search specifically for the known encodings.
+     */
+    private static SerializerEncoding checkForKnownEncoding(String contentType) {
+        int length = contentType.length();
+
+        // Check the length of the content type first as it is a quick check.
+        if (length != 8 && length != 9 && length != 10 && length != 15 && length != 16) {
+            return null;
+        }
+
+        if ("text/".regionMatches(true, 0, contentType, 0, 5)) {
+            if (length == 8) {
+                if ("xml".regionMatches(true, 0, contentType, 5, 3)) {
+                    return XML;
+                } else if ("csv".regionMatches(true, 0, contentType, 5, 3)) {
+                    return TEXT;
+                } else if ("css".regionMatches(true, 0, contentType, 5, 3)) {
+                    return TEXT;
+                }
+            } else if (length == 9 && "html".regionMatches(true, 0, contentType, 5, 4)) {
+                return TEXT;
+            } else if (length == 10 && "plain".regionMatches(true, 0, contentType, 5, 5)) {
+                return TEXT;
+            } else if (length == 15 && "javascript".regionMatches(true, 0, contentType, 5, 10)) {
+                return TEXT;
+            }
+        } else if ("application/".regionMatches(true, 0, contentType, 0, 12)) {
+            if (length == 16 && "json".regionMatches(true, 0, contentType, 12, 4)) {
+                return JSON;
+            } else if (length == 15 && "xml".regionMatches(true, 0, contentType, 12, 3)) {
+                return XML;
+            }
+        }
+
+        return null;
     }
 }

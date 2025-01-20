@@ -7,24 +7,22 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.BuildContext;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class BuildContextTests {
-    @Test
-    public void testDeserialize() {
-        BuildContext model =
-            BinaryData
-                .fromString("{\"contextUri\":\"mfpjbabw\",\"dockerfilePath\":\"fcxsspuunnoxy\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        BuildContext model
+            = BinaryData.fromString("{\"contextUri\":\"zrcxfailcfxwmdbo\",\"dockerfilePath\":\"fgsftufqob\"}")
                 .toObject(BuildContext.class);
-        Assertions.assertEquals("mfpjbabw", model.contextUri());
-        Assertions.assertEquals("fcxsspuunnoxy", model.dockerfilePath());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.contextUri());
+        Assertions.assertEquals("fgsftufqob", model.dockerfilePath());
     }
 
-    @Test
-    public void testSerialize() {
-        BuildContext model = new BuildContext().withContextUri("mfpjbabw").withDockerfilePath("fcxsspuunnoxy");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        BuildContext model = new BuildContext().withContextUri("zrcxfailcfxwmdbo").withDockerfilePath("fgsftufqob");
         model = BinaryData.fromObject(model).toObject(BuildContext.class);
-        Assertions.assertEquals("mfpjbabw", model.contextUri());
-        Assertions.assertEquals("fcxsspuunnoxy", model.dockerfilePath());
+        Assertions.assertEquals("zrcxfailcfxwmdbo", model.contextUri());
+        Assertions.assertEquals("fgsftufqob", model.dockerfilePath());
     }
 }

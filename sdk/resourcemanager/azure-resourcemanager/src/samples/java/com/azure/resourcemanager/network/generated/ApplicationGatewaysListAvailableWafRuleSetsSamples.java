@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.network.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for ApplicationGateways ListAvailableWafRuleSets. */
+/**
+ * Samples for ApplicationGateways ListAvailableWafRuleSets.
+ */
 public final class ApplicationGatewaysListAvailableWafRuleSetsSamples {
     /*
-     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2022-05-01/examples/ApplicationGatewayAvailableWafRuleSetsGet.json
+     * x-ms-original-file: specification/network/resource-manager/Microsoft.Network/stable/2024-05-01/examples/
+     * ApplicationGatewayAvailableWafRuleSetsGet.json
      */
     /**
      * Sample code: Get Available Waf Rule Sets.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getAvailableWafRuleSets(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .networks()
+        azure.networks()
             .manager()
             .serviceClient()
             .getApplicationGateways()
-            .listAvailableWafRuleSetsWithResponse(Context.NONE);
+            .listAvailableWafRuleSetsWithResponse(com.azure.core.util.Context.NONE);
     }
 }

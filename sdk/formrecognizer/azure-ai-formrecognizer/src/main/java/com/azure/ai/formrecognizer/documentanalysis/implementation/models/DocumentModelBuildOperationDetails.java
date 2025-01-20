@@ -5,29 +5,59 @@
 package com.azure.ai.formrecognizer.documentanalysis.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-/** Get Operation response object. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("documentModelBuild")
+/**
+ * Get Operation response object.
+ */
 @Fluent
 public final class DocumentModelBuildOperationDetails extends OperationDetails {
     /*
+     * Type of operation.
+     */
+    private String kind = "documentModelBuild";
+
+    /*
      * Operation result upon success.
      */
-    @JsonProperty(value = "result")
     private DocumentModelDetails result;
 
-    /** Creates an instance of DocumentModelBuildOperationDetails class. */
-    public DocumentModelBuildOperationDetails() {}
+    /**
+     * Creates an instance of DocumentModelBuildOperationDetails class.
+     * 
+     * @param operationId the operationId value to set.
+     * @param status the status value to set.
+     * @param createdDateTime the createdDateTime value to set.
+     * @param lastUpdatedDateTime the lastUpdatedDateTime value to set.
+     * @param resourceLocation the resourceLocation value to set.
+     */
+    public DocumentModelBuildOperationDetails(String operationId, OperationStatus status,
+        OffsetDateTime createdDateTime, OffsetDateTime lastUpdatedDateTime, String resourceLocation) {
+        super(operationId, status, createdDateTime, lastUpdatedDateTime, resourceLocation);
+    }
+
+    /**
+     * Get the kind property: Type of operation.
+     * 
+     * @return the kind value.
+     */
+    @Override
+    public String getKind() {
+        return this.kind;
+    }
 
     /**
      * Get the result property: Operation result upon success.
-     *
+     * 
      * @return the result value.
      */
     public DocumentModelDetails getResult() {
@@ -36,7 +66,7 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
 
     /**
      * Set the result property: Operation result upon success.
-     *
+     * 
      * @param result the result value to set.
      * @return the DocumentModelBuildOperationDetails object itself.
      */
@@ -45,66 +75,166 @@ public final class DocumentModelBuildOperationDetails extends OperationDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setOperationId(String operationId) {
-        super.setOperationId(operationId);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setStatus(OperationStatus status) {
-        super.setStatus(status);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentModelBuildOperationDetails setPercentCompleted(Integer percentCompleted) {
         super.setPercentCompleted(percentCompleted);
         return this;
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setCreatedDateTime(OffsetDateTime createdDateTime) {
-        super.setCreatedDateTime(createdDateTime);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setLastUpdatedDateTime(OffsetDateTime lastUpdatedDateTime) {
-        super.setLastUpdatedDateTime(lastUpdatedDateTime);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public DocumentModelBuildOperationDetails setResourceLocation(String resourceLocation) {
-        super.setResourceLocation(resourceLocation);
-        return this;
-    }
-
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentModelBuildOperationDetails setApiVersion(String apiVersion) {
         super.setApiVersion(apiVersion);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentModelBuildOperationDetails setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentModelBuildOperationDetails setError(Error error) {
         super.setError(error);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("operationId", getOperationId());
+        jsonWriter.writeStringField("status", getStatus() == null ? null : getStatus().toString());
+        jsonWriter.writeStringField("createdDateTime",
+            getCreatedDateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreatedDateTime()));
+        jsonWriter.writeStringField("lastUpdatedDateTime",
+            getLastUpdatedDateTime() == null
+                ? null
+                : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getLastUpdatedDateTime()));
+        jsonWriter.writeStringField("resourceLocation", getResourceLocation());
+        jsonWriter.writeNumberField("percentCompleted", getPercentCompleted());
+        jsonWriter.writeStringField("apiVersion", getApiVersion());
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("error", getError());
+        jsonWriter.writeStringField("kind", this.kind);
+        jsonWriter.writeJsonField("result", this.result);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DocumentModelBuildOperationDetails from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DocumentModelBuildOperationDetails if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DocumentModelBuildOperationDetails.
+     */
+    public static DocumentModelBuildOperationDetails fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean operationIdFound = false;
+            String operationId = null;
+            boolean statusFound = false;
+            OperationStatus status = null;
+            boolean createdDateTimeFound = false;
+            OffsetDateTime createdDateTime = null;
+            boolean lastUpdatedDateTimeFound = false;
+            OffsetDateTime lastUpdatedDateTime = null;
+            boolean resourceLocationFound = false;
+            String resourceLocation = null;
+            Integer percentCompleted = null;
+            String apiVersion = null;
+            Map<String, String> tags = null;
+            Error error = null;
+            String kind = "documentModelBuild";
+            DocumentModelDetails result = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("operationId".equals(fieldName)) {
+                    operationId = reader.getString();
+                    operationIdFound = true;
+                } else if ("status".equals(fieldName)) {
+                    status = OperationStatus.fromString(reader.getString());
+                    statusFound = true;
+                } else if ("createdDateTime".equals(fieldName)) {
+                    createdDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    createdDateTimeFound = true;
+                } else if ("lastUpdatedDateTime".equals(fieldName)) {
+                    lastUpdatedDateTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                    lastUpdatedDateTimeFound = true;
+                } else if ("resourceLocation".equals(fieldName)) {
+                    resourceLocation = reader.getString();
+                    resourceLocationFound = true;
+                } else if ("percentCompleted".equals(fieldName)) {
+                    percentCompleted = reader.getNullable(JsonReader::getInt);
+                } else if ("apiVersion".equals(fieldName)) {
+                    apiVersion = reader.getString();
+                } else if ("tags".equals(fieldName)) {
+                    tags = reader.readMap(reader1 -> reader1.getString());
+                } else if ("error".equals(fieldName)) {
+                    error = Error.fromJson(reader);
+                } else if ("kind".equals(fieldName)) {
+                    kind = reader.getString();
+                } else if ("result".equals(fieldName)) {
+                    result = DocumentModelDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (operationIdFound
+                && statusFound
+                && createdDateTimeFound
+                && lastUpdatedDateTimeFound
+                && resourceLocationFound) {
+                DocumentModelBuildOperationDetails deserializedDocumentModelBuildOperationDetails
+                    = new DocumentModelBuildOperationDetails(operationId, status, createdDateTime, lastUpdatedDateTime,
+                        resourceLocation);
+                deserializedDocumentModelBuildOperationDetails.setPercentCompleted(percentCompleted);
+                deserializedDocumentModelBuildOperationDetails.setApiVersion(apiVersion);
+                deserializedDocumentModelBuildOperationDetails.setTags(tags);
+                deserializedDocumentModelBuildOperationDetails.setError(error);
+                deserializedDocumentModelBuildOperationDetails.kind = kind;
+                deserializedDocumentModelBuildOperationDetails.result = result;
+
+                return deserializedDocumentModelBuildOperationDetails;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!operationIdFound) {
+                missingProperties.add("operationId");
+            }
+            if (!statusFound) {
+                missingProperties.add("status");
+            }
+            if (!createdDateTimeFound) {
+                missingProperties.add("createdDateTime");
+            }
+            if (!lastUpdatedDateTimeFound) {
+                missingProperties.add("lastUpdatedDateTime");
+            }
+            if (!resourceLocationFound) {
+                missingProperties.add("resourceLocation");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

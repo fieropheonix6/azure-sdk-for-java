@@ -13,15 +13,21 @@ import java.time.Duration;
 public class ExponentialRetryProperties implements RetryOptionsProvider.RetryOptions.ExponentialRetryOptions {
 
     /**
+     * Creates an instance of {@link ExponentialRetryProperties}.
+     */
+    public ExponentialRetryProperties() {
+    }
+
+    /**
      * The maximum number of attempts.
      */
     private Integer maxRetries;
     /**
-     * Amount of time to wait between retry attempts.
+     * Amount of time(Duration) to wait between retry attempts.
      */
     private Duration baseDelay;
     /**
-     * Maximum permissible amount of time between retry attempts.
+     * Maximum permissible amount(duration) of time between retry attempts.
      */
     private Duration maxDelay;
 

@@ -5,32 +5,51 @@
 package com.azure.resourcemanager.frontdoor.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FrontDoorForwardingProtocol. */
+/**
+ * Protocol this rule will use when forwarding traffic to backends.
+ */
 public final class FrontDoorForwardingProtocol extends ExpandableStringEnum<FrontDoorForwardingProtocol> {
-    /** Static value HttpOnly for FrontDoorForwardingProtocol. */
+    /**
+     * Static value HttpOnly for FrontDoorForwardingProtocol.
+     */
     public static final FrontDoorForwardingProtocol HTTP_ONLY = fromString("HttpOnly");
 
-    /** Static value HttpsOnly for FrontDoorForwardingProtocol. */
+    /**
+     * Static value HttpsOnly for FrontDoorForwardingProtocol.
+     */
     public static final FrontDoorForwardingProtocol HTTPS_ONLY = fromString("HttpsOnly");
 
-    /** Static value MatchRequest for FrontDoorForwardingProtocol. */
+    /**
+     * Static value MatchRequest for FrontDoorForwardingProtocol.
+     */
     public static final FrontDoorForwardingProtocol MATCH_REQUEST = fromString("MatchRequest");
 
     /**
+     * Creates a new instance of FrontDoorForwardingProtocol value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public FrontDoorForwardingProtocol() {
+    }
+
+    /**
      * Creates or finds a FrontDoorForwardingProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FrontDoorForwardingProtocol.
      */
-    @JsonCreator
     public static FrontDoorForwardingProtocol fromString(String name) {
         return fromString(name, FrontDoorForwardingProtocol.class);
     }
 
-    /** @return known FrontDoorForwardingProtocol values. */
+    /**
+     * Gets known FrontDoorForwardingProtocol values.
+     * 
+     * @return known FrontDoorForwardingProtocol values.
+     */
     public static Collection<FrontDoorForwardingProtocol> values() {
         return values(FrontDoorForwardingProtocol.class);
     }

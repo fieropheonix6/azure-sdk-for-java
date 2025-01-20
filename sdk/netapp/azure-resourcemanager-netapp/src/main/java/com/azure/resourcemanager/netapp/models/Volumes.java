@@ -8,14 +8,16 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Volumes. */
+/**
+ * Resource collection API of Volumes.
+ */
 public interface Volumes {
     /**
      * Describe all volumes
-     *
-     * <p>List all volumes within the capacity pool.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volumes within the capacity pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,10 +29,10 @@ public interface Volumes {
 
     /**
      * Describe all volumes
-     *
-     * <p>List all volumes within the capacity pool.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all volumes within the capacity pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param context The context to associate with this operation.
@@ -43,10 +45,28 @@ public interface Volumes {
 
     /**
      * Describe a volume
-     *
-     * <p>Get the details of the specified volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get the details of the specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the details of the specified volume along with {@link Response}.
+     */
+    Response<Volume> getWithResponse(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
+
+    /**
+     * Describe a volume
+     * 
+     * Get the details of the specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -58,46 +78,11 @@ public interface Volumes {
     Volume get(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Describe a volume
-     *
-     * <p>Get the details of the specified volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the specified volume along with {@link Response}.
-     */
-    Response<Volume> getWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
-
-    /**
      * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
-     *     volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, Boolean forceDelete);
-
-    /**
-     * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -109,34 +94,63 @@ public interface Volumes {
 
     /**
      * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
      * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
-     *     volume.
+     * volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        Boolean forceDelete,
+    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, Boolean forceDelete,
+        Context context);
+
+    /**
+     * Populate Availability Zone
+     * 
+     * This operation will populate availability zone information for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    Volume populateAvailabilityZone(String resourceGroupName, String accountName, String poolName, String volumeName);
+
+    /**
+     * Populate Availability Zone
+     * 
+     * This operation will populate availability zone information for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return volume resource.
+     */
+    Volume populateAvailabilityZone(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context);
 
     /**
      * Revert a volume to one of its snapshots
-     *
-     * <p>Revert a volume to the snapshot specified in the body.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Revert a volume to the snapshot specified in the body.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -149,10 +163,10 @@ public interface Volumes {
 
     /**
      * Revert a volume to one of its snapshots
-     *
-     * <p>Revert a volume to the snapshot specified in the body.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Revert a volume to the snapshot specified in the body.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -162,20 +176,15 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void revert(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        VolumeRevert body,
+    void revert(String resourceGroupName, String accountName, String poolName, String volumeName, VolumeRevert body,
         Context context);
 
     /**
      * Reset cifs password
-     *
-     * <p>Reset cifs password from volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Reset cifs password from volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -187,10 +196,10 @@ public interface Volumes {
 
     /**
      * Reset cifs password
-     *
-     * <p>Reset cifs password from volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Reset cifs password from volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -199,32 +208,152 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resetCifsPassword(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void resetCifsPassword(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
-     * Break volume replication
-     *
-     * <p>Break the replication connection on the destination volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Split clone from parent volume
+     * 
+     * Split operation to convert clone volume to an independent volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param body Optional body to force break the replication.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void breakReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, BreakReplicationRequest body);
+    void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName);
+
+    /**
+     * Split clone from parent volume
+     * 
+     * Split operation to convert clone volume to an independent volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void splitCloneFromParent(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
+
+    /**
+     * Break file locks
+     * 
+     * Break all the file locks on a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName);
+
+    /**
+     * Break file locks
+     * 
+     * Break all the file locks on a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Optional body to provide the ability to clear file locks with selected options.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void breakFileLocks(String resourceGroupName, String accountName, String poolName, String volumeName,
+        BreakFileLocksRequest body, Context context);
+
+    /**
+     * Get Group Id List for LDAP User
+     * 
+     * Returns the list of group Ids for a specific LDAP User.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user.
+     */
+    GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
+        String poolName, String volumeName, GetGroupIdListForLdapUserRequest body);
+
+    /**
+     * Get Group Id List for LDAP User
+     * 
+     * Returns the list of group Ids for a specific LDAP User.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Returns group Id list for a specific LDAP user.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return group Id list for Ldap user.
+     */
+    GetGroupIdListForLdapUserResponse listGetGroupIdListForLdapUser(String resourceGroupName, String accountName,
+        String poolName, String volumeName, GetGroupIdListForLdapUserRequest body, Context context);
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume.
+     */
+    ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
+
+    /**
+     * Lists Quota Report for the volume
+     * 
+     * Returns report of quotas for the volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return quota Report for volume.
+     */
+    ListQuotaReportResponse listQuotaReport(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
 
     /**
      * Break volume replication
-     *
-     * <p>Break the replication connection on the destination volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Break the replication connection on the destination volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -236,10 +365,10 @@ public interface Volumes {
 
     /**
      * Break volume replication
-     *
-     * <p>Break the replication connection on the destination volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Break the replication connection on the destination volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -249,21 +378,16 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void breakReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        BreakReplicationRequest body,
-        Context context);
+    void breakReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        BreakReplicationRequest body, Context context);
 
     /**
      * Re-establish volume replication
-     *
-     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * 
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
      * snapshots.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -272,20 +396,16 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void reestablishReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
+    void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         ReestablishReplicationRequest body);
 
     /**
      * Re-establish volume replication
-     *
-     * <p>Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
+     * 
+     * Re-establish a previously deleted replication between 2 volumes that have a common ad-hoc or policy-based
      * snapshots.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -295,37 +415,15 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void reestablishReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        ReestablishReplicationRequest body,
-        Context context);
+    void reestablishReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        ReestablishReplicationRequest body, Context context);
 
     /**
      * Get volume replication status
-     *
-     * <p>Get the status of the replication.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the replication.
-     */
-    ReplicationStatus replicationStatus(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
-
-    /**
-     * Get volume replication status
-     *
-     * <p>Get the status of the replication.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Get the status of the replication.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -335,15 +433,32 @@ public interface Volumes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the replication along with {@link Response}.
      */
-    Response<ReplicationStatus> replicationStatusWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    Response<ReplicationStatus> replicationStatusWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context);
+
+    /**
+     * Get volume replication status
+     * 
+     * Get the status of the replication.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the replication.
+     */
+    ReplicationStatus replicationStatus(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * List replications for volume
-     *
-     * <p>List all replications for a specified volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all replications for a specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -352,15 +467,15 @@ public interface Volumes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list Replications as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Replication> listReplications(
-        String resourceGroupName, String accountName, String poolName, String volumeName);
+    PagedIterable<Replication> listReplications(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
 
     /**
      * List replications for volume
-     *
-     * <p>List all replications for a specified volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * List all replications for a specified volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -370,16 +485,16 @@ public interface Volumes {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list Replications as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Replication> listReplications(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    PagedIterable<Replication> listReplications(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
 
     /**
      * Resync volume replication
-     *
-     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * 
+     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -391,11 +506,11 @@ public interface Volumes {
 
     /**
      * Resync volume replication
-     *
-     * <p>Resync the connection on the destination volume. If the operation is ran on the source volume it will
+     * 
+     * Resync the connection on the destination volume. If the operation is ran on the source volume it will
      * reverse-resync the connection and sync from destination to source.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -404,15 +519,15 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resyncReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void resyncReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
      * Delete volume replication
-     *
-     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -424,10 +539,10 @@ public interface Volumes {
 
     /**
      * Delete volume replication
-     *
-     * <p>Delete the replication connection on the destination volume, and send release to the source replication.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Delete the replication connection on the destination volume, and send release to the source replication.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -436,55 +551,50 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void deleteReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
-
-    /**
-     * Authorize source volume replication
-     *
-     * <p>Authorize the replication connection on the source volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Authorize request object supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void authorizeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, AuthorizeRequest body);
-
-    /**
-     * Authorize source volume replication
-     *
-     * <p>Authorize the replication connection on the source volume.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Authorize request object supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void authorizeReplication(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        AuthorizeRequest body,
+    void deleteReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context);
 
     /**
+     * Authorize source volume replication
+     * 
+     * Authorize the replication connection on the source volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Authorize request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void authorizeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        AuthorizeRequest body);
+
+    /**
+     * Authorize source volume replication
+     * 
+     * Authorize the replication connection on the source volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Authorize request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void authorizeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        AuthorizeRequest body, Context context);
+
+    /**
      * ReInitialize volume replication
-     *
-     * <p>Re-Initializes the replication connection on the destination volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Re-Initializes the replication connection on the destination volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -496,10 +606,10 @@ public interface Volumes {
 
     /**
      * ReInitialize volume replication
-     *
-     * <p>Re-Initializes the replication connection on the destination volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Re-Initializes the replication connection on the destination volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -508,72 +618,190 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void reInitializeReplication(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
-
-    /**
-     * Change pool for volume
-     *
-     * <p>Moves volume to another pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Move volume to the pool supplied in the body of the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void poolChange(
-        String resourceGroupName, String accountName, String poolName, String volumeName, PoolChangeRequest body);
-
-    /**
-     * Change pool for volume
-     *
-     * <p>Moves volume to another pool.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param accountName The name of the NetApp account.
-     * @param poolName The name of the capacity pool.
-     * @param volumeName The name of the volume.
-     * @param body Move volume to the pool supplied in the body of the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void poolChange(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        PoolChangeRequest body,
+    void reInitializeReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
         Context context);
 
     /**
-     * Relocate volume
-     *
-     * <p>Relocates volume to a new stamp.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
-     * @param body Relocate volume request.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process.
+     */
+    ClusterPeerCommandResponse peerExternalCluster(String resourceGroupName, String accountName, String poolName,
+        String volumeName, PeerClusterForVolumeMigrationRequest body);
+
+    /**
+     * Start Cluster peering
+     * 
+     * Starts peering the external cluster for this migration volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Cluster peer request object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about cluster peering process.
+     */
+    ClusterPeerCommandResponse peerExternalCluster(String resourceGroupName, String accountName, String poolName,
+        String volumeName, PeerClusterForVolumeMigrationRequest body, Context context);
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process.
+     */
+    SvmPeerCommandResponse authorizeExternalReplication(String resourceGroupName, String accountName, String poolName,
+        String volumeName);
+
+    /**
+     * Start migration process
+     * 
+     * Starts SVM peering and returns a command to be run on the external ONTAP to accept it. Once the SVM have been
+     * peered a SnapMirror will be created.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about svm peering process.
+     */
+    SvmPeerCommandResponse authorizeExternalReplication(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context);
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void relocate(
-        String resourceGroupName, String accountName, String poolName, String volumeName, RelocateVolumeRequest body);
+    void finalizeExternalReplication(String resourceGroupName, String accountName, String poolName, String volumeName);
+
+    /**
+     * Finalize migration process
+     * 
+     * Finalizes the migration of an external volume by releasing the replication and breaking the external cluster
+     * peering if no other migration is active.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void finalizeExternalReplication(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void performReplicationTransfer(String resourceGroupName, String accountName, String poolName, String volumeName);
+
+    /**
+     * Perform a replication transfer
+     * 
+     * Performs an adhoc replication transfer on a volume with volumeType Migration.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void performReplicationTransfer(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
+
+    /**
+     * Change pool for volume
+     * 
+     * Moves volume to another pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Move volume to the pool supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,
+        PoolChangeRequest body);
+
+    /**
+     * Change pool for volume
+     * 
+     * Moves volume to another pool.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param body Move volume to the pool supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void poolChange(String resourceGroupName, String accountName, String poolName, String volumeName,
+        PoolChangeRequest body, Context context);
 
     /**
      * Relocate volume
-     *
-     * <p>Relocates volume to a new stamp.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Relocates volume to a new stamp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -585,10 +813,10 @@ public interface Volumes {
 
     /**
      * Relocate volume
-     *
-     * <p>Relocates volume to a new stamp.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Relocates volume to a new stamp.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -598,20 +826,15 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void relocate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        RelocateVolumeRequest body,
-        Context context);
+    void relocate(String resourceGroupName, String accountName, String poolName, String volumeName,
+        RelocateVolumeRequest body, Context context);
 
     /**
      * Finalize volume relocation
-     *
-     * <p>Finalizes the relocation of the volume and cleans up the old volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -623,10 +846,10 @@ public interface Volumes {
 
     /**
      * Finalize volume relocation
-     *
-     * <p>Finalizes the relocation of the volume and cleans up the old volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Finalizes the relocation of the volume and cleans up the old volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -635,15 +858,15 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void finalizeRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void finalizeRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
      * Revert volume relocation
-     *
-     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -655,10 +878,10 @@ public interface Volumes {
 
     /**
      * Revert volume relocation
-     *
-     * <p>Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
-     *
-     * @param resourceGroupName The name of the resource group.
+     * 
+     * Reverts the volume relocation process, cleans up the new volume and starts using the former-existing volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
      * @param volumeName The name of the volume.
@@ -667,14 +890,14 @@ public interface Volumes {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void revertRelocation(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    void revertRelocation(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
      * Describe a volume
-     *
-     * <p>Get the details of the specified volume.
-     *
+     * 
+     * Get the details of the specified volume.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -685,9 +908,9 @@ public interface Volumes {
 
     /**
      * Describe a volume
-     *
-     * <p>Get the details of the specified volume.
-     *
+     * 
+     * Get the details of the specified volume.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -699,9 +922,9 @@ public interface Volumes {
 
     /**
      * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
+     * 
+     * Delete the specified volume.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -711,12 +934,12 @@ public interface Volumes {
 
     /**
      * Delete a volume
-     *
-     * <p>Delete the specified volume.
-     *
+     * 
+     * Delete the specified volume.
+     * 
      * @param id the resource ID.
      * @param forceDelete An option to force delete the volume. Will cleanup resources connected to the particular
-     *     volume.
+     * volume.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -726,7 +949,7 @@ public interface Volumes {
 
     /**
      * Begins definition for a new Volume resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Volume definition.
      */

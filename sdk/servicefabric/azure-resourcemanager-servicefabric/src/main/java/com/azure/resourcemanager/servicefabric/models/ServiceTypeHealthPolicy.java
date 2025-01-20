@@ -5,27 +5,32 @@
 package com.azure.resourcemanager.servicefabric.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Represents the health policy used to evaluate the health of services belonging to a service type. */
+/**
+ * Represents the health policy used to evaluate the health of services belonging to a service type.
+ */
 @Fluent
-public final class ServiceTypeHealthPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTypeHealthPolicy.class);
-
+public final class ServiceTypeHealthPolicy implements JsonSerializable<ServiceTypeHealthPolicy> {
     /*
-     * The maximum percentage of services allowed to be unhealthy before your
-     * application is considered in error.
-     *
+     * The maximum percentage of services allowed to be unhealthy before your application is considered in error.
      */
-    @JsonProperty(value = "maxPercentUnhealthyServices")
     private Integer maxPercentUnhealthyServices;
+
+    /**
+     * Creates an instance of ServiceTypeHealthPolicy class.
+     */
+    public ServiceTypeHealthPolicy() {
+    }
 
     /**
      * Get the maxPercentUnhealthyServices property: The maximum percentage of services allowed to be unhealthy before
      * your application is considered in error.
-     *
+     * 
      * @return the maxPercentUnhealthyServices value.
      */
     public Integer maxPercentUnhealthyServices() {
@@ -35,7 +40,7 @@ public final class ServiceTypeHealthPolicy {
     /**
      * Set the maxPercentUnhealthyServices property: The maximum percentage of services allowed to be unhealthy before
      * your application is considered in error.
-     *
+     * 
      * @param maxPercentUnhealthyServices the maxPercentUnhealthyServices value to set.
      * @return the ServiceTypeHealthPolicy object itself.
      */
@@ -46,9 +51,46 @@ public final class ServiceTypeHealthPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("maxPercentUnhealthyServices", this.maxPercentUnhealthyServices);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ServiceTypeHealthPolicy from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ServiceTypeHealthPolicy if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ServiceTypeHealthPolicy.
+     */
+    public static ServiceTypeHealthPolicy fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ServiceTypeHealthPolicy deserializedServiceTypeHealthPolicy = new ServiceTypeHealthPolicy();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("maxPercentUnhealthyServices".equals(fieldName)) {
+                    deserializedServiceTypeHealthPolicy.maxPercentUnhealthyServices
+                        = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedServiceTypeHealthPolicy;
+        });
     }
 }

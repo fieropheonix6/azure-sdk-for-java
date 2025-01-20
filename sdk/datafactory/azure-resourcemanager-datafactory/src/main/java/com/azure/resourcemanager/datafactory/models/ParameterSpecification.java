@@ -6,30 +6,36 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Definition of a single parameter for an entity. */
+/**
+ * Definition of a single parameter for an entity.
+ */
 @Fluent
-public final class ParameterSpecification {
+public final class ParameterSpecification implements JsonSerializable<ParameterSpecification> {
     /*
      * Parameter type.
      */
-    @JsonProperty(value = "type", required = true)
     private ParameterType type;
 
     /*
      * Default value of parameter.
      */
-    @JsonProperty(value = "defaultValue")
     private Object defaultValue;
 
-    /** Creates an instance of ParameterSpecification class. */
+    /**
+     * Creates an instance of ParameterSpecification class.
+     */
     public ParameterSpecification() {
     }
 
     /**
      * Get the type property: Parameter type.
-     *
+     * 
      * @return the type value.
      */
     public ParameterType type() {
@@ -38,7 +44,7 @@ public final class ParameterSpecification {
 
     /**
      * Set the type property: Parameter type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ParameterSpecification object itself.
      */
@@ -49,7 +55,7 @@ public final class ParameterSpecification {
 
     /**
      * Get the defaultValue property: Default value of parameter.
-     *
+     * 
      * @return the defaultValue value.
      */
     public Object defaultValue() {
@@ -58,7 +64,7 @@ public final class ParameterSpecification {
 
     /**
      * Set the defaultValue property: Default value of parameter.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the ParameterSpecification object itself.
      */
@@ -69,16 +75,55 @@ public final class ParameterSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model ParameterSpecification"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property type in model ParameterSpecification"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ParameterSpecification.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("type", this.type == null ? null : this.type.toString());
+        jsonWriter.writeUntypedField("defaultValue", this.defaultValue);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ParameterSpecification from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ParameterSpecification if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ParameterSpecification.
+     */
+    public static ParameterSpecification fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ParameterSpecification deserializedParameterSpecification = new ParameterSpecification();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("type".equals(fieldName)) {
+                    deserializedParameterSpecification.type = ParameterType.fromString(reader.getString());
+                } else if ("defaultValue".equals(fieldName)) {
+                    deserializedParameterSpecification.defaultValue = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedParameterSpecification;
+        });
+    }
 }

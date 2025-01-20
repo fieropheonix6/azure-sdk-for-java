@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VerifiedPartners Get. */
+/**
+ * Samples for VerifiedPartners Get.
+ */
 public final class VerifiedPartnersGetSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/VerifiedPartners_Get.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2024-06-01-preview/examples/
+     * VerifiedPartners_Get.json
      */
     /**
      * Sample code: VerifiedPartners_Get.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void verifiedPartnersGet(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager.verifiedPartners().getWithResponse("Contoso.Finance", Context.NONE);
+        manager.verifiedPartners().getWithResponse("Contoso.Finance", com.azure.core.util.Context.NONE);
     }
 }

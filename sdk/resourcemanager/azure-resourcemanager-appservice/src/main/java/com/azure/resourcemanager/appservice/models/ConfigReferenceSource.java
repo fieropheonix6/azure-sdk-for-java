@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.appservice.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** Defines values for ConfigReferenceSource. */
+/**
+ * Defines values for ConfigReferenceSource.
+ */
 public enum ConfigReferenceSource {
-    /** Enum value KeyVault. */
+    /**
+     * Enum value KeyVault.
+     */
     KEY_VAULT("KeyVault");
 
-    /** The actual serialized value for a ConfigReferenceSource instance. */
+    /**
+     * The actual serialized value for a ConfigReferenceSource instance.
+     */
     private final String value;
 
     ConfigReferenceSource(String value) {
@@ -21,12 +24,14 @@ public enum ConfigReferenceSource {
 
     /**
      * Parses a serialized value to a ConfigReferenceSource instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ConfigReferenceSource object, or null if unable to parse.
      */
-    @JsonCreator
     public static ConfigReferenceSource fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ConfigReferenceSource[] items = ConfigReferenceSource.values();
         for (ConfigReferenceSource item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -36,7 +41,9 @@ public enum ConfigReferenceSource {
         return null;
     }
 
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

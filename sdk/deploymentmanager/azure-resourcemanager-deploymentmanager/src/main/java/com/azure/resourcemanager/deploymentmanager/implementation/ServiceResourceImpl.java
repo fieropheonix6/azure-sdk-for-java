@@ -57,6 +57,10 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServiceResourceInner innerModel() {
         return this.innerObject;
     }
@@ -78,24 +82,19 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceTopologyName, serviceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, serviceName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceTopologyName, serviceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, serviceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -110,29 +109,23 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceTopologyName, serviceName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, serviceName, this.innerModel(),
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, serviceTopologyName, serviceName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .createOrUpdateWithResponse(resourceGroupName, serviceTopologyName, serviceName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
-    ServiceResourceImpl(
-        ServiceResourceInner innerObject,
+    ServiceResourceImpl(ServiceResourceInner innerObject,
         com.azure.resourcemanager.deploymentmanager.DeploymentManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -142,22 +135,18 @@ public final class ServiceResourceImpl implements ServiceResource, ServiceResour
     }
 
     public ServiceResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .getWithResponse(resourceGroupName, serviceTopologyName, serviceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getWithResponse(resourceGroupName, serviceTopologyName, serviceName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public ServiceResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .getWithResponse(resourceGroupName, serviceTopologyName, serviceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getServices()
+            .getWithResponse(resourceGroupName, serviceTopologyName, serviceName, context)
+            .getValue();
         return this;
     }
 

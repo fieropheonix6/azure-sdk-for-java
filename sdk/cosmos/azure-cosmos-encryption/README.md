@@ -1,5 +1,5 @@
 # Encryption plugin library for Azure Cosmos DB Java SDK for Java
-The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into CosmosDB and decrypting it when reading back from the database.
+The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into Cosmos DB and decrypting it when reading back from the database.
 
 [Source code][encryption_source_code] | [Package (Maven)][cosmos_encryption_maven] | [API reference documentation][encryption_api_documentation] | [Product documentation][cosmos_docs] |
 [Samples][getting_started_encryption]
@@ -12,7 +12,7 @@ The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provi
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-cosmos-encryption</artifactId>
-  <version>1.9.0</version>
+  <version>2.17.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -25,7 +25,7 @@ Refer to [javadocs][encryption_api_documentation] for more details on the packag
 ### Prerequisites
 
 - [Java Development Kit (JDK) with version 8 or above][jdk]
-- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://docs.microsoft.com/azure/cosmos-db/local-emulator) for development and testing. As emulator HTTPS certificate is self-signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
+- An active Azure account. If you don't have one, you can sign up for a [free account][azure_subscription]. Alternatively, you can use the [Azure Cosmos DB Emulator](https://learn.microsoft.com/azure/cosmos-db/local-emulator) for development and testing. As emulator HTTPS certificate is self-signed, you need to import its certificate to java trusted cert store as [explained here](https://learn.microsoft.com/azure/cosmos-db/local-emulator-export-ssl-certificates)
 - (Optional) SLF4J is a logging facade.
 - (Optional) [SLF4J binding](https://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 - (Optional) [Maven][maven]
@@ -36,9 +36,9 @@ The SDK provides Reactor Core-based async APIs. You can read more about Reactor 
 
 ## Key concepts
 
-The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into CosmosDB and decrypting it when reading back from the database. Underneath it uses Azure Cosmos DB Java SDK which provides client-side logical representation to access the Azure Cosmos DB SQL API.
+The Azure Cosmos Encryption Plugin is used for encrypting data with a user-provided key before saving into Cosmos DB and decrypting it when reading back from the database. Underneath it uses Azure Cosmos DB Java SDK which provides client-side logical representation to access the Azure Cosmos DB SQL API.
 A Cosmos DB account contains zero or more databases, a database (DB) contains zero or more containers, and a container contains zero or more items.
-You may read more about databases, containers, and items [here](https://docs.microsoft.com/azure/cosmos-db/databases-containers-items).
+You may read more about databases, containers, and items [here](https://learn.microsoft.com/azure/cosmos-db/databases-containers-items).
 A few important properties are defined at the level of the container, among them are provisioned throughput and partition key.
 
 ## Examples
@@ -190,8 +190,8 @@ log4j.appender.A1.layout.ConversionPattern=%d %5X{pid} [%t] %-5p %c - %m%n
 ## Next steps
 
 - Cosmos encryption sample program is [here][getting_started_encryption]
-- Quick start of CosmosDB core java sdk [quickstart][quickstart] - Building a java app to manage CosmosDB SQL API data
-- [Read more about Azure CosmosDB Service][cosmos_docs]
+- Quick start of Cosmos DB core java sdk [quickstart][quickstart] - Building a java app to manage Cosmos DB SQL API data
+- [Read more about Azure Cosmos DB Service][cosmos_docs]
 
 ## Contributing
 
@@ -208,22 +208,22 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 
 <!-- LINKS -->
 [encryption_source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/cosmos/azure-cosmos-encryption/src
-[cosmos_introduction]: https://docs.microsoft.com/azure/cosmos-db/
+[cosmos_introduction]: https://learn.microsoft.com/azure/cosmos-db/
 [api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos/latest/index.html
 [encryption_api_documentation]: https://azuresdkdocs.blob.core.windows.net/$web/java/azure-cosmos-encryption/latest/index.html
-[cosmos_docs]: https://docs.microsoft.com/azure/cosmos-db/introduction
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[cosmos_docs]: https://learn.microsoft.com/azure/cosmos-db/introduction
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [maven]: https://maven.apache.org/
-[cosmos_encryption_maven]: https://search.maven.org/artifact/com.azure/azure-cosmos-encryption
+[cosmos_encryption_maven]: https://central.sonatype.com/artifact/com.azure/azure-cosmos-encryption
 [cla]: https://cla.microsoft.com
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [azure_subscription]: https://azure.microsoft.com/free/
-[troubleshooting]: https://docs.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
-[perf_guide]: https://docs.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
-[sql_api_query]: https://docs.microsoft.com/azure/cosmos-db/sql-api-sql-query
+[troubleshooting]: https://learn.microsoft.com/azure/cosmos-db/troubleshoot-java-sdk-v4-sql
+[perf_guide]: https://learn.microsoft.com/azure/cosmos-db/performance-tips-java-sdk-v4-sql?tabs=api-async
+[sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [getting_started_encryption]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/cosmos/azure-cosmos-encryption/src/samples/java/com/azure/cosmos/encryption/
-[quickstart]: https://docs.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
+[quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-encryption%2FREADME.png)

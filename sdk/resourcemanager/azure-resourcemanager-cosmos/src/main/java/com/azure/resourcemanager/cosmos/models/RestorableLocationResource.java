@@ -5,39 +5,48 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Properties of the regional restorable account. */
+/**
+ * Properties of the regional restorable account.
+ */
 @Immutable
-public final class RestorableLocationResource {
+public final class RestorableLocationResource implements JsonSerializable<RestorableLocationResource> {
     /*
      * The location of the regional restorable account.
      */
-    @JsonProperty(value = "locationName", access = JsonProperty.Access.WRITE_ONLY)
     private String locationName;
 
     /*
      * The instance id of the regional restorable account.
      */
-    @JsonProperty(value = "regionalDatabaseAccountInstanceId", access = JsonProperty.Access.WRITE_ONLY)
     private String regionalDatabaseAccountInstanceId;
 
     /*
      * The creation time of the regional restorable database account (ISO-8601 format).
      */
-    @JsonProperty(value = "creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime creationTime;
 
     /*
      * The time at which the regional restorable database account has been deleted (ISO-8601 format).
      */
-    @JsonProperty(value = "deletionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime deletionTime;
 
     /**
+     * Creates an instance of RestorableLocationResource class.
+     */
+    public RestorableLocationResource() {
+    }
+
+    /**
      * Get the locationName property: The location of the regional restorable account.
-     *
+     * 
      * @return the locationName value.
      */
     public String locationName() {
@@ -46,7 +55,7 @@ public final class RestorableLocationResource {
 
     /**
      * Get the regionalDatabaseAccountInstanceId property: The instance id of the regional restorable account.
-     *
+     * 
      * @return the regionalDatabaseAccountInstanceId value.
      */
     public String regionalDatabaseAccountInstanceId() {
@@ -55,7 +64,7 @@ public final class RestorableLocationResource {
 
     /**
      * Get the creationTime property: The creation time of the regional restorable database account (ISO-8601 format).
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -65,7 +74,7 @@ public final class RestorableLocationResource {
     /**
      * Get the deletionTime property: The time at which the regional restorable database account has been deleted
      * (ISO-8601 format).
-     *
+     * 
      * @return the deletionTime value.
      */
     public OffsetDateTime deletionTime() {
@@ -74,9 +83,52 @@ public final class RestorableLocationResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorableLocationResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorableLocationResource if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RestorableLocationResource.
+     */
+    public static RestorableLocationResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorableLocationResource deserializedRestorableLocationResource = new RestorableLocationResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("locationName".equals(fieldName)) {
+                    deserializedRestorableLocationResource.locationName = reader.getString();
+                } else if ("regionalDatabaseAccountInstanceId".equals(fieldName)) {
+                    deserializedRestorableLocationResource.regionalDatabaseAccountInstanceId = reader.getString();
+                } else if ("creationTime".equals(fieldName)) {
+                    deserializedRestorableLocationResource.creationTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("deletionTime".equals(fieldName)) {
+                    deserializedRestorableLocationResource.deletionTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorableLocationResource;
+        });
     }
 }

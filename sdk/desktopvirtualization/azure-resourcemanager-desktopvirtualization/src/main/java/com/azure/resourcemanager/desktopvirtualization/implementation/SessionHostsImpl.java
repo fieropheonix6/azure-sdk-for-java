@@ -22,11 +22,22 @@ public final class SessionHostsImpl implements SessionHosts {
 
     private final com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager;
 
-    public SessionHostsImpl(
-        SessionHostsClient innerClient,
+    public SessionHostsImpl(SessionHostsClient innerClient,
         com.azure.resourcemanager.desktopvirtualization.DesktopVirtualizationManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<SessionHost> getWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        Context context) {
+        Response<SessionHostInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, hostPoolName, sessionHostname, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SessionHostImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SessionHost get(String resourceGroupName, String hostPoolName, String sessionHostname) {
@@ -38,30 +49,26 @@ public final class SessionHostsImpl implements SessionHosts {
         }
     }
 
-    public Response<SessionHost> getWithResponse(
-        String resourceGroupName, String hostPoolName, String sessionHostname, Context context) {
-        Response<SessionHostInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, hostPoolName, sessionHostname, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SessionHostImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String hostPoolName, String sessionHostname,
+        Boolean force, Context context) {
+        return this.serviceClient()
+            .deleteWithResponse(resourceGroupName, hostPoolName, sessionHostname, force, context);
     }
 
     public void delete(String resourceGroupName, String hostPoolName, String sessionHostname) {
         this.serviceClient().delete(resourceGroupName, hostPoolName, sessionHostname);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String hostPoolName, String sessionHostname, Boolean force, Context context) {
-        return this
-            .serviceClient()
-            .deleteWithResponse(resourceGroupName, hostPoolName, sessionHostname, force, context);
+    public Response<SessionHost> updateWithResponse(String resourceGroupName, String hostPoolName,
+        String sessionHostname, Boolean force, SessionHostPatch sessionHost, Context context) {
+        Response<SessionHostInner> inner = this.serviceClient()
+            .updateWithResponse(resourceGroupName, hostPoolName, sessionHostname, force, sessionHost, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new SessionHostImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public SessionHost update(String resourceGroupName, String hostPoolName, String sessionHostname) {
@@ -73,36 +80,16 @@ public final class SessionHostsImpl implements SessionHosts {
         }
     }
 
-    public Response<SessionHost> updateWithResponse(
-        String resourceGroupName,
-        String hostPoolName,
-        String sessionHostname,
-        Boolean force,
-        SessionHostPatch sessionHost,
-        Context context) {
-        Response<SessionHostInner> inner =
-            this
-                .serviceClient()
-                .updateWithResponse(resourceGroupName, hostPoolName, sessionHostname, force, sessionHost, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new SessionHostImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName) {
         PagedIterable<SessionHostInner> inner = this.serviceClient().list(resourceGroupName, hostPoolName);
-        return Utils.mapPage(inner, inner1 -> new SessionHostImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SessionHostImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName, Context context) {
-        PagedIterable<SessionHostInner> inner = this.serviceClient().list(resourceGroupName, hostPoolName, context);
-        return Utils.mapPage(inner, inner1 -> new SessionHostImpl(inner1, this.manager()));
+    public PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName, Integer pageSize,
+        Boolean isDescending, Integer initialSkip, Context context) {
+        PagedIterable<SessionHostInner> inner
+            = this.serviceClient().list(resourceGroupName, hostPoolName, pageSize, isDescending, initialSkip, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new SessionHostImpl(inner1, this.manager()));
     }
 
     private SessionHostsClient serviceClient() {

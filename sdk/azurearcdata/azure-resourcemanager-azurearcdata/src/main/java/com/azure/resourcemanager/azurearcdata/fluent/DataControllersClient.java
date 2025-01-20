@@ -14,58 +14,92 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.azurearcdata.fluent.models.DataControllerResourceInner;
 import com.azure.resourcemanager.azurearcdata.models.DataControllerUpdate;
 
-/** An instance of this class provides access to all the operations defined in DataControllersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DataControllersClient.
+ */
 public interface DataControllersClient {
     /**
      * List dataController resources in the subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataControllerResourceInner> list();
 
     /**
      * List dataController resources in the subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataControllerResourceInner> list(Context context);
 
     /**
      * List dataController resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataControllerResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * List dataController resources in the resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DataControllerResourceInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Creates or replaces a dataController resource.
-     *
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerResource desc.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of data controller resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DataControllerResourceInner>, DataControllerResourceInner> beginPutDataController(
+        String resourceGroupName, String dataControllerName, DataControllerResourceInner dataControllerResource);
+
+    /**
+     * Creates or replaces a dataController resource.
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerResource desc.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of data controller resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<DataControllerResourceInner>, DataControllerResourceInner> beginPutDataController(
+        String resourceGroupName, String dataControllerName, DataControllerResourceInner dataControllerResource,
+        Context context);
+
+    /**
+     * Creates or replaces a dataController resource.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @param dataControllerResource desc.
@@ -75,12 +109,12 @@ public interface DataControllersClient {
      * @return data controller resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DataControllerResourceInner>, DataControllerResourceInner> beginPutDataController(
-        String resourceGroupName, String dataControllerName, DataControllerResourceInner dataControllerResource);
+    DataControllerResourceInner putDataController(String resourceGroupName, String dataControllerName,
+        DataControllerResourceInner dataControllerResource);
 
     /**
      * Creates or replaces a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @param dataControllerResource desc.
@@ -91,77 +125,40 @@ public interface DataControllersClient {
      * @return data controller resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DataControllerResourceInner>, DataControllerResourceInner> beginPutDataController(
-        String resourceGroupName,
-        String dataControllerName,
-        DataControllerResourceInner dataControllerResource,
-        Context context);
-
-    /**
-     * Creates or replaces a dataController resource.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param dataControllerResource desc.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataControllerResourceInner putDataController(
-        String resourceGroupName, String dataControllerName, DataControllerResourceInner dataControllerResource);
-
-    /**
-     * Creates or replaces a dataController resource.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param dataControllerResource desc.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DataControllerResourceInner putDataController(
-        String resourceGroupName,
-        String dataControllerName,
-        DataControllerResourceInner dataControllerResource,
-        Context context);
+    DataControllerResourceInner putDataController(String resourceGroupName, String dataControllerName,
+        DataControllerResourceInner dataControllerResource, Context context);
 
     /**
      * Deletes a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dataControllerName);
 
     /**
      * Deletes a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String dataControllerName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String dataControllerName,
+        Context context);
 
     /**
      * Deletes a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +170,7 @@ public interface DataControllersClient {
 
     /**
      * Deletes a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @param context The context to associate with this operation.
@@ -186,7 +183,22 @@ public interface DataControllersClient {
 
     /**
      * Retrieves a dataController resource.
-     *
+     * 
+     * @param resourceGroupName The name of the Azure resource group.
+     * @param dataControllerName The dataControllerName parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data controller resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DataControllerResourceInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String dataControllerName, Context context);
+
+    /**
+     * Retrieves a dataController resource.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -198,23 +210,24 @@ public interface DataControllersClient {
     DataControllerResourceInner getByResourceGroup(String resourceGroupName, String dataControllerName);
 
     /**
-     * Retrieves a dataController resource.
-     *
+     * Updates a dataController resource.
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
+     * @param dataControllerResource The update data controller resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource.
+     * @return data controller resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataControllerResourceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String dataControllerName, Context context);
+    Response<DataControllerResourceInner> patchDataControllerWithResponse(String resourceGroupName,
+        String dataControllerName, DataControllerUpdate dataControllerResource, Context context);
 
     /**
      * Updates a dataController resource.
-     *
+     * 
      * @param resourceGroupName The name of the Azure resource group.
      * @param dataControllerName The dataControllerName parameter.
      * @param dataControllerResource The update data controller resource.
@@ -224,25 +237,6 @@ public interface DataControllersClient {
      * @return data controller resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DataControllerResourceInner patchDataController(
-        String resourceGroupName, String dataControllerName, DataControllerUpdate dataControllerResource);
-
-    /**
-     * Updates a dataController resource.
-     *
-     * @param resourceGroupName The name of the Azure resource group.
-     * @param dataControllerName The dataControllerName parameter.
-     * @param dataControllerResource The update data controller resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data controller resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DataControllerResourceInner> patchDataControllerWithResponse(
-        String resourceGroupName,
-        String dataControllerName,
-        DataControllerUpdate dataControllerResource,
-        Context context);
+    DataControllerResourceInner patchDataController(String resourceGroupName, String dataControllerName,
+        DataControllerUpdate dataControllerResource);
 }

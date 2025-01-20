@@ -4,15 +4,18 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
-
-/** The component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup. */
+/**
+ * The component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup.
+ */
 public enum ComponentNames {
-    /** Enum value Microsoft-Windows-Shell-Setup. */
+    /**
+     * Enum value Microsoft-Windows-Shell-Setup.
+     */
     MICROSOFT_WINDOWS_SHELL_SETUP("Microsoft-Windows-Shell-Setup");
 
-    /** The actual serialized value for a ComponentNames instance. */
+    /**
+     * The actual serialized value for a ComponentNames instance.
+     */
     private final String value;
 
     ComponentNames(String value) {
@@ -21,11 +24,10 @@ public enum ComponentNames {
 
     /**
      * Parses a serialized value to a ComponentNames instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ComponentNames object, or null if unable to parse.
      */
-    @JsonCreator
     public static ComponentNames fromString(String value) {
         if (value == null) {
             return null;
@@ -39,8 +41,9 @@ public enum ComponentNames {
         return null;
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

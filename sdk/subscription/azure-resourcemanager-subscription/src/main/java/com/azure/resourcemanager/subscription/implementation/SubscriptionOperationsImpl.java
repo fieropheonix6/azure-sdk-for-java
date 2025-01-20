@@ -17,20 +17,28 @@ import com.azure.resourcemanager.subscription.models.EnabledSubscriptionId;
 import com.azure.resourcemanager.subscription.models.RenamedSubscriptionId;
 import com.azure.resourcemanager.subscription.models.SubscriptionName;
 import com.azure.resourcemanager.subscription.models.SubscriptionOperations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SubscriptionOperationsImpl implements SubscriptionOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SubscriptionOperationsImpl.class);
 
     private final SubscriptionOperationsClient innerClient;
 
     private final com.azure.resourcemanager.subscription.SubscriptionManager serviceManager;
 
-    public SubscriptionOperationsImpl(
-        SubscriptionOperationsClient innerClient,
+    public SubscriptionOperationsImpl(SubscriptionOperationsClient innerClient,
         com.azure.resourcemanager.subscription.SubscriptionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<CanceledSubscriptionId> cancelWithResponse(String subscriptionId, Context context) {
+        Response<CanceledSubscriptionIdInner> inner = this.serviceClient().cancelWithResponse(subscriptionId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new CanceledSubscriptionIdImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public CanceledSubscriptionId cancel(String subscriptionId) {
@@ -42,14 +50,13 @@ public final class SubscriptionOperationsImpl implements SubscriptionOperations 
         }
     }
 
-    public Response<CanceledSubscriptionId> cancelWithResponse(String subscriptionId, Context context) {
-        Response<CanceledSubscriptionIdInner> inner = this.serviceClient().cancelWithResponse(subscriptionId, context);
+    public Response<RenamedSubscriptionId> renameWithResponse(String subscriptionId, SubscriptionName body,
+        Context context) {
+        Response<RenamedSubscriptionIdInner> inner
+            = this.serviceClient().renameWithResponse(subscriptionId, body, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new CanceledSubscriptionIdImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new RenamedSubscriptionIdImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -64,16 +71,11 @@ public final class SubscriptionOperationsImpl implements SubscriptionOperations 
         }
     }
 
-    public Response<RenamedSubscriptionId> renameWithResponse(
-        String subscriptionId, SubscriptionName body, Context context) {
-        Response<RenamedSubscriptionIdInner> inner =
-            this.serviceClient().renameWithResponse(subscriptionId, body, context);
+    public Response<EnabledSubscriptionId> enableWithResponse(String subscriptionId, Context context) {
+        Response<EnabledSubscriptionIdInner> inner = this.serviceClient().enableWithResponse(subscriptionId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new RenamedSubscriptionIdImpl(inner.getValue(), this.manager()));
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new EnabledSubscriptionIdImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -83,19 +85,6 @@ public final class SubscriptionOperationsImpl implements SubscriptionOperations 
         EnabledSubscriptionIdInner inner = this.serviceClient().enable(subscriptionId);
         if (inner != null) {
             return new EnabledSubscriptionIdImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<EnabledSubscriptionId> enableWithResponse(String subscriptionId, Context context) {
-        Response<EnabledSubscriptionIdInner> inner = this.serviceClient().enableWithResponse(subscriptionId, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new EnabledSubscriptionIdImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }

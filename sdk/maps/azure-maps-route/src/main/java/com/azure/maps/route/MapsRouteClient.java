@@ -3,8 +3,6 @@
 
 package com.azure.maps.route;
 
-import java.util.List;
-
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -23,6 +21,8 @@ import com.azure.maps.route.models.RouteMatrixOptions;
 import com.azure.maps.route.models.RouteMatrixResult;
 import com.azure.maps.route.models.RouteRangeOptions;
 import com.azure.maps.route.models.RouteRangeResult;
+
+import java.util.List;
 
 /**
  * Initializes a new instance of the synchronous RouteClient type.
@@ -61,12 +61,13 @@ import com.azure.maps.route.models.RouteRangeResult;
 */
 @ServiceClient(builder = MapsRouteClientBuilder.class)
 public final class MapsRouteClient {
-    @Generated private final MapsRouteAsyncClient asyncClient;
+    @Generated
+    private final MapsRouteAsyncClient asyncClient;
 
     /**
      * Initializes an instance of Routes client.
      *
-     * @param serviceClient the service client implementation.
+     * @param asyncClient the service client implementation.
      */
     MapsRouteClient(MapsRouteAsyncClient asyncClient) {
         this.asyncClient = asyncClient;
@@ -81,14 +82,14 @@ public final class MapsRouteClient {
      *
      * &#47;&#47; origins
      * GeoPointCollection origins = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36006, 4.85106&#41;,
-     *     new GeoPoint&#40;52.36187, 4.85056&#41;
+     *     new GeoPoint&#40;4.85106, 52.36006&#41;,
+     *     new GeoPoint&#40;4.85056, 52.36187&#41;
      * &#41;&#41;;
      *
      * &#47;&#47; destinations
      * GeoPointCollection destinations = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36241, 4.85003&#41;,
-     *     new GeoPoint&#40;52.50931, 13.42937&#41;
+     *     new GeoPoint&#40;4.85003, 52.36241&#41;,
+     *     new GeoPoint&#40;13.42937, 52.50931&#41;
      * &#41;&#41;;
      *
      * matrixQuery.setDestinations&#40;destinations&#41;;
@@ -119,14 +120,14 @@ public final class MapsRouteClient {
      *
      * &#47;&#47; origins
      * GeoPointCollection origins = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36006, 4.85106&#41;,
-     *     new GeoPoint&#40;52.36187, 4.85056&#41;
+     *     new GeoPoint&#40;4.85106, 52.36006&#41;,
+     *     new GeoPoint&#40;4.85056, 52.36187&#41;
      * &#41;&#41;;
      *
      * &#47;&#47; destinations
      * GeoPointCollection destinations = new GeoPointCollection&#40;Arrays.asList&#40;
-     *     new GeoPoint&#40;52.36241, 4.85003&#41;,
-     *     new GeoPoint&#40;52.50931, 13.42937&#41;
+     *     new GeoPoint&#40;4.85003, 52.36241&#41;,
+     *     new GeoPoint&#40;13.42937, 52.50931&#41;
      * &#41;&#41;;
      *
      * matrixQuery.setDestinations&#40;destinations&#41;;
@@ -145,9 +146,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Matrix call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(
-            RouteMatrixOptions options,
-            Context context) {
+    public SyncPoller<RouteMatrixResult, RouteMatrixResult> beginGetRouteMatrix(RouteMatrixOptions options,
+        Context context) {
         return this.asyncClient.beginGetRouteMatrix(options, context).getSyncPoller();
     }
 
@@ -228,8 +228,7 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteDirections> getRouteDirectionsWithResponse(
-            RouteDirectionsOptions options, Context context) {
+    public Response<RouteDirections> getRouteDirectionsWithResponse(RouteDirectionsOptions options, Context context) {
         return this.asyncClient.getRouteDirectionsWithContextWithResponse(options, context).block();
     }
 
@@ -284,8 +283,7 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RouteDirections getRouteDirections(
-            RouteDirectionsOptions options, RouteDirectionsParameters parameters) {
+    public RouteDirections getRouteDirections(RouteDirectionsOptions options, RouteDirectionsParameters parameters) {
         return this.asyncClient.getRouteDirections(options, parameters).block();
     }
 
@@ -341,10 +339,9 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteDirections> getRouteDirectionsWithResponse(
-            RouteDirectionsOptions options, RouteDirectionsParameters parameters, Context context) {
-        return this.asyncClient.getRouteDirectionsWithParametersWithResponse(
-            options, parameters, context).block();
+    public Response<RouteDirections> getRouteDirectionsWithResponse(RouteDirectionsOptions options,
+        RouteDirectionsParameters parameters, Context context) {
+        return this.asyncClient.getRouteDirectionsWithParametersWithResponse(options, parameters, context).block();
     }
 
     /**
@@ -352,7 +349,7 @@ public final class MapsRouteClient {
      * <!-- src_embed com.azure.maps.search.sync.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * client.getRouteRange&#40;rangeOptions&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.sync.route_range -->
@@ -373,7 +370,7 @@ public final class MapsRouteClient {
      * <!-- src_embed com.azure.maps.search.sync.route_range -->
      * <pre>
      * System.out.println&#40;&quot;Get route range&quot;&#41;;
-     * RouteRangeOptions rangeOptions = new RouteRangeOptions&#40;new GeoPosition&#40;5.86605, 50.97452&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
+     * RouteRangeOptions rangeOptions = new RouteRangeOptions&#40;new GeoPosition&#40;50.97452, 5.86605&#41;, Duration.ofSeconds&#40;6000&#41;&#41;;
      * client.getRouteRange&#40;rangeOptions&#41;;
      * </pre>
      * <!-- end com.azure.maps.search.sync.route_range -->
@@ -386,8 +383,7 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Range call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RouteRangeResult> getRouteRangeWithResponse(
-            RouteRangeOptions options, Context context) {
+    public Response<RouteRangeResult> getRouteRangeWithResponse(RouteRangeOptions options, Context context) {
         return this.asyncClient.getRouteRangeWithResponse(options, context).block();
     }
 
@@ -432,7 +428,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
+    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult>
+        beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList) {
         return this.beginRequestRouteDirectionsBatch(optionsList, null);
     }
 
@@ -478,9 +475,9 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
-        return this.asyncClient
-            .beginRequestRouteDirectionsBatch(optionsList, context).getSyncPoller();
+    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult>
+        beginRequestRouteDirectionsBatch(List<RouteDirectionsOptions> optionsList, Context context) {
+        return this.asyncClient.beginRequestRouteDirectionsBatch(optionsList, context).getSyncPoller();
     }
 
     /**
@@ -493,8 +490,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(
-            String batchId) {
+    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult>
+        beginGetRouteDirectionsBatch(String batchId) {
         return this.beginGetRouteDirectionsBatch(batchId, null);
     }
 
@@ -509,8 +506,8 @@ public final class MapsRouteClient {
      * @return this object is returned from a successful Route Directions call.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult> beginGetRouteDirectionsBatch(
-            String batchId, Context context) {
+    public SyncPoller<RouteDirectionsBatchResult, RouteDirectionsBatchResult>
+        beginGetRouteDirectionsBatch(String batchId, Context context) {
         return this.asyncClient.beginGetRouteDirectionsBatch(batchId, context).getSyncPoller();
     }
 }

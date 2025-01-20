@@ -7,39 +7,62 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.eventgrid.models.EventTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.IdentityInfo;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicActivationState;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicProvisioningState;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-/** Event Grid Partner Topic. */
+/**
+ * Event Grid Partner Topic.
+ */
 @Fluent
 public final class PartnerTopicInner extends Resource {
     /*
      * Properties of the Partner Topic.
      */
-    @JsonProperty(value = "properties")
     private PartnerTopicProperties innerProperties;
 
     /*
      * The system metadata relating to Partner Topic resource.
      */
-    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
     /*
      * Identity information for the Partner Topic resource.
      */
-    @JsonProperty(value = "identity")
     private IdentityInfo identity;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of PartnerTopicInner class.
+     */
+    public PartnerTopicInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Partner Topic.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PartnerTopicProperties innerProperties() {
@@ -48,7 +71,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the systemData property: The system metadata relating to Partner Topic resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -57,7 +80,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the identity property: Identity information for the Partner Topic resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityInfo identity() {
@@ -66,7 +89,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the identity property: Identity information for the Partner Topic resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -75,14 +98,48 @@ public final class PartnerTopicInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartnerTopicInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PartnerTopicInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +148,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     *
+     * 
      * @return the partnerRegistrationImmutableId value.
      */
     public UUID partnerRegistrationImmutableId() {
@@ -100,7 +157,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the partnerRegistrationImmutableId property: The immutableId of the corresponding partner registration.
-     *
+     * 
      * @param partnerRegistrationImmutableId the partnerRegistrationImmutableId value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -114,7 +171,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the source property: Source associated with this partner topic. This represents a unique partner resource.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -123,7 +180,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the source property: Source associated with this partner topic. This represents a unique partner resource.
-     *
+     * 
      * @param source the source value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -137,7 +194,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the eventTypeInfo property: Event Type information from the corresponding event channel.
-     *
+     * 
      * @return the eventTypeInfo value.
      */
     public EventTypeInfo eventTypeInfo() {
@@ -146,7 +203,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the eventTypeInfo property: Event Type information from the corresponding event channel.
-     *
+     * 
      * @param eventTypeInfo the eventTypeInfo value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -160,8 +217,9 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
-     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
-     *
+     * while the partner topic is still never activated,
+     * the partner topic and corresponding event channel are deleted.
+     * 
      * @return the expirationTimeIfNotActivatedUtc value.
      */
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
@@ -170,8 +228,9 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the partner topic. If this timer expires
-     * while the partner topic is still never activated, the partner topic and corresponding event channel are deleted.
-     *
+     * while the partner topic is still never activated,
+     * the partner topic and corresponding event channel are deleted.
+     * 
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -185,7 +244,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner topic.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PartnerTopicProvisioningState provisioningState() {
@@ -194,7 +253,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the activationState property: Activation state of the partner topic.
-     *
+     * 
      * @return the activationState value.
      */
     public PartnerTopicActivationState activationState() {
@@ -203,7 +262,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the activationState property: Activation state of the partner topic.
-     *
+     * 
      * @param activationState the activationState value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -217,9 +276,9 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Get the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
-     * ambiguity of the origin of creation of the partner topic for the customer.
-     *
+     * publisher/partner to show custom description for the customer partner topic.
+     * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
+     * 
      * @return the partnerTopicFriendlyDescription value.
      */
     public String partnerTopicFriendlyDescription() {
@@ -228,9 +287,9 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Set the partnerTopicFriendlyDescription property: Friendly description about the topic. This can be set by the
-     * publisher/partner to show custom description for the customer partner topic. This will be helpful to remove any
-     * ambiguity of the origin of creation of the partner topic for the customer.
-     *
+     * publisher/partner to show custom description for the customer partner topic.
+     * This will be helpful to remove any ambiguity of the origin of creation of the partner topic for the customer.
+     * 
      * @param partnerTopicFriendlyDescription the partnerTopicFriendlyDescription value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -245,7 +304,7 @@ public final class PartnerTopicInner extends Resource {
     /**
      * Get the messageForActivation property: Context or helpful message that can be used during the approval process by
      * the subscriber.
-     *
+     * 
      * @return the messageForActivation value.
      */
     public String messageForActivation() {
@@ -255,7 +314,7 @@ public final class PartnerTopicInner extends Resource {
     /**
      * Set the messageForActivation property: Context or helpful message that can be used during the approval process by
      * the subscriber.
-     *
+     * 
      * @param messageForActivation the messageForActivation value to set.
      * @return the PartnerTopicInner object itself.
      */
@@ -269,7 +328,7 @@ public final class PartnerTopicInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -279,5 +338,60 @@ public final class PartnerTopicInner extends Resource {
         if (identity() != null) {
             identity().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeJsonField("identity", this.identity);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PartnerTopicInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PartnerTopicInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the PartnerTopicInner.
+     */
+    public static PartnerTopicInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PartnerTopicInner deserializedPartnerTopicInner = new PartnerTopicInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedPartnerTopicInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedPartnerTopicInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedPartnerTopicInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedPartnerTopicInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedPartnerTopicInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedPartnerTopicInner.innerProperties = PartnerTopicProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedPartnerTopicInner.systemData = SystemData.fromJson(reader);
+                } else if ("identity".equals(fieldName)) {
+                    deserializedPartnerTopicInner.identity = IdentityInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPartnerTopicInner;
+        });
     }
 }

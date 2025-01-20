@@ -5,29 +5,86 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** A snapshot of a web app configuration. */
+/**
+ * A snapshot of a web app configuration.
+ */
 @Fluent
 public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
     /*
      * SiteConfigurationSnapshotInfo resource specific properties
      */
-    @JsonProperty(value = "properties")
     private SiteConfigurationSnapshotInfoProperties innerProperties;
+
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of SiteConfigurationSnapshotInfoInner class.
+     */
+    public SiteConfigurationSnapshotInfoInner() {
+    }
 
     /**
      * Get the innerProperties property: SiteConfigurationSnapshotInfo resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SiteConfigurationSnapshotInfoProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SiteConfigurationSnapshotInfoInner withKind(String kind) {
         super.withKind(kind);
@@ -36,7 +93,7 @@ public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource 
 
     /**
      * Get the time property: The time the snapshot was taken.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -45,7 +102,7 @@ public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource 
 
     /**
      * Get the snapshotId property: The id of the snapshot.
-     *
+     * 
      * @return the snapshotId value.
      */
     public Integer snapshotId() {
@@ -54,14 +111,61 @@ public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", kind());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SiteConfigurationSnapshotInfoInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SiteConfigurationSnapshotInfoInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SiteConfigurationSnapshotInfoInner.
+     */
+    public static SiteConfigurationSnapshotInfoInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SiteConfigurationSnapshotInfoInner deserializedSiteConfigurationSnapshotInfoInner
+                = new SiteConfigurationSnapshotInfoInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSiteConfigurationSnapshotInfoInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedSiteConfigurationSnapshotInfoInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedSiteConfigurationSnapshotInfoInner.type = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    deserializedSiteConfigurationSnapshotInfoInner.withKind(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedSiteConfigurationSnapshotInfoInner.innerProperties
+                        = SiteConfigurationSnapshotInfoProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSiteConfigurationSnapshotInfoInner;
+        });
     }
 }

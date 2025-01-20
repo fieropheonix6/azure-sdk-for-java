@@ -11,7 +11,7 @@ import java.time.OffsetDateTime;
 import java.util.Locale;
 
 /**
- * The {@link TextAnalyticsActionResult} model.
+ * The {@code TextAnalyticsActionResult} model.
  */
 @Immutable
 public class TextAnalyticsActionResult {
@@ -23,8 +23,8 @@ public class TextAnalyticsActionResult {
     private boolean isError;
 
     static {
-        TextAnalyticsActionResultPropertiesHelper.setAccessor(
-            new TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor() {
+        TextAnalyticsActionResultPropertiesHelper
+            .setAccessor(new TextAnalyticsActionResultPropertiesHelper.TextAnalyticsActionResultAccessor() {
                 @Override
                 public void setActionName(TextAnalyticsActionResult actionResult, String actionName) {
                     actionResult.setActionName(actionName);
@@ -45,6 +45,12 @@ public class TextAnalyticsActionResult {
                     actionResult.setIsError(isError);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code TextAnalyticsActionResult} model.
+     */
+    public TextAnalyticsActionResult() {
     }
 
     /**
@@ -104,11 +110,9 @@ public class TextAnalyticsActionResult {
      */
     void throwExceptionIfError() {
         if (this.isError()) {
-            throw logger.logExceptionAsError(new TextAnalyticsException(
-                String.format(Locale.ROOT,
-                    "Error in accessing the property on action result, when %s returned with an error: %s",
-                    this.getClass().getSimpleName(), this.error.getMessage()),
-                this.error.getErrorCode(), null));
+            throw logger.logExceptionAsError(new TextAnalyticsException(String.format(Locale.ROOT,
+                "Error in accessing the property on action result, when %s returned with an error: %s",
+                this.getClass().getSimpleName(), this.error.getMessage()), this.error.getErrorCode(), null));
         }
     }
 }

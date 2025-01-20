@@ -6,43 +6,47 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Structure of command payload. */
+/**
+ * Structure of command payload.
+ */
 @Fluent
-public final class DataFlowDebugCommandPayload {
+public final class DataFlowDebugCommandPayload implements JsonSerializable<DataFlowDebugCommandPayload> {
     /*
      * The stream name which is used for preview.
      */
-    @JsonProperty(value = "streamName", required = true)
     private String streamName;
 
     /*
      * Row limits for preview response.
      */
-    @JsonProperty(value = "rowLimits")
     private Integer rowLimits;
 
     /*
      * Array of column names.
      */
-    @JsonProperty(value = "columns")
     private List<String> columns;
 
     /*
      * The expression which is used for preview.
      */
-    @JsonProperty(value = "expression")
     private String expression;
 
-    /** Creates an instance of DataFlowDebugCommandPayload class. */
+    /**
+     * Creates an instance of DataFlowDebugCommandPayload class.
+     */
     public DataFlowDebugCommandPayload() {
     }
 
     /**
      * Get the streamName property: The stream name which is used for preview.
-     *
+     * 
      * @return the streamName value.
      */
     public String streamName() {
@@ -51,7 +55,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Set the streamName property: The stream name which is used for preview.
-     *
+     * 
      * @param streamName the streamName value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
@@ -62,7 +66,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Get the rowLimits property: Row limits for preview response.
-     *
+     * 
      * @return the rowLimits value.
      */
     public Integer rowLimits() {
@@ -71,7 +75,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Set the rowLimits property: Row limits for preview response.
-     *
+     * 
      * @param rowLimits the rowLimits value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
@@ -82,7 +86,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Get the columns property: Array of column names.
-     *
+     * 
      * @return the columns value.
      */
     public List<String> columns() {
@@ -91,7 +95,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Set the columns property: Array of column names.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
@@ -102,7 +106,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Get the expression property: The expression which is used for preview.
-     *
+     * 
      * @return the expression value.
      */
     public String expression() {
@@ -111,7 +115,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Set the expression property: The expression which is used for preview.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
@@ -122,17 +126,63 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (streamName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property streamName in model DataFlowDebugCommandPayload"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property streamName in model DataFlowDebugCommandPayload"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DataFlowDebugCommandPayload.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("streamName", this.streamName);
+        jsonWriter.writeNumberField("rowLimits", this.rowLimits);
+        jsonWriter.writeArrayField("columns", this.columns, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("expression", this.expression);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DataFlowDebugCommandPayload from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DataFlowDebugCommandPayload if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DataFlowDebugCommandPayload.
+     */
+    public static DataFlowDebugCommandPayload fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DataFlowDebugCommandPayload deserializedDataFlowDebugCommandPayload = new DataFlowDebugCommandPayload();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("streamName".equals(fieldName)) {
+                    deserializedDataFlowDebugCommandPayload.streamName = reader.getString();
+                } else if ("rowLimits".equals(fieldName)) {
+                    deserializedDataFlowDebugCommandPayload.rowLimits = reader.getNullable(JsonReader::getInt);
+                } else if ("columns".equals(fieldName)) {
+                    List<String> columns = reader.readArray(reader1 -> reader1.getString());
+                    deserializedDataFlowDebugCommandPayload.columns = columns;
+                } else if ("expression".equals(fieldName)) {
+                    deserializedDataFlowDebugCommandPayload.expression = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDataFlowDebugCommandPayload;
+        });
+    }
 }

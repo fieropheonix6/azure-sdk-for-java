@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for VirtualMachineRunCommands Get. */
+/**
+ * Samples for VirtualMachineRunCommands Get.
+ */
 public final class VirtualMachineRunCommandsGetSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/RunCommand_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/runCommandExamples/
+     * RunCommand_Get.json
      */
     /**
      * Sample code: VirtualMachineRunCommandGet.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void virtualMachineRunCommandGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getVirtualMachineRunCommands()
-            .getWithResponse("SoutheastAsia", "RunPowerShellScript", Context.NONE);
+            .getWithResponse("SoutheastAsia", "RunPowerShellScript", com.azure.core.util.Context.NONE);
     }
 }

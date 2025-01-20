@@ -5,64 +5,99 @@
 package com.azure.resourcemanager.connectedvmware.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.connectedvmware.models.ProvisioningState;
 import com.azure.resourcemanager.connectedvmware.models.ResourceStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 
-/** Defines the resource properties. */
+/**
+ * Describes the properties of a Host.
+ */
 @Fluent
-public final class HostProperties {
+public final class HostProperties implements JsonSerializable<HostProperties> {
     /*
      * Gets or sets a unique identifier for this resource.
      */
-    @JsonProperty(value = "uuid", access = JsonProperty.Access.WRITE_ONLY)
     private String uuid;
 
     /*
      * Gets or sets the ARM Id of the vCenter resource in which this host resides.
      */
-    @JsonProperty(value = "vCenterId")
     private String vCenterId;
 
     /*
      * Gets or sets the vCenter MoRef (Managed Object Reference) ID for the host.
      */
-    @JsonProperty(value = "moRefId")
     private String moRefId;
 
     /*
      * Gets or sets the inventory Item ID for the host.
      */
-    @JsonProperty(value = "inventoryItemId")
     private String inventoryItemId;
 
     /*
      * Gets or sets the vCenter Managed Object name for the host.
      */
-    @JsonProperty(value = "moName", access = JsonProperty.Access.WRITE_ONLY)
     private String moName;
 
     /*
      * The resource status information.
      */
-    @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceStatus> statuses;
 
     /*
      * Gets the name of the corresponding resource in Kubernetes.
      */
-    @JsonProperty(value = "customResourceName", access = JsonProperty.Access.WRITE_ONLY)
     private String customResourceName;
 
     /*
-     * Gets or sets the provisioning state.
+     * Gets the used physical memory on the host in GB.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private Long overallMemoryUsageGB;
+
+    /*
+     * Gets the total amount of physical memory on the host in GB.
+     */
+    private Long memorySizeGB;
+
+    /*
+     * Gets the used CPU usage across all cores in MHz.
+     */
+    private Long overallCpuUsageMHz;
+
+    /*
+     * Gets the max CPU usage across all cores in MHz.
+     */
+    private Long cpuMhz;
+
+    /*
+     * Gets the datastore ARM ids.
+     */
+    private List<String> datastoreIds;
+
+    /*
+     * Gets the network ARM ids.
+     */
+    private List<String> networkIds;
+
+    /*
+     * Gets the provisioning state.
+     */
+    private ProvisioningState provisioningState;
+
+    /**
+     * Creates an instance of HostProperties class.
+     */
+    public HostProperties() {
+    }
 
     /**
      * Get the uuid property: Gets or sets a unique identifier for this resource.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -71,7 +106,7 @@ public final class HostProperties {
 
     /**
      * Get the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this host resides.
-     *
+     * 
      * @return the vCenterId value.
      */
     public String vCenterId() {
@@ -80,7 +115,7 @@ public final class HostProperties {
 
     /**
      * Set the vCenterId property: Gets or sets the ARM Id of the vCenter resource in which this host resides.
-     *
+     * 
      * @param vCenterId the vCenterId value to set.
      * @return the HostProperties object itself.
      */
@@ -91,7 +126,7 @@ public final class HostProperties {
 
     /**
      * Get the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the host.
-     *
+     * 
      * @return the moRefId value.
      */
     public String moRefId() {
@@ -100,7 +135,7 @@ public final class HostProperties {
 
     /**
      * Set the moRefId property: Gets or sets the vCenter MoRef (Managed Object Reference) ID for the host.
-     *
+     * 
      * @param moRefId the moRefId value to set.
      * @return the HostProperties object itself.
      */
@@ -111,7 +146,7 @@ public final class HostProperties {
 
     /**
      * Get the inventoryItemId property: Gets or sets the inventory Item ID for the host.
-     *
+     * 
      * @return the inventoryItemId value.
      */
     public String inventoryItemId() {
@@ -120,7 +155,7 @@ public final class HostProperties {
 
     /**
      * Set the inventoryItemId property: Gets or sets the inventory Item ID for the host.
-     *
+     * 
      * @param inventoryItemId the inventoryItemId value to set.
      * @return the HostProperties object itself.
      */
@@ -131,7 +166,7 @@ public final class HostProperties {
 
     /**
      * Get the moName property: Gets or sets the vCenter Managed Object name for the host.
-     *
+     * 
      * @return the moName value.
      */
     public String moName() {
@@ -140,7 +175,7 @@ public final class HostProperties {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceStatus> statuses() {
@@ -149,7 +184,7 @@ public final class HostProperties {
 
     /**
      * Get the customResourceName property: Gets the name of the corresponding resource in Kubernetes.
-     *
+     * 
      * @return the customResourceName value.
      */
     public String customResourceName() {
@@ -157,22 +192,143 @@ public final class HostProperties {
     }
 
     /**
-     * Get the provisioningState property: Gets or sets the provisioning state.
-     *
+     * Get the overallMemoryUsageGB property: Gets the used physical memory on the host in GB.
+     * 
+     * @return the overallMemoryUsageGB value.
+     */
+    public Long overallMemoryUsageGB() {
+        return this.overallMemoryUsageGB;
+    }
+
+    /**
+     * Get the memorySizeGB property: Gets the total amount of physical memory on the host in GB.
+     * 
+     * @return the memorySizeGB value.
+     */
+    public Long memorySizeGB() {
+        return this.memorySizeGB;
+    }
+
+    /**
+     * Get the overallCpuUsageMHz property: Gets the used CPU usage across all cores in MHz.
+     * 
+     * @return the overallCpuUsageMHz value.
+     */
+    public Long overallCpuUsageMHz() {
+        return this.overallCpuUsageMHz;
+    }
+
+    /**
+     * Get the cpuMhz property: Gets the max CPU usage across all cores in MHz.
+     * 
+     * @return the cpuMhz value.
+     */
+    public Long cpuMhz() {
+        return this.cpuMhz;
+    }
+
+    /**
+     * Get the datastoreIds property: Gets the datastore ARM ids.
+     * 
+     * @return the datastoreIds value.
+     */
+    public List<String> datastoreIds() {
+        return this.datastoreIds;
+    }
+
+    /**
+     * Get the networkIds property: Gets the network ARM ids.
+     * 
+     * @return the networkIds value.
+     */
+    public List<String> networkIds() {
+        return this.networkIds;
+    }
+
+    /**
+     * Get the provisioningState property: Gets the provisioning state.
+     * 
      * @return the provisioningState value.
      */
-    public String provisioningState() {
+    public ProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (statuses() != null) {
             statuses().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("vCenterId", this.vCenterId);
+        jsonWriter.writeStringField("moRefId", this.moRefId);
+        jsonWriter.writeStringField("inventoryItemId", this.inventoryItemId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HostProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HostProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HostProperties.
+     */
+    public static HostProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HostProperties deserializedHostProperties = new HostProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uuid".equals(fieldName)) {
+                    deserializedHostProperties.uuid = reader.getString();
+                } else if ("vCenterId".equals(fieldName)) {
+                    deserializedHostProperties.vCenterId = reader.getString();
+                } else if ("moRefId".equals(fieldName)) {
+                    deserializedHostProperties.moRefId = reader.getString();
+                } else if ("inventoryItemId".equals(fieldName)) {
+                    deserializedHostProperties.inventoryItemId = reader.getString();
+                } else if ("moName".equals(fieldName)) {
+                    deserializedHostProperties.moName = reader.getString();
+                } else if ("statuses".equals(fieldName)) {
+                    List<ResourceStatus> statuses = reader.readArray(reader1 -> ResourceStatus.fromJson(reader1));
+                    deserializedHostProperties.statuses = statuses;
+                } else if ("customResourceName".equals(fieldName)) {
+                    deserializedHostProperties.customResourceName = reader.getString();
+                } else if ("overallMemoryUsageGB".equals(fieldName)) {
+                    deserializedHostProperties.overallMemoryUsageGB = reader.getNullable(JsonReader::getLong);
+                } else if ("memorySizeGB".equals(fieldName)) {
+                    deserializedHostProperties.memorySizeGB = reader.getNullable(JsonReader::getLong);
+                } else if ("overallCpuUsageMHz".equals(fieldName)) {
+                    deserializedHostProperties.overallCpuUsageMHz = reader.getNullable(JsonReader::getLong);
+                } else if ("cpuMhz".equals(fieldName)) {
+                    deserializedHostProperties.cpuMhz = reader.getNullable(JsonReader::getLong);
+                } else if ("datastoreIds".equals(fieldName)) {
+                    List<String> datastoreIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHostProperties.datastoreIds = datastoreIds;
+                } else if ("networkIds".equals(fieldName)) {
+                    List<String> networkIds = reader.readArray(reader1 -> reader1.getString());
+                    deserializedHostProperties.networkIds = networkIds;
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedHostProperties.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHostProperties;
+        });
     }
 }

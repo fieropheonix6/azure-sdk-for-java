@@ -5,85 +5,82 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.BastionConnectProtocol;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The session detail for a target. */
+/**
+ * The session detail for a target.
+ */
 @Immutable
-public final class BastionActiveSessionInner {
+public final class BastionActiveSessionInner implements JsonSerializable<BastionActiveSessionInner> {
     /*
      * A unique id for the session.
      */
-    @JsonProperty(value = "sessionId", access = JsonProperty.Access.WRITE_ONLY)
     private String sessionId;
 
     /*
      * The time when the session started.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private Object startTime;
 
     /*
      * The subscription id for the target virtual machine.
      */
-    @JsonProperty(value = "targetSubscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetSubscriptionId;
 
     /*
      * The type of the resource.
      */
-    @JsonProperty(value = "resourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceType;
 
     /*
      * The host name of the target.
      */
-    @JsonProperty(value = "targetHostName", access = JsonProperty.Access.WRITE_ONLY)
     private String targetHostname;
 
     /*
      * The resource group of the target.
      */
-    @JsonProperty(value = "targetResourceGroup", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceGroup;
 
     /*
      * The user name who is active on this session.
      */
-    @JsonProperty(value = "userName", access = JsonProperty.Access.WRITE_ONLY)
     private String username;
 
     /*
      * The IP Address of the target.
      */
-    @JsonProperty(value = "targetIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String targetIpAddress;
 
     /*
      * The protocol used to connect to the target.
      */
-    @JsonProperty(value = "protocol", access = JsonProperty.Access.WRITE_ONLY)
     private BastionConnectProtocol protocol;
 
     /*
      * The resource id of the target.
      */
-    @JsonProperty(value = "targetResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String targetResourceId;
 
     /*
      * Duration in mins the session has been active.
      */
-    @JsonProperty(value = "sessionDurationInMins", access = JsonProperty.Access.WRITE_ONLY)
     private Float sessionDurationInMins;
 
-    /** Creates an instance of BastionActiveSessionInner class. */
+    /**
+     * Creates an instance of BastionActiveSessionInner class.
+     */
     public BastionActiveSessionInner() {
     }
 
     /**
      * Get the sessionId property: A unique id for the session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -92,7 +89,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the startTime property: The time when the session started.
-     *
+     * 
      * @return the startTime value.
      */
     public Object startTime() {
@@ -101,7 +98,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetSubscriptionId property: The subscription id for the target virtual machine.
-     *
+     * 
      * @return the targetSubscriptionId value.
      */
     public String targetSubscriptionId() {
@@ -110,7 +107,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the resourceType property: The type of the resource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -119,7 +116,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetHostname property: The host name of the target.
-     *
+     * 
      * @return the targetHostname value.
      */
     public String targetHostname() {
@@ -128,7 +125,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetResourceGroup property: The resource group of the target.
-     *
+     * 
      * @return the targetResourceGroup value.
      */
     public String targetResourceGroup() {
@@ -137,7 +134,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the username property: The user name who is active on this session.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -146,7 +143,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetIpAddress property: The IP Address of the target.
-     *
+     * 
      * @return the targetIpAddress value.
      */
     public String targetIpAddress() {
@@ -155,7 +152,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the protocol property: The protocol used to connect to the target.
-     *
+     * 
      * @return the protocol value.
      */
     public BastionConnectProtocol protocol() {
@@ -164,7 +161,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the targetResourceId property: The resource id of the target.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -173,7 +170,7 @@ public final class BastionActiveSessionInner {
 
     /**
      * Get the sessionDurationInMins property: Duration in mins the session has been active.
-     *
+     * 
      * @return the sessionDurationInMins value.
      */
     public Float sessionDurationInMins() {
@@ -182,9 +179,66 @@ public final class BastionActiveSessionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BastionActiveSessionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BastionActiveSessionInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BastionActiveSessionInner.
+     */
+    public static BastionActiveSessionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BastionActiveSessionInner deserializedBastionActiveSessionInner = new BastionActiveSessionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sessionId".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.sessionId = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.startTime = reader.readUntyped();
+                } else if ("targetSubscriptionId".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.targetSubscriptionId = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.resourceType = reader.getString();
+                } else if ("targetHostName".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.targetHostname = reader.getString();
+                } else if ("targetResourceGroup".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.targetResourceGroup = reader.getString();
+                } else if ("userName".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.username = reader.getString();
+                } else if ("targetIpAddress".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.targetIpAddress = reader.getString();
+                } else if ("protocol".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.protocol
+                        = BastionConnectProtocol.fromString(reader.getString());
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.targetResourceId = reader.getString();
+                } else if ("sessionDurationInMins".equals(fieldName)) {
+                    deserializedBastionActiveSessionInner.sessionDurationInMins
+                        = reader.getNullable(JsonReader::getFloat);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBastionActiveSessionInner;
+        });
     }
 }

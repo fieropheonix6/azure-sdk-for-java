@@ -5,26 +5,36 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Set of data with rendering instructions. */
+/**
+ * Set of data with rendering instructions.
+ */
 @Fluent
-public final class DiagnosticData {
+public final class DiagnosticData implements JsonSerializable<DiagnosticData> {
     /*
      * Data in table form
      */
-    @JsonProperty(value = "table")
     private DataTableResponseObject table;
 
     /*
      * Properties that describe how the table should be rendered
      */
-    @JsonProperty(value = "renderingProperties")
     private Rendering renderingProperties;
 
     /**
+     * Creates an instance of DiagnosticData class.
+     */
+    public DiagnosticData() {
+    }
+
+    /**
      * Get the table property: Data in table form.
-     *
+     * 
      * @return the table value.
      */
     public DataTableResponseObject table() {
@@ -33,7 +43,7 @@ public final class DiagnosticData {
 
     /**
      * Set the table property: Data in table form.
-     *
+     * 
      * @param table the table value to set.
      * @return the DiagnosticData object itself.
      */
@@ -44,7 +54,7 @@ public final class DiagnosticData {
 
     /**
      * Get the renderingProperties property: Properties that describe how the table should be rendered.
-     *
+     * 
      * @return the renderingProperties value.
      */
     public Rendering renderingProperties() {
@@ -53,7 +63,7 @@ public final class DiagnosticData {
 
     /**
      * Set the renderingProperties property: Properties that describe how the table should be rendered.
-     *
+     * 
      * @param renderingProperties the renderingProperties value to set.
      * @return the DiagnosticData object itself.
      */
@@ -64,7 +74,7 @@ public final class DiagnosticData {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -74,5 +84,44 @@ public final class DiagnosticData {
         if (renderingProperties() != null) {
             renderingProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("table", this.table);
+        jsonWriter.writeJsonField("renderingProperties", this.renderingProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DiagnosticData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DiagnosticData if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DiagnosticData.
+     */
+    public static DiagnosticData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DiagnosticData deserializedDiagnosticData = new DiagnosticData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("table".equals(fieldName)) {
+                    deserializedDiagnosticData.table = DataTableResponseObject.fromJson(reader);
+                } else if ("renderingProperties".equals(fieldName)) {
+                    deserializedDiagnosticData.renderingProperties = Rendering.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDiagnosticData;
+        });
     }
 }

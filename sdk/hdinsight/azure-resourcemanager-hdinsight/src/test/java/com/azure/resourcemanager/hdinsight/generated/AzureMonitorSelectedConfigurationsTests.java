@@ -11,38 +11,34 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class AzureMonitorSelectedConfigurationsTests {
-    @Test
-    public void testDeserialize() {
-        AzureMonitorSelectedConfigurations model =
-            BinaryData
-                .fromString(
-                    "{\"configurationVersion\":\"kixrj\",\"globalConfigurations\":{\"frl\":\"rgz\",\"jylwbtlhflsj\":\"zszrnwoiindfpw\"},\"tableList\":[{\"name\":\"zfjvfbgofe\"},{\"name\":\"a\"}]}")
-                .toObject(AzureMonitorSelectedConfigurations.class);
-        Assertions.assertEquals("kixrj", model.configurationVersion());
-        Assertions.assertEquals("rgz", model.globalConfigurations().get("frl"));
-        Assertions.assertEquals("zfjvfbgofe", model.tableList().get(0).name());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        AzureMonitorSelectedConfigurations model = BinaryData.fromString(
+            "{\"configurationVersion\":\"odlqiyntor\",\"globalConfigurations\":{\"yzrpzbchckqqzq\":\"leosjswsrms\",\"ysuiizynkedya\":\"ox\"},\"tableList\":[{\"name\":\"hqmibzyhwit\"},{\"name\":\"ypyynpcdpumnzg\"},{\"name\":\"z\"},{\"name\":\"abikns\"}]}")
+            .toObject(AzureMonitorSelectedConfigurations.class);
+        Assertions.assertEquals("odlqiyntor", model.configurationVersion());
+        Assertions.assertEquals("leosjswsrms", model.globalConfigurations().get("yzrpzbchckqqzq"));
+        Assertions.assertEquals("hqmibzyhwit", model.tableList().get(0).name());
     }
 
-    @Test
-    public void testSerialize() {
-        AzureMonitorSelectedConfigurations model =
-            new AzureMonitorSelectedConfigurations()
-                .withConfigurationVersion("kixrj")
-                .withGlobalConfigurations(mapOf("frl", "rgz", "jylwbtlhflsj", "zszrnwoiindfpw"))
-                .withTableList(
-                    Arrays
-                        .asList(
-                            new AzureMonitorTableConfiguration().withName("zfjvfbgofe"),
-                            new AzureMonitorTableConfiguration().withName("a")));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        AzureMonitorSelectedConfigurations model
+            = new AzureMonitorSelectedConfigurations().withConfigurationVersion("odlqiyntor")
+                .withGlobalConfigurations(mapOf("yzrpzbchckqqzq", "leosjswsrms", "ysuiizynkedya", "ox"))
+                .withTableList(Arrays.asList(new AzureMonitorTableConfiguration().withName("hqmibzyhwit"),
+                    new AzureMonitorTableConfiguration().withName("ypyynpcdpumnzg"),
+                    new AzureMonitorTableConfiguration().withName("z"),
+                    new AzureMonitorTableConfiguration().withName("abikns")));
         model = BinaryData.fromObject(model).toObject(AzureMonitorSelectedConfigurations.class);
-        Assertions.assertEquals("kixrj", model.configurationVersion());
-        Assertions.assertEquals("rgz", model.globalConfigurations().get("frl"));
-        Assertions.assertEquals("zfjvfbgofe", model.tableList().get(0).name());
+        Assertions.assertEquals("odlqiyntor", model.configurationVersion());
+        Assertions.assertEquals("leosjswsrms", model.globalConfigurations().get("yzrpzbchckqqzq"));
+        Assertions.assertEquals("hqmibzyhwit", model.tableList().get(0).name());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -4,24 +4,24 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for AppServiceEnvironments GetByResourceGroup. */
+/**
+ * Samples for AppServiceEnvironments GetByResourceGroup.
+ */
 public final class AppServiceEnvironmentsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/AppServiceEnvironments_Get.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2024-04-01/examples/AppServiceEnvironments_Get.json
      */
     /**
      * Sample code: Get the properties of an App Service Environment.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getThePropertiesOfAnAppServiceEnvironment(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
+        azure.webApps()
             .manager()
             .serviceClient()
             .getAppServiceEnvironments()
-            .getByResourceGroupWithResponse("test-rg", "test-ase", Context.NONE);
+            .getByResourceGroupWithResponse("test-rg", "test-ase", com.azure.core.util.Context.NONE);
     }
 }

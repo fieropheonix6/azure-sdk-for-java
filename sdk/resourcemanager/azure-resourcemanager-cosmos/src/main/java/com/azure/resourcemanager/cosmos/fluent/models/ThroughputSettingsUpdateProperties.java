@@ -6,21 +6,32 @@ package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsResource;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Properties to update Azure Cosmos DB resource throughput. */
+/**
+ * Properties to update Azure Cosmos DB resource throughput.
+ */
 @Fluent
-public final class ThroughputSettingsUpdateProperties {
+public final class ThroughputSettingsUpdateProperties implements JsonSerializable<ThroughputSettingsUpdateProperties> {
     /*
      * The standard JSON format of a resource throughput
      */
-    @JsonProperty(value = "resource", required = true)
     private ThroughputSettingsResource resource;
 
     /**
+     * Creates an instance of ThroughputSettingsUpdateProperties class.
+     */
+    public ThroughputSettingsUpdateProperties() {
+    }
+
+    /**
      * Get the resource property: The standard JSON format of a resource throughput.
-     *
+     * 
      * @return the resource value.
      */
     public ThroughputSettingsResource resource() {
@@ -29,7 +40,7 @@ public final class ThroughputSettingsUpdateProperties {
 
     /**
      * Set the resource property: The standard JSON format of a resource throughput.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ThroughputSettingsUpdateProperties object itself.
      */
@@ -40,19 +51,57 @@ public final class ThroughputSettingsUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model ThroughputSettingsUpdateProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property resource in model ThroughputSettingsUpdateProperties"));
         } else {
             resource().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ThroughputSettingsUpdateProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resource", this.resource);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ThroughputSettingsUpdateProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ThroughputSettingsUpdateProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ThroughputSettingsUpdateProperties.
+     */
+    public static ThroughputSettingsUpdateProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ThroughputSettingsUpdateProperties deserializedThroughputSettingsUpdateProperties
+                = new ThroughputSettingsUpdateProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resource".equals(fieldName)) {
+                    deserializedThroughputSettingsUpdateProperties.resource
+                        = ThroughputSettingsResource.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedThroughputSettingsUpdateProperties;
+        });
+    }
 }

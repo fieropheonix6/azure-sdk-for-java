@@ -5,103 +5,101 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appservice.models.BackupItemStatus;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** BackupItem resource specific properties. */
+/**
+ * BackupItem resource specific properties.
+ */
 @Immutable
-public final class BackupItemProperties {
+public final class BackupItemProperties implements JsonSerializable<BackupItemProperties> {
     /*
      * Id of the backup.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private Integer backupId;
 
     /*
      * SAS URL for the storage account container which contains this backup.
      */
-    @JsonProperty(value = "storageAccountUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String storageAccountUrl;
 
     /*
      * Name of the blob which contains data for this backup.
      */
-    @JsonProperty(value = "blobName", access = JsonProperty.Access.WRITE_ONLY)
     private String blobName;
 
     /*
      * Name of this backup.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * Backup status.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private BackupItemStatus status;
 
     /*
      * Size of the backup in bytes.
      */
-    @JsonProperty(value = "sizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long sizeInBytes;
 
     /*
      * Timestamp of the backup creation.
      */
-    @JsonProperty(value = "created", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime created;
 
     /*
      * Details regarding this backup. Might contain an error message.
      */
-    @JsonProperty(value = "log", access = JsonProperty.Access.WRITE_ONLY)
     private String log;
 
     /*
      * List of databases included in the backup.
      */
-    @JsonProperty(value = "databases", access = JsonProperty.Access.WRITE_ONLY)
     private List<DatabaseBackupSetting> databases;
 
     /*
      * True if this backup has been created due to a schedule being triggered.
      */
-    @JsonProperty(value = "scheduled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean scheduled;
 
     /*
      * Timestamp of a last restore operation which used this backup.
      */
-    @JsonProperty(value = "lastRestoreTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastRestoreTimestamp;
 
     /*
      * Timestamp when this backup finished.
      */
-    @JsonProperty(value = "finishedTimeStamp", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime finishedTimestamp;
 
     /*
-     * Unique correlation identifier. Please use this along with the timestamp
-     * while communicating with Azure support.
+     * Unique correlation identifier. Please use this along with the timestamp while communicating with Azure support.
      */
-    @JsonProperty(value = "correlationId", access = JsonProperty.Access.WRITE_ONLY)
     private String correlationId;
 
     /*
      * Size of the original web app which has been backed up.
      */
-    @JsonProperty(value = "websiteSizeInBytes", access = JsonProperty.Access.WRITE_ONLY)
     private Long websiteSizeInBytes;
 
     /**
+     * Creates an instance of BackupItemProperties class.
+     */
+    public BackupItemProperties() {
+    }
+
+    /**
      * Get the backupId property: Id of the backup.
-     *
+     * 
      * @return the backupId value.
      */
     public Integer backupId() {
@@ -110,7 +108,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the storageAccountUrl property: SAS URL for the storage account container which contains this backup.
-     *
+     * 
      * @return the storageAccountUrl value.
      */
     public String storageAccountUrl() {
@@ -119,7 +117,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the blobName property: Name of the blob which contains data for this backup.
-     *
+     * 
      * @return the blobName value.
      */
     public String blobName() {
@@ -128,7 +126,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the name property: Name of this backup.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -137,7 +135,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the status property: Backup status.
-     *
+     * 
      * @return the status value.
      */
     public BackupItemStatus status() {
@@ -146,7 +144,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the sizeInBytes property: Size of the backup in bytes.
-     *
+     * 
      * @return the sizeInBytes value.
      */
     public Long sizeInBytes() {
@@ -155,7 +153,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the created property: Timestamp of the backup creation.
-     *
+     * 
      * @return the created value.
      */
     public OffsetDateTime created() {
@@ -164,7 +162,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the log property: Details regarding this backup. Might contain an error message.
-     *
+     * 
      * @return the log value.
      */
     public String log() {
@@ -173,7 +171,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the databases property: List of databases included in the backup.
-     *
+     * 
      * @return the databases value.
      */
     public List<DatabaseBackupSetting> databases() {
@@ -182,7 +180,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the scheduled property: True if this backup has been created due to a schedule being triggered.
-     *
+     * 
      * @return the scheduled value.
      */
     public Boolean scheduled() {
@@ -191,7 +189,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the lastRestoreTimestamp property: Timestamp of a last restore operation which used this backup.
-     *
+     * 
      * @return the lastRestoreTimestamp value.
      */
     public OffsetDateTime lastRestoreTimestamp() {
@@ -200,7 +198,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the finishedTimestamp property: Timestamp when this backup finished.
-     *
+     * 
      * @return the finishedTimestamp value.
      */
     public OffsetDateTime finishedTimestamp() {
@@ -210,7 +208,7 @@ public final class BackupItemProperties {
     /**
      * Get the correlationId property: Unique correlation identifier. Please use this along with the timestamp while
      * communicating with Azure support.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -219,7 +217,7 @@ public final class BackupItemProperties {
 
     /**
      * Get the websiteSizeInBytes property: Size of the original web app which has been backed up.
-     *
+     * 
      * @return the websiteSizeInBytes value.
      */
     public Long websiteSizeInBytes() {
@@ -228,12 +226,78 @@ public final class BackupItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (databases() != null) {
             databases().forEach(e -> e.validate());
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupItemProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupItemProperties if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the BackupItemProperties.
+     */
+    public static BackupItemProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupItemProperties deserializedBackupItemProperties = new BackupItemProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedBackupItemProperties.backupId = reader.getNullable(JsonReader::getInt);
+                } else if ("storageAccountUrl".equals(fieldName)) {
+                    deserializedBackupItemProperties.storageAccountUrl = reader.getString();
+                } else if ("blobName".equals(fieldName)) {
+                    deserializedBackupItemProperties.blobName = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedBackupItemProperties.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedBackupItemProperties.status = BackupItemStatus.fromString(reader.getString());
+                } else if ("sizeInBytes".equals(fieldName)) {
+                    deserializedBackupItemProperties.sizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("created".equals(fieldName)) {
+                    deserializedBackupItemProperties.created = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("log".equals(fieldName)) {
+                    deserializedBackupItemProperties.log = reader.getString();
+                } else if ("databases".equals(fieldName)) {
+                    List<DatabaseBackupSetting> databases
+                        = reader.readArray(reader1 -> DatabaseBackupSetting.fromJson(reader1));
+                    deserializedBackupItemProperties.databases = databases;
+                } else if ("scheduled".equals(fieldName)) {
+                    deserializedBackupItemProperties.scheduled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("lastRestoreTimeStamp".equals(fieldName)) {
+                    deserializedBackupItemProperties.lastRestoreTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("finishedTimeStamp".equals(fieldName)) {
+                    deserializedBackupItemProperties.finishedTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("correlationId".equals(fieldName)) {
+                    deserializedBackupItemProperties.correlationId = reader.getString();
+                } else if ("websiteSizeInBytes".equals(fieldName)) {
+                    deserializedBackupItemProperties.websiteSizeInBytes = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupItemProperties;
+        });
     }
 }

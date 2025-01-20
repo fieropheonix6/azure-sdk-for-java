@@ -7,15 +7,30 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.cfg.PackageVersion;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MemberNameConverterImplTests {
+    @Test
+    public void usesReflectionProperly() {
+        if (PackageVersion.VERSION.getMinorVersion() >= 12) {
+            assertTrue(new MemberNameConverterImpl(null).useJackson212,
+                "Jackson 2.12 or later was found on the classpath, expected reflection to be used for member name.");
+        } else {
+            assertFalse(new MemberNameConverterImpl(null).useJackson212,
+                "Jackson 2.11 or earlier was found on the classpath, expected reflection to not be used for member "
+                    + "name.");
+        }
+    }
+
     @Test
     public void fieldsWithJsonProperty() throws NoSuchFieldException {
         final Field publicFieldWithAnnotationAndValue = Foo.class.getDeclaredField("publicFieldWithAnnotationAndValue");
@@ -24,8 +39,10 @@ public class MemberNameConverterImplTests {
 
         MemberNameConverterImpl memberNameConverter = new MemberNameConverterImpl(new ObjectMapper());
 
-        assertEquals("public-field-with-annotation-and-value", memberNameConverter.convertMemberName(publicFieldWithAnnotationAndValue));
-        assertEquals("publicFieldWithAnnotationNoValue", memberNameConverter.convertMemberName(publicFieldWithAnnotationNoValue));
+        assertEquals("public-field-with-annotation-and-value",
+            memberNameConverter.convertMemberName(publicFieldWithAnnotationAndValue));
+        assertEquals("publicFieldWithAnnotationNoValue",
+            memberNameConverter.convertMemberName(publicFieldWithAnnotationNoValue));
         assertNull(memberNameConverter.convertMemberName(privateFieldWithAnnotation));
     }
 
@@ -41,9 +58,12 @@ public class MemberNameConverterImplTests {
 
         MemberNameConverterImpl memberNameConverter = new MemberNameConverterImpl(new ObjectMapper());
 
-        assertEquals("public-getter-with-annotation-and-value", memberNameConverter.convertMemberName(getPublicWithAnnotationAndValue));
-        assertEquals("publicWithAnnotationNoValue", memberNameConverter.convertMemberName(getPublicWithAnnotationNoValue));
-        assertEquals("publicWithAnnotationBoolean", memberNameConverter.convertMemberName(isPublicWithAnnotationBoolean));
+        assertEquals("public-getter-with-annotation-and-value",
+            memberNameConverter.convertMemberName(getPublicWithAnnotationAndValue));
+        assertEquals("publicWithAnnotationNoValue",
+            memberNameConverter.convertMemberName(getPublicWithAnnotationNoValue));
+        assertEquals("publicWithAnnotationBoolean",
+            memberNameConverter.convertMemberName(isPublicWithAnnotationBoolean));
         assertNull(memberNameConverter.convertMemberName(publicWithAnnotationNoPrefix));
         assertNull(memberNameConverter.convertMemberName(isPublicWithAnnotationString));
         assertNull(memberNameConverter.convertMemberName(getPrivateWithAnnotation));

@@ -6,38 +6,51 @@ package com.azure.resourcemanager.workloads.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Gets or sets the database configuration. */
+/**
+ * Gets or sets the database configuration.
+ */
 @Fluent
-public final class DatabaseConfiguration {
+public final class DatabaseConfiguration implements JsonSerializable<DatabaseConfiguration> {
     /*
      * The database type.
      */
-    @JsonProperty(value = "databaseType")
     private SapDatabaseType databaseType;
 
     /*
      * The subnet id.
      */
-    @JsonProperty(value = "subnetId", required = true)
     private String subnetId;
 
     /*
      * Gets or sets the virtual machine configuration.
      */
-    @JsonProperty(value = "virtualMachineConfiguration", required = true)
     private VirtualMachineConfiguration virtualMachineConfiguration;
 
     /*
      * The number of database VMs.
      */
-    @JsonProperty(value = "instanceCount", required = true)
     private long instanceCount;
+
+    /*
+     * Gets or sets the disk configuration.
+     */
+    private DiskConfiguration diskConfiguration;
+
+    /**
+     * Creates an instance of DatabaseConfiguration class.
+     */
+    public DatabaseConfiguration() {
+    }
 
     /**
      * Get the databaseType property: The database type.
-     *
+     * 
      * @return the databaseType value.
      */
     public SapDatabaseType databaseType() {
@@ -46,7 +59,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the databaseType property: The database type.
-     *
+     * 
      * @param databaseType the databaseType value to set.
      * @return the DatabaseConfiguration object itself.
      */
@@ -57,7 +70,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Get the subnetId property: The subnet id.
-     *
+     * 
      * @return the subnetId value.
      */
     public String subnetId() {
@@ -66,7 +79,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the subnetId property: The subnet id.
-     *
+     * 
      * @param subnetId the subnetId value to set.
      * @return the DatabaseConfiguration object itself.
      */
@@ -77,7 +90,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Get the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     *
+     * 
      * @return the virtualMachineConfiguration value.
      */
     public VirtualMachineConfiguration virtualMachineConfiguration() {
@@ -86,19 +99,19 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the virtualMachineConfiguration property: Gets or sets the virtual machine configuration.
-     *
+     * 
      * @param virtualMachineConfiguration the virtualMachineConfiguration value to set.
      * @return the DatabaseConfiguration object itself.
      */
-    public DatabaseConfiguration withVirtualMachineConfiguration(
-        VirtualMachineConfiguration virtualMachineConfiguration) {
+    public DatabaseConfiguration
+        withVirtualMachineConfiguration(VirtualMachineConfiguration virtualMachineConfiguration) {
         this.virtualMachineConfiguration = virtualMachineConfiguration;
         return this;
     }
 
     /**
      * Get the instanceCount property: The number of database VMs.
-     *
+     * 
      * @return the instanceCount value.
      */
     public long instanceCount() {
@@ -107,7 +120,7 @@ public final class DatabaseConfiguration {
 
     /**
      * Set the instanceCount property: The number of database VMs.
-     *
+     * 
      * @param instanceCount the instanceCount value to set.
      * @return the DatabaseConfiguration object itself.
      */
@@ -117,25 +130,96 @@ public final class DatabaseConfiguration {
     }
 
     /**
+     * Get the diskConfiguration property: Gets or sets the disk configuration.
+     * 
+     * @return the diskConfiguration value.
+     */
+    public DiskConfiguration diskConfiguration() {
+        return this.diskConfiguration;
+    }
+
+    /**
+     * Set the diskConfiguration property: Gets or sets the disk configuration.
+     * 
+     * @param diskConfiguration the diskConfiguration value to set.
+     * @return the DatabaseConfiguration object itself.
+     */
+    public DatabaseConfiguration withDiskConfiguration(DiskConfiguration diskConfiguration) {
+        this.diskConfiguration = diskConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (subnetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subnetId in model DatabaseConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property subnetId in model DatabaseConfiguration"));
         }
         if (virtualMachineConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualMachineConfiguration in model DatabaseConfiguration"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property virtualMachineConfiguration in model DatabaseConfiguration"));
         } else {
             virtualMachineConfiguration().validate();
+        }
+        if (diskConfiguration() != null) {
+            diskConfiguration().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(DatabaseConfiguration.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("subnetId", this.subnetId);
+        jsonWriter.writeJsonField("virtualMachineConfiguration", this.virtualMachineConfiguration);
+        jsonWriter.writeLongField("instanceCount", this.instanceCount);
+        jsonWriter.writeStringField("databaseType", this.databaseType == null ? null : this.databaseType.toString());
+        jsonWriter.writeJsonField("diskConfiguration", this.diskConfiguration);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DatabaseConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DatabaseConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the DatabaseConfiguration.
+     */
+    public static DatabaseConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DatabaseConfiguration deserializedDatabaseConfiguration = new DatabaseConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("subnetId".equals(fieldName)) {
+                    deserializedDatabaseConfiguration.subnetId = reader.getString();
+                } else if ("virtualMachineConfiguration".equals(fieldName)) {
+                    deserializedDatabaseConfiguration.virtualMachineConfiguration
+                        = VirtualMachineConfiguration.fromJson(reader);
+                } else if ("instanceCount".equals(fieldName)) {
+                    deserializedDatabaseConfiguration.instanceCount = reader.getLong();
+                } else if ("databaseType".equals(fieldName)) {
+                    deserializedDatabaseConfiguration.databaseType = SapDatabaseType.fromString(reader.getString());
+                } else if ("diskConfiguration".equals(fieldName)) {
+                    deserializedDatabaseConfiguration.diskConfiguration = DiskConfiguration.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDatabaseConfiguration;
+        });
+    }
 }

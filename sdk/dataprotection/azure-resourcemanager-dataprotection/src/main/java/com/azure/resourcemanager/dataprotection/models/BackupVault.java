@@ -6,42 +6,109 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** BackupVault Backup Vault. */
+/**
+ * BackupVault
+ * 
+ * Backup Vault.
+ */
 @Fluent
-public final class BackupVault {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupVault.class);
+public final class BackupVault implements JsonSerializable<BackupVault> {
+    /*
+     * Monitoring Settings
+     */
+    private MonitoringSettings monitoringSettings;
 
     /*
      * Provisioning state of the BackupVault resource
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /*
      * Resource move state for backup vault
      */
-    @JsonProperty(value = "resourceMoveState", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceMoveState resourceMoveState;
 
     /*
      * Resource move details for backup vault
      */
-    @JsonProperty(value = "resourceMoveDetails", access = JsonProperty.Access.WRITE_ONLY)
     private ResourceMoveDetails resourceMoveDetails;
+
+    /*
+     * Security Settings
+     */
+    private SecuritySettings securitySettings;
 
     /*
      * Storage Settings
      */
-    @JsonProperty(value = "storageSettings", required = true)
     private List<StorageSetting> storageSettings;
+
+    /*
+     * Is vault protected by resource guard
+     */
+    private Boolean isVaultProtectedByResourceGuard;
+
+    /*
+     * Feature Settings
+     */
+    private FeatureSettings featureSettings;
+
+    /*
+     * Secure Score of Backup Vault
+     */
+    private SecureScoreLevel secureScore;
+
+    /*
+     * Security Level of Backup Vault
+     */
+    private BcdrSecurityLevel bcdrSecurityLevel;
+
+    /*
+     * ResourceGuardOperationRequests on which LAC check will be performed
+     */
+    private List<String> resourceGuardOperationRequests;
+
+    /*
+     * List of replicated regions for Backup Vault
+     */
+    private List<String> replicatedRegions;
+
+    /**
+     * Creates an instance of BackupVault class.
+     */
+    public BackupVault() {
+    }
+
+    /**
+     * Get the monitoringSettings property: Monitoring Settings.
+     * 
+     * @return the monitoringSettings value.
+     */
+    public MonitoringSettings monitoringSettings() {
+        return this.monitoringSettings;
+    }
+
+    /**
+     * Set the monitoringSettings property: Monitoring Settings.
+     * 
+     * @param monitoringSettings the monitoringSettings value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withMonitoringSettings(MonitoringSettings monitoringSettings) {
+        this.monitoringSettings = monitoringSettings;
+        return this;
+    }
 
     /**
      * Get the provisioningState property: Provisioning state of the BackupVault resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -50,7 +117,7 @@ public final class BackupVault {
 
     /**
      * Get the resourceMoveState property: Resource move state for backup vault.
-     *
+     * 
      * @return the resourceMoveState value.
      */
     public ResourceMoveState resourceMoveState() {
@@ -59,7 +126,7 @@ public final class BackupVault {
 
     /**
      * Get the resourceMoveDetails property: Resource move details for backup vault.
-     *
+     * 
      * @return the resourceMoveDetails value.
      */
     public ResourceMoveDetails resourceMoveDetails() {
@@ -67,8 +134,28 @@ public final class BackupVault {
     }
 
     /**
+     * Get the securitySettings property: Security Settings.
+     * 
+     * @return the securitySettings value.
+     */
+    public SecuritySettings securitySettings() {
+        return this.securitySettings;
+    }
+
+    /**
+     * Set the securitySettings property: Security Settings.
+     * 
+     * @param securitySettings the securitySettings value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withSecuritySettings(SecuritySettings securitySettings) {
+        this.securitySettings = securitySettings;
+        return this;
+    }
+
+    /**
      * Get the storageSettings property: Storage Settings.
-     *
+     * 
      * @return the storageSettings value.
      */
     public List<StorageSetting> storageSettings() {
@@ -77,7 +164,7 @@ public final class BackupVault {
 
     /**
      * Set the storageSettings property: Storage Settings.
-     *
+     * 
      * @param storageSettings the storageSettings value to set.
      * @return the BackupVault object itself.
      */
@@ -87,20 +174,191 @@ public final class BackupVault {
     }
 
     /**
+     * Get the isVaultProtectedByResourceGuard property: Is vault protected by resource guard.
+     * 
+     * @return the isVaultProtectedByResourceGuard value.
+     */
+    public Boolean isVaultProtectedByResourceGuard() {
+        return this.isVaultProtectedByResourceGuard;
+    }
+
+    /**
+     * Get the featureSettings property: Feature Settings.
+     * 
+     * @return the featureSettings value.
+     */
+    public FeatureSettings featureSettings() {
+        return this.featureSettings;
+    }
+
+    /**
+     * Set the featureSettings property: Feature Settings.
+     * 
+     * @param featureSettings the featureSettings value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withFeatureSettings(FeatureSettings featureSettings) {
+        this.featureSettings = featureSettings;
+        return this;
+    }
+
+    /**
+     * Get the secureScore property: Secure Score of Backup Vault.
+     * 
+     * @return the secureScore value.
+     */
+    public SecureScoreLevel secureScore() {
+        return this.secureScore;
+    }
+
+    /**
+     * Get the bcdrSecurityLevel property: Security Level of Backup Vault.
+     * 
+     * @return the bcdrSecurityLevel value.
+     */
+    public BcdrSecurityLevel bcdrSecurityLevel() {
+        return this.bcdrSecurityLevel;
+    }
+
+    /**
+     * Get the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
+     * performed.
+     * 
+     * @return the resourceGuardOperationRequests value.
+     */
+    public List<String> resourceGuardOperationRequests() {
+        return this.resourceGuardOperationRequests;
+    }
+
+    /**
+     * Set the resourceGuardOperationRequests property: ResourceGuardOperationRequests on which LAC check will be
+     * performed.
+     * 
+     * @param resourceGuardOperationRequests the resourceGuardOperationRequests value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
+        this.resourceGuardOperationRequests = resourceGuardOperationRequests;
+        return this;
+    }
+
+    /**
+     * Get the replicatedRegions property: List of replicated regions for Backup Vault.
+     * 
+     * @return the replicatedRegions value.
+     */
+    public List<String> replicatedRegions() {
+        return this.replicatedRegions;
+    }
+
+    /**
+     * Set the replicatedRegions property: List of replicated regions for Backup Vault.
+     * 
+     * @param replicatedRegions the replicatedRegions value to set.
+     * @return the BackupVault object itself.
+     */
+    public BackupVault withReplicatedRegions(List<String> replicatedRegions) {
+        this.replicatedRegions = replicatedRegions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (monitoringSettings() != null) {
+            monitoringSettings().validate();
+        }
         if (resourceMoveDetails() != null) {
             resourceMoveDetails().validate();
         }
+        if (securitySettings() != null) {
+            securitySettings().validate();
+        }
         if (storageSettings() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property storageSettings in model BackupVault"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property storageSettings in model BackupVault"));
         } else {
             storageSettings().forEach(e -> e.validate());
         }
+        if (featureSettings() != null) {
+            featureSettings().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupVault.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("storageSettings", this.storageSettings,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("monitoringSettings", this.monitoringSettings);
+        jsonWriter.writeJsonField("securitySettings", this.securitySettings);
+        jsonWriter.writeJsonField("featureSettings", this.featureSettings);
+        jsonWriter.writeArrayField("resourceGuardOperationRequests", this.resourceGuardOperationRequests,
+            (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("replicatedRegions", this.replicatedRegions,
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of BackupVault from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of BackupVault if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the BackupVault.
+     */
+    public static BackupVault fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            BackupVault deserializedBackupVault = new BackupVault();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("storageSettings".equals(fieldName)) {
+                    List<StorageSetting> storageSettings
+                        = reader.readArray(reader1 -> StorageSetting.fromJson(reader1));
+                    deserializedBackupVault.storageSettings = storageSettings;
+                } else if ("monitoringSettings".equals(fieldName)) {
+                    deserializedBackupVault.monitoringSettings = MonitoringSettings.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedBackupVault.provisioningState = ProvisioningState.fromString(reader.getString());
+                } else if ("resourceMoveState".equals(fieldName)) {
+                    deserializedBackupVault.resourceMoveState = ResourceMoveState.fromString(reader.getString());
+                } else if ("resourceMoveDetails".equals(fieldName)) {
+                    deserializedBackupVault.resourceMoveDetails = ResourceMoveDetails.fromJson(reader);
+                } else if ("securitySettings".equals(fieldName)) {
+                    deserializedBackupVault.securitySettings = SecuritySettings.fromJson(reader);
+                } else if ("isVaultProtectedByResourceGuard".equals(fieldName)) {
+                    deserializedBackupVault.isVaultProtectedByResourceGuard
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("featureSettings".equals(fieldName)) {
+                    deserializedBackupVault.featureSettings = FeatureSettings.fromJson(reader);
+                } else if ("secureScore".equals(fieldName)) {
+                    deserializedBackupVault.secureScore = SecureScoreLevel.fromString(reader.getString());
+                } else if ("bcdrSecurityLevel".equals(fieldName)) {
+                    deserializedBackupVault.bcdrSecurityLevel = BcdrSecurityLevel.fromString(reader.getString());
+                } else if ("resourceGuardOperationRequests".equals(fieldName)) {
+                    List<String> resourceGuardOperationRequests = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackupVault.resourceGuardOperationRequests = resourceGuardOperationRequests;
+                } else if ("replicatedRegions".equals(fieldName)) {
+                    List<String> replicatedRegions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedBackupVault.replicatedRegions = replicatedRegions;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedBackupVault;
+        });
     }
 }

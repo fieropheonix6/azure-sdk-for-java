@@ -5,31 +5,36 @@
 package com.azure.resourcemanager.devtestlabs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties for retargeting a virtual machine schedule. */
+/**
+ * Properties for retargeting a virtual machine schedule.
+ */
 @Fluent
-public final class RetargetScheduleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetargetScheduleProperties.class);
-
+public final class RetargetScheduleProperties implements JsonSerializable<RetargetScheduleProperties> {
     /*
      * The resource Id of the virtual machine on which the schedule operates
      */
-    @JsonProperty(value = "currentResourceId")
     private String currentResourceId;
 
     /*
-     * The resource Id of the virtual machine that the schedule should be
-     * retargeted to
+     * The resource Id of the virtual machine that the schedule should be retargeted to
      */
-    @JsonProperty(value = "targetResourceId")
     private String targetResourceId;
 
     /**
+     * Creates an instance of RetargetScheduleProperties class.
+     */
+    public RetargetScheduleProperties() {
+    }
+
+    /**
      * Get the currentResourceId property: The resource Id of the virtual machine on which the schedule operates.
-     *
+     * 
      * @return the currentResourceId value.
      */
     public String currentResourceId() {
@@ -38,7 +43,7 @@ public final class RetargetScheduleProperties {
 
     /**
      * Set the currentResourceId property: The resource Id of the virtual machine on which the schedule operates.
-     *
+     * 
      * @param currentResourceId the currentResourceId value to set.
      * @return the RetargetScheduleProperties object itself.
      */
@@ -50,7 +55,7 @@ public final class RetargetScheduleProperties {
     /**
      * Get the targetResourceId property: The resource Id of the virtual machine that the schedule should be retargeted
      * to.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -60,7 +65,7 @@ public final class RetargetScheduleProperties {
     /**
      * Set the targetResourceId property: The resource Id of the virtual machine that the schedule should be retargeted
      * to.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the RetargetScheduleProperties object itself.
      */
@@ -71,9 +76,48 @@ public final class RetargetScheduleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("currentResourceId", this.currentResourceId);
+        jsonWriter.writeStringField("targetResourceId", this.targetResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RetargetScheduleProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RetargetScheduleProperties if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the RetargetScheduleProperties.
+     */
+    public static RetargetScheduleProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RetargetScheduleProperties deserializedRetargetScheduleProperties = new RetargetScheduleProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("currentResourceId".equals(fieldName)) {
+                    deserializedRetargetScheduleProperties.currentResourceId = reader.getString();
+                } else if ("targetResourceId".equals(fieldName)) {
+                    deserializedRetargetScheduleProperties.targetResourceId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRetargetScheduleProperties;
+        });
     }
 }

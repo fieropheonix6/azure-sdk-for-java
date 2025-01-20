@@ -18,7 +18,7 @@ import reactor.core.publisher.Mono;
 
 /** Implementation for SQL Server Key interface. */
 public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, ServerKeyInner, SqlServerImpl, SqlServer>
-    implements SqlServerKey, SqlServerKey.Update, SqlServerKeyOperations.SqlServerKeyOperationsDefinition {
+    implements SqlServerKey, SqlServerKeyOperations.SqlServerKeyOperationsDefinition {
 
     private SqlServerManager sqlServerManager;
     private String resourceGroupName;
@@ -55,11 +55,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
      * @param innerObject reference to the inner object representing this external child resource
      * @param sqlServerManager reference to the SQL server manager that accesses firewall rule operations
      */
-    SqlServerKeyImpl(
-        String resourceGroupName,
-        String sqlServerName,
-        String name,
-        ServerKeyInner innerObject,
+    SqlServerKeyImpl(String resourceGroupName, String sqlServerName, String name, ServerKeyInner innerObject,
         SqlServerManager sqlServerManager) {
         super(name, null, innerObject);
         Objects.requireNonNull(sqlServerManager);
@@ -141,30 +137,15 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
     }
 
     @Override
-    public SqlServerKeyImpl withThumbprint(String thumbprint) {
-        this.innerModel().withThumbprint(thumbprint);
-        return this;
-    }
-
-    @Override
-    public SqlServerKeyImpl withCreationDate(OffsetDateTime creationDate) {
-        this.innerModel().withCreationDate(creationDate);
-        return this;
-    }
-
-    @Override
     public Mono<SqlServerKey> createResourceAsync() {
         final SqlServerKeyImpl self = this;
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getServerKeys()
             .createOrUpdateAsync(self.resourceGroupName, self.sqlServerName, self.serverKeyName, self.innerModel())
-            .map(
-                serverKeyInner -> {
-                    self.setInner(serverKeyInner);
-                    return self;
-                });
+            .map(serverKeyInner -> {
+                self.setInner(serverKeyInner);
+                return self;
+            });
     }
 
     @Override
@@ -174,18 +155,14 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public Mono<Void> deleteResourceAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getServerKeys()
             .deleteAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
 
     @Override
     protected Mono<ServerKeyInner> getInnerAsync() {
-        return this
-            .sqlServerManager
-            .serviceClient()
+        return this.sqlServerManager.serviceClient()
             .getServerKeys()
             .getAsync(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -237,9 +214,7 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
 
     @Override
     public void delete() {
-        this
-            .sqlServerManager
-            .serviceClient()
+        this.sqlServerManager.serviceClient()
             .getServerKeys()
             .delete(this.resourceGroupName, this.sqlServerName, this.name());
     }
@@ -247,11 +222,5 @@ public class SqlServerKeyImpl extends ExternalChildResourceImpl<SqlServerKey, Se
     @Override
     public Mono<Void> deleteAsync() {
         return this.deleteResourceAsync();
-    }
-
-    @Override
-    public Update update() {
-        super.prepareUpdate();
-        return this;
     }
 }

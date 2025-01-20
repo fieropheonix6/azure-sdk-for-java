@@ -5,150 +5,240 @@
 package com.azure.resourcemanager.support.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.support.models.CommunicationDirection;
 import com.azure.resourcemanager.support.models.CommunicationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Object that represents a Communication resource. */
-@JsonFlatten
+/**
+ * Object that represents a Communication resource.
+ */
 @Fluent
-public class CommunicationDetailsInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommunicationDetailsInner.class);
+public final class CommunicationDetailsInner extends ProxyResource {
+    /*
+     * Properties of the resource.
+     */
+    private CommunicationDetailsProperties innerProperties = new CommunicationDetailsProperties();
 
     /*
-     * Communication type.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.communicationType", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationType communicationType;
+    private String type;
 
     /*
-     * Direction of communication.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.communicationDirection", access = JsonProperty.Access.WRITE_ONLY)
-    private CommunicationDirection communicationDirection;
+    private String name;
 
     /*
-     * Email address of the sender. This property is required if called by a
-     * service principal.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.sender")
-    private String sender;
+    private String id;
 
-    /*
-     * Subject of the communication.
+    /**
+     * Creates an instance of CommunicationDetailsInner class.
      */
-    @JsonProperty(value = "properties.subject")
-    private String subject;
+    public CommunicationDetailsInner() {
+    }
 
-    /*
-     * Body of the communication.
+    /**
+     * Get the innerProperties property: Properties of the resource.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.body")
-    private String body;
+    private CommunicationDetailsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Time in UTC (ISO 8601 format) when the communication was created.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.createdDate", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdDate;
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the communicationType property: Communication type.
-     *
+     * 
      * @return the communicationType value.
      */
     public CommunicationType communicationType() {
-        return this.communicationType;
+        return this.innerProperties() == null ? null : this.innerProperties().communicationType();
     }
 
     /**
      * Get the communicationDirection property: Direction of communication.
-     *
+     * 
      * @return the communicationDirection value.
      */
     public CommunicationDirection communicationDirection() {
-        return this.communicationDirection;
+        return this.innerProperties() == null ? null : this.innerProperties().communicationDirection();
     }
 
     /**
      * Get the sender property: Email address of the sender. This property is required if called by a service principal.
-     *
+     * 
      * @return the sender value.
      */
     public String sender() {
-        return this.sender;
+        return this.innerProperties() == null ? null : this.innerProperties().sender();
     }
 
     /**
      * Set the sender property: Email address of the sender. This property is required if called by a service principal.
-     *
+     * 
      * @param sender the sender value to set.
      * @return the CommunicationDetailsInner object itself.
      */
     public CommunicationDetailsInner withSender(String sender) {
-        this.sender = sender;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationDetailsProperties();
+        }
+        this.innerProperties().withSender(sender);
         return this;
     }
 
     /**
      * Get the subject property: Subject of the communication.
-     *
+     * 
      * @return the subject value.
      */
     public String subject() {
-        return this.subject;
+        return this.innerProperties() == null ? null : this.innerProperties().subject();
     }
 
     /**
      * Set the subject property: Subject of the communication.
-     *
+     * 
      * @param subject the subject value to set.
      * @return the CommunicationDetailsInner object itself.
      */
     public CommunicationDetailsInner withSubject(String subject) {
-        this.subject = subject;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationDetailsProperties();
+        }
+        this.innerProperties().withSubject(subject);
         return this;
     }
 
     /**
      * Get the body property: Body of the communication.
-     *
+     * 
      * @return the body value.
      */
     public String body() {
-        return this.body;
+        return this.innerProperties() == null ? null : this.innerProperties().body();
     }
 
     /**
      * Set the body property: Body of the communication.
-     *
+     * 
      * @param body the body value to set.
      * @return the CommunicationDetailsInner object itself.
      */
     public CommunicationDetailsInner withBody(String body) {
-        this.body = body;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CommunicationDetailsProperties();
+        }
+        this.innerProperties().withBody(body);
         return this;
     }
 
     /**
      * Get the createdDate property: Time in UTC (ISO 8601 format) when the communication was created.
-     *
+     * 
      * @return the createdDate value.
      */
     public OffsetDateTime createdDate() {
-        return this.createdDate;
+        return this.innerProperties() == null ? null : this.innerProperties().createdDate();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property innerProperties in model CommunicationDetailsInner"));
+        } else {
+            innerProperties().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommunicationDetailsInner.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CommunicationDetailsInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CommunicationDetailsInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CommunicationDetailsInner.
+     */
+    public static CommunicationDetailsInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CommunicationDetailsInner deserializedCommunicationDetailsInner = new CommunicationDetailsInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedCommunicationDetailsInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedCommunicationDetailsInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedCommunicationDetailsInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedCommunicationDetailsInner.innerProperties
+                        = CommunicationDetailsProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCommunicationDetailsInner;
+        });
     }
 }

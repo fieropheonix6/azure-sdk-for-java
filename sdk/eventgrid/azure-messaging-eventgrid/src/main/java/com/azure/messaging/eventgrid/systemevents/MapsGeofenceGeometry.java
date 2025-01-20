@@ -5,60 +5,62 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The geofence geometry. */
+/**
+ * The geofence geometry.
+ */
 @Fluent
-public final class MapsGeofenceGeometry {
+public final class MapsGeofenceGeometry implements JsonSerializable<MapsGeofenceGeometry> {
     /*
      * ID of the device.
      */
-    @JsonProperty(value = "deviceId")
     private String deviceId;
 
     /*
-     * Distance from the coordinate to the closest border of the geofence.
-     * Positive means the coordinate is outside of the geofence. If the
-     * coordinate is outside of the geofence, but more than the value of
-     * searchBuffer away from the closest geofence border, then the value is
-     * 999. Negative means the coordinate is inside of the geofence. If the
-     * coordinate is inside the polygon, but more than the value of
-     * searchBuffer away from the closest geofencing border,then the value is
-     * -999. A value of 999 means that there is great confidence the coordinate
-     * is well outside the geofence. A value of -999 means that there is great
-     * confidence the coordinate is well within the geofence.
+     * Distance from the coordinate to the closest border of the geofence. Positive means the coordinate is outside of
+     * the geofence. If the coordinate is outside of the geofence, but more than the value of searchBuffer away from the
+     * closest geofence border, then the value is 999. Negative means the coordinate is inside of the geofence. If the
+     * coordinate is inside the polygon, but more than the value of searchBuffer away from the closest geofencing
+     * border,then the value is -999. A value of 999 means that there is great confidence the coordinate is well outside
+     * the geofence. A value of -999 means that there is great confidence the coordinate is well within the geofence.
      */
-    @JsonProperty(value = "distance")
     private Float distance;
 
     /*
      * The unique ID for the geofence geometry.
      */
-    @JsonProperty(value = "geometryId")
     private String geometryId;
 
     /*
      * Latitude of the nearest point of the geometry.
      */
-    @JsonProperty(value = "nearestLat")
     private Float nearestLat;
 
     /*
      * Longitude of the nearest point of the geometry.
      */
-    @JsonProperty(value = "nearestLon")
     private Float nearestLon;
 
     /*
-     * The unique id returned from user upload service when uploading a
-     * geofence. Will not be included in geofencing post API.
+     * The unique id returned from user upload service when uploading a geofence. Will not be included in geofencing
+     * post API.
      */
-    @JsonProperty(value = "udId")
     private String udId;
 
     /**
+     * Creates an instance of MapsGeofenceGeometry class.
+     */
+    public MapsGeofenceGeometry() {
+    }
+
+    /**
      * Get the deviceId property: ID of the device.
-     *
+     * 
      * @return the deviceId value.
      */
     public String getDeviceId() {
@@ -67,7 +69,7 @@ public final class MapsGeofenceGeometry {
 
     /**
      * Set the deviceId property: ID of the device.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
@@ -84,7 +86,7 @@ public final class MapsGeofenceGeometry {
      * from the closest geofencing border,then the value is -999. A value of 999 means that there is great confidence
      * the coordinate is well outside the geofence. A value of -999 means that there is great confidence the coordinate
      * is well within the geofence.
-     *
+     * 
      * @return the distance value.
      */
     public Float getDistance() {
@@ -99,7 +101,7 @@ public final class MapsGeofenceGeometry {
      * from the closest geofencing border,then the value is -999. A value of 999 means that there is great confidence
      * the coordinate is well outside the geofence. A value of -999 means that there is great confidence the coordinate
      * is well within the geofence.
-     *
+     * 
      * @param distance the distance value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
@@ -110,7 +112,7 @@ public final class MapsGeofenceGeometry {
 
     /**
      * Get the geometryId property: The unique ID for the geofence geometry.
-     *
+     * 
      * @return the geometryId value.
      */
     public String getGeometryId() {
@@ -119,7 +121,7 @@ public final class MapsGeofenceGeometry {
 
     /**
      * Set the geometryId property: The unique ID for the geofence geometry.
-     *
+     * 
      * @param geometryId the geometryId value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
@@ -130,7 +132,7 @@ public final class MapsGeofenceGeometry {
 
     /**
      * Get the nearestLat property: Latitude of the nearest point of the geometry.
-     *
+     * 
      * @return the nearestLat value.
      */
     public Float getNearestLat() {
@@ -139,7 +141,7 @@ public final class MapsGeofenceGeometry {
 
     /**
      * Set the nearestLat property: Latitude of the nearest point of the geometry.
-     *
+     * 
      * @param nearestLat the nearestLat value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
@@ -150,7 +152,7 @@ public final class MapsGeofenceGeometry {
 
     /**
      * Get the nearestLon property: Longitude of the nearest point of the geometry.
-     *
+     * 
      * @return the nearestLon value.
      */
     public Float getNearestLon() {
@@ -159,7 +161,7 @@ public final class MapsGeofenceGeometry {
 
     /**
      * Set the nearestLon property: Longitude of the nearest point of the geometry.
-     *
+     * 
      * @param nearestLon the nearestLon value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
@@ -171,7 +173,7 @@ public final class MapsGeofenceGeometry {
     /**
      * Get the udId property: The unique id returned from user upload service when uploading a geofence. Will not be
      * included in geofencing post API.
-     *
+     * 
      * @return the udId value.
      */
     public String getUdId() {
@@ -181,12 +183,63 @@ public final class MapsGeofenceGeometry {
     /**
      * Set the udId property: The unique id returned from user upload service when uploading a geofence. Will not be
      * included in geofencing post API.
-     *
+     * 
      * @param udId the udId value to set.
      * @return the MapsGeofenceGeometry object itself.
      */
     public MapsGeofenceGeometry setUdId(String udId) {
         this.udId = udId;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeNumberField("distance", this.distance);
+        jsonWriter.writeStringField("geometryId", this.geometryId);
+        jsonWriter.writeNumberField("nearestLat", this.nearestLat);
+        jsonWriter.writeNumberField("nearestLon", this.nearestLon);
+        jsonWriter.writeStringField("udId", this.udId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MapsGeofenceGeometry from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MapsGeofenceGeometry if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MapsGeofenceGeometry.
+     */
+    public static MapsGeofenceGeometry fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MapsGeofenceGeometry deserializedMapsGeofenceGeometry = new MapsGeofenceGeometry();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedMapsGeofenceGeometry.deviceId = reader.getString();
+                } else if ("distance".equals(fieldName)) {
+                    deserializedMapsGeofenceGeometry.distance = reader.getNullable(JsonReader::getFloat);
+                } else if ("geometryId".equals(fieldName)) {
+                    deserializedMapsGeofenceGeometry.geometryId = reader.getString();
+                } else if ("nearestLat".equals(fieldName)) {
+                    deserializedMapsGeofenceGeometry.nearestLat = reader.getNullable(JsonReader::getFloat);
+                } else if ("nearestLon".equals(fieldName)) {
+                    deserializedMapsGeofenceGeometry.nearestLon = reader.getNullable(JsonReader::getFloat);
+                } else if ("udId".equals(fieldName)) {
+                    deserializedMapsGeofenceGeometry.udId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMapsGeofenceGeometry;
+        });
     }
 }

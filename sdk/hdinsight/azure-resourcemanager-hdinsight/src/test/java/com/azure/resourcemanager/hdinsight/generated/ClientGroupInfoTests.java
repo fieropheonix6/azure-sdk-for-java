@@ -7,24 +7,21 @@ package com.azure.resourcemanager.hdinsight.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.hdinsight.models.ClientGroupInfo;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClientGroupInfoTests {
-    @Test
-    public void testDeserialize() {
-        ClientGroupInfo model =
-            BinaryData
-                .fromString("{\"groupName\":\"crzevdphlx\",\"groupId\":\"lthqtrgqjbp\"}")
-                .toObject(ClientGroupInfo.class);
-        Assertions.assertEquals("crzevdphlx", model.groupName());
-        Assertions.assertEquals("lthqtrgqjbp", model.groupId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClientGroupInfo model = BinaryData.fromString("{\"groupName\":\"anuzbpzkafkuw\",\"groupId\":\"rnwb\"}")
+            .toObject(ClientGroupInfo.class);
+        Assertions.assertEquals("anuzbpzkafkuw", model.groupName());
+        Assertions.assertEquals("rnwb", model.groupId());
     }
 
-    @Test
-    public void testSerialize() {
-        ClientGroupInfo model = new ClientGroupInfo().withGroupName("crzevdphlx").withGroupId("lthqtrgqjbp");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClientGroupInfo model = new ClientGroupInfo().withGroupName("anuzbpzkafkuw").withGroupId("rnwb");
         model = BinaryData.fromObject(model).toObject(ClientGroupInfo.class);
-        Assertions.assertEquals("crzevdphlx", model.groupName());
-        Assertions.assertEquals("lthqtrgqjbp", model.groupId());
+        Assertions.assertEquals("anuzbpzkafkuw", model.groupName());
+        Assertions.assertEquals("rnwb", model.groupId());
     }
 }

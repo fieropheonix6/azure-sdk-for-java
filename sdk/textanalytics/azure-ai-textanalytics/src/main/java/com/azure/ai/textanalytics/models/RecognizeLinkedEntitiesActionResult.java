@@ -8,15 +8,21 @@ import com.azure.ai.textanalytics.util.RecognizeLinkedEntitiesResultCollection;
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link RecognizeLinkedEntitiesActionResult} model.
+ * The {@code RecognizeLinkedEntitiesActionResult} model.
  */
 @Immutable
 public final class RecognizeLinkedEntitiesActionResult extends TextAnalyticsActionResult {
     private RecognizeLinkedEntitiesResultCollection documentsResults;
 
     static {
-        RecognizeLinkedEntitiesActionResultPropertiesHelper.setAccessor(
-            (actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+        RecognizeLinkedEntitiesActionResultPropertiesHelper
+            .setAccessor((actionResult, documentsResults) -> actionResult.setDocumentsResults(documentsResults));
+    }
+
+    /**
+     * Constructs a {@code RecognizeLinkedEntitiesActionResult} model.
+     */
+    public RecognizeLinkedEntitiesActionResult() {
     }
 
     /**

@@ -5,41 +5,37 @@
 package com.azure.resourcemanager.compute.generated;
 
 import com.azure.core.management.SubResource;
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.ImageUpdate;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Images Update. */
+/**
+ * Samples for Images Update.
+ */
 public final class ImagesUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/imageExamples/Image_Update.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2024-07-01/examples/imageExamples/
+     * Image_Update.json
      */
     /**
      * Sample code: Updates tags of an Image.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updatesTagsOfAnImage(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getImages()
-            .update(
-                "myResourceGroup",
-                "myImage",
-                new ImageUpdate()
-                    .withTags(mapOf("department", "HR"))
-                    .withSourceVirtualMachine(
-                        new SubResource()
-                            .withId(
-                                "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"))
-                    .withHyperVGeneration(HyperVGenerationTypes.V1),
-                Context.NONE);
+            .update("myResourceGroup", "myImage", new ImageUpdate().withTags(mapOf("department", "HR"))
+                .withSourceVirtualMachine(new SubResource().withId(
+                    "/subscriptions/{subscription-id}/resourceGroups/myResourceGroup/providers/Microsoft.Compute/virtualMachines/myVM"))
+                .withHyperVGeneration(HyperVGenerationTypes.V1), com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

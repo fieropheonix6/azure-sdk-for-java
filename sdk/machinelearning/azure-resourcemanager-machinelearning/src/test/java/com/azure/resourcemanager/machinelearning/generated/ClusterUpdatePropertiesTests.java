@@ -10,39 +10,29 @@ import com.azure.resourcemanager.machinelearning.models.ScaleSettings;
 import com.azure.resourcemanager.machinelearning.models.ScaleSettingsInformation;
 import java.time.Duration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ClusterUpdatePropertiesTests {
-    @Test
-    public void testDeserialize() {
-        ClusterUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"scaleSettings\":{\"maxNodeCount\":735455048,\"minNodeCount\":1281560612,\"nodeIdleTimeBeforeScaleDown\":\"PT89H36M53S\"}}}")
-                .toObject(ClusterUpdateProperties.class);
-        Assertions.assertEquals(735455048, model.properties().scaleSettings().maxNodeCount());
-        Assertions.assertEquals(1281560612, model.properties().scaleSettings().minNodeCount());
-        Assertions
-            .assertEquals(
-                Duration.parse("PT89H36M53S"), model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ClusterUpdateProperties model = BinaryData.fromString(
+            "{\"properties\":{\"scaleSettings\":{\"maxNodeCount\":2125596553,\"minNodeCount\":236135695,\"nodeIdleTimeBeforeScaleDown\":\"PT176H56M43S\"}}}")
+            .toObject(ClusterUpdateProperties.class);
+        Assertions.assertEquals(2125596553, model.properties().scaleSettings().maxNodeCount());
+        Assertions.assertEquals(236135695, model.properties().scaleSettings().minNodeCount());
+        Assertions.assertEquals(Duration.parse("PT176H56M43S"),
+            model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
     }
 
-    @Test
-    public void testSerialize() {
-        ClusterUpdateProperties model =
-            new ClusterUpdateProperties()
-                .withProperties(
-                    new ScaleSettingsInformation()
-                        .withScaleSettings(
-                            new ScaleSettings()
-                                .withMaxNodeCount(735455048)
-                                .withMinNodeCount(1281560612)
-                                .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT89H36M53S"))));
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ClusterUpdateProperties model = new ClusterUpdateProperties().withProperties(
+            new ScaleSettingsInformation().withScaleSettings(new ScaleSettings().withMaxNodeCount(2125596553)
+                .withMinNodeCount(236135695)
+                .withNodeIdleTimeBeforeScaleDown(Duration.parse("PT176H56M43S"))));
         model = BinaryData.fromObject(model).toObject(ClusterUpdateProperties.class);
-        Assertions.assertEquals(735455048, model.properties().scaleSettings().maxNodeCount());
-        Assertions.assertEquals(1281560612, model.properties().scaleSettings().minNodeCount());
-        Assertions
-            .assertEquals(
-                Duration.parse("PT89H36M53S"), model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
+        Assertions.assertEquals(2125596553, model.properties().scaleSettings().maxNodeCount());
+        Assertions.assertEquals(236135695, model.properties().scaleSettings().minNodeCount());
+        Assertions.assertEquals(Duration.parse("PT176H56M43S"),
+            model.properties().scaleSettings().nodeIdleTimeBeforeScaleDown());
     }
 }

@@ -7,26 +7,23 @@ package com.azure.resourcemanager.kusto.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.kusto.fluent.models.OperationResultProperties;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class OperationResultPropertiesTests {
-    @Test
-    public void testDeserialize() {
-        OperationResultProperties model =
-            BinaryData
-                .fromString(
-                    "{\"operationKind\":\"minrfdw\",\"provisioningState\":\"Deleting\",\"operationState\":\"hziuiefozbhdms\"}")
-                .toObject(OperationResultProperties.class);
-        Assertions.assertEquals("minrfdw", model.operationKind());
-        Assertions.assertEquals("hziuiefozbhdms", model.operationState());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationResultProperties model = BinaryData.fromString(
+            "{\"operationKind\":\"zfttsttktlahb\",\"provisioningState\":\"Creating\",\"operationState\":\"xtgzukxitmmqtgqq\"}")
+            .toObject(OperationResultProperties.class);
+        Assertions.assertEquals("zfttsttktlahb", model.operationKind());
+        Assertions.assertEquals("xtgzukxitmmqtgqq", model.operationState());
     }
 
-    @Test
-    public void testSerialize() {
-        OperationResultProperties model =
-            new OperationResultProperties().withOperationKind("minrfdw").withOperationState("hziuiefozbhdms");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        OperationResultProperties model
+            = new OperationResultProperties().withOperationKind("zfttsttktlahb").withOperationState("xtgzukxitmmqtgqq");
         model = BinaryData.fromObject(model).toObject(OperationResultProperties.class);
-        Assertions.assertEquals("minrfdw", model.operationKind());
-        Assertions.assertEquals("hziuiefozbhdms", model.operationState());
+        Assertions.assertEquals("zfttsttktlahb", model.operationKind());
+        Assertions.assertEquals("xtgzukxitmmqtgqq", model.operationState());
     }
 }

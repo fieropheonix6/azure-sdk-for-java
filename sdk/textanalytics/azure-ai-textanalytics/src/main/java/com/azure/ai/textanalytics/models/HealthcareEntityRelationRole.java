@@ -7,7 +7,7 @@ import com.azure.ai.textanalytics.implementation.HealthcareEntityRelationRolePro
 import com.azure.core.annotation.Immutable;
 
 /**
- * The {@link HealthcareEntityRelationRole} model.
+ * The {@code HealthcareEntityRelationRole} model.
  */
 @Immutable
 public final class HealthcareEntityRelationRole {
@@ -22,18 +22,25 @@ public final class HealthcareEntityRelationRole {
     private HealthcareEntity entity;
 
     static {
-        HealthcareEntityRelationRolePropertiesHelper.setAccessor(
-            new HealthcareEntityRelationRolePropertiesHelper.HealthcareEntityRelationRoleAccessor() {
+        HealthcareEntityRelationRolePropertiesHelper
+            .setAccessor(new HealthcareEntityRelationRolePropertiesHelper.HealthcareEntityRelationRoleAccessor() {
                 @Override
                 public void setName(HealthcareEntityRelationRole healthcareEntityRelationRole, String name) {
                     healthcareEntityRelationRole.setName(name);
                 }
 
                 @Override
-                public void setEntity(HealthcareEntityRelationRole healthcareEntityRelationRole, HealthcareEntity entity) {
+                public void setEntity(HealthcareEntityRelationRole healthcareEntityRelationRole,
+                    HealthcareEntity entity) {
                     healthcareEntityRelationRole.setEntity(entity);
                 }
             });
+    }
+
+    /**
+     * Constructs a {@code HealthcareEntityRelationRole} model.
+     */
+    public HealthcareEntityRelationRole() {
     }
 
     /**

@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The identifier information of shared gallery. */
+/**
+ * The identifier information of shared gallery.
+ */
 @Fluent
-public final class SharedGalleryIdentifier {
+public final class SharedGalleryIdentifier implements JsonSerializable<SharedGalleryIdentifier> {
     /*
      * The unique id of this shared gallery.
      */
-    @JsonProperty(value = "uniqueId")
     private String uniqueId;
 
-    /** Creates an instance of SharedGalleryIdentifier class. */
+    /**
+     * Creates an instance of SharedGalleryIdentifier class.
+     */
     public SharedGalleryIdentifier() {
     }
 
     /**
      * Get the uniqueId property: The unique id of this shared gallery.
-     *
+     * 
      * @return the uniqueId value.
      */
     public String uniqueId() {
@@ -31,7 +38,7 @@ public final class SharedGalleryIdentifier {
 
     /**
      * Set the uniqueId property: The unique id of this shared gallery.
-     *
+     * 
      * @param uniqueId the uniqueId value to set.
      * @return the SharedGalleryIdentifier object itself.
      */
@@ -42,9 +49,45 @@ public final class SharedGalleryIdentifier {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("uniqueId", this.uniqueId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SharedGalleryIdentifier from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SharedGalleryIdentifier if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SharedGalleryIdentifier.
+     */
+    public static SharedGalleryIdentifier fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SharedGalleryIdentifier deserializedSharedGalleryIdentifier = new SharedGalleryIdentifier();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("uniqueId".equals(fieldName)) {
+                    deserializedSharedGalleryIdentifier.uniqueId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSharedGalleryIdentifier;
+        });
     }
 }

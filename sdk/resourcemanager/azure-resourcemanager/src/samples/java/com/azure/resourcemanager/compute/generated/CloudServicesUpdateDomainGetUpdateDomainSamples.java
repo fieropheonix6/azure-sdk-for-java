@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.compute.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for CloudServicesUpdateDomain GetUpdateDomain. */
+/**
+ * Samples for CloudServicesUpdateDomain GetUpdateDomain.
+ */
 public final class CloudServicesUpdateDomainGetUpdateDomainSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2022-04-04/examples/CloudServiceUpdateDomain_Get.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/CloudserviceRP/stable/2024-11-04/examples/
+     * CloudServiceUpdateDomain_Get.json
      */
     /**
      * Sample code: Get Cloud Service Update Domain.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getCloudServiceUpdateDomain(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
+        azure.virtualMachines()
             .manager()
             .serviceClient()
             .getCloudServicesUpdateDomains()
-            .getUpdateDomainWithResponse("ConstosoRG", "{cs-name}", 1, Context.NONE);
+            .getUpdateDomainWithResponse("ConstosoRG", "{cs-name}", 1, com.azure.core.util.Context.NONE);
     }
 }

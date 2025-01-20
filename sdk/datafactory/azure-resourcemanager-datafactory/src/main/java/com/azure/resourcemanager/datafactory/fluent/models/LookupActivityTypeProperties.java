@@ -6,39 +6,44 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.datafactory.models.CopySource;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** Lookup activity properties. */
+/**
+ * Lookup activity properties.
+ */
 @Fluent
-public final class LookupActivityTypeProperties {
+public final class LookupActivityTypeProperties implements JsonSerializable<LookupActivityTypeProperties> {
     /*
      * Dataset-specific source properties, same as copy activity source.
      */
-    @JsonProperty(value = "source", required = true)
     private CopySource source;
 
     /*
      * Lookup activity dataset reference.
      */
-    @JsonProperty(value = "dataset", required = true)
     private DatasetReference dataset;
 
     /*
      * Whether to return first row or all rows. Default value is true. Type: boolean (or Expression with resultType
      * boolean).
      */
-    @JsonProperty(value = "firstRowOnly")
     private Object firstRowOnly;
 
-    /** Creates an instance of LookupActivityTypeProperties class. */
+    /**
+     * Creates an instance of LookupActivityTypeProperties class.
+     */
     public LookupActivityTypeProperties() {
     }
 
     /**
      * Get the source property: Dataset-specific source properties, same as copy activity source.
-     *
+     * 
      * @return the source value.
      */
     public CopySource source() {
@@ -47,7 +52,7 @@ public final class LookupActivityTypeProperties {
 
     /**
      * Set the source property: Dataset-specific source properties, same as copy activity source.
-     *
+     * 
      * @param source the source value to set.
      * @return the LookupActivityTypeProperties object itself.
      */
@@ -58,7 +63,7 @@ public final class LookupActivityTypeProperties {
 
     /**
      * Get the dataset property: Lookup activity dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference dataset() {
@@ -67,7 +72,7 @@ public final class LookupActivityTypeProperties {
 
     /**
      * Set the dataset property: Lookup activity dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the LookupActivityTypeProperties object itself.
      */
@@ -79,7 +84,7 @@ public final class LookupActivityTypeProperties {
     /**
      * Get the firstRowOnly property: Whether to return first row or all rows. Default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @return the firstRowOnly value.
      */
     public Object firstRowOnly() {
@@ -89,7 +94,7 @@ public final class LookupActivityTypeProperties {
     /**
      * Set the firstRowOnly property: Whether to return first row or all rows. Default value is true. Type: boolean (or
      * Expression with resultType boolean).
-     *
+     * 
      * @param firstRowOnly the firstRowOnly value to set.
      * @return the LookupActivityTypeProperties object itself.
      */
@@ -100,27 +105,68 @@ public final class LookupActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property source in model LookupActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property source in model LookupActivityTypeProperties"));
         } else {
             source().validate();
         }
         if (dataset() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataset in model LookupActivityTypeProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property dataset in model LookupActivityTypeProperties"));
         } else {
             dataset().validate();
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(LookupActivityTypeProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("source", this.source);
+        jsonWriter.writeJsonField("dataset", this.dataset);
+        jsonWriter.writeUntypedField("firstRowOnly", this.firstRowOnly);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of LookupActivityTypeProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of LookupActivityTypeProperties if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the LookupActivityTypeProperties.
+     */
+    public static LookupActivityTypeProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LookupActivityTypeProperties deserializedLookupActivityTypeProperties = new LookupActivityTypeProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("source".equals(fieldName)) {
+                    deserializedLookupActivityTypeProperties.source = CopySource.fromJson(reader);
+                } else if ("dataset".equals(fieldName)) {
+                    deserializedLookupActivityTypeProperties.dataset = DatasetReference.fromJson(reader);
+                } else if ("firstRowOnly".equals(fieldName)) {
+                    deserializedLookupActivityTypeProperties.firstRowOnly = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedLookupActivityTypeProperties;
+        });
+    }
 }

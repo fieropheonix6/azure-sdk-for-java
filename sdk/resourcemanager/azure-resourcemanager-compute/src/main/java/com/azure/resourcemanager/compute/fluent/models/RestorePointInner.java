@@ -6,30 +6,51 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
 import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Restore Point details. */
+/**
+ * Restore Point details.
+ */
 @Fluent
 public final class RestorePointInner extends ProxyResource {
     /*
      * The restore point properties.
      */
-    @JsonProperty(value = "properties")
     private RestorePointProperties innerProperties;
 
-    /** Creates an instance of RestorePointInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
+
+    /**
+     * Creates an instance of RestorePointInner class.
+     */
     public RestorePointInner() {
     }
 
     /**
      * Get the innerProperties property: The restore point properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorePointProperties innerProperties() {
@@ -37,9 +58,39 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
+    }
+
+    /**
      * Get the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
      * point. If no disks are specified, all disks will be included.
-     *
+     * 
      * @return the excludeDisks value.
      */
     public List<ApiEntityReference> excludeDisks() {
@@ -49,7 +100,7 @@ public final class RestorePointInner extends ProxyResource {
     /**
      * Set the excludeDisks property: List of disk resource ids that the customer wishes to exclude from the restore
      * point. If no disks are specified, all disks will be included.
-     *
+     * 
      * @param excludeDisks the excludeDisks value to set.
      * @return the RestorePointInner object itself.
      */
@@ -63,7 +114,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Get the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
-     *
+     * 
      * @return the sourceMetadata value.
      */
     public RestorePointSourceMetadata sourceMetadata() {
@@ -71,8 +122,22 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
+     * Set the sourceMetadata property: Gets the details of the VM captured at the time of the restore point creation.
+     * 
+     * @param sourceMetadata the sourceMetadata value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withSourceMetadata(RestorePointSourceMetadata sourceMetadata) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withSourceMetadata(sourceMetadata);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Gets the provisioning state of the restore point.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -83,7 +148,7 @@ public final class RestorePointInner extends ProxyResource {
      * Get the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
      * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
      * https://aka.ms/RestorePoints for more details.
-     *
+     * 
      * @return the consistencyMode value.
      */
     public ConsistencyModeTypes consistencyMode() {
@@ -94,7 +159,7 @@ public final class RestorePointInner extends ProxyResource {
      * Set the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
      * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
      * https://aka.ms/RestorePoints for more details.
-     *
+     * 
      * @param consistencyMode the consistencyMode value to set.
      * @return the RestorePointInner object itself.
      */
@@ -108,7 +173,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Get the timeCreated property: Gets the creation time of the restore point.
-     *
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -117,7 +182,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Set the timeCreated property: Gets the creation time of the restore point.
-     *
+     * 
      * @param timeCreated the timeCreated value to set.
      * @return the RestorePointInner object itself.
      */
@@ -132,7 +197,7 @@ public final class RestorePointInner extends ProxyResource {
     /**
      * Get the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
      * created.
-     *
+     * 
      * @return the sourceRestorePoint value.
      */
     public ApiEntityReference sourceRestorePoint() {
@@ -142,7 +207,7 @@ public final class RestorePointInner extends ProxyResource {
     /**
      * Set the sourceRestorePoint property: Resource Id of the source restore point from which a copy needs to be
      * created.
-     *
+     * 
      * @param sourceRestorePoint the sourceRestorePoint value to set.
      * @return the RestorePointInner object itself.
      */
@@ -156,7 +221,7 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Get the instanceView property: The restore point instance view.
-     *
+     * 
      * @return the instanceView value.
      */
     public RestorePointInstanceView instanceView() {
@@ -165,12 +230,55 @@ public final class RestorePointInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RestorePointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RestorePointInner if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RestorePointInner.
+     */
+    public static RestorePointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RestorePointInner deserializedRestorePointInner = new RestorePointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRestorePointInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRestorePointInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRestorePointInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRestorePointInner.innerProperties = RestorePointProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRestorePointInner;
+        });
     }
 }

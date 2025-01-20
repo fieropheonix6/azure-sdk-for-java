@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -13,26 +12,38 @@ import java.util.Collection;
  * the ownership of the file. unrestricted - Non-root users can change ownership of files that they own.
  */
 public final class ChownMode extends ExpandableStringEnum<ChownMode> {
-    /** Static value Restricted for ChownMode. */
+    /**
+     * Static value Restricted for ChownMode.
+     */
     public static final ChownMode RESTRICTED = fromString("Restricted");
 
-    /** Static value Unrestricted for ChownMode. */
+    /**
+     * Static value Unrestricted for ChownMode.
+     */
     public static final ChownMode UNRESTRICTED = fromString("Unrestricted");
 
     /**
+     * Creates a new instance of ChownMode value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ChownMode() {
+    }
+
+    /**
      * Creates or finds a ChownMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ChownMode.
      */
-    @JsonCreator
     public static ChownMode fromString(String name) {
         return fromString(name, ChownMode.class);
     }
 
     /**
      * Gets known ChownMode values.
-     *
+     * 
      * @return known ChownMode values.
      */
     public static Collection<ChownMode> values() {

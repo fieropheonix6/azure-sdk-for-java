@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Confirmation. */
+/**
+ * Determines the type of confirmation e-mail that will be sent to the newly created user.
+ */
 public final class Confirmation extends ExpandableStringEnum<Confirmation> {
-    /** Static value signup for Confirmation. */
+    /**
+     * Static value signup for Confirmation.
+     */
     public static final Confirmation SIGNUP = fromString("signup");
 
-    /** Static value invite for Confirmation. */
+    /**
+     * Static value invite for Confirmation.
+     */
     public static final Confirmation INVITE = fromString("invite");
 
     /**
+     * Creates a new instance of Confirmation value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public Confirmation() {
+    }
+
+    /**
      * Creates or finds a Confirmation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Confirmation.
      */
-    @JsonCreator
     public static Confirmation fromString(String name) {
         return fromString(name, Confirmation.class);
     }
 
-    /** @return known Confirmation values. */
+    /**
+     * Gets known Confirmation values.
+     * 
+     * @return known Confirmation values.
+     */
     public static Collection<Confirmation> values() {
         return values(Confirmation.class);
     }

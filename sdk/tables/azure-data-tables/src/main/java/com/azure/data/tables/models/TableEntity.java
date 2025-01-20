@@ -5,7 +5,7 @@ package com.azure.data.tables.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.data.tables.implementation.ModelHelper;
+import com.azure.data.tables.implementation.TableEntityAccessHelper;
 import com.azure.data.tables.implementation.TablesConstants;
 
 import java.time.OffsetDateTime;
@@ -13,16 +13,89 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.azure.core.util.CoreUtils.isNullOrEmpty;
-
 /**
+ * <h2>Overview</h2>
  * An entity within a table.
- *
+ * <p>
  * A {@code TableEntity} can be used directly when interacting with the Tables service, with methods on the
  * {@link com.azure.data.tables.TableClient} and {@link com.azure.data.tables.TableAsyncClient} classes that accept and
  * return {@code TableEntity} instances. After creating an instance, call the {@link #addProperty(String, Object)} or
  * {@link #setProperties(Map)} methods to add properties to the entity. When retrieving an entity from the service, call
  * the {@link #getProperty(String)} or {@link #getProperties()} methods to access the entity's properties.
+ *
+ * <h3><strong>Usage Code Samples</strong></h3>
+ *
+ * <p>The following samples provide examples of common operations preformed on a TableEntity. The samples use a subset of acceptable
+ * property values. For an exhaustive list, see <a href="https://docs.microsoft.com/rest/api/storageservices/understanding-the-table-service-data-model#property-types">the service documentation</a>.
+ * </p>
+ *
+ * <strong>Create a TableEntity</strong>
+ *
+ * <p>The following sample shows the creation of a table entity.</p>
+ *
+ *  <!-- src_embed com.azure.data.tables.models.TableEntity.create#string-string -->
+ * <pre>
+ * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+ * </pre>
+ *  <!-- end com.azure.data.tables.models.TableEntity.create#string-string -->
+ *
+ * <strong>Add properties to a TableEntity</strong>
+ *
+ * <p>The following sample shows the addition of properties to a table entity.</p>
+ *
+ * <!-- src_embed com.azure.data.tables.models.TableEntity.create#string-string -->
+ * <pre>
+ * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.models.TableEntity.create#string-string -->
+ *
+ * <strong>Set properties from a TableEntity</strong>
+ *
+ * <p>The following sample shows the setting of a table entity's properties.</p>
+ *
+ * <!-- src_embed com.azure.data.tables.models.TableEntity.setProperties#map -->
+ * <pre>
+ * Map&lt;String, Object&gt; properties = new HashMap&lt;&gt;&#40;&#41;;
+ * properties.put&#40;&quot;String&quot;, &quot;StringValue&quot;&#41;;
+ * properties.put&#40;&quot;Integer&quot;, 100&#41;;
+ * properties.put&#40;&quot;Boolean&quot;, true&#41;;
+ * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+ *     .setProperties&#40;properties&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.models.TableEntity.setProperties#map -->
+ *
+ * <strong>Get a property from a TableEntity</strong>
+ *
+ * <p>The following sample shows the retrieval of a property from a table entity.</p>
+ *
+ * <!-- src_embed com.azure.data.tables.models.TableEntity.getProperty#string -->
+ * <pre>
+ * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+ *     .addProperty&#40;&quot;String&quot;, &quot;StringValue&quot;&#41;
+ *     .addProperty&#40;&quot;Integer&quot;, 100&#41;
+ *     .addProperty&#40;&quot;Boolean&quot;, true&#41;;
+ *
+ * String stringValue = &#40;String&#41; entity.getProperty&#40;&quot;String&quot;&#41;;
+ * int integerValue = &#40;int&#41; entity.getProperty&#40;&quot;Integer&quot;&#41;;
+ * boolean booleanValue = &#40;boolean&#41; entity.getProperty&#40;&quot;Boolean&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.models.TableEntity.getProperty#string -->
+ *
+ * <strong>Get properties from a TableEntity</strong>
+ *
+ * <p>The following sample shows the retrieval of all properties from a table entity.</p>
+ *
+ * <!-- src_embed com.azure.data.tables.models.TableEntity.getProperties -->
+ * <pre>
+ * TableEntity entity = new TableEntity&#40;&quot;partitionKey&quot;, &quot;rowKey&quot;&#41;
+ *     .addProperty&#40;&quot;String&quot;, &quot;StringValue&quot;&#41;
+ *     .addProperty&#40;&quot;Integer&quot;, 100&#41;
+ *     .addProperty&#40;&quot;Boolean&quot;, true&#41;;
+ *
+ * Map&lt;String, Object&gt; properties = entity.getProperties&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.models.TableEntity.getProperties -->
+ *
  */
 @Fluent
 public final class TableEntity {
@@ -33,7 +106,7 @@ public final class TableEntity {
 
     static {
         // This is used by classes in different packages to get access to private and package-private methods.
-        ModelHelper.setEntityCreator(TableEntity::new);
+        TableEntityAccessHelper.setTableEntityCreator(TableEntity::new);
     }
 
     /**
@@ -43,14 +116,14 @@ public final class TableEntity {
      * @param rowKey The row key of the entity.
      */
     public TableEntity(String partitionKey, String rowKey) {
-        if (isNullOrEmpty(partitionKey)) {
+        if (null == partitionKey) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(String.format("'%s' is an empty value.", TablesConstants.PARTITION_KEY)));
+                new IllegalArgumentException(String.format("'%s' is an null value.", TablesConstants.PARTITION_KEY)));
         }
 
-        if (isNullOrEmpty(rowKey)) {
+        if (null == rowKey) {
             throw logger.logExceptionAsError(
-                new IllegalArgumentException(String.format("'%s' is an empty value.", TablesConstants.ROW_KEY)));
+                new IllegalArgumentException(String.format("'%s' is an null value.", TablesConstants.ROW_KEY)));
         }
 
         this.properties = new HashMap<>();
@@ -70,7 +143,7 @@ public final class TableEntity {
 
     /**
      * Gets a single property from the entity's properties map.
-     *
+     * <p>
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
      * {@link #setProperties(Map)} will be returned from this method.
      *
@@ -84,7 +157,7 @@ public final class TableEntity {
 
     /**
      * Gets the map of the entity's properties.
-     *
+     * <p>
      * Only properties that have been added by calling {@link #addProperty(String, Object)} or
      * {@link #setProperties(Map)} will be returned from this method.
      *
@@ -141,23 +214,18 @@ public final class TableEntity {
     private void validateProperty(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
-        if ((TablesConstants.PARTITION_KEY.equals(key) || TablesConstants.ROW_KEY.equals(key)) && value != null
-            && (!(value instanceof String) || ((String) value).isEmpty())) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' must be a non-empty String.", key)));
-        }
-
         if (TablesConstants.TIMESTAMP_KEY.equals(key) && value != null && !(value instanceof OffsetDateTime)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' must be an OffsetDateTime.", key)));
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException(String.format("'%s' must be an OffsetDateTime.", key)));
         }
 
-        if ((TablesConstants.ODATA_ETAG_KEY.equals(key) || TablesConstants.ODATA_EDIT_LINK_KEY.equals(key)
-            || TablesConstants.ODATA_ID_KEY.equals(key) || TablesConstants.ODATA_TYPE_KEY.equals(key)) && value != null
-            && !(value instanceof String)) {
+        if ((TablesConstants.ODATA_ETAG_KEY.equals(key)
+            || TablesConstants.ODATA_EDIT_LINK_KEY.equals(key)
+            || TablesConstants.ODATA_ID_KEY.equals(key)
+            || TablesConstants.ODATA_TYPE_KEY.equals(key)) && value != null && !(value instanceof String)) {
 
-            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
-                "'%s' must be a String.", key)));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException(String.format("'%s' must be a String.", key)));
         }
     }
 
@@ -181,7 +249,7 @@ public final class TableEntity {
 
     /**
      * Gets the entity's timestamp.
-     *
+     * <p>
      * The timestamp is automatically populated by the service. New {@code TableEntity} instances will not have a
      * timestamp, but a timestamp will be present on any {@code TableEntity} returned from the service.
      *
@@ -193,7 +261,7 @@ public final class TableEntity {
 
     /**
      * Gets the entity's eTag.
-     *
+     * <p>
      * The eTag is automatically populated by the service. New {@code TableEntity} instances will not have an eTag, but
      * an eTag will be present on any {@code TableEntity} returned from the service.
      *

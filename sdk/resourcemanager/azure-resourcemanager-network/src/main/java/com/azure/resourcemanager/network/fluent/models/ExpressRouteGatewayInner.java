@@ -6,41 +6,55 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.network.models.ExpressRouteGatewayPropertiesAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualHubId;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-/** ExpressRoute gateway resource. */
+/**
+ * ExpressRoute gateway resource.
+ */
 @Fluent
 public final class ExpressRouteGatewayInner extends Resource {
     /*
      * Properties of the express route gateway.
      */
-    @JsonProperty(value = "properties")
     private ExpressRouteGatewayProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
     /*
      * Resource ID.
      */
-    @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ExpressRouteGatewayInner class. */
+    /*
+     * The type of the resource.
+     */
+    private String type;
+
+    /*
+     * The name of the resource.
+     */
+    private String name;
+
+    /**
+     * Creates an instance of ExpressRouteGatewayInner class.
+     */
     public ExpressRouteGatewayInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the express route gateway.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteGatewayProperties innerProperties() {
@@ -49,7 +63,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -58,7 +72,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -67,7 +81,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -76,14 +90,38 @@ public final class ExpressRouteGatewayInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
+     */
+    @Override
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
+     */
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteGatewayInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,7 +130,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the autoScaleConfiguration property: Configuration for auto scaling.
-     *
+     * 
      * @return the autoScaleConfiguration value.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration() {
@@ -101,12 +139,12 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the autoScaleConfiguration property: Configuration for auto scaling.
-     *
+     * 
      * @param autoScaleConfiguration the autoScaleConfiguration value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
-    public ExpressRouteGatewayInner withAutoScaleConfiguration(
-        ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration) {
+    public ExpressRouteGatewayInner
+        withAutoScaleConfiguration(ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteGatewayProperties();
         }
@@ -116,7 +154,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
+     * 
      * @return the expressRouteConnections value.
      */
     public List<ExpressRouteConnectionInner> expressRouteConnections() {
@@ -125,12 +163,12 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
+     * 
      * @param expressRouteConnections the expressRouteConnections value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
-    public ExpressRouteGatewayInner withExpressRouteConnections(
-        List<ExpressRouteConnectionInner> expressRouteConnections) {
+    public ExpressRouteGatewayInner
+        withExpressRouteConnections(List<ExpressRouteConnectionInner> expressRouteConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteGatewayProperties();
         }
@@ -140,7 +178,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -149,7 +187,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
+     * 
      * @return the virtualHub value.
      */
     public VirtualHubId virtualHub() {
@@ -158,7 +196,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -173,7 +211,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     /**
      * Get the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     *
+     * 
      * @return the allowNonVirtualWanTraffic value.
      */
     public Boolean allowNonVirtualWanTraffic() {
@@ -183,7 +221,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     /**
      * Set the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     *
+     * 
      * @param allowNonVirtualWanTraffic the allowNonVirtualWanTraffic value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -197,12 +235,66 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("location", location());
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("id", this.id);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ExpressRouteGatewayInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ExpressRouteGatewayInner if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ExpressRouteGatewayInner.
+     */
+    public static ExpressRouteGatewayInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ExpressRouteGatewayInner deserializedExpressRouteGatewayInner = new ExpressRouteGatewayInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedExpressRouteGatewayInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedExpressRouteGatewayInner.type = reader.getString();
+                } else if ("location".equals(fieldName)) {
+                    deserializedExpressRouteGatewayInner.withLocation(reader.getString());
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedExpressRouteGatewayInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedExpressRouteGatewayInner.innerProperties
+                        = ExpressRouteGatewayProperties.fromJson(reader);
+                } else if ("etag".equals(fieldName)) {
+                    deserializedExpressRouteGatewayInner.etag = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    deserializedExpressRouteGatewayInner.id = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedExpressRouteGatewayInner;
+        });
     }
 }

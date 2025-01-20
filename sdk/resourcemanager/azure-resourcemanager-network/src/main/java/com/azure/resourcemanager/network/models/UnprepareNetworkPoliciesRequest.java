@@ -5,24 +5,31 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Details of UnprepareNetworkPolicies for Subnet. */
+/**
+ * Details of UnprepareNetworkPolicies for Subnet.
+ */
 @Fluent
-public final class UnprepareNetworkPoliciesRequest {
+public final class UnprepareNetworkPoliciesRequest implements JsonSerializable<UnprepareNetworkPoliciesRequest> {
     /*
      * The name of the service for which subnet is being unprepared for.
      */
-    @JsonProperty(value = "serviceName")
     private String serviceName;
 
-    /** Creates an instance of UnprepareNetworkPoliciesRequest class. */
+    /**
+     * Creates an instance of UnprepareNetworkPoliciesRequest class.
+     */
     public UnprepareNetworkPoliciesRequest() {
     }
 
     /**
      * Get the serviceName property: The name of the service for which subnet is being unprepared for.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -31,7 +38,7 @@ public final class UnprepareNetworkPoliciesRequest {
 
     /**
      * Set the serviceName property: The name of the service for which subnet is being unprepared for.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the UnprepareNetworkPoliciesRequest object itself.
      */
@@ -42,9 +49,46 @@ public final class UnprepareNetworkPoliciesRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("serviceName", this.serviceName);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of UnprepareNetworkPoliciesRequest from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of UnprepareNetworkPoliciesRequest if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the UnprepareNetworkPoliciesRequest.
+     */
+    public static UnprepareNetworkPoliciesRequest fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            UnprepareNetworkPoliciesRequest deserializedUnprepareNetworkPoliciesRequest
+                = new UnprepareNetworkPoliciesRequest();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("serviceName".equals(fieldName)) {
+                    deserializedUnprepareNetworkPoliciesRequest.serviceName = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedUnprepareNetworkPoliciesRequest;
+        });
     }
 }

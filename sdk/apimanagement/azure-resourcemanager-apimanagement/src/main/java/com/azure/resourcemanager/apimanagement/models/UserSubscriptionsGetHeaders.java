@@ -5,20 +5,32 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.HttpHeaders;
 
-/** The UserSubscriptionsGetHeaders model. */
+/**
+ * The UserSubscriptionsGetHeaders model.
+ */
 @Fluent
 public final class UserSubscriptionsGetHeaders {
     /*
      * The Etag property.
      */
-    @JsonProperty(value = "Etag")
     private String etag;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of UserSubscriptionsGetHeaders class.
+     * 
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public UserSubscriptionsGetHeaders(HttpHeaders rawHeaders) {
+        this.etag = rawHeaders.getValue(HttpHeaderName.ETAG);
+    }
 
     /**
      * Get the etag property: The Etag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -27,7 +39,7 @@ public final class UserSubscriptionsGetHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the UserSubscriptionsGetHeaders object itself.
      */
@@ -38,7 +50,7 @@ public final class UserSubscriptionsGetHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

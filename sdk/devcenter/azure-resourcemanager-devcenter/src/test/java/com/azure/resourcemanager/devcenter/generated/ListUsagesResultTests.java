@@ -6,20 +6,17 @@ package com.azure.resourcemanager.devcenter.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.devcenter.models.ListUsagesResult;
-import org.junit.jupiter.api.Test;
 
 public final class ListUsagesResultTests {
-    @Test
-    public void testDeserialize() {
-        ListUsagesResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"currentValue\":8612812378237184133,\"limit\":8060447161666090820,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"otgqrlltmu\",\"value\":\"auwzizxbmpgc\"}},{\"currentValue\":2032891691540283618,\"limit\":3898811101398882532,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"tdum\",\"value\":\"p\"}}],\"nextLink\":\"ebmnzbtbhjpglk\"}")
-                .toObject(ListUsagesResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ListUsagesResult model = BinaryData.fromString(
+            "{\"value\":[{\"currentValue\":6928961478611605886,\"limit\":5360902839879947019,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"yijejvegrhbpnaix\",\"value\":\"ccbdre\"},\"id\":\"hcexdrrvqa\"},{\"currentValue\":1704091583579950228,\"limit\":6945893981350514667,\"unit\":\"Count\",\"name\":{\"localizedValue\":\"hyjsvfycx\",\"value\":\"fvoow\"},\"id\":\"vmtgjqppy\"}],\"nextLink\":\"tronzmyhgfi\"}")
+            .toObject(ListUsagesResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         ListUsagesResult model = new ListUsagesResult();
         model = BinaryData.fromObject(model).toObject(ListUsagesResult.class);
     }

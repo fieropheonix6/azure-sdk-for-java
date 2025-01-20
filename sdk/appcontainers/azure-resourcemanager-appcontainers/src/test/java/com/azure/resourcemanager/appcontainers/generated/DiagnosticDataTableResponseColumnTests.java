@@ -7,30 +7,26 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.DiagnosticDataTableResponseColumn;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class DiagnosticDataTableResponseColumnTests {
-    @Test
-    public void testDeserialize() {
-        DiagnosticDataTableResponseColumn model =
-            BinaryData
-                .fromString("{\"columnName\":\"orbteoy\",\"dataType\":\"hjxa\",\"columnType\":\"vjgsl\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        DiagnosticDataTableResponseColumn model
+            = BinaryData.fromString("{\"columnName\":\"bvopwndyqle\",\"dataType\":\"lklmtkhlo\",\"columnType\":\"x\"}")
                 .toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("orbteoy", model.columnName());
-        Assertions.assertEquals("hjxa", model.dataType());
-        Assertions.assertEquals("vjgsl", model.columnType());
+        Assertions.assertEquals("bvopwndyqle", model.columnName());
+        Assertions.assertEquals("lklmtkhlo", model.dataType());
+        Assertions.assertEquals("x", model.columnType());
     }
 
-    @Test
-    public void testSerialize() {
-        DiagnosticDataTableResponseColumn model =
-            new DiagnosticDataTableResponseColumn()
-                .withColumnName("orbteoy")
-                .withDataType("hjxa")
-                .withColumnType("vjgsl");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        DiagnosticDataTableResponseColumn model = new DiagnosticDataTableResponseColumn().withColumnName("bvopwndyqle")
+            .withDataType("lklmtkhlo")
+            .withColumnType("x");
         model = BinaryData.fromObject(model).toObject(DiagnosticDataTableResponseColumn.class);
-        Assertions.assertEquals("orbteoy", model.columnName());
-        Assertions.assertEquals("hjxa", model.dataType());
-        Assertions.assertEquals("vjgsl", model.columnType());
+        Assertions.assertEquals("bvopwndyqle", model.columnName());
+        Assertions.assertEquals("lklmtkhlo", model.dataType());
+        Assertions.assertEquals("x", model.columnType());
     }
 }

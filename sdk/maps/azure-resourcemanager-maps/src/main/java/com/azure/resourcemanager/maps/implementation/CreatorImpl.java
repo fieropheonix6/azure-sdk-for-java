@@ -5,10 +5,11 @@
 package com.azure.resourcemanager.maps.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.maps.fluent.models.CreatorInner;
+import com.azure.resourcemanager.maps.fluent.models.CreatorProperties;
 import com.azure.resourcemanager.maps.models.Creator;
-import com.azure.resourcemanager.maps.models.CreatorProperties;
 import com.azure.resourcemanager.maps.models.CreatorUpdateParameters;
 import java.util.Collections;
 import java.util.Map;
@@ -47,12 +48,20 @@ public final class CreatorImpl implements Creator, Creator.Definition, Creator.U
         return this.innerModel().properties();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public CreatorInner innerModel() {
@@ -78,23 +87,18 @@ public final class CreatorImpl implements Creator, Creator.Definition, Creator.U
     }
 
     public Creator create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCreators()
-                .createOrUpdateWithResponse(
-                    resourceGroupName, accountName, creatorName, this.innerModel(), Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCreators()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, creatorName, this.innerModel(), Context.NONE)
+            .getValue();
         return this;
     }
 
     public Creator create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCreators()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, creatorName, this.innerModel(), context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCreators()
+            .createOrUpdateWithResponse(resourceGroupName, accountName, creatorName, this.innerModel(), context)
+            .getValue();
         return this;
     }
 
@@ -110,51 +114,43 @@ public final class CreatorImpl implements Creator, Creator.Definition, Creator.U
     }
 
     public Creator apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCreators()
-                .updateWithResponse(
-                    resourceGroupName, accountName, creatorName, updateCreatorUpdateParameters, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCreators()
+            .updateWithResponse(resourceGroupName, accountName, creatorName, updateCreatorUpdateParameters,
+                Context.NONE)
+            .getValue();
         return this;
     }
 
     public Creator apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCreators()
-                .updateWithResponse(resourceGroupName, accountName, creatorName, updateCreatorUpdateParameters, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCreators()
+            .updateWithResponse(resourceGroupName, accountName, creatorName, updateCreatorUpdateParameters, context)
+            .getValue();
         return this;
     }
 
     CreatorImpl(CreatorInner innerObject, com.azure.resourcemanager.maps.AzureMapsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.accountName = Utils.getValueFromIdByName(innerObject.id(), "accounts");
-        this.creatorName = Utils.getValueFromIdByName(innerObject.id(), "creators");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.accountName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "accounts");
+        this.creatorName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "creators");
     }
 
     public Creator refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCreators()
-                .getWithResponse(resourceGroupName, accountName, creatorName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCreators()
+            .getWithResponse(resourceGroupName, accountName, creatorName, Context.NONE)
+            .getValue();
         return this;
     }
 
     public Creator refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getCreators()
-                .getWithResponse(resourceGroupName, accountName, creatorName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient()
+            .getCreators()
+            .getWithResponse(resourceGroupName, accountName, creatorName, context)
+            .getValue();
         return this;
     }
 
@@ -183,7 +179,7 @@ public final class CreatorImpl implements Creator, Creator.Definition, Creator.U
         }
     }
 
-    public CreatorImpl withStorageUnits(Integer storageUnits) {
+    public CreatorImpl withStorageUnits(int storageUnits) {
         this.updateCreatorUpdateParameters.withStorageUnits(storageUnits);
         return this;
     }

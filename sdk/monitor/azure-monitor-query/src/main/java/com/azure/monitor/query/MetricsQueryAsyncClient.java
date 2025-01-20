@@ -9,42 +9,43 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.monitor.query.implementation.logs.models.LogsQueryHelper;
-import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
-import com.azure.monitor.query.implementation.metrics.models.Metric;
 import com.azure.monitor.query.implementation.metrics.MonitorManagementClientImpl;
-import com.azure.monitor.query.implementation.metrics.models.MetadataValue;
+import com.azure.monitor.query.implementation.metrics.models.ErrorResponseException;
 import com.azure.monitor.query.implementation.metrics.models.MetricsHelper;
-import com.azure.monitor.query.implementation.metrics.models.MetricsResponse;
 import com.azure.monitor.query.implementation.metrics.models.ResultType;
 import com.azure.monitor.query.implementation.metricsdefinitions.MetricsDefinitionsClientImpl;
-import com.azure.monitor.query.implementation.metricsdefinitions.models.LocalizableString;
 import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespacesClientImpl;
-import com.azure.monitor.query.models.MetricAvailability;
 import com.azure.monitor.query.models.MetricDefinition;
-import com.azure.monitor.query.models.MetricResult;
 import com.azure.monitor.query.models.MetricNamespace;
 import com.azure.monitor.query.models.MetricsQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
-import com.azure.monitor.query.models.QueryTimeInterval;
-import com.azure.monitor.query.models.TimeSeriesElement;
-import com.azure.monitor.query.models.MetricValue;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.withContext;
+import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.convertToMetricsQueryResult;
 
 /**
- * The asynchronous client for querying Azure Monitor metrics.
- * <p><strong>Instantiating an asynchronous Metrics query Client</strong></p>
+ * <p>The asynchronous client for querying Azure Monitor metrics.</p>
+ *
+ * <p>Azure Monitor Metrics is a feature of Azure Monitor that collects numeric data from monitored resources into a
+ * time-series database. Metrics are numerical values that are collected at regular intervals and describe some aspect
+ * of a system at a particular time. The MetricsQueryClient provides synchronous implementations of methods that query
+ * metrics from your Azure services.</p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>
+ *     Authenticating and building MetricsQueryAsyncClient instances are done through {@link MetricsQueryClientBuilder}.
+ *     The following sample shows how to build a new MetricsQueryClient instance.
+ * </p>
  *
  * <!-- src_embed com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
  * <pre>
@@ -53,6 +54,27 @@ import static com.azure.core.util.FluxUtil.withContext;
  *         .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
+ *
+ * <p>
+ *     For more information on building and authenticating, see the {@link MetricsQueryClientBuilder} documentation.
+ * </p>
+ *
+ * <h3>Client Usage</h3>
+ *
+ * <p>
+ *     For more information on using the MetricsQueryAsyncClient, see the following method documentation:
+ * </p>
+ *
+ * <ul>
+ *     <li>
+ *         {@link MetricsQueryAsyncClient#queryResource(String, List)} - Query metrics for an Azure resource.
+ *         {@link MetricsQueryAsyncClient#listMetricNamespaces(String, OffsetDateTime)} - Lists all the metrics namespaces created for the resource URI.
+ *         {@link MetricsQueryAsyncClient#listMetricDefinitions(String)} - Lists all the metrics definitions created for the resource URI.
+ *     </li>
+ * </ul>
+ *
+ * @see com.azure.monitor.query
+ * @see MetricsQueryClientBuilder
  */
 @ServiceClient(builder = MetricsQueryClientBuilder.class, isAsync = true)
 public final class MetricsQueryAsyncClient {
@@ -61,8 +83,7 @@ public final class MetricsQueryAsyncClient {
     private final MetricsDefinitionsClientImpl metricsDefinitionsClient;
 
     MetricsQueryAsyncClient(MonitorManagementClientImpl metricsClient,
-                            MetricsNamespacesClientImpl metricsNamespaceClient,
-                            MetricsDefinitionsClientImpl metricsDefinitionsClients) {
+        MetricsNamespacesClientImpl metricsNamespaceClient, MetricsDefinitionsClientImpl metricsDefinitionsClients) {
         this.metricsClient = metricsClient;
         this.metricsNamespaceClient = metricsNamespaceClient;
         this.metricsDefinitionsClient = metricsDefinitionsClients;
@@ -109,7 +130,7 @@ public final class MetricsQueryAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
-                                                                        MetricsQueryOptions options) {
+        MetricsQueryOptions options) {
         return withContext(context -> queryResourceWithResponse(resourceUri, metricsNames, options, context));
     }
 
@@ -122,10 +143,9 @@ public final class MetricsQueryAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     @SuppressWarnings("deprecation")
     public PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime) {
-        return metricsNamespaceClient
-                .getMetricNamespaces()
-                .listAsync(resourceUri, startTime.toString())
-                .mapPage(this::mapMetricNamespace);
+        return metricsNamespaceClient.getMetricNamespaces()
+            .listAsync(resourceUri, startTime == null ? null : startTime.toString())
+            .mapPage(MetricsHelper::mapMetricNamespace);
     }
 
     /**
@@ -147,126 +167,43 @@ public final class MetricsQueryAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     @SuppressWarnings("deprecation")
     public PagedFlux<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace) {
-        return metricsDefinitionsClient
-                .getMetricDefinitions()
-                .listAsync(resourceUri, metricsNamespace)
-                .mapPage(this::mapToMetricDefinition);
-    }
-
-    private MetricDefinition mapToMetricDefinition(com.azure.monitor.query.implementation.metricsdefinitions.models.MetricDefinition definition) {
-        MetricDefinition metricDefinition = new MetricDefinition();
-        List<String> dimensions = null;
-        if (!CoreUtils.isNullOrEmpty(definition.getDimensions())) {
-            dimensions = definition.getDimensions().stream().map(LocalizableString::getValue)
-                    .collect(Collectors.toList());
-        }
-        MetricsHelper.setMetricDefinitionProperties(metricDefinition,
-                definition.isDimensionRequired(), definition.getResourceId(), definition.getNamespace(),
-                definition.getName().getValue(), definition.getDisplayDescription(), definition.getCategory(),
-                definition.getMetricClass(), definition.getUnit(), definition.getPrimaryAggregationType(),
-                definition.getSupportedAggregationTypes(),
-                mapMetricAvailabilities(definition.getMetricAvailabilities()), definition.getId(),
-                dimensions);
-        return metricDefinition;
-    }
-
-    private List<MetricAvailability> mapMetricAvailabilities(List<com.azure.monitor.query.implementation.metricsdefinitions.models.MetricAvailability> metricAvailabilities) {
-        return metricAvailabilities.stream()
-                .map(availabilityImpl -> {
-                    MetricAvailability metricAvailability = new MetricAvailability();
-                    MetricsHelper.setMetricAvailabilityProperties(metricAvailability, availabilityImpl.getRetention(),
-                            availabilityImpl.getTimeGrain());
-                    return metricAvailability;
-                }).collect(Collectors.toList());
+        return metricsDefinitionsClient.getMetricDefinitions()
+            .listAsync(resourceUri, metricsNamespace)
+            .mapPage(MetricsHelper::mapToMetricDefinition);
     }
 
     @SuppressWarnings("deprecation")
     PagedFlux<MetricNamespace> listMetricNamespaces(String resourceUri, OffsetDateTime startTime, Context context) {
-        return metricsNamespaceClient
-                .getMetricNamespaces()
-                .listAsync(resourceUri, startTime == null ? null : startTime.toString(), context)
-                .mapPage(this::mapMetricNamespace);
-    }
-
-    private MetricNamespace mapMetricNamespace(com.azure.monitor.query.implementation.metricsnamespaces.models.MetricNamespace namespaceImpl) {
-        MetricNamespace metricNamespace = new MetricNamespace();
-        MetricsHelper.setMetricNamespaceProperties(metricNamespace, namespaceImpl.getClassification(),
-                namespaceImpl.getId(), namespaceImpl.getName(),
-                namespaceImpl.getProperties() == null ? null : namespaceImpl.getProperties().getMetricNamespaceName(),
-                namespaceImpl.getType());
-
-        return metricNamespace;
+        return metricsNamespaceClient.getMetricNamespaces()
+            .listAsync(resourceUri, startTime == null ? null : startTime.toString(), context)
+            .mapPage(MetricsHelper::mapMetricNamespace);
     }
 
     @SuppressWarnings("deprecation")
     PagedFlux<MetricDefinition> listMetricDefinitions(String resourceUri, String metricsNamespace, Context context) {
         return metricsDefinitionsClient.getMetricDefinitions()
-                .listAsync(resourceUri, metricsNamespace, context)
-                .mapPage(this::mapToMetricDefinition);
+            .listAsync(resourceUri, metricsNamespace, context)
+            .mapPage(MetricsHelper::mapToMetricDefinition);
     }
 
     Mono<Response<MetricsQueryResult>> queryResourceWithResponse(String resourceUri, List<String> metricsNames,
-                                                                 MetricsQueryOptions options, Context context) {
+        MetricsQueryOptions options, Context context) {
         String aggregation = null;
         if (!CoreUtils.isNullOrEmpty(options.getAggregations())) {
-            aggregation = options.getAggregations()
-                    .stream()
-                    .map(type -> type.toString())
-                    .collect(Collectors.joining(","));
+            aggregation
+                = options.getAggregations().stream().map(type -> type.toString()).collect(Collectors.joining(","));
         }
-        String timespan = options.getTimeInterval() == null ? null
-                : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
-        return metricsClient
-                .getMetrics()
-                .listWithResponseAsync(resourceUri, timespan, options.getGranularity(),
-                        String.join(",", metricsNames), aggregation, options.getTop(), options.getOrderBy(),
-                        options.getFilter(), ResultType.DATA, options.getMetricNamespace(), context)
-                .map(response -> convertToMetricsQueryResult(response))
-                .onErrorMap(ErrorResponseException.class, ex -> {
-                    return new HttpResponseException(ex.getMessage(), ex.getResponse(),
-                            new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage()));
-                });
+        String timespan
+            = options.getTimeInterval() == null ? null : LogsQueryHelper.toIso8601Format(options.getTimeInterval());
+        return metricsClient.getMetrics()
+            .listWithResponseAsync(resourceUri, timespan, options.getGranularity(), String.join(",", metricsNames),
+                aggregation, options.getTop(), options.getOrderBy(), options.getFilter(), ResultType.DATA,
+                options.getMetricNamespace(), null, null, null, context)
+            .map(response -> convertToMetricsQueryResult(response))
+            .onErrorMap(ErrorResponseException.class, ex -> {
+                return new HttpResponseException(ex.getMessage(), ex.getResponse(),
+                    new ResponseError(ex.getValue().getCode(), ex.getValue().getMessage()));
+            });
     }
 
-    private Response<MetricsQueryResult> convertToMetricsQueryResult(Response<MetricsResponse> response) {
-        MetricsResponse metricsResponse = response.getValue();
-        MetricsQueryResult metricsQueryResult = new MetricsQueryResult(
-                metricsResponse.getCost(),
-                metricsResponse.getTimespan() == null ? null : QueryTimeInterval.parse(metricsResponse.getTimespan()),
-                metricsResponse.getInterval(),
-                metricsResponse.getNamespace(), metricsResponse.getResourceregion(), mapMetrics(metricsResponse.getValue()));
-
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(), metricsQueryResult);
-    }
-
-    private List<MetricResult> mapMetrics(List<Metric> value) {
-        return value.stream()
-                .map(metric -> new MetricResult(metric.getId(), metric.getType(), metric.getUnit(), metric.getName().getValue(),
-                        mapTimeSeries(metric.getTimeseries()), metric.getDisplayDescription(),
-                        new ResponseError(metric.getErrorCode(), metric.getErrorMessage())))
-                .collect(Collectors.toList());
-    }
-
-    private List<TimeSeriesElement> mapTimeSeries(List<com.azure.monitor.query.implementation.metrics.models.TimeSeriesElement> timeseries) {
-        return timeseries.stream()
-                .map(timeSeriesElement -> new TimeSeriesElement(mapMetricsData(timeSeriesElement.getData()),
-                        mapMetricsMetadata(timeSeriesElement.getMetadatavalues())))
-                .collect(Collectors.toList());
-    }
-
-    private Map<String, String> mapMetricsMetadata(List<MetadataValue> metadataValues) {
-        if (metadataValues == null) {
-            return null;
-        }
-        return metadataValues.stream()
-                .collect(Collectors.toMap(value -> value.getName().getValue(), MetadataValue::getValue));
-    }
-
-    private List<MetricValue> mapMetricsData(List<com.azure.monitor.query.implementation.metrics.models.MetricValue> data) {
-        return data.stream()
-                .map(metricValue -> new MetricValue(metricValue.getTimeStamp(),
-                        metricValue.getAverage(), metricValue.getMinimum(), metricValue.getMaximum(), metricValue.getTotal(),
-                        metricValue.getCount()))
-                .collect(Collectors.toList());
-    }
 }

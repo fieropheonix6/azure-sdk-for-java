@@ -5,71 +5,71 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
-/** Specifies Windows operating system settings on the virtual machine. */
+/**
+ * Specifies Windows operating system settings on the virtual machine.
+ */
 @Fluent
-public final class WindowsConfiguration {
+public final class WindowsConfiguration implements JsonSerializable<WindowsConfiguration> {
     /*
-     * Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this
-     * property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM
-     * Agent is installed on the VM so that extensions can be added to the VM later.
+     * Indicates whether virtual machine agent should be provisioned on the virtual machine. When this property is not
+     * specified in the request body, it is set to true by default. This will ensure that VM Agent is installed on the
+     * VM so that extensions can be added to the VM later.
      */
-    @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
 
     /*
-     * Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. <br><br>
-     * For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.
+     * Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For
+     * virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning.
      */
-    @JsonProperty(value = "enableAutomaticUpdates")
     private Boolean enableAutomaticUpdates;
 
     /*
-     * Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". <br><br> Possible values can be
+     * Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible values can be
      * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
      * from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
      */
-    @JsonProperty(value = "timeZone")
     private String timeZone;
 
     /*
      * Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file,
      * which is used by Windows Setup.
      */
-    @JsonProperty(value = "additionalUnattendContent")
     private List<AdditionalUnattendContent> additionalUnattendContent;
 
     /*
      * [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
      */
-    @JsonProperty(value = "patchSettings")
     private PatchSettings patchSettings;
 
     /*
      * Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell.
      */
-    @JsonProperty(value = "winRM")
     private WinRMConfiguration winRM;
 
     /*
-     * Indicates whether VMAgent Platform Updates is enabled for the Windows virtual machine. Default value is false.
+     * Indicates whether VMAgent Platform Updates are enabled for the Windows Virtual Machine.
      */
-    @JsonProperty(value = "enableVMAgentPlatformUpdates")
     private Boolean enableVMAgentPlatformUpdates;
 
-    /** Creates an instance of WindowsConfiguration class. */
+    /**
+     * Creates an instance of WindowsConfiguration class.
+     */
     public WindowsConfiguration() {
     }
 
     /**
      * Get the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
-     * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
-     * it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM
-     * later.
-     *
+     * machine. When this property is not specified in the request body, it is set to true by default. This will ensure
+     * that VM Agent is installed on the VM so that extensions can be added to the VM later.
+     * 
      * @return the provisionVMAgent value.
      */
     public Boolean provisionVMAgent() {
@@ -78,10 +78,9 @@ public final class WindowsConfiguration {
 
     /**
      * Set the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
-     * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
-     * it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM
-     * later.
-     *
+     * machine. When this property is not specified in the request body, it is set to true by default. This will ensure
+     * that VM Agent is installed on the VM so that extensions can be added to the VM later.
+     * 
      * @param provisionVMAgent the provisionVMAgent value to set.
      * @return the WindowsConfiguration object itself.
      */
@@ -92,9 +91,9 @@ public final class WindowsConfiguration {
 
     /**
      * Get the enableAutomaticUpdates property: Indicates whether Automatic Updates is enabled for the Windows virtual
-     * machine. Default value is true. &lt;br&gt;&lt;br&gt; For virtual machine scale sets, this property can be updated
-     * and updates will take effect on OS reprovisioning.
-     *
+     * machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will
+     * take effect on OS reprovisioning.
+     * 
      * @return the enableAutomaticUpdates value.
      */
     public Boolean enableAutomaticUpdates() {
@@ -103,9 +102,9 @@ public final class WindowsConfiguration {
 
     /**
      * Set the enableAutomaticUpdates property: Indicates whether Automatic Updates is enabled for the Windows virtual
-     * machine. Default value is true. &lt;br&gt;&lt;br&gt; For virtual machine scale sets, this property can be updated
-     * and updates will take effect on OS reprovisioning.
-     *
+     * machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will
+     * take effect on OS reprovisioning.
+     * 
      * @param enableAutomaticUpdates the enableAutomaticUpdates value to set.
      * @return the WindowsConfiguration object itself.
      */
@@ -115,12 +114,12 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
-     * &lt;br&gt;&lt;br&gt; Possible values can be
+     * Get the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible
+     * values can be
      * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
      * from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -128,12 +127,12 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time".
-     * &lt;br&gt;&lt;br&gt; Possible values can be
+     * Set the timeZone property: Specifies the time zone of the virtual machine. e.g. "Pacific Standard Time". Possible
+     * values can be
      * [TimeZoneInfo.Id](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.id?#System_TimeZoneInfo_Id) value
      * from time zones returned by
      * [TimeZoneInfo.GetSystemTimeZones](https://docs.microsoft.com/dotnet/api/system.timezoneinfo.getsystemtimezones).
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the WindowsConfiguration object itself.
      */
@@ -145,7 +144,7 @@ public final class WindowsConfiguration {
     /**
      * Get the additionalUnattendContent property: Specifies additional base-64 encoded XML formatted information that
      * can be included in the Unattend.xml file, which is used by Windows Setup.
-     *
+     * 
      * @return the additionalUnattendContent value.
      */
     public List<AdditionalUnattendContent> additionalUnattendContent() {
@@ -155,19 +154,19 @@ public final class WindowsConfiguration {
     /**
      * Set the additionalUnattendContent property: Specifies additional base-64 encoded XML formatted information that
      * can be included in the Unattend.xml file, which is used by Windows Setup.
-     *
+     * 
      * @param additionalUnattendContent the additionalUnattendContent value to set.
      * @return the WindowsConfiguration object itself.
      */
-    public WindowsConfiguration withAdditionalUnattendContent(
-        List<AdditionalUnattendContent> additionalUnattendContent) {
+    public WindowsConfiguration
+        withAdditionalUnattendContent(List<AdditionalUnattendContent> additionalUnattendContent) {
         this.additionalUnattendContent = additionalUnattendContent;
         return this;
     }
 
     /**
      * Get the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
-     *
+     * 
      * @return the patchSettings value.
      */
     public PatchSettings patchSettings() {
@@ -176,7 +175,7 @@ public final class WindowsConfiguration {
 
     /**
      * Set the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Windows.
-     *
+     * 
      * @param patchSettings the patchSettings value to set.
      * @return the WindowsConfiguration object itself.
      */
@@ -188,7 +187,7 @@ public final class WindowsConfiguration {
     /**
      * Get the winRM property: Specifies the Windows Remote Management listeners. This enables remote Windows
      * PowerShell.
-     *
+     * 
      * @return the winRM value.
      */
     public WinRMConfiguration winRM() {
@@ -198,7 +197,7 @@ public final class WindowsConfiguration {
     /**
      * Set the winRM property: Specifies the Windows Remote Management listeners. This enables remote Windows
      * PowerShell.
-     *
+     * 
      * @param winRM the winRM value to set.
      * @return the WindowsConfiguration object itself.
      */
@@ -208,9 +207,9 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
-     * Windows virtual machine. Default value is false.
-     *
+     * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates are enabled for the
+     * Windows Virtual Machine.
+     * 
      * @return the enableVMAgentPlatformUpdates value.
      */
     public Boolean enableVMAgentPlatformUpdates() {
@@ -218,20 +217,8 @@ public final class WindowsConfiguration {
     }
 
     /**
-     * Set the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
-     * Windows virtual machine. Default value is false.
-     *
-     * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
-     * @return the WindowsConfiguration object itself.
-     */
-    public WindowsConfiguration withEnableVMAgentPlatformUpdates(Boolean enableVMAgentPlatformUpdates) {
-        this.enableVMAgentPlatformUpdates = enableVMAgentPlatformUpdates;
-        return this;
-    }
-
-    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -244,5 +231,63 @@ public final class WindowsConfiguration {
         if (winRM() != null) {
             winRM().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("provisionVMAgent", this.provisionVMAgent);
+        jsonWriter.writeBooleanField("enableAutomaticUpdates", this.enableAutomaticUpdates);
+        jsonWriter.writeStringField("timeZone", this.timeZone);
+        jsonWriter.writeArrayField("additionalUnattendContent", this.additionalUnattendContent,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("patchSettings", this.patchSettings);
+        jsonWriter.writeJsonField("winRM", this.winRM);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of WindowsConfiguration from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of WindowsConfiguration if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the WindowsConfiguration.
+     */
+    public static WindowsConfiguration fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            WindowsConfiguration deserializedWindowsConfiguration = new WindowsConfiguration();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("provisionVMAgent".equals(fieldName)) {
+                    deserializedWindowsConfiguration.provisionVMAgent = reader.getNullable(JsonReader::getBoolean);
+                } else if ("enableAutomaticUpdates".equals(fieldName)) {
+                    deserializedWindowsConfiguration.enableAutomaticUpdates
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("timeZone".equals(fieldName)) {
+                    deserializedWindowsConfiguration.timeZone = reader.getString();
+                } else if ("additionalUnattendContent".equals(fieldName)) {
+                    List<AdditionalUnattendContent> additionalUnattendContent
+                        = reader.readArray(reader1 -> AdditionalUnattendContent.fromJson(reader1));
+                    deserializedWindowsConfiguration.additionalUnattendContent = additionalUnattendContent;
+                } else if ("patchSettings".equals(fieldName)) {
+                    deserializedWindowsConfiguration.patchSettings = PatchSettings.fromJson(reader);
+                } else if ("winRM".equals(fieldName)) {
+                    deserializedWindowsConfiguration.winRM = WinRMConfiguration.fromJson(reader);
+                } else if ("enableVMAgentPlatformUpdates".equals(fieldName)) {
+                    deserializedWindowsConfiguration.enableVMAgentPlatformUpdates
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedWindowsConfiguration;
+        });
     }
 }

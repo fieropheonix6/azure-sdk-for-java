@@ -6,61 +6,70 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.AutomaticRepairsPolicy;
 import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.PriorityMixPolicy;
+import com.azure.resourcemanager.compute.models.ResiliencyPolicy;
 import com.azure.resourcemanager.compute.models.ScaleInPolicy;
+import com.azure.resourcemanager.compute.models.ScheduledEventsPolicy;
+import com.azure.resourcemanager.compute.models.SkuProfile;
 import com.azure.resourcemanager.compute.models.SpotRestorePolicy;
 import com.azure.resourcemanager.compute.models.UpgradePolicy;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProfile;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.resourcemanager.compute.models.ZonalPlatformFaultDomainAlignMode;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 
-/** Describes the properties of a Virtual Machine Scale Set. */
+/**
+ * Describes the properties of a Virtual Machine Scale Set.
+ */
 @Fluent
-public final class VirtualMachineScaleSetProperties {
+public final class VirtualMachineScaleSetProperties implements JsonSerializable<VirtualMachineScaleSetProperties> {
     /*
      * The upgrade policy.
      */
-    @JsonProperty(value = "upgradePolicy")
     private UpgradePolicy upgradePolicy;
+
+    /*
+     * The ScheduledEventsPolicy.
+     */
+    private ScheduledEventsPolicy scheduledEventsPolicy;
 
     /*
      * Policy for automatic repairs.
      */
-    @JsonProperty(value = "automaticRepairsPolicy")
     private AutomaticRepairsPolicy automaticRepairsPolicy;
 
     /*
      * The virtual machine profile.
      */
-    @JsonProperty(value = "virtualMachineProfile")
     private VirtualMachineScaleSetVMProfile virtualMachineProfile;
 
     /*
      * The provisioning state, which only appears in the response.
      */
-    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
     /*
      * Specifies whether the Virtual Machine Scale Set should be overprovisioned.
      */
-    @JsonProperty(value = "overprovision")
     private Boolean overprovision;
 
     /*
      * When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally
      * kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs.
      */
-    @JsonProperty(value = "doNotRunExtensionsOnOverprovisionedVMs")
     private Boolean doNotRunExtensionsOnOverprovisionedVMs;
 
     /*
      * Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
      */
-    @JsonProperty(value = "uniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String uniqueId;
 
     /*
@@ -68,35 +77,30 @@ public final class VirtualMachineScaleSetProperties {
      * singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not
      * be modified to true.
      */
-    @JsonProperty(value = "singlePlacementGroup")
     private Boolean singlePlacementGroup;
 
     /*
      * Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage.
-     * zoneBalance property can only be set if the zones property of the scale set contains more than one zone. If
-     * there are no zones or only one zone specified, then zoneBalance property should not be set.
+     * zoneBalance property can only be set if the zones property of the scale set contains more than one zone. If there
+     * are no zones or only one zone specified, then zoneBalance property should not be set.
      */
-    @JsonProperty(value = "zoneBalance")
     private Boolean zoneBalance;
 
     /*
      * Fault Domain count for each placement group.
      */
-    @JsonProperty(value = "platformFaultDomainCount")
     private Integer platformFaultDomainCount;
 
     /*
      * Specifies information about the proximity placement group that the virtual machine scale set should be assigned
-     * to. <br><br>Minimum api-version: 2018-04-01.
+     * to. Minimum api-version: 2018-04-01.
      */
-    @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;
 
     /*
-     * Specifies information about the dedicated host group that the virtual machine scale set resides in.
-     * <br><br>Minimum api-version: 2020-06-01.
+     * Specifies information about the dedicated host group that the virtual machine scale set resides in. Minimum
+     * api-version: 2020-06-01.
      */
-    @JsonProperty(value = "hostGroup")
     private SubResource hostGroup;
 
     /*
@@ -104,47 +108,62 @@ public final class VirtualMachineScaleSetProperties {
      * For instance: whether the Virtual Machines have the capability to support attaching managed data disks with
      * UltraSSD_LRS storage account type.
      */
-    @JsonProperty(value = "additionalCapabilities")
     private AdditionalCapabilities additionalCapabilities;
 
     /*
      * Specifies the policies applied when scaling in Virtual Machines in the Virtual Machine Scale Set.
      */
-    @JsonProperty(value = "scaleInPolicy")
     private ScaleInPolicy scaleInPolicy;
 
     /*
      * Specifies the orchestration mode for the virtual machine scale set.
      */
-    @JsonProperty(value = "orchestrationMode")
     private OrchestrationMode orchestrationMode;
 
     /*
      * Specifies the Spot Restore properties for the virtual machine scale set.
      */
-    @JsonProperty(value = "spotRestorePolicy")
     private SpotRestorePolicy spotRestorePolicy;
 
     /*
      * Specifies the desired targets for mixing Spot and Regular priority VMs within the same VMSS Flex instance.
      */
-    @JsonProperty(value = "priorityMixPolicy")
     private PriorityMixPolicy priorityMixPolicy;
 
     /*
-     * Specifies the time at which the Virtual Machine Scale Set resource was created.<br><br>Minimum api-version:
-     * 2021-11-01.
+     * Specifies the time at which the Virtual Machine Scale Set resource was created. Minimum api-version: 2021-11-01.
      */
-    @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
 
-    /** Creates an instance of VirtualMachineScaleSetProperties class. */
+    /*
+     * Optional property which must either be set to True or omitted.
+     */
+    private Boolean constrainedMaximumCapacity;
+
+    /*
+     * Policy for Resiliency
+     */
+    private ResiliencyPolicy resiliencyPolicy;
+
+    /*
+     * Specifies the align mode between Virtual Machine Scale Set compute and storage Fault Domain count.
+     */
+    private ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode;
+
+    /*
+     * Specifies the sku profile for the virtual machine scale set.
+     */
+    private SkuProfile skuProfile;
+
+    /**
+     * Creates an instance of VirtualMachineScaleSetProperties class.
+     */
     public VirtualMachineScaleSetProperties() {
     }
 
     /**
      * Get the upgradePolicy property: The upgrade policy.
-     *
+     * 
      * @return the upgradePolicy value.
      */
     public UpgradePolicy upgradePolicy() {
@@ -153,7 +172,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the upgradePolicy property: The upgrade policy.
-     *
+     * 
      * @param upgradePolicy the upgradePolicy value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -163,8 +182,28 @@ public final class VirtualMachineScaleSetProperties {
     }
 
     /**
+     * Get the scheduledEventsPolicy property: The ScheduledEventsPolicy.
+     * 
+     * @return the scheduledEventsPolicy value.
+     */
+    public ScheduledEventsPolicy scheduledEventsPolicy() {
+        return this.scheduledEventsPolicy;
+    }
+
+    /**
+     * Set the scheduledEventsPolicy property: The ScheduledEventsPolicy.
+     * 
+     * @param scheduledEventsPolicy the scheduledEventsPolicy value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withScheduledEventsPolicy(ScheduledEventsPolicy scheduledEventsPolicy) {
+        this.scheduledEventsPolicy = scheduledEventsPolicy;
+        return this;
+    }
+
+    /**
      * Get the automaticRepairsPolicy property: Policy for automatic repairs.
-     *
+     * 
      * @return the automaticRepairsPolicy value.
      */
     public AutomaticRepairsPolicy automaticRepairsPolicy() {
@@ -173,7 +212,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the automaticRepairsPolicy property: Policy for automatic repairs.
-     *
+     * 
      * @param automaticRepairsPolicy the automaticRepairsPolicy value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -184,7 +223,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the virtualMachineProfile property: The virtual machine profile.
-     *
+     * 
      * @return the virtualMachineProfile value.
      */
     public VirtualMachineScaleSetVMProfile virtualMachineProfile() {
@@ -193,19 +232,19 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the virtualMachineProfile property: The virtual machine profile.
-     *
+     * 
      * @param virtualMachineProfile the virtualMachineProfile value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
-    public VirtualMachineScaleSetProperties withVirtualMachineProfile(
-        VirtualMachineScaleSetVMProfile virtualMachineProfile) {
+    public VirtualMachineScaleSetProperties
+        withVirtualMachineProfile(VirtualMachineScaleSetVMProfile virtualMachineProfile) {
         this.virtualMachineProfile = virtualMachineProfile;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state, which only appears in the response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -214,7 +253,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the overprovision property: Specifies whether the Virtual Machine Scale Set should be overprovisioned.
-     *
+     * 
      * @return the overprovision value.
      */
     public Boolean overprovision() {
@@ -223,7 +262,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the overprovision property: Specifies whether the Virtual Machine Scale Set should be overprovisioned.
-     *
+     * 
      * @param overprovision the overprovision value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -236,7 +275,7 @@ public final class VirtualMachineScaleSetProperties {
      * Get the doNotRunExtensionsOnOverprovisionedVMs property: When Overprovision is enabled, extensions are launched
      * only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions
      * do not run on the extra overprovisioned VMs.
-     *
+     * 
      * @return the doNotRunExtensionsOnOverprovisionedVMs value.
      */
     public Boolean doNotRunExtensionsOnOverprovisionedVMs() {
@@ -247,19 +286,19 @@ public final class VirtualMachineScaleSetProperties {
      * Set the doNotRunExtensionsOnOverprovisionedVMs property: When Overprovision is enabled, extensions are launched
      * only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions
      * do not run on the extra overprovisioned VMs.
-     *
+     * 
      * @param doNotRunExtensionsOnOverprovisionedVMs the doNotRunExtensionsOnOverprovisionedVMs value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
-    public VirtualMachineScaleSetProperties withDoNotRunExtensionsOnOverprovisionedVMs(
-        Boolean doNotRunExtensionsOnOverprovisionedVMs) {
+    public VirtualMachineScaleSetProperties
+        withDoNotRunExtensionsOnOverprovisionedVMs(Boolean doNotRunExtensionsOnOverprovisionedVMs) {
         this.doNotRunExtensionsOnOverprovisionedVMs = doNotRunExtensionsOnOverprovisionedVMs;
         return this;
     }
 
     /**
      * Get the uniqueId property: Specifies the ID which uniquely identifies a Virtual Machine Scale Set.
-     *
+     * 
      * @return the uniqueId value.
      */
     public String uniqueId() {
@@ -270,7 +309,7 @@ public final class VirtualMachineScaleSetProperties {
      * Get the singlePlacementGroup property: When true this limits the scale set to a single placement group, of max
      * size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if
      * singlePlacementGroup is false, it may not be modified to true.
-     *
+     * 
      * @return the singlePlacementGroup value.
      */
     public Boolean singlePlacementGroup() {
@@ -281,7 +320,7 @@ public final class VirtualMachineScaleSetProperties {
      * Set the singlePlacementGroup property: When true this limits the scale set to a single placement group, of max
      * size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if
      * singlePlacementGroup is false, it may not be modified to true.
-     *
+     * 
      * @param singlePlacementGroup the singlePlacementGroup value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -294,7 +333,7 @@ public final class VirtualMachineScaleSetProperties {
      * Get the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
      * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
      * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
-     *
+     * 
      * @return the zoneBalance value.
      */
     public Boolean zoneBalance() {
@@ -305,7 +344,7 @@ public final class VirtualMachineScaleSetProperties {
      * Set the zoneBalance property: Whether to force strictly even Virtual Machine distribution cross x-zones in case
      * there is zone outage. zoneBalance property can only be set if the zones property of the scale set contains more
      * than one zone. If there are no zones or only one zone specified, then zoneBalance property should not be set.
-     *
+     * 
      * @param zoneBalance the zoneBalance value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -316,7 +355,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the platformFaultDomainCount property: Fault Domain count for each placement group.
-     *
+     * 
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -325,7 +364,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the platformFaultDomainCount property: Fault Domain count for each placement group.
-     *
+     * 
      * @param platformFaultDomainCount the platformFaultDomainCount value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -336,8 +375,8 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * virtual machine scale set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
-     *
+     * virtual machine scale set should be assigned to. Minimum api-version: 2018-04-01.
+     * 
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
@@ -346,8 +385,8 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
-     * virtual machine scale set should be assigned to. &lt;br&gt;&lt;br&gt;Minimum api-version: 2018-04-01.
-     *
+     * virtual machine scale set should be assigned to. Minimum api-version: 2018-04-01.
+     * 
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -358,8 +397,8 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the hostGroup property: Specifies information about the dedicated host group that the virtual machine scale
-     * set resides in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
-     *
+     * set resides in. Minimum api-version: 2020-06-01.
+     * 
      * @return the hostGroup value.
      */
     public SubResource hostGroup() {
@@ -368,8 +407,8 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the hostGroup property: Specifies information about the dedicated host group that the virtual machine scale
-     * set resides in. &lt;br&gt;&lt;br&gt;Minimum api-version: 2020-06-01.
-     *
+     * set resides in. Minimum api-version: 2020-06-01.
+     * 
      * @param hostGroup the hostGroup value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -382,7 +421,7 @@ public final class VirtualMachineScaleSetProperties {
      * Get the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the Virtual
      * Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to
      * support attaching managed data disks with UltraSSD_LRS storage account type.
-     *
+     * 
      * @return the additionalCapabilities value.
      */
     public AdditionalCapabilities additionalCapabilities() {
@@ -393,7 +432,7 @@ public final class VirtualMachineScaleSetProperties {
      * Set the additionalCapabilities property: Specifies additional capabilities enabled or disabled on the Virtual
      * Machines in the Virtual Machine Scale Set. For instance: whether the Virtual Machines have the capability to
      * support attaching managed data disks with UltraSSD_LRS storage account type.
-     *
+     * 
      * @param additionalCapabilities the additionalCapabilities value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -405,7 +444,7 @@ public final class VirtualMachineScaleSetProperties {
     /**
      * Get the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
      * Machine Scale Set.
-     *
+     * 
      * @return the scaleInPolicy value.
      */
     public ScaleInPolicy scaleInPolicy() {
@@ -415,7 +454,7 @@ public final class VirtualMachineScaleSetProperties {
     /**
      * Set the scaleInPolicy property: Specifies the policies applied when scaling in Virtual Machines in the Virtual
      * Machine Scale Set.
-     *
+     * 
      * @param scaleInPolicy the scaleInPolicy value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -426,7 +465,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
-     *
+     * 
      * @return the orchestrationMode value.
      */
     public OrchestrationMode orchestrationMode() {
@@ -435,7 +474,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the orchestrationMode property: Specifies the orchestration mode for the virtual machine scale set.
-     *
+     * 
      * @param orchestrationMode the orchestrationMode value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -446,7 +485,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Get the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
-     *
+     * 
      * @return the spotRestorePolicy value.
      */
     public SpotRestorePolicy spotRestorePolicy() {
@@ -455,7 +494,7 @@ public final class VirtualMachineScaleSetProperties {
 
     /**
      * Set the spotRestorePolicy property: Specifies the Spot Restore properties for the virtual machine scale set.
-     *
+     * 
      * @param spotRestorePolicy the spotRestorePolicy value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -467,7 +506,7 @@ public final class VirtualMachineScaleSetProperties {
     /**
      * Get the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
      * the same VMSS Flex instance.
-     *
+     * 
      * @return the priorityMixPolicy value.
      */
     public PriorityMixPolicy priorityMixPolicy() {
@@ -477,7 +516,7 @@ public final class VirtualMachineScaleSetProperties {
     /**
      * Set the priorityMixPolicy property: Specifies the desired targets for mixing Spot and Regular priority VMs within
      * the same VMSS Flex instance.
-     *
+     * 
      * @param priorityMixPolicy the priorityMixPolicy value to set.
      * @return the VirtualMachineScaleSetProperties object itself.
      */
@@ -487,9 +526,9 @@ public final class VirtualMachineScaleSetProperties {
     }
 
     /**
-     * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was
-     * created.&lt;br&gt;&lt;br&gt;Minimum api-version: 2021-11-01.
-     *
+     * Get the timeCreated property: Specifies the time at which the Virtual Machine Scale Set resource was created.
+     * Minimum api-version: 2021-11-01.
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -497,13 +536,99 @@ public final class VirtualMachineScaleSetProperties {
     }
 
     /**
+     * Get the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     * 
+     * @return the constrainedMaximumCapacity value.
+     */
+    public Boolean constrainedMaximumCapacity() {
+        return this.constrainedMaximumCapacity;
+    }
+
+    /**
+     * Set the constrainedMaximumCapacity property: Optional property which must either be set to True or omitted.
+     * 
+     * @param constrainedMaximumCapacity the constrainedMaximumCapacity value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withConstrainedMaximumCapacity(Boolean constrainedMaximumCapacity) {
+        this.constrainedMaximumCapacity = constrainedMaximumCapacity;
+        return this;
+    }
+
+    /**
+     * Get the resiliencyPolicy property: Policy for Resiliency.
+     * 
+     * @return the resiliencyPolicy value.
+     */
+    public ResiliencyPolicy resiliencyPolicy() {
+        return this.resiliencyPolicy;
+    }
+
+    /**
+     * Set the resiliencyPolicy property: Policy for Resiliency.
+     * 
+     * @param resiliencyPolicy the resiliencyPolicy value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withResiliencyPolicy(ResiliencyPolicy resiliencyPolicy) {
+        this.resiliencyPolicy = resiliencyPolicy;
+        return this;
+    }
+
+    /**
+     * Get the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @return the zonalPlatformFaultDomainAlignMode value.
+     */
+    public ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode() {
+        return this.zonalPlatformFaultDomainAlignMode;
+    }
+
+    /**
+     * Set the zonalPlatformFaultDomainAlignMode property: Specifies the align mode between Virtual Machine Scale Set
+     * compute and storage Fault Domain count.
+     * 
+     * @param zonalPlatformFaultDomainAlignMode the zonalPlatformFaultDomainAlignMode value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties
+        withZonalPlatformFaultDomainAlignMode(ZonalPlatformFaultDomainAlignMode zonalPlatformFaultDomainAlignMode) {
+        this.zonalPlatformFaultDomainAlignMode = zonalPlatformFaultDomainAlignMode;
+        return this;
+    }
+
+    /**
+     * Get the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @return the skuProfile value.
+     */
+    public SkuProfile skuProfile() {
+        return this.skuProfile;
+    }
+
+    /**
+     * Set the skuProfile property: Specifies the sku profile for the virtual machine scale set.
+     * 
+     * @param skuProfile the skuProfile value to set.
+     * @return the VirtualMachineScaleSetProperties object itself.
+     */
+    public VirtualMachineScaleSetProperties withSkuProfile(SkuProfile skuProfile) {
+        this.skuProfile = skuProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (upgradePolicy() != null) {
             upgradePolicy().validate();
+        }
+        if (scheduledEventsPolicy() != null) {
+            scheduledEventsPolicy().validate();
         }
         if (automaticRepairsPolicy() != null) {
             automaticRepairsPolicy().validate();
@@ -523,5 +648,127 @@ public final class VirtualMachineScaleSetProperties {
         if (priorityMixPolicy() != null) {
             priorityMixPolicy().validate();
         }
+        if (resiliencyPolicy() != null) {
+            resiliencyPolicy().validate();
+        }
+        if (skuProfile() != null) {
+            skuProfile().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("upgradePolicy", this.upgradePolicy);
+        jsonWriter.writeJsonField("scheduledEventsPolicy", this.scheduledEventsPolicy);
+        jsonWriter.writeJsonField("automaticRepairsPolicy", this.automaticRepairsPolicy);
+        jsonWriter.writeJsonField("virtualMachineProfile", this.virtualMachineProfile);
+        jsonWriter.writeBooleanField("overprovision", this.overprovision);
+        jsonWriter.writeBooleanField("doNotRunExtensionsOnOverprovisionedVMs",
+            this.doNotRunExtensionsOnOverprovisionedVMs);
+        jsonWriter.writeBooleanField("singlePlacementGroup", this.singlePlacementGroup);
+        jsonWriter.writeBooleanField("zoneBalance", this.zoneBalance);
+        jsonWriter.writeNumberField("platformFaultDomainCount", this.platformFaultDomainCount);
+        jsonWriter.writeJsonField("proximityPlacementGroup", this.proximityPlacementGroup);
+        jsonWriter.writeJsonField("hostGroup", this.hostGroup);
+        jsonWriter.writeJsonField("additionalCapabilities", this.additionalCapabilities);
+        jsonWriter.writeJsonField("scaleInPolicy", this.scaleInPolicy);
+        jsonWriter.writeStringField("orchestrationMode",
+            this.orchestrationMode == null ? null : this.orchestrationMode.toString());
+        jsonWriter.writeJsonField("spotRestorePolicy", this.spotRestorePolicy);
+        jsonWriter.writeJsonField("priorityMixPolicy", this.priorityMixPolicy);
+        jsonWriter.writeBooleanField("constrainedMaximumCapacity", this.constrainedMaximumCapacity);
+        jsonWriter.writeJsonField("resiliencyPolicy", this.resiliencyPolicy);
+        jsonWriter.writeStringField("zonalPlatformFaultDomainAlignMode",
+            this.zonalPlatformFaultDomainAlignMode == null ? null : this.zonalPlatformFaultDomainAlignMode.toString());
+        jsonWriter.writeJsonField("skuProfile", this.skuProfile);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of VirtualMachineScaleSetProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of VirtualMachineScaleSetProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the VirtualMachineScaleSetProperties.
+     */
+    public static VirtualMachineScaleSetProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            VirtualMachineScaleSetProperties deserializedVirtualMachineScaleSetProperties
+                = new VirtualMachineScaleSetProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("upgradePolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.upgradePolicy = UpgradePolicy.fromJson(reader);
+                } else if ("scheduledEventsPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.scheduledEventsPolicy
+                        = ScheduledEventsPolicy.fromJson(reader);
+                } else if ("automaticRepairsPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.automaticRepairsPolicy
+                        = AutomaticRepairsPolicy.fromJson(reader);
+                } else if ("virtualMachineProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.virtualMachineProfile
+                        = VirtualMachineScaleSetVMProfile.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.provisioningState = reader.getString();
+                } else if ("overprovision".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.overprovision
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("doNotRunExtensionsOnOverprovisionedVMs".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.doNotRunExtensionsOnOverprovisionedVMs
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("uniqueId".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.uniqueId = reader.getString();
+                } else if ("singlePlacementGroup".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.singlePlacementGroup
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("zoneBalance".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.zoneBalance
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("platformFaultDomainCount".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.platformFaultDomainCount
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("proximityPlacementGroup".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.proximityPlacementGroup = SubResource.fromJson(reader);
+                } else if ("hostGroup".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.hostGroup = SubResource.fromJson(reader);
+                } else if ("additionalCapabilities".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.additionalCapabilities
+                        = AdditionalCapabilities.fromJson(reader);
+                } else if ("scaleInPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.scaleInPolicy = ScaleInPolicy.fromJson(reader);
+                } else if ("orchestrationMode".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.orchestrationMode
+                        = OrchestrationMode.fromString(reader.getString());
+                } else if ("spotRestorePolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.spotRestorePolicy = SpotRestorePolicy.fromJson(reader);
+                } else if ("priorityMixPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.priorityMixPolicy = PriorityMixPolicy.fromJson(reader);
+                } else if ("timeCreated".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.timeCreated = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("constrainedMaximumCapacity".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.constrainedMaximumCapacity
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("resiliencyPolicy".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.resiliencyPolicy = ResiliencyPolicy.fromJson(reader);
+                } else if ("zonalPlatformFaultDomainAlignMode".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.zonalPlatformFaultDomainAlignMode
+                        = ZonalPlatformFaultDomainAlignMode.fromString(reader.getString());
+                } else if ("skuProfile".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetProperties.skuProfile = SkuProfile.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedVirtualMachineScaleSetProperties;
+        });
     }
 }

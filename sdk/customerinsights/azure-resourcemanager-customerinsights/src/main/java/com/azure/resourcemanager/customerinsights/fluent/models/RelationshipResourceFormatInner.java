@@ -5,307 +5,364 @@
 package com.azure.resourcemanager.customerinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.customerinsights.models.CardinalityTypes;
 import com.azure.resourcemanager.customerinsights.models.PropertyDefinition;
 import com.azure.resourcemanager.customerinsights.models.ProvisioningStates;
 import com.azure.resourcemanager.customerinsights.models.RelationshipTypeMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The relationship resource format. */
-@JsonFlatten
+/**
+ * The relationship resource format.
+ */
 @Fluent
-public class RelationshipResourceFormatInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationshipResourceFormatInner.class);
+public final class RelationshipResourceFormatInner extends ProxyResource {
+    /*
+     * The definition of Relationship.
+     */
+    private RelationshipDefinition innerProperties;
 
     /*
-     * The Relationship Cardinality.
+     * The type of the resource.
      */
-    @JsonProperty(value = "properties.cardinality")
-    private CardinalityTypes cardinality;
+    private String type;
 
     /*
-     * Localized display name for the Relationship.
+     * The name of the resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private Map<String, String> displayName;
+    private String name;
 
     /*
-     * Localized descriptions for the Relationship.
+     * Fully qualified resource Id for the resource.
      */
-    @JsonProperty(value = "properties.description")
-    private Map<String, String> description;
+    private String id;
 
-    /*
-     * The expiry date time in UTC.
+    /**
+     * Creates an instance of RelationshipResourceFormatInner class.
      */
-    @JsonProperty(value = "properties.expiryDateTimeUtc")
-    private OffsetDateTime expiryDateTimeUtc;
+    public RelationshipResourceFormatInner() {
+    }
 
-    /*
-     * The properties of the Relationship.
+    /**
+     * Get the innerProperties property: The definition of Relationship.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.fields")
-    private List<PropertyDefinition> fields;
+    private RelationshipDefinition innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Optional property to be used to map fields in profile to their strong
-     * ids in related profile.
+    /**
+     * Get the type property: The type of the resource.
+     * 
+     * @return the type value.
      */
-    @JsonProperty(value = "properties.lookupMappings")
-    private List<RelationshipTypeMapping> lookupMappings;
+    @Override
+    public String type() {
+        return this.type;
+    }
 
-    /*
-     * Profile type.
+    /**
+     * Get the name property: The name of the resource.
+     * 
+     * @return the name value.
      */
-    @JsonProperty(value = "properties.profileType")
-    private String profileType;
+    @Override
+    public String name() {
+        return this.name;
+    }
 
-    /*
-     * Provisioning state.
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningStates provisioningState;
-
-    /*
-     * The Relationship name.
-     */
-    @JsonProperty(value = "properties.relationshipName", access = JsonProperty.Access.WRITE_ONLY)
-    private String relationshipName;
-
-    /*
-     * Related profile being referenced.
-     */
-    @JsonProperty(value = "properties.relatedProfileType")
-    private String relatedProfileType;
-
-    /*
-     * The relationship guid id.
-     */
-    @JsonProperty(value = "properties.relationshipGuidId", access = JsonProperty.Access.WRITE_ONLY)
-    private String relationshipGuidId;
-
-    /*
-     * The hub name.
-     */
-    @JsonProperty(value = "properties.tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
+    @Override
+    public String id() {
+        return this.id;
+    }
 
     /**
      * Get the cardinality property: The Relationship Cardinality.
-     *
+     * 
      * @return the cardinality value.
      */
     public CardinalityTypes cardinality() {
-        return this.cardinality;
+        return this.innerProperties() == null ? null : this.innerProperties().cardinality();
     }
 
     /**
      * Set the cardinality property: The Relationship Cardinality.
-     *
+     * 
      * @param cardinality the cardinality value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withCardinality(CardinalityTypes cardinality) {
-        this.cardinality = cardinality;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withCardinality(cardinality);
         return this;
     }
 
     /**
      * Get the displayName property: Localized display name for the Relationship.
-     *
+     * 
      * @return the displayName value.
      */
     public Map<String, String> displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
      * Set the displayName property: Localized display name for the Relationship.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withDisplayName(Map<String, String> displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
     /**
      * Get the description property: Localized descriptions for the Relationship.
-     *
+     * 
      * @return the description value.
      */
     public Map<String, String> description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
      * Set the description property: Localized descriptions for the Relationship.
-     *
+     * 
      * @param description the description value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withDescription(Map<String, String> description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
     /**
      * Get the expiryDateTimeUtc property: The expiry date time in UTC.
-     *
+     * 
      * @return the expiryDateTimeUtc value.
      */
     public OffsetDateTime expiryDateTimeUtc() {
-        return this.expiryDateTimeUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().expiryDateTimeUtc();
     }
 
     /**
      * Set the expiryDateTimeUtc property: The expiry date time in UTC.
-     *
+     * 
      * @param expiryDateTimeUtc the expiryDateTimeUtc value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withExpiryDateTimeUtc(OffsetDateTime expiryDateTimeUtc) {
-        this.expiryDateTimeUtc = expiryDateTimeUtc;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withExpiryDateTimeUtc(expiryDateTimeUtc);
         return this;
     }
 
     /**
      * Get the fields property: The properties of the Relationship.
-     *
+     * 
      * @return the fields value.
      */
     public List<PropertyDefinition> fields() {
-        return this.fields;
+        return this.innerProperties() == null ? null : this.innerProperties().fields();
     }
 
     /**
      * Set the fields property: The properties of the Relationship.
-     *
+     * 
      * @param fields the fields value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withFields(List<PropertyDefinition> fields) {
-        this.fields = fields;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withFields(fields);
         return this;
     }
 
     /**
      * Get the lookupMappings property: Optional property to be used to map fields in profile to their strong ids in
      * related profile.
-     *
+     * 
      * @return the lookupMappings value.
      */
     public List<RelationshipTypeMapping> lookupMappings() {
-        return this.lookupMappings;
+        return this.innerProperties() == null ? null : this.innerProperties().lookupMappings();
     }
 
     /**
      * Set the lookupMappings property: Optional property to be used to map fields in profile to their strong ids in
      * related profile.
-     *
+     * 
      * @param lookupMappings the lookupMappings value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withLookupMappings(List<RelationshipTypeMapping> lookupMappings) {
-        this.lookupMappings = lookupMappings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withLookupMappings(lookupMappings);
         return this;
     }
 
     /**
      * Get the profileType property: Profile type.
-     *
+     * 
      * @return the profileType value.
      */
     public String profileType() {
-        return this.profileType;
+        return this.innerProperties() == null ? null : this.innerProperties().profileType();
     }
 
     /**
      * Set the profileType property: Profile type.
-     *
+     * 
      * @param profileType the profileType value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withProfileType(String profileType) {
-        this.profileType = profileType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withProfileType(profileType);
         return this;
     }
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
      * Get the relationshipName property: The Relationship name.
-     *
+     * 
      * @return the relationshipName value.
      */
     public String relationshipName() {
-        return this.relationshipName;
+        return this.innerProperties() == null ? null : this.innerProperties().relationshipName();
     }
 
     /**
      * Get the relatedProfileType property: Related profile being referenced.
-     *
+     * 
      * @return the relatedProfileType value.
      */
     public String relatedProfileType() {
-        return this.relatedProfileType;
+        return this.innerProperties() == null ? null : this.innerProperties().relatedProfileType();
     }
 
     /**
      * Set the relatedProfileType property: Related profile being referenced.
-     *
+     * 
      * @param relatedProfileType the relatedProfileType value to set.
      * @return the RelationshipResourceFormatInner object itself.
      */
     public RelationshipResourceFormatInner withRelatedProfileType(String relatedProfileType) {
-        this.relatedProfileType = relatedProfileType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RelationshipDefinition();
+        }
+        this.innerProperties().withRelatedProfileType(relatedProfileType);
         return this;
     }
 
     /**
      * Get the relationshipGuidId property: The relationship guid id.
-     *
+     * 
      * @return the relationshipGuidId value.
      */
     public String relationshipGuidId() {
-        return this.relationshipGuidId;
+        return this.innerProperties() == null ? null : this.innerProperties().relationshipGuidId();
     }
 
     /**
      * Get the tenantId property: The hub name.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (fields() != null) {
-            fields().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (lookupMappings() != null) {
-            lookupMappings().forEach(e -> e.validate());
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RelationshipResourceFormatInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RelationshipResourceFormatInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RelationshipResourceFormatInner.
+     */
+    public static RelationshipResourceFormatInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RelationshipResourceFormatInner deserializedRelationshipResourceFormatInner
+                = new RelationshipResourceFormatInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedRelationshipResourceFormatInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedRelationshipResourceFormatInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedRelationshipResourceFormatInner.type = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedRelationshipResourceFormatInner.innerProperties
+                        = RelationshipDefinition.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRelationshipResourceFormatInner;
+        });
     }
 }

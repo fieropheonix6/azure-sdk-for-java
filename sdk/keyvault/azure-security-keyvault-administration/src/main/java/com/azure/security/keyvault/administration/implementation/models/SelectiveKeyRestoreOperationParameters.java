@@ -4,30 +4,45 @@
 
 package com.azure.security.keyvault.administration.implementation.models;
 
-import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.annotation.Immutable;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
-/** The SelectiveKeyRestoreOperationParameters model. */
-@Fluent
-public final class SelectiveKeyRestoreOperationParameters {
+/**
+ * The SelectiveKeyRestoreOperationParameters model.
+ */
+@Immutable
+public final class SelectiveKeyRestoreOperationParameters
+    implements JsonSerializable<SelectiveKeyRestoreOperationParameters> {
     /*
      * The sasTokenParameters property.
      */
-    @JsonProperty(value = "sasTokenParameters", required = true)
-    private SASTokenParameter sasTokenParameters;
+    private final SASTokenParameter sasTokenParameters;
 
     /*
      * The Folder name of the blob where the previous successful full backup was stored
      */
-    @JsonProperty(value = "folder", required = true)
-    private String folder;
+    private final String folder;
 
-    /** Creates an instance of SelectiveKeyRestoreOperationParameters class. */
-    public SelectiveKeyRestoreOperationParameters() {}
+    /**
+     * Creates an instance of SelectiveKeyRestoreOperationParameters class.
+     * 
+     * @param sasTokenParameters the sasTokenParameters value to set.
+     * @param folder the folder value to set.
+     */
+    public SelectiveKeyRestoreOperationParameters(SASTokenParameter sasTokenParameters, String folder) {
+        this.sasTokenParameters = sasTokenParameters;
+        this.folder = folder;
+    }
 
     /**
      * Get the sasTokenParameters property: The sasTokenParameters property.
-     *
+     * 
      * @return the sasTokenParameters value.
      */
     public SASTokenParameter getSasTokenParameters() {
@@ -35,19 +50,8 @@ public final class SelectiveKeyRestoreOperationParameters {
     }
 
     /**
-     * Set the sasTokenParameters property: The sasTokenParameters property.
-     *
-     * @param sasTokenParameters the sasTokenParameters value to set.
-     * @return the SelectiveKeyRestoreOperationParameters object itself.
-     */
-    public SelectiveKeyRestoreOperationParameters setSasTokenParameters(SASTokenParameter sasTokenParameters) {
-        this.sasTokenParameters = sasTokenParameters;
-        return this;
-    }
-
-    /**
      * Get the folder property: The Folder name of the blob where the previous successful full backup was stored.
-     *
+     * 
      * @return the folder value.
      */
     public String getFolder() {
@@ -55,13 +59,58 @@ public final class SelectiveKeyRestoreOperationParameters {
     }
 
     /**
-     * Set the folder property: The Folder name of the blob where the previous successful full backup was stored.
-     *
-     * @param folder the folder value to set.
-     * @return the SelectiveKeyRestoreOperationParameters object itself.
+     * {@inheritDoc}
      */
-    public SelectiveKeyRestoreOperationParameters setFolder(String folder) {
-        this.folder = folder;
-        return this;
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("sasTokenParameters", this.sasTokenParameters);
+        jsonWriter.writeStringField("folder", this.folder);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SelectiveKeyRestoreOperationParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SelectiveKeyRestoreOperationParameters if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SelectiveKeyRestoreOperationParameters.
+     */
+    public static SelectiveKeyRestoreOperationParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean sasTokenParametersFound = false;
+            SASTokenParameter sasTokenParameters = null;
+            boolean folderFound = false;
+            String folder = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("sasTokenParameters".equals(fieldName)) {
+                    sasTokenParameters = SASTokenParameter.fromJson(reader);
+                    sasTokenParametersFound = true;
+                } else if ("folder".equals(fieldName)) {
+                    folder = reader.getString();
+                    folderFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (sasTokenParametersFound && folderFound) {
+                return new SelectiveKeyRestoreOperationParameters(sasTokenParameters, folder);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!sasTokenParametersFound) {
+                missingProperties.add("sasTokenParameters");
+            }
+            if (!folderFound) {
+                missingProperties.add("folder");
+            }
+
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

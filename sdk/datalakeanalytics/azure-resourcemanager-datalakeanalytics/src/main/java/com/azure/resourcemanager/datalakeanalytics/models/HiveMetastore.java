@@ -4,124 +4,52 @@
 
 package com.azure.resourcemanager.datalakeanalytics.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.datalakeanalytics.fluent.models.HiveMetastoreProperties;
+import java.io.IOException;
 
-/** The HiveMetastore model. */
-@JsonFlatten
-@Immutable
-public class HiveMetastore extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HiveMetastore.class);
-
+/**
+ * The HiveMetastore model.
+ */
+@Fluent
+public final class HiveMetastore extends SubResource {
     /*
-     * The serverUri for the Hive MetaStore
+     * The HiveMetastoreProperties rule properties.
      */
-    @JsonProperty(value = "properties.serverUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String serverUri;
-
-    /*
-     * The databaseName for the Hive MetaStore
-     */
-    @JsonProperty(value = "properties.databaseName", access = JsonProperty.Access.WRITE_ONLY)
-    private String databaseName;
-
-    /*
-     * The runtimeVersion for the Hive MetaStore
-     */
-    @JsonProperty(value = "properties.runtimeVersion", access = JsonProperty.Access.WRITE_ONLY)
-    private String runtimeVersion;
-
-    /*
-     * The userName for the Hive MetaStore
-     */
-    @JsonProperty(value = "properties.userName", access = JsonProperty.Access.WRITE_ONLY)
-    private String username;
-
-    /*
-     * The password for the Hive MetaStore
-     */
-    @JsonProperty(value = "properties.password", access = JsonProperty.Access.WRITE_ONLY)
-    private String password;
-
-    /*
-     * The current state of the NestedResource
-     */
-    @JsonProperty(value = "properties.nestedResourceProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private NestedResourceProvisioningState nestedResourceProvisioningState;
+    private HiveMetastoreProperties innerProperties;
 
     /*
      * The resource name.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
     /**
-     * Get the serverUri property: The serverUri for the Hive MetaStore.
-     *
-     * @return the serverUri value.
+     * Creates an instance of HiveMetastore class.
      */
-    public String serverUri() {
-        return this.serverUri;
+    public HiveMetastore() {
     }
 
     /**
-     * Get the databaseName property: The databaseName for the Hive MetaStore.
-     *
-     * @return the databaseName value.
+     * Get the innerProperties property: The HiveMetastoreProperties rule properties.
+     * 
+     * @return the innerProperties value.
      */
-    public String databaseName() {
-        return this.databaseName;
-    }
-
-    /**
-     * Get the runtimeVersion property: The runtimeVersion for the Hive MetaStore.
-     *
-     * @return the runtimeVersion value.
-     */
-    public String runtimeVersion() {
-        return this.runtimeVersion;
-    }
-
-    /**
-     * Get the username property: The userName for the Hive MetaStore.
-     *
-     * @return the username value.
-     */
-    public String username() {
-        return this.username;
-    }
-
-    /**
-     * Get the password property: The password for the Hive MetaStore.
-     *
-     * @return the password value.
-     */
-    public String password() {
-        return this.password;
-    }
-
-    /**
-     * Get the nestedResourceProvisioningState property: The current state of the NestedResource.
-     *
-     * @return the nestedResourceProvisioningState value.
-     */
-    public NestedResourceProvisioningState nestedResourceProvisioningState() {
-        return this.nestedResourceProvisioningState;
+    private HiveMetastoreProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -130,14 +58,16 @@ public class HiveMetastore extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HiveMetastore withId(String id) {
         super.withId(id);
@@ -145,10 +75,109 @@ public class HiveMetastore extends SubResource {
     }
 
     /**
+     * Get the serverUri property: The serverUri for the Hive MetaStore.
+     * 
+     * @return the serverUri value.
+     */
+    public String serverUri() {
+        return this.innerProperties() == null ? null : this.innerProperties().serverUri();
+    }
+
+    /**
+     * Get the databaseName property: The databaseName for the Hive MetaStore.
+     * 
+     * @return the databaseName value.
+     */
+    public String databaseName() {
+        return this.innerProperties() == null ? null : this.innerProperties().databaseName();
+    }
+
+    /**
+     * Get the runtimeVersion property: The runtimeVersion for the Hive MetaStore.
+     * 
+     * @return the runtimeVersion value.
+     */
+    public String runtimeVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().runtimeVersion();
+    }
+
+    /**
+     * Get the username property: The userName for the Hive MetaStore.
+     * 
+     * @return the username value.
+     */
+    public String username() {
+        return this.innerProperties() == null ? null : this.innerProperties().username();
+    }
+
+    /**
+     * Get the password property: The password for the Hive MetaStore.
+     * 
+     * @return the password value.
+     */
+    public String password() {
+        return this.innerProperties() == null ? null : this.innerProperties().password();
+    }
+
+    /**
+     * Get the nestedResourceProvisioningState property: The current state of the NestedResource.
+     * 
+     * @return the nestedResourceProvisioningState value.
+     */
+    public NestedResourceProvisioningState nestedResourceProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().nestedResourceProvisioningState();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HiveMetastore from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HiveMetastore if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HiveMetastore.
+     */
+    public static HiveMetastore fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HiveMetastore deserializedHiveMetastore = new HiveMetastore();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedHiveMetastore.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedHiveMetastore.innerProperties = HiveMetastoreProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedHiveMetastore.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedHiveMetastore.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHiveMetastore;
+        });
     }
 }

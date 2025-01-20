@@ -4,24 +4,25 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SqlResources DeleteSqlRoleAssignment. */
+/**
+ * Samples for SqlResources DeleteSqlRoleAssignment.
+ */
 public final class SqlResourcesDeleteSqlRoleAssignmentSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBSqlRoleAssignmentDelete.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2024-11-15/examples/
+     * CosmosDBSqlRoleAssignmentDelete.json
      */
     /**
      * Sample code: CosmosDBSqlRoleAssignmentDelete.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBSqlRoleAssignmentDelete(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
+        azure.cosmosDBAccounts()
             .manager()
             .serviceClient()
             .getSqlResources()
-            .deleteSqlRoleAssignment("myRoleAssignmentId", "myResourceGroupName", "myAccountName", Context.NONE);
+            .deleteSqlRoleAssignment("myRoleAssignmentId", "myResourceGroupName", "myAccountName",
+                com.azure.core.util.Context.NONE);
     }
 }

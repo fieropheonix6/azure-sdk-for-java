@@ -11,6 +11,7 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -19,12 +20,14 @@ import com.azure.core.http.policy.RequestIdPolicy;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.EventGridManagementClient;
+import com.azure.resourcemanager.eventgrid.implementation.CaCertificatesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.ChannelsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.ClientGroupsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.ClientsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.DomainTopicsImpl;
@@ -32,38 +35,55 @@ import com.azure.resourcemanager.eventgrid.implementation.DomainsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.EventGridManagementClientBuilder;
 import com.azure.resourcemanager.eventgrid.implementation.EventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.ExtensionTopicsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.NamespaceTopicEventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.NamespaceTopicsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.NamespacesImpl;
+import com.azure.resourcemanager.eventgrid.implementation.NetworkSecurityPerimeterConfigurationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.OperationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PartnerConfigurationsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.PartnerDestinationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PartnerNamespacesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PartnerRegistrationsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PartnerTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PartnerTopicsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.PermissionBindingsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PrivateEndpointConnectionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.PrivateLinkResourcesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.SystemTopicEventSubscriptionsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.SystemTopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicEventSubscriptionsImpl;
+import com.azure.resourcemanager.eventgrid.implementation.TopicSpacesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicTypesImpl;
 import com.azure.resourcemanager.eventgrid.implementation.TopicsImpl;
 import com.azure.resourcemanager.eventgrid.implementation.VerifiedPartnersImpl;
+import com.azure.resourcemanager.eventgrid.models.CaCertificates;
 import com.azure.resourcemanager.eventgrid.models.Channels;
+import com.azure.resourcemanager.eventgrid.models.ClientGroups;
+import com.azure.resourcemanager.eventgrid.models.Clients;
 import com.azure.resourcemanager.eventgrid.models.DomainEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.DomainTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.DomainTopics;
 import com.azure.resourcemanager.eventgrid.models.Domains;
 import com.azure.resourcemanager.eventgrid.models.EventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.ExtensionTopics;
+import com.azure.resourcemanager.eventgrid.models.NamespaceTopicEventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.NamespaceTopics;
+import com.azure.resourcemanager.eventgrid.models.Namespaces;
+import com.azure.resourcemanager.eventgrid.models.NetworkSecurityPerimeterConfigurations;
 import com.azure.resourcemanager.eventgrid.models.Operations;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfigurations;
+import com.azure.resourcemanager.eventgrid.models.PartnerDestinations;
 import com.azure.resourcemanager.eventgrid.models.PartnerNamespaces;
 import com.azure.resourcemanager.eventgrid.models.PartnerRegistrations;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.PartnerTopics;
+import com.azure.resourcemanager.eventgrid.models.PermissionBindings;
 import com.azure.resourcemanager.eventgrid.models.PrivateEndpointConnections;
 import com.azure.resourcemanager.eventgrid.models.PrivateLinkResources;
 import com.azure.resourcemanager.eventgrid.models.SystemTopicEventSubscriptions;
 import com.azure.resourcemanager.eventgrid.models.SystemTopics;
 import com.azure.resourcemanager.eventgrid.models.TopicEventSubscriptions;
+import com.azure.resourcemanager.eventgrid.models.TopicSpaces;
 import com.azure.resourcemanager.eventgrid.models.TopicTypes;
 import com.azure.resourcemanager.eventgrid.models.Topics;
 import com.azure.resourcemanager.eventgrid.models.VerifiedPartners;
@@ -74,13 +94,24 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to EventGridManager. Azure EventGrid Management Client. */
+/**
+ * Entry point to EventGridManager.
+ * Azure EventGrid Management Client.
+ */
 public final class EventGridManager {
+    private CaCertificates caCertificates;
+
     private Channels channels;
+
+    private ClientGroups clientGroups;
+
+    private Clients clients;
 
     private Domains domains;
 
     private DomainTopics domainTopics;
+
+    private DomainTopicEventSubscriptions domainTopicEventSubscriptions;
 
     private TopicEventSubscriptions topicEventSubscriptions;
 
@@ -88,17 +119,21 @@ public final class EventGridManager {
 
     private EventSubscriptions eventSubscriptions;
 
-    private DomainTopicEventSubscriptions domainTopicEventSubscriptions;
-
     private SystemTopicEventSubscriptions systemTopicEventSubscriptions;
+
+    private NamespaceTopicEventSubscriptions namespaceTopicEventSubscriptions;
 
     private PartnerTopicEventSubscriptions partnerTopicEventSubscriptions;
 
+    private Namespaces namespaces;
+
+    private NamespaceTopics namespaceTopics;
+
     private Operations operations;
 
-    private Topics topics;
-
     private PartnerConfigurations partnerConfigurations;
+
+    private PartnerDestinations partnerDestinations;
 
     private PartnerNamespaces partnerNamespaces;
 
@@ -106,13 +141,21 @@ public final class EventGridManager {
 
     private PartnerTopics partnerTopics;
 
+    private NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations;
+
+    private PermissionBindings permissionBindings;
+
     private PrivateEndpointConnections privateEndpointConnections;
 
     private PrivateLinkResources privateLinkResources;
 
     private SystemTopics systemTopics;
 
+    private Topics topics;
+
     private ExtensionTopics extensionTopics;
+
+    private TopicSpaces topicSpaces;
 
     private TopicTypes topicTypes;
 
@@ -123,18 +166,16 @@ public final class EventGridManager {
     private EventGridManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new EventGridManagementClientBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new EventGridManagementClientBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
+            .subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval)
+            .buildClient();
     }
 
     /**
      * Creates an instance of EventGrid service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the EventGrid service API instance.
@@ -147,7 +188,7 @@ public final class EventGridManager {
 
     /**
      * Creates an instance of EventGrid service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the EventGrid service API instance.
@@ -160,14 +201,16 @@ public final class EventGridManager {
 
     /**
      * Gets a Configurable instance that can be used to create EventGridManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new EventGridManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -239,8 +282,8 @@ public final class EventGridManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -257,8 +300,8 @@ public final class EventGridManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -278,15 +321,13 @@ public final class EventGridManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
+            userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.eventgrid")
                 .append("/")
-                .append("1.2.0-beta.3");
+                .append("1.2.0-beta.7");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
+                userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
                     .append("; ")
                     .append(Configuration.getGlobalConfiguration().get("os.name"))
@@ -311,38 +352,40 @@ public final class EventGridManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
-            policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.add(new BearerTokenAuthenticationPolicy(credential, scopes.toArray(new String[0])));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0]))
+                .build();
             return new EventGridManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
+     * Gets the resource collection API of CaCertificates. It manages CaCertificate.
+     * 
+     * @return Resource collection API of CaCertificates.
+     */
+    public CaCertificates caCertificates() {
+        if (this.caCertificates == null) {
+            this.caCertificates = new CaCertificatesImpl(clientObject.getCaCertificates(), this);
+        }
+        return caCertificates;
+    }
+
+    /**
      * Gets the resource collection API of Channels. It manages Channel.
-     *
+     * 
      * @return Resource collection API of Channels.
      */
     public Channels channels() {
@@ -353,8 +396,32 @@ public final class EventGridManager {
     }
 
     /**
+     * Gets the resource collection API of ClientGroups. It manages ClientGroup.
+     * 
+     * @return Resource collection API of ClientGroups.
+     */
+    public ClientGroups clientGroups() {
+        if (this.clientGroups == null) {
+            this.clientGroups = new ClientGroupsImpl(clientObject.getClientGroups(), this);
+        }
+        return clientGroups;
+    }
+
+    /**
+     * Gets the resource collection API of Clients. It manages Client.
+     * 
+     * @return Resource collection API of Clients.
+     */
+    public Clients clients() {
+        if (this.clients == null) {
+            this.clients = new ClientsImpl(clientObject.getClients(), this);
+        }
+        return clients;
+    }
+
+    /**
      * Gets the resource collection API of Domains. It manages Domain.
-     *
+     * 
      * @return Resource collection API of Domains.
      */
     public Domains domains() {
@@ -366,7 +433,7 @@ public final class EventGridManager {
 
     /**
      * Gets the resource collection API of DomainTopics.
-     *
+     * 
      * @return Resource collection API of DomainTopics.
      */
     public DomainTopics domainTopics() {
@@ -377,34 +444,47 @@ public final class EventGridManager {
     }
 
     /**
+     * Gets the resource collection API of DomainTopicEventSubscriptions.
+     * 
+     * @return Resource collection API of DomainTopicEventSubscriptions.
+     */
+    public DomainTopicEventSubscriptions domainTopicEventSubscriptions() {
+        if (this.domainTopicEventSubscriptions == null) {
+            this.domainTopicEventSubscriptions
+                = new DomainTopicEventSubscriptionsImpl(clientObject.getDomainTopicEventSubscriptions(), this);
+        }
+        return domainTopicEventSubscriptions;
+    }
+
+    /**
      * Gets the resource collection API of TopicEventSubscriptions. It manages EventSubscription.
-     *
+     * 
      * @return Resource collection API of TopicEventSubscriptions.
      */
     public TopicEventSubscriptions topicEventSubscriptions() {
         if (this.topicEventSubscriptions == null) {
-            this.topicEventSubscriptions =
-                new TopicEventSubscriptionsImpl(clientObject.getTopicEventSubscriptions(), this);
+            this.topicEventSubscriptions
+                = new TopicEventSubscriptionsImpl(clientObject.getTopicEventSubscriptions(), this);
         }
         return topicEventSubscriptions;
     }
 
     /**
      * Gets the resource collection API of DomainEventSubscriptions.
-     *
+     * 
      * @return Resource collection API of DomainEventSubscriptions.
      */
     public DomainEventSubscriptions domainEventSubscriptions() {
         if (this.domainEventSubscriptions == null) {
-            this.domainEventSubscriptions =
-                new DomainEventSubscriptionsImpl(clientObject.getDomainEventSubscriptions(), this);
+            this.domainEventSubscriptions
+                = new DomainEventSubscriptionsImpl(clientObject.getDomainEventSubscriptions(), this);
         }
         return domainEventSubscriptions;
     }
 
     /**
      * Gets the resource collection API of EventSubscriptions.
-     *
+     * 
      * @return Resource collection API of EventSubscriptions.
      */
     public EventSubscriptions eventSubscriptions() {
@@ -415,47 +495,71 @@ public final class EventGridManager {
     }
 
     /**
-     * Gets the resource collection API of DomainTopicEventSubscriptions.
-     *
-     * @return Resource collection API of DomainTopicEventSubscriptions.
-     */
-    public DomainTopicEventSubscriptions domainTopicEventSubscriptions() {
-        if (this.domainTopicEventSubscriptions == null) {
-            this.domainTopicEventSubscriptions =
-                new DomainTopicEventSubscriptionsImpl(clientObject.getDomainTopicEventSubscriptions(), this);
-        }
-        return domainTopicEventSubscriptions;
-    }
-
-    /**
      * Gets the resource collection API of SystemTopicEventSubscriptions.
-     *
+     * 
      * @return Resource collection API of SystemTopicEventSubscriptions.
      */
     public SystemTopicEventSubscriptions systemTopicEventSubscriptions() {
         if (this.systemTopicEventSubscriptions == null) {
-            this.systemTopicEventSubscriptions =
-                new SystemTopicEventSubscriptionsImpl(clientObject.getSystemTopicEventSubscriptions(), this);
+            this.systemTopicEventSubscriptions
+                = new SystemTopicEventSubscriptionsImpl(clientObject.getSystemTopicEventSubscriptions(), this);
         }
         return systemTopicEventSubscriptions;
     }
 
     /**
+     * Gets the resource collection API of NamespaceTopicEventSubscriptions. It manages Subscription.
+     * 
+     * @return Resource collection API of NamespaceTopicEventSubscriptions.
+     */
+    public NamespaceTopicEventSubscriptions namespaceTopicEventSubscriptions() {
+        if (this.namespaceTopicEventSubscriptions == null) {
+            this.namespaceTopicEventSubscriptions
+                = new NamespaceTopicEventSubscriptionsImpl(clientObject.getNamespaceTopicEventSubscriptions(), this);
+        }
+        return namespaceTopicEventSubscriptions;
+    }
+
+    /**
      * Gets the resource collection API of PartnerTopicEventSubscriptions.
-     *
+     * 
      * @return Resource collection API of PartnerTopicEventSubscriptions.
      */
     public PartnerTopicEventSubscriptions partnerTopicEventSubscriptions() {
         if (this.partnerTopicEventSubscriptions == null) {
-            this.partnerTopicEventSubscriptions =
-                new PartnerTopicEventSubscriptionsImpl(clientObject.getPartnerTopicEventSubscriptions(), this);
+            this.partnerTopicEventSubscriptions
+                = new PartnerTopicEventSubscriptionsImpl(clientObject.getPartnerTopicEventSubscriptions(), this);
         }
         return partnerTopicEventSubscriptions;
     }
 
     /**
+     * Gets the resource collection API of Namespaces. It manages Namespace.
+     * 
+     * @return Resource collection API of Namespaces.
+     */
+    public Namespaces namespaces() {
+        if (this.namespaces == null) {
+            this.namespaces = new NamespacesImpl(clientObject.getNamespaces(), this);
+        }
+        return namespaces;
+    }
+
+    /**
+     * Gets the resource collection API of NamespaceTopics. It manages NamespaceTopic.
+     * 
+     * @return Resource collection API of NamespaceTopics.
+     */
+    public NamespaceTopics namespaceTopics() {
+        if (this.namespaceTopics == null) {
+            this.namespaceTopics = new NamespaceTopicsImpl(clientObject.getNamespaceTopics(), this);
+        }
+        return namespaceTopics;
+    }
+
+    /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -466,20 +570,8 @@ public final class EventGridManager {
     }
 
     /**
-     * Gets the resource collection API of Topics. It manages Topic.
-     *
-     * @return Resource collection API of Topics.
-     */
-    public Topics topics() {
-        if (this.topics == null) {
-            this.topics = new TopicsImpl(clientObject.getTopics(), this);
-        }
-        return topics;
-    }
-
-    /**
      * Gets the resource collection API of PartnerConfigurations.
-     *
+     * 
      * @return Resource collection API of PartnerConfigurations.
      */
     public PartnerConfigurations partnerConfigurations() {
@@ -490,8 +582,20 @@ public final class EventGridManager {
     }
 
     /**
+     * Gets the resource collection API of PartnerDestinations. It manages PartnerDestination.
+     * 
+     * @return Resource collection API of PartnerDestinations.
+     */
+    public PartnerDestinations partnerDestinations() {
+        if (this.partnerDestinations == null) {
+            this.partnerDestinations = new PartnerDestinationsImpl(clientObject.getPartnerDestinations(), this);
+        }
+        return partnerDestinations;
+    }
+
+    /**
      * Gets the resource collection API of PartnerNamespaces. It manages PartnerNamespace.
-     *
+     * 
      * @return Resource collection API of PartnerNamespaces.
      */
     public PartnerNamespaces partnerNamespaces() {
@@ -503,7 +607,7 @@ public final class EventGridManager {
 
     /**
      * Gets the resource collection API of PartnerRegistrations. It manages PartnerRegistration.
-     *
+     * 
      * @return Resource collection API of PartnerRegistrations.
      */
     public PartnerRegistrations partnerRegistrations() {
@@ -515,7 +619,7 @@ public final class EventGridManager {
 
     /**
      * Gets the resource collection API of PartnerTopics. It manages PartnerTopic.
-     *
+     * 
      * @return Resource collection API of PartnerTopics.
      */
     public PartnerTopics partnerTopics() {
@@ -526,21 +630,46 @@ public final class EventGridManager {
     }
 
     /**
+     * Gets the resource collection API of NetworkSecurityPerimeterConfigurations.
+     * 
+     * @return Resource collection API of NetworkSecurityPerimeterConfigurations.
+     */
+    public NetworkSecurityPerimeterConfigurations networkSecurityPerimeterConfigurations() {
+        if (this.networkSecurityPerimeterConfigurations == null) {
+            this.networkSecurityPerimeterConfigurations = new NetworkSecurityPerimeterConfigurationsImpl(
+                clientObject.getNetworkSecurityPerimeterConfigurations(), this);
+        }
+        return networkSecurityPerimeterConfigurations;
+    }
+
+    /**
+     * Gets the resource collection API of PermissionBindings. It manages PermissionBinding.
+     * 
+     * @return Resource collection API of PermissionBindings.
+     */
+    public PermissionBindings permissionBindings() {
+        if (this.permissionBindings == null) {
+            this.permissionBindings = new PermissionBindingsImpl(clientObject.getPermissionBindings(), this);
+        }
+        return permissionBindings;
+    }
+
+    /**
      * Gets the resource collection API of PrivateEndpointConnections.
-     *
+     * 
      * @return Resource collection API of PrivateEndpointConnections.
      */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
-            this.privateEndpointConnections =
-                new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
+            this.privateEndpointConnections
+                = new PrivateEndpointConnectionsImpl(clientObject.getPrivateEndpointConnections(), this);
         }
         return privateEndpointConnections;
     }
 
     /**
      * Gets the resource collection API of PrivateLinkResources.
-     *
+     * 
      * @return Resource collection API of PrivateLinkResources.
      */
     public PrivateLinkResources privateLinkResources() {
@@ -552,7 +681,7 @@ public final class EventGridManager {
 
     /**
      * Gets the resource collection API of SystemTopics. It manages SystemTopic.
-     *
+     * 
      * @return Resource collection API of SystemTopics.
      */
     public SystemTopics systemTopics() {
@@ -563,8 +692,20 @@ public final class EventGridManager {
     }
 
     /**
+     * Gets the resource collection API of Topics. It manages Topic.
+     * 
+     * @return Resource collection API of Topics.
+     */
+    public Topics topics() {
+        if (this.topics == null) {
+            this.topics = new TopicsImpl(clientObject.getTopics(), this);
+        }
+        return topics;
+    }
+
+    /**
      * Gets the resource collection API of ExtensionTopics.
-     *
+     * 
      * @return Resource collection API of ExtensionTopics.
      */
     public ExtensionTopics extensionTopics() {
@@ -575,8 +716,20 @@ public final class EventGridManager {
     }
 
     /**
+     * Gets the resource collection API of TopicSpaces. It manages TopicSpace.
+     * 
+     * @return Resource collection API of TopicSpaces.
+     */
+    public TopicSpaces topicSpaces() {
+        if (this.topicSpaces == null) {
+            this.topicSpaces = new TopicSpacesImpl(clientObject.getTopicSpaces(), this);
+        }
+        return topicSpaces;
+    }
+
+    /**
      * Gets the resource collection API of TopicTypes.
-     *
+     * 
      * @return Resource collection API of TopicTypes.
      */
     public TopicTypes topicTypes() {
@@ -588,7 +741,7 @@ public final class EventGridManager {
 
     /**
      * Gets the resource collection API of VerifiedPartners.
-     *
+     * 
      * @return Resource collection API of VerifiedPartners.
      */
     public VerifiedPartners verifiedPartners() {
@@ -599,8 +752,10 @@ public final class EventGridManager {
     }
 
     /**
-     * @return Wrapped service client EventGridManagementClient providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client EventGridManagementClient providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client EventGridManagementClient.
      */
     public EventGridManagementClient serviceClient() {
         return this.clientObject;

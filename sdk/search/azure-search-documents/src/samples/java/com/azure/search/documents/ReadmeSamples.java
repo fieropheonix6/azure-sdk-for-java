@@ -7,8 +7,10 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.search.documents.indexes.SearchIndexAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexClient;
@@ -16,6 +18,8 @@ import com.azure.search.documents.indexes.SearchIndexClientBuilder;
 import com.azure.search.documents.indexes.SearchIndexerAsyncClient;
 import com.azure.search.documents.indexes.SearchIndexerClient;
 import com.azure.search.documents.indexes.SearchIndexerClientBuilder;
+import com.azure.search.documents.indexes.SearchableField;
+import com.azure.search.documents.indexes.SimpleField;
 import com.azure.search.documents.indexes.models.IndexDocumentsBatch;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -142,8 +146,10 @@ public class ReadmeSamples {
     }
 
     // BEGIN: readme-sample-hotelclass
-    public class Hotel {
+    public static class Hotel {
+        @SimpleField(isKey = true, isFilterable = true, isSortable = true)
         private String id;
+        @SearchableField(isFilterable = true, isSortable = true)
         private String name;
 
         public String getId() {
@@ -285,5 +291,22 @@ public class ReadmeSamples {
             .audience(SearchAudience.AZURE_CHINA)
             .buildClient();
         // END: readme-sample-nationalCloud
+    }
+
+    public void searchClientWithTokenCredential() {
+        // BEGIN: readme-sample-searchClientWithTokenCredential
+        String indexName = "nycjobs";
+
+        // Get the service endpoint from the environment
+        String endpoint = Configuration.getGlobalConfiguration().get("SEARCH_ENDPOINT");
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // Create a client
+        SearchClient client = new SearchClientBuilder()
+            .endpoint(endpoint)
+            .indexName(indexName)
+            .credential(credential)
+            .buildClient();
+        // END: readme-sample-searchClientWithTokenCredential
     }
 }

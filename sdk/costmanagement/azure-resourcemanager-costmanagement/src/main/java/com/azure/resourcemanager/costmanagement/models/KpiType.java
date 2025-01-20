@@ -5,29 +5,46 @@
 package com.azure.resourcemanager.costmanagement.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KpiType. */
+/**
+ * KPI type (Forecast, Budget).
+ */
 public final class KpiType extends ExpandableStringEnum<KpiType> {
-    /** Static value Forecast for KpiType. */
+    /**
+     * Static value Forecast for KpiType.
+     */
     public static final KpiType FORECAST = fromString("Forecast");
 
-    /** Static value Budget for KpiType. */
+    /**
+     * Static value Budget for KpiType.
+     */
     public static final KpiType BUDGET = fromString("Budget");
 
     /**
+     * Creates a new instance of KpiType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KpiType() {
+    }
+
+    /**
      * Creates or finds a KpiType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KpiType.
      */
-    @JsonCreator
     public static KpiType fromString(String name) {
         return fromString(name, KpiType.class);
     }
 
-    /** @return known KpiType values. */
+    /**
+     * Gets known KpiType values.
+     * 
+     * @return known KpiType values.
+     */
     public static Collection<KpiType> values() {
         return values(KpiType.class);
     }

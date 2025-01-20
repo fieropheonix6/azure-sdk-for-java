@@ -7,21 +7,19 @@ package com.azure.resourcemanager.machinelearning.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.WorkspaceConnectionPersonalAccessToken;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class WorkspaceConnectionPersonalAccessTokenTests {
-    @Test
-    public void testDeserialize() {
-        WorkspaceConnectionPersonalAccessToken model =
-            BinaryData.fromString("{\"pat\":\"phuuuerctato\"}").toObject(WorkspaceConnectionPersonalAccessToken.class);
-        Assertions.assertEquals("phuuuerctato", model.pat());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        WorkspaceConnectionPersonalAccessToken model
+            = BinaryData.fromString("{\"pat\":\"jshcybwf\"}").toObject(WorkspaceConnectionPersonalAccessToken.class);
+        Assertions.assertEquals("jshcybwf", model.pat());
     }
 
-    @Test
-    public void testSerialize() {
-        WorkspaceConnectionPersonalAccessToken model =
-            new WorkspaceConnectionPersonalAccessToken().withPat("phuuuerctato");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        WorkspaceConnectionPersonalAccessToken model = new WorkspaceConnectionPersonalAccessToken().withPat("jshcybwf");
         model = BinaryData.fromObject(model).toObject(WorkspaceConnectionPersonalAccessToken.class);
-        Assertions.assertEquals("phuuuerctato", model.pat());
+        Assertions.assertEquals("jshcybwf", model.pat());
     }
 }

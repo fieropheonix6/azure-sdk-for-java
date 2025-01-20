@@ -6,36 +6,41 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Radius Server Settings. */
+/**
+ * Radius Server Settings.
+ */
 @Fluent
-public final class RadiusServer {
+public final class RadiusServer implements JsonSerializable<RadiusServer> {
     /*
      * The address of this radius server.
      */
-    @JsonProperty(value = "radiusServerAddress", required = true)
     private String radiusServerAddress;
 
     /*
      * The initial score assigned to this radius server.
      */
-    @JsonProperty(value = "radiusServerScore")
     private Long radiusServerScore;
 
     /*
      * The secret used for this radius server.
      */
-    @JsonProperty(value = "radiusServerSecret")
     private String radiusServerSecret;
 
-    /** Creates an instance of RadiusServer class. */
+    /**
+     * Creates an instance of RadiusServer class.
+     */
     public RadiusServer() {
     }
 
     /**
      * Get the radiusServerAddress property: The address of this radius server.
-     *
+     * 
      * @return the radiusServerAddress value.
      */
     public String radiusServerAddress() {
@@ -44,7 +49,7 @@ public final class RadiusServer {
 
     /**
      * Set the radiusServerAddress property: The address of this radius server.
-     *
+     * 
      * @param radiusServerAddress the radiusServerAddress value to set.
      * @return the RadiusServer object itself.
      */
@@ -55,7 +60,7 @@ public final class RadiusServer {
 
     /**
      * Get the radiusServerScore property: The initial score assigned to this radius server.
-     *
+     * 
      * @return the radiusServerScore value.
      */
     public Long radiusServerScore() {
@@ -64,7 +69,7 @@ public final class RadiusServer {
 
     /**
      * Set the radiusServerScore property: The initial score assigned to this radius server.
-     *
+     * 
      * @param radiusServerScore the radiusServerScore value to set.
      * @return the RadiusServer object itself.
      */
@@ -75,7 +80,7 @@ public final class RadiusServer {
 
     /**
      * Get the radiusServerSecret property: The secret used for this radius server.
-     *
+     * 
      * @return the radiusServerSecret value.
      */
     public String radiusServerSecret() {
@@ -84,7 +89,7 @@ public final class RadiusServer {
 
     /**
      * Set the radiusServerSecret property: The secret used for this radius server.
-     *
+     * 
      * @param radiusServerSecret the radiusServerSecret value to set.
      * @return the RadiusServer object itself.
      */
@@ -95,17 +100,59 @@ public final class RadiusServer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (radiusServerAddress() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property radiusServerAddress in model RadiusServer"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property radiusServerAddress in model RadiusServer"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(RadiusServer.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("radiusServerAddress", this.radiusServerAddress);
+        jsonWriter.writeNumberField("radiusServerScore", this.radiusServerScore);
+        jsonWriter.writeStringField("radiusServerSecret", this.radiusServerSecret);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of RadiusServer from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of RadiusServer if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the RadiusServer.
+     */
+    public static RadiusServer fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiusServer deserializedRadiusServer = new RadiusServer();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("radiusServerAddress".equals(fieldName)) {
+                    deserializedRadiusServer.radiusServerAddress = reader.getString();
+                } else if ("radiusServerScore".equals(fieldName)) {
+                    deserializedRadiusServer.radiusServerScore = reader.getNullable(JsonReader::getLong);
+                } else if ("radiusServerSecret".equals(fieldName)) {
+                    deserializedRadiusServer.radiusServerSecret = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedRadiusServer;
+        });
+    }
 }

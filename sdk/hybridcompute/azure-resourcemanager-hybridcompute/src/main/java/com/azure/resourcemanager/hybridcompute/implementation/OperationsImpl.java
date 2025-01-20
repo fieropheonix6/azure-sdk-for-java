@@ -11,29 +11,28 @@ import com.azure.resourcemanager.hybridcompute.fluent.OperationsClient;
 import com.azure.resourcemanager.hybridcompute.fluent.models.OperationValueInner;
 import com.azure.resourcemanager.hybridcompute.models.OperationValue;
 import com.azure.resourcemanager.hybridcompute.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 
     private final com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.hybridcompute.HybridComputeManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OperationValue> list() {
         PagedIterable<OperationValueInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new OperationValueImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationValueImpl(inner1, this.manager()));
     }
 
     public PagedIterable<OperationValue> list(Context context) {
         PagedIterable<OperationValueInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new OperationValueImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new OperationValueImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

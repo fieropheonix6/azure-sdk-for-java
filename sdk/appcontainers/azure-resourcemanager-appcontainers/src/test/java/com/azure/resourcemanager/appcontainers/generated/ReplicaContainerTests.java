@@ -7,37 +7,32 @@ package com.azure.resourcemanager.appcontainers.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.appcontainers.models.ReplicaContainer;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class ReplicaContainerTests {
-    @Test
-    public void testDeserialize() {
-        ReplicaContainer model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"fhsxttaugz\",\"containerId\":\"faazpxdtnkdmkqjj\",\"ready\":false,\"started\":false,\"restartCount\":1886433502,\"logStreamEndpoint\":\"pyouaibrebqaays\",\"execEndpoint\":\"ixqtn\"}")
-                .toObject(ReplicaContainer.class);
-        Assertions.assertEquals("fhsxttaugz", model.name());
-        Assertions.assertEquals("faazpxdtnkdmkqjj", model.containerId());
-        Assertions.assertEquals(false, model.ready());
-        Assertions.assertEquals(false, model.started());
-        Assertions.assertEquals(1886433502, model.restartCount());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        ReplicaContainer model = BinaryData.fromString(
+            "{\"name\":\"uqn\",\"containerId\":\"phzfylsgcrp\",\"ready\":true,\"started\":true,\"restartCount\":1496519581,\"runningState\":\"Terminated\",\"runningStateDetails\":\"zelfwyfwl\",\"logStreamEndpoint\":\"jwetnpsihcla\",\"execEndpoint\":\"va\",\"debugEndpoint\":\"pt\"}")
+            .toObject(ReplicaContainer.class);
+        Assertions.assertEquals("uqn", model.name());
+        Assertions.assertEquals("phzfylsgcrp", model.containerId());
+        Assertions.assertEquals(true, model.ready());
+        Assertions.assertEquals(true, model.started());
+        Assertions.assertEquals(1496519581, model.restartCount());
     }
 
-    @Test
-    public void testSerialize() {
-        ReplicaContainer model =
-            new ReplicaContainer()
-                .withName("fhsxttaugz")
-                .withContainerId("faazpxdtnkdmkqjj")
-                .withReady(false)
-                .withStarted(false)
-                .withRestartCount(1886433502);
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        ReplicaContainer model = new ReplicaContainer().withName("uqn")
+            .withContainerId("phzfylsgcrp")
+            .withReady(true)
+            .withStarted(true)
+            .withRestartCount(1496519581);
         model = BinaryData.fromObject(model).toObject(ReplicaContainer.class);
-        Assertions.assertEquals("fhsxttaugz", model.name());
-        Assertions.assertEquals("faazpxdtnkdmkqjj", model.containerId());
-        Assertions.assertEquals(false, model.ready());
-        Assertions.assertEquals(false, model.started());
-        Assertions.assertEquals(1886433502, model.restartCount());
+        Assertions.assertEquals("uqn", model.name());
+        Assertions.assertEquals("phzfylsgcrp", model.containerId());
+        Assertions.assertEquals(true, model.ready());
+        Assertions.assertEquals(true, model.started());
+        Assertions.assertEquals(1496519581, model.restartCount());
     }
 }

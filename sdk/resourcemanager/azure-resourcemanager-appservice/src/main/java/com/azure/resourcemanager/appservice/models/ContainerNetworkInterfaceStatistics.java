@@ -5,62 +5,67 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The ContainerNetworkInterfaceStatistics model. */
+/**
+ * The ContainerNetworkInterfaceStatistics model.
+ */
 @Fluent
-public final class ContainerNetworkInterfaceStatistics {
+public final class ContainerNetworkInterfaceStatistics
+    implements JsonSerializable<ContainerNetworkInterfaceStatistics> {
     /*
      * The rxBytes property.
      */
-    @JsonProperty(value = "rxBytes")
     private Long rxBytes;
 
     /*
      * The rxPackets property.
      */
-    @JsonProperty(value = "rxPackets")
     private Long rxPackets;
 
     /*
      * The rxErrors property.
      */
-    @JsonProperty(value = "rxErrors")
     private Long rxErrors;
 
     /*
      * The rxDropped property.
      */
-    @JsonProperty(value = "rxDropped")
     private Long rxDropped;
 
     /*
      * The txBytes property.
      */
-    @JsonProperty(value = "txBytes")
     private Long txBytes;
 
     /*
      * The txPackets property.
      */
-    @JsonProperty(value = "txPackets")
     private Long txPackets;
 
     /*
      * The txErrors property.
      */
-    @JsonProperty(value = "txErrors")
     private Long txErrors;
 
     /*
      * The txDropped property.
      */
-    @JsonProperty(value = "txDropped")
     private Long txDropped;
 
     /**
+     * Creates an instance of ContainerNetworkInterfaceStatistics class.
+     */
+    public ContainerNetworkInterfaceStatistics() {
+    }
+
+    /**
      * Get the rxBytes property: The rxBytes property.
-     *
+     * 
      * @return the rxBytes value.
      */
     public Long rxBytes() {
@@ -69,7 +74,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the rxBytes property: The rxBytes property.
-     *
+     * 
      * @param rxBytes the rxBytes value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -80,7 +85,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the rxPackets property: The rxPackets property.
-     *
+     * 
      * @return the rxPackets value.
      */
     public Long rxPackets() {
@@ -89,7 +94,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the rxPackets property: The rxPackets property.
-     *
+     * 
      * @param rxPackets the rxPackets value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -100,7 +105,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the rxErrors property: The rxErrors property.
-     *
+     * 
      * @return the rxErrors value.
      */
     public Long rxErrors() {
@@ -109,7 +114,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the rxErrors property: The rxErrors property.
-     *
+     * 
      * @param rxErrors the rxErrors value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -120,7 +125,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the rxDropped property: The rxDropped property.
-     *
+     * 
      * @return the rxDropped value.
      */
     public Long rxDropped() {
@@ -129,7 +134,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the rxDropped property: The rxDropped property.
-     *
+     * 
      * @param rxDropped the rxDropped value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -140,7 +145,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the txBytes property: The txBytes property.
-     *
+     * 
      * @return the txBytes value.
      */
     public Long txBytes() {
@@ -149,7 +154,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the txBytes property: The txBytes property.
-     *
+     * 
      * @param txBytes the txBytes value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -160,7 +165,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the txPackets property: The txPackets property.
-     *
+     * 
      * @return the txPackets value.
      */
     public Long txPackets() {
@@ -169,7 +174,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the txPackets property: The txPackets property.
-     *
+     * 
      * @param txPackets the txPackets value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -180,7 +185,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the txErrors property: The txErrors property.
-     *
+     * 
      * @return the txErrors value.
      */
     public Long txErrors() {
@@ -189,7 +194,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the txErrors property: The txErrors property.
-     *
+     * 
      * @param txErrors the txErrors value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -200,7 +205,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Get the txDropped property: The txDropped property.
-     *
+     * 
      * @return the txDropped value.
      */
     public Long txDropped() {
@@ -209,7 +214,7 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Set the txDropped property: The txDropped property.
-     *
+     * 
      * @param txDropped the txDropped value to set.
      * @return the ContainerNetworkInterfaceStatistics object itself.
      */
@@ -220,9 +225,67 @@ public final class ContainerNetworkInterfaceStatistics {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeNumberField("rxBytes", this.rxBytes);
+        jsonWriter.writeNumberField("rxPackets", this.rxPackets);
+        jsonWriter.writeNumberField("rxErrors", this.rxErrors);
+        jsonWriter.writeNumberField("rxDropped", this.rxDropped);
+        jsonWriter.writeNumberField("txBytes", this.txBytes);
+        jsonWriter.writeNumberField("txPackets", this.txPackets);
+        jsonWriter.writeNumberField("txErrors", this.txErrors);
+        jsonWriter.writeNumberField("txDropped", this.txDropped);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerNetworkInterfaceStatistics from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerNetworkInterfaceStatistics if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerNetworkInterfaceStatistics.
+     */
+    public static ContainerNetworkInterfaceStatistics fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerNetworkInterfaceStatistics deserializedContainerNetworkInterfaceStatistics
+                = new ContainerNetworkInterfaceStatistics();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("rxBytes".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.rxBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("rxPackets".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.rxPackets = reader.getNullable(JsonReader::getLong);
+                } else if ("rxErrors".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.rxErrors = reader.getNullable(JsonReader::getLong);
+                } else if ("rxDropped".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.rxDropped = reader.getNullable(JsonReader::getLong);
+                } else if ("txBytes".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.txBytes = reader.getNullable(JsonReader::getLong);
+                } else if ("txPackets".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.txPackets = reader.getNullable(JsonReader::getLong);
+                } else if ("txErrors".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.txErrors = reader.getNullable(JsonReader::getLong);
+                } else if ("txDropped".equals(fieldName)) {
+                    deserializedContainerNetworkInterfaceStatistics.txDropped = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerNetworkInterfaceStatistics;
+        });
     }
 }

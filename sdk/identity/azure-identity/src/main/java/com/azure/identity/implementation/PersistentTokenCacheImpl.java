@@ -17,8 +17,10 @@ import java.nio.file.Paths;
 
 public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     private static final String DEFAULT_CACHE_FILE_NAME = "msal.cache";
+    private static final String CAE_ENABLED_CACHE_SUFFIX = ".cae";
+    private static final String CAE_DISABLED_CACHE_SUFFIX = ".nocae";
     private static final String DEFAULT_CONFIDENTIAL_CACHE_FILE_NAME = "msal.confidential.cache";
-    private static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
+    static final Path DEFAULT_CACHE_FILE_PATH = Platform.isWindows()
         ? Paths.get(System.getProperty("user.home"), "AppData", "Local", ".IdentityService")
         : Paths.get(System.getProperty("user.home"), ".IdentityService");
     private static final String DEFAULT_KEYCHAIN_SERVICE = "Microsoft.Developer.IdentityService";
@@ -36,8 +38,11 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     private String name;
     private PersistenceTokenCacheAccessAspect cacheAccessAspect;
 
-    public PersistentTokenCacheImpl() {
+    private boolean caeEnabled;
+
+    public PersistentTokenCacheImpl(boolean caeEnabled) {
         super();
+        this.caeEnabled = caeEnabled;
     }
 
     public PersistentTokenCacheImpl setAllowUnencryptedStorage(boolean allowUnencryptedStorage) {
@@ -56,8 +61,8 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
             cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
             return true;
         } catch (Throwable t) {
-            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
-                "Shared token cache is unavailable in this environment.", null, t));
+            throw LOGGER.logExceptionAsError(
+                new ClientAuthenticationException("Shared token cache is unavailable in this environment.", null, t));
         }
     }
 
@@ -70,18 +75,17 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     }
 
     private PersistenceSettings getPersistenceSettings() {
-        PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings.builder(
-            name != null ? name : DEFAULT_CACHE_FILE_NAME, DEFAULT_CACHE_FILE_PATH);
+        PersistenceSettings.Builder persistenceSettingsBuilder = PersistenceSettings
+            .builder(getCacheName(name != null ? name : DEFAULT_CACHE_FILE_NAME), DEFAULT_CACHE_FILE_PATH);
         if (Platform.isMac()) {
-            persistenceSettingsBuilder.setMacKeychain(
-                DEFAULT_KEYCHAIN_SERVICE, name != null ? name : DEFAULT_KEYCHAIN_ACCOUNT);
+            persistenceSettingsBuilder.setMacKeychain(DEFAULT_KEYCHAIN_SERVICE,
+                getCacheName(name != null ? name : DEFAULT_KEYCHAIN_ACCOUNT));
             return persistenceSettingsBuilder.build();
         } else if (Platform.isLinux()) {
             try {
-                persistenceSettingsBuilder
-                    .setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
-                        name != null ? name : DEFAULT_KEYRING_ITEM_NAME, DEFAULT_KEYRING_ATTR_NAME,
-                        DEFAULT_KEYRING_ATTR_VALUE, null, null);
+                persistenceSettingsBuilder.setLinuxKeyring(DEFAULT_KEYRING_NAME, DEFAULT_KEYRING_SCHEMA,
+                    getCacheName(name != null ? name : DEFAULT_KEYRING_ITEM_NAME), DEFAULT_KEYRING_ATTR_NAME,
+                    DEFAULT_KEYRING_ATTR_VALUE, null, null);
                 return persistenceSettingsBuilder.build();
             } catch (KeyRingAccessException e) {
                 if (!allowUnencryptedStorage) {
@@ -92,5 +96,13 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
             }
         }
         return persistenceSettingsBuilder.build();
+    }
+
+    private String getCacheName(String name) {
+        if (caeEnabled) {
+            return name + CAE_ENABLED_CACHE_SUFFIX;
+        } else {
+            return name + CAE_DISABLED_CACHE_SUFFIX;
+        }
     }
 }

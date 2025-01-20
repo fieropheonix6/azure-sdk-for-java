@@ -5,91 +5,56 @@
 package com.azure.resourcemanager.frontdoor.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsConfiguration;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsProvisioningState;
 import com.azure.resourcemanager.frontdoor.models.CustomHttpsProvisioningSubstate;
 import com.azure.resourcemanager.frontdoor.models.FrontDoorResourceState;
 import com.azure.resourcemanager.frontdoor.models.FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink;
 import com.azure.resourcemanager.frontdoor.models.SessionAffinityEnabledState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** A frontend endpoint used for routing. */
-@JsonFlatten
+/**
+ * A frontend endpoint used for routing.
+ */
 @Fluent
-public class FrontendEndpointInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontendEndpointInner.class);
+public final class FrontendEndpointInner extends SubResource {
+    /*
+     * Properties of the Frontend endpoint
+     */
+    private FrontendEndpointProperties innerProperties;
 
     /*
      * Resource name.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /*
      * Resource type.
      */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The host name of the frontendEndpoint. Must be a domain name.
+    /**
+     * Creates an instance of FrontendEndpointInner class.
      */
-    @JsonProperty(value = "properties.hostName")
-    private String hostname;
+    public FrontendEndpointInner() {
+    }
 
-    /*
-     * Whether to allow session affinity on this host. Valid options are
-     * 'Enabled' or 'Disabled'
+    /**
+     * Get the innerProperties property: Properties of the Frontend endpoint.
+     * 
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.sessionAffinityEnabledState")
-    private SessionAffinityEnabledState sessionAffinityEnabledState;
-
-    /*
-     * UNUSED. This field will be ignored. The TTL to use in seconds for
-     * session affinity, if applicable.
-     */
-    @JsonProperty(value = "properties.sessionAffinityTtlSeconds")
-    private Integer sessionAffinityTtlSeconds;
-
-    /*
-     * Defines the Web Application Firewall policy for each host (if
-     * applicable)
-     */
-    @JsonProperty(value = "properties.webApplicationFirewallPolicyLink")
-    private FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink;
-
-    /*
-     * Resource status.
-     */
-    @JsonProperty(value = "properties.resourceState", access = JsonProperty.Access.WRITE_ONLY)
-    private FrontDoorResourceState resourceState;
-
-    /*
-     * Provisioning status of Custom Https of the frontendEndpoint.
-     */
-    @JsonProperty(value = "properties.customHttpsProvisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private CustomHttpsProvisioningState customHttpsProvisioningState;
-
-    /*
-     * Provisioning substate shows the progress of custom HTTPS
-     * enabling/disabling process step by step.
-     */
-    @JsonProperty(value = "properties.customHttpsProvisioningSubstate", access = JsonProperty.Access.WRITE_ONLY)
-    private CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate;
-
-    /*
-     * The configuration specifying how to enable HTTPS
-     */
-    @JsonProperty(value = "properties.customHttpsConfiguration", access = JsonProperty.Access.WRITE_ONLY)
-    private CustomHttpsConfiguration customHttpsConfiguration;
+    private FrontendEndpointProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -98,7 +63,7 @@ public class FrontendEndpointInner extends SubResource {
 
     /**
      * Set the name property: Resource name.
-     *
+     * 
      * @param name the name value to set.
      * @return the FrontendEndpointInner object itself.
      */
@@ -109,7 +74,7 @@ public class FrontendEndpointInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -117,131 +82,8 @@ public class FrontendEndpointInner extends SubResource {
     }
 
     /**
-     * Get the hostname property: The host name of the frontendEndpoint. Must be a domain name.
-     *
-     * @return the hostname value.
+     * {@inheritDoc}
      */
-    public String hostname() {
-        return this.hostname;
-    }
-
-    /**
-     * Set the hostname property: The host name of the frontendEndpoint. Must be a domain name.
-     *
-     * @param hostname the hostname value to set.
-     * @return the FrontendEndpointInner object itself.
-     */
-    public FrontendEndpointInner withHostname(String hostname) {
-        this.hostname = hostname;
-        return this;
-    }
-
-    /**
-     * Get the sessionAffinityEnabledState property: Whether to allow session affinity on this host. Valid options are
-     * 'Enabled' or 'Disabled'.
-     *
-     * @return the sessionAffinityEnabledState value.
-     */
-    public SessionAffinityEnabledState sessionAffinityEnabledState() {
-        return this.sessionAffinityEnabledState;
-    }
-
-    /**
-     * Set the sessionAffinityEnabledState property: Whether to allow session affinity on this host. Valid options are
-     * 'Enabled' or 'Disabled'.
-     *
-     * @param sessionAffinityEnabledState the sessionAffinityEnabledState value to set.
-     * @return the FrontendEndpointInner object itself.
-     */
-    public FrontendEndpointInner withSessionAffinityEnabledState(
-        SessionAffinityEnabledState sessionAffinityEnabledState) {
-        this.sessionAffinityEnabledState = sessionAffinityEnabledState;
-        return this;
-    }
-
-    /**
-     * Get the sessionAffinityTtlSeconds property: UNUSED. This field will be ignored. The TTL to use in seconds for
-     * session affinity, if applicable.
-     *
-     * @return the sessionAffinityTtlSeconds value.
-     */
-    public Integer sessionAffinityTtlSeconds() {
-        return this.sessionAffinityTtlSeconds;
-    }
-
-    /**
-     * Set the sessionAffinityTtlSeconds property: UNUSED. This field will be ignored. The TTL to use in seconds for
-     * session affinity, if applicable.
-     *
-     * @param sessionAffinityTtlSeconds the sessionAffinityTtlSeconds value to set.
-     * @return the FrontendEndpointInner object itself.
-     */
-    public FrontendEndpointInner withSessionAffinityTtlSeconds(Integer sessionAffinityTtlSeconds) {
-        this.sessionAffinityTtlSeconds = sessionAffinityTtlSeconds;
-        return this;
-    }
-
-    /**
-     * Get the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each host (if
-     * applicable).
-     *
-     * @return the webApplicationFirewallPolicyLink value.
-     */
-    public FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
-        return this.webApplicationFirewallPolicyLink;
-    }
-
-    /**
-     * Set the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each host (if
-     * applicable).
-     *
-     * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set.
-     * @return the FrontendEndpointInner object itself.
-     */
-    public FrontendEndpointInner withWebApplicationFirewallPolicyLink(
-        FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
-        this.webApplicationFirewallPolicyLink = webApplicationFirewallPolicyLink;
-        return this;
-    }
-
-    /**
-     * Get the resourceState property: Resource status.
-     *
-     * @return the resourceState value.
-     */
-    public FrontDoorResourceState resourceState() {
-        return this.resourceState;
-    }
-
-    /**
-     * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the frontendEndpoint.
-     *
-     * @return the customHttpsProvisioningState value.
-     */
-    public CustomHttpsProvisioningState customHttpsProvisioningState() {
-        return this.customHttpsProvisioningState;
-    }
-
-    /**
-     * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
-     * enabling/disabling process step by step.
-     *
-     * @return the customHttpsProvisioningSubstate value.
-     */
-    public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
-        return this.customHttpsProvisioningSubstate;
-    }
-
-    /**
-     * Get the customHttpsConfiguration property: The configuration specifying how to enable HTTPS.
-     *
-     * @return the customHttpsConfiguration value.
-     */
-    public CustomHttpsConfiguration customHttpsConfiguration() {
-        return this.customHttpsConfiguration;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public FrontendEndpointInner withId(String id) {
         super.withId(id);
@@ -249,16 +91,194 @@ public class FrontendEndpointInner extends SubResource {
     }
 
     /**
+     * Get the resourceState property: Resource status.
+     * 
+     * @return the resourceState value.
+     */
+    public FrontDoorResourceState resourceState() {
+        return this.innerProperties() == null ? null : this.innerProperties().resourceState();
+    }
+
+    /**
+     * Get the customHttpsProvisioningState property: Provisioning status of Custom Https of the frontendEndpoint.
+     * 
+     * @return the customHttpsProvisioningState value.
+     */
+    public CustomHttpsProvisioningState customHttpsProvisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().customHttpsProvisioningState();
+    }
+
+    /**
+     * Get the customHttpsProvisioningSubstate property: Provisioning substate shows the progress of custom HTTPS
+     * enabling/disabling process step by step.
+     * 
+     * @return the customHttpsProvisioningSubstate value.
+     */
+    public CustomHttpsProvisioningSubstate customHttpsProvisioningSubstate() {
+        return this.innerProperties() == null ? null : this.innerProperties().customHttpsProvisioningSubstate();
+    }
+
+    /**
+     * Get the customHttpsConfiguration property: The configuration specifying how to enable HTTPS.
+     * 
+     * @return the customHttpsConfiguration value.
+     */
+    public CustomHttpsConfiguration customHttpsConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().customHttpsConfiguration();
+    }
+
+    /**
+     * Get the hostname property: The host name of the frontendEndpoint. Must be a domain name.
+     * 
+     * @return the hostname value.
+     */
+    public String hostname() {
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
+    }
+
+    /**
+     * Set the hostname property: The host name of the frontendEndpoint. Must be a domain name.
+     * 
+     * @param hostname the hostname value to set.
+     * @return the FrontendEndpointInner object itself.
+     */
+    public FrontendEndpointInner withHostname(String hostname) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendEndpointProperties();
+        }
+        this.innerProperties().withHostname(hostname);
+        return this;
+    }
+
+    /**
+     * Get the sessionAffinityEnabledState property: Whether to allow session affinity on this host. Valid options are
+     * 'Enabled' or 'Disabled'.
+     * 
+     * @return the sessionAffinityEnabledState value.
+     */
+    public SessionAffinityEnabledState sessionAffinityEnabledState() {
+        return this.innerProperties() == null ? null : this.innerProperties().sessionAffinityEnabledState();
+    }
+
+    /**
+     * Set the sessionAffinityEnabledState property: Whether to allow session affinity on this host. Valid options are
+     * 'Enabled' or 'Disabled'.
+     * 
+     * @param sessionAffinityEnabledState the sessionAffinityEnabledState value to set.
+     * @return the FrontendEndpointInner object itself.
+     */
+    public FrontendEndpointInner
+        withSessionAffinityEnabledState(SessionAffinityEnabledState sessionAffinityEnabledState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendEndpointProperties();
+        }
+        this.innerProperties().withSessionAffinityEnabledState(sessionAffinityEnabledState);
+        return this;
+    }
+
+    /**
+     * Get the sessionAffinityTtlSeconds property: UNUSED. This field will be ignored. The TTL to use in seconds for
+     * session affinity, if applicable.
+     * 
+     * @return the sessionAffinityTtlSeconds value.
+     */
+    public Integer sessionAffinityTtlSeconds() {
+        return this.innerProperties() == null ? null : this.innerProperties().sessionAffinityTtlSeconds();
+    }
+
+    /**
+     * Set the sessionAffinityTtlSeconds property: UNUSED. This field will be ignored. The TTL to use in seconds for
+     * session affinity, if applicable.
+     * 
+     * @param sessionAffinityTtlSeconds the sessionAffinityTtlSeconds value to set.
+     * @return the FrontendEndpointInner object itself.
+     */
+    public FrontendEndpointInner withSessionAffinityTtlSeconds(Integer sessionAffinityTtlSeconds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendEndpointProperties();
+        }
+        this.innerProperties().withSessionAffinityTtlSeconds(sessionAffinityTtlSeconds);
+        return this;
+    }
+
+    /**
+     * Get the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each host (if
+     * applicable).
+     * 
+     * @return the webApplicationFirewallPolicyLink value.
+     */
+    public FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink() {
+        return this.innerProperties() == null ? null : this.innerProperties().webApplicationFirewallPolicyLink();
+    }
+
+    /**
+     * Set the webApplicationFirewallPolicyLink property: Defines the Web Application Firewall policy for each host (if
+     * applicable).
+     * 
+     * @param webApplicationFirewallPolicyLink the webApplicationFirewallPolicyLink value to set.
+     * @return the FrontendEndpointInner object itself.
+     */
+    public FrontendEndpointInner withWebApplicationFirewallPolicyLink(
+        FrontendEndpointUpdateParametersWebApplicationFirewallPolicyLink webApplicationFirewallPolicyLink) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new FrontendEndpointProperties();
+        }
+        this.innerProperties().withWebApplicationFirewallPolicyLink(webApplicationFirewallPolicyLink);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (webApplicationFirewallPolicyLink() != null) {
-            webApplicationFirewallPolicyLink().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (customHttpsConfiguration() != null) {
-            customHttpsConfiguration().validate();
-        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FrontendEndpointInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FrontendEndpointInner if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FrontendEndpointInner.
+     */
+    public static FrontendEndpointInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FrontendEndpointInner deserializedFrontendEndpointInner = new FrontendEndpointInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedFrontendEndpointInner.withId(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedFrontendEndpointInner.innerProperties = FrontendEndpointProperties.fromJson(reader);
+                } else if ("name".equals(fieldName)) {
+                    deserializedFrontendEndpointInner.name = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedFrontendEndpointInner.type = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedFrontendEndpointInner;
+        });
     }
 }

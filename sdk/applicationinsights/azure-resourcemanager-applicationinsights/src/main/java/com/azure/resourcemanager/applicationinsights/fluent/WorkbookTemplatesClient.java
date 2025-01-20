@@ -12,38 +12,55 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookTemplateInner;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateUpdateParameters;
 
-/** An instance of this class provides access to all the operations defined in WorkbookTemplatesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkbookTemplatesClient.
+ */
 public interface WorkbookTemplatesClient {
     /**
      * Get all Workbook templates defined within a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Workbook templates defined within a specified resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkbookTemplateInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Get all Workbook templates defined within a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all Workbook templates defined within a specified resource group as paginated response with {@link
-     *     PagedIterable}.
+     * @return all Workbook templates defined within a specified resource group as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WorkbookTemplateInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Get a single workbook template by its resourceName.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a single workbook template by its resourceName along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WorkbookTemplateInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName,
+        Context context);
+
+    /**
+     * Get a single workbook template by its resourceName.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -55,35 +72,8 @@ public interface WorkbookTemplatesClient {
     WorkbookTemplateInner getByResourceGroup(String resourceGroupName, String resourceName);
 
     /**
-     * Get a single workbook template by its resourceName.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a single workbook template by its resourceName along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookTemplateInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceName, Context context);
-
-    /**
      * Delete a workbook template.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param resourceName The name of the Application Insights component resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String resourceName);
-
-    /**
-     * Delete a workbook template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param context The context to associate with this operation.
@@ -96,23 +86,20 @@ public interface WorkbookTemplatesClient {
     Response<Void> deleteWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
-     * Create a new workbook template.
-     *
+     * Delete a workbook template.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
-     * @param workbookTemplateProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an Application Insights workbook template definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkbookTemplateInner createOrUpdate(
-        String resourceGroupName, String resourceName, WorkbookTemplateInner workbookTemplateProperties);
+    void delete(String resourceGroupName, String resourceName);
 
     /**
      * Create a new workbook template.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookTemplateProperties Properties that need to be specified to create a new workbook.
@@ -123,28 +110,27 @@ public interface WorkbookTemplatesClient {
      * @return an Application Insights workbook template definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookTemplateInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        WorkbookTemplateInner workbookTemplateProperties,
-        Context context);
+    Response<WorkbookTemplateInner> createOrUpdateWithResponse(String resourceGroupName, String resourceName,
+        WorkbookTemplateInner workbookTemplateProperties, Context context);
 
     /**
-     * Updates a workbook template that has already been added.
-     *
+     * Create a new workbook template.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
+     * @param workbookTemplateProperties Properties that need to be specified to create a new workbook.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an Application Insights workbook template definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WorkbookTemplateInner update(String resourceGroupName, String resourceName);
+    WorkbookTemplateInner createOrUpdate(String resourceGroupName, String resourceName,
+        WorkbookTemplateInner workbookTemplateProperties);
 
     /**
      * Updates a workbook template that has already been added.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the Application Insights component resource.
      * @param workbookTemplateUpdateParameters Properties that need to be specified to patch a workbook template.
@@ -155,9 +141,19 @@ public interface WorkbookTemplatesClient {
      * @return an Application Insights workbook template definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WorkbookTemplateInner> updateWithResponse(
-        String resourceGroupName,
-        String resourceName,
-        WorkbookTemplateUpdateParameters workbookTemplateUpdateParameters,
-        Context context);
+    Response<WorkbookTemplateInner> updateWithResponse(String resourceGroupName, String resourceName,
+        WorkbookTemplateUpdateParameters workbookTemplateUpdateParameters, Context context);
+
+    /**
+     * Updates a workbook template that has already been added.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName The name of the Application Insights component resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an Application Insights workbook template definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WorkbookTemplateInner update(String resourceGroupName, String resourceName);
 }

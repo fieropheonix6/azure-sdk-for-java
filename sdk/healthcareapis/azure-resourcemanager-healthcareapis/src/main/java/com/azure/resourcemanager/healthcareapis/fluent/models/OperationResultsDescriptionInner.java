@@ -5,51 +5,57 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.healthcareapis.models.OperationResultStatus;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import java.io.IOException;
 
-/** The properties indicating the operation result of an operation on a service. */
+/**
+ * The properties indicating the operation result of an operation on a service.
+ */
 @Fluent
-public final class OperationResultsDescriptionInner {
+public final class OperationResultsDescriptionInner implements JsonSerializable<OperationResultsDescriptionInner> {
     /*
      * The ID of the operation returned.
      */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
      * The name of the operation result.
      */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
      * The status of the operation being performed.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private OperationResultStatus status;
 
     /*
      * The time that the operation was started.
      */
-    @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private String startTime;
 
     /*
      * The time that the operation finished.
      */
-    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
     private String endTime;
 
     /*
      * Additional properties of the operation result.
      */
-    @JsonProperty(value = "properties")
     private Object properties;
 
     /**
+     * Creates an instance of OperationResultsDescriptionInner class.
+     */
+    public OperationResultsDescriptionInner() {
+    }
+
+    /**
      * Get the id property: The ID of the operation returned.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -58,7 +64,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the name property: The name of the operation result.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,7 +73,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the status property: The status of the operation being performed.
-     *
+     * 
      * @return the status value.
      */
     public OperationResultStatus status() {
@@ -76,7 +82,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the startTime property: The time that the operation was started.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -85,7 +91,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the endTime property: The time that the operation finished.
-     *
+     * 
      * @return the endTime value.
      */
     public String endTime() {
@@ -94,7 +100,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Get the properties property: Additional properties of the operation result.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -103,7 +109,7 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Set the properties property: Additional properties of the operation result.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationResultsDescriptionInner object itself.
      */
@@ -114,9 +120,57 @@ public final class OperationResultsDescriptionInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeUntypedField("properties", this.properties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of OperationResultsDescriptionInner from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of OperationResultsDescriptionInner if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the OperationResultsDescriptionInner.
+     */
+    public static OperationResultsDescriptionInner fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            OperationResultsDescriptionInner deserializedOperationResultsDescriptionInner
+                = new OperationResultsDescriptionInner();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedOperationResultsDescriptionInner.id = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedOperationResultsDescriptionInner.name = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedOperationResultsDescriptionInner.status
+                        = OperationResultStatus.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedOperationResultsDescriptionInner.startTime = reader.getString();
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedOperationResultsDescriptionInner.endTime = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedOperationResultsDescriptionInner.properties = reader.readUntyped();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedOperationResultsDescriptionInner;
+        });
     }
 }

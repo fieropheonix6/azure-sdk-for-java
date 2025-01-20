@@ -7,32 +7,35 @@ package com.azure.resourcemanager.costmanagement.models;
 import com.azure.resourcemanager.costmanagement.fluent.models.OperationStatusInner;
 import java.time.OffsetDateTime;
 
-/** An immutable client-side representation of OperationStatus. */
+/**
+ * An immutable client-side representation of OperationStatus.
+ */
 public interface OperationStatus {
     /**
      * Gets the status property: The status of the long running operation.
-     *
+     * 
      * @return the status value.
      */
-    Status status();
+    OperationStatusType status();
 
     /**
-     * Gets the reportUrl property: The URL to download the generated report.
-     *
+     * Gets the reportUrl property: The CSV file from the reportUrl blob link consists of reservation usage data with
+     * the following schema at daily granularity.
+     * 
      * @return the reportUrl value.
      */
-    String reportUrl();
+    ReservationReportSchema reportUrl();
 
     /**
      * Gets the validUntil property: The time at which report URL becomes invalid.
-     *
+     * 
      * @return the validUntil value.
      */
     OffsetDateTime validUntil();
 
     /**
      * Gets the inner com.azure.resourcemanager.costmanagement.fluent.models.OperationStatusInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationStatusInner innerModel();

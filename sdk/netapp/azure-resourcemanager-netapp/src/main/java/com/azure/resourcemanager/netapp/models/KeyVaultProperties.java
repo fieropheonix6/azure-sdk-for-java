@@ -6,44 +6,51 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Properties of key vault. */
+/**
+ * Properties of key vault.
+ */
 @Fluent
-public final class KeyVaultProperties {
+public final class KeyVaultProperties implements JsonSerializable<KeyVaultProperties> {
     /*
      * UUID v4 used to identify the Azure Key Vault configuration
      */
-    @JsonProperty(value = "keyVaultId", access = JsonProperty.Access.WRITE_ONLY)
     private String keyVaultId;
 
     /*
      * The Uri of KeyVault.
      */
-    @JsonProperty(value = "keyVaultUri", required = true)
     private String keyVaultUri;
 
     /*
      * The name of KeyVault key.
      */
-    @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
     /*
      * The resource ID of KeyVault.
      */
-    @JsonProperty(value = "keyVaultResourceId", required = true)
     private String keyVaultResourceId;
 
     /*
      * Status of the KeyVault connection.
      */
-    @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private KeyVaultStatus status;
 
     /**
+     * Creates an instance of KeyVaultProperties class.
+     */
+    public KeyVaultProperties() {
+    }
+
+    /**
      * Get the keyVaultId property: UUID v4 used to identify the Azure Key Vault configuration.
-     *
+     * 
      * @return the keyVaultId value.
      */
     public String keyVaultId() {
@@ -52,7 +59,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @return the keyVaultUri value.
      */
     public String keyVaultUri() {
@@ -61,7 +68,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVaultUri property: The Uri of KeyVault.
-     *
+     * 
      * @param keyVaultUri the keyVaultUri value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -72,7 +79,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyName property: The name of KeyVault key.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -81,7 +88,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyName property: The name of KeyVault key.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -92,7 +99,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the keyVaultResourceId property: The resource ID of KeyVault.
-     *
+     * 
      * @return the keyVaultResourceId value.
      */
     public String keyVaultResourceId() {
@@ -101,7 +108,7 @@ public final class KeyVaultProperties {
 
     /**
      * Set the keyVaultResourceId property: The resource ID of KeyVault.
-     *
+     * 
      * @param keyVaultResourceId the keyVaultResourceId value to set.
      * @return the KeyVaultProperties object itself.
      */
@@ -112,7 +119,7 @@ public final class KeyVaultProperties {
 
     /**
      * Get the status property: Status of the KeyVault connection.
-     *
+     * 
      * @return the status value.
      */
     public KeyVaultStatus status() {
@@ -121,27 +128,66 @@ public final class KeyVaultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyVaultUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyVaultUri in model KeyVaultProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyVaultUri in model KeyVaultProperties"));
         }
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keyName in model KeyVaultProperties"));
-        }
-        if (keyVaultResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyVaultResourceId in model KeyVaultProperties"));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Missing required property keyName in model KeyVaultProperties"));
         }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultProperties.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("keyVaultUri", this.keyVaultUri);
+        jsonWriter.writeStringField("keyName", this.keyName);
+        jsonWriter.writeStringField("keyVaultResourceId", this.keyVaultResourceId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of KeyVaultProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of KeyVaultProperties if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the KeyVaultProperties.
+     */
+    public static KeyVaultProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            KeyVaultProperties deserializedKeyVaultProperties = new KeyVaultProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("keyVaultUri".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyVaultUri = reader.getString();
+                } else if ("keyName".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyName = reader.getString();
+                } else if ("keyVaultId".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyVaultId = reader.getString();
+                } else if ("keyVaultResourceId".equals(fieldName)) {
+                    deserializedKeyVaultProperties.keyVaultResourceId = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedKeyVaultProperties.status = KeyVaultStatus.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedKeyVaultProperties;
+        });
+    }
 }

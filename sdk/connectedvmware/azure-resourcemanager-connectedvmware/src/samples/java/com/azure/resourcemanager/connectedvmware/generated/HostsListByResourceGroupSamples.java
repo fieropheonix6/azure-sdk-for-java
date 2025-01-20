@@ -4,20 +4,22 @@
 
 package com.azure.resourcemanager.connectedvmware.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Hosts ListByResourceGroup. */
+/**
+ * Samples for Hosts ListByResourceGroup.
+ */
 public final class HostsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/preview/2022-01-10-preview/examples/ListHostsByResourceGroup.json
+     * x-ms-original-file:
+     * specification/connectedvmware/resource-manager/Microsoft.ConnectedVMwarevSphere/stable/2023-10-01/examples/
+     * ListHostsByResourceGroup.json
      */
     /**
      * Sample code: ListHostsByResourceGroup.
-     *
+     * 
      * @param manager Entry point to ConnectedVMwareManager.
      */
-    public static void listHostsByResourceGroup(
-        com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
-        manager.hosts().listByResourceGroup("testrg", Context.NONE);
+    public static void
+        listHostsByResourceGroup(com.azure.resourcemanager.connectedvmware.ConnectedVMwareManager manager) {
+        manager.hosts().listByResourceGroup("testrg", com.azure.core.util.Context.NONE);
     }
 }

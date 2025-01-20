@@ -20,34 +20,30 @@ public final class IntegrationRuntimeStatusOperationsImpl implements Integration
 
     private final com.azure.resourcemanager.synapse.SynapseManager serviceManager;
 
-    public IntegrationRuntimeStatusOperationsImpl(
-        IntegrationRuntimeStatusOperationsClient innerClient,
+    public IntegrationRuntimeStatusOperationsImpl(IntegrationRuntimeStatusOperationsClient innerClient,
         com.azure.resourcemanager.synapse.SynapseManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public IntegrationRuntimeStatusResponse get(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName) {
-        IntegrationRuntimeStatusResponseInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
+    public Response<IntegrationRuntimeStatusResponse> getWithResponse(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName, Context context) {
+        Response<IntegrationRuntimeStatusResponseInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
         if (inner != null) {
-            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new IntegrationRuntimeStatusResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public Response<IntegrationRuntimeStatusResponse> getWithResponse(
-        String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
-        Response<IntegrationRuntimeStatusResponseInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, integrationRuntimeName, context);
+    public IntegrationRuntimeStatusResponse get(String resourceGroupName, String workspaceName,
+        String integrationRuntimeName) {
+        IntegrationRuntimeStatusResponseInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, integrationRuntimeName);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new IntegrationRuntimeStatusResponseImpl(inner.getValue(), this.manager()));
+            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }

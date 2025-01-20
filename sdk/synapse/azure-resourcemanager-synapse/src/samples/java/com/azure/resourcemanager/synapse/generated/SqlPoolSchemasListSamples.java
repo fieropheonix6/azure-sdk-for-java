@@ -4,19 +4,20 @@
 
 package com.azure.resourcemanager.synapse.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for SqlPoolSchemas List. */
+/**
+ * Samples for SqlPoolSchemas List.
+ */
 public final class SqlPoolSchemasListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolSchema.json
+     * x-ms-original-file:
+     * specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-03-01/examples/ListSqlPoolSchema.json
      */
     /**
      * Sample code: List the schema in a SQL Analytics pool.
-     *
+     * 
      * @param manager Entry point to SynapseManager.
      */
     public static void listTheSchemaInASQLAnalyticsPool(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.sqlPoolSchemas().list("myRG", "serverName", "myDatabase", null, Context.NONE);
+        manager.sqlPoolSchemas().list("myRG", "serverName", "myDatabase", null, com.azure.core.util.Context.NONE);
     }
 }

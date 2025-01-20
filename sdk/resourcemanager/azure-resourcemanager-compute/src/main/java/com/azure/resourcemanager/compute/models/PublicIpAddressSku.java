@@ -5,30 +5,36 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible. */
+/**
+ * Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
+ */
 @Fluent
-public final class PublicIpAddressSku {
+public final class PublicIpAddressSku implements JsonSerializable<PublicIpAddressSku> {
     /*
      * Specify public IP sku name
      */
-    @JsonProperty(value = "name")
     private PublicIpAddressSkuName name;
 
     /*
      * Specify public IP sku tier
      */
-    @JsonProperty(value = "tier")
     private PublicIpAddressSkuTier tier;
 
-    /** Creates an instance of PublicIpAddressSku class. */
+    /**
+     * Creates an instance of PublicIpAddressSku class.
+     */
     public PublicIpAddressSku() {
     }
 
     /**
      * Get the name property: Specify public IP sku name.
-     *
+     * 
      * @return the name value.
      */
     public PublicIpAddressSkuName name() {
@@ -37,7 +43,7 @@ public final class PublicIpAddressSku {
 
     /**
      * Set the name property: Specify public IP sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the PublicIpAddressSku object itself.
      */
@@ -48,7 +54,7 @@ public final class PublicIpAddressSku {
 
     /**
      * Get the tier property: Specify public IP sku tier.
-     *
+     * 
      * @return the tier value.
      */
     public PublicIpAddressSkuTier tier() {
@@ -57,7 +63,7 @@ public final class PublicIpAddressSku {
 
     /**
      * Set the tier property: Specify public IP sku tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the PublicIpAddressSku object itself.
      */
@@ -68,9 +74,48 @@ public final class PublicIpAddressSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", this.name == null ? null : this.name.toString());
+        jsonWriter.writeStringField("tier", this.tier == null ? null : this.tier.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PublicIpAddressSku from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PublicIpAddressSku if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PublicIpAddressSku.
+     */
+    public static PublicIpAddressSku fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PublicIpAddressSku deserializedPublicIpAddressSku = new PublicIpAddressSku();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    deserializedPublicIpAddressSku.name = PublicIpAddressSkuName.fromString(reader.getString());
+                } else if ("tier".equals(fieldName)) {
+                    deserializedPublicIpAddressSku.tier = PublicIpAddressSkuTier.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPublicIpAddressSku;
+        });
     }
 }

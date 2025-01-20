@@ -26,33 +26,46 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
 
     private final com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager;
 
-    public OpenIdConnectProvidersImpl(
-        OpenIdConnectProvidersClient innerClient,
+    public OpenIdConnectProvidersImpl(OpenIdConnectProvidersClient innerClient,
         com.azure.resourcemanager.apimanagement.ApiManagementManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
     public PagedIterable<OpenidConnectProviderContract> listByService(String resourceGroupName, String serviceName) {
-        PagedIterable<OpenidConnectProviderContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName);
-        return Utils.mapPage(inner, inner1 -> new OpenidConnectProviderContractImpl(inner1, this.manager()));
+        PagedIterable<OpenidConnectProviderContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OpenidConnectProviderContractImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<OpenidConnectProviderContract> listByService(
-        String resourceGroupName, String serviceName, String filter, Integer top, Integer skip, Context context) {
-        PagedIterable<OpenidConnectProviderContractInner> inner =
-            this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
-        return Utils.mapPage(inner, inner1 -> new OpenidConnectProviderContractImpl(inner1, this.manager()));
+    public PagedIterable<OpenidConnectProviderContract> listByService(String resourceGroupName, String serviceName,
+        String filter, Integer top, Integer skip, Context context) {
+        PagedIterable<OpenidConnectProviderContractInner> inner
+            = this.serviceClient().listByService(resourceGroupName, serviceName, filter, top, skip, context);
+        return ResourceManagerUtils.mapPage(inner,
+            inner1 -> new OpenidConnectProviderContractImpl(inner1, this.manager()));
+    }
+
+    public OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(String resourceGroupName,
+        String serviceName, String opid, Context context) {
+        return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, opid, context);
     }
 
     public void getEntityTag(String resourceGroupName, String serviceName, String opid) {
         this.serviceClient().getEntityTag(resourceGroupName, serviceName, opid);
     }
 
-    public OpenIdConnectProvidersGetEntityTagResponse getEntityTagWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context) {
-        return this.serviceClient().getEntityTagWithResponse(resourceGroupName, serviceName, opid, context);
+    public Response<OpenidConnectProviderContract> getWithResponse(String resourceGroupName, String serviceName,
+        String opid, Context context) {
+        OpenIdConnectProvidersGetResponse inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serviceName, opid, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new OpenidConnectProviderContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public OpenidConnectProviderContract get(String resourceGroupName, String serviceName, String opid) {
@@ -64,28 +77,25 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
         }
     }
 
-    public Response<OpenidConnectProviderContract> getWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context) {
-        OpenIdConnectProvidersGetResponse inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serviceName, opid, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new OpenidConnectProviderContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
+    public Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String opid, String ifMatch,
+        Context context) {
+        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, opid, ifMatch, context);
     }
 
     public void delete(String resourceGroupName, String serviceName, String opid, String ifMatch) {
         this.serviceClient().delete(resourceGroupName, serviceName, opid, ifMatch);
     }
 
-    public Response<Void> deleteWithResponse(
-        String resourceGroupName, String serviceName, String opid, String ifMatch, Context context) {
-        return this.serviceClient().deleteWithResponse(resourceGroupName, serviceName, opid, ifMatch, context);
+    public Response<ClientSecretContract> listSecretsWithResponse(String resourceGroupName, String serviceName,
+        String opid, Context context) {
+        OpenIdConnectProvidersListSecretsResponse inner
+            = this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, opid, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new ClientSecretContractImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public ClientSecretContract listSecrets(String resourceGroupName, String serviceName, String opid) {
@@ -97,134 +107,79 @@ public final class OpenIdConnectProvidersImpl implements OpenIdConnectProviders 
         }
     }
 
-    public Response<ClientSecretContract> listSecretsWithResponse(
-        String resourceGroupName, String serviceName, String opid, Context context) {
-        OpenIdConnectProvidersListSecretsResponse inner =
-            this.serviceClient().listSecretsWithResponse(resourceGroupName, serviceName, opid, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new ClientSecretContractImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public OpenidConnectProviderContract getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String opid = Utils.getValueFromIdByName(id, "openidConnectProviders");
+        String opid = ResourceManagerUtils.getValueFromIdByName(id, "openidConnectProviders");
         if (opid == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'openidConnectProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'openidConnectProviders'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, opid, Context.NONE).getValue();
     }
 
     public Response<OpenidConnectProviderContract> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String opid = Utils.getValueFromIdByName(id, "openidConnectProviders");
+        String opid = ResourceManagerUtils.getValueFromIdByName(id, "openidConnectProviders");
         if (opid == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'openidConnectProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'openidConnectProviders'.", id)));
         }
         return this.getWithResponse(resourceGroupName, serviceName, opid, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String opid = Utils.getValueFromIdByName(id, "openidConnectProviders");
+        String opid = ResourceManagerUtils.getValueFromIdByName(id, "openidConnectProviders");
         if (opid == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'openidConnectProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'openidConnectProviders'.", id)));
         }
         String localIfMatch = null;
         this.deleteWithResponse(resourceGroupName, serviceName, opid, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String serviceName = Utils.getValueFromIdByName(id, "service");
+        String serviceName = ResourceManagerUtils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
-        String opid = Utils.getValueFromIdByName(id, "openidConnectProviders");
+        String opid = ResourceManagerUtils.getValueFromIdByName(id, "openidConnectProviders");
         if (opid == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'openidConnectProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String
+                .format("The resource ID '%s' is not valid. Missing path segment 'openidConnectProviders'.", id)));
         }
         return this.deleteWithResponse(resourceGroupName, serviceName, opid, ifMatch, context);
     }

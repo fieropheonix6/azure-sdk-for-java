@@ -5,45 +5,52 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The SqlDatabaseGetPropertiesResource model. */
+/**
+ * The SqlDatabaseGetPropertiesResource model.
+ */
 @Fluent
 public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource {
     /*
      * A system generated property that specified the addressable path of the collections resource.
      */
-    @JsonProperty(value = "_colls")
     private String colls;
 
     /*
      * A system generated property that specifies the addressable path of the users resource.
      */
-    @JsonProperty(value = "_users")
     private String users;
 
     /*
      * A system generated property. A unique identifier.
      */
-    @JsonProperty(value = "_rid", access = JsonProperty.Access.WRITE_ONLY)
     private String rid;
 
     /*
      * A system generated property that denotes the last updated timestamp of the resource.
      */
-    @JsonProperty(value = "_ts", access = JsonProperty.Access.WRITE_ONLY)
     private Float ts;
 
     /*
      * A system generated property representing the resource etag required for optimistic concurrency control.
      */
-    @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /**
+     * Creates an instance of SqlDatabaseGetPropertiesResource class.
+     */
+    public SqlDatabaseGetPropertiesResource() {
+    }
 
     /**
      * Get the colls property: A system generated property that specified the addressable path of the collections
      * resource.
-     *
+     * 
      * @return the colls value.
      */
     public String colls() {
@@ -53,7 +60,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     /**
      * Set the colls property: A system generated property that specified the addressable path of the collections
      * resource.
-     *
+     * 
      * @param colls the colls value to set.
      * @return the SqlDatabaseGetPropertiesResource object itself.
      */
@@ -64,7 +71,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
 
     /**
      * Get the users property: A system generated property that specifies the addressable path of the users resource.
-     *
+     * 
      * @return the users value.
      */
     public String users() {
@@ -73,7 +80,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
 
     /**
      * Set the users property: A system generated property that specifies the addressable path of the users resource.
-     *
+     * 
      * @param users the users value to set.
      * @return the SqlDatabaseGetPropertiesResource object itself.
      */
@@ -84,7 +91,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -93,7 +100,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     *
+     * 
      * @return the ts value.
      */
     public Float ts() {
@@ -103,14 +110,16 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseGetPropertiesResource withId(String id) {
         super.withId(id);
@@ -118,12 +127,97 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlDatabaseGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlDatabaseGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
+        if (id() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Missing required property id in model SqlDatabaseGetPropertiesResource"));
+        }
+        if (restoreParameters() != null) {
+            restoreParameters().validate();
+        }
+    }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlDatabaseGetPropertiesResource.class);
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", id());
+        jsonWriter.writeJsonField("restoreParameters", restoreParameters());
+        jsonWriter.writeStringField("createMode", createMode() == null ? null : createMode().toString());
+        jsonWriter.writeStringField("_colls", this.colls);
+        jsonWriter.writeStringField("_users", this.users);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SqlDatabaseGetPropertiesResource from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SqlDatabaseGetPropertiesResource if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the SqlDatabaseGetPropertiesResource.
+     */
+    public static SqlDatabaseGetPropertiesResource fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SqlDatabaseGetPropertiesResource deserializedSqlDatabaseGetPropertiesResource
+                = new SqlDatabaseGetPropertiesResource();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("id".equals(fieldName)) {
+                    deserializedSqlDatabaseGetPropertiesResource.withId(reader.getString());
+                } else if ("restoreParameters".equals(fieldName)) {
+                    deserializedSqlDatabaseGetPropertiesResource
+                        .withRestoreParameters(ResourceRestoreParameters.fromJson(reader));
+                } else if ("createMode".equals(fieldName)) {
+                    deserializedSqlDatabaseGetPropertiesResource
+                        .withCreateMode(CreateMode.fromString(reader.getString()));
+                } else if ("_colls".equals(fieldName)) {
+                    deserializedSqlDatabaseGetPropertiesResource.colls = reader.getString();
+                } else if ("_users".equals(fieldName)) {
+                    deserializedSqlDatabaseGetPropertiesResource.users = reader.getString();
+                } else if ("_rid".equals(fieldName)) {
+                    deserializedSqlDatabaseGetPropertiesResource.rid = reader.getString();
+                } else if ("_ts".equals(fieldName)) {
+                    deserializedSqlDatabaseGetPropertiesResource.ts = reader.getNullable(JsonReader::getFloat);
+                } else if ("_etag".equals(fieldName)) {
+                    deserializedSqlDatabaseGetPropertiesResource.etag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSqlDatabaseGetPropertiesResource;
+        });
     }
 }

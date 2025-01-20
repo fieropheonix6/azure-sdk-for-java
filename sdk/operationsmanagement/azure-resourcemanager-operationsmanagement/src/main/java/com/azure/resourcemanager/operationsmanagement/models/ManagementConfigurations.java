@@ -7,11 +7,28 @@ package com.azure.resourcemanager.operationsmanagement.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ManagementConfigurations. */
+/**
+ * Resource collection API of ManagementConfigurations.
+ */
 public interface ManagementConfigurations {
     /**
+     * Retrieves the ManagementConfigurations list for the subscription
+     * 
      * Retrieves the ManagementConfigurations list.
-     *
+     * 
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of ManagementConfiguration response along with {@link Response}.
+     */
+    Response<ManagementConfigurationPropertiesList> listBySubscriptionWithResponse(Context context);
+
+    /**
+     * Retrieves the ManagementConfigurations list for the subscription
+     * 
+     * Retrieves the ManagementConfigurations list.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of ManagementConfiguration response.
@@ -19,19 +36,26 @@ public interface ManagementConfigurations {
     ManagementConfigurationPropertiesList listBySubscription();
 
     /**
-     * Retrieves the ManagementConfigurations list.
-     *
+     * Deletes the ManagementConfiguration
+     * 
+     * Deletes the ManagementConfiguration in the subscription.
+     * 
+     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
+     * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of ManagementConfiguration response.
+     * @return the {@link Response}.
      */
-    Response<ManagementConfigurationPropertiesList> listBySubscriptionWithResponse(Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String managementConfigurationName,
+        Context context);
 
     /**
+     * Deletes the ManagementConfiguration
+     * 
      * Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,21 +65,26 @@ public interface ManagementConfigurations {
     void deleteByResourceGroup(String resourceGroupName, String managementConfigurationName);
 
     /**
-     * Deletes the ManagementConfiguration in the subscription.
-     *
+     * Retrieve ManagementConfiguration.
+     * 
+     * Retrieves the user ManagementConfiguration.
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the container for solution along with {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String managementConfigurationName, Context context);
+    Response<ManagementConfiguration> getByResourceGroupWithResponse(String resourceGroupName,
+        String managementConfigurationName, Context context);
 
     /**
+     * Retrieve ManagementConfiguration.
+     * 
      * Retrieves the user ManagementConfiguration.
-     *
+     * 
      * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
      * @param managementConfigurationName User Management Configuration Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -66,45 +95,37 @@ public interface ManagementConfigurations {
     ManagementConfiguration getByResourceGroup(String resourceGroupName, String managementConfigurationName);
 
     /**
+     * Retrieve ManagementConfiguration.
+     * 
      * Retrieves the user ManagementConfiguration.
-     *
-     * @param resourceGroupName The name of the resource group to get. The name is case insensitive.
-     * @param managementConfigurationName User Management Configuration Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
-     */
-    Response<ManagementConfiguration> getByResourceGroupWithResponse(
-        String resourceGroupName, String managementConfigurationName, Context context);
-
-    /**
-     * Retrieves the user ManagementConfiguration.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response}.
      */
     ManagementConfiguration getById(String id);
 
     /**
+     * Retrieve ManagementConfiguration.
+     * 
      * Retrieves the user ManagementConfiguration.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the container for solution.
+     * @return the container for solution along with {@link Response}.
      */
     Response<ManagementConfiguration> getByIdWithResponse(String id, Context context);
 
     /**
+     * Deletes the ManagementConfiguration
+     * 
      * Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -113,20 +134,22 @@ public interface ManagementConfigurations {
     void deleteById(String id);
 
     /**
+     * Deletes the ManagementConfiguration
+     * 
      * Deletes the ManagementConfiguration in the subscription.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new ManagementConfiguration resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ManagementConfiguration definition.
      */

@@ -6,17 +6,15 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.machinelearning.models.Password;
-import org.junit.jupiter.api.Test;
 
 public final class PasswordTests {
-    @Test
-    public void testDeserialize() {
-        Password model =
-            BinaryData.fromString("{\"name\":\"pgvdf\",\"value\":\"otkftutqxlngx\"}").toObject(Password.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        Password model = BinaryData.fromString("{\"name\":\"yocf\",\"value\":\"ksymd\"}").toObject(Password.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         Password model = new Password();
         model = BinaryData.fromObject(model).toObject(Password.class);
     }

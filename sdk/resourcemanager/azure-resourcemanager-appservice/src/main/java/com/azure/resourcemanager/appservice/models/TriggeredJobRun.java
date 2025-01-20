@@ -5,81 +5,84 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.util.CoreUtils;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Triggered Web Job Run Information. */
+/**
+ * Triggered Web Job Run Information.
+ */
 @Fluent
-public final class TriggeredJobRun {
+public final class TriggeredJobRun implements JsonSerializable<TriggeredJobRun> {
     /*
      * Job ID.
      */
-    @JsonProperty(value = "web_job_id")
     private String webJobId;
 
     /*
      * Job name.
      */
-    @JsonProperty(value = "web_job_name")
     private String webJobName;
 
     /*
      * Job status.
      */
-    @JsonProperty(value = "status")
     private TriggeredWebJobStatus status;
 
     /*
      * Start time.
      */
-    @JsonProperty(value = "start_time")
     private OffsetDateTime startTime;
 
     /*
      * End time.
      */
-    @JsonProperty(value = "end_time")
     private OffsetDateTime endTime;
 
     /*
      * Job duration.
      */
-    @JsonProperty(value = "duration")
     private String duration;
 
     /*
      * Output URL.
      */
-    @JsonProperty(value = "output_url")
     private String outputUrl;
 
     /*
      * Error URL.
      */
-    @JsonProperty(value = "error_url")
     private String errorUrl;
 
     /*
      * Job URL.
      */
-    @JsonProperty(value = "url")
     private String url;
 
     /*
      * Job name.
      */
-    @JsonProperty(value = "job_name")
     private String jobName;
 
     /*
      * Job trigger.
      */
-    @JsonProperty(value = "trigger")
     private String trigger;
 
     /**
+     * Creates an instance of TriggeredJobRun class.
+     */
+    public TriggeredJobRun() {
+    }
+
+    /**
      * Get the webJobId property: Job ID.
-     *
+     * 
      * @return the webJobId value.
      */
     public String webJobId() {
@@ -88,7 +91,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the webJobId property: Job ID.
-     *
+     * 
      * @param webJobId the webJobId value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -99,7 +102,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the webJobName property: Job name.
-     *
+     * 
      * @return the webJobName value.
      */
     public String webJobName() {
@@ -108,7 +111,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the webJobName property: Job name.
-     *
+     * 
      * @param webJobName the webJobName value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -119,7 +122,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the status property: Job status.
-     *
+     * 
      * @return the status value.
      */
     public TriggeredWebJobStatus status() {
@@ -128,7 +131,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the status property: Job status.
-     *
+     * 
      * @param status the status value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -139,7 +142,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the startTime property: Start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -148,7 +151,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the startTime property: Start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -159,7 +162,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the endTime property: End time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -168,7 +171,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the endTime property: End time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -179,7 +182,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the duration property: Job duration.
-     *
+     * 
      * @return the duration value.
      */
     public String duration() {
@@ -188,7 +191,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the duration property: Job duration.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -199,7 +202,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the outputUrl property: Output URL.
-     *
+     * 
      * @return the outputUrl value.
      */
     public String outputUrl() {
@@ -208,7 +211,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the outputUrl property: Output URL.
-     *
+     * 
      * @param outputUrl the outputUrl value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -219,7 +222,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the errorUrl property: Error URL.
-     *
+     * 
      * @return the errorUrl value.
      */
     public String errorUrl() {
@@ -228,7 +231,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the errorUrl property: Error URL.
-     *
+     * 
      * @param errorUrl the errorUrl value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -239,7 +242,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the url property: Job URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -248,7 +251,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the url property: Job URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -259,7 +262,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the jobName property: Job name.
-     *
+     * 
      * @return the jobName value.
      */
     public String jobName() {
@@ -268,7 +271,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the jobName property: Job name.
-     *
+     * 
      * @param jobName the jobName value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -279,7 +282,7 @@ public final class TriggeredJobRun {
 
     /**
      * Get the trigger property: Job trigger.
-     *
+     * 
      * @return the trigger value.
      */
     public String trigger() {
@@ -288,7 +291,7 @@ public final class TriggeredJobRun {
 
     /**
      * Set the trigger property: Job trigger.
-     *
+     * 
      * @param trigger the trigger value to set.
      * @return the TriggeredJobRun object itself.
      */
@@ -299,9 +302,79 @@ public final class TriggeredJobRun {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("web_job_id", this.webJobId);
+        jsonWriter.writeStringField("web_job_name", this.webJobName);
+        jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
+        jsonWriter.writeStringField("start_time",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("end_time",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("duration", this.duration);
+        jsonWriter.writeStringField("output_url", this.outputUrl);
+        jsonWriter.writeStringField("error_url", this.errorUrl);
+        jsonWriter.writeStringField("url", this.url);
+        jsonWriter.writeStringField("job_name", this.jobName);
+        jsonWriter.writeStringField("trigger", this.trigger);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of TriggeredJobRun from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of TriggeredJobRun if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the TriggeredJobRun.
+     */
+    public static TriggeredJobRun fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            TriggeredJobRun deserializedTriggeredJobRun = new TriggeredJobRun();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("web_job_id".equals(fieldName)) {
+                    deserializedTriggeredJobRun.webJobId = reader.getString();
+                } else if ("web_job_name".equals(fieldName)) {
+                    deserializedTriggeredJobRun.webJobName = reader.getString();
+                } else if ("status".equals(fieldName)) {
+                    deserializedTriggeredJobRun.status = TriggeredWebJobStatus.fromString(reader.getString());
+                } else if ("start_time".equals(fieldName)) {
+                    deserializedTriggeredJobRun.startTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("end_time".equals(fieldName)) {
+                    deserializedTriggeredJobRun.endTime = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("duration".equals(fieldName)) {
+                    deserializedTriggeredJobRun.duration = reader.getString();
+                } else if ("output_url".equals(fieldName)) {
+                    deserializedTriggeredJobRun.outputUrl = reader.getString();
+                } else if ("error_url".equals(fieldName)) {
+                    deserializedTriggeredJobRun.errorUrl = reader.getString();
+                } else if ("url".equals(fieldName)) {
+                    deserializedTriggeredJobRun.url = reader.getString();
+                } else if ("job_name".equals(fieldName)) {
+                    deserializedTriggeredJobRun.jobName = reader.getString();
+                } else if ("trigger".equals(fieldName)) {
+                    deserializedTriggeredJobRun.trigger = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedTriggeredJobRun;
+        });
     }
 }

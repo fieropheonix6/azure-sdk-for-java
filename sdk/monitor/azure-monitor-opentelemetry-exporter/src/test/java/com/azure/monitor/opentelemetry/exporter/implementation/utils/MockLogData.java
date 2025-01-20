@@ -4,6 +4,7 @@
 package com.azure.monitor.opentelemetry.exporter.implementation.utils;
 
 import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.api.logs.Severity;
 import io.opentelemetry.api.trace.SpanContext;
 import io.opentelemetry.api.trace.SpanId;
 import io.opentelemetry.api.trace.TraceFlags;
@@ -11,13 +12,12 @@ import io.opentelemetry.api.trace.TraceId;
 import io.opentelemetry.api.trace.TraceState;
 import io.opentelemetry.sdk.common.InstrumentationScopeInfo;
 import io.opentelemetry.sdk.logs.data.Body;
-import io.opentelemetry.sdk.logs.data.LogData;
-import io.opentelemetry.sdk.logs.data.Severity;
+import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.resources.Resource;
 
 import java.time.Instant;
 
-public class MockLogData implements LogData {
+public class MockLogData implements LogRecordData {
 
     @Override
     public Resource getResource() {
@@ -30,16 +30,18 @@ public class MockLogData implements LogData {
     }
 
     @Override
-    public long getEpochNanos() {
+    public long getTimestampEpochNanos() {
         return Instant.now().getEpochSecond();
     }
 
     @Override
+    public long getObservedTimestampEpochNanos() {
+        return getTimestampEpochNanos();
+    }
+
+    @Override
     public SpanContext getSpanContext() {
-        return SpanContext.create(
-            TraceId.fromLongs(10L, 2L),
-            SpanId.fromLong(1),
-            TraceFlags.getDefault(),
+        return SpanContext.create(TraceId.fromLongs(10L, 2L), SpanId.fromLong(1), TraceFlags.getDefault(),
             TraceState.builder().build());
     }
 
@@ -67,5 +69,10 @@ public class MockLogData implements LogData {
             .put("operation", "get")
             .put("id", "1234")
             .build();
+    }
+
+    @Override
+    public int getTotalAttributeCount() {
+        return getAttributes().size();
     }
 }

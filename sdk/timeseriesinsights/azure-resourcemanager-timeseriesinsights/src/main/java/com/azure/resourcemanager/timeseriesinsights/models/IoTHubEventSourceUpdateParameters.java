@@ -5,119 +5,56 @@
 package com.azure.resourcemanager.timeseriesinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.timeseriesinsights.fluent.models.IoTHubEventSourceMutableProperties;
+import java.io.IOException;
 import java.util.Map;
 
-/** Parameters supplied to the Update Event Source operation to update an IoTHub event source. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("Microsoft.IoTHub")
-@JsonFlatten
+/**
+ * Parameters supplied to the Update Event Source operation to update an IoTHub event source.
+ */
 @Fluent
-public class IoTHubEventSourceUpdateParameters extends EventSourceUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IoTHubEventSourceUpdateParameters.class);
+public final class IoTHubEventSourceUpdateParameters extends EventSourceUpdateParameters {
+    /*
+     * The kind of the event source.
+     */
+    private EventSourceKind kind = EventSourceKind.MICROSOFT_IO_THUB;
 
     /*
-     * The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or
-     * empty-string is specified, the event creation time will be used.
+     * Properties of the IoTHub event source.
      */
-    @JsonProperty(value = "properties.timestampPropertyName")
-    private String timestampPropertyName;
-
-    /*
-     * An object that represents the local timestamp property. It contains the
-     * format of local timestamp that needs to be used and the corresponding
-     * timezone offset information. If a value isn't specified for
-     * localTimestamp, or if null, then the local timestamp will not be
-     * ingressed with the events.
-     */
-    @JsonProperty(value = "properties.localTimestamp")
-    private LocalTimestamp localTimestamp;
-
-    /*
-     * The value of the shared access key that grants the Time Series Insights
-     * service read access to the iot hub. This property is not shown in event
-     * source responses.
-     */
-    @JsonProperty(value = "properties.sharedAccessKey")
-    private String sharedAccessKey;
+    private IoTHubEventSourceMutableProperties innerProperties;
 
     /**
-     * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
-     * time will be used.
-     *
-     * @return the timestampPropertyName value.
+     * Creates an instance of IoTHubEventSourceUpdateParameters class.
      */
-    public String timestampPropertyName() {
-        return this.timestampPropertyName;
+    public IoTHubEventSourceUpdateParameters() {
     }
 
     /**
-     * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
-     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
-     * time will be used.
-     *
-     * @param timestampPropertyName the timestampPropertyName value to set.
-     * @return the IoTHubEventSourceUpdateParameters object itself.
+     * Get the kind property: The kind of the event source.
+     * 
+     * @return the kind value.
      */
-    public IoTHubEventSourceUpdateParameters withTimestampPropertyName(String timestampPropertyName) {
-        this.timestampPropertyName = timestampPropertyName;
-        return this;
+    @Override
+    public EventSourceKind kind() {
+        return this.kind;
     }
 
     /**
-     * Get the localTimestamp property: An object that represents the local timestamp property. It contains the format
-     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
-     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-     *
-     * @return the localTimestamp value.
+     * Get the innerProperties property: Properties of the IoTHub event source.
+     * 
+     * @return the innerProperties value.
      */
-    public LocalTimestamp localTimestamp() {
-        return this.localTimestamp;
+    private IoTHubEventSourceMutableProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the localTimestamp property: An object that represents the local timestamp property. It contains the format
-     * of local timestamp that needs to be used and the corresponding timezone offset information. If a value isn't
-     * specified for localTimestamp, or if null, then the local timestamp will not be ingressed with the events.
-     *
-     * @param localTimestamp the localTimestamp value to set.
-     * @return the IoTHubEventSourceUpdateParameters object itself.
+     * {@inheritDoc}
      */
-    public IoTHubEventSourceUpdateParameters withLocalTimestamp(LocalTimestamp localTimestamp) {
-        this.localTimestamp = localTimestamp;
-        return this;
-    }
-
-    /**
-     * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
-     * read access to the iot hub. This property is not shown in event source responses.
-     *
-     * @return the sharedAccessKey value.
-     */
-    public String sharedAccessKey() {
-        return this.sharedAccessKey;
-    }
-
-    /**
-     * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
-     * read access to the iot hub. This property is not shown in event source responses.
-     *
-     * @param sharedAccessKey the sharedAccessKey value to set.
-     * @return the IoTHubEventSourceUpdateParameters object itself.
-     */
-    public IoTHubEventSourceUpdateParameters withSharedAccessKey(String sharedAccessKey) {
-        this.sharedAccessKey = sharedAccessKey;
-        return this;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public IoTHubEventSourceUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -125,15 +62,111 @@ public class IoTHubEventSourceUpdateParameters extends EventSourceUpdateParamete
     }
 
     /**
+     * Get the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
+     * read access to the iot hub. This property is not shown in event source responses.
+     * 
+     * @return the sharedAccessKey value.
+     */
+    public String sharedAccessKey() {
+        return this.innerProperties() == null ? null : this.innerProperties().sharedAccessKey();
+    }
+
+    /**
+     * Set the sharedAccessKey property: The value of the shared access key that grants the Time Series Insights service
+     * read access to the iot hub. This property is not shown in event source responses.
+     * 
+     * @param sharedAccessKey the sharedAccessKey value to set.
+     * @return the IoTHubEventSourceUpdateParameters object itself.
+     */
+    public IoTHubEventSourceUpdateParameters withSharedAccessKey(String sharedAccessKey) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceMutableProperties();
+        }
+        this.innerProperties().withSharedAccessKey(sharedAccessKey);
+        return this;
+    }
+
+    /**
+     * Get the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
+     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
+     * time will be used.
+     * 
+     * @return the timestampPropertyName value.
+     */
+    public String timestampPropertyName() {
+        return this.innerProperties() == null ? null : this.innerProperties().timestampPropertyName();
+    }
+
+    /**
+     * Set the timestampPropertyName property: The event property that will be used as the event source's timestamp. If
+     * a value isn't specified for timestampPropertyName, or if null or empty-string is specified, the event creation
+     * time will be used.
+     * 
+     * @param timestampPropertyName the timestampPropertyName value to set.
+     * @return the IoTHubEventSourceUpdateParameters object itself.
+     */
+    public IoTHubEventSourceUpdateParameters withTimestampPropertyName(String timestampPropertyName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new IoTHubEventSourceMutableProperties();
+        }
+        this.innerProperties().withTimestampPropertyName(timestampPropertyName);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
-        super.validate();
-        if (localTimestamp() != null) {
-            localTimestamp().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("tags", tags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("kind", this.kind == null ? null : this.kind.toString());
+        jsonWriter.writeJsonField("properties", this.innerProperties);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of IoTHubEventSourceUpdateParameters from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of IoTHubEventSourceUpdateParameters if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the IoTHubEventSourceUpdateParameters.
+     */
+    public static IoTHubEventSourceUpdateParameters fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            IoTHubEventSourceUpdateParameters deserializedIoTHubEventSourceUpdateParameters
+                = new IoTHubEventSourceUpdateParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedIoTHubEventSourceUpdateParameters.withTags(tags);
+                } else if ("kind".equals(fieldName)) {
+                    deserializedIoTHubEventSourceUpdateParameters.kind = EventSourceKind.fromString(reader.getString());
+                } else if ("properties".equals(fieldName)) {
+                    deserializedIoTHubEventSourceUpdateParameters.innerProperties
+                        = IoTHubEventSourceMutableProperties.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedIoTHubEventSourceUpdateParameters;
+        });
     }
 }
